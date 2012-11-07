@@ -1,0 +1,60 @@
+# HookflashServices
+#
+
+if [ -z "$(PREFIX)" ]; then PREFIX=/usr; fi
+
+
+LIB_NAME=hookflash_services_http
+ARNAME=lib$(LIB_NAME).a
+
+CC=g++
+CFLAGS=-fPIC
+LDFLAGS=-D_LINUX
+INC=-I../../../ -I$(PREFIX)/include -I/usr/lib/jvm/java-6-sun-1.6.0.26/include -I/usr/lib/jvm/java-6-sun-1.6.0.26/include/linux
+SRC=../../../hookflash/services/http/cpp
+
+
+
+
+OUT_DIR=out
+OUT_BIN_DIR=$(OUT_DIR)/bin
+OUT_OBJ_DIR=$(OUT_DIR)/obj
+OUT_LIB_DIR=$(OUT_DIR)/lib
+OUT_INCLUDE_DIR=$(OUT_DIR)/include
+
+
+OBJS=$(patsubst $(SRC)/%.cpp,%.o,$(wildcard $(SRC)/*.cpp))
+OBJ_PATHS=$(addprefix $(OUT_OBJ_DIR)/,$(OBJS))
+
+
+
+
+all:prepare copy_headers build
+
+
+copy_headers:
+	cp ../../../hookflash/services/http/*.h $(OUT_INCLUDE_DIR)/hookflash/services/http
+	cp ../../../hookflash/services/http/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/services/http/internal
+
+
+build: $(OBJS) archive
+
+
+%.o: $(SRC)/%.cpp
+	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$@ $<
+
+archive:
+	ar rcs $(OUT_LIB_DIR)/$(ARNAME) $(OBJ_PATHS)
+
+
+prepare:
+	mkdir -p $(OUT_OBJ_DIR)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)/hookflash/services/http/internal
+
+install:
+	mkdir -p $(PREFIX)
+	cp -R $(OUT_INCLUDE_DIR) $(PREFIX)
+	cp -R $(OUT_LIB_DIR) $(PREFIX)
+	#cp -R $(OUT_BIN_DIR) $(PREFIX)
+

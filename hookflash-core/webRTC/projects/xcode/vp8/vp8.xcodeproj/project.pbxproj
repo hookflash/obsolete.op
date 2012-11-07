@@ -1,0 +1,375 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A83BDF813E8327000256E6E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A83BDF713E8327000256E6E /* Foundation.framework */; };
+		E2FF9701150A4A64009A26A3 /* vp8.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2FF9700150A4A64009A26A3 /* vp8.cc */; };
+		E2FF9703150A4A6D009A26A3 /* vp8.h in Headers */ = {isa = PBXBuildFile; fileRef = E2FF9702150A4A6D009A26A3 /* vp8.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2A9B8E3613E867EA00F5534B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A9B8E3213E867EA00F5534B /* vplib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2A8711E313E6C7FA00BCA399;
+			remoteInfo = vplib;
+		};
+		2A9B8E3913E8681900F5534B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A9B8E3213E867EA00F5534B /* vplib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A8711E213E6C7FA00BCA399;
+			remoteInfo = vplib;
+		};
+		2A9B8E4213E868BE00F5534B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A9B8E3B13E868BD00F5534B /* system_wrappers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2A87113213E6C12A00BCA399;
+			remoteInfo = system_wrappers;
+		};
+		2A9B8E4413E868C900F5534B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A9B8E3B13E868BD00F5534B /* system_wrappers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A87113113E6C12A00BCA399;
+			remoteInfo = system_wrappers;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		2A83BDF413E8327000256E6E /* libvp8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvp8.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A83BDF713E8327000256E6E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2A9B8E3213E867EA00F5534B /* vplib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = vplib.xcodeproj; path = vp8.xcodeproj/../../vplib/vplib.xcodeproj; sourceTree = "<group>"; };
+		2A9B8E3B13E868BD00F5534B /* system_wrappers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers.xcodeproj; path = ../system_wrappers/system_wrappers.xcodeproj; sourceTree = "<group>"; };
+		E2FF9700150A4A64009A26A3 /* vp8.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vp8.cc; path = ../../../webRTC/src/modules/video_coding/codecs/vp8/main/source/vp8.cc; sourceTree = "<group>"; };
+		E2FF9702150A4A6D009A26A3 /* vp8.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vp8.h; path = ../../../webRTC/src/modules/video_coding/codecs/vp8/main/interface/vp8.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A83BDF113E8327000256E6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A83BDF813E8327000256E6E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A83BDE913E8327000256E6E = {
+			isa = PBXGroup;
+			children = (
+				E2FF96FE150A4A12009A26A3 /* Source */,
+				2A83BE0113E8335000256E6E /* Project */,
+				2A83BDF613E8327000256E6E /* Frameworks */,
+				2A83BDF513E8327000256E6E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A83BDF513E8327000256E6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A83BDF413E8327000256E6E /* libvp8.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A83BDF613E8327000256E6E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A83BDF713E8327000256E6E /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2A83BE0113E8335000256E6E /* Project */ = {
+			isa = PBXGroup;
+			children = (
+				2A9B8E3B13E868BD00F5534B /* system_wrappers.xcodeproj */,
+				2A9B8E3213E867EA00F5534B /* vplib.xcodeproj */,
+			);
+			name = Project;
+			sourceTree = "<group>";
+		};
+		2A9B8E3313E867EA00F5534B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A9B8E3713E867EA00F5534B /* libvplib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A9B8E3C13E868BD00F5534B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A9B8E4313E868BE00F5534B /* libsystem_wrappers.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2FF96FE150A4A12009A26A3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF96FF150A4A3E009A26A3 /* ../interface */,
+				E2FF9700150A4A64009A26A3 /* vp8.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E2FF96FF150A4A3E009A26A3 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF9702150A4A6D009A26A3 /* vp8.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A83BDF213E8327000256E6E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF9703150A4A6D009A26A3 /* vp8.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A83BDF313E8327000256E6E /* vp8 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A83BDFE13E8327000256E6E /* Build configuration list for PBXNativeTarget "vp8" */;
+			buildPhases = (
+				2A83BDF013E8327000256E6E /* Sources */,
+				2A83BDF113E8327000256E6E /* Frameworks */,
+				2A83BDF213E8327000256E6E /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2A9B8E4513E868C900F5534B /* PBXTargetDependency */,
+				2A9B8E3A13E8681900F5534B /* PBXTargetDependency */,
+			);
+			name = vp8;
+			productName = vp8;
+			productReference = 2A83BDF413E8327000256E6E /* libvp8.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A83BDEB13E8327000256E6E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A83BDEE13E8327000256E6E /* Build configuration list for PBXProject "vp8" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A83BDE913E8327000256E6E;
+			productRefGroup = 2A83BDF513E8327000256E6E /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2A9B8E3C13E868BD00F5534B /* Products */;
+					ProjectRef = 2A9B8E3B13E868BD00F5534B /* system_wrappers.xcodeproj */;
+				},
+				{
+					ProductGroup = 2A9B8E3313E867EA00F5534B /* Products */;
+					ProjectRef = 2A9B8E3213E867EA00F5534B /* vplib.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				2A83BDF313E8327000256E6E /* vp8 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		2A9B8E3713E867EA00F5534B /* libvplib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvplib.a;
+			remoteRef = 2A9B8E3613E867EA00F5534B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2A9B8E4313E868BE00F5534B /* libsystem_wrappers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsystem_wrappers.a;
+			remoteRef = 2A9B8E4213E868BE00F5534B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A83BDF013E8327000256E6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF9701150A4A64009A26A3 /* vp8.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2A9B8E3A13E8681900F5534B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = vplib;
+			targetProxy = 2A9B8E3913E8681900F5534B /* PBXContainerItemProxy */;
+		};
+		2A9B8E4513E868C900F5534B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = system_wrappers;
+			targetProxy = 2A9B8E4413E868C900F5534B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2A83BDFC13E8327000256E6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A83BDFD13E8327000256E6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A83BDFF13E8327000256E6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/vp8.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+					../../../webRTC/src/common_video/interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/modules/video_coding/codecs/interface,
+					../../../webRTC/third_party/libvpx/source/libvpx,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A83BE0013E8327000256E6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/vp8.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+					../../../webRTC/src/common_video/interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/modules/video_coding/codecs/interface,
+					../../../webRTC/third_party/libvpx/source/libvpx,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A83BDEE13E8327000256E6E /* Build configuration list for PBXProject "vp8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A83BDFC13E8327000256E6E /* Debug */,
+				2A83BDFD13E8327000256E6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A83BDFE13E8327000256E6E /* Build configuration list for PBXNativeTarget "vp8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A83BDFF13E8327000256E6E /* Debug */,
+				2A83BE0013E8327000256E6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A83BDEB13E8327000256E6E /* Project object */;
+}

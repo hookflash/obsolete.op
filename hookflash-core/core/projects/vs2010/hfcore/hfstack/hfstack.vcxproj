@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{41EEE569-EEBB-45B0-85DD-96CC506E47B4}</ProjectGuid>
+    <RootNamespace>hfstack</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\..\..\..\..\hookflash-libs\boost\boost;$(ProjectDir)\..\..\..\..\;$(ProjectDir)\..\..\..\..\..\..\hookflash-libs\cryptopp;$(ProjectDir)\..\..\..\..\..\..\hookflash-libs\zsLib;$(ProjectDir)\..\..\..\..\hookflash\services;$(ProjectDir)\..\..\..\..\hookflash\stack;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\hookflash\stack\hookflashTypes.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IAccount.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IBootstrappedNetwork.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IHelper.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IMessageRequester.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\hookflashTypes.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_Account.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_AccountFinder.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_AccountFinderSession.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_AccountPeerLocation.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_BootstrappedNetwork.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_MessageRequester.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_MessageRequesterManager.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_PeerContactProfile.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_PeerFilePrivate.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_PeerFilePublic.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_PeerFiles.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\internal\stack_PeerSubscription.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IPeerContactProfile.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IPeerFilePrivate.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IPeerFilePublic.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IPeerFiles.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\IPeerSubscription.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\hookflashTypes.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\MessageHelper.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToBootstrapperFindersGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToBootstrapperFindersGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToBootstrapperServicesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToBootstrapperServicesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaResignRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaResignResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaValidateRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToCaptchaCaptchaValidateResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderAuthorizationListsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderAuthorizationListsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderAuthorizationListsSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderAuthorizationListsSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderContactDeleteAllReferencesRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderContactDeleteAllReferencesResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderContactForwardRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderContactForwardResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderEventsNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderEventsNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderEventsSubscribeRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderEventsSubscribeResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderExternalContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderExternalContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderExternalContactProfilesSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderExternalContactProfilesSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupListGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupListGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchCancelRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchCancelResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupSearchResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupsSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderGroupsSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderMessageExpireRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderMessageExpireResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderMessageSendRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderMessageSendResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfileDeleteRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfileDeleteResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfileSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfileSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchCancelRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchCancelResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerContactSearchResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerLocationFindReply.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerLocationFindRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPeerLocationFindResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPresencePublishRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderPresencePublishResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderServiceNotifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderServiceNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionCreateRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionCreateResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionDeleteRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionDeleteResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionKeepAliveRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderSessionKeepAliveResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderThreadPublishRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToFinderThreadPublishResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerDialogSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerDialogSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerMessageGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerMessageGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerMessageSendRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerMessageSendResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerConnectionRequestRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerConnectionRequestResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerIdentifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerIdentifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerPreauthorizedFindRequestRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPeerPreauthorizedFindRequestResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPublicPeerFilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerPublicPeerFilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerStateNotifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerStateNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerThreadSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerThreadSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerThreadsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToPeerThreadsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToSaltSignedSaltGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\internal\PeerToSaltSignedSaltGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\Message.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\MessageNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\MessageReply.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\MessageRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\MessageResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\messages.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToBootstrapperFindersGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToBootstrapperFindersGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToBootstrapperServicesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToBootstrapperServicesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaResignRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaResignResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaValidateRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToCaptchaCaptchaValidateResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderAuthorizationListsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderAuthorizationListsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderAuthorizationListsSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderAuthorizationListsSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderContactDeleteAllReferencesRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderContactDeleteAllReferencesResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderContactForwardRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderContactForwardResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderEventsNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderEventsNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderEventsSubscribeRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderEventsSubscribeResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderExternalContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderExternalContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderExternalContactProfilesSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderExternalContactProfilesSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupListGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupListGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchCancelRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchCancelResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupSearchResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupsSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderGroupsSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderMessageExpireRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderMessageExpireResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderMessageSendRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderMessageSendResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfileDeleteRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfileDeleteResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfileSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfileSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchCancelRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchCancelResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchNotifyNotify.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerContactSearchResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerLocationFindReply.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerLocationFindRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPeerLocationFindResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPresencePublishRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderPresencePublishResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderServiceNotifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderServiceNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionCreateRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionCreateResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionDeleteRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionDeleteResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionKeepAliveRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderSessionKeepAliveResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderThreadPublishRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToFinderThreadPublishResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerDialogSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerDialogSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerMessageGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerMessageGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerMessageSendRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerMessageSendResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerConnectionRequestRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerConnectionRequestResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerContactProfilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerContactProfilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerIdentifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerIdentifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerPreauthorizedFindRequestRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPeerPreauthorizedFindRequestResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPublicPeerFilesGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerPublicPeerFilesGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerStateNotifyRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerStateNotifyResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerThreadSetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerThreadSetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerThreadsGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToPeerThreadsGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToSaltSignedSaltGetRequest.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\message\PeerToSaltSignedSaltGetResult.h" />
+    <ClInclude Include="..\..\..\..\hookflash\stack\stack.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_Account.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_AccountFinder.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_AccountPeerLocation.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_BootstrappedNetwork.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_IHelper.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_MessageRequester.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_MessageRequesterManager.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_PeerContactProfile.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_PeerFilePrivate.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_PeerFilePublic.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_PeerFiles.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_PeerSubscription.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\cpp\stack_stack.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\Message.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\MessageHelper.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\MessageResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToBootstrapperFindersGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToBootstrapperFindersGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToBootstrapperServicesGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToBootstrapperServicesGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaResignRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaResignResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaValidateRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToCaptchaCaptchaValidateResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderAuthorizationListsGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderAuthorizationListsGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderAuthorizationListsSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderAuthorizationListsSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderContactDeleteAllReferencesRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderContactDeleteAllReferencesResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderContactForwardRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderContactForwardResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderEventsNotifyNotify.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderEventsNotifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderEventsSubscribeRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderEventsSubscribeResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderExternalContactProfilesGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderExternalContactProfilesGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderExternalContactProfilesSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderExternalContactProfilesSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupListGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupListGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchCancelRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchCancelResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchNotifyNotify.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchNotifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupSearchResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupsGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupsGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupsSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderGroupsSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderMessageExpireRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderMessageExpireResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderMessageSendRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderMessageSendResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfileDeleteRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfileDeleteResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfileSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfileSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfilesGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactProfilesGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchCancelRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchCancelResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchNotifyNotify.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchNotifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerContactSearchResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerLocationFindReply.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerLocationFindRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPeerLocationFindResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPresencePublishRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderPresencePublishResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderServiceNotifyRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderServiceNotifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionCreateRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionCreateResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionDeleteRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionDeleteResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionKeepAliveRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderSessionKeepAliveResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderThreadPublishRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToFinderThreadPublishResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerDialogSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerDialogSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerMessageGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerMessageGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerMessageSendRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerMessageSendResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerConnectionRequestRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerConnectionRequestResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerContactProfilesGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerContactProfilesGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerIdentifyRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerIdentifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerPreauthorizedFindRequestRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPeerPreauthorizedFindRequestResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPublicPeerFilesGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerPublicPeerFilesGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerStateNotifyRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerStateNotifyResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerThreadSetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerThreadSetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerThreadsGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToPeerThreadsGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToSaltSignedSaltGetRequest.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\PeerToSaltSignedSaltGetResult.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\stack\message\cpp\stack_message_messages.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

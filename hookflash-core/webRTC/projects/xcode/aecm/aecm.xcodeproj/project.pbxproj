@@ -1,0 +1,286 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870AC713E35AB200BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870AC613E35AB200BCA399 /* Foundation.framework */; };
+		E27B22F61441E3180030DDF2 /* echo_control_mobile.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22F51441E3180030DDF2 /* echo_control_mobile.h */; };
+		E27B22FD1441E3330030DDF2 /* aecm_core_neon.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22F71441E3330030DDF2 /* aecm_core_neon.c */; };
+		E27B22FE1441E3330030DDF2 /* aecm_core.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22F81441E3330030DDF2 /* aecm_core.c */; };
+		E27B22FF1441E3330030DDF2 /* aecm_core.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22F91441E3330030DDF2 /* aecm_core.h */; };
+		E27B23001441E3330030DDF2 /* aecm_delay_estimator.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22FA1441E3330030DDF2 /* aecm_delay_estimator.c */; };
+		E27B23011441E3330030DDF2 /* aecm_delay_estimator.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22FB1441E3330030DDF2 /* aecm_delay_estimator.h */; };
+		E27B23021441E3330030DDF2 /* echo_control_mobile.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22FC1441E3330030DDF2 /* echo_control_mobile.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870AC313E35AB200BCA399 /* libaecm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libaecm.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870AC613E35AB200BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B22F51441E3180030DDF2 /* echo_control_mobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = echo_control_mobile.h; path = ../../../webRTC/src/modules/audio_processing/aecm/main/interface/echo_control_mobile.h; sourceTree = "<group>"; };
+		E27B22F71441E3330030DDF2 /* aecm_core_neon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aecm_core_neon.c; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/aecm_core_neon.c; sourceTree = "<group>"; };
+		E27B22F81441E3330030DDF2 /* aecm_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aecm_core.c; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/aecm_core.c; sourceTree = "<group>"; };
+		E27B22F91441E3330030DDF2 /* aecm_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aecm_core.h; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/aecm_core.h; sourceTree = "<group>"; };
+		E27B22FA1441E3330030DDF2 /* aecm_delay_estimator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aecm_delay_estimator.c; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/aecm_delay_estimator.c; sourceTree = "<group>"; };
+		E27B22FB1441E3330030DDF2 /* aecm_delay_estimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aecm_delay_estimator.h; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/aecm_delay_estimator.h; sourceTree = "<group>"; };
+		E27B22FC1441E3330030DDF2 /* echo_control_mobile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = echo_control_mobile.c; path = ../../../webRTC/src/modules/audio_processing/aecm/main/source/echo_control_mobile.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870AC013E35AB200BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870AC713E35AB200BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870AB813E35AB200BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B22F31441E2D50030DDF2 /* Source */,
+				2A870AC513E35AB200BCA399 /* Frameworks */,
+				2A870AC413E35AB200BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870AC413E35AB200BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870AC313E35AB200BCA399 /* libaecm.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870AC513E35AB200BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870AC613E35AB200BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B22F31441E2D50030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22F41441E2DD0030DDF2 /* ../interface */,
+				E27B22F71441E3330030DDF2 /* aecm_core_neon.c */,
+				E27B22F81441E3330030DDF2 /* aecm_core.c */,
+				E27B22F91441E3330030DDF2 /* aecm_core.h */,
+				E27B22FA1441E3330030DDF2 /* aecm_delay_estimator.c */,
+				E27B22FB1441E3330030DDF2 /* aecm_delay_estimator.h */,
+				E27B22FC1441E3330030DDF2 /* echo_control_mobile.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B22F41441E2DD0030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22F51441E3180030DDF2 /* echo_control_mobile.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870AC113E35AB200BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B22F61441E3180030DDF2 /* echo_control_mobile.h in Headers */,
+				E27B22FF1441E3330030DDF2 /* aecm_core.h in Headers */,
+				E27B23011441E3330030DDF2 /* aecm_delay_estimator.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870AC213E35AB200BCA399 /* aecm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870ACD13E35AB200BCA399 /* Build configuration list for PBXNativeTarget "aecm" */;
+			buildPhases = (
+				2A870ABF13E35AB200BCA399 /* Sources */,
+				2A870AC013E35AB200BCA399 /* Frameworks */,
+				2A870AC113E35AB200BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = aecm;
+			productName = aecm;
+			productReference = 2A870AC313E35AB200BCA399 /* libaecm.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870ABA13E35AB200BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870ABD13E35AB200BCA399 /* Build configuration list for PBXProject "aecm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870AB813E35AB200BCA399;
+			productRefGroup = 2A870AC413E35AB200BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870AC213E35AB200BCA399 /* aecm */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870ABF13E35AB200BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B22FD1441E3330030DDF2 /* aecm_core_neon.c in Sources */,
+				E27B22FE1441E3330030DDF2 /* aecm_core.c in Sources */,
+				E27B23001441E3330030DDF2 /* aecm_delay_estimator.c in Sources */,
+				E27B23021441E3330030DDF2 /* echo_control_mobile.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870ACB13E35AB200BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870ACC13E35AB200BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870ACE13E35AB200BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/aecm.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870ACF13E35AB200BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/aecm.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870ABD13E35AB200BCA399 /* Build configuration list for PBXProject "aecm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870ACB13E35AB200BCA399 /* Debug */,
+				2A870ACC13E35AB200BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870ACD13E35AB200BCA399 /* Build configuration list for PBXNativeTarget "aecm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870ACE13E35AB200BCA399 /* Debug */,
+				2A870ACF13E35AB200BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870ABA13E35AB200BCA399 /* Project object */;
+}

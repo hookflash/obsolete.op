@@ -1,0 +1,364 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870B1F13E35EF200BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870B1E13E35EF200BCA399 /* Foundation.framework */; };
+		E27B22541441DF9B0030DDF2 /* audio_processing.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22531441DF9B0030DDF2 /* audio_processing.h */; };
+		E27B226B1441DFBE0030DDF2 /* audio_buffer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22551441DFBD0030DDF2 /* audio_buffer.cc */; };
+		E27B226C1441DFBE0030DDF2 /* audio_buffer.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22561441DFBD0030DDF2 /* audio_buffer.h */; };
+		E27B226D1441DFBE0030DDF2 /* audio_processing_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22571441DFBD0030DDF2 /* audio_processing_impl.cc */; };
+		E27B226E1441DFBE0030DDF2 /* audio_processing_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22581441DFBD0030DDF2 /* audio_processing_impl.h */; };
+		E27B226F1441DFBE0030DDF2 /* echo_cancellation_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22591441DFBD0030DDF2 /* echo_cancellation_impl.cc */; };
+		E27B22701441DFBE0030DDF2 /* echo_cancellation_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B225A1441DFBD0030DDF2 /* echo_cancellation_impl.h */; };
+		E27B22711441DFBE0030DDF2 /* echo_control_mobile_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B225B1441DFBD0030DDF2 /* echo_control_mobile_impl.cc */; };
+		E27B22721441DFBE0030DDF2 /* echo_control_mobile_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B225C1441DFBD0030DDF2 /* echo_control_mobile_impl.h */; };
+		E27B22731441DFBE0030DDF2 /* gain_control_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B225D1441DFBD0030DDF2 /* gain_control_impl.cc */; };
+		E27B22741441DFBE0030DDF2 /* gain_control_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B225E1441DFBD0030DDF2 /* gain_control_impl.h */; };
+		E27B22751441DFBE0030DDF2 /* high_pass_filter_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B225F1441DFBD0030DDF2 /* high_pass_filter_impl.cc */; };
+		E27B22761441DFBE0030DDF2 /* high_pass_filter_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22601441DFBD0030DDF2 /* high_pass_filter_impl.h */; };
+		E27B22771441DFBE0030DDF2 /* level_estimator_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22611441DFBD0030DDF2 /* level_estimator_impl.cc */; };
+		E27B22781441DFBE0030DDF2 /* level_estimator_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22621441DFBD0030DDF2 /* level_estimator_impl.h */; };
+		E27B22791441DFBE0030DDF2 /* noise_suppression_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22631441DFBD0030DDF2 /* noise_suppression_impl.cc */; };
+		E27B227A1441DFBE0030DDF2 /* noise_suppression_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22641441DFBD0030DDF2 /* noise_suppression_impl.h */; };
+		E27B227B1441DFBE0030DDF2 /* processing_component.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22651441DFBD0030DDF2 /* processing_component.cc */; };
+		E27B227C1441DFBE0030DDF2 /* processing_component.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22661441DFBD0030DDF2 /* processing_component.h */; };
+		E27B227D1441DFBE0030DDF2 /* splitting_filter.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22671441DFBD0030DDF2 /* splitting_filter.cc */; };
+		E27B227E1441DFBE0030DDF2 /* splitting_filter.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22681441DFBD0030DDF2 /* splitting_filter.h */; };
+		E27B227F1441DFBE0030DDF2 /* voice_detection_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B22691441DFBE0030DDF2 /* voice_detection_impl.cc */; };
+		E27B22801441DFBE0030DDF2 /* voice_detection_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B226A1441DFBE0030DDF2 /* voice_detection_impl.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870B1B13E35EF200BCA399 /* libaudio_processing.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libaudio_processing.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870B1E13E35EF200BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B22531441DF9B0030DDF2 /* audio_processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = audio_processing.h; path = ../../../webRTC/src/modules/audio_processing/main/interface/audio_processing.h; sourceTree = "<group>"; };
+		E27B22551441DFBD0030DDF2 /* audio_buffer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = audio_buffer.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/audio_buffer.cc; sourceTree = "<group>"; };
+		E27B22561441DFBD0030DDF2 /* audio_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = audio_buffer.h; path = ../../../webRTC/src/modules/audio_processing/main/source/audio_buffer.h; sourceTree = "<group>"; };
+		E27B22571441DFBD0030DDF2 /* audio_processing_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = audio_processing_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/audio_processing_impl.cc; sourceTree = "<group>"; };
+		E27B22581441DFBD0030DDF2 /* audio_processing_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = audio_processing_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/audio_processing_impl.h; sourceTree = "<group>"; };
+		E27B22591441DFBD0030DDF2 /* echo_cancellation_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = echo_cancellation_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/echo_cancellation_impl.cc; sourceTree = "<group>"; };
+		E27B225A1441DFBD0030DDF2 /* echo_cancellation_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = echo_cancellation_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/echo_cancellation_impl.h; sourceTree = "<group>"; };
+		E27B225B1441DFBD0030DDF2 /* echo_control_mobile_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = echo_control_mobile_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/echo_control_mobile_impl.cc; sourceTree = "<group>"; };
+		E27B225C1441DFBD0030DDF2 /* echo_control_mobile_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = echo_control_mobile_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/echo_control_mobile_impl.h; sourceTree = "<group>"; };
+		E27B225D1441DFBD0030DDF2 /* gain_control_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gain_control_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/gain_control_impl.cc; sourceTree = "<group>"; };
+		E27B225E1441DFBD0030DDF2 /* gain_control_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gain_control_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/gain_control_impl.h; sourceTree = "<group>"; };
+		E27B225F1441DFBD0030DDF2 /* high_pass_filter_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = high_pass_filter_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/high_pass_filter_impl.cc; sourceTree = "<group>"; };
+		E27B22601441DFBD0030DDF2 /* high_pass_filter_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = high_pass_filter_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/high_pass_filter_impl.h; sourceTree = "<group>"; };
+		E27B22611441DFBD0030DDF2 /* level_estimator_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = level_estimator_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/level_estimator_impl.cc; sourceTree = "<group>"; };
+		E27B22621441DFBD0030DDF2 /* level_estimator_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = level_estimator_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/level_estimator_impl.h; sourceTree = "<group>"; };
+		E27B22631441DFBD0030DDF2 /* noise_suppression_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = noise_suppression_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/noise_suppression_impl.cc; sourceTree = "<group>"; };
+		E27B22641441DFBD0030DDF2 /* noise_suppression_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise_suppression_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/noise_suppression_impl.h; sourceTree = "<group>"; };
+		E27B22651441DFBD0030DDF2 /* processing_component.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = processing_component.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/processing_component.cc; sourceTree = "<group>"; };
+		E27B22661441DFBD0030DDF2 /* processing_component.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = processing_component.h; path = ../../../webRTC/src/modules/audio_processing/main/source/processing_component.h; sourceTree = "<group>"; };
+		E27B22671441DFBD0030DDF2 /* splitting_filter.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = splitting_filter.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/splitting_filter.cc; sourceTree = "<group>"; };
+		E27B22681441DFBD0030DDF2 /* splitting_filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = splitting_filter.h; path = ../../../webRTC/src/modules/audio_processing/main/source/splitting_filter.h; sourceTree = "<group>"; };
+		E27B22691441DFBE0030DDF2 /* voice_detection_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = voice_detection_impl.cc; path = ../../../webRTC/src/modules/audio_processing/main/source/voice_detection_impl.cc; sourceTree = "<group>"; };
+		E27B226A1441DFBE0030DDF2 /* voice_detection_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = voice_detection_impl.h; path = ../../../webRTC/src/modules/audio_processing/main/source/voice_detection_impl.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870B1813E35EF200BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870B1F13E35EF200BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870B1013E35EF200BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B22511441DF1E0030DDF2 /* Source */,
+				2A870B1D13E35EF200BCA399 /* Frameworks */,
+				2A870B1C13E35EF200BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870B1C13E35EF200BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870B1B13E35EF200BCA399 /* libaudio_processing.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870B1D13E35EF200BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870B1E13E35EF200BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B22511441DF1E0030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22521441DF780030DDF2 /* ../interface */,
+				E27B22551441DFBD0030DDF2 /* audio_buffer.cc */,
+				E27B22561441DFBD0030DDF2 /* audio_buffer.h */,
+				E27B22571441DFBD0030DDF2 /* audio_processing_impl.cc */,
+				E27B22581441DFBD0030DDF2 /* audio_processing_impl.h */,
+				E27B22591441DFBD0030DDF2 /* echo_cancellation_impl.cc */,
+				E27B225A1441DFBD0030DDF2 /* echo_cancellation_impl.h */,
+				E27B225B1441DFBD0030DDF2 /* echo_control_mobile_impl.cc */,
+				E27B225C1441DFBD0030DDF2 /* echo_control_mobile_impl.h */,
+				E27B225D1441DFBD0030DDF2 /* gain_control_impl.cc */,
+				E27B225E1441DFBD0030DDF2 /* gain_control_impl.h */,
+				E27B225F1441DFBD0030DDF2 /* high_pass_filter_impl.cc */,
+				E27B22601441DFBD0030DDF2 /* high_pass_filter_impl.h */,
+				E27B22611441DFBD0030DDF2 /* level_estimator_impl.cc */,
+				E27B22621441DFBD0030DDF2 /* level_estimator_impl.h */,
+				E27B22631441DFBD0030DDF2 /* noise_suppression_impl.cc */,
+				E27B22641441DFBD0030DDF2 /* noise_suppression_impl.h */,
+				E27B22651441DFBD0030DDF2 /* processing_component.cc */,
+				E27B22661441DFBD0030DDF2 /* processing_component.h */,
+				E27B22671441DFBD0030DDF2 /* splitting_filter.cc */,
+				E27B22681441DFBD0030DDF2 /* splitting_filter.h */,
+				E27B22691441DFBE0030DDF2 /* voice_detection_impl.cc */,
+				E27B226A1441DFBE0030DDF2 /* voice_detection_impl.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B22521441DF780030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22531441DF9B0030DDF2 /* audio_processing.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870B1913E35EF200BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B22541441DF9B0030DDF2 /* audio_processing.h in Headers */,
+				E27B226C1441DFBE0030DDF2 /* audio_buffer.h in Headers */,
+				E27B226E1441DFBE0030DDF2 /* audio_processing_impl.h in Headers */,
+				E27B22701441DFBE0030DDF2 /* echo_cancellation_impl.h in Headers */,
+				E27B22721441DFBE0030DDF2 /* echo_control_mobile_impl.h in Headers */,
+				E27B22741441DFBE0030DDF2 /* gain_control_impl.h in Headers */,
+				E27B22761441DFBE0030DDF2 /* high_pass_filter_impl.h in Headers */,
+				E27B22781441DFBE0030DDF2 /* level_estimator_impl.h in Headers */,
+				E27B227A1441DFBE0030DDF2 /* noise_suppression_impl.h in Headers */,
+				E27B227C1441DFBE0030DDF2 /* processing_component.h in Headers */,
+				E27B227E1441DFBE0030DDF2 /* splitting_filter.h in Headers */,
+				E27B22801441DFBE0030DDF2 /* voice_detection_impl.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870B1A13E35EF200BCA399 /* audio_processing */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870B2513E35EF200BCA399 /* Build configuration list for PBXNativeTarget "audio_processing" */;
+			buildPhases = (
+				2A870B1713E35EF200BCA399 /* Sources */,
+				2A870B1813E35EF200BCA399 /* Frameworks */,
+				2A870B1913E35EF200BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = audio_processing;
+			productName = audio_processing;
+			productReference = 2A870B1B13E35EF200BCA399 /* libaudio_processing.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870B1213E35EF200BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870B1513E35EF200BCA399 /* Build configuration list for PBXProject "apm" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870B1013E35EF200BCA399;
+			productRefGroup = 2A870B1C13E35EF200BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870B1A13E35EF200BCA399 /* audio_processing */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870B1713E35EF200BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B226B1441DFBE0030DDF2 /* audio_buffer.cc in Sources */,
+				E27B226D1441DFBE0030DDF2 /* audio_processing_impl.cc in Sources */,
+				E27B226F1441DFBE0030DDF2 /* echo_cancellation_impl.cc in Sources */,
+				E27B22711441DFBE0030DDF2 /* echo_control_mobile_impl.cc in Sources */,
+				E27B22731441DFBE0030DDF2 /* gain_control_impl.cc in Sources */,
+				E27B22751441DFBE0030DDF2 /* high_pass_filter_impl.cc in Sources */,
+				E27B22771441DFBE0030DDF2 /* level_estimator_impl.cc in Sources */,
+				E27B22791441DFBE0030DDF2 /* noise_suppression_impl.cc in Sources */,
+				E27B227B1441DFBE0030DDF2 /* processing_component.cc in Sources */,
+				E27B227D1441DFBE0030DDF2 /* splitting_filter.cc in Sources */,
+				E27B227F1441DFBE0030DDF2 /* voice_detection_impl.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870B2313E35EF200BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870B2413E35EF200BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870B2613E35EF200BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/audio_processing.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_NS_FIXED\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/system_wrappers/interface,
+					../../../webRTC/src/modules/audio_processing/aec/main/interface,
+					../../../webRTC/src/modules/audio_processing/aecm/main/interface,
+					../../../webRTC/src/modules/audio_processing/agc/main/interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/common_audio/vad/main/interface,
+					../../../webRTC/src/modules/audio_processing/ns/main/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870B2713E35EF200BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/audio_processing.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_NS_FIXED\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/system_wrappers/interface,
+					../../../webRTC/src/modules/audio_processing/aec/main/interface,
+					../../../webRTC/src/modules/audio_processing/aecm/main/interface,
+					../../../webRTC/src/modules/audio_processing/agc/main/interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/common_audio/vad/main/interface,
+					../../../webRTC/src/modules/audio_processing/ns/main/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870B1513E35EF200BCA399 /* Build configuration list for PBXProject "apm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870B2313E35EF200BCA399 /* Debug */,
+				2A870B2413E35EF200BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870B2513E35EF200BCA399 /* Build configuration list for PBXNativeTarget "audio_processing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870B2613E35EF200BCA399 /* Debug */,
+				2A870B2713E35EF200BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870B1213E35EF200BCA399 /* Project object */;
+}

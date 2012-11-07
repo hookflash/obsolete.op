@@ -1,0 +1,296 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870BB113E3664800BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870BB013E3664800BCA399 /* Foundation.framework */; };
+		E27B27FB1442570A0030DDF2 /* media_file_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27F91442570A0030DDF2 /* media_file_defines.h */; };
+		E27B27FC1442570A0030DDF2 /* media_file.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27FA1442570A0030DDF2 /* media_file.h */; };
+		E27B28031442571D0030DDF2 /* avi_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B27FD1442571D0030DDF2 /* avi_file.cc */; };
+		E27B28041442571D0030DDF2 /* avi_file.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27FE1442571D0030DDF2 /* avi_file.h */; };
+		E27B28051442571D0030DDF2 /* media_file_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B27FF1442571D0030DDF2 /* media_file_impl.cc */; };
+		E27B28061442571D0030DDF2 /* media_file_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B28001442571D0030DDF2 /* media_file_impl.h */; };
+		E27B28071442571D0030DDF2 /* media_file_utility.cc in Sources */ = {isa = PBXBuildFile; fileRef = E27B28011442571D0030DDF2 /* media_file_utility.cc */; };
+		E27B28081442571D0030DDF2 /* media_file_utility.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B28021442571D0030DDF2 /* media_file_utility.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870BAD13E3664800BCA399 /* libmedia_file.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmedia_file.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870BB013E3664800BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B27F91442570A0030DDF2 /* media_file_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = media_file_defines.h; path = ../../../webRTC/src/modules/media_file/interface/media_file_defines.h; sourceTree = "<group>"; };
+		E27B27FA1442570A0030DDF2 /* media_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = media_file.h; path = ../../../webRTC/src/modules/media_file/interface/media_file.h; sourceTree = "<group>"; };
+		E27B27FD1442571D0030DDF2 /* avi_file.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = avi_file.cc; path = ../../../webRTC/src/modules/media_file/source/avi_file.cc; sourceTree = "<group>"; };
+		E27B27FE1442571D0030DDF2 /* avi_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = avi_file.h; path = ../../../webRTC/src/modules/media_file/source/avi_file.h; sourceTree = "<group>"; };
+		E27B27FF1442571D0030DDF2 /* media_file_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = media_file_impl.cc; path = ../../../webRTC/src/modules/media_file/source/media_file_impl.cc; sourceTree = "<group>"; };
+		E27B28001442571D0030DDF2 /* media_file_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = media_file_impl.h; path = ../../../webRTC/src/modules/media_file/source/media_file_impl.h; sourceTree = "<group>"; };
+		E27B28011442571D0030DDF2 /* media_file_utility.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = media_file_utility.cc; path = ../../../webRTC/src/modules/media_file/source/media_file_utility.cc; sourceTree = "<group>"; };
+		E27B28021442571D0030DDF2 /* media_file_utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = media_file_utility.h; path = ../../../webRTC/src/modules/media_file/source/media_file_utility.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870BAA13E3664800BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870BB113E3664800BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870BA213E3664800BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B27F7144256CF0030DDF2 /* Source */,
+				2A870BAF13E3664800BCA399 /* Frameworks */,
+				2A870BAE13E3664800BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870BAE13E3664800BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870BAD13E3664800BCA399 /* libmedia_file.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870BAF13E3664800BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870BB013E3664800BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B27F7144256CF0030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27F8144256D80030DDF2 /* ../interface */,
+				E27B27FD1442571D0030DDF2 /* avi_file.cc */,
+				E27B27FE1442571D0030DDF2 /* avi_file.h */,
+				E27B27FF1442571D0030DDF2 /* media_file_impl.cc */,
+				E27B28001442571D0030DDF2 /* media_file_impl.h */,
+				E27B28011442571D0030DDF2 /* media_file_utility.cc */,
+				E27B28021442571D0030DDF2 /* media_file_utility.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B27F8144256D80030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27F91442570A0030DDF2 /* media_file_defines.h */,
+				E27B27FA1442570A0030DDF2 /* media_file.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870BAB13E3664800BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B27FB1442570A0030DDF2 /* media_file_defines.h in Headers */,
+				E27B27FC1442570A0030DDF2 /* media_file.h in Headers */,
+				E27B28041442571D0030DDF2 /* avi_file.h in Headers */,
+				E27B28061442571D0030DDF2 /* media_file_impl.h in Headers */,
+				E27B28081442571D0030DDF2 /* media_file_utility.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870BAC13E3664800BCA399 /* media_file */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870BB713E3664800BCA399 /* Build configuration list for PBXNativeTarget "media_file" */;
+			buildPhases = (
+				2A870BA913E3664800BCA399 /* Sources */,
+				2A870BAA13E3664800BCA399 /* Frameworks */,
+				2A870BAB13E3664800BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = media_file;
+			productName = media_file;
+			productReference = 2A870BAD13E3664800BCA399 /* libmedia_file.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870BA413E3664800BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870BA713E3664800BCA399 /* Build configuration list for PBXProject "media_file" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870BA213E3664800BCA399;
+			productRefGroup = 2A870BAE13E3664800BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870BAC13E3664800BCA399 /* media_file */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870BA913E3664800BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B28031442571D0030DDF2 /* avi_file.cc in Sources */,
+				E27B28051442571D0030DDF2 /* media_file_impl.cc in Sources */,
+				E27B28071442571D0030DDF2 /* media_file_utility.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870BB513E3664800BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870BB613E3664800BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870BB813E3664800BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/media_file.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_MODULE_UTILITY_VIDEO\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../..,
+					../interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/modules/utility/interface,
+					../../../webRTC/src/modules/audio_coding/main/interface,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870BB913E3664800BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/media_file.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_MODULE_UTILITY_VIDEO\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../..,
+					../interface,
+					../../../webRTC/src/modules/interface,
+					../../../webRTC/src/modules/utility/interface,
+					../../../webRTC/src/modules/audio_coding/main/interface,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870BA713E3664800BCA399 /* Build configuration list for PBXProject "media_file" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870BB513E3664800BCA399 /* Debug */,
+				2A870BB613E3664800BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870BB713E3664800BCA399 /* Build configuration list for PBXNativeTarget "media_file" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870BB813E3664800BCA399 /* Debug */,
+				2A870BB913E3664800BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870BA413E3664800BCA399 /* Project object */;
+}

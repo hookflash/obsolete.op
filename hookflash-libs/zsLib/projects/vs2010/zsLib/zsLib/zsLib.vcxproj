@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\zsLib\Event.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Exception.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\boostTypes.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Event.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Exception.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\IPAddress.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\ISocket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Log.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueue.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThread.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadBasic.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadUsingMainThreadMessageQueueForApple.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Numeric.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Proxy.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\ProxyPack.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Socket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\SocketMonitor.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Stringize.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\Timer.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\TimerMonitor.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\XML.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\zsTypes.h" />
+    <ClInclude Include="..\..\..\..\zsLib\IPAddress.h" />
+    <ClInclude Include="..\..\..\..\zsLib\ISocket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Log.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueue.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueueAssociator.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueueThread.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Numeric.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Proxy.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Socket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\String.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Stringize.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Timer.h" />
+    <ClInclude Include="..\..\..\..\zsLib\XML.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsHelpers.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsLib.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsTypes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\zsLib\lgpl-3.0.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Event.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\IPAddress.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Log.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueue.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThread.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadBasic.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadUsingMainThreadMessageQueueForApple.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Numeric.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Proxy.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Socket.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\SocketMonitor.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\String.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Stringize.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Timer.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\TimerMonitor.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XML.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLAttribute.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLComment.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLDeclaration.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLDocument.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLElement.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLNode.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParser.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParserPos.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParserWarningTypes.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLText.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLUnknown.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\zsHelpers.cpp" />
+    <ClCompile Include="..\..\..\..\zsLib\cpp\zsLib.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>zsLib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>"$(ProjectDir)\..\..\..\..\";"$(ProjectDir)\..\..\..\..\..\boost\boost"</AdditionalIncludeDirectories>
+      <FunctionLevelLinking>No</FunctionLevelLinking>
+      <FloatingPointExceptions>No</FloatingPointExceptions>
+      <RuntimeTypeInfo>Yes</RuntimeTypeInfo>
+      <OpenMPSupport>No</OpenMPSupport>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <UseUnicodeForAssemblerListing>
+      </UseUnicodeForAssemblerListing>
+      <AdditionalOptions>/D "_UNICODE" /D "UNICODE" %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>ws2_32.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+    </Lib>
+    <Lib>
+      <UseUnicodeResponseFiles>true</UseUnicodeResponseFiles>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

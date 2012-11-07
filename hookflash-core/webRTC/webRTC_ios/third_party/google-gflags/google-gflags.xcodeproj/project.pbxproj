@@ -1,0 +1,345 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		82B3257D11F8E7279B6FDEB9 /* gflags.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3D840EFD88D54BA52F89D744 /* gflags.cc */; };
+		9FB0EEA828BFFC48A5AAB40C /* gflags_reporting.cc in Sources */ = {isa = PBXBuildFile; fileRef = 45E0537C854A607F8DAF763B /* gflags_reporting.cc */; };
+		AFAB12406DEC8D37F92F3C63 /* gflags_completions.cc in Sources */ = {isa = PBXBuildFile; fileRef = C8B541617605F00E3A3C7816 /* gflags_completions.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		067A3DA6F2B39C54B09E1E95 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		0CAE073604E35B86E80B459A /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../build/common.gypi; sourceTree = "<group>"; };
+		1A6855B4A04A95A17CD04436 /* google-gflags.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = "google-gflags.gyp"; sourceTree = "<group>"; };
+		2E9694959A159ADBFD5270A2 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../build/release.gypi; sourceTree = "<group>"; };
+		31052157C92C7169797EB0B0 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		3D840EFD88D54BA52F89D744 /* gflags.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gflags.cc; sourceTree = "<group>"; };
+		45E0537C854A607F8DAF763B /* gflags_reporting.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gflags_reporting.cc; sourceTree = "<group>"; };
+		51FF03143385FF14A64BEF27 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		713CCFE522423C79BBA6A91A /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../src/supplement.gypi; sourceTree = "<group>"; };
+		9A558C392C6FE3AF8F893ED0 /* libgoogle-gflags.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libgoogle-gflags.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B3D6496882F755D47B338B8E /* filename_rules.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = filename_rules.gypi; path = ../../build/filename_rules.gypi; sourceTree = "<group>"; };
+		C8B541617605F00E3A3C7816 /* gflags_completions.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gflags_completions.cc; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A93C23699E0E05705FD3A571 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		189A120A7CA21E7A24ED7399 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				3D840EFD88D54BA52F89D744 /* gflags.cc */,
+				C8B541617605F00E3A3C7816 /* gflags_completions.cc */,
+				45E0537C854A607F8DAF763B /* gflags_reporting.cc */,
+			);
+			name = Source;
+			path = src;
+			sourceTree = "<group>";
+		};
+		30D104E7A6E5C3CED88DFB05 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				0CAE073604E35B86E80B459A /* common.gypi */,
+				B3D6496882F755D47B338B8E /* filename_rules.gypi */,
+				1A6855B4A04A95A17CD04436 /* google-gflags.gyp */,
+				2E9694959A159ADBFD5270A2 /* release.gypi */,
+				067A3DA6F2B39C54B09E1E95 /* release_defaults.gypi */,
+				51FF03143385FF14A64BEF27 /* release_impl.gypi */,
+				31052157C92C7169797EB0B0 /* release_impl_official.gypi */,
+				713CCFE522423C79BBA6A91A /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		548AC295B66F2D3C2C945CF8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A558C392C6FE3AF8F893ED0 /* libgoogle-gflags.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CBA7484823A9DCE8D7D8DED6 = {
+			isa = PBXGroup;
+			children = (
+				189A120A7CA21E7A24ED7399 /* Source */,
+				548AC295B66F2D3C2C945CF8 /* Products */,
+				30D104E7A6E5C3CED88DFB05 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C10F184DAE6ED39059229DF9 /* google-gflags */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC298E3FC65BB13D852F4F7D /* Build configuration list for PBXNativeTarget "google-gflags" */;
+			buildPhases = (
+				C3C89C70C9E4C487BCEF8BD5 /* Sources */,
+				A93C23699E0E05705FD3A571 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "google-gflags";
+			productName = "google-gflags";
+			productReference = 9A558C392C6FE3AF8F893ED0 /* libgoogle-gflags.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D4C6B1F8983AAAE594F494A7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 2C500AC69373DF21E853C901 /* Build configuration list for PBXProject "google-gflags" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CBA7484823A9DCE8D7D8DED6;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C10F184DAE6ED39059229DF9 /* google-gflags */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C3C89C70C9E4C487BCEF8BD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82B3257D11F8E7279B6FDEB9 /* gflags.cc in Sources */,
+				AFAB12406DEC8D37F92F3C63 /* gflags_completions.cc in Sources */,
+				9FB0EEA828BFFC48A5AAB40C /* gflags_reporting.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		07102A8BE8EDB421F3628FEF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GFLAGS_DLL_DECL=\"",
+					"\"GFLAGS_DLL_DECLARE_FLAG=\"",
+					"\"GFLAGS_DLL_DEFINE_FLAG=\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../third_party/google-gflags/gen/arch/mac/ia32/include/private",
+					"../../third_party/google-gflags/gen/arch/mac/ia32/include",
+					"../../third_party/google-gflags/src",
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PRODUCT_NAME = "google-gflags";
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
+		3D0BFD246297C958CA99ADB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+			};
+			name = Debug;
+		};
+		AF0AA3D333D4BC33F0371177 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+			};
+			name = Release;
+		};
+		B8A26E353DC07A4F16F2D6CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GFLAGS_DLL_DECL=\"",
+					"\"GFLAGS_DLL_DECLARE_FLAG=\"",
+					"\"GFLAGS_DLL_DEFINE_FLAG=\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../third_party/google-gflags/gen/arch/mac/ia32/include/private",
+					"../../third_party/google-gflags/gen/arch/mac/ia32/include",
+					"../../third_party/google-gflags/src",
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PRODUCT_NAME = "google-gflags";
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2C500AC69373DF21E853C901 /* Build configuration list for PBXProject "google-gflags" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3D0BFD246297C958CA99ADB1 /* Debug */,
+				AF0AA3D333D4BC33F0371177 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		AC298E3FC65BB13D852F4F7D /* Build configuration list for PBXNativeTarget "google-gflags" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8A26E353DC07A4F16F2D6CC /* Debug */,
+				07102A8BE8EDB421F3628FEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D4C6B1F8983AAAE594F494A7 /* Project object */;
+}

@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'webrtc_ios' target in the 'webrtc_ios' project
+//
+
+#ifdef __OBJC__
+  #import <Foundation/Foundation.h>
+#endif

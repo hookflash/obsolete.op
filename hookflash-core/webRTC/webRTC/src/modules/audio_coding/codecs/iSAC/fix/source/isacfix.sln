@@ -1,0 +1,77 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(audio_coding)", "..\..\..\..\..\..\..\..\modules\audio_coding", "{12FD6E01-2A08-1DE3-C093-B7E4E6B1201D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(codecs)", "..\..\..\..\..\..\..\..\modules\audio_coding\codecs", "{0939A182-5DA4-2CDA-9DC5-77B4FEEC6F19}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(common_audio)", "..\..\..\..\..\..\..\..\common_audio", "{C4EE13A5-F8E2-558A-341F-C9D86316A4CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(fix)", "..\..\..\..\..\..\..\..\modules\audio_coding\codecs\iSAC\fix", "{C16DA52D-D07C-E1A1-E37E-3A5D5AF8B4E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(iSAC)", "..\..\..\..\..\..\..\..\modules\audio_coding\codecs\iSAC", "{6B814126-4CE4-1748-9BA5-9891D23E82AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(main)", "..\..\..\..\..\..\..\..\common_audio\signal_processing_library\main", "{D3B11ADF-7621-D5D7-1B68-66F6359E783A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(modules)", "..\..\..\..\..\..\..\..\modules", "{ABA814CE-769C-A7C4-7A0D-B2A09A6EE486}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(signal_processing_library)", "..\..\..\..\..\..\..\..\common_audio\signal_processing_library", "{47885D36-7727-D5D7-2956-F4CE969EA55C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(source)", "..\..\..\..\..\..\..\..\modules\audio_coding\codecs\iSAC\fix\source", "{102BA1F7-4053-8D2E-93C5-F3F8DC797A48}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(source)", "..\..\..\..\..\..\..\..\common_audio\signal_processing_library\main\source", "{60CB4342-FC36-73FF-D15B-B3799382D4A4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iSACFix", "iSACFix.vcproj", "{F698A1F0-074F-C083-283C-AB9485AE6C4C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "spl", "..\..\..\..\..\..\common_audio\signal_processing_library\main\source\spl.vcproj", "{8659E754-46C9-79F1-13CC-260EA5495ECD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|x64 = Release|x64
+		Purify|Win32 = Purify|Win32
+		Purify|x64 = Purify|x64
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Debug|Win32.Build.0 = Debug|Win32
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Release|x64.ActiveCfg = Release|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Release|x64.Build.0 = Release|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Purify|Win32.ActiveCfg = Purify|Win32
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Purify|Win32.Build.0 = Purify|Win32
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Purify|x64.ActiveCfg = Purify|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Purify|x64.Build.0 = Purify|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Debug|x64.ActiveCfg = Debug|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Debug|x64.Build.0 = Debug|x64
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Release|Win32.ActiveCfg = Release|Win32
+		{8659E754-46C9-79F1-13CC-260EA5495ECD}.Release|Win32.Build.0 = Release|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Debug|Win32.Build.0 = Debug|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Release|x64.ActiveCfg = Release|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Release|x64.Build.0 = Release|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Purify|Win32.ActiveCfg = Purify|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Purify|Win32.Build.0 = Purify|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Purify|x64.ActiveCfg = Purify|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Purify|x64.Build.0 = Purify|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Debug|x64.ActiveCfg = Debug|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Debug|x64.Build.0 = Debug|x64
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Release|Win32.ActiveCfg = Release|Win32
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0939A182-5DA4-2CDA-9DC5-77B4FEEC6F19} = {12FD6E01-2A08-1DE3-C093-B7E4E6B1201D}
+		{6B814126-4CE4-1748-9BA5-9891D23E82AC} = {0939A182-5DA4-2CDA-9DC5-77B4FEEC6F19}
+		{47885D36-7727-D5D7-2956-F4CE969EA55C} = {C4EE13A5-F8E2-558A-341F-C9D86316A4CD}
+		{102BA1F7-4053-8D2E-93C5-F3F8DC797A48} = {C16DA52D-D07C-E1A1-E37E-3A5D5AF8B4E2}
+		{C16DA52D-D07C-E1A1-E37E-3A5D5AF8B4E2} = {6B814126-4CE4-1748-9BA5-9891D23E82AC}
+		{60CB4342-FC36-73FF-D15B-B3799382D4A4} = {D3B11ADF-7621-D5D7-1B68-66F6359E783A}
+		{12FD6E01-2A08-1DE3-C093-B7E4E6B1201D} = {ABA814CE-769C-A7C4-7A0D-B2A09A6EE486}
+		{D3B11ADF-7621-D5D7-1B68-66F6359E783A} = {47885D36-7727-D5D7-2956-F4CE969EA55C}
+		{F698A1F0-074F-C083-283C-AB9485AE6C4C} = {102BA1F7-4053-8D2E-93C5-F3F8DC797A48}
+		{8659E754-46C9-79F1-13CC-260EA5495ECD} = {60CB4342-FC36-73FF-D15B-B3799382D4A4}
+	EndGlobalSection
+EndGlobal

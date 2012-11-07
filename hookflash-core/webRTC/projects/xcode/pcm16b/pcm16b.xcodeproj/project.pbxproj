@@ -1,0 +1,262 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A87104A13E6B65C00BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A87104913E6B65C00BCA399 /* Foundation.framework */; };
+		E27B27A31442557E0030DDF2 /* pcm16b.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27A21442557E0030DDF2 /* pcm16b.h */; };
+		E27B27A5144255880030DDF2 /* pcm16b.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27A4144255880030DDF2 /* pcm16b.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A87104613E6B65C00BCA399 /* libpcm16b.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libpcm16b.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A87104913E6B65C00BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B27A21442557E0030DDF2 /* pcm16b.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pcm16b.h; path = ../../../webRTC/src/modules/audio_coding/codecs/PCM16B/main/interface/pcm16b.h; sourceTree = "<group>"; };
+		E27B27A4144255880030DDF2 /* pcm16b.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = pcm16b.c; path = ../../../webRTC/src/modules/audio_coding/codecs/PCM16B/main/source/pcm16b.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A87104313E6B65C00BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A87104A13E6B65C00BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A87103B13E6B65C00BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B27A0144255520030DDF2 /* Source */,
+				2A87104813E6B65C00BCA399 /* Frameworks */,
+				2A87104713E6B65C00BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A87104713E6B65C00BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A87104613E6B65C00BCA399 /* libpcm16b.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A87104813E6B65C00BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A87104913E6B65C00BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B27A0144255520030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27A11442555A0030DDF2 /* ../interface */,
+				E27B27A4144255880030DDF2 /* pcm16b.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B27A11442555A0030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27A21442557E0030DDF2 /* pcm16b.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A87104413E6B65C00BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B27A31442557E0030DDF2 /* pcm16b.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A87104513E6B65C00BCA399 /* pcm16b */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A87105013E6B65D00BCA399 /* Build configuration list for PBXNativeTarget "pcm16b" */;
+			buildPhases = (
+				2A87104213E6B65C00BCA399 /* Sources */,
+				2A87104313E6B65C00BCA399 /* Frameworks */,
+				2A87104413E6B65C00BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = pcm16b;
+			productName = pcm16b;
+			productReference = 2A87104613E6B65C00BCA399 /* libpcm16b.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A87103D13E6B65C00BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A87104013E6B65C00BCA399 /* Build configuration list for PBXProject "pcm16b" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A87103B13E6B65C00BCA399;
+			productRefGroup = 2A87104713E6B65C00BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A87104513E6B65C00BCA399 /* pcm16b */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A87104213E6B65C00BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B27A5144255880030DDF2 /* pcm16b.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A87104E13E6B65D00BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A87104F13E6B65D00BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A87105113E6B65D00BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/pcm16b.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A87105213E6B65D00BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/pcm16b.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A87104013E6B65C00BCA399 /* Build configuration list for PBXProject "pcm16b" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87104E13E6B65D00BCA399 /* Debug */,
+				2A87104F13E6B65D00BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A87105013E6B65D00BCA399 /* Build configuration list for PBXNativeTarget "pcm16b" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87105113E6B65D00BCA399 /* Debug */,
+				2A87105213E6B65D00BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A87103D13E6B65C00BCA399 /* Project object */;
+}

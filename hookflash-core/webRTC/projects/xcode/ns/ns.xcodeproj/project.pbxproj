@@ -1,0 +1,306 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870AAF13E35A6E00BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870AAE13E35A6E00BCA399 /* Foundation.framework */; };
+		E27B23DA1441E8540030DDF2 /* noise_suppression_x.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23D81441E8540030DDF2 /* noise_suppression_x.h */; };
+		E27B23DB1441E8540030DDF2 /* noise_suppression.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23D91441E8540030DDF2 /* noise_suppression.h */; };
+		E27B23E61441E8770030DDF2 /* defines.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23DC1441E8770030DDF2 /* defines.h */; };
+		E27B23E71441E8770030DDF2 /* noise_suppression_x.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B23DD1441E8770030DDF2 /* noise_suppression_x.c */; };
+		E27B23E81441E8770030DDF2 /* noise_suppression.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B23DE1441E8770030DDF2 /* noise_suppression.c */; };
+		E27B23E91441E8770030DDF2 /* ns_core.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B23DF1441E8770030DDF2 /* ns_core.c */; };
+		E27B23EA1441E8770030DDF2 /* ns_core.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23E01441E8770030DDF2 /* ns_core.h */; };
+		E27B23EB1441E8770030DDF2 /* nsx_core_neon.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B23E11441E8770030DDF2 /* nsx_core_neon.c */; };
+		E27B23EC1441E8770030DDF2 /* nsx_core.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B23E21441E8770030DDF2 /* nsx_core.c */; };
+		E27B23ED1441E8770030DDF2 /* nsx_core.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23E31441E8770030DDF2 /* nsx_core.h */; };
+		E27B23EE1441E8770030DDF2 /* nsx_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23E41441E8770030DDF2 /* nsx_defines.h */; };
+		E27B23EF1441E8770030DDF2 /* windows_private.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B23E51441E8770030DDF2 /* windows_private.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870AAB13E35A6E00BCA399 /* libns.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libns.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870AAE13E35A6E00BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B23D81441E8540030DDF2 /* noise_suppression_x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise_suppression_x.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/interface/noise_suppression_x.h; sourceTree = "<group>"; };
+		E27B23D91441E8540030DDF2 /* noise_suppression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise_suppression.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/interface/noise_suppression.h; sourceTree = "<group>"; };
+		E27B23DC1441E8770030DDF2 /* defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = defines.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/defines.h; sourceTree = "<group>"; };
+		E27B23DD1441E8770030DDF2 /* noise_suppression_x.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise_suppression_x.c; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/noise_suppression_x.c; sourceTree = "<group>"; };
+		E27B23DE1441E8770030DDF2 /* noise_suppression.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise_suppression.c; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/noise_suppression.c; sourceTree = "<group>"; };
+		E27B23DF1441E8770030DDF2 /* ns_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ns_core.c; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/ns_core.c; sourceTree = "<group>"; };
+		E27B23E01441E8770030DDF2 /* ns_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ns_core.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/ns_core.h; sourceTree = "<group>"; };
+		E27B23E11441E8770030DDF2 /* nsx_core_neon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nsx_core_neon.c; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/nsx_core_neon.c; sourceTree = "<group>"; };
+		E27B23E21441E8770030DDF2 /* nsx_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nsx_core.c; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/nsx_core.c; sourceTree = "<group>"; };
+		E27B23E31441E8770030DDF2 /* nsx_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nsx_core.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/nsx_core.h; sourceTree = "<group>"; };
+		E27B23E41441E8770030DDF2 /* nsx_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nsx_defines.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/nsx_defines.h; sourceTree = "<group>"; };
+		E27B23E51441E8770030DDF2 /* windows_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = windows_private.h; path = ../../../webRTC/src/modules/audio_processing/ns/main/source/windows_private.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870AA813E35A6E00BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870AAF13E35A6E00BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870AA013E35A6E00BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B23D61441E82D0030DDF2 /* Source */,
+				2A870AAD13E35A6E00BCA399 /* Frameworks */,
+				2A870AAC13E35A6E00BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870AAC13E35A6E00BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870AAB13E35A6E00BCA399 /* libns.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870AAD13E35A6E00BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870AAE13E35A6E00BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B23D61441E82D0030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B23D71441E8350030DDF2 /* ../interface */,
+				E27B23DC1441E8770030DDF2 /* defines.h */,
+				E27B23DD1441E8770030DDF2 /* noise_suppression_x.c */,
+				E27B23DE1441E8770030DDF2 /* noise_suppression.c */,
+				E27B23DF1441E8770030DDF2 /* ns_core.c */,
+				E27B23E01441E8770030DDF2 /* ns_core.h */,
+				E27B23E11441E8770030DDF2 /* nsx_core_neon.c */,
+				E27B23E21441E8770030DDF2 /* nsx_core.c */,
+				E27B23E31441E8770030DDF2 /* nsx_core.h */,
+				E27B23E41441E8770030DDF2 /* nsx_defines.h */,
+				E27B23E51441E8770030DDF2 /* windows_private.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B23D71441E8350030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B23D81441E8540030DDF2 /* noise_suppression_x.h */,
+				E27B23D91441E8540030DDF2 /* noise_suppression.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870AA913E35A6E00BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B23DA1441E8540030DDF2 /* noise_suppression_x.h in Headers */,
+				E27B23DB1441E8540030DDF2 /* noise_suppression.h in Headers */,
+				E27B23E61441E8770030DDF2 /* defines.h in Headers */,
+				E27B23EA1441E8770030DDF2 /* ns_core.h in Headers */,
+				E27B23ED1441E8770030DDF2 /* nsx_core.h in Headers */,
+				E27B23EE1441E8770030DDF2 /* nsx_defines.h in Headers */,
+				E27B23EF1441E8770030DDF2 /* windows_private.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870AAA13E35A6E00BCA399 /* ns */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870AB513E35A6E00BCA399 /* Build configuration list for PBXNativeTarget "ns" */;
+			buildPhases = (
+				2A870AA713E35A6E00BCA399 /* Sources */,
+				2A870AA813E35A6E00BCA399 /* Frameworks */,
+				2A870AA913E35A6E00BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ns;
+			productName = ns;
+			productReference = 2A870AAB13E35A6E00BCA399 /* libns.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870AA213E35A6E00BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870AA513E35A6E00BCA399 /* Build configuration list for PBXProject "ns" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870AA013E35A6E00BCA399;
+			productRefGroup = 2A870AAC13E35A6E00BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870AAA13E35A6E00BCA399 /* ns */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870AA713E35A6E00BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B23E71441E8770030DDF2 /* noise_suppression_x.c in Sources */,
+				E27B23E81441E8770030DDF2 /* noise_suppression.c in Sources */,
+				E27B23E91441E8770030DDF2 /* ns_core.c in Sources */,
+				E27B23EB1441E8770030DDF2 /* nsx_core_neon.c in Sources */,
+				E27B23EC1441E8770030DDF2 /* nsx_core.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870AB313E35A6E00BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870AB413E35A6E00BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870AB613E35A6E00BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/ns.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870AB713E35A6E00BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/ns.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870AA513E35A6E00BCA399 /* Build configuration list for PBXProject "ns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870AB313E35A6E00BCA399 /* Debug */,
+				2A870AB413E35A6E00BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870AB513E35A6E00BCA399 /* Build configuration list for PBXNativeTarget "ns" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870AB613E35A6E00BCA399 /* Debug */,
+				2A870AB713E35A6E00BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870AA213E35A6E00BCA399 /* Project object */;
+}

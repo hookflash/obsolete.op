@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject Keyword="Win32Proj" Name="libjingle" ProjectGUID="{CA7EB8E6-B636-41A3-02A4-15A86A8A1518}" ProjectType="Visual C++" RootNamespace="libjingle" Version="9.00">
+  <Platforms>
+    <Platform Name="Win32"/>
+    <Platform Name="x64"/>
+  </Platforms>
+  <ToolFiles/>
+  <Configurations>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Purify|Win32" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BufferSecurityCheck="true" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" InlineFunctionExpansion="2" MinimalRebuild="false" Name="VCCLCompilerTool" Optimization="2" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="0" RuntimeTypeInfo="false" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="1" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" SubSystem="1" TargetMachine="1"/>
+    </Configuration>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Purify|x64" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BufferSecurityCheck="false" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" InlineFunctionExpansion="2" MinimalRebuild="false" Name="VCCLCompilerTool" Optimization="0" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;;&quot;PURIFY&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="0" RuntimeTypeInfo="false" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;;&quot;PURIFY&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" EnableCOMDATFolding="1" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="1" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" SubSystem="1" TargetMachine="17"/>
+    </Configuration>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Debug|Win32" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BasicRuntimeChecks="3" BufferSecurityCheck="true" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" MinimalRebuild="false" Name="VCCLCompilerTool" Optimization="0" PreprocessorDefinitions="_DEBUG;&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=1&quot;;&quot;WTF_USE_DYNAMIC_ANNOTATIONS=1&quot;;&quot;_DEBUG&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="1" RuntimeTypeInfo="false" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="_DEBUG;&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=1&quot;;&quot;WTF_USE_DYNAMIC_ANNOTATIONS=1&quot;;&quot;_DEBUG&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="2" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" RandomizedBaseAddress="1" SubSystem="1" TargetMachine="1"/>
+    </Configuration>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Release|Win32" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BufferSecurityCheck="true" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" InlineFunctionExpansion="2" MinimalRebuild="false" Name="VCCLCompilerTool" OmitFramePointers="true" Optimization="2" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="0" RuntimeTypeInfo="false" StringPooling="true" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\platformsdk_win7\files\Lib;..\..\third_party\directxsdk\files\Lib\x86" AdditionalOptions="/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" EnableCOMDATFolding="2" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="1" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" OptimizeReferences="2" SubSystem="1" TargetMachine="1"/>
+    </Configuration>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Release|x64" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BufferSecurityCheck="true" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" InlineFunctionExpansion="2" MinimalRebuild="false" Name="VCCLCompilerTool" Optimization="2" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="0" RuntimeTypeInfo="false" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;NDEBUG&quot;;&quot;NVALGRIND&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=0&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="1" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" SubSystem="1" TargetMachine="17"/>
+    </Configuration>
+    <Configuration CharacterSet="1" ConfigurationType="4" IntermediateDirectory="$(OutDir)\obj\$(ProjectName)" Name="Debug|x64" OutputDirectory="$(SolutionDir)$(ConfigurationName)">
+      <Tool AdditionalIncludeDirectories="..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" AdditionalOptions="/MP" BasicRuntimeChecks="3" BufferSecurityCheck="true" DebugInformationFormat="3" Detect64BitPortabilityProblems="false" DisableSpecificWarnings="4351;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4355;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4800" EnableFunctionLevelLinking="true" ExceptionHandling="0" MinimalRebuild="false" Name="VCCLCompilerTool" Optimization="0" PreprocessorDefinitions="_DEBUG;&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=1&quot;;&quot;WTF_USE_DYNAMIC_ANNOTATIONS=1&quot;" ProgramDataBaseFileName="$(IntDir)\$(ProjectName)\vc80.pdb" RuntimeLibrary="1" RuntimeTypeInfo="false" WarnAsError="false" WarningLevel="3"/>
+      <Tool AdditionalIncludeDirectories="..\..;$(OutDir)\obj\global_intermediate;..\..\src;..\..\third_party_mods\libjingle\source;..\..\third_party\libjingle\source;..\..\third_party\expat\files;..\third_party\platformsdk_win7\files\Include;..\..\third_party\wtl\include;..\..\third_party\expat\files\lib;..\..\third_party\jsoncpp\include;..\..\third_party\platformsdk_win7\files\Include;..\..\third_party\directxsdk\files\Include;$(VSInstallDir)\VC\atlmfc\include" Culture="1033" Name="VCResourceCompilerTool" PreprocessorDefinitions="_DEBUG;&quot;FEATURE_ENABLE_SSL&quot;;&quot;FEATURE_ENABLE_VOICEMAIL&quot;;&quot;_USE_32BIT_TIME_T&quot;;&quot;SAFE_TO_DEFINE_TALK_BASE_LOGGING_MACROS&quot;;&quot;EXPAT_RELATIVE_PATH&quot;;&quot;WEBRTC_RELATIVE_PATH&quot;;&quot;HAVE_WEBRTC&quot;;&quot;_WIN32_WINNT=0x0600&quot;;&quot;WINVER=0x0600&quot;;&quot;WIN32&quot;;&quot;_WINDOWS&quot;;&quot;NOMINMAX&quot;;&quot;_CRT_RAND_S&quot;;&quot;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS&quot;;&quot;WIN32_LEAN_AND_MEAN&quot;;&quot;_ATL_NO_OPENGL&quot;;&quot;_HAS_TR1=0&quot;;&quot;_HAS_EXCEPTIONS=0&quot;;&quot;_SECURE_ATL&quot;;&quot;CHROMIUM_BUILD&quot;;&quot;TOOLKIT_VIEWS=1&quot;;&quot;ENABLE_REMOTING=1&quot;;&quot;ENABLE_P2P_APIS=1&quot;;&quot;ENABLE_CONFIGURATION_POLICY&quot;;&quot;ENABLE_GPU=1&quot;;&quot;ENABLE_EGLIMAGE=1&quot;;&quot;USE_SKIA=1&quot;;&quot;__STD_C&quot;;&quot;_CRT_SECURE_NO_DEPRECATE&quot;;&quot;_SCL_SECURE_NO_DEPRECATE&quot;;&quot;ENABLE_REGISTER_PROTOCOL_HANDLER=1&quot;;&quot;XML_STATIC&quot;;&quot;_CRT_NONSTDC_NO_WARNINGS&quot;;&quot;_CRT_NONSTDC_NO_DEPRECATE&quot;;&quot;NO_TCMALLOC&quot;;&quot;DYNAMIC_ANNOTATIONS_ENABLED=1&quot;;&quot;WTF_USE_DYNAMIC_ANNOTATIONS=1&quot;"/>
+      <Tool DLLDataFileName="dlldata.c" GenerateStublessProxies="true" HeaderFileName="$(InputName).h" InterfaceIdentifierFileName="$(InputName)_i.c" Name="VCMIDLTool" OutputDirectory="$(IntDir)" ProxyFileName="$(InputName)_p.c" TypeLibraryName="$(InputName).tlb"/>
+      <Tool AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/ignore:4221" Name="VCLibrarianTool" OutputFile="$(OutDir)\lib\$(ProjectName).lib"/>
+      <Tool AdditionalDependencies="wininet.lib dnsapi.lib version.lib msimg32.lib ws2_32.lib usp10.lib psapi.lib dbghelp.lib winmm.lib shlwapi.lib" AdditionalLibraryDirectories="..\..\third_party\directxsdk\files\Lib\x86;..\..\third_party\platformsdk_win7\files\Lib\x64" AdditionalLibraryDirectories_excluded="..\..\third_party\platformsdk_win7\files\Lib" AdditionalOptions="/dynamicbase /ignore:4199 /ignore:4221 /nxcompat" DelayLoadDLLs="dbghelp.dll;dwmapi.dll;uxtheme.dll" FixedBaseAddress="1" GenerateDebugInformation="true" ImportLibrary="$(OutDir)\lib\$(TargetName).lib" LinkIncremental="2" MapFileName="$(OutDir)\$(TargetName).map" Name="VCLinkerTool" RandomizedBaseAddress="1" SubSystem="1" TargetMachine="17"/>
+    </Configuration>
+  </Configurations>
+  <References/>
+  <Files>
+    <File RelativePath="libjingle.gyp"/>
+    <Filter Name="..">
+      <Filter Name="..">
+        <Filter Name="third_party">
+          <Filter Name="libjingle">
+            <Filter Name="source">
+              <Filter Name="talk">
+                <Filter Name="xmllite">
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\qname.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlbuilder.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlelement.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlparser.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\qname.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlconstants.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlconstants.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlparser.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlbuilder.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlprinter.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlnsstack.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlnsstack.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlelement.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmllite\xmlprinter.cc"/>
+                </Filter>
+                <Filter Name="xmpp">
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\ratelimitmanager.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppengineimpl_iq.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\saslcookiemechanism.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\saslhandler.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\asyncsocket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppclient.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmpplogintask.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\ratelimitmanager.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\saslmechanism.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppengine.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\jid.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmpptask.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\prexmppauth.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppstanzaparser.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\jid.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\saslplainmechanism.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\constants.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\plainsaslhandler.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppstanzaparser.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppclientsettings.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\constants.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppengineimpl.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\saslmechanism.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmpplogintask.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmpptask.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppclient.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\xmpp\xmppengineimpl.cc"/>
+                </Filter>
+                <Filter Name="base">
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asynchttprequest.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\taskparent.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketstream.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32socketinit.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncpacketsocket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\criticalsection.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\messagequeue.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\constructormagic.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\winfirewall.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\physicalsocketserver.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncsocket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\host.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\base64.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32filesystem.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpclient.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\schanneladapter.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\byteorder.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\taskrunner.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketaddress.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\event.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\logging.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\linked_ptr.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\sslsocketfactory.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\helpers.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\autodetectproxy.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\basicdefs.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\time.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\signalthread.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asynctcpsocket.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringutils.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpcommon.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\signalthread.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\firewallsocketserver.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\sslsocketfactory.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\basictypes.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\firewallsocketserver.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\time.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\winping.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\flags.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httprequest.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\common.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\proxyinfo.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\basicpacketsocketfactory.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\network.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringencode.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketfactory.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\nethelpers.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\helpers.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\ssladapter.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stream.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringdigest.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\pathutils.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\fileutils.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asynctcpsocket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\checks.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\winfirewall.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringdigest.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\taskrunner.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\urlencode.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpcommon-inl.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\winping.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketstream.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httprequest.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\messagequeue.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\basicpacketsocketfactory.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketserver.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\logging.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\fileutils.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\diskcache.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncudpsocket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\sigslot.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32window.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketaddresspair.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncfile.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\ratetracker.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\network.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncfile.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketpool.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\task.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\md5c.c"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\ratetracker.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\urlencode.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringutils.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\sec_buffer.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\cryptstring.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\autodetectproxy.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\proxyinfo.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32filesystem.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpcommon.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asynchttprequest.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\thread.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncsocket.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\bytebuffer.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\nethelpers.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\event.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpclient.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\flags.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketadapters.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketadapters.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\scoped_ptr.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketaddress.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\physicalsocketserver.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\host.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\messagehandler.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\task.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stringencode.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\proxydetect.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socket.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32securityerrors.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\thread.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\messagehandler.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\asyncudpsocket.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketaddresspair.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\checks.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\taskparent.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\common.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\schanneladapter.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\sigslotrepeater.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\stream.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\ssladapter.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\pathutils.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\win32window.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpbase.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\base64.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\Equifax_Secure_Global_eBusiness_CA-1.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\httpbase.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\diskcache.cc"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\proxydetect.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\bytebuffer.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\md5.h"/>
+                  <File RelativePath="..\..\third_party\libjingle\source\talk\base\socketpool.cc"/>
+                </Filter>
+              </Filter>
+            </Filter>
+          </Filter>
+        </Filter>
+        <Filter Name="third_party_mods">
+          <Filter Name="libjingle">
+            <Filter Name="source">
+              <Filter Name="talk">
+                <Filter Name="base">
+                  <File RelativePath="..\..\third_party_mods\libjingle\source\talk\base\json.h"/>
+                  <File RelativePath="..\..\third_party_mods\libjingle\source\talk\base\json.cc"/>
+                </Filter>
+              </Filter>
+            </Filter>
+          </Filter>
+        </Filter>
+      </Filter>
+    </Filter>
+  </Files>
+  <Globals/>
+</VisualStudioProject>

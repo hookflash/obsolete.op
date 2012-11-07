@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zsLib", "zsLib\zsLib.vcxproj", "{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zsLibTest", "zsLibTest\zsLibTest.vcxproj", "{8360BA90-6127-4867-8C22-16D46779FDC1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D} = {2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}.Debug|Win32.Build.0 = Debug|Win32
+		{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}.Release|Win32.ActiveCfg = Release|Win32
+		{2DF1721C-A8A5-4FE5-835C-8C3B1CE5829D}.Release|Win32.Build.0 = Release|Win32
+		{8360BA90-6127-4867-8C22-16D46779FDC1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8360BA90-6127-4867-8C22-16D46779FDC1}.Debug|Win32.Build.0 = Debug|Win32
+		{8360BA90-6127-4867-8C22-16D46779FDC1}.Release|Win32.ActiveCfg = Release|Win32
+		{8360BA90-6127-4867-8C22-16D46779FDC1}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

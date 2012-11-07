@@ -1,0 +1,2515 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E232B290154D852A00A2BAA7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232B28F154D852A00A2BAA7 /* UIKit.framework */; };
+		E232B291154D852A00A2BAA7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E285460E154CB38200902B40 /* Foundation.framework */; };
+		E232B293154D852A00A2BAA7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E232B292154D852A00A2BAA7 /* CoreGraphics.framework */; };
+		E232B2A3154D85DB00A2BAA7 /* hookflashAppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E232B27D154D84E100A2BAA7 /* hookflashAppDelegate.mm */; };
+		E232B2A4154D85DB00A2BAA7 /* hookflashViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E232B27F154D84E100A2BAA7 /* hookflashViewController.mm */; };
+		E232B2A5154D85DB00A2BAA7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E232B286154D850700A2BAA7 /* main.m */; };
+		E24DB1991561595A007A669A /* libgtest_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25573AC1558246D00CA2903 /* libgtest_ios.a */; };
+		E255711415580E2000CA2903 /* vie_autotest_codec.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255711015580E2000CA2903 /* vie_autotest_codec.cc */; };
+		E255711515580E2000CA2903 /* vie_autotest_iphone.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255711115580E2000CA2903 /* vie_autotest_iphone.cc */; };
+		E255711615580E2000CA2903 /* vie_autotest.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255711215580E2000CA2903 /* vie_autotest.cc */; };
+		E25573361558146800CA2903 /* tb_capture_device.cc in Sources */ = {isa = PBXBuildFile; fileRef = E25573341558146800CA2903 /* tb_capture_device.cc */; };
+		E25573371558146800CA2903 /* tb_interfaces.cc in Sources */ = {isa = PBXBuildFile; fileRef = E25573351558146800CA2903 /* tb_interfaces.cc */; };
+		E25573FF1558250300CA2903 /* libvideo_engine_core_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E285460B154CB38200902B40 /* libvideo_engine_core_ios.a */; };
+		E25574001558250300CA2903 /* libaec_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572E21558107E00CA2903 /* libaec_ios.a */; };
+		E25574011558250300CA2903 /* libaecm_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572E41558107E00CA2903 /* libaecm_ios.a */; };
+		E25574021558250300CA2903 /* libagc_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572E61558107E00CA2903 /* libagc_ios.a */; };
+		E25574031558250300CA2903 /* libapm_util_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572EC1558107E00CA2903 /* libapm_util_ios.a */; };
+		E25574041558250300CA2903 /* libaudio_coding_module_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572D81558107E00CA2903 /* libaudio_coding_module_ios.a */; };
+		E25574051558250300CA2903 /* libaudio_conference_mixer_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572DC1558107E00CA2903 /* libaudio_conference_mixer_ios.a */; };
+		E25574061558250300CA2903 /* libaudio_device_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572DE1558107E00CA2903 /* libaudio_device_ios.a */; };
+		E25574071558250300CA2903 /* libaudio_processing_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572E01558107E00CA2903 /* libaudio_processing_ios.a */; };
+		E25574081558250300CA2903 /* libbitrate_controller_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572EE1558107E00CA2903 /* libbitrate_controller_ios.a */; };
+		E25574091558250300CA2903 /* libCNG_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572CA1558107E00CA2903 /* libCNG_ios.a */; };
+		E255740A1558250300CA2903 /* libG711_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572CC1558107E00CA2903 /* libG711_ios.a */; };
+		E255740B1558250300CA2903 /* libG722_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572CE1558107E00CA2903 /* libG722_ios.a */; };
+		E255740D1558250300CA2903 /* libiLBC_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572D41558107E00CA2903 /* libiLBC_ios.a */; };
+		E255740E1558250300CA2903 /* libiSAC_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572D01558107E00CA2903 /* libiSAC_ios.a */; };
+		E255740F1558250300CA2903 /* libiSACFix_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572D21558107E00CA2903 /* libiSACFix_ios.a */; };
+		E25574111558250300CA2903 /* libmedia_file_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572F01558107E00CA2903 /* libmedia_file_ios.a */; };
+		E25574121558250300CA2903 /* libNetEq_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572DA1558107E00CA2903 /* libNetEq_ios.a */; };
+		E25574131558250300CA2903 /* libns_fix_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572EA1558107E00CA2903 /* libns_fix_ios.a */; };
+		E25574141558250300CA2903 /* libns_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572E81558107E00CA2903 /* libns_ios.a */; };
+		E25574151558250300CA2903 /* libPCM16B_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572D61558107E00CA2903 /* libPCM16B_ios.a */; };
+		E25574161558250300CA2903 /* libresampler_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2557329155810DF00CA2903 /* libresampler_ios.a */; };
+		E25574171558250300CA2903 /* librtp_rtcp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572F21558107E00CA2903 /* librtp_rtcp_ios.a */; };
+		E25574181558250300CA2903 /* libsignal_processing_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E255732B155810DF00CA2903 /* libsignal_processing_ios.a */; };
+		E25574191558250300CA2903 /* libsystem_wrappers_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572A51558106A00CA2903 /* libsystem_wrappers_ios.a */; };
+		E255741A1558250300CA2903 /* libudp_transport_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572F41558107E00CA2903 /* libudp_transport_ios.a */; };
+		E255741B1558250300CA2903 /* libvad_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E255732D155810DF00CA2903 /* libvad_ios.a */; };
+		E255741C1558250300CA2903 /* libvideo_capture_module_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572F81558107E00CA2903 /* libvideo_capture_module_ios.a */; };
+		E255741D1558250300CA2903 /* libvideo_processing_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25573001558107E00CA2903 /* libvideo_processing_ios.a */; };
+		E255741E1558250300CA2903 /* libvideo_render_module_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25573021558107E00CA2903 /* libvideo_render_module_ios.a */; };
+		E255741F1558250300CA2903 /* libvoice_engine_core_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572991558105200CA2903 /* libvoice_engine_core_ios.a */; };
+		E25574201558250300CA2903 /* libvpx_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2557312155810AC00CA2903 /* libvpx_ios.a */; };
+		E25574211558250300CA2903 /* libwebrtc_i420_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572FA1558107E00CA2903 /* libwebrtc_i420_ios.a */; };
+		E25574221558250300CA2903 /* libwebrtc_jpeg_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E255731F155810D500CA2903 /* libwebrtc_jpeg_ios.a */; };
+		E25574231558250300CA2903 /* libwebrtc_libyuv_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2557321155810D500CA2903 /* libwebrtc_libyuv_ios.a */; };
+		E25574241558250300CA2903 /* libwebrtc_utility_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572F61558107E00CA2903 /* libwebrtc_utility_ios.a */; };
+		E25574251558250300CA2903 /* libwebrtc_video_coding_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572FE1558107E00CA2903 /* libwebrtc_video_coding_ios.a */; };
+		E25574261558250300CA2903 /* libwebrtc_vp8_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E25572FC1558107E00CA2903 /* libwebrtc_vp8_ios.a */; };
+		E25574271558250300CA2903 /* libyuv_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E255730C1558109C00CA2903 /* libyuv_ios.a */; };
+		E25574291558253200CA2903 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E25574281558253200CA2903 /* CoreMedia.framework */; };
+		E255742B1558253B00CA2903 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E255742A1558253B00CA2903 /* CoreVideo.framework */; };
+		E255742D1558254F00CA2903 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E255742C1558254E00CA2903 /* AVFoundation.framework */; };
+		E255748715587F6B00CA2903 /* libjpeg_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E255748315587F2700CA2903 /* libjpeg_ios.a */; };
+		E285475B154CB3F600902B40 /* vie_base.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854750154CB3F600902B40 /* vie_base.h */; };
+		E285475C154CB3F600902B40 /* vie_capture.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854751154CB3F600902B40 /* vie_capture.h */; };
+		E285475D154CB3F600902B40 /* vie_codec.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854752154CB3F600902B40 /* vie_codec.h */; };
+		E285475E154CB3F600902B40 /* vie_encryption.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854753154CB3F600902B40 /* vie_encryption.h */; };
+		E285475F154CB3F600902B40 /* vie_errors.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854754154CB3F600902B40 /* vie_errors.h */; };
+		E2854760154CB3F600902B40 /* vie_external_codec.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854755154CB3F600902B40 /* vie_external_codec.h */; };
+		E2854761154CB3F600902B40 /* vie_file.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854756154CB3F600902B40 /* vie_file.h */; };
+		E2854762154CB3F600902B40 /* vie_image_process.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854757154CB3F600902B40 /* vie_image_process.h */; };
+		E2854763154CB3F600902B40 /* vie_network.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854758154CB3F600902B40 /* vie_network.h */; };
+		E2854764154CB3F600902B40 /* vie_render.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854759154CB3F600902B40 /* vie_render.h */; };
+		E2854765154CB3F600902B40 /* vie_rtp_rtcp.h in Headers */ = {isa = PBXBuildFile; fileRef = E285475A154CB3F600902B40 /* vie_rtp_rtcp.h */; };
+		E28547A6154CB41800902B40 /* vie_base_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854766154CB41800902B40 /* vie_base_impl.cc */; };
+		E28547A7154CB41800902B40 /* vie_base_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854767154CB41800902B40 /* vie_base_impl.h */; };
+		E28547A8154CB41800902B40 /* vie_capture_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854768154CB41800902B40 /* vie_capture_impl.cc */; };
+		E28547A9154CB41800902B40 /* vie_capture_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854769154CB41800902B40 /* vie_capture_impl.h */; };
+		E28547AA154CB41800902B40 /* vie_capturer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285476A154CB41800902B40 /* vie_capturer.cc */; };
+		E28547AB154CB41800902B40 /* vie_capturer.h in Headers */ = {isa = PBXBuildFile; fileRef = E285476B154CB41800902B40 /* vie_capturer.h */; };
+		E28547AC154CB41800902B40 /* vie_channel_group.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285476C154CB41800902B40 /* vie_channel_group.cc */; };
+		E28547AD154CB41800902B40 /* vie_channel_group.h in Headers */ = {isa = PBXBuildFile; fileRef = E285476D154CB41800902B40 /* vie_channel_group.h */; };
+		E28547AE154CB41800902B40 /* vie_channel_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285476E154CB41800902B40 /* vie_channel_manager.cc */; };
+		E28547AF154CB41800902B40 /* vie_channel_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E285476F154CB41800902B40 /* vie_channel_manager.h */; };
+		E28547B0154CB41800902B40 /* vie_channel.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854770154CB41800902B40 /* vie_channel.cc */; };
+		E28547B1154CB41800902B40 /* vie_channel.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854771154CB41800902B40 /* vie_channel.h */; };
+		E28547B2154CB41800902B40 /* vie_codec_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854772154CB41800902B40 /* vie_codec_impl.cc */; };
+		E28547B3154CB41800902B40 /* vie_codec_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854773154CB41800902B40 /* vie_codec_impl.h */; };
+		E28547B4154CB41800902B40 /* vie_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854774154CB41800902B40 /* vie_defines.h */; };
+		E28547B5154CB41800902B40 /* vie_encoder.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854775154CB41800902B40 /* vie_encoder.cc */; };
+		E28547B6154CB41800902B40 /* vie_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854776154CB41800902B40 /* vie_encoder.h */; };
+		E28547B7154CB41800902B40 /* vie_encryption_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854777154CB41800902B40 /* vie_encryption_impl.cc */; };
+		E28547B8154CB41800902B40 /* vie_encryption_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854778154CB41800902B40 /* vie_encryption_impl.h */; };
+		E28547B9154CB41800902B40 /* vie_external_codec_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854779154CB41800902B40 /* vie_external_codec_impl.cc */; };
+		E28547BA154CB41800902B40 /* vie_external_codec_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E285477A154CB41800902B40 /* vie_external_codec_impl.h */; };
+		E28547BB154CB41800902B40 /* vie_file_image.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285477B154CB41800902B40 /* vie_file_image.cc */; };
+		E28547BC154CB41800902B40 /* vie_file_image.h in Headers */ = {isa = PBXBuildFile; fileRef = E285477C154CB41800902B40 /* vie_file_image.h */; };
+		E28547BD154CB41800902B40 /* vie_file_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285477D154CB41800902B40 /* vie_file_impl.cc */; };
+		E28547BE154CB41800902B40 /* vie_file_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E285477E154CB41800902B40 /* vie_file_impl.h */; };
+		E28547BF154CB41800902B40 /* vie_file_player.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285477F154CB41800902B40 /* vie_file_player.cc */; };
+		E28547C0154CB41800902B40 /* vie_file_player.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854780154CB41800902B40 /* vie_file_player.h */; };
+		E28547C1154CB41800902B40 /* vie_file_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854781154CB41800902B40 /* vie_file_recorder.cc */; };
+		E28547C2154CB41800902B40 /* vie_file_recorder.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854782154CB41800902B40 /* vie_file_recorder.h */; };
+		E28547C3154CB41800902B40 /* vie_frame_provider_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854783154CB41800902B40 /* vie_frame_provider_base.cc */; };
+		E28547C4154CB41800902B40 /* vie_frame_provider_base.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854784154CB41800902B40 /* vie_frame_provider_base.h */; };
+		E28547C5154CB41800902B40 /* vie_image_process_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854785154CB41800902B40 /* vie_image_process_impl.cc */; };
+		E28547C6154CB41800902B40 /* vie_image_process_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854786154CB41800902B40 /* vie_image_process_impl.h */; };
+		E28547C7154CB41800902B40 /* vie_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854787154CB41800902B40 /* vie_impl.cc */; };
+		E28547C8154CB41800902B40 /* vie_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854788154CB41800902B40 /* vie_impl.h */; };
+		E28547C9154CB41800902B40 /* vie_input_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854789154CB41800902B40 /* vie_input_manager.cc */; };
+		E28547CA154CB41800902B40 /* vie_input_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E285478A154CB41800902B40 /* vie_input_manager.h */; };
+		E28547CB154CB41800902B40 /* vie_manager_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285478B154CB41800902B40 /* vie_manager_base.cc */; };
+		E28547CC154CB41800902B40 /* vie_manager_base.h in Headers */ = {isa = PBXBuildFile; fileRef = E285478C154CB41800902B40 /* vie_manager_base.h */; };
+		E28547CD154CB41800902B40 /* vie_network_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285478D154CB41800902B40 /* vie_network_impl.cc */; };
+		E28547CE154CB41900902B40 /* vie_network_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E285478E154CB41800902B40 /* vie_network_impl.h */; };
+		E28547CF154CB41900902B40 /* vie_performance_monitor.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285478F154CB41800902B40 /* vie_performance_monitor.cc */; };
+		E28547D0154CB41900902B40 /* vie_performance_monitor.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854790154CB41800902B40 /* vie_performance_monitor.h */; };
+		E28547D1154CB41900902B40 /* vie_receiver.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854791154CB41800902B40 /* vie_receiver.cc */; };
+		E28547D2154CB41900902B40 /* vie_receiver.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854792154CB41800902B40 /* vie_receiver.h */; };
+		E28547D3154CB41900902B40 /* vie_ref_count.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854793154CB41800902B40 /* vie_ref_count.cc */; };
+		E28547D4154CB41900902B40 /* vie_ref_count.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854794154CB41800902B40 /* vie_ref_count.h */; };
+		E28547D6154CB41900902B40 /* vie_remb.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854796154CB41800902B40 /* vie_remb.cc */; };
+		E28547D7154CB41900902B40 /* vie_remb.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854797154CB41800902B40 /* vie_remb.h */; };
+		E28547D8154CB41900902B40 /* vie_render_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2854798154CB41800902B40 /* vie_render_impl.cc */; };
+		E28547D9154CB41900902B40 /* vie_render_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E2854799154CB41800902B40 /* vie_render_impl.h */; };
+		E28547DA154CB41900902B40 /* vie_render_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285479A154CB41800902B40 /* vie_render_manager.cc */; };
+		E28547DB154CB41900902B40 /* vie_render_manager.h in Headers */ = {isa = PBXBuildFile; fileRef = E285479B154CB41800902B40 /* vie_render_manager.h */; };
+		E28547DC154CB41900902B40 /* vie_renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285479C154CB41800902B40 /* vie_renderer.cc */; };
+		E28547DD154CB41900902B40 /* vie_renderer.h in Headers */ = {isa = PBXBuildFile; fileRef = E285479D154CB41800902B40 /* vie_renderer.h */; };
+		E28547DE154CB41900902B40 /* vie_rtp_rtcp_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = E285479E154CB41800902B40 /* vie_rtp_rtcp_impl.cc */; };
+		E28547DF154CB41900902B40 /* vie_rtp_rtcp_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E285479F154CB41800902B40 /* vie_rtp_rtcp_impl.h */; };
+		E28547E0154CB41900902B40 /* vie_sender.cc in Sources */ = {isa = PBXBuildFile; fileRef = E28547A0154CB41800902B40 /* vie_sender.cc */; };
+		E28547E1154CB41900902B40 /* vie_sender.h in Headers */ = {isa = PBXBuildFile; fileRef = E28547A1154CB41800902B40 /* vie_sender.h */; };
+		E28547E2154CB41900902B40 /* vie_shared_data.cc in Sources */ = {isa = PBXBuildFile; fileRef = E28547A2154CB41800902B40 /* vie_shared_data.cc */; };
+		E28547E3154CB41900902B40 /* vie_shared_data.h in Headers */ = {isa = PBXBuildFile; fileRef = E28547A3154CB41800902B40 /* vie_shared_data.h */; };
+		E28547E4154CB41900902B40 /* vie_sync_module.cc in Sources */ = {isa = PBXBuildFile; fileRef = E28547A4154CB41800902B40 /* vie_sync_module.cc */; };
+		E28547E5154CB41900902B40 /* vie_sync_module.h in Headers */ = {isa = PBXBuildFile; fileRef = E28547A5154CB41800902B40 /* vie_sync_module.h */; };
+		E289344315AA324700A0DF9D /* liblibogg_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E289344215AA320E00A0DF9D /* liblibogg_ios.a */; };
+		E289344415AA324700A0DF9D /* libvorbis_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E289343A15AA2BA000A0DF9D /* libvorbis_ios.a */; };
+		E2C86ADD1620C384004CD206 /* common_types.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C86ADA1620C384004CD206 /* common_types.h */; };
+		E2C86ADE1620C384004CD206 /* engine_configurations.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C86ADB1620C384004CD206 /* engine_configurations.h */; };
+		E2C86ADF1620C384004CD206 /* typedefs.h in Headers */ = {isa = PBXBuildFile; fileRef = E2C86ADC1620C384004CD206 /* typedefs.h */; };
+		E2F64A3B1560689E00D95EC7 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E232B282154D84F000A2BAA7 /* MainWindow.xib */; };
+		E2F64A3C156068A800D95EC7 /* hookflashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E232B280154D84F000A2BAA7 /* hookflashViewController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E25572981558105200CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28547F1154CB4B900902B40;
+			remoteInfo = voice_engine_core;
+		};
+		E255729A1558105200CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E232B1DC154D83C500A2BAA7;
+			remoteInfo = hookflash;
+		};
+		E25572A41558106A00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A01558106900CA2903 /* system_wrappers_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854507154CA63700902B40;
+			remoteInfo = system_wrappers;
+		};
+		E25572C91558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853CFB154C1D2A00902B40;
+			remoteInfo = CNG;
+		};
+		E25572CB1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853D15154C1E7B00902B40;
+			remoteInfo = G711;
+		};
+		E25572CD1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853D2F154C1F5100902B40;
+			remoteInfo = G722;
+		};
+		E25572CF1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853DA6154C212800902B40;
+			remoteInfo = iSAC;
+		};
+		E25572D11558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853DB5154C213300902B40;
+			remoteInfo = iSACFix;
+		};
+		E25572D31558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853EA2154C22C700902B40;
+			remoteInfo = iLBC;
+		};
+		E25572D51558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853EFB154C23A800902B40;
+			remoteInfo = PCM16B;
+		};
+		E25572D71558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853F45154C8F0E00902B40;
+			remoteInfo = audio_coding_module;
+		};
+		E25572D91558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853FA6154C900900902B40;
+			remoteInfo = NetEq;
+		};
+		E25572DB1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2853FE8154C911700902B40;
+			remoteInfo = audio_conference_mixer;
+		};
+		E25572DD1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285400B154C91D800902B40;
+			remoteInfo = audio_device;
+		};
+		E25572DF1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285403C154C930D00902B40;
+			remoteInfo = audio_processing;
+		};
+		E25572E11558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854063154C93EF00902B40;
+			remoteInfo = aec;
+		};
+		E25572E31558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285407E154C949D00902B40;
+			remoteInfo = aecm;
+		};
+		E25572E51558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854096154C951D00902B40;
+			remoteInfo = agc;
+		};
+		E25572E71558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28540B4154C95EA00902B40;
+			remoteInfo = ns;
+		};
+		E25572E91558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28540C8154C964B00902B40;
+			remoteInfo = ns_fix;
+		};
+		E25572EB1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28540E3154C96A600902B40;
+			remoteInfo = apm_util;
+		};
+		E25572ED1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28540FE154C976900902B40;
+			remoteInfo = bitrate_controller;
+		};
+		E25572EF1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285411B154C982300902B40;
+			remoteInfo = media_file;
+		};
+		E25572F11558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285417D154C98E300902B40;
+			remoteInfo = rtp_rtcp;
+		};
+		E25572F31558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28541C2154C9A4900902B40;
+			remoteInfo = udp_transport;
+		};
+		E25572F51558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28541ED154C9AF200902B40;
+			remoteInfo = webrtc_utility;
+		};
+		E25572F71558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854212154C9BC900902B40;
+			remoteInfo = video_capture_module;
+		};
+		E25572F91558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285422D154C9CDB00902B40;
+			remoteInfo = webrtc_i420;
+		};
+		E25572FB1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854248154C9D7800902B40;
+			remoteInfo = webrtc_vp8;
+		};
+		E25572FD1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E285429E154C9E8000902B40;
+			remoteInfo = webrtc_video_coding;
+		};
+		E25572FF1558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28542E1154C9F5600902B40;
+			remoteInfo = video_processing;
+		};
+		E25573011558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854307154CA02100902B40;
+			remoteInfo = video_render_module;
+		};
+		E25573031558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E232B2B2154D87DA00A2BAA7;
+			remoteInfo = hookflash_voice;
+		};
+		E25573051558107E00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E232B2CD154D883A00A2BAA7;
+			remoteInfo = hookflaash_video;
+		};
+		E255730B1558109C00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25573071558109B00CA2903 /* libyuv_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854D3E154CBD7A00902B40;
+			remoteInfo = libyuv;
+		};
+		E2557311155810AC00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255730D155810AC00CA2903 /* libvpx_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854ADD154CB80300902B40;
+			remoteInfo = libvpx;
+		};
+		E255731E155810D500CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557319155810D400CA2903 /* common_video_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28544D7154CA56400902B40;
+			remoteInfo = webrtc_jpeg;
+		};
+		E2557320155810D500CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557319155810D400CA2903 /* common_video_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28544EF154CA5DA00902B40;
+			remoteInfo = webrtc_libyuv;
+		};
+		E2557328155810DF00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854359154CA1A100902B40;
+			remoteInfo = resampler;
+		};
+		E255732A155810DF00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854398154CA23100902B40;
+			remoteInfo = signal_processing;
+		};
+		E255732C155810DF00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28543E1154CA2D900902B40;
+			remoteInfo = vad;
+		};
+		E25573AB1558246D00CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25573A41558246D00CA2903 /* gtest_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E255734315581F4600CA2903;
+			remoteInfo = gtest;
+		};
+		E25573AD155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2854602154CB38200902B40 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E285460A154CB38200902B40;
+			remoteInfo = video_engine_core;
+		};
+		E25573B1155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853CFA154C1D2A00902B40;
+			remoteInfo = CNG;
+		};
+		E25573B3155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853D14154C1E7B00902B40;
+			remoteInfo = G711;
+		};
+		E25573B5155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853D2E154C1F5100902B40;
+			remoteInfo = G722;
+		};
+		E25573B7155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853DA5154C212800902B40;
+			remoteInfo = iSAC;
+		};
+		E25573B9155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853DB4154C213300902B40;
+			remoteInfo = iSACFix;
+		};
+		E25573BB155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853EA1154C22C700902B40;
+			remoteInfo = iLBC;
+		};
+		E25573BD155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853EFA154C23A800902B40;
+			remoteInfo = PCM16B;
+		};
+		E25573BF155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853F44154C8F0E00902B40;
+			remoteInfo = audio_coding_module;
+		};
+		E25573C1155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853FA5154C900900902B40;
+			remoteInfo = NetEq;
+		};
+		E25573C3155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2853FE7154C911700902B40;
+			remoteInfo = audio_conference_mixer;
+		};
+		E25573C5155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285400A154C91D800902B40;
+			remoteInfo = audio_device;
+		};
+		E25573C7155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285403B154C930D00902B40;
+			remoteInfo = audio_processing;
+		};
+		E25573C9155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854062154C93EF00902B40;
+			remoteInfo = aec;
+		};
+		E25573CB155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285407D154C949D00902B40;
+			remoteInfo = aecm;
+		};
+		E25573CD155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854095154C951D00902B40;
+			remoteInfo = agc;
+		};
+		E25573CF155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28540B3154C95EA00902B40;
+			remoteInfo = ns;
+		};
+		E25573D1155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28540C7154C964B00902B40;
+			remoteInfo = ns_fix;
+		};
+		E25573D3155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28540E2154C96A600902B40;
+			remoteInfo = apm_util;
+		};
+		E25573D5155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28540FD154C976900902B40;
+			remoteInfo = bitrate_controller;
+		};
+		E25573D7155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285411A154C982300902B40;
+			remoteInfo = media_file;
+		};
+		E25573D9155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285417C154C98E300902B40;
+			remoteInfo = rtp_rtcp;
+		};
+		E25573DB155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28541C1154C9A4900902B40;
+			remoteInfo = udp_transport;
+		};
+		E25573DD155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28541EC154C9AF200902B40;
+			remoteInfo = webrtc_utility;
+		};
+		E25573DF155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854211154C9BC900902B40;
+			remoteInfo = video_capture_module;
+		};
+		E25573E1155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285422C154C9CDB00902B40;
+			remoteInfo = webrtc_i420;
+		};
+		E25573E3155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854247154C9D7800902B40;
+			remoteInfo = webrtc_vp8;
+		};
+		E25573E5155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E285429D154C9E8000902B40;
+			remoteInfo = webrtc_video_coding;
+		};
+		E25573E7155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28542E0154C9F5600902B40;
+			remoteInfo = video_processing;
+		};
+		E25573E9155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854306154CA02100902B40;
+			remoteInfo = video_render_module;
+		};
+		E25573EB155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25573071558109B00CA2903 /* libyuv_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854D3D154CBD7A00902B40;
+			remoteInfo = libyuv;
+		};
+		E25573ED155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854358154CA1A100902B40;
+			remoteInfo = resampler;
+		};
+		E25573EF155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854397154CA23100902B40;
+			remoteInfo = signal_processing;
+		};
+		E25573F1155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28543E0154CA2D900902B40;
+			remoteInfo = vad;
+		};
+		E25573F3155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557319155810D400CA2903 /* common_video_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28544D6154CA56400902B40;
+			remoteInfo = webrtc_jpeg;
+		};
+		E25573F5155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E2557319155810D400CA2903 /* common_video_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28544EE154CA5DA00902B40;
+			remoteInfo = webrtc_libyuv;
+		};
+		E25573F7155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25573A41558246D00CA2903 /* gtest_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E255734215581F4600CA2903;
+			remoteInfo = gtest;
+		};
+		E25573F9155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255730D155810AC00CA2903 /* libvpx_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854ADC154CB80300902B40;
+			remoteInfo = libvpx;
+		};
+		E25573FB155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A01558106900CA2903 /* system_wrappers_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854506154CA63700902B40;
+			remoteInfo = system_wrappers;
+		};
+		E25573FD155824C800CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28547F0154CB4B900902B40;
+			remoteInfo = voice_engine_core;
+		};
+		E255748215587F2700CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255747B15587F2600CA2903 /* libjpeg_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E28549C6154CB6A400902B40;
+			remoteInfo = libjpeg;
+		};
+		E255748415587F3600CA2903 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E255747B15587F2600CA2903 /* libjpeg_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E28549C5154CB6A400902B40;
+			remoteInfo = libjpeg;
+		};
+		E289343915AA2BA000A0DF9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2C05CA615921FB900CF213C;
+			remoteInfo = vorbis_ios;
+		};
+		E289344115AA320E00A0DF9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E289343D15AA320D00A0DF9D /* libogg_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2C05CEF15922BE200CF213C;
+			remoteInfo = libogg_ios;
+		};
+		E289344515AA325A00A0DF9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C05C8315921FB900CF213C;
+			remoteInfo = vorbis_ios;
+		};
+		E289344715AA325A00A0DF9D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E289343D15AA320D00A0DF9D /* libogg_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2C05CEE15922BE200CF213C;
+			remoteInfo = libogg_ios;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		E232B27C154D84E100A2BAA7 /* hookflashAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = hookflashAppDelegate.h; path = hookflash/hookflashAppDelegate.h; sourceTree = "<group>"; };
+		E232B27D154D84E100A2BAA7 /* hookflashAppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = hookflashAppDelegate.mm; path = hookflash/hookflashAppDelegate.mm; sourceTree = "<group>"; };
+		E232B27E154D84E100A2BAA7 /* hookflashViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = hookflashViewController.h; path = hookflash/hookflashViewController.h; sourceTree = "<group>"; };
+		E232B27F154D84E100A2BAA7 /* hookflashViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = hookflashViewController.mm; path = hookflash/hookflashViewController.mm; sourceTree = "<group>"; };
+		E232B281154D84F000A2BAA7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = hookflash/en.lproj/hookflashViewController.xib; sourceTree = "<group>"; };
+		E232B283154D84F000A2BAA7 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = hookflash/en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		E232B284154D850700A2BAA7 /* hookflash-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "hookflash-Info.plist"; path = "hookflash/hookflash-Info.plist"; sourceTree = "<group>"; };
+		E232B285154D850700A2BAA7 /* hookflash-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "hookflash-Prefix.pch"; path = "hookflash/hookflash-Prefix.pch"; sourceTree = "<group>"; };
+		E232B286154D850700A2BAA7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = main.m; path = hookflash/main.m; sourceTree = "<group>"; };
+		E232B288154D851200A2BAA7 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = hookflash/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E232B28D154D852A00A2BAA7 /* hookflash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hookflash.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E232B28F154D852A00A2BAA7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		E232B292154D852A00A2BAA7 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E255710915580D9F00CA2903 /* vie_autotest_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_autotest_defines.h; path = test/auto_test/interface/vie_autotest_defines.h; sourceTree = "<group>"; };
+		E255710A15580D9F00CA2903 /* vie_autotest_iphone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_autotest_iphone.h; path = test/auto_test/interface/vie_autotest_iphone.h; sourceTree = "<group>"; };
+		E255710C15580D9F00CA2903 /* vie_autotest_window_manager_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_autotest_window_manager_interface.h; path = test/auto_test/interface/vie_autotest_window_manager_interface.h; sourceTree = "<group>"; };
+		E255710D15580D9F00CA2903 /* vie_autotest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_autotest.h; path = test/auto_test/interface/vie_autotest.h; sourceTree = "<group>"; };
+		E255711015580E2000CA2903 /* vie_autotest_codec.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vie_autotest_codec.cc; path = test/auto_test/source/vie_autotest_codec.cc; sourceTree = "<group>"; };
+		E255711115580E2000CA2903 /* vie_autotest_iphone.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vie_autotest_iphone.cc; path = test/auto_test/source/vie_autotest_iphone.cc; sourceTree = "<group>"; };
+		E255711215580E2000CA2903 /* vie_autotest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vie_autotest.cc; path = test/auto_test/source/vie_autotest.cc; sourceTree = "<group>"; };
+		E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = voice_engine_ios.xcodeproj; path = ../voice_engine/voice_engine_ios.xcodeproj; sourceTree = "<group>"; };
+		E25572A01558106900CA2903 /* system_wrappers_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers_ios.xcodeproj; path = ../system_wrappers/source/system_wrappers_ios.xcodeproj; sourceTree = "<group>"; };
+		E25572A61558107D00CA2903 /* modules_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules_ios.xcodeproj; path = ../modules/modules_ios.xcodeproj; sourceTree = "<group>"; };
+		E25573071558109B00CA2903 /* libyuv_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libyuv_ios.xcodeproj; path = ../../third_party/libyuv/libyuv_ios.xcodeproj; sourceTree = "<group>"; };
+		E255730D155810AC00CA2903 /* libvpx_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvpx_ios.xcodeproj; path = ../../third_party/libvpx/libvpx_ios.xcodeproj; sourceTree = "<group>"; };
+		E2557319155810D400CA2903 /* common_video_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video_ios.xcodeproj; path = ../common_video/common_video_ios.xcodeproj; sourceTree = "<group>"; };
+		E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio_ios.xcodeproj; path = ../common_audio/common_audio_ios.xcodeproj; sourceTree = "<group>"; };
+		E25573321558142000CA2903 /* tb_capture_device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tb_capture_device.h; path = test/libvietest/include/tb_capture_device.h; sourceTree = "<group>"; };
+		E25573331558142000CA2903 /* tb_interfaces.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tb_interfaces.h; path = test/libvietest/include/tb_interfaces.h; sourceTree = "<group>"; };
+		E25573341558146800CA2903 /* tb_capture_device.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tb_capture_device.cc; path = test/libvietest/testbed/tb_capture_device.cc; sourceTree = "<group>"; };
+		E25573351558146800CA2903 /* tb_interfaces.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tb_interfaces.cc; path = test/libvietest/testbed/tb_interfaces.cc; sourceTree = "<group>"; };
+		E25573A41558246D00CA2903 /* gtest_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = gtest_ios.xcodeproj; path = ../../testing/gtest_ios.xcodeproj; sourceTree = "<group>"; };
+		E25574281558253200CA2903 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E255742A1558253B00CA2903 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		E255742C1558254E00CA2903 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E255747B15587F2600CA2903 /* libjpeg_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg_ios.xcodeproj; path = ../../third_party/libjpeg/libjpeg_ios.xcodeproj; sourceTree = "<group>"; };
+		E285460B154CB38200902B40 /* libvideo_engine_core_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvideo_engine_core_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E285460E154CB38200902B40 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E2854750154CB3F600902B40 /* vie_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_base.h; path = include/vie_base.h; sourceTree = "<group>"; };
+		E2854751154CB3F600902B40 /* vie_capture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_capture.h; path = include/vie_capture.h; sourceTree = "<group>"; };
+		E2854752154CB3F600902B40 /* vie_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_codec.h; path = include/vie_codec.h; sourceTree = "<group>"; };
+		E2854753154CB3F600902B40 /* vie_encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_encryption.h; path = include/vie_encryption.h; sourceTree = "<group>"; };
+		E2854754154CB3F600902B40 /* vie_errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_errors.h; path = include/vie_errors.h; sourceTree = "<group>"; };
+		E2854755154CB3F600902B40 /* vie_external_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_external_codec.h; path = include/vie_external_codec.h; sourceTree = "<group>"; };
+		E2854756154CB3F600902B40 /* vie_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_file.h; path = include/vie_file.h; sourceTree = "<group>"; };
+		E2854757154CB3F600902B40 /* vie_image_process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_image_process.h; path = include/vie_image_process.h; sourceTree = "<group>"; };
+		E2854758154CB3F600902B40 /* vie_network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_network.h; path = include/vie_network.h; sourceTree = "<group>"; };
+		E2854759154CB3F600902B40 /* vie_render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_render.h; path = include/vie_render.h; sourceTree = "<group>"; };
+		E285475A154CB3F600902B40 /* vie_rtp_rtcp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vie_rtp_rtcp.h; path = include/vie_rtp_rtcp.h; sourceTree = "<group>"; };
+		E2854766154CB41800902B40 /* vie_base_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_base_impl.cc; sourceTree = "<group>"; };
+		E2854767154CB41800902B40 /* vie_base_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_base_impl.h; sourceTree = "<group>"; };
+		E2854768154CB41800902B40 /* vie_capture_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_capture_impl.cc; sourceTree = "<group>"; };
+		E2854769154CB41800902B40 /* vie_capture_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_capture_impl.h; sourceTree = "<group>"; };
+		E285476A154CB41800902B40 /* vie_capturer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_capturer.cc; sourceTree = "<group>"; };
+		E285476B154CB41800902B40 /* vie_capturer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_capturer.h; sourceTree = "<group>"; };
+		E285476C154CB41800902B40 /* vie_channel_group.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel_group.cc; sourceTree = "<group>"; };
+		E285476D154CB41800902B40 /* vie_channel_group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_channel_group.h; sourceTree = "<group>"; };
+		E285476E154CB41800902B40 /* vie_channel_manager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel_manager.cc; sourceTree = "<group>"; };
+		E285476F154CB41800902B40 /* vie_channel_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_channel_manager.h; sourceTree = "<group>"; };
+		E2854770154CB41800902B40 /* vie_channel.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel.cc; sourceTree = "<group>"; };
+		E2854771154CB41800902B40 /* vie_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_channel.h; sourceTree = "<group>"; };
+		E2854772154CB41800902B40 /* vie_codec_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_codec_impl.cc; sourceTree = "<group>"; };
+		E2854773154CB41800902B40 /* vie_codec_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_codec_impl.h; sourceTree = "<group>"; };
+		E2854774154CB41800902B40 /* vie_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_defines.h; sourceTree = "<group>"; };
+		E2854775154CB41800902B40 /* vie_encoder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_encoder.cc; sourceTree = "<group>"; };
+		E2854776154CB41800902B40 /* vie_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_encoder.h; sourceTree = "<group>"; };
+		E2854777154CB41800902B40 /* vie_encryption_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_encryption_impl.cc; sourceTree = "<group>"; };
+		E2854778154CB41800902B40 /* vie_encryption_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_encryption_impl.h; sourceTree = "<group>"; };
+		E2854779154CB41800902B40 /* vie_external_codec_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_external_codec_impl.cc; sourceTree = "<group>"; };
+		E285477A154CB41800902B40 /* vie_external_codec_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_external_codec_impl.h; sourceTree = "<group>"; };
+		E285477B154CB41800902B40 /* vie_file_image.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_image.cc; sourceTree = "<group>"; };
+		E285477C154CB41800902B40 /* vie_file_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_file_image.h; sourceTree = "<group>"; };
+		E285477D154CB41800902B40 /* vie_file_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_impl.cc; sourceTree = "<group>"; };
+		E285477E154CB41800902B40 /* vie_file_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_file_impl.h; sourceTree = "<group>"; };
+		E285477F154CB41800902B40 /* vie_file_player.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_player.cc; sourceTree = "<group>"; };
+		E2854780154CB41800902B40 /* vie_file_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_file_player.h; sourceTree = "<group>"; };
+		E2854781154CB41800902B40 /* vie_file_recorder.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_recorder.cc; sourceTree = "<group>"; };
+		E2854782154CB41800902B40 /* vie_file_recorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_file_recorder.h; sourceTree = "<group>"; };
+		E2854783154CB41800902B40 /* vie_frame_provider_base.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_frame_provider_base.cc; sourceTree = "<group>"; };
+		E2854784154CB41800902B40 /* vie_frame_provider_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_frame_provider_base.h; sourceTree = "<group>"; };
+		E2854785154CB41800902B40 /* vie_image_process_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_image_process_impl.cc; sourceTree = "<group>"; };
+		E2854786154CB41800902B40 /* vie_image_process_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_image_process_impl.h; sourceTree = "<group>"; };
+		E2854787154CB41800902B40 /* vie_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_impl.cc; sourceTree = "<group>"; };
+		E2854788154CB41800902B40 /* vie_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_impl.h; sourceTree = "<group>"; };
+		E2854789154CB41800902B40 /* vie_input_manager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_input_manager.cc; sourceTree = "<group>"; };
+		E285478A154CB41800902B40 /* vie_input_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_input_manager.h; sourceTree = "<group>"; };
+		E285478B154CB41800902B40 /* vie_manager_base.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_manager_base.cc; sourceTree = "<group>"; };
+		E285478C154CB41800902B40 /* vie_manager_base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_manager_base.h; sourceTree = "<group>"; };
+		E285478D154CB41800902B40 /* vie_network_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_network_impl.cc; sourceTree = "<group>"; };
+		E285478E154CB41800902B40 /* vie_network_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_network_impl.h; sourceTree = "<group>"; };
+		E285478F154CB41800902B40 /* vie_performance_monitor.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_performance_monitor.cc; sourceTree = "<group>"; };
+		E2854790154CB41800902B40 /* vie_performance_monitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_performance_monitor.h; sourceTree = "<group>"; };
+		E2854791154CB41800902B40 /* vie_receiver.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_receiver.cc; sourceTree = "<group>"; };
+		E2854792154CB41800902B40 /* vie_receiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_receiver.h; sourceTree = "<group>"; };
+		E2854793154CB41800902B40 /* vie_ref_count.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_ref_count.cc; sourceTree = "<group>"; };
+		E2854794154CB41800902B40 /* vie_ref_count.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_ref_count.h; sourceTree = "<group>"; };
+		E2854795154CB41800902B40 /* vie_remb_unittest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_remb_unittest.cc; sourceTree = "<group>"; };
+		E2854796154CB41800902B40 /* vie_remb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_remb.cc; sourceTree = "<group>"; };
+		E2854797154CB41800902B40 /* vie_remb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_remb.h; sourceTree = "<group>"; };
+		E2854798154CB41800902B40 /* vie_render_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_render_impl.cc; sourceTree = "<group>"; };
+		E2854799154CB41800902B40 /* vie_render_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_render_impl.h; sourceTree = "<group>"; };
+		E285479A154CB41800902B40 /* vie_render_manager.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_render_manager.cc; sourceTree = "<group>"; };
+		E285479B154CB41800902B40 /* vie_render_manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_render_manager.h; sourceTree = "<group>"; };
+		E285479C154CB41800902B40 /* vie_renderer.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_renderer.cc; sourceTree = "<group>"; };
+		E285479D154CB41800902B40 /* vie_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_renderer.h; sourceTree = "<group>"; };
+		E285479E154CB41800902B40 /* vie_rtp_rtcp_impl.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_rtp_rtcp_impl.cc; sourceTree = "<group>"; };
+		E285479F154CB41800902B40 /* vie_rtp_rtcp_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_rtp_rtcp_impl.h; sourceTree = "<group>"; };
+		E28547A0154CB41800902B40 /* vie_sender.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_sender.cc; sourceTree = "<group>"; };
+		E28547A1154CB41800902B40 /* vie_sender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_sender.h; sourceTree = "<group>"; };
+		E28547A2154CB41800902B40 /* vie_shared_data.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_shared_data.cc; sourceTree = "<group>"; };
+		E28547A3154CB41800902B40 /* vie_shared_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_shared_data.h; sourceTree = "<group>"; };
+		E28547A4154CB41800902B40 /* vie_sync_module.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vie_sync_module.cc; sourceTree = "<group>"; };
+		E28547A5154CB41800902B40 /* vie_sync_module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vie_sync_module.h; sourceTree = "<group>"; };
+		E289343D15AA320D00A0DF9D /* libogg_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libogg_ios.xcodeproj; path = ../../third_party/libogg/libogg_ios.xcodeproj; sourceTree = "<group>"; };
+		E2C86ADA1620C384004CD206 /* common_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common_types.h; path = ../common_types.h; sourceTree = "<group>"; };
+		E2C86ADB1620C384004CD206 /* engine_configurations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_configurations.h; path = ../engine_configurations.h; sourceTree = "<group>"; };
+		E2C86ADC1620C384004CD206 /* typedefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = typedefs.h; path = ../typedefs.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E232B28A154D852A00A2BAA7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E289344315AA324700A0DF9D /* liblibogg_ios.a in Frameworks */,
+				E289344415AA324700A0DF9D /* libvorbis_ios.a in Frameworks */,
+				E24DB1991561595A007A669A /* libgtest_ios.a in Frameworks */,
+				E255748715587F6B00CA2903 /* libjpeg_ios.a in Frameworks */,
+				E25573FF1558250300CA2903 /* libvideo_engine_core_ios.a in Frameworks */,
+				E25574001558250300CA2903 /* libaec_ios.a in Frameworks */,
+				E25574011558250300CA2903 /* libaecm_ios.a in Frameworks */,
+				E25574021558250300CA2903 /* libagc_ios.a in Frameworks */,
+				E25574031558250300CA2903 /* libapm_util_ios.a in Frameworks */,
+				E25574041558250300CA2903 /* libaudio_coding_module_ios.a in Frameworks */,
+				E25574051558250300CA2903 /* libaudio_conference_mixer_ios.a in Frameworks */,
+				E25574061558250300CA2903 /* libaudio_device_ios.a in Frameworks */,
+				E25574071558250300CA2903 /* libaudio_processing_ios.a in Frameworks */,
+				E25574081558250300CA2903 /* libbitrate_controller_ios.a in Frameworks */,
+				E25574091558250300CA2903 /* libCNG_ios.a in Frameworks */,
+				E255740A1558250300CA2903 /* libG711_ios.a in Frameworks */,
+				E255740B1558250300CA2903 /* libG722_ios.a in Frameworks */,
+				E255740D1558250300CA2903 /* libiLBC_ios.a in Frameworks */,
+				E255740E1558250300CA2903 /* libiSAC_ios.a in Frameworks */,
+				E255740F1558250300CA2903 /* libiSACFix_ios.a in Frameworks */,
+				E25574111558250300CA2903 /* libmedia_file_ios.a in Frameworks */,
+				E25574121558250300CA2903 /* libNetEq_ios.a in Frameworks */,
+				E25574131558250300CA2903 /* libns_fix_ios.a in Frameworks */,
+				E25574141558250300CA2903 /* libns_ios.a in Frameworks */,
+				E25574151558250300CA2903 /* libPCM16B_ios.a in Frameworks */,
+				E25574161558250300CA2903 /* libresampler_ios.a in Frameworks */,
+				E25574171558250300CA2903 /* librtp_rtcp_ios.a in Frameworks */,
+				E25574181558250300CA2903 /* libsignal_processing_ios.a in Frameworks */,
+				E25574191558250300CA2903 /* libsystem_wrappers_ios.a in Frameworks */,
+				E255741A1558250300CA2903 /* libudp_transport_ios.a in Frameworks */,
+				E255741B1558250300CA2903 /* libvad_ios.a in Frameworks */,
+				E255741C1558250300CA2903 /* libvideo_capture_module_ios.a in Frameworks */,
+				E255741D1558250300CA2903 /* libvideo_processing_ios.a in Frameworks */,
+				E255741E1558250300CA2903 /* libvideo_render_module_ios.a in Frameworks */,
+				E255741F1558250300CA2903 /* libvoice_engine_core_ios.a in Frameworks */,
+				E25574201558250300CA2903 /* libvpx_ios.a in Frameworks */,
+				E25574211558250300CA2903 /* libwebrtc_i420_ios.a in Frameworks */,
+				E25574221558250300CA2903 /* libwebrtc_jpeg_ios.a in Frameworks */,
+				E25574231558250300CA2903 /* libwebrtc_libyuv_ios.a in Frameworks */,
+				E25574241558250300CA2903 /* libwebrtc_utility_ios.a in Frameworks */,
+				E25574251558250300CA2903 /* libwebrtc_video_coding_ios.a in Frameworks */,
+				E25574261558250300CA2903 /* libwebrtc_vp8_ios.a in Frameworks */,
+				E25574271558250300CA2903 /* libyuv_ios.a in Frameworks */,
+				E255742D1558254F00CA2903 /* AVFoundation.framework in Frameworks */,
+				E255742B1558253B00CA2903 /* CoreVideo.framework in Frameworks */,
+				E25574291558253200CA2903 /* CoreMedia.framework in Frameworks */,
+				E232B290154D852A00A2BAA7 /* UIKit.framework in Frameworks */,
+				E232B291154D852A00A2BAA7 /* Foundation.framework in Frameworks */,
+				E232B293154D852A00A2BAA7 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2854608154CB38200902B40 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E232B128154D801400A2BAA7 /* hookflash */ = {
+			isa = PBXGroup;
+			children = (
+				E232B282154D84F000A2BAA7 /* MainWindow.xib */,
+				E232B27C154D84E100A2BAA7 /* hookflashAppDelegate.h */,
+				E232B27D154D84E100A2BAA7 /* hookflashAppDelegate.mm */,
+				E232B27E154D84E100A2BAA7 /* hookflashViewController.h */,
+				E232B27F154D84E100A2BAA7 /* hookflashViewController.mm */,
+				E232B280154D84F000A2BAA7 /* hookflashViewController.xib */,
+				E232B27B154D84C300A2BAA7 /* Supporting Files */,
+			);
+			name = hookflash;
+			sourceTree = "<group>";
+		};
+		E232B279154D849E00A2BAA7 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				E255732F1558137D00CA2903 /* libvietest */,
+				E255732E1558137300CA2903 /* auto_test */,
+			);
+			name = test;
+			sourceTree = "<group>";
+		};
+		E232B27B154D84C300A2BAA7 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E232B287154D851200A2BAA7 /* InfoPlist.strings */,
+				E232B284154D850700A2BAA7 /* hookflash-Info.plist */,
+				E232B285154D850700A2BAA7 /* hookflash-Prefix.pch */,
+				E232B286154D850700A2BAA7 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E255710615580D0A00CA2903 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				E255711015580E2000CA2903 /* vie_autotest_codec.cc */,
+				E255711115580E2000CA2903 /* vie_autotest_iphone.cc */,
+				E255711215580E2000CA2903 /* vie_autotest.cc */,
+			);
+			name = source;
+			sourceTree = "<group>";
+		};
+		E255710815580D1500CA2903 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				E255710915580D9F00CA2903 /* vie_autotest_defines.h */,
+				E255710A15580D9F00CA2903 /* vie_autotest_iphone.h */,
+				E255710C15580D9F00CA2903 /* vie_autotest_window_manager_interface.h */,
+				E255710D15580D9F00CA2903 /* vie_autotest.h */,
+			);
+			name = interface;
+			sourceTree = "<group>";
+		};
+		E255711715580E3B00CA2903 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				E289343D15AA320D00A0DF9D /* libogg_ios.xcodeproj */,
+				E255747B15587F2600CA2903 /* libjpeg_ios.xcodeproj */,
+				E25573A41558246D00CA2903 /* gtest_ios.xcodeproj */,
+				E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */,
+				E2557319155810D400CA2903 /* common_video_ios.xcodeproj */,
+				E255730D155810AC00CA2903 /* libvpx_ios.xcodeproj */,
+				E25573071558109B00CA2903 /* libyuv_ios.xcodeproj */,
+				E25572A61558107D00CA2903 /* modules_ios.xcodeproj */,
+				E25572A01558106900CA2903 /* system_wrappers_ios.xcodeproj */,
+				E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		E255726C1558104F00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E25572991558105200CA2903 /* libvoice_engine_core_ios.a */,
+				E255729B1558105200CA2903 /* hookflash.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E25572A11558106900CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E25572A51558106A00CA2903 /* libsystem_wrappers_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E25572A71558107D00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E25572CA1558107E00CA2903 /* libCNG_ios.a */,
+				E25572CC1558107E00CA2903 /* libG711_ios.a */,
+				E25572CE1558107E00CA2903 /* libG722_ios.a */,
+				E25572D01558107E00CA2903 /* libiSAC_ios.a */,
+				E25572D21558107E00CA2903 /* libiSACFix_ios.a */,
+				E25572D41558107E00CA2903 /* libiLBC_ios.a */,
+				E25572D61558107E00CA2903 /* libPCM16B_ios.a */,
+				E289343A15AA2BA000A0DF9D /* libvorbis_ios.a */,
+				E25572D81558107E00CA2903 /* libaudio_coding_module_ios.a */,
+				E25572DA1558107E00CA2903 /* libNetEq_ios.a */,
+				E25572DC1558107E00CA2903 /* libaudio_conference_mixer_ios.a */,
+				E25572DE1558107E00CA2903 /* libaudio_device_ios.a */,
+				E25572E01558107E00CA2903 /* libaudio_processing_ios.a */,
+				E25572E21558107E00CA2903 /* libaec_ios.a */,
+				E25572E41558107E00CA2903 /* libaecm_ios.a */,
+				E25572E61558107E00CA2903 /* libagc_ios.a */,
+				E25572E81558107E00CA2903 /* libns_ios.a */,
+				E25572EA1558107E00CA2903 /* libns_fix_ios.a */,
+				E25572EC1558107E00CA2903 /* libapm_util_ios.a */,
+				E25572EE1558107E00CA2903 /* libbitrate_controller_ios.a */,
+				E25572F01558107E00CA2903 /* libmedia_file_ios.a */,
+				E25572F21558107E00CA2903 /* librtp_rtcp_ios.a */,
+				E25572F41558107E00CA2903 /* libudp_transport_ios.a */,
+				E25572F61558107E00CA2903 /* libwebrtc_utility_ios.a */,
+				E25572F81558107E00CA2903 /* libvideo_capture_module_ios.a */,
+				E25572FA1558107E00CA2903 /* libwebrtc_i420_ios.a */,
+				E25572FC1558107E00CA2903 /* libwebrtc_vp8_ios.a */,
+				E25572FE1558107E00CA2903 /* libwebrtc_video_coding_ios.a */,
+				E25573001558107E00CA2903 /* libvideo_processing_ios.a */,
+				E25573021558107E00CA2903 /* libvideo_render_module_ios.a */,
+				E25573041558107E00CA2903 /* hookflash_voice.app */,
+				E25573061558107E00CA2903 /* hookflash_video.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E25573081558109B00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E255730C1558109C00CA2903 /* libyuv_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E255730E155810AC00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2557312155810AC00CA2903 /* libvpx_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E255731A155810D400CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E255731F155810D500CA2903 /* libwebrtc_jpeg_ios.a */,
+				E2557321155810D500CA2903 /* libwebrtc_libyuv_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2557323155810DF00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E2557329155810DF00CA2903 /* libresampler_ios.a */,
+				E255732B155810DF00CA2903 /* libsignal_processing_ios.a */,
+				E255732D155810DF00CA2903 /* libvad_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E255732E1558137300CA2903 /* auto_test */ = {
+			isa = PBXGroup;
+			children = (
+				E255710815580D1500CA2903 /* interface */,
+				E255710615580D0A00CA2903 /* source */,
+			);
+			name = auto_test;
+			sourceTree = "<group>";
+		};
+		E255732F1558137D00CA2903 /* libvietest */ = {
+			isa = PBXGroup;
+			children = (
+				E2557331155813B000CA2903 /* include */,
+				E2557330155813A200CA2903 /* testbed */,
+			);
+			name = libvietest;
+			sourceTree = "<group>";
+		};
+		E2557330155813A200CA2903 /* testbed */ = {
+			isa = PBXGroup;
+			children = (
+				E25573341558146800CA2903 /* tb_capture_device.cc */,
+				E25573351558146800CA2903 /* tb_interfaces.cc */,
+			);
+			name = testbed;
+			sourceTree = "<group>";
+		};
+		E2557331155813B000CA2903 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E25573321558142000CA2903 /* tb_capture_device.h */,
+				E25573331558142000CA2903 /* tb_interfaces.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		E25573A51558246D00CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E25573AC1558246D00CA2903 /* libgtest_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E255747C15587F2600CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E255748315587F2700CA2903 /* libjpeg_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2854600154CB38200902B40 = {
+			isa = PBXGroup;
+			children = (
+				E285474D154CB3D300902B40 /* Source */,
+				E255711715580E3B00CA2903 /* Projects */,
+				E285460D154CB38200902B40 /* Frameworks */,
+				E285460C154CB38200902B40 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E285460C154CB38200902B40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E285460B154CB38200902B40 /* libvideo_engine_core_ios.a */,
+				E232B28D154D852A00A2BAA7 /* hookflash.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E285460D154CB38200902B40 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E255742C1558254E00CA2903 /* AVFoundation.framework */,
+				E255742A1558253B00CA2903 /* CoreVideo.framework */,
+				E25574281558253200CA2903 /* CoreMedia.framework */,
+				E285460E154CB38200902B40 /* Foundation.framework */,
+				E232B28F154D852A00A2BAA7 /* UIKit.framework */,
+				E232B292154D852A00A2BAA7 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E285474D154CB3D300902B40 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E2C86AD91620C368004CD206 /* .. */,
+				E285474F154CB3E200902B40 /* include */,
+				E232B279154D849E00A2BAA7 /* test */,
+				E232B128154D801400A2BAA7 /* hookflash */,
+				E2854766154CB41800902B40 /* vie_base_impl.cc */,
+				E2854767154CB41800902B40 /* vie_base_impl.h */,
+				E2854768154CB41800902B40 /* vie_capture_impl.cc */,
+				E2854769154CB41800902B40 /* vie_capture_impl.h */,
+				E285476A154CB41800902B40 /* vie_capturer.cc */,
+				E285476B154CB41800902B40 /* vie_capturer.h */,
+				E285476C154CB41800902B40 /* vie_channel_group.cc */,
+				E285476D154CB41800902B40 /* vie_channel_group.h */,
+				E285476E154CB41800902B40 /* vie_channel_manager.cc */,
+				E285476F154CB41800902B40 /* vie_channel_manager.h */,
+				E2854770154CB41800902B40 /* vie_channel.cc */,
+				E2854771154CB41800902B40 /* vie_channel.h */,
+				E2854772154CB41800902B40 /* vie_codec_impl.cc */,
+				E2854773154CB41800902B40 /* vie_codec_impl.h */,
+				E2854774154CB41800902B40 /* vie_defines.h */,
+				E2854775154CB41800902B40 /* vie_encoder.cc */,
+				E2854776154CB41800902B40 /* vie_encoder.h */,
+				E2854777154CB41800902B40 /* vie_encryption_impl.cc */,
+				E2854778154CB41800902B40 /* vie_encryption_impl.h */,
+				E2854779154CB41800902B40 /* vie_external_codec_impl.cc */,
+				E285477A154CB41800902B40 /* vie_external_codec_impl.h */,
+				E285477B154CB41800902B40 /* vie_file_image.cc */,
+				E285477C154CB41800902B40 /* vie_file_image.h */,
+				E285477D154CB41800902B40 /* vie_file_impl.cc */,
+				E285477E154CB41800902B40 /* vie_file_impl.h */,
+				E285477F154CB41800902B40 /* vie_file_player.cc */,
+				E2854780154CB41800902B40 /* vie_file_player.h */,
+				E2854781154CB41800902B40 /* vie_file_recorder.cc */,
+				E2854782154CB41800902B40 /* vie_file_recorder.h */,
+				E2854783154CB41800902B40 /* vie_frame_provider_base.cc */,
+				E2854784154CB41800902B40 /* vie_frame_provider_base.h */,
+				E2854785154CB41800902B40 /* vie_image_process_impl.cc */,
+				E2854786154CB41800902B40 /* vie_image_process_impl.h */,
+				E2854787154CB41800902B40 /* vie_impl.cc */,
+				E2854788154CB41800902B40 /* vie_impl.h */,
+				E2854789154CB41800902B40 /* vie_input_manager.cc */,
+				E285478A154CB41800902B40 /* vie_input_manager.h */,
+				E285478B154CB41800902B40 /* vie_manager_base.cc */,
+				E285478C154CB41800902B40 /* vie_manager_base.h */,
+				E285478D154CB41800902B40 /* vie_network_impl.cc */,
+				E285478E154CB41800902B40 /* vie_network_impl.h */,
+				E285478F154CB41800902B40 /* vie_performance_monitor.cc */,
+				E2854790154CB41800902B40 /* vie_performance_monitor.h */,
+				E2854791154CB41800902B40 /* vie_receiver.cc */,
+				E2854792154CB41800902B40 /* vie_receiver.h */,
+				E2854793154CB41800902B40 /* vie_ref_count.cc */,
+				E2854794154CB41800902B40 /* vie_ref_count.h */,
+				E2854795154CB41800902B40 /* vie_remb_unittest.cc */,
+				E2854796154CB41800902B40 /* vie_remb.cc */,
+				E2854797154CB41800902B40 /* vie_remb.h */,
+				E2854798154CB41800902B40 /* vie_render_impl.cc */,
+				E2854799154CB41800902B40 /* vie_render_impl.h */,
+				E285479A154CB41800902B40 /* vie_render_manager.cc */,
+				E285479B154CB41800902B40 /* vie_render_manager.h */,
+				E285479C154CB41800902B40 /* vie_renderer.cc */,
+				E285479D154CB41800902B40 /* vie_renderer.h */,
+				E285479E154CB41800902B40 /* vie_rtp_rtcp_impl.cc */,
+				E285479F154CB41800902B40 /* vie_rtp_rtcp_impl.h */,
+				E28547A0154CB41800902B40 /* vie_sender.cc */,
+				E28547A1154CB41800902B40 /* vie_sender.h */,
+				E28547A2154CB41800902B40 /* vie_shared_data.cc */,
+				E28547A3154CB41800902B40 /* vie_shared_data.h */,
+				E28547A4154CB41800902B40 /* vie_sync_module.cc */,
+				E28547A5154CB41800902B40 /* vie_sync_module.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E285474F154CB3E200902B40 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				E2854750154CB3F600902B40 /* vie_base.h */,
+				E2854751154CB3F600902B40 /* vie_capture.h */,
+				E2854752154CB3F600902B40 /* vie_codec.h */,
+				E2854753154CB3F600902B40 /* vie_encryption.h */,
+				E2854754154CB3F600902B40 /* vie_errors.h */,
+				E2854755154CB3F600902B40 /* vie_external_codec.h */,
+				E2854756154CB3F600902B40 /* vie_file.h */,
+				E2854757154CB3F600902B40 /* vie_image_process.h */,
+				E2854758154CB3F600902B40 /* vie_network.h */,
+				E2854759154CB3F600902B40 /* vie_render.h */,
+				E285475A154CB3F600902B40 /* vie_rtp_rtcp.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		E289343E15AA320D00A0DF9D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E289344215AA320E00A0DF9D /* liblibogg_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E2C86AD91620C368004CD206 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				E2C86ADA1620C384004CD206 /* common_types.h */,
+				E2C86ADB1620C384004CD206 /* engine_configurations.h */,
+				E2C86ADC1620C384004CD206 /* typedefs.h */,
+			);
+			name = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E2854609154CB38200902B40 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E285475B154CB3F600902B40 /* vie_base.h in Headers */,
+				E285475C154CB3F600902B40 /* vie_capture.h in Headers */,
+				E285475D154CB3F600902B40 /* vie_codec.h in Headers */,
+				E285475E154CB3F600902B40 /* vie_encryption.h in Headers */,
+				E285475F154CB3F600902B40 /* vie_errors.h in Headers */,
+				E2854760154CB3F600902B40 /* vie_external_codec.h in Headers */,
+				E2854761154CB3F600902B40 /* vie_file.h in Headers */,
+				E2854762154CB3F600902B40 /* vie_image_process.h in Headers */,
+				E2854763154CB3F600902B40 /* vie_network.h in Headers */,
+				E2854764154CB3F600902B40 /* vie_render.h in Headers */,
+				E2854765154CB3F600902B40 /* vie_rtp_rtcp.h in Headers */,
+				E28547A7154CB41800902B40 /* vie_base_impl.h in Headers */,
+				E28547A9154CB41800902B40 /* vie_capture_impl.h in Headers */,
+				E28547AB154CB41800902B40 /* vie_capturer.h in Headers */,
+				E28547AD154CB41800902B40 /* vie_channel_group.h in Headers */,
+				E28547AF154CB41800902B40 /* vie_channel_manager.h in Headers */,
+				E28547B1154CB41800902B40 /* vie_channel.h in Headers */,
+				E28547B3154CB41800902B40 /* vie_codec_impl.h in Headers */,
+				E28547B4154CB41800902B40 /* vie_defines.h in Headers */,
+				E28547B6154CB41800902B40 /* vie_encoder.h in Headers */,
+				E28547B8154CB41800902B40 /* vie_encryption_impl.h in Headers */,
+				E28547BA154CB41800902B40 /* vie_external_codec_impl.h in Headers */,
+				E28547BC154CB41800902B40 /* vie_file_image.h in Headers */,
+				E28547BE154CB41800902B40 /* vie_file_impl.h in Headers */,
+				E28547C0154CB41800902B40 /* vie_file_player.h in Headers */,
+				E28547C2154CB41800902B40 /* vie_file_recorder.h in Headers */,
+				E28547C4154CB41800902B40 /* vie_frame_provider_base.h in Headers */,
+				E28547C6154CB41800902B40 /* vie_image_process_impl.h in Headers */,
+				E28547C8154CB41800902B40 /* vie_impl.h in Headers */,
+				E28547CA154CB41800902B40 /* vie_input_manager.h in Headers */,
+				E28547CC154CB41800902B40 /* vie_manager_base.h in Headers */,
+				E28547CE154CB41900902B40 /* vie_network_impl.h in Headers */,
+				E28547D0154CB41900902B40 /* vie_performance_monitor.h in Headers */,
+				E28547D2154CB41900902B40 /* vie_receiver.h in Headers */,
+				E28547D4154CB41900902B40 /* vie_ref_count.h in Headers */,
+				E28547D7154CB41900902B40 /* vie_remb.h in Headers */,
+				E28547D9154CB41900902B40 /* vie_render_impl.h in Headers */,
+				E28547DB154CB41900902B40 /* vie_render_manager.h in Headers */,
+				E28547DD154CB41900902B40 /* vie_renderer.h in Headers */,
+				E28547DF154CB41900902B40 /* vie_rtp_rtcp_impl.h in Headers */,
+				E28547E1154CB41900902B40 /* vie_sender.h in Headers */,
+				E28547E3154CB41900902B40 /* vie_shared_data.h in Headers */,
+				E28547E5154CB41900902B40 /* vie_sync_module.h in Headers */,
+				E2C86ADD1620C384004CD206 /* common_types.h in Headers */,
+				E2C86ADE1620C384004CD206 /* engine_configurations.h in Headers */,
+				E2C86ADF1620C384004CD206 /* typedefs.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E232B28C154D852A00A2BAA7 /* hookflash */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E232B2A0154D852A00A2BAA7 /* Build configuration list for PBXNativeTarget "hookflash" */;
+			buildPhases = (
+				E232B289154D852A00A2BAA7 /* Sources */,
+				E232B28A154D852A00A2BAA7 /* Frameworks */,
+				E232B28B154D852A00A2BAA7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E289344615AA325A00A0DF9D /* PBXTargetDependency */,
+				E289344815AA325A00A0DF9D /* PBXTargetDependency */,
+				E255748515587F3600CA2903 /* PBXTargetDependency */,
+				E25573AE155824C800CA2903 /* PBXTargetDependency */,
+				E25573B2155824C800CA2903 /* PBXTargetDependency */,
+				E25573B4155824C800CA2903 /* PBXTargetDependency */,
+				E25573B6155824C800CA2903 /* PBXTargetDependency */,
+				E25573B8155824C800CA2903 /* PBXTargetDependency */,
+				E25573BA155824C800CA2903 /* PBXTargetDependency */,
+				E25573BC155824C800CA2903 /* PBXTargetDependency */,
+				E25573BE155824C800CA2903 /* PBXTargetDependency */,
+				E25573C0155824C800CA2903 /* PBXTargetDependency */,
+				E25573C2155824C800CA2903 /* PBXTargetDependency */,
+				E25573C4155824C800CA2903 /* PBXTargetDependency */,
+				E25573C6155824C800CA2903 /* PBXTargetDependency */,
+				E25573C8155824C800CA2903 /* PBXTargetDependency */,
+				E25573CA155824C800CA2903 /* PBXTargetDependency */,
+				E25573CC155824C800CA2903 /* PBXTargetDependency */,
+				E25573CE155824C800CA2903 /* PBXTargetDependency */,
+				E25573D0155824C800CA2903 /* PBXTargetDependency */,
+				E25573D2155824C800CA2903 /* PBXTargetDependency */,
+				E25573D4155824C800CA2903 /* PBXTargetDependency */,
+				E25573D6155824C800CA2903 /* PBXTargetDependency */,
+				E25573D8155824C800CA2903 /* PBXTargetDependency */,
+				E25573DA155824C800CA2903 /* PBXTargetDependency */,
+				E25573DC155824C800CA2903 /* PBXTargetDependency */,
+				E25573DE155824C800CA2903 /* PBXTargetDependency */,
+				E25573E0155824C800CA2903 /* PBXTargetDependency */,
+				E25573E2155824C800CA2903 /* PBXTargetDependency */,
+				E25573E4155824C800CA2903 /* PBXTargetDependency */,
+				E25573E6155824C800CA2903 /* PBXTargetDependency */,
+				E25573E8155824C800CA2903 /* PBXTargetDependency */,
+				E25573EA155824C800CA2903 /* PBXTargetDependency */,
+				E25573EC155824C800CA2903 /* PBXTargetDependency */,
+				E25573EE155824C800CA2903 /* PBXTargetDependency */,
+				E25573F0155824C800CA2903 /* PBXTargetDependency */,
+				E25573F2155824C800CA2903 /* PBXTargetDependency */,
+				E25573F4155824C800CA2903 /* PBXTargetDependency */,
+				E25573F6155824C800CA2903 /* PBXTargetDependency */,
+				E25573F8155824C800CA2903 /* PBXTargetDependency */,
+				E25573FA155824C800CA2903 /* PBXTargetDependency */,
+				E25573FC155824C800CA2903 /* PBXTargetDependency */,
+				E25573FE155824C800CA2903 /* PBXTargetDependency */,
+			);
+			name = hookflash;
+			productName = hookflash;
+			productReference = E232B28D154D852A00A2BAA7 /* hookflash.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E285460A154CB38200902B40 /* video_engine_core_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2854618154CB38200902B40 /* Build configuration list for PBXNativeTarget "video_engine_core_ios" */;
+			buildPhases = (
+				E2854607154CB38200902B40 /* Sources */,
+				E2854608154CB38200902B40 /* Frameworks */,
+				E2854609154CB38200902B40 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = video_engine_core_ios;
+			productName = video_engine_ios;
+			productReference = E285460B154CB38200902B40 /* libvideo_engine_core_ios.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E2854602154CB38200902B40 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = E2854605154CB38200902B40 /* Build configuration list for PBXProject "video_engine_ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E2854600154CB38200902B40;
+			productRefGroup = E285460C154CB38200902B40 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E2557323155810DF00CA2903 /* Products */;
+					ProjectRef = E2557322155810DF00CA2903 /* common_audio_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E255731A155810D400CA2903 /* Products */;
+					ProjectRef = E2557319155810D400CA2903 /* common_video_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E25573A51558246D00CA2903 /* Products */;
+					ProjectRef = E25573A41558246D00CA2903 /* gtest_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E255747C15587F2600CA2903 /* Products */;
+					ProjectRef = E255747B15587F2600CA2903 /* libjpeg_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E289343E15AA320D00A0DF9D /* Products */;
+					ProjectRef = E289343D15AA320D00A0DF9D /* libogg_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E255730E155810AC00CA2903 /* Products */;
+					ProjectRef = E255730D155810AC00CA2903 /* libvpx_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E25573081558109B00CA2903 /* Products */;
+					ProjectRef = E25573071558109B00CA2903 /* libyuv_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E25572A71558107D00CA2903 /* Products */;
+					ProjectRef = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E25572A11558106900CA2903 /* Products */;
+					ProjectRef = E25572A01558106900CA2903 /* system_wrappers_ios.xcodeproj */;
+				},
+				{
+					ProductGroup = E255726C1558104F00CA2903 /* Products */;
+					ProjectRef = E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				E285460A154CB38200902B40 /* video_engine_core_ios */,
+				E232B28C154D852A00A2BAA7 /* hookflash */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E25572991558105200CA2903 /* libvoice_engine_core_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvoice_engine_core_ios.a;
+			remoteRef = E25572981558105200CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255729B1558105200CA2903 /* hookflash.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = hookflash.app;
+			remoteRef = E255729A1558105200CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572A51558106A00CA2903 /* libsystem_wrappers_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsystem_wrappers_ios.a;
+			remoteRef = E25572A41558106A00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572CA1558107E00CA2903 /* libCNG_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCNG_ios.a;
+			remoteRef = E25572C91558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572CC1558107E00CA2903 /* libG711_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libG711_ios.a;
+			remoteRef = E25572CB1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572CE1558107E00CA2903 /* libG722_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libG722_ios.a;
+			remoteRef = E25572CD1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572D01558107E00CA2903 /* libiSAC_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiSAC_ios.a;
+			remoteRef = E25572CF1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572D21558107E00CA2903 /* libiSACFix_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiSACFix_ios.a;
+			remoteRef = E25572D11558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572D41558107E00CA2903 /* libiLBC_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiLBC_ios.a;
+			remoteRef = E25572D31558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572D61558107E00CA2903 /* libPCM16B_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPCM16B_ios.a;
+			remoteRef = E25572D51558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572D81558107E00CA2903 /* libaudio_coding_module_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaudio_coding_module_ios.a;
+			remoteRef = E25572D71558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572DA1558107E00CA2903 /* libNetEq_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libNetEq_ios.a;
+			remoteRef = E25572D91558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572DC1558107E00CA2903 /* libaudio_conference_mixer_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaudio_conference_mixer_ios.a;
+			remoteRef = E25572DB1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572DE1558107E00CA2903 /* libaudio_device_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaudio_device_ios.a;
+			remoteRef = E25572DD1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572E01558107E00CA2903 /* libaudio_processing_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaudio_processing_ios.a;
+			remoteRef = E25572DF1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572E21558107E00CA2903 /* libaec_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaec_ios.a;
+			remoteRef = E25572E11558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572E41558107E00CA2903 /* libaecm_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libaecm_ios.a;
+			remoteRef = E25572E31558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572E61558107E00CA2903 /* libagc_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libagc_ios.a;
+			remoteRef = E25572E51558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572E81558107E00CA2903 /* libns_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libns_ios.a;
+			remoteRef = E25572E71558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572EA1558107E00CA2903 /* libns_fix_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libns_fix_ios.a;
+			remoteRef = E25572E91558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572EC1558107E00CA2903 /* libapm_util_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libapm_util_ios.a;
+			remoteRef = E25572EB1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572EE1558107E00CA2903 /* libbitrate_controller_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libbitrate_controller_ios.a;
+			remoteRef = E25572ED1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572F01558107E00CA2903 /* libmedia_file_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libmedia_file_ios.a;
+			remoteRef = E25572EF1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572F21558107E00CA2903 /* librtp_rtcp_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = librtp_rtcp_ios.a;
+			remoteRef = E25572F11558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572F41558107E00CA2903 /* libudp_transport_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libudp_transport_ios.a;
+			remoteRef = E25572F31558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572F61558107E00CA2903 /* libwebrtc_utility_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_utility_ios.a;
+			remoteRef = E25572F51558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572F81558107E00CA2903 /* libvideo_capture_module_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvideo_capture_module_ios.a;
+			remoteRef = E25572F71558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572FA1558107E00CA2903 /* libwebrtc_i420_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_i420_ios.a;
+			remoteRef = E25572F91558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572FC1558107E00CA2903 /* libwebrtc_vp8_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_vp8_ios.a;
+			remoteRef = E25572FB1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25572FE1558107E00CA2903 /* libwebrtc_video_coding_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_video_coding_ios.a;
+			remoteRef = E25572FD1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25573001558107E00CA2903 /* libvideo_processing_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvideo_processing_ios.a;
+			remoteRef = E25572FF1558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25573021558107E00CA2903 /* libvideo_render_module_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvideo_render_module_ios.a;
+			remoteRef = E25573011558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25573041558107E00CA2903 /* hookflash_voice.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = hookflash_voice.app;
+			remoteRef = E25573031558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25573061558107E00CA2903 /* hookflash_video.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = hookflash_video.app;
+			remoteRef = E25573051558107E00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255730C1558109C00CA2903 /* libyuv_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libyuv_ios.a;
+			remoteRef = E255730B1558109C00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2557312155810AC00CA2903 /* libvpx_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvpx_ios.a;
+			remoteRef = E2557311155810AC00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255731F155810D500CA2903 /* libwebrtc_jpeg_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_jpeg_ios.a;
+			remoteRef = E255731E155810D500CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2557321155810D500CA2903 /* libwebrtc_libyuv_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_libyuv_ios.a;
+			remoteRef = E2557320155810D500CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2557329155810DF00CA2903 /* libresampler_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libresampler_ios.a;
+			remoteRef = E2557328155810DF00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255732B155810DF00CA2903 /* libsignal_processing_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsignal_processing_ios.a;
+			remoteRef = E255732A155810DF00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255732D155810DF00CA2903 /* libvad_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvad_ios.a;
+			remoteRef = E255732C155810DF00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E25573AC1558246D00CA2903 /* libgtest_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest_ios.a;
+			remoteRef = E25573AB1558246D00CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E255748315587F2700CA2903 /* libjpeg_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjpeg_ios.a;
+			remoteRef = E255748215587F2700CA2903 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E289343A15AA2BA000A0DF9D /* libvorbis_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvorbis_ios.a;
+			remoteRef = E289343915AA2BA000A0DF9D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E289344215AA320E00A0DF9D /* liblibogg_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblibogg_ios.a;
+			remoteRef = E289344115AA320E00A0DF9D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E232B28B154D852A00A2BAA7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2F64A3B1560689E00D95EC7 /* MainWindow.xib in Resources */,
+				E2F64A3C156068A800D95EC7 /* hookflashViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E232B289154D852A00A2BAA7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E232B2A3154D85DB00A2BAA7 /* hookflashAppDelegate.mm in Sources */,
+				E232B2A4154D85DB00A2BAA7 /* hookflashViewController.mm in Sources */,
+				E232B2A5154D85DB00A2BAA7 /* main.m in Sources */,
+				E255711415580E2000CA2903 /* vie_autotest_codec.cc in Sources */,
+				E255711515580E2000CA2903 /* vie_autotest_iphone.cc in Sources */,
+				E255711615580E2000CA2903 /* vie_autotest.cc in Sources */,
+				E25573361558146800CA2903 /* tb_capture_device.cc in Sources */,
+				E25573371558146800CA2903 /* tb_interfaces.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E2854607154CB38200902B40 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E28547A6154CB41800902B40 /* vie_base_impl.cc in Sources */,
+				E28547A8154CB41800902B40 /* vie_capture_impl.cc in Sources */,
+				E28547AA154CB41800902B40 /* vie_capturer.cc in Sources */,
+				E28547AC154CB41800902B40 /* vie_channel_group.cc in Sources */,
+				E28547AE154CB41800902B40 /* vie_channel_manager.cc in Sources */,
+				E28547B0154CB41800902B40 /* vie_channel.cc in Sources */,
+				E28547B2154CB41800902B40 /* vie_codec_impl.cc in Sources */,
+				E28547B5154CB41800902B40 /* vie_encoder.cc in Sources */,
+				E28547B7154CB41800902B40 /* vie_encryption_impl.cc in Sources */,
+				E28547B9154CB41800902B40 /* vie_external_codec_impl.cc in Sources */,
+				E28547BB154CB41800902B40 /* vie_file_image.cc in Sources */,
+				E28547BD154CB41800902B40 /* vie_file_impl.cc in Sources */,
+				E28547BF154CB41800902B40 /* vie_file_player.cc in Sources */,
+				E28547C1154CB41800902B40 /* vie_file_recorder.cc in Sources */,
+				E28547C3154CB41800902B40 /* vie_frame_provider_base.cc in Sources */,
+				E28547C5154CB41800902B40 /* vie_image_process_impl.cc in Sources */,
+				E28547C7154CB41800902B40 /* vie_impl.cc in Sources */,
+				E28547C9154CB41800902B40 /* vie_input_manager.cc in Sources */,
+				E28547CB154CB41800902B40 /* vie_manager_base.cc in Sources */,
+				E28547CD154CB41800902B40 /* vie_network_impl.cc in Sources */,
+				E28547CF154CB41900902B40 /* vie_performance_monitor.cc in Sources */,
+				E28547D1154CB41900902B40 /* vie_receiver.cc in Sources */,
+				E28547D3154CB41900902B40 /* vie_ref_count.cc in Sources */,
+				E28547D6154CB41900902B40 /* vie_remb.cc in Sources */,
+				E28547D8154CB41900902B40 /* vie_render_impl.cc in Sources */,
+				E28547DA154CB41900902B40 /* vie_render_manager.cc in Sources */,
+				E28547DC154CB41900902B40 /* vie_renderer.cc in Sources */,
+				E28547DE154CB41900902B40 /* vie_rtp_rtcp_impl.cc in Sources */,
+				E28547E0154CB41900902B40 /* vie_sender.cc in Sources */,
+				E28547E2154CB41900902B40 /* vie_shared_data.cc in Sources */,
+				E28547E4154CB41900902B40 /* vie_sync_module.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E25573AE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E285460A154CB38200902B40 /* video_engine_core_ios */;
+			targetProxy = E25573AD155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573B2155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = E25573B1155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573B4155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = E25573B3155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573B6155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = E25573B5155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573B8155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = E25573B7155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573BA155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSACFix;
+			targetProxy = E25573B9155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573BC155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = E25573BB155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573BE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = E25573BD155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573C0155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = audio_coding_module;
+			targetProxy = E25573BF155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573C2155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = NetEq;
+			targetProxy = E25573C1155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573C4155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = audio_conference_mixer;
+			targetProxy = E25573C3155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573C6155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = audio_device;
+			targetProxy = E25573C5155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573C8155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = audio_processing;
+			targetProxy = E25573C7155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573CA155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = aec;
+			targetProxy = E25573C9155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573CC155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = aecm;
+			targetProxy = E25573CB155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573CE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = agc;
+			targetProxy = E25573CD155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573D0155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ns;
+			targetProxy = E25573CF155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573D2155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ns_fix;
+			targetProxy = E25573D1155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573D4155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = apm_util;
+			targetProxy = E25573D3155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573D6155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = bitrate_controller;
+			targetProxy = E25573D5155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573D8155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = media_file;
+			targetProxy = E25573D7155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573DA155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = rtp_rtcp;
+			targetProxy = E25573D9155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573DC155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = udp_transport;
+			targetProxy = E25573DB155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573DE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_utility;
+			targetProxy = E25573DD155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573E0155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = video_capture_module;
+			targetProxy = E25573DF155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573E2155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_i420;
+			targetProxy = E25573E1155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573E4155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_vp8;
+			targetProxy = E25573E3155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573E6155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_video_coding;
+			targetProxy = E25573E5155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573E8155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = video_processing;
+			targetProxy = E25573E7155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573EA155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = video_render_module;
+			targetProxy = E25573E9155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573EC155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libyuv;
+			targetProxy = E25573EB155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573EE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = resampler;
+			targetProxy = E25573ED155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573F0155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = signal_processing;
+			targetProxy = E25573EF155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573F2155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = vad;
+			targetProxy = E25573F1155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573F4155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_jpeg;
+			targetProxy = E25573F3155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573F6155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_libyuv;
+			targetProxy = E25573F5155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573F8155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gtest;
+			targetProxy = E25573F7155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573FA155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libvpx;
+			targetProxy = E25573F9155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573FC155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = system_wrappers;
+			targetProxy = E25573FB155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E25573FE155824C800CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = voice_engine_core;
+			targetProxy = E25573FD155824C800CA2903 /* PBXContainerItemProxy */;
+		};
+		E255748515587F3600CA2903 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libjpeg;
+			targetProxy = E255748415587F3600CA2903 /* PBXContainerItemProxy */;
+		};
+		E289344615AA325A00A0DF9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = vorbis_ios;
+			targetProxy = E289344515AA325A00A0DF9D /* PBXContainerItemProxy */;
+		};
+		E289344815AA325A00A0DF9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libogg_ios;
+			targetProxy = E289344715AA325A00A0DF9D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		E232B280154D84F000A2BAA7 /* hookflashViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E232B281154D84F000A2BAA7 /* en */,
+			);
+			name = hookflashViewController.xib;
+			sourceTree = "<group>";
+		};
+		E232B282154D84F000A2BAA7 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E232B283154D84F000A2BAA7 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		E232B287154D851200A2BAA7 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E232B288154D851200A2BAA7 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		E232B2A1154D852A00A2BAA7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "hookflash/hookflash-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					..,
+					main/interface,
+					../voice_engine/main/interface,
+					../modules/video_render/main/interface,
+					../modules/interface,
+					test/libvietest/include,
+					../modules/video_render/main/source/iPhone,
+					../system_wrappers/interface,
+					../../testing/gtest/include,
+				);
+				INFOPLIST_FILE = "hookflash/hookflash-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					"objective-c++",
+					"-v",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		E232B2A2154D852A00A2BAA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "hookflash/hookflash-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				HEADER_SEARCH_PATHS = (
+					..,
+					main/interface,
+					../voice_engine/main/interface,
+					../modules/video_render/main/interface,
+					../modules/interface,
+					test/libvietest/include,
+					../modules/video_render/main/source/iPhone,
+					../system_wrappers/interface,
+					../../testing/gtest/include,
+				);
+				INFOPLIST_FILE = "hookflash/hookflash-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"-x",
+					"objective-c++",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		E2854616154CB38200902B40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E2854617154CB38200902B40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E2854619154CB38200902B40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DSTROOT = /tmp/video_engine_ios.dst;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../..,
+					include,
+					../common_video/interface,
+					../modules/video_capture/main/interface,
+					../modules/video_render/main/interface,
+					../common_video/jpeg/include,
+					../../src/common_video/interface,
+					../modules/media_file/interface,
+					../modules/interface,
+					../modules/rtp_rtcp/interface,
+					../modules/udp_transport/interface,
+					../modules/utility/interface,
+					../modules/audio_coding/main/interface,
+					../../src/modules/rtp_rtcp/interface,
+					../../src/common_video/libyuv/include,
+					../modules/video_coding/main/interface,
+					../modules/video_coding/codecs/interface,
+					../modules/video_processing/main/interface,
+					../modules/video_render/main/source/mac,
+					../voice_engine/main/interface,
+					../system_wrappers/interface,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Debug;
+		};
+		E285461A154CB38200902B40 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DSTROOT = /tmp/video_engine_ios.dst;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../..,
+					include,
+					../common_video/interface,
+					../modules/video_capture/main/interface,
+					../modules/video_render/main/interface,
+					../common_video/jpeg/include,
+					../../src/common_video/interface,
+					../modules/media_file/interface,
+					../modules/interface,
+					../modules/rtp_rtcp/interface,
+					../modules/udp_transport/interface,
+					../modules/utility/interface,
+					../modules/audio_coding/main/interface,
+					../../src/modules/rtp_rtcp/interface,
+					../../src/common_video/libyuv/include,
+					../modules/video_coding/main/interface,
+					../modules/video_coding/codecs/interface,
+					../modules/video_processing/main/interface,
+					../modules/video_render/main/source/mac,
+					../voice_engine/main/interface,
+					../system_wrappers/interface,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E232B2A0154D852A00A2BAA7 /* Build configuration list for PBXNativeTarget "hookflash" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E232B2A1154D852A00A2BAA7 /* Debug */,
+				E232B2A2154D852A00A2BAA7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2854605154CB38200902B40 /* Build configuration list for PBXProject "video_engine_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2854616154CB38200902B40 /* Debug */,
+				E2854617154CB38200902B40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E2854618154CB38200902B40 /* Build configuration list for PBXNativeTarget "video_engine_core_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E2854619154CB38200902B40 /* Debug */,
+				E285461A154CB38200902B40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E2854602154CB38200902B40 /* Project object */;
+}

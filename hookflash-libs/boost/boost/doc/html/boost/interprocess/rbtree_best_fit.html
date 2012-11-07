@@ -1,0 +1,322 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template rbtree_best_fit</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../boost_interprocess_reference.html#header.boost.interprocess.mem_algo.rbtree_best_fit_hpp" title="Header &lt;boost/interprocess/mem_algo/rbtree_best_fit.hpp&gt;">
+<link rel="prev" href="null_mapped_region_func_id832822.html" title="Struct null_mapped_region_function">
+<link rel="next" href="rbtree_best_fit/block_ctrl.html" title="Struct block_ctrl">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="null_mapped_region_func_id832822.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.mem_algo.rbtree_best_fit_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rbtree_best_fit/block_ctrl.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.interprocess.rbtree_best_fit"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template rbtree_best_fit</span></h2>
+<p>boost::interprocess::rbtree_best_fit</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_interprocess_reference.html#header.boost.interprocess.mem_algo.rbtree_best_fit_hpp" title="Header &lt;boost/interprocess/mem_algo/rbtree_best_fit.hpp&gt;">boost/interprocess/mem_algo/rbtree_best_fit.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> MutexFamily<span class="special">,</span> <span class="keyword">typename</span> VoidPointer<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> MemAlignment<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="rbtree_best_fit.html" title="Class template rbtree_best_fit">rbtree_best_fit</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// <a class="link" href="rbtree_best_fit.html#boost.interprocess.rbtree_best_fittypes">types</a></span>
+  <span class="keyword">typedef</span> <span class="identifier">MutexFamily</span> <a class="link" href="rbtree_best_fit.html#boost.interprocess.rbtree_best_fit.mutex_family"><span class="identifier">mutex_family</span></a><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">VoidPointer</span> <a name="boost.interprocess.rbtree_best_fit.void_pointer"></a><span class="identifier">void_pointer</span><span class="special">;</span>           <span class="comment">// Pointer type to be used with the rest of the Interprocess framework. </span>
+  <span class="keyword">typedef</span> <span class="emphasis"><em><span class="identifier">unspecified</span></em></span> <a name="boost.interprocess.rbtree_best_fit.multiallocation_chain"></a><span class="identifier">multiallocation_chain</span><span class="special">;</span>
+
+  <span class="comment">// member classes/structs/unions</span>
+
+  <span class="comment">// Block control structure.</span>
+
+  <span class="keyword">struct</span> <a class="link" href="rbtree_best_fit/block_ctrl.html" title="Struct block_ctrl">block_ctrl</a> <span class="special">:</span> <span class="keyword">public</span> boost::interprocess::rbtree_best_fit&lt; MutexFamily, VoidPointer, MemAlignment &gt;::SizeHolder
+  <span class="special">{</span>
+    <span class="comment">// <a class="link" href="rbtree_best_fit/block_ctrl.html#boost.interprocess.rbtree_best_fit.block_ctrlconstruct-copy-destruct">construct/copy/destruct</a></span>
+    <a class="link" href="rbtree_best_fit/block_ctrl.html#id832938-bb"><span class="identifier">block_ctrl</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="rbtree_best_fit/header_t.html" title="Struct header_t">header_t</a> <span class="special">:</span> <span class="keyword">public</span> <span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">interprocess_mutex</span> <span class="special">{</span>
+    <span class="identifier">Imultiset</span> m_imultiset<span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_extra_hdr_bytes<span class="special">;</span>    <span class="comment">// The extra size required by the segment. </span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_allocated<span class="special">;</span>    <span class="comment">// Allocated bytes for internal checking. </span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_size<span class="special">;</span>    <span class="comment">// The size of the memory segment. </span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="rbtree_best_fit/size_block_ctrl_compare.html" title="Struct size_block_ctrl_compare">size_block_ctrl_compare</a> <span class="special">{</span>
+
+    <span class="comment">// <a class="link" href="rbtree_best_fit/size_block_ctrl_compare.html#id832988-bb">public member functions</a></span>
+    <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit/size_block_ctrl_compare.html#id832991-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">block_ctrl</span> <span class="special">&amp;</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+    <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit/size_block_ctrl_compare.html#id833010-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">block_ctrl</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="keyword">struct</span> <a class="link" href="rbtree_best_fit/SizeHolder.html" title="Struct SizeHolder">SizeHolder</a> <span class="special">{</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_prev_size<span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_size<span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_prev_allocated<span class="special">;</span>
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> m_allocated<span class="special">;</span>
+  <span class="special">}</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="rbtree_best_fit.html#boost.interprocess.rbtree_best_fitconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="rbtree_best_fit.html#id833145-bb"><span class="identifier">rbtree_best_fit</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="rbtree_best_fit.html#id833148-bb"><span class="identifier">rbtree_best_fit</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="rbtree_best_fit.html" title="Class template rbtree_best_fit">rbtree_best_fit</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="rbtree_best_fit.html#id833873-bb"><span class="identifier">rbtree_best_fit</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  rbtree_best_fit&amp; <a class="link" href="rbtree_best_fit.html#id833159-bb"><span class="keyword">operator</span><span class="special">=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="rbtree_best_fit.html" title="Class template rbtree_best_fit">rbtree_best_fit</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="rbtree_best_fit.html#id833892-bb"><span class="special">~</span><span class="identifier">rbtree_best_fit</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="rbtree_best_fit.html#id833103-bb">private member functions</a></span>
+   <a class="link" href="rbtree_best_fit.html#id833106-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="identifier">Alignment</span> <span class="special">&gt;=</span><span class="number">4</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+   <a class="link" href="rbtree_best_fit.html#id833118-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span>
+   <a class="link" href="rbtree_best_fit.html#id833132-bb"><span class="identifier">BOOST_STATIC_ASSERT</span></a><span class="special">(</span><span class="special">(</span><span class="number">0</span><span class="special">==</span><span class="special">(</span><span class="identifier">Alignment</span> <span class="special">&amp;</span><span class="special">(</span><span class="identifier">Alignment</span><span class="special">-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">(</span><span class="number">1u</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="rbtree_best_fit.html#id833169-bb">public member functions</a></span>
+  <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833173-bb"><span class="identifier">allocate</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">multiallocation_chain</span> <a class="link" href="rbtree_best_fit.html#id833189-bb"><span class="identifier">allocate_many</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">multiallocation_chain</span> 
+  <a class="link" href="rbtree_best_fit.html#id833215-bb"><span class="identifier">allocate_many</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833243-bb"><span class="identifier">deallocate_many</span></a><span class="special">(</span><span class="identifier">multiallocation_chain</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833259-bb"><span class="identifier">deallocate</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833277-bb"><span class="identifier">get_size</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833287-bb"><span class="identifier">get_free_memory</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833298-bb"><span class="identifier">zero_free_memory</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833311-bb"><span class="identifier">grow</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833329-bb"><span class="identifier">shrink_to_fit</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit.html#id833340-bb"><span class="identifier">all_memory_deallocated</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit.html#id833351-bb"><span class="identifier">check_sanity</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+    <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+    <a class="link" href="rbtree_best_fit.html#id833363-bb"><span class="identifier">allocation_command</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">T</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a class="link" href="rbtree_best_fit.html#id833409-bb"><span class="identifier">raw_allocation_command</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                         <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> 
+                         <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833456-bb"><span class="identifier">size</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833473-bb"><span class="identifier">allocate_aligned</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a class="link" href="rbtree_best_fit.html#id833497-bb"><span class="identifier">priv_allocation_command</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                          <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a class="link" href="rbtree_best_fit.html#id833540-bb"><span class="identifier">priv_allocate</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit.html#id833590-bb"><span class="identifier">priv_expand</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> 
+                   <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833624-bb"><span class="identifier">priv_expand_both_sides</span></a><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span><span class="special">,</span> 
+                                <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">,</span> 
+                                <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">block_ctrl</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833675-bb"><span class="identifier">priv_prev_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit.html#id833692-bb"><span class="identifier">priv_is_prev_allocated</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">block_ctrl</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833708-bb"><span class="identifier">priv_end_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">block_ctrl</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833725-bb"><span class="identifier">priv_next_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">bool</span> <a class="link" href="rbtree_best_fit.html#id833742-bb"><span class="identifier">priv_is_allocated_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833758-bb"><span class="identifier">priv_mark_as_allocated_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833775-bb"><span class="identifier">priv_mark_as_free_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833791-bb"><span class="identifier">priv_check_and_allocate</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">,</span> <span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833821-bb"><span class="identifier">priv_deallocate</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833837-bb"><span class="identifier">priv_add_segment</span></a><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="rbtree_best_fit.html#id833859-bb"><span class="identifier">priv_mark_new_allocated_block</span></a><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="rbtree_best_fit.html#id833895-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833899-bb"><span class="identifier">get_min_size</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833916-bb"><span class="identifier">priv_first_block_offset</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">block_ctrl</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833941-bb"><span class="identifier">priv_get_block</span></a><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">void</span> <span class="special">*</span> <a class="link" href="rbtree_best_fit.html#id833958-bb"><span class="identifier">priv_get_user_buffer</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">block_ctrl</span> <span class="special">*</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a class="link" href="rbtree_best_fit.html#id833975-bb"><span class="identifier">priv_get_total_units</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> Alignment<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> PayloadPerAllocation<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id1508721"></a><h2>Description</h2>
+<p>This class implements an algorithm that stores the free nodes in a red-black tree to have logarithmic search/insert times. </p>
+<div class="refsect2">
+<a name="id1508729"></a><h3>
+<a name="boost.interprocess.rbtree_best_fittypes"></a><code class="computeroutput">rbtree_best_fit</code> 
+        public
+       types</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<p>
+<span class="keyword">typedef</span> <span class="identifier">MutexFamily</span> <a name="boost.interprocess.rbtree_best_fit.mutex_family"></a><span class="identifier">mutex_family</span><span class="special">;</span></p>
+<p>Shared interprocess_mutex family used for the rest of the Interprocess framework </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="id1508781"></a><h3>
+<a name="boost.interprocess.rbtree_best_fitconstruct-copy-destruct"></a><code class="computeroutput">rbtree_best_fit</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="id833145-bb"></a><span class="identifier">rbtree_best_fit</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>@ //Non-copyable </li>
+<li class="listitem"><pre class="literallayout"><a name="id833148-bb"></a><span class="identifier">rbtree_best_fit</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="rbtree_best_fit.html" title="Class template rbtree_best_fit">rbtree_best_fit</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><a name="id833873-bb"></a><span class="identifier">rbtree_best_fit</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> size<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> extra_hdr_bytes<span class="special">)</span><span class="special">;</span></pre>
+<p>Constructor. "size" is the total size of the managed memory segment, "extra_hdr_bytes" indicates the extra bytes beginning in the sizeof(rbtree_best_fit) offset that the allocator should not use at all. </p>
+</li>
+<li class="listitem"><pre class="literallayout">rbtree_best_fit&amp; <a name="id833159-bb"></a><span class="keyword">operator</span><span class="special">=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="rbtree_best_fit.html" title="Class template rbtree_best_fit">rbtree_best_fit</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><a name="id833892-bb"></a><span class="special">~</span><span class="identifier">rbtree_best_fit</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Destructor. </li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id1509036"></a><h3>
+<a name="id833103-bb"></a><code class="computeroutput">rbtree_best_fit</code> private member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"> <a name="id833106-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="identifier">Alignment</span> <span class="special">&gt;=</span><span class="number">4</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"> <a name="id833118-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="emphasis"><em><span class="identifier">unspecified</span></em></span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"> <a name="id833132-bb"></a><span class="identifier">BOOST_STATIC_ASSERT</span><span class="special">(</span><span class="special">(</span><span class="number">0</span><span class="special">==</span><span class="special">(</span><span class="identifier">Alignment</span> <span class="special">&amp;</span><span class="special">(</span><span class="identifier">Alignment</span><span class="special">-</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span><span class="special">(</span><span class="number">1u</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id1509254"></a><h3>
+<a name="id833169-bb"></a><code class="computeroutput">rbtree_best_fit</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <span class="special">*</span> <a name="id833173-bb"></a><span class="identifier">allocate</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> nbytes<span class="special">)</span><span class="special">;</span></pre>Allocates bytes, returns 0 if there is not more memory. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">multiallocation_chain</span> 
+<a name="id833189-bb"></a><span class="identifier">allocate_many</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> elem_bytes<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> num_elements<span class="special">)</span><span class="special">;</span></pre>@ <p>Multiple element allocation, same size </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">multiallocation_chain</span> 
+<a name="id833215-bb"></a><span class="identifier">allocate_many</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">*</span> elem_sizes<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> n_elements<span class="special">,</span> 
+              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> sizeof_element<span class="special">)</span><span class="special">;</span></pre>Multiple element allocation, different size. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833243-bb"></a><span class="identifier">deallocate_many</span><span class="special">(</span><span class="identifier">multiallocation_chain</span> chain<span class="special">)</span><span class="special">;</span></pre>Multiple element allocation, different size. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833259-bb"></a><span class="identifier">deallocate</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> addr<span class="special">)</span><span class="special">;</span></pre>
+<p>Deallocates previously allocated bytes </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id833277-bb"></a><span class="identifier">get_size</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the size of the memory segment. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id833287-bb"></a><span class="identifier">get_free_memory</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the number of free bytes of the segment. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833298-bb"></a><span class="identifier">zero_free_memory</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Initializes to zero all the memory that's not in use. This function is normally used for security reasons. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833311-bb"></a><span class="identifier">grow</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> extra_size<span class="special">)</span><span class="special">;</span></pre>
+<p>Increases managed memory in extra_size bytes more </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833329-bb"></a><span class="identifier">shrink_to_fit</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Decreases managed memory as much as possible. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id833340-bb"></a><span class="identifier">all_memory_deallocated</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>Returns true if all allocated memory has been deallocated. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id833351-bb"></a><span class="identifier">check_sanity</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Makes an internal sanity check and returns true if success </p>
+</li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> T<span class="special">&gt;</span> 
+  <span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="identifier">T</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+  <a name="id833363-bb"></a><span class="identifier">allocation_command</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span> command<span class="special">,</span> 
+                     <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> limit_size<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_size<span class="special">,</span> 
+                     <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">,</span> <span class="identifier">T</span> <span class="special">*</span> reuse_ptr <span class="special">=</span> <span class="number">0</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+<a name="id833409-bb"></a><span class="identifier">raw_allocation_command</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span> command<span class="special">,</span> 
+                       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> limit_object<span class="special">,</span> 
+                       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_object<span class="special">,</span> 
+                       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_object<span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> reuse_ptr <span class="special">=</span> <span class="number">0</span><span class="special">,</span> 
+                       <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> sizeof_object <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id833456-bb"></a><span class="identifier">size</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> ptr<span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>Returns the size of the buffer previously allocated pointed by ptr. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <span class="special">*</span> <a name="id833473-bb"></a><span class="identifier">allocate_aligned</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> nbytes<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> alignment<span class="special">)</span><span class="special">;</span></pre>
+<p>Allocates aligned bytes, returns 0 if there is not more memory. Alignment must be power of 2 </p>
+</li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+<a name="id833497-bb"></a><span class="identifier">priv_allocation_command</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span> command<span class="special">,</span> 
+                        <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> limit_size<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_size<span class="special">,</span> 
+                        <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> reuse_ptr<span class="special">,</span> 
+                        <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> sizeof_object<span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">std</span><span class="special">::</span><span class="identifier">pair</span><span class="special">&lt;</span> <span class="keyword">void</span> <span class="special">*</span><span class="special">,</span> <span class="keyword">bool</span> <span class="special">&gt;</span> 
+<a name="id833540-bb"></a><span class="identifier">priv_allocate</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span> command<span class="special">,</span> 
+              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> limit_size<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_size<span class="special">,</span> 
+              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> reuse_ptr <span class="special">=</span> <span class="number">0</span><span class="special">,</span> 
+              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> backwards_multiple <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span></pre>Real allocation algorithm with min allocation option. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id833590-bb"></a><span class="identifier">priv_expand</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> ptr<span class="special">,</span> <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> min_size<span class="special">,</span> 
+                 <span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_size<span class="special">,</span> 
+                 <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">)</span><span class="special">;</span></pre>Real expand function implementation. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <span class="special">*</span> <a name="id833624-bb"></a><span class="identifier">priv_expand_both_sides</span><span class="special">(</span><span class="identifier">boost</span><span class="special">::</span><span class="identifier">interprocess</span><span class="special">::</span><span class="identifier">allocation_type</span> command<span class="special">,</span> 
+                              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> min_size<span class="special">,</span> 
+                              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> preferred_size<span class="special">,</span> 
+                              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">,</span> <span class="keyword">void</span> <span class="special">*</span> reuse_ptr<span class="special">,</span> 
+                              <span class="keyword">bool</span> only_preferred_backwards<span class="special">,</span> 
+                              <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> backwards_multiple<span class="special">)</span><span class="special">;</span></pre>Real expand to both sides implementation. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">block_ctrl</span> <span class="special">*</span> <a name="id833675-bb"></a><span class="identifier">priv_prev_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Get poitner of the previous block (previous block must be free) </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id833692-bb"></a><span class="identifier">priv_is_prev_allocated</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Returns true if the previous block is allocated. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">block_ctrl</span> <span class="special">*</span> <a name="id833708-bb"></a><span class="identifier">priv_end_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> first_segment_block<span class="special">)</span><span class="special">;</span></pre>Get a pointer of the "end" block from the first block of the segment. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">block_ctrl</span> <span class="special">*</span> <a name="id833725-bb"></a><span class="identifier">priv_next_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Get the size in the tail of the previous block. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">bool</span> <a name="id833742-bb"></a><span class="identifier">priv_is_allocated_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Check if this block is free (not allocated) </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833758-bb"></a><span class="identifier">priv_mark_as_allocated_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Marks the block as allocated. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833775-bb"></a><span class="identifier">priv_mark_as_free_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Marks the block as allocated. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <span class="special">*</span> <a name="id833791-bb"></a><span class="identifier">priv_check_and_allocate</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> units<span class="special">,</span> <span class="identifier">block_ctrl</span> <span class="special">*</span> block<span class="special">,</span> 
+                               <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <span class="special">&amp;</span> received_size<span class="special">)</span><span class="special">;</span></pre>
+<p>Checks if block has enough memory and splits/unlinks the block returning the address to the users </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833821-bb"></a><span class="identifier">priv_deallocate</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> addr<span class="special">)</span><span class="special">;</span></pre>Real deallocation algorithm. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id833837-bb"></a><span class="identifier">priv_add_segment</span><span class="special">(</span><span class="keyword">void</span> <span class="special">*</span> addr<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> size<span class="special">)</span><span class="special">;</span></pre>Makes a new memory portion available for allocation. </li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id833859-bb"></a><span class="identifier">priv_mark_new_allocated_block</span><span class="special">(</span><span class="identifier">block_ctrl</span> <span class="special">*</span> block<span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id1511815"></a><h3>
+<a name="id833895-bb"></a><code class="computeroutput">rbtree_best_fit</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id833899-bb"></a><span class="identifier">get_min_size</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> extra_hdr_bytes<span class="special">)</span><span class="special">;</span></pre>Obtains the minimum size needed by the algorithm. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> 
+<a name="id833916-bb"></a><span class="identifier">priv_first_block_offset</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> this_ptr<span class="special">,</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> extra_hdr_bytes<span class="special">)</span><span class="special">;</span></pre>@ private: <p>@ </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">block_ctrl</span> <span class="special">*</span> <a name="id833941-bb"></a><span class="identifier">priv_get_block</span><span class="special">(</span><span class="keyword">const</span> <span class="keyword">void</span> <span class="special">*</span> ptr<span class="special">)</span><span class="special">;</span></pre>Obtains the block control structure of the user buffer. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <span class="keyword">void</span> <span class="special">*</span> <a name="id833958-bb"></a><span class="identifier">priv_get_user_buffer</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">block_ctrl</span> <span class="special">*</span> block<span class="special">)</span><span class="special">;</span></pre>Obtains the pointer returned to the user from the block control. </li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">static</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> <a name="id833975-bb"></a><span class="identifier">priv_get_total_units</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">size_t</span> userbytes<span class="special">)</span><span class="special">;</span></pre>
+<p>Returns the number of total units that a user buffer of "userbytes" bytes really occupies (including header) </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2005 - 2010 Ion Gaztanaga<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="null_mapped_region_func_id832822.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_interprocess_reference.html#header.boost.interprocess.mem_algo.rbtree_best_fit_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="rbtree_best_fit/block_ctrl.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

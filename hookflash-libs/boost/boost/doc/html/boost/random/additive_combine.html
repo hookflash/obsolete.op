@@ -1,0 +1,193 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template additive_combine</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../boost_random/reference.html#header.boost.random.additive_combine_hpp" title="Header &lt;boost/random/additive_combine.hpp&gt;">
+<link rel="prev" href="../taus88.html" title="Type definition taus88">
+<link rel="next" href="../ecuyer1988.html" title="Type definition ecuyer1988">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../taus88.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/reference.html#header.boost.random.additive_combine_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../ecuyer1988.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.random.additive_combine"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template additive_combine</span></h2>
+<p>boost::random::additive_combine</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_random/reference.html#header.boost.random.additive_combine_hpp" title="Header &lt;boost/random/additive_combine.hpp&gt;">boost/random/additive_combine.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> MLCG1<span class="special">,</span> <span class="keyword">typename</span> MLCG2<span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span> val<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">MLCG1</span>              <a name="boost.random.additive_combine.first_base"></a><span class="identifier">first_base</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="identifier">MLCG2</span>              <a name="boost.random.additive_combine.second_base"></a><span class="identifier">second_base</span><span class="special">;</span>
+  <span class="keyword">typedef</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span> <a name="boost.random.additive_combine.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="additive_combine.html#boost.random.additive_combineconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="additive_combine.html#id1181614-bb"><span class="identifier">additive_combine</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="additive_combine.html#id1181626-bb"><span class="identifier">additive_combine</span></a><span class="special">(</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="additive_combine.html#id1181644-bb"><span class="identifier">additive_combine</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">MLCG2</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a class="link" href="additive_combine.html#id1181676-bb"><span class="identifier">additive_combine</span></a><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">It</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="additive_combine.html#id1181443-bb">public member functions</a></span>
+  <span class="identifier">result_type</span> <a class="link" href="additive_combine.html#id1181446-bb"><span class="identifier">min</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="additive_combine.html#id1181458-bb"><span class="identifier">max</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="additive_combine.html#id1181470-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="additive_combine.html#id1181489-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="additive_combine.html#id1181517-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">,</span> <span class="keyword">typename</span> <span class="identifier">MLCG2</span><span class="special">::</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="additive_combine.html#id1181555-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">It</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="additive_combine.html#id1181602-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="additive_combine.html#id1155354-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="additive_combine.html#id1155358-bb"><span class="identifier">validation</span></a><span class="special">(</span><span class="identifier">result_type</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="additive_combine.html#id1155371-bb">friend functions</a></span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+    <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+    <a class="link" href="additive_combine.html#id1155375-bb"><span class="keyword">operator</span><span class="special">&lt;&lt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> 
+               <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+    <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+    <a class="link" href="additive_combine.html#id1155433-bb"><span class="keyword">operator</span><span class="special">&gt;&gt;</span></a><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span><span class="special">,</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">friend</span> <span class="keyword">bool</span> <a class="link" href="additive_combine.html#id1155482-bb"><span class="keyword">operator</span><span class="special">==</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">friend</span> <span class="keyword">bool</span> <a class="link" href="additive_combine.html#id1155520-bb"><span class="keyword">operator</span><span class="special">!=</span></a><span class="special">(</span><span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">,</span> <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> has_fixed_range<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> min_value<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> max_value<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2631582"></a><h2>Description</h2>
+<p>An instantiation of class template  <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a>  model a  <a class="link" href="../../boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator" title="Pseudo-Random Number Generator">pseudo-random number generator</a> . It combines two multiplicative  <a class="link" href="linear_congruential.html" title="Class template linear_congruential">linear_congruential</a> number generators, i.e. those with <code class="computeroutput">c</code> = 0. It is described in</p>
+<p> </p>
+<div class="blockquote"><blockquote class="blockquote"><p>  "Efficient and Portable Combined Random Number Generators", Pierre L'Ecuyer, Communications of the ACM, Vol. 31, No. 6, June 1988, pp. 742-749, 774  </p></blockquote></div>
+<p> </p>
+<p>The template parameters MLCG1 and MLCG2 shall denote two different  <a class="link" href="linear_congruential.html" title="Class template linear_congruential">linear_congruential</a> number generators, each with c = 0. Each invocation returns a random number X(n) := (MLCG1(n) - MLCG2(n)) mod (m1 - 1), where m1 denotes the modulus of MLCG1.</p>
+<p>The template parameter <code class="computeroutput">val</code> is the validation value checked by validation. </p>
+<div class="refsect2">
+<a name="id2631653"></a><h3>
+<a name="boost.random.additive_combineconstruct-copy-destruct"></a><code class="computeroutput">additive_combine</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="id1181614-bb"></a><span class="identifier">additive_combine</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator using the default constructors of the two base generators. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="id1181626-bb"></a><span class="identifier">additive_combine</span><span class="special">(</span><span class="identifier">result_type</span> aseed<span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator, using aseed as the constructor argument for both base generators. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><a name="id1181644-bb"></a><span class="identifier">additive_combine</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span> seed1<span class="special">,</span> 
+                 <span class="keyword">typename</span> <span class="identifier">MLCG2</span><span class="special">::</span><span class="identifier">result_type</span> seed2<span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator, using <code class="computeroutput">seed1</code> and <code class="computeroutput">seed2</code> as the constructor argument to the first and second base generators, respectively. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a name="id1181676-bb"></a><span class="identifier">additive_combine</span><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span> first<span class="special">,</span> <span class="identifier">It</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p>Contructs an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator with values from the range defined by the input iterators first and last. first will be modified to point to the element after the last one used.</p>
+<p>Throws: <code class="computeroutput">std::invalid_argument</code> if the input range is too small.</p>
+<p>Exception Safety: Basic </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2631966"></a><h3>
+<a name="id1181443-bb"></a><code class="computeroutput">additive_combine</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1181446-bb"></a><span class="identifier">min</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns: The smallest value that the generator can produce </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1181458-bb"></a><span class="identifier">max</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns: The largest value that the generator can produce </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1181470-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Seeds an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator using the default seeds of the two base generators. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1181489-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">result_type</span> aseed<span class="special">)</span><span class="special">;</span></pre>
+<p>Seeds an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator, using <code class="computeroutput">aseed</code> as the seed for both base generators. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1181517-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="keyword">typename</span> <span class="identifier">MLCG1</span><span class="special">::</span><span class="identifier">result_type</span> seed1<span class="special">,</span> 
+          <span class="keyword">typename</span> <span class="identifier">MLCG2</span><span class="special">::</span><span class="identifier">result_type</span> seed2<span class="special">)</span><span class="special">;</span></pre>
+<p>Seeds an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator, using <code class="computeroutput">seed1</code> and <code class="computeroutput">seed2</code> as the seeds to the first and second base generators, respectively. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1181555-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span> first<span class="special">,</span> <span class="identifier">It</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p>Seeds an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator with values from the range defined by the input iterators first and last. first will be modified to point to the element after the last one used.</p>
+<p>Throws: <code class="computeroutput">std::invalid_argument</code> if the input range is too small.</p>
+<p>Exception Safety: Basic </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1181602-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Returns: the next value of the generator </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2632436"></a><h3>
+<a name="id1155354-bb"></a><code class="computeroutput">additive_combine</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="keyword">bool</span> <a name="id1155358-bb"></a><span class="identifier">validation</span><span class="special">(</span><span class="identifier">result_type</span> x<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+<div class="refsect2">
+<a name="id2632500"></a><h3>
+<a name="id1155371-bb"></a><code class="computeroutput">additive_combine</code> friend functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+  <a name="id1155375-bb"></a><span class="keyword">operator</span><span class="special">&lt;&lt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_ostream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> os<span class="special">,</span> 
+             <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> r<span class="special">)</span><span class="special">;</span></pre>
+<p>Writes the state of an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator to a <code class="computeroutput">std::ostream</code>. The textual representation of an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator is the textual representation of the first base generator followed by the textual representation of the second base generator. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> CharT<span class="special">,</span> <span class="keyword">typename</span> Traits<span class="special">&gt;</span> 
+  <span class="keyword">friend</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> 
+  <a name="id1155433-bb"></a><span class="keyword">operator</span><span class="special">&gt;&gt;</span><span class="special">(</span><span class="identifier">std</span><span class="special">::</span><span class="identifier">basic_istream</span><span class="special">&lt;</span> <span class="identifier">CharT</span><span class="special">,</span> <span class="identifier">Traits</span> <span class="special">&gt;</span> <span class="special">&amp;</span> is<span class="special">,</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> r<span class="special">)</span><span class="special">;</span></pre>
+<p>Reads the state of an  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generator from a <code class="computeroutput">std::istream</code>. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">friend</span> <span class="keyword">bool</span> <a name="id1155482-bb"></a><span class="keyword">operator</span><span class="special">==</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> x<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
+<p>Returns: true iff the two  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generators will produce the same sequence of values. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">friend</span> <span class="keyword">bool</span> <a name="id1155520-bb"></a><span class="keyword">operator</span><span class="special">!=</span><span class="special">(</span><span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> x<span class="special">,</span> <span class="keyword">const</span> <a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a> <span class="special">&amp;</span> y<span class="special">)</span><span class="special">;</span></pre>
+<p>Returns: true iff the two  <code class="computeroutput"><a class="link" href="additive_combine.html" title="Class template additive_combine">additive_combine</a></code>  generators will produce different sequences of values. </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../taus88.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/reference.html#header.boost.random.additive_combine_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../ecuyer1988.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

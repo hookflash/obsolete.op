@@ -1,0 +1,292 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870A7513E356F800BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870A7413E356F800BCA399 /* Foundation.framework */; };
+		E27B22CF1441E1510030DDF2 /* echo_cancellation.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22CE1441E1510030DDF2 /* echo_cancellation.h */; };
+		E27B22D71441E1790030DDF2 /* aec_core.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22D01441E1790030DDF2 /* aec_core.c */; };
+		E27B22D81441E1790030DDF2 /* aec_core.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22D11441E1790030DDF2 /* aec_core.h */; };
+		E27B22D91441E1790030DDF2 /* aec_rdft.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22D21441E1790030DDF2 /* aec_rdft.c */; };
+		E27B22DA1441E1790030DDF2 /* aec_rdft.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22D31441E1790030DDF2 /* aec_rdft.h */; };
+		E27B22DB1441E1790030DDF2 /* echo_cancellation.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22D41441E1790030DDF2 /* echo_cancellation.c */; };
+		E27B22DC1441E1790030DDF2 /* resampler.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B22D51441E1790030DDF2 /* resampler.c */; };
+		E27B22DD1441E1790030DDF2 /* resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B22D61441E1790030DDF2 /* resampler.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870A7113E356F800BCA399 /* libaec.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libaec.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870A7413E356F800BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B22CE1441E1510030DDF2 /* echo_cancellation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = echo_cancellation.h; path = ../../../webRTC/src/modules/audio_processing/aec/main/interface/echo_cancellation.h; sourceTree = "<group>"; };
+		E27B22D01441E1790030DDF2 /* aec_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aec_core.c; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/aec_core.c; sourceTree = "<group>"; };
+		E27B22D11441E1790030DDF2 /* aec_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aec_core.h; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/aec_core.h; sourceTree = "<group>"; };
+		E27B22D21441E1790030DDF2 /* aec_rdft.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = aec_rdft.c; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/aec_rdft.c; sourceTree = "<group>"; };
+		E27B22D31441E1790030DDF2 /* aec_rdft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aec_rdft.h; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/aec_rdft.h; sourceTree = "<group>"; };
+		E27B22D41441E1790030DDF2 /* echo_cancellation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = echo_cancellation.c; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/echo_cancellation.c; sourceTree = "<group>"; };
+		E27B22D51441E1790030DDF2 /* resampler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = resampler.c; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/resampler.c; sourceTree = "<group>"; };
+		E27B22D61441E1790030DDF2 /* resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = resampler.h; path = ../../../webRTC/src/modules/audio_processing/aec/main/source/resampler.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870A6E13E356F800BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870A7513E356F800BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870A6613E356F800BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B22CC1441E1140030DDF2 /* Source */,
+				2A870A7313E356F800BCA399 /* Frameworks */,
+				2A870A7213E356F800BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870A7213E356F800BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870A7113E356F800BCA399 /* libaec.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870A7313E356F800BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870A7413E356F800BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B22CC1441E1140030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22CD1441E1420030DDF2 /* ../interface */,
+				E27B22D01441E1790030DDF2 /* aec_core.c */,
+				E27B22D11441E1790030DDF2 /* aec_core.h */,
+				E27B22D21441E1790030DDF2 /* aec_rdft.c */,
+				E27B22D31441E1790030DDF2 /* aec_rdft.h */,
+				E27B22D41441E1790030DDF2 /* echo_cancellation.c */,
+				E27B22D51441E1790030DDF2 /* resampler.c */,
+				E27B22D61441E1790030DDF2 /* resampler.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B22CD1441E1420030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B22CE1441E1510030DDF2 /* echo_cancellation.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870A6F13E356F800BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B22CF1441E1510030DDF2 /* echo_cancellation.h in Headers */,
+				E27B22D81441E1790030DDF2 /* aec_core.h in Headers */,
+				E27B22DA1441E1790030DDF2 /* aec_rdft.h in Headers */,
+				E27B22DD1441E1790030DDF2 /* resampler.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870A7013E356F800BCA399 /* aec */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870A7B13E356F800BCA399 /* Build configuration list for PBXNativeTarget "aec" */;
+			buildPhases = (
+				2A870A6D13E356F800BCA399 /* Sources */,
+				2A870A6E13E356F800BCA399 /* Frameworks */,
+				2A870A6F13E356F800BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = aec;
+			productName = aec;
+			productReference = 2A870A7113E356F800BCA399 /* libaec.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870A6813E356F800BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870A6B13E356F800BCA399 /* Build configuration list for PBXProject "aec" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870A6613E356F800BCA399;
+			productRefGroup = 2A870A7213E356F800BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870A7013E356F800BCA399 /* aec */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870A6D13E356F800BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B22D71441E1790030DDF2 /* aec_core.c in Sources */,
+				E27B22D91441E1790030DDF2 /* aec_rdft.c in Sources */,
+				E27B22DB1441E1790030DDF2 /* echo_cancellation.c in Sources */,
+				E27B22DC1441E1790030DDF2 /* resampler.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870A7913E356F800BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870A7A13E356F800BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870A7C13E356F800BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/aec.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+					../../../webRTC/src,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870A7D13E356F800BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/aec.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+					../../../webRTC/src/modules/audio_processing/utility,
+					../../../webRTC/src,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870A6B13E356F800BCA399 /* Build configuration list for PBXProject "aec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870A7913E356F800BCA399 /* Debug */,
+				2A870A7A13E356F800BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870A7B13E356F800BCA399 /* Build configuration list for PBXNativeTarget "aec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870A7C13E356F800BCA399 /* Debug */,
+				2A870A7D13E356F800BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870A6813E356F800BCA399 /* Project object */;
+}

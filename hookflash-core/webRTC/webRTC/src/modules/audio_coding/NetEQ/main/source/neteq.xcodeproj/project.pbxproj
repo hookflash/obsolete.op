@@ -1,0 +1,3327 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		B69E3F62AC57C974A76FCA55 /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 6EC8088723290DD8D7AFE8D4 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				7D651C571E879E9BBF2DF74A /* PBXTargetDependency */,
+				EB763B81D45B5438A21F8498 /* PBXTargetDependency */,
+				1931E9263691E9D7BDB12E0A /* PBXTargetDependency */,
+				5DFA69057FC0556FB24B5AFF /* PBXTargetDependency */,
+				FC2752409B2CE043153B5E54 /* PBXTargetDependency */,
+				991B58EE1B2C2DD9193C55BC /* PBXTargetDependency */,
+				07E26D8214541E093215E86B /* PBXTargetDependency */,
+				41AE2A67CA34E6D91937E9CB /* PBXTargetDependency */,
+				CDAB5745A601983D2317A8B8 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		008D2079399F601CBD6DDCC4 /* libvad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BEF8F4D8F9D797A5FEE52FE /* libvad.a */; };
+		015339AC2098EABF9007980A /* dsp.c in Sources */ = {isa = PBXBuildFile; fileRef = 2E092D423E6EA420CAB2F3FB /* dsp.c */; };
+		026294BF7DC9664AA78DFCBE /* peak_detection.c in Sources */ = {isa = PBXBuildFile; fileRef = D956E7909BA049CD88B4EC2C /* peak_detection.c */; };
+		02F110836514AC5A78724A8D /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		03F7F2D0B21BC484F17F14FC /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		042EDE27C47991EA35EF66C2 /* cng_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = ED917740C6ECC09805BD32EE /* cng_internal.c */; };
+		04FE5FBD1B58690F290A5F72 /* automode.c in Sources */ = {isa = PBXBuildFile; fileRef = F7D028A90CA3E8A32C6556BB /* automode.c */; };
+		05FE88E850A6CBBC6BCF4989 /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		07E33E1C56A5394571F4B3CE /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		0A4AEB519CAF7818277911CD /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		0DE5E7CB0C35A02A335DB432 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		10EB380400D9CD76DD50B66F /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		13EF91A690FA58A4BFCF3D03 /* RTPtimeshift.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6DB15B2D62F8C4DD3FA8174C /* RTPtimeshift.cc */; };
+		143D47AEA74D9C2D83E273EC /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		148346873444D92A784530B7 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		19641627E27936DB89B8B898 /* libNetEq.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF17F2E66DC7AC6E34849C5F /* libNetEq.a */; };
+		1C99D9DE1DBEF7B7CAC2653A /* bufstats_decision.c in Sources */ = {isa = PBXBuildFile; fileRef = 35DF1AA2DD4EF629AFCAB159 /* bufstats_decision.c */; };
+		1FF50241D67A6055816F2841 /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		203162EF8A59A030B7EA66A4 /* mcu_address_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 896383E1E569A538C0EF39E3 /* mcu_address_init.c */; };
+		279FF1FB19026B71718B3E53 /* RTPcat.cc in Sources */ = {isa = PBXBuildFile; fileRef = 34525E4C902D329CB5F2901A /* RTPcat.cc */; };
+		295817727E5638FD56A48DED /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		2BD0B693A9E5E7481028D3AB /* mix_voice_unvoice.c in Sources */ = {isa = PBXBuildFile; fileRef = B1F36D9A0015173D401EA852 /* mix_voice_unvoice.c */; };
+		2C9D630AA5AD943C7E357285 /* rtcp.c in Sources */ = {isa = PBXBuildFile; fileRef = 667996BC30CCF42145FFBB43 /* rtcp.c */; };
+		2D3715322C219A9BFF3C9F57 /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		2D8ABA653049F0B4701AEC1A /* mcu_reset.c in Sources */ = {isa = PBXBuildFile; fileRef = 6A74434048431D945E70E55D /* mcu_reset.c */; };
+		2DFE0AF0925B345E69D8CC53 /* RTPanalyze.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7EDE2F542CEF79038AD33A83 /* RTPanalyze.cc */; };
+		3184012BD8FAD5EBFDF7F18E /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		328AB146BC5D3DC0DE12B1B0 /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		34A1418F01B2BC9FC206C0C1 /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		376C731DFBAE8630B5AF4AF0 /* accelerate.c in Sources */ = {isa = PBXBuildFile; fileRef = 52DD33AFB85B9D95B264436A /* accelerate.c */; };
+		3939DA42A9548821DF671EB5 /* split_and_insert.c in Sources */ = {isa = PBXBuildFile; fileRef = 58F7ADB96999CCC525BDFD87 /* split_and_insert.c */; };
+		446F1A50E9966098B70717D4 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		486C51687F801E43A5AC6114 /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		48864B325A144FEDECBA47F5 /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		488C16ADC494CCB78F87DB97 /* rtp.c in Sources */ = {isa = PBXBuildFile; fileRef = 59638F56C24C9F29773B4FB2 /* rtp.c */; };
+		493EF37D7BE3A589741C2053 /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		4B9BF3B675D5296C5B7EF86E /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		4C60ECC2ED49ACDA57CB75B8 /* NETEQTEST_NetEQClass.cc in Sources */ = {isa = PBXBuildFile; fileRef = F27DAFDA411D0B1DE948288F /* NETEQTEST_NetEQClass.cc */; };
+		4F0539A48CCDB3EB2E1AE5D4 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		517753F6B2B310EE0016B94F /* recin.c in Sources */ = {isa = PBXBuildFile; fileRef = E38D9656E54A7F67DB846D15 /* recin.c */; };
+		536FE146942D99BFB8760B73 /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		5575345654DBC7FB626B3DB8 /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		59999C0872AAD3DA82D9B6B4 /* dtmf_tonegen.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066F1FF58B391CFE7F7ACDC /* dtmf_tonegen.c */; };
+		5B3B11F0748CD5ECB7A82E7E /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		5C73E983947D05B11CDF3A82 /* set_fs.c in Sources */ = {isa = PBXBuildFile; fileRef = 970C8704F0B0E4C5EEF0E3C2 /* set_fs.c */; };
+		5D39BB6497E57D12EADB83D6 /* codec_db.c in Sources */ = {isa = PBXBuildFile; fileRef = 4EBCB5CC538D0096AC73655D /* codec_db.c */; };
+		5E2B80C0EAFFAB06D5BC2F39 /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		65F2846AD4F7983918C4BD08 /* signal_mcu.c in Sources */ = {isa = PBXBuildFile; fileRef = 1B84F6DB92E86715DD5E36E2 /* signal_mcu.c */; };
+		6B40807CA24D0619D85B46F7 /* correlator.c in Sources */ = {isa = PBXBuildFile; fileRef = BBBA1AFAB634697C977A6E44 /* correlator.c */; };
+		6B54A518340D4902DB4273AB /* RTPchange.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82FF325108AF368647D51D97 /* RTPchange.cc */; };
+		6BE6728187E7A000EEFD86F8 /* dtmf_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = F4EA3E7506E11C84FD3BC4BC /* dtmf_buffer.c */; };
+		6DD625C697D3B111C3C9495D /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		6E75EC0AE0A74813C44F4237 /* mcu_dsp_common.c in Sources */ = {isa = PBXBuildFile; fileRef = 695929B1D704A35AFF46DDDC /* mcu_dsp_common.c */; };
+		73BFD6324B61B311201C3CBF /* libPCM16B.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C2357A51545AF3179D8686E /* libPCM16B.a */; };
+		7426484573F46C8644DA7245 /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		7A8328B471BDF66C5EC1AB12 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		7BEEEB2697CDCB46C991F2B7 /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		7C6B38CC50EC14DBD680EEC7 /* recout.c in Sources */ = {isa = PBXBuildFile; fileRef = 5244BFA9DE72E25DD76C17CB /* recout.c */; };
+		7E359078E95231A9D71762D9 /* RTPjitter.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8061DA5681FBBC5CF502BFB5 /* RTPjitter.cc */; };
+		7EB7602EB60F3DD52E1A305C /* RTPencode.cc in Sources */ = {isa = PBXBuildFile; fileRef = 290BEBF40D6826DF014C1DDD /* RTPencode.cc */; };
+		834981436B146E9974872DBE /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F68933BD1D7F8426732E333 /* libiLBC.a */; };
+		84AAF7BE190A2D07E80BFA9A /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		866914789F1C3A9FF55115A1 /* merge.c in Sources */ = {isa = PBXBuildFile; fileRef = F6168465E8FD8207ED1A02EE /* merge.c */; };
+		8AEF2D8776CFE85781DFAE38 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		8D888D8E8AF49495378E2F10 /* NETEQTEST_CodecClass.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1E24773BDAF6270A3EF5AC79 /* NETEQTEST_CodecClass.cc */; };
+		8DD0802967A66CE0266D9115 /* normal.c in Sources */ = {isa = PBXBuildFile; fileRef = 2893189AA083174A8C933324 /* normal.c */; };
+		8EA1A5D0E758CB6546305422 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		94097EE875CEF1208BDE7D41 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		96B56C62E9E6862ABCE50891 /* min_distortion.c in Sources */ = {isa = PBXBuildFile; fileRef = 4DC2CF62D5019375F0CA6A21 /* min_distortion.c */; };
+		9903E74BEA593022B1A53CBF /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		9BDEC7A64D7C5B3F85CA0335 /* NetEqRTPplay.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9988BA073D540667F4F808F9 /* NetEqRTPplay.cc */; };
+		A6624AFE94407EA649F12159 /* dsp_helpfunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = 2F0CE445BA0D8933637584AA /* dsp_helpfunctions.c */; };
+		A75070E707A63B5249ED32D5 /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		AD844DFC1AC49FEB4552E58F /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		B5C28E81AD24FB9D2060DE10 /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		BA967A1645A8FC688662815B /* NETEQTEST_RTPpacket.cc in Sources */ = {isa = PBXBuildFile; fileRef = 60FCB9BDBD69C37F5F393854 /* NETEQTEST_RTPpacket.cc */; };
+		BAFB7EAB25CC04C97549880B /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 452ADC54719987C22DB1D6D7 /* libCNG.a */; };
+		C18580243989A6D62FE50ABC /* unmute_signal.c in Sources */ = {isa = PBXBuildFile; fileRef = B17815AB6878509C0C5F47DF /* unmute_signal.c */; };
+		C18A2EBC7B26EB0194A3A24D /* webrtc_neteq.c in Sources */ = {isa = PBXBuildFile; fileRef = FB395C653D4D841A92DB70CB /* webrtc_neteq.c */; };
+		C4B37D4B28EEADEA544362D8 /* packet_buffer.c in Sources */ = {isa = PBXBuildFile; fileRef = 8DE125FE5D05BF8760D978FC /* packet_buffer.c */; };
+		CA696ED95882038CEFA67CF4 /* mute_signal.c in Sources */ = {isa = PBXBuildFile; fileRef = 9694EC303752561DE489D8BE /* mute_signal.c */; };
+		CD2505C1874334706D0B7303 /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		CF8CED5E61E48A1E99D77DA3 /* bgn_update.c in Sources */ = {isa = PBXBuildFile; fileRef = 5FFAFC153665F689F2F4DDD3 /* bgn_update.c */; };
+		D30BB7497F753E1AF94A8FFE /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		D36BEC8A9DECE2BCB15FEEDC /* libspl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DFF8116BAB69C1F492AD9EA5 /* libspl.a */; };
+		E434D3372720F9399AE84420 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		EF74106B539BE2CF82A36B57 /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9FFD075CFDB21030599A97 /* libG711.a */; };
+		F11B59100AD708565AA9CC18 /* expand.c in Sources */ = {isa = PBXBuildFile; fileRef = 23653F179A1D536706723E86 /* expand.c */; };
+		F2EB03DE070BE2A250377B98 /* libNetEqTestTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */; };
+		FAAD6EF00C79FAC8A30E7E43 /* preemptive_expand.c in Sources */ = {isa = PBXBuildFile; fileRef = 0ECAB2888F8C3E800F2134C0 /* preemptive_expand.c */; };
+		FD9C00F4A8D9FD9FE2702B94 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A75824B2219E858C860993D /* libG722.a */; };
+		FDF14376A5FB2511926E93DF /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */; };
+		FEDD3A833D43FD98B586AEFA /* random_vector.c in Sources */ = {isa = PBXBuildFile; fileRef = D7756F5147DD021A2EFCF4D2 /* random_vector.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03BE44A01F8C21962F59AC88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		07B8EB36B646BE927785D67C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		10277A93ADAB15C6480554F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		1080BC82E4406066C8791BFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E87F0572D73DF6CEED93DB79;
+			remoteInfo = RTPtimeshift;
+		};
+		124FF8DC38E4A1EAD31CED41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A6D488B324748B941631F41B;
+			remoteInfo = PCM16B;
+		};
+		145A8B3287D4F6C909F3756A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 16B8B51C64F75DE5D6D19768;
+			remoteInfo = G722Test;
+		};
+		2322103041568E218A4DB65A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		27EA63594C927F762114C525 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5DD51D6465BAEDFA7FA2BD09;
+			remoteInfo = CNG;
+		};
+		2C249647E203E29B85626EF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		2C6AF7E37D6BB3E7DDFCEFB3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		2D499E683712DBB56E4B24EC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		2F32A91302C2E55BD020D547 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E53F7313DAB7D36982EB11D1 /* vad.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AC798BE13DC78FBF1355D50;
+			remoteInfo = vad;
+		};
+		2F9C838978101931C176375A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		310AF6A69451774449302E94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 08E19BD98554D46D5C00DDB9;
+			remoteInfo = RTPcat;
+		};
+		31AE9C060CAA45B92E086D21 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		32C1FEB06E0F6E8C6141BA16 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		33B067DF2AB963328DC33242 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		355A82E3A1F50649BF2B7640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1914F996BBFB7CCA8C311646;
+			remoteInfo = g711_test;
+		};
+		3D1C4421F3016FE7E27E6748 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		4069F30A554F658148DDAEEE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		40D5B8871042BB8EE06D53E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		41FE630B1113B0ECD56494C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		446EE6A21915FB49D43EE0A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 363E4CB4DDACCE2CA667195C;
+			remoteInfo = NetEq;
+		};
+		505D18A147A0FC29C6E05B6A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		52D6BEE6181D413BD394120D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+		52F673373A8A3E70F5DD85E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+		5350CCB7D7547686EACD95CE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		54771BF9328474D82D9BB09E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		5B1E50905243A1F379AFAADB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		5D2B6C63439C51B3858A31D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		629BF3E2D8952053843965FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD8D7A920A3F2A113E3F5117;
+			remoteInfo = RTPjitter;
+		};
+		6833D70E1F3B136383CF0CF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		6DA861555AFDC172EE82A1E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		6FD16FB987D5F852FB1CD487 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		7247245F35BB9F5D3EF9953C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9737D6AAF1EDE8555428643F;
+			remoteInfo = G722;
+		};
+		72FE50FF36B33B9960858D72 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		791753488AC6D1FAEAB86F78 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+		7AFF1330894F3527E8494C3D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		835924460CB6E83A68128EF3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8C49BA63C4BBBFBF7706AC5D;
+			remoteInfo = RTPchange;
+		};
+		93233D603463F6D0A35686CC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		94EBEA6E1DFDBA09A67C3BA7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		97F0857FB1AF1F003A5ABDE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		99828BE9ADD7A4FC176C2737 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2D0871A44EB721080BB00801;
+			remoteInfo = G711;
+		};
+		9A2D165590CF30BF2BDEE3C6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		9BF4423C35EE9A168BB34A43 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		A54735AB18CCD7D615AAB466 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+		A697DAE16152EA790FC19C44 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		B1C788305F8D72D09A09BDEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E53F7313DAB7D36982EB11D1 /* vad.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0083711451CADDF8B1EEBB4B;
+			remoteInfo = vad;
+		};
+		B6F9280E4E600F536633C435 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		B7D57050769E1E329802FDAC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A9F81127CDDFA2CC72067367;
+			remoteInfo = iLBC;
+		};
+		B93C1357CCEE5AF71605BC0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		B943051CB8D288EC2CEA7D8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 61E4974A873C24A46D04F455;
+			remoteInfo = RTPanalyze;
+		};
+		BF6E5269947EAB9B9949BF4F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F72F7ACC306AE34BA64B2E2C;
+			remoteInfo = spl;
+		};
+		BFAEDC366504518142F6DFAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		C142EB28F0FEDA44CB999070 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 363E4CB4DDACCE2CA667195C;
+			remoteInfo = NetEq;
+		};
+		C5DEF22012A6A838755497F7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		C61D31D7F7900367CC0E96A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		C6F1DA0B8DB783ED0A1F1331 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 786E25629AAC2B81E3609DCC;
+			remoteInfo = RTPencode;
+		};
+		D02CFBE07C796665967B30C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+		D5314BA5A3DC536BD94EEE83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A38C9E3DEC198EA4E2686125;
+			remoteInfo = spl;
+		};
+		D5C50DF05E1F59640A558B88 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F69624931BD12E856E6DB7FC;
+			remoteInfo = NetEqTestTools;
+		};
+		D80D32251CA693E120BB8D03 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 296D3284F076F48304A6F204;
+			remoteInfo = G722;
+		};
+		D9CB0A0DB1441DFC65E76BD7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 60A21A36E390B9F7B9C2172B;
+			remoteInfo = iSAC;
+		};
+		DCD53CA0D77BCFDAA359628F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2C63C2A82FB2150F3B0570DE;
+			remoteInfo = iSAC;
+		};
+		DD6B0A03AE6D60D396707825 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F2FC11A9D0189192C216A207;
+			remoteInfo = CNG;
+		};
+		E9BFE7873123C4A17E054B0A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C724361ED4A76CFBBF53CB24;
+			remoteInfo = iLBC;
+		};
+		EE56AF33AF9E74914E6FC9A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = C18F7AD0879A1509DD06DE02;
+			remoteInfo = PCM16B;
+		};
+		F2B472830A39CCC0126A46A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E354639F2A9135068CD5160 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52627D53C308C79B4FC1D820;
+			remoteInfo = NetEqRTPplay;
+		};
+		FDD84EC3FB707FC2D71A2D18 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ECD14687E348647801386F43;
+			remoteInfo = G711;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0066F1FF58B391CFE7F7ACDC /* dtmf_tonegen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dtmf_tonegen.c; sourceTree = "<group>"; };
+		0325B3111ABBBC1F8FF5A25F /* webrtc_neteq_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = webrtc_neteq_internal.h; sourceTree = "<group>"; };
+		067FD613E2FF0DB536D8DDEB /* NETEQTEST_RTPpacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NETEQTEST_RTPpacket.h; sourceTree = "<group>"; };
+		0ECAB2888F8C3E800F2134C0 /* preemptive_expand.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = preemptive_expand.c; sourceTree = "<group>"; };
+		0FCAAEDC8D6BC7432BDF3F7C /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		10DBE32D8644AD56C11931EF /* automode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = automode.h; sourceTree = "<group>"; };
+		17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pcm16b.xcodeproj; path = ../../../codecs/PCM16B/main/source/pcm16b.xcodeproj; sourceTree = SOURCE_ROOT; };
+		17B294C2D7BAFBDA7F2E6BFD /* RTPchange */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPchange; sourceTree = BUILT_PRODUCTS_DIR; };
+		1814E4938AC722C7992895A1 /* codec_db.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = codec_db.h; sourceTree = "<group>"; };
+		18A736200688986F71A06743 /* packet_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = packet_buffer.h; sourceTree = "<group>"; };
+		1B84F6DB92E86715DD5E36E2 /* signal_mcu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = signal_mcu.c; sourceTree = "<group>"; };
+		1DF7283426065B0C50B94BBF /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../../../build/release.gypi; sourceTree = "<group>"; };
+		1E24773BDAF6270A3EF5AC79 /* NETEQTEST_CodecClass.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NETEQTEST_CodecClass.cc; sourceTree = "<group>"; };
+		23653F179A1D536706723E86 /* expand.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = expand.c; sourceTree = "<group>"; };
+		273AD27ABB3B0F13DAFE14F9 /* RTPanalyze */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPanalyze; sourceTree = BUILT_PRODUCTS_DIR; };
+		2893189AA083174A8C933324 /* normal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = normal.c; sourceTree = "<group>"; };
+		290BEBF40D6826DF014C1DDD /* RTPencode.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPencode.cc; sourceTree = "<group>"; };
+		2E092D423E6EA420CAB2F3FB /* dsp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dsp.c; sourceTree = "<group>"; };
+		2E95178ACD435BDFC91B1D2B /* RTPjitter */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPjitter; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F0CE445BA0D8933637584AA /* dsp_helpfunctions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dsp_helpfunctions.c; sourceTree = "<group>"; };
+		34525E4C902D329CB5F2901A /* RTPcat.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPcat.cc; sourceTree = "<group>"; };
+		35DF1AA2DD4EF629AFCAB159 /* bufstats_decision.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bufstats_decision.c; sourceTree = "<group>"; };
+		37F9ADB450D30C0194007D9A /* webrtc_neteq_help_macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = webrtc_neteq_help_macros.h; sourceTree = "<group>"; };
+		3C3D09DAF783CD24ED689B96 /* delay_logging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = delay_logging.h; sourceTree = "<group>"; };
+		3C8A2505D6128AD8685361DB /* neteq.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = neteq.gyp; sourceTree = "<group>"; };
+		47F7203B4BB24CD1976084F9 /* codec_db_defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = codec_db_defines.h; sourceTree = "<group>"; };
+		4DC2CF62D5019375F0CA6A21 /* min_distortion.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = min_distortion.c; sourceTree = "<group>"; };
+		4EBCB5CC538D0096AC73655D /* codec_db.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = codec_db.c; sourceTree = "<group>"; };
+		503296B1E3442CF9C43310B2 /* cng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cng.xcodeproj; path = ../../../codecs/CNG/main/source/cng.xcodeproj; sourceTree = SOURCE_ROOT; };
+		5244BFA9DE72E25DD76C17CB /* recout.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recout.c; sourceTree = "<group>"; };
+		52DD33AFB85B9D95B264436A /* accelerate.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = accelerate.c; sourceTree = "<group>"; };
+		5563813375A1C97D4FB4AE5F /* isac.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = isac.xcodeproj; path = ../../../codecs/iSAC/main/source/isac.xcodeproj; sourceTree = SOURCE_ROOT; };
+		58F7ADB96999CCC525BDFD87 /* split_and_insert.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = split_and_insert.c; sourceTree = "<group>"; };
+		59638F56C24C9F29773B4FB2 /* rtp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rtp.c; sourceTree = "<group>"; };
+		5FFAFC153665F689F2F4DDD3 /* bgn_update.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bgn_update.c; sourceTree = "<group>"; };
+		60FCB9BDBD69C37F5F393854 /* NETEQTEST_RTPpacket.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NETEQTEST_RTPpacket.cc; sourceTree = "<group>"; };
+		66330E87F8F18F49732E53F3 /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../../../common_settings.gypi; sourceTree = "<group>"; };
+		667996BC30CCF42145FFBB43 /* rtcp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = rtcp.c; sourceTree = "<group>"; };
+		692BD9CB51651318AD436CC6 /* dtmf_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtmf_buffer.h; sourceTree = "<group>"; };
+		695929B1D704A35AFF46DDDC /* mcu_dsp_common.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mcu_dsp_common.c; sourceTree = "<group>"; };
+		6A74434048431D945E70E55D /* mcu_reset.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mcu_reset.c; sourceTree = "<group>"; };
+		6DB15B2D62F8C4DD3FA8174C /* RTPtimeshift.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPtimeshift.cc; sourceTree = "<group>"; };
+		6DED0815705AF111FE68AE72 /* webrtc_neteq.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = webrtc_neteq.h; sourceTree = "<group>"; };
+		6FA07B9F0C67EC1599067D79 /* NETEQTEST_CodecClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NETEQTEST_CodecClass.h; sourceTree = "<group>"; };
+		713E883ED85FA1F442E7345E /* libNetEqTestTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNetEqTestTools.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		74CC0B2028CA2C3E62D568C4 /* RTPcat */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPcat; sourceTree = BUILT_PRODUCTS_DIR; };
+		754A1491C85A830FF11A4397 /* dsp_helpfunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dsp_helpfunctions.h; sourceTree = "<group>"; };
+		7EDE2F542CEF79038AD33A83 /* RTPanalyze.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPanalyze.cc; sourceTree = "<group>"; };
+		8061DA5681FBBC5CF502BFB5 /* RTPjitter.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPjitter.cc; sourceTree = "<group>"; };
+		82FF325108AF368647D51D97 /* RTPchange.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RTPchange.cc; sourceTree = "<group>"; };
+		83B488F916776522DA7C7C65 /* mcu_dsp_common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcu_dsp_common.h; sourceTree = "<group>"; };
+		896383E1E569A538C0EF39E3 /* mcu_address_init.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mcu_address_init.c; sourceTree = "<group>"; };
+		8DE125FE5D05BF8760D978FC /* packet_buffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = packet_buffer.c; sourceTree = "<group>"; };
+		965CC0575D33164E14BDFF05 /* g711.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = g711.xcodeproj; path = ../../../codecs/G711/main/source/g711.xcodeproj; sourceTree = SOURCE_ROOT; };
+		9694EC303752561DE489D8BE /* mute_signal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mute_signal.c; sourceTree = "<group>"; };
+		970C8704F0B0E4C5EEF0E3C2 /* set_fs.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = set_fs.c; sourceTree = "<group>"; };
+		991722D8C63BDE3A6B4E8B7A /* rtp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rtp.h; sourceTree = "<group>"; };
+		9988BA073D540667F4F808F9 /* NetEqRTPplay.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetEqRTPplay.cc; sourceTree = "<group>"; };
+		9994282CD8EFBD62FAC8BFD9 /* neteq_statistics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = neteq_statistics.h; sourceTree = "<group>"; };
+		A2CBD39B9FA7CFB2E63AAA35 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		A7226A35B0919F4A4B06B18B /* spl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = spl.xcodeproj; path = ../../../../../common_audio/signal_processing_library/main/source/spl.xcodeproj; sourceTree = SOURCE_ROOT; };
+		A914CC4FC3F7D27FDD4BCBE2 /* rtcp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rtcp.h; sourceTree = "<group>"; };
+		AD38825978DEBD6F324E663E /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../../../supplement.gypi; sourceTree = "<group>"; };
+		B17815AB6878509C0C5F47DF /* unmute_signal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = unmute_signal.c; sourceTree = "<group>"; };
+		B1F36D9A0015173D401EA852 /* mix_voice_unvoice.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mix_voice_unvoice.c; sourceTree = "<group>"; };
+		BB9E9B5A2264327E8AA41579 /* RTPencode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPencode; sourceTree = BUILT_PRODUCTS_DIR; };
+		BBBA1AFAB634697C977A6E44 /* correlator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = correlator.c; sourceTree = "<group>"; };
+		BE6EB02A25CA9DDC9553F102 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../build/common.gypi; sourceTree = "<group>"; };
+		BF17F2E66DC7AC6E34849C5F /* libNetEq.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNetEq.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = g722.xcodeproj; path = ../../../codecs/G722/main/source/g722.xcodeproj; sourceTree = SOURCE_ROOT; };
+		CC7B4A87BA0DE336D7A11CC1 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		CCF30BF2823F624783992240 /* buffer_stats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = buffer_stats.h; sourceTree = "<group>"; };
+		D4CD5B447FB5C8FBBC60D2C4 /* RTPtimeshift */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RTPtimeshift; sourceTree = BUILT_PRODUCTS_DIR; };
+		D50100704CAFA63151978AB9 /* neteq_error_codes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = neteq_error_codes.h; sourceTree = "<group>"; };
+		D698809702E2755B6BE65A74 /* ilbc.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ilbc.xcodeproj; path = ../../../codecs/iLBC/main/source/ilbc.xcodeproj; sourceTree = SOURCE_ROOT; };
+		D7756F5147DD021A2EFCF4D2 /* random_vector.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = random_vector.c; sourceTree = "<group>"; };
+		D956E7909BA049CD88B4EC2C /* peak_detection.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = peak_detection.c; sourceTree = "<group>"; };
+		E38D9656E54A7F67DB846D15 /* recin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = recin.c; sourceTree = "<group>"; };
+		E53F7313DAB7D36982EB11D1 /* vad.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = vad.xcodeproj; path = ../../../../../common_audio/vad/main/source/vad.xcodeproj; sourceTree = SOURCE_ROOT; };
+		E9BA9D39B3781F2D155FD8AD /* NetEqRTPplay */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NetEqRTPplay; sourceTree = BUILT_PRODUCTS_DIR; };
+		EAD9964744405D38EBD3AB67 /* neteq_defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = neteq_defines.h; sourceTree = "<group>"; };
+		EB2ABAF3C0245651CD44C0B5 /* dtmf_tonegen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtmf_tonegen.h; sourceTree = "<group>"; };
+		EBC158444776084EA43AF169 /* NETEQTEST_NetEQClass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NETEQTEST_NetEQClass.h; sourceTree = "<group>"; };
+		ED917740C6ECC09805BD32EE /* cng_internal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cng_internal.c; sourceTree = "<group>"; };
+		F27DAFDA411D0B1DE948288F /* NETEQTEST_NetEQClass.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NETEQTEST_NetEQClass.cc; sourceTree = "<group>"; };
+		F4EA3E7506E11C84FD3BC4BC /* dtmf_buffer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dtmf_buffer.c; sourceTree = "<group>"; };
+		F6168465E8FD8207ED1A02EE /* merge.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = merge.c; sourceTree = "<group>"; };
+		F63E6C862F236F9257022727 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../build/common.gypi; sourceTree = "<group>"; };
+		F7D028A90CA3E8A32C6556BB /* automode.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = automode.c; sourceTree = "<group>"; };
+		FB395C653D4D841A92DB70CB /* webrtc_neteq.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = webrtc_neteq.c; sourceTree = "<group>"; };
+		FEB150847602B4C579AFF8F1 /* dsp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dsp.h; sourceTree = "<group>"; };
+		FFAD7731E1193A87E32DE922 /* mcu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mcu.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1C692A12388E9030419DF9E1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				148346873444D92A784530B7 /* libNetEqTestTools.a in Frameworks */,
+				9903E74BEA593022B1A53CBF /* libG711.a in Frameworks */,
+				D30BB7497F753E1AF94A8FFE /* libG722.a in Frameworks */,
+				5B3B11F0748CD5ECB7A82E7E /* libPCM16B.a in Frameworks */,
+				48864B325A144FEDECBA47F5 /* libiLBC.a in Frameworks */,
+				A75070E707A63B5249ED32D5 /* libiSAC.a in Frameworks */,
+				0A4AEB519CAF7818277911CD /* libCNG.a in Frameworks */,
+				008D2079399F601CBD6DDCC4 /* libvad.a in Frameworks */,
+				D36BEC8A9DECE2BCB15FEEDC /* libspl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2FC397D4AA9E34D2E3C2F5FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				446F1A50E9966098B70717D4 /* libNetEqTestTools.a in Frameworks */,
+				84AAF7BE190A2D07E80BFA9A /* libG711.a in Frameworks */,
+				94097EE875CEF1208BDE7D41 /* libG722.a in Frameworks */,
+				295817727E5638FD56A48DED /* libPCM16B.a in Frameworks */,
+				6DD625C697D3B111C3C9495D /* libiLBC.a in Frameworks */,
+				B5C28E81AD24FB9D2060DE10 /* libspl.a in Frameworks */,
+				FDF14376A5FB2511926E93DF /* libiSAC.a in Frameworks */,
+				AD844DFC1AC49FEB4552E58F /* libCNG.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FF5434CD4799E11FBEF403D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4F0539A48CCDB3EB2E1AE5D4 /* libNetEqTestTools.a in Frameworks */,
+				EF74106B539BE2CF82A36B57 /* libG711.a in Frameworks */,
+				FD9C00F4A8D9FD9FE2702B94 /* libG722.a in Frameworks */,
+				328AB146BC5D3DC0DE12B1B0 /* libPCM16B.a in Frameworks */,
+				834981436B146E9974872DBE /* libiLBC.a in Frameworks */,
+				536FE146942D99BFB8760B73 /* libspl.a in Frameworks */,
+				03F7F2D0B21BC484F17F14FC /* libiSAC.a in Frameworks */,
+				02F110836514AC5A78724A8D /* libCNG.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81ACBBA2CF4C92FB2F746A1A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0B9D13186F28535DF6C82DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19641627E27936DB89B8B898 /* libNetEq.a in Frameworks */,
+				E434D3372720F9399AE84420 /* libNetEqTestTools.a in Frameworks */,
+				CD2505C1874334706D0B7303 /* libG711.a in Frameworks */,
+				0DE5E7CB0C35A02A335DB432 /* libG722.a in Frameworks */,
+				05FE88E850A6CBBC6BCF4989 /* libPCM16B.a in Frameworks */,
+				34A1418F01B2BC9FC206C0C1 /* libiLBC.a in Frameworks */,
+				5E2B80C0EAFFAB06D5BC2F39 /* libiSAC.a in Frameworks */,
+				BAFB7EAB25CC04C97549880B /* libCNG.a in Frameworks */,
+				7BEEEB2697CDCB46C991F2B7 /* libspl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0C885928622959B836CBC1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B42978EEB00DA10EAE3C2936 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBE1559F2371C137EC737FA9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F2EB03DE070BE2A250377B98 /* libNetEqTestTools.a in Frameworks */,
+				07E33E1C56A5394571F4B3CE /* libG711.a in Frameworks */,
+				8AEF2D8776CFE85781DFAE38 /* libG722.a in Frameworks */,
+				73BFD6324B61B311201C3CBF /* libPCM16B.a in Frameworks */,
+				4B9BF3B675D5296C5B7EF86E /* libiLBC.a in Frameworks */,
+				493EF37D7BE3A589741C2053 /* libspl.a in Frameworks */,
+				7426484573F46C8644DA7245 /* libiSAC.a in Frameworks */,
+				10EB380400D9CD76DD50B66F /* libCNG.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1E140520B6108682E4D0EC3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7A8328B471BDF66C5EC1AB12 /* libNetEqTestTools.a in Frameworks */,
+				143D47AEA74D9C2D83E273EC /* libG711.a in Frameworks */,
+				8EA1A5D0E758CB6546305422 /* libG722.a in Frameworks */,
+				3184012BD8FAD5EBFDF7F18E /* libPCM16B.a in Frameworks */,
+				5575345654DBC7FB626B3DB8 /* libiLBC.a in Frameworks */,
+				1FF50241D67A6055816F2841 /* libspl.a in Frameworks */,
+				2D3715322C219A9BFF3C9F57 /* libiSAC.a in Frameworks */,
+				486C51687F801E43A5AC6114 /* libCNG.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02AFE49F23A31CD97AD7BE29 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				1E24773BDAF6270A3EF5AC79 /* NETEQTEST_CodecClass.cc */,
+				6FA07B9F0C67EC1599067D79 /* NETEQTEST_CodecClass.h */,
+				F27DAFDA411D0B1DE948288F /* NETEQTEST_NetEQClass.cc */,
+				EBC158444776084EA43AF169 /* NETEQTEST_NetEQClass.h */,
+				60FCB9BDBD69C37F5F393854 /* NETEQTEST_RTPpacket.cc */,
+				067FD613E2FF0DB536D8DDEB /* NETEQTEST_RTPpacket.h */,
+				9988BA073D540667F4F808F9 /* NetEqRTPplay.cc */,
+				7EDE2F542CEF79038AD33A83 /* RTPanalyze.cc */,
+				34525E4C902D329CB5F2901A /* RTPcat.cc */,
+				82FF325108AF368647D51D97 /* RTPchange.cc */,
+				290BEBF40D6826DF014C1DDD /* RTPencode.cc */,
+				8061DA5681FBBC5CF502BFB5 /* RTPjitter.cc */,
+				6DB15B2D62F8C4DD3FA8174C /* RTPtimeshift.cc */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		232A29EAB78A01000DA9DEF3 = {
+			isa = PBXGroup;
+			children = (
+				D69436C6F431CD4CBBEF024D /* Source */,
+				40B8D4807A01F092C70549E9 /* Projects */,
+				48843DC2C3FCC39AE9D471FA /* Products */,
+				ED0049CAA239E05E82B848C3 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		3253A7B20A5EB25AC3434474 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				6DED0815705AF111FE68AE72 /* webrtc_neteq.h */,
+				37F9ADB450D30C0194007D9A /* webrtc_neteq_help_macros.h */,
+				0325B3111ABBBC1F8FF5A25F /* webrtc_neteq_internal.h */,
+			);
+			path = interface;
+			sourceTree = "<group>";
+		};
+		401E1C0200EFC29F3EAD462A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4A9FFD075CFDB21030599A97 /* libG711.a */,
+				20553DC5BB7077B916656F72 /* g711_test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40B8D4807A01F092C70549E9 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				503296B1E3442CF9C43310B2 /* cng.xcodeproj */,
+				965CC0575D33164E14BDFF05 /* g711.xcodeproj */,
+				CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */,
+				D698809702E2755B6BE65A74 /* ilbc.xcodeproj */,
+				5563813375A1C97D4FB4AE5F /* isac.xcodeproj */,
+				17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */,
+				A7226A35B0919F4A4B06B18B /* spl.xcodeproj */,
+				E53F7313DAB7D36982EB11D1 /* vad.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		48843DC2C3FCC39AE9D471FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF17F2E66DC7AC6E34849C5F /* libNetEq.a */,
+				E9BA9D39B3781F2D155FD8AD /* NetEqRTPplay */,
+				BB9E9B5A2264327E8AA41579 /* RTPencode */,
+				2E95178ACD435BDFC91B1D2B /* RTPjitter */,
+				273AD27ABB3B0F13DAFE14F9 /* RTPanalyze */,
+				17B294C2D7BAFBDA7F2E6BFD /* RTPchange */,
+				D4CD5B447FB5C8FBBC60D2C4 /* RTPtimeshift */,
+				74CC0B2028CA2C3E62D568C4 /* RTPcat */,
+				713E883ED85FA1F442E7345E /* libNetEqTestTools.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4B94C6EDC59A6467964FC82A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9C2357A51545AF3179D8686E /* libPCM16B.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		758D5FE3D56C0C73722099F7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5A75824B2219E858C860993D /* libG722.a */,
+				342C0F938AD7083CE211851F /* G722Test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A8890A14A396505B144EC326 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DFF8116BAB69C1F492AD9EA5 /* libspl.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A9177AA720ACF2EFBF8C2E23 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				3253A7B20A5EB25AC3434474 /* interface */,
+				02AFE49F23A31CD97AD7BE29 /* test */,
+			);
+			path = ..;
+			sourceTree = "<group>";
+		};
+		B9938FC436C489E0D195A377 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C0FB755CCBE827826EFA2BA8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				452ADC54719987C22DB1D6D7 /* libCNG.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C37003151653D9588F741929 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7F68933BD1D7F8426732E333 /* libiLBC.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C8CB78DA6327C0819AB51D7A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8BEF8F4D8F9D797A5FEE52FE /* libvad.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D69436C6F431CD4CBBEF024D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A9177AA720ACF2EFBF8C2E23 /* .. */,
+				52DD33AFB85B9D95B264436A /* accelerate.c */,
+				F7D028A90CA3E8A32C6556BB /* automode.c */,
+				10DBE32D8644AD56C11931EF /* automode.h */,
+				5FFAFC153665F689F2F4DDD3 /* bgn_update.c */,
+				CCF30BF2823F624783992240 /* buffer_stats.h */,
+				35DF1AA2DD4EF629AFCAB159 /* bufstats_decision.c */,
+				ED917740C6ECC09805BD32EE /* cng_internal.c */,
+				4EBCB5CC538D0096AC73655D /* codec_db.c */,
+				1814E4938AC722C7992895A1 /* codec_db.h */,
+				47F7203B4BB24CD1976084F9 /* codec_db_defines.h */,
+				BBBA1AFAB634697C977A6E44 /* correlator.c */,
+				3C3D09DAF783CD24ED689B96 /* delay_logging.h */,
+				2E092D423E6EA420CAB2F3FB /* dsp.c */,
+				FEB150847602B4C579AFF8F1 /* dsp.h */,
+				2F0CE445BA0D8933637584AA /* dsp_helpfunctions.c */,
+				754A1491C85A830FF11A4397 /* dsp_helpfunctions.h */,
+				F4EA3E7506E11C84FD3BC4BC /* dtmf_buffer.c */,
+				692BD9CB51651318AD436CC6 /* dtmf_buffer.h */,
+				0066F1FF58B391CFE7F7ACDC /* dtmf_tonegen.c */,
+				EB2ABAF3C0245651CD44C0B5 /* dtmf_tonegen.h */,
+				23653F179A1D536706723E86 /* expand.c */,
+				FFAD7731E1193A87E32DE922 /* mcu.h */,
+				896383E1E569A538C0EF39E3 /* mcu_address_init.c */,
+				695929B1D704A35AFF46DDDC /* mcu_dsp_common.c */,
+				83B488F916776522DA7C7C65 /* mcu_dsp_common.h */,
+				6A74434048431D945E70E55D /* mcu_reset.c */,
+				F6168465E8FD8207ED1A02EE /* merge.c */,
+				4DC2CF62D5019375F0CA6A21 /* min_distortion.c */,
+				B1F36D9A0015173D401EA852 /* mix_voice_unvoice.c */,
+				9694EC303752561DE489D8BE /* mute_signal.c */,
+				EAD9964744405D38EBD3AB67 /* neteq_defines.h */,
+				D50100704CAFA63151978AB9 /* neteq_error_codes.h */,
+				9994282CD8EFBD62FAC8BFD9 /* neteq_statistics.h */,
+				2893189AA083174A8C933324 /* normal.c */,
+				8DE125FE5D05BF8760D978FC /* packet_buffer.c */,
+				18A736200688986F71A06743 /* packet_buffer.h */,
+				D956E7909BA049CD88B4EC2C /* peak_detection.c */,
+				0ECAB2888F8C3E800F2134C0 /* preemptive_expand.c */,
+				D7756F5147DD021A2EFCF4D2 /* random_vector.c */,
+				E38D9656E54A7F67DB846D15 /* recin.c */,
+				5244BFA9DE72E25DD76C17CB /* recout.c */,
+				667996BC30CCF42145FFBB43 /* rtcp.c */,
+				A914CC4FC3F7D27FDD4BCBE2 /* rtcp.h */,
+				59638F56C24C9F29773B4FB2 /* rtp.c */,
+				991722D8C63BDE3A6B4E8B7A /* rtp.h */,
+				970C8704F0B0E4C5EEF0E3C2 /* set_fs.c */,
+				1B84F6DB92E86715DD5E36E2 /* signal_mcu.c */,
+				58F7ADB96999CCC525BDFD87 /* split_and_insert.c */,
+				B17815AB6878509C0C5F47DF /* unmute_signal.c */,
+				FB395C653D4D841A92DB70CB /* webrtc_neteq.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		ED0049CAA239E05E82B848C3 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				BE6EB02A25CA9DDC9553F102 /* common.gypi */,
+				F63E6C862F236F9257022727 /* common.gypi */,
+				66330E87F8F18F49732E53F3 /* common_settings.gypi */,
+				3C8A2505D6128AD8685361DB /* neteq.gyp */,
+				1DF7283426065B0C50B94BBF /* release.gypi */,
+				0FCAAEDC8D6BC7432BDF3F7C /* release_defaults.gypi */,
+				CC7B4A87BA0DE336D7A11CC1 /* release_impl.gypi */,
+				A2CBD39B9FA7CFB2E63AAA35 /* release_impl_official.gypi */,
+				AD38825978DEBD6F324E663E /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		08E19BD98554D46D5C00DDB9 /* RTPcat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 889945E09EA7E6196EAB80FC /* Build configuration list for PBXNativeTarget "RTPcat" */;
+			buildPhases = (
+				8AD9E09782B9CC8EB3D8E71B /* Sources */,
+				5FF5434CD4799E11FBEF403D /* Frameworks */,
+				799089116CDA33D1631C3D70 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1D6FF8FCBC8D4D1F9C3202DD /* PBXTargetDependency */,
+				C8A5FA6D6CCB0935B365571C /* PBXTargetDependency */,
+				1DC23826C132FF6CA26B15C4 /* PBXTargetDependency */,
+				C5A70F590C7A6769CEB8E2C8 /* PBXTargetDependency */,
+				8C6D7EF63910C2DC2524563E /* PBXTargetDependency */,
+				E74A3987F5E7E473474D15B1 /* PBXTargetDependency */,
+				8CBF3716EEAD951D7A3E10CD /* PBXTargetDependency */,
+				145D81976D1CD9E423AF809F /* PBXTargetDependency */,
+			);
+			name = RTPcat;
+			productName = RTPcat;
+			productReference = 74CC0B2028CA2C3E62D568C4 /* RTPcat */;
+			productType = "com.apple.product-type.tool";
+		};
+		363E4CB4DDACCE2CA667195C /* NetEq */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 49963EDEAF5C1CE2EB1BC5D9 /* Build configuration list for PBXNativeTarget "NetEq" */;
+			buildPhases = (
+				AADCA61CEF068BB7BF5EA9AB /* Sources */,
+				81ACBBA2CF4C92FB2F746A1A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetEq;
+			productName = NetEq;
+			productReference = BF17F2E66DC7AC6E34849C5F /* libNetEq.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		52627D53C308C79B4FC1D820 /* NetEqRTPplay */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7E50FD4E5EA39ED7956A4522 /* Build configuration list for PBXNativeTarget "NetEqRTPplay" */;
+			buildPhases = (
+				31511F2FF263630C09C642FC /* Sources */,
+				A0B9D13186F28535DF6C82DA /* Frameworks */,
+				018C0E7369720B4AE87AEB9C /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				270E1A9716CC882BDAB4C75C /* PBXTargetDependency */,
+				616F3618A673D05AB984222B /* PBXTargetDependency */,
+				9FD1B58F8E1B83AC4F5BCF43 /* PBXTargetDependency */,
+				A6A51A5C94C8C02C46A62788 /* PBXTargetDependency */,
+				2D54A4D495202E0B0450EB14 /* PBXTargetDependency */,
+				1BA292784A728E1D9886CF74 /* PBXTargetDependency */,
+				0930CE81AF5D46ED3C992B48 /* PBXTargetDependency */,
+				25C21526A20B957CC0E740F2 /* PBXTargetDependency */,
+				EE8A514EFFF9B467DC28D454 /* PBXTargetDependency */,
+			);
+			name = NetEqRTPplay;
+			productName = NetEqRTPplay;
+			productReference = E9BA9D39B3781F2D155FD8AD /* NetEqRTPplay */;
+			productType = "com.apple.product-type.tool";
+		};
+		61E4974A873C24A46D04F455 /* RTPanalyze */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6C245F7A42B8E5201D7DFA12 /* Build configuration list for PBXNativeTarget "RTPanalyze" */;
+			buildPhases = (
+				4290D847BC0EB7E665F14948 /* Sources */,
+				BBE1559F2371C137EC737FA9 /* Frameworks */,
+				C98D10053843D77A0E5D1427 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				46FE57F0EE9409A08002048F /* PBXTargetDependency */,
+				84023F3254B4E63F8F7B0C80 /* PBXTargetDependency */,
+				CEBE5F98A2BC694EFBE12F39 /* PBXTargetDependency */,
+				48AF40FFCA9010B57619C936 /* PBXTargetDependency */,
+				F6F852EF7E5EA23F16E7DFD1 /* PBXTargetDependency */,
+				E20C9222CD48B67B30FC82CB /* PBXTargetDependency */,
+				A24E2AA2368E6542FB287F95 /* PBXTargetDependency */,
+				E56017CE7670C2461DD3FCD9 /* PBXTargetDependency */,
+			);
+			name = RTPanalyze;
+			productName = RTPanalyze;
+			productReference = 273AD27ABB3B0F13DAFE14F9 /* RTPanalyze */;
+			productType = "com.apple.product-type.tool";
+		};
+		786E25629AAC2B81E3609DCC /* RTPencode */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 26055349C0B70CB3723FF9D7 /* Build configuration list for PBXNativeTarget "RTPencode" */;
+			buildPhases = (
+				92A2FBEAA9E96EF2CA5F8550 /* Sources */,
+				1C692A12388E9030419DF9E1 /* Frameworks */,
+				116AD351DD65B8EEEE0ADE50 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3E88C5E688F1B2DFA96FB484 /* PBXTargetDependency */,
+				CB7B88B3D8A4E70BB88B8126 /* PBXTargetDependency */,
+				6D792B70F3A961773907F53C /* PBXTargetDependency */,
+				CDFE2E17EF6863DE1E0197C8 /* PBXTargetDependency */,
+				09376E0D4DDDD87E43DEF6F1 /* PBXTargetDependency */,
+				328FB7FB4589F3FF95830323 /* PBXTargetDependency */,
+				84E1251FF8F9CD7C7B7B4051 /* PBXTargetDependency */,
+				5D64906FC4720699D764E896 /* PBXTargetDependency */,
+				D2F37DD3D862BB160DCD5A2A /* PBXTargetDependency */,
+			);
+			name = RTPencode;
+			productName = RTPencode;
+			productReference = BB9E9B5A2264327E8AA41579 /* RTPencode */;
+			productType = "com.apple.product-type.tool";
+		};
+		8C49BA63C4BBBFBF7706AC5D /* RTPchange */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C43D2BA31B131BA0FEE2B433 /* Build configuration list for PBXNativeTarget "RTPchange" */;
+			buildPhases = (
+				BBD3793B91C6460C1FFB8B5A /* Sources */,
+				D1E140520B6108682E4D0EC3 /* Frameworks */,
+				06E570BDABE98BB3B082FD00 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7D6257CEAD5EEAB24FE67586 /* PBXTargetDependency */,
+				A7F5CCDEB1747681A06740AB /* PBXTargetDependency */,
+				7FBCBBBDF3ACAC44B31F1BAF /* PBXTargetDependency */,
+				3B33FAE953289AEB4CB4C0B0 /* PBXTargetDependency */,
+				D7A732FB7CE77B49F94CCABD /* PBXTargetDependency */,
+				27527FC152D05E2A521D8F81 /* PBXTargetDependency */,
+				106637537D2305C5A79113E4 /* PBXTargetDependency */,
+				096A0B486540CE2CB08FA67D /* PBXTargetDependency */,
+			);
+			name = RTPchange;
+			productName = RTPchange;
+			productReference = 17B294C2D7BAFBDA7F2E6BFD /* RTPchange */;
+			productType = "com.apple.product-type.tool";
+		};
+		DD8D7A920A3F2A113E3F5117 /* RTPjitter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 41E9D01F6B1E43A865BF7A21 /* Build configuration list for PBXNativeTarget "RTPjitter" */;
+			buildPhases = (
+				AD93663C81A5EE6E67CB8826 /* Sources */,
+				A0C885928622959B836CBC1C /* Frameworks */,
+				8A83BA8D1DA24617626C9AE7 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RTPjitter;
+			productName = RTPjitter;
+			productReference = 2E95178ACD435BDFC91B1D2B /* RTPjitter */;
+			productType = "com.apple.product-type.tool";
+		};
+		E87F0572D73DF6CEED93DB79 /* RTPtimeshift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1535AE77599E9C91BDB4FCE5 /* Build configuration list for PBXNativeTarget "RTPtimeshift" */;
+			buildPhases = (
+				E23B0FD2D158300330DBE6BA /* Sources */,
+				2FC397D4AA9E34D2E3C2F5FD /* Frameworks */,
+				01AD910D28832AB7F3D193A6 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8A3024186ABE26948A04AE2 /* PBXTargetDependency */,
+				EECF1254680F64E7F6C2B860 /* PBXTargetDependency */,
+				9CEEE6E452463022BD6D50F4 /* PBXTargetDependency */,
+				1CE1609AE98EDED498DF8473 /* PBXTargetDependency */,
+				6522BD96EB28F93DDD9FB25F /* PBXTargetDependency */,
+				954384FC681D20DD7B8B85A9 /* PBXTargetDependency */,
+				79DF1047B1ED7B70A291B74F /* PBXTargetDependency */,
+				C5905C6236BA1F2B4DAAFC2A /* PBXTargetDependency */,
+			);
+			name = RTPtimeshift;
+			productName = RTPtimeshift;
+			productReference = D4CD5B447FB5C8FBBC60D2C4 /* RTPtimeshift */;
+			productType = "com.apple.product-type.tool";
+		};
+		F69624931BD12E856E6DB7FC /* NetEqTestTools */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A6FB4C0C72C815E2C120EFB3 /* Build configuration list for PBXNativeTarget "NetEqTestTools" */;
+			buildPhases = (
+				D1364F0C5E31752EC3D469B9 /* Sources */,
+				B42978EEB00DA10EAE3C2936 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetEqTestTools;
+			productName = NetEqTestTools;
+			productReference = 713E883ED85FA1F442E7345E /* libNetEqTestTools.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1E354639F2A9135068CD5160 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 79ED7786A538F4DA4F2BE219 /* Build configuration list for PBXProject "neteq" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 232A29EAB78A01000DA9DEF3;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = C0FB755CCBE827826EFA2BA8 /* Products */;
+					ProjectRef = 503296B1E3442CF9C43310B2 /* cng.xcodeproj */;
+				},
+				{
+					ProductGroup = 401E1C0200EFC29F3EAD462A /* Products */;
+					ProjectRef = 965CC0575D33164E14BDFF05 /* g711.xcodeproj */;
+				},
+				{
+					ProductGroup = 758D5FE3D56C0C73722099F7 /* Products */;
+					ProjectRef = CC4F5E79BF9A87A7EEA4CF8C /* g722.xcodeproj */;
+				},
+				{
+					ProductGroup = C37003151653D9588F741929 /* Products */;
+					ProjectRef = D698809702E2755B6BE65A74 /* ilbc.xcodeproj */;
+				},
+				{
+					ProductGroup = B9938FC436C489E0D195A377 /* Products */;
+					ProjectRef = 5563813375A1C97D4FB4AE5F /* isac.xcodeproj */;
+				},
+				{
+					ProductGroup = 4B94C6EDC59A6467964FC82A /* Products */;
+					ProjectRef = 17A491F112F5FFAA4FC1267A /* pcm16b.xcodeproj */;
+				},
+				{
+					ProductGroup = A8890A14A396505B144EC326 /* Products */;
+					ProjectRef = A7226A35B0919F4A4B06B18B /* spl.xcodeproj */;
+				},
+				{
+					ProductGroup = C8CB78DA6327C0819AB51D7A /* Products */;
+					ProjectRef = E53F7313DAB7D36982EB11D1 /* vad.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				B69E3F62AC57C974A76FCA55 /* All */,
+				363E4CB4DDACCE2CA667195C /* NetEq */,
+				52627D53C308C79B4FC1D820 /* NetEqRTPplay */,
+				786E25629AAC2B81E3609DCC /* RTPencode */,
+				DD8D7A920A3F2A113E3F5117 /* RTPjitter */,
+				61E4974A873C24A46D04F455 /* RTPanalyze */,
+				8C49BA63C4BBBFBF7706AC5D /* RTPchange */,
+				E87F0572D73DF6CEED93DB79 /* RTPtimeshift */,
+				08E19BD98554D46D5C00DDB9 /* RTPcat */,
+				F69624931BD12E856E6DB7FC /* NetEqTestTools */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		20553DC5BB7077B916656F72 /* g711_test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = g711_test;
+			remoteRef = 355A82E3A1F50649BF2B7640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		342C0F938AD7083CE211851F /* G722Test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = G722Test;
+			remoteRef = 145A8B3287D4F6C909F3756A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		452ADC54719987C22DB1D6D7 /* libCNG.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libCNG.a;
+			remoteRef = 27EA63594C927F762114C525 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4A9FFD075CFDB21030599A97 /* libG711.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libG711.a;
+			remoteRef = 99828BE9ADD7A4FC176C2737 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		57F2DA4A34093B7A3CAE3CC3 /* libiSAC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiSAC.a;
+			remoteRef = D9CB0A0DB1441DFC65E76BD7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5A75824B2219E858C860993D /* libG722.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libG722.a;
+			remoteRef = D80D32251CA693E120BB8D03 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		7F68933BD1D7F8426732E333 /* libiLBC.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libiLBC.a;
+			remoteRef = B7D57050769E1E329802FDAC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8BEF8F4D8F9D797A5FEE52FE /* libvad.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvad.a;
+			remoteRef = B1C788305F8D72D09A09BDEA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9C2357A51545AF3179D8686E /* libPCM16B.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libPCM16B.a;
+			remoteRef = 124FF8DC38E4A1EAD31CED41 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DFF8116BAB69C1F492AD9EA5 /* libspl.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libspl.a;
+			remoteRef = BF6E5269947EAB9B9949BF4F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		018C0E7369720B4AE87AEB9C /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		01AD910D28832AB7F3D193A6 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		06E570BDABE98BB3B082FD00 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		116AD351DD65B8EEEE0ADE50 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		799089116CDA33D1631C3D70 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		8A83BA8D1DA24617626C9AE7 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		C98D10053843D77A0E5D1427 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		31511F2FF263630C09C642FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BDEC7A64D7C5B3F85CA0335 /* NetEqRTPplay.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4290D847BC0EB7E665F14948 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2DFE0AF0925B345E69D8CC53 /* RTPanalyze.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8AD9E09782B9CC8EB3D8E71B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				279FF1FB19026B71718B3E53 /* RTPcat.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92A2FBEAA9E96EF2CA5F8550 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EB7602EB60F3DD52E1A305C /* RTPencode.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AADCA61CEF068BB7BF5EA9AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				376C731DFBAE8630B5AF4AF0 /* accelerate.c in Sources */,
+				04FE5FBD1B58690F290A5F72 /* automode.c in Sources */,
+				CF8CED5E61E48A1E99D77DA3 /* bgn_update.c in Sources */,
+				1C99D9DE1DBEF7B7CAC2653A /* bufstats_decision.c in Sources */,
+				042EDE27C47991EA35EF66C2 /* cng_internal.c in Sources */,
+				5D39BB6497E57D12EADB83D6 /* codec_db.c in Sources */,
+				6B40807CA24D0619D85B46F7 /* correlator.c in Sources */,
+				015339AC2098EABF9007980A /* dsp.c in Sources */,
+				A6624AFE94407EA649F12159 /* dsp_helpfunctions.c in Sources */,
+				6BE6728187E7A000EEFD86F8 /* dtmf_buffer.c in Sources */,
+				59999C0872AAD3DA82D9B6B4 /* dtmf_tonegen.c in Sources */,
+				F11B59100AD708565AA9CC18 /* expand.c in Sources */,
+				203162EF8A59A030B7EA66A4 /* mcu_address_init.c in Sources */,
+				6E75EC0AE0A74813C44F4237 /* mcu_dsp_common.c in Sources */,
+				2D8ABA653049F0B4701AEC1A /* mcu_reset.c in Sources */,
+				866914789F1C3A9FF55115A1 /* merge.c in Sources */,
+				96B56C62E9E6862ABCE50891 /* min_distortion.c in Sources */,
+				2BD0B693A9E5E7481028D3AB /* mix_voice_unvoice.c in Sources */,
+				CA696ED95882038CEFA67CF4 /* mute_signal.c in Sources */,
+				8DD0802967A66CE0266D9115 /* normal.c in Sources */,
+				C4B37D4B28EEADEA544362D8 /* packet_buffer.c in Sources */,
+				026294BF7DC9664AA78DFCBE /* peak_detection.c in Sources */,
+				FAAD6EF00C79FAC8A30E7E43 /* preemptive_expand.c in Sources */,
+				FEDD3A833D43FD98B586AEFA /* random_vector.c in Sources */,
+				517753F6B2B310EE0016B94F /* recin.c in Sources */,
+				7C6B38CC50EC14DBD680EEC7 /* recout.c in Sources */,
+				2C9D630AA5AD943C7E357285 /* rtcp.c in Sources */,
+				488C16ADC494CCB78F87DB97 /* rtp.c in Sources */,
+				5C73E983947D05B11CDF3A82 /* set_fs.c in Sources */,
+				65F2846AD4F7983918C4BD08 /* signal_mcu.c in Sources */,
+				3939DA42A9548821DF671EB5 /* split_and_insert.c in Sources */,
+				C18580243989A6D62FE50ABC /* unmute_signal.c in Sources */,
+				C18A2EBC7B26EB0194A3A24D /* webrtc_neteq.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AD93663C81A5EE6E67CB8826 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7E359078E95231A9D71762D9 /* RTPjitter.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BBD3793B91C6460C1FFB8B5A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B54A518340D4902DB4273AB /* RTPchange.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D1364F0C5E31752EC3D469B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4C60ECC2ED49ACDA57CB75B8 /* NETEQTEST_NetEQClass.cc in Sources */,
+				BA967A1645A8FC688662815B /* NETEQTEST_RTPpacket.cc in Sources */,
+				8D888D8E8AF49495378E2F10 /* NETEQTEST_CodecClass.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E23B0FD2D158300330DBE6BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				13EF91A690FA58A4BFCF3D03 /* RTPtimeshift.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		07E26D8214541E093215E86B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E87F0572D73DF6CEED93DB79 /* RTPtimeshift */;
+			targetProxy = 1080BC82E4406066C8791BFC /* PBXContainerItemProxy */;
+		};
+		0930CE81AF5D46ED3C992B48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = 07B8EB36B646BE927785D67C /* PBXContainerItemProxy */;
+		};
+		09376E0D4DDDD87E43DEF6F1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = 3D1C4421F3016FE7E27E6748 /* PBXContainerItemProxy */;
+		};
+		096A0B486540CE2CB08FA67D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = A697DAE16152EA790FC19C44 /* PBXContainerItemProxy */;
+		};
+		106637537D2305C5A79113E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = 2322103041568E218A4DB65A /* PBXContainerItemProxy */;
+		};
+		145D81976D1CD9E423AF809F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = 7AFF1330894F3527E8494C3D /* PBXContainerItemProxy */;
+		};
+		1931E9263691E9D7BDB12E0A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 786E25629AAC2B81E3609DCC /* RTPencode */;
+			targetProxy = C6F1DA0B8DB783ED0A1F1331 /* PBXContainerItemProxy */;
+		};
+		1BA292784A728E1D9886CF74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = BFAEDC366504518142F6DFAE /* PBXContainerItemProxy */;
+		};
+		1CE1609AE98EDED498DF8473 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = 72FE50FF36B33B9960858D72 /* PBXContainerItemProxy */;
+		};
+		1D6FF8FCBC8D4D1F9C3202DD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = C5DEF22012A6A838755497F7 /* PBXContainerItemProxy */;
+		};
+		1DC23826C132FF6CA26B15C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 5D2B6C63439C51B3858A31D8 /* PBXContainerItemProxy */;
+		};
+		25C21526A20B957CC0E740F2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = DD6B0A03AE6D60D396707825 /* PBXContainerItemProxy */;
+		};
+		270E1A9716CC882BDAB4C75C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 363E4CB4DDACCE2CA667195C /* NetEq */;
+			targetProxy = C142EB28F0FEDA44CB999070 /* PBXContainerItemProxy */;
+		};
+		27527FC152D05E2A521D8F81 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = 03BE44A01F8C21962F59AC88 /* PBXContainerItemProxy */;
+		};
+		2D54A4D495202E0B0450EB14 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = 93233D603463F6D0A35686CC /* PBXContainerItemProxy */;
+		};
+		328FB7FB4589F3FF95830323 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = 2D499E683712DBB56E4B24EC /* PBXContainerItemProxy */;
+		};
+		3B33FAE953289AEB4CB4C0B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = 6DA861555AFDC172EE82A1E6 /* PBXContainerItemProxy */;
+		};
+		3E88C5E688F1B2DFA96FB484 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = D5C50DF05E1F59640A558B88 /* PBXContainerItemProxy */;
+		};
+		41AE2A67CA34E6D91937E9CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 08E19BD98554D46D5C00DDB9 /* RTPcat */;
+			targetProxy = 310AF6A69451774449302E94 /* PBXContainerItemProxy */;
+		};
+		46FE57F0EE9409A08002048F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = 9BF4423C35EE9A168BB34A43 /* PBXContainerItemProxy */;
+		};
+		48AF40FFCA9010B57619C936 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = EE56AF33AF9E74914E6FC9A5 /* PBXContainerItemProxy */;
+		};
+		5D64906FC4720699D764E896 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = vad;
+			targetProxy = 2F32A91302C2E55BD020D547 /* PBXContainerItemProxy */;
+		};
+		5DFA69057FC0556FB24B5AFF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD8D7A920A3F2A113E3F5117 /* RTPjitter */;
+			targetProxy = 629BF3E2D8952053843965FC /* PBXContainerItemProxy */;
+		};
+		616F3618A673D05AB984222B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = 32C1FEB06E0F6E8C6141BA16 /* PBXContainerItemProxy */;
+		};
+		6522BD96EB28F93DDD9FB25F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = B93C1357CCEE5AF71605BC0E /* PBXContainerItemProxy */;
+		};
+		6D792B70F3A961773907F53C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 54771BF9328474D82D9BB09E /* PBXContainerItemProxy */;
+		};
+		79DF1047B1ED7B70A291B74F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = DCD53CA0D77BCFDAA359628F /* PBXContainerItemProxy */;
+		};
+		7D6257CEAD5EEAB24FE67586 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = 9A2D165590CF30BF2BDEE3C6 /* PBXContainerItemProxy */;
+		};
+		7D651C571E879E9BBF2DF74A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 363E4CB4DDACCE2CA667195C /* NetEq */;
+			targetProxy = 446EE6A21915FB49D43EE0A5 /* PBXContainerItemProxy */;
+		};
+		7FBCBBBDF3ACAC44B31F1BAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 2F9C838978101931C176375A /* PBXContainerItemProxy */;
+		};
+		84023F3254B4E63F8F7B0C80 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = 52D6BEE6181D413BD394120D /* PBXContainerItemProxy */;
+		};
+		84E1251FF8F9CD7C7B7B4051 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = 5B1E50905243A1F379AFAADB /* PBXContainerItemProxy */;
+		};
+		8C6D7EF63910C2DC2524563E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = 2C249647E203E29B85626EF8 /* PBXContainerItemProxy */;
+		};
+		8CBF3716EEAD951D7A3E10CD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = 6FD16FB987D5F852FB1CD487 /* PBXContainerItemProxy */;
+		};
+		954384FC681D20DD7B8B85A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = 5350CCB7D7547686EACD95CE /* PBXContainerItemProxy */;
+		};
+		991B58EE1B2C2DD9193C55BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8C49BA63C4BBBFBF7706AC5D /* RTPchange */;
+			targetProxy = 835924460CB6E83A68128EF3 /* PBXContainerItemProxy */;
+		};
+		9CEEE6E452463022BD6D50F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 6833D70E1F3B136383CF0CF3 /* PBXContainerItemProxy */;
+		};
+		9FD1B58F8E1B83AC4F5BCF43 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = A54735AB18CCD7D615AAB466 /* PBXContainerItemProxy */;
+		};
+		A24E2AA2368E6542FB287F95 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iSAC;
+			targetProxy = 10277A93ADAB15C6480554F4 /* PBXContainerItemProxy */;
+		};
+		A6A51A5C94C8C02C46A62788 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 7247245F35BB9F5D3EF9953C /* PBXContainerItemProxy */;
+		};
+		A7F5CCDEB1747681A06740AB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = FDD84EC3FB707FC2D71A2D18 /* PBXContainerItemProxy */;
+		};
+		C5905C6236BA1F2B4DAAFC2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = 2C6AF7E37D6BB3E7DDFCEFB3 /* PBXContainerItemProxy */;
+		};
+		C5A70F590C7A6769CEB8E2C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = 4069F30A554F658148DDAEEE /* PBXContainerItemProxy */;
+		};
+		C8A5FA6D6CCB0935B365571C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = 791753488AC6D1FAEAB86F78 /* PBXContainerItemProxy */;
+		};
+		CB7B88B3D8A4E70BB88B8126 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = 52F673373A8A3E70F5DD85E2 /* PBXContainerItemProxy */;
+		};
+		CDAB5745A601983D2317A8B8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = 33B067DF2AB963328DC33242 /* PBXContainerItemProxy */;
+		};
+		CDFE2E17EF6863DE1E0197C8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = PCM16B;
+			targetProxy = 505D18A147A0FC29C6E05B6A /* PBXContainerItemProxy */;
+		};
+		CEBE5F98A2BC694EFBE12F39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G722;
+			targetProxy = 40D5B8871042BB8EE06D53E0 /* PBXContainerItemProxy */;
+		};
+		D2F37DD3D862BB160DCD5A2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = 41FE630B1113B0ECD56494C9 /* PBXContainerItemProxy */;
+		};
+		D7A732FB7CE77B49F94CCABD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = C61D31D7F7900367CC0E96A5 /* PBXContainerItemProxy */;
+		};
+		D8A3024186ABE26948A04AE2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F69624931BD12E856E6DB7FC /* NetEqTestTools */;
+			targetProxy = 97F0857FB1AF1F003A5ABDE4 /* PBXContainerItemProxy */;
+		};
+		E20C9222CD48B67B30FC82CB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = D5314BA5A3DC536BD94EEE83 /* PBXContainerItemProxy */;
+		};
+		E56017CE7670C2461DD3FCD9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CNG;
+			targetProxy = 31AE9C060CAA45B92E086D21 /* PBXContainerItemProxy */;
+		};
+		E74A3987F5E7E473474D15B1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = 94EBEA6E1DFDBA09A67C3BA7 /* PBXContainerItemProxy */;
+		};
+		EB763B81D45B5438A21F8498 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52627D53C308C79B4FC1D820 /* NetEqRTPplay */;
+			targetProxy = F2B472830A39CCC0126A46A0 /* PBXContainerItemProxy */;
+		};
+		EE8A514EFFF9B467DC28D454 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = spl;
+			targetProxy = B6F9280E4E600F536633C435 /* PBXContainerItemProxy */;
+		};
+		EECF1254680F64E7F6C2B860 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = G711;
+			targetProxy = D02CFBE07C796665967B30C0 /* PBXContainerItemProxy */;
+		};
+		F6F852EF7E5EA23F16E7DFD1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = iLBC;
+			targetProxy = E9BFE7873123C4A17E054B0A /* PBXContainerItemProxy */;
+		};
+		FC2752409B2CE043153B5E54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 61E4974A873C24A46D04F455 /* RTPanalyze */;
+			targetProxy = B943051CB8D288EC2CEA7D8E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1900991D0C44B9605F505715 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPchange;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		1C87ADAEA3521881292FD507 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Debug;
+		};
+		1D106E53577056B9C9212E43 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Release;
+		};
+		245467E3C24F9E565F0770A6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../test,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+					../../../../../common_audio/vad/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPencode;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		302530C982C3AB0EC3C41802 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPanalyze;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		308F1CEFCEBF1D4D7DA6F9BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPcat;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		321FAB31AC05BEEFE066A96B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../xcodebuild;
+			};
+			name = Release;
+		};
+		3909E1ADAC466D11CB6603B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPtimeshift;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		3F482684B68CB588B1713EDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPcat;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		5AA66B6E09287E97A34E6F98 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NETEQ_VOICEENGINE_CODECS\"",
+					"\"SCRATCH\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../codecs/CNG/main/interface,
+					../../../../../common_audio/signal_processing_library/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEq;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		715A013477DDFE92142FEC99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPtimeshift;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		778C8BC417E361DA96FB8656 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../source,
+					../interface,
+					../test,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEqTestTools;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		7D14ECDD3445734D61E2DCF1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../source,
+					../test,
+					../interface,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEqRTPplay;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		89F4FFAAC34F5D8BE6A455CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPanalyze;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		AAF550863AA983B4E162CFB6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../test,
+					../interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPchange;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		C8CA8AF071BCE2928ED0690A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../test,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+					../../../../../common_audio/vad/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPencode;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		D57FB174E178E5B3F88D6820 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../source,
+					../test,
+					../interface,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEqRTPplay;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		D9E47024E6A01730EDB19E54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPjitter;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		E463CBEEE2723378B4154E5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		F3E08323491FF6FC23C6776C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = RTPjitter;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		FC6E0D133CF9133D1742F564 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NETEQ_VOICEENGINE_CODECS\"",
+					"\"SCRATCH\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../codecs/CNG/main/interface,
+					../../../../../common_audio/signal_processing_library/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEq;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		FF176290CD9A7860E90E545A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"CODEC_ILBC\"",
+					"\"CODEC_PCM16B\"",
+					"\"CODEC_G711\"",
+					"\"CODEC_G722\"",
+					"\"CODEC_ISAC\"",
+					"\"CODEC_PCM16B_WB\"",
+					"\"CODEC_ISAC_SWB\"",
+					"\"CODEC_PCM16B_32KHZ\"",
+					"\"CODEC_CNGCODEC8\"",
+					"\"CODEC_CNGCODEC16\"",
+					"\"CODEC_CNGCODEC32\"",
+					"\"CODEC_ATEVENT_DECODE\"",
+					"\"CODEC_RED\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../source,
+					../interface,
+					../test,
+					../../../codecs/G711/main/interface,
+					../../../codecs/G722/main/interface,
+					../../../codecs/PCM16B/main/interface,
+					../../../codecs/iLBC/main/interface,
+					../../../codecs/iSAC/main/interface,
+					../../../codecs/CNG/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = NetEqTestTools;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1535AE77599E9C91BDB4FCE5 /* Build configuration list for PBXNativeTarget "RTPtimeshift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3909E1ADAC466D11CB6603B3 /* Debug */,
+				715A013477DDFE92142FEC99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		26055349C0B70CB3723FF9D7 /* Build configuration list for PBXNativeTarget "RTPencode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8CA8AF071BCE2928ED0690A /* Debug */,
+				245467E3C24F9E565F0770A6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		41E9D01F6B1E43A865BF7A21 /* Build configuration list for PBXNativeTarget "RTPjitter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F3E08323491FF6FC23C6776C /* Debug */,
+				D9E47024E6A01730EDB19E54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		49963EDEAF5C1CE2EB1BC5D9 /* Build configuration list for PBXNativeTarget "NetEq" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FC6E0D133CF9133D1742F564 /* Debug */,
+				5AA66B6E09287E97A34E6F98 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		6C245F7A42B8E5201D7DFA12 /* Build configuration list for PBXNativeTarget "RTPanalyze" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				302530C982C3AB0EC3C41802 /* Debug */,
+				89F4FFAAC34F5D8BE6A455CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		6EC8088723290DD8D7AFE8D4 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C87ADAEA3521881292FD507 /* Debug */,
+				1D106E53577056B9C9212E43 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		79ED7786A538F4DA4F2BE219 /* Build configuration list for PBXProject "neteq" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E463CBEEE2723378B4154E5A /* Debug */,
+				321FAB31AC05BEEFE066A96B /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		7E50FD4E5EA39ED7956A4522 /* Build configuration list for PBXNativeTarget "NetEqRTPplay" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D57FB174E178E5B3F88D6820 /* Debug */,
+				7D14ECDD3445734D61E2DCF1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		889945E09EA7E6196EAB80FC /* Build configuration list for PBXNativeTarget "RTPcat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3F482684B68CB588B1713EDE /* Debug */,
+				308F1CEFCEBF1D4D7DA6F9BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		A6FB4C0C72C815E2C120EFB3 /* Build configuration list for PBXNativeTarget "NetEqTestTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				778C8BC417E361DA96FB8656 /* Debug */,
+				FF176290CD9A7860E90E545A /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		C43D2BA31B131BA0FEE2B433 /* Build configuration list for PBXNativeTarget "RTPchange" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1900991D0C44B9605F505715 /* Debug */,
+				AAF550863AA983B4E162CFB6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1E354639F2A9135068CD5160 /* Project object */;
+}

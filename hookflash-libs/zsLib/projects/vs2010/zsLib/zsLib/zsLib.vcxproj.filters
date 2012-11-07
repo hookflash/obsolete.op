@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{2c0748a8-1942-490b-9ef7-fa4a6b7a8b34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{4ccc1ad4-a341-461f-be88-3fe97c86a4df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\zsLib\Event.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Exception.h" />
+    <ClInclude Include="..\..\..\..\zsLib\IPAddress.h" />
+    <ClInclude Include="..\..\..\..\zsLib\ISocket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Log.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueue.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueueAssociator.h" />
+    <ClInclude Include="..\..\..\..\zsLib\MessageQueueThread.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Numeric.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Proxy.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Socket.h" />
+    <ClInclude Include="..\..\..\..\zsLib\String.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Stringize.h" />
+    <ClInclude Include="..\..\..\..\zsLib\Timer.h" />
+    <ClInclude Include="..\..\..\..\zsLib\XML.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsHelpers.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsLib.h" />
+    <ClInclude Include="..\..\..\..\zsLib\zsTypes.h" />
+    <ClInclude Include="..\..\..\..\zsLib\internal\boostTypes.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Event.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Exception.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\IPAddress.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\ISocket.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Log.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueue.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThread.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadBasic.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\MessageQueueThreadUsingMainThreadMessageQueueForApple.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Numeric.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Proxy.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\ProxyPack.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Socket.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\SocketMonitor.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Stringize.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\Timer.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\TimerMonitor.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\XML.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\zsLib\internal\zsTypes.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\zsLib\lgpl-3.0.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Event.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\IPAddress.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Log.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueue.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThread.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadBasic.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\MessageQueueThreadUsingMainThreadMessageQueueForApple.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Numeric.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Proxy.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Socket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\SocketMonitor.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\String.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Stringize.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\Timer.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\TimerMonitor.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XML.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLAttribute.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLComment.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLDeclaration.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLDocument.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLElement.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLNode.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParser.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParserPos.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLParserWarningTypes.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLText.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\XMLUnknown.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\zsHelpers.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\zsLib\cpp\zsLib.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

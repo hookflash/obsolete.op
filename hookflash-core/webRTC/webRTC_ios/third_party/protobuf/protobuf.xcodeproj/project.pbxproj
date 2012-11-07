@@ -1,0 +1,1648 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		17D5580949FDA8CAC7C2CAF8 /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 22A8079D09FCEE5CEA3EDD86 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				4B2A78FEA80B5BBBE624A811 /* PBXTargetDependency */,
+				665221EF988E43B37831F9A6 /* PBXTargetDependency */,
+				BA1BA221E8BD1FE4685AB481 /* PBXTargetDependency */,
+				3993E2C40D082EDAAA850095 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+		790FD8255E43A003688436A8 /* py_proto */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 817F9014C5E45829895C251F /* Build configuration list for PBXAggregateTarget "py_proto" */;
+			buildPhases = (
+				DFADFFBF321063416BB7793B /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				E9D33597A739A23C67DD6252 /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				9BB1BE1F240066EB9F37C671 /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/ */,
+			);
+			dependencies = (
+			);
+			name = py_proto;
+			productName = py_proto;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		0198D62F626140F53CD2CB24 /* message.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7384938AB8FCB03B82E8B219 /* message.cc */; };
+		0384E7ED8D304FBE82B8D696 /* extension_set_heavy.cc in Sources */ = {isa = PBXBuildFile; fileRef = D3CB0730BF410D831A1115AD /* extension_set_heavy.cc */; };
+		0CF0CCAC07DDB1849F66568E /* service.cc in Sources */ = {isa = PBXBuildFile; fileRef = 69429D35882D1239F7FCB5B5 /* service.cc */; };
+		0ECDB050007922D37BC0DF21 /* descriptor.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 11B121F7C4C7AEC43C40D294 /* descriptor.py */; };
+		0F860140A5C074C8529B0FB9 /* substitute.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9444182A7E485FD8A1A3E6FA /* substitute.cc */; };
+		134448A90B32304E46499378 /* java_primitive_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 12523A153E76B243C62384FF /* java_primitive_field.cc */; };
+		171291855B44D41ECF934644 /* cpp_message_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0AE15E4920CA30EC14D7E7CB /* cpp_message_field.cc */; };
+		1DAD7714EB1C4B1BA49060E2 /* zero_copy_stream.cc in Sources */ = {isa = PBXBuildFile; fileRef = E49498B3764DD2345965D048 /* zero_copy_stream.cc */; };
+		213F9BF992862BC9E163832D /* service.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 6D4CA0D6C8E76001BBC8BE0A /* service.py */; };
+		2456E97FBF4281CC4B2D63C4 /* type_checkers.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 01620C5972F1653E7A18E8B2 /* type_checkers.py */; };
+		2AAB52200FF660D668126163 /* java_helpers.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2C2368FC10425DC53E913FDA /* java_helpers.cc */; };
+		2B3D441114DBECC2333D9597 /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 24BC86504D5CC5899571EC01 /* __init__.py */; };
+		3447271C7DAD3415BDD83C5D /* cpp_extension.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0FF8930D1D8E9B9C8C911E06 /* cpp_extension.cc */; };
+		36BAFC054E683AE257151C3A /* reflection.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 20D79C06470CBBD555DEAF20 /* reflection.py */; };
+		399E6719BEC022D2615CABFA /* atomicops_internals_x86_gcc.cc in Sources */ = {isa = PBXBuildFile; fileRef = E0B99F36701EC1D704F2C04A /* atomicops_internals_x86_gcc.cc */; };
+		3B0838A2BC0C47B33CF51DA5 /* java_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1D30E875B324597F43C6162A /* java_generator.cc */; };
+		3B91D2113449D663E3E97F63 /* libprotobuf_lite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ED1A3CE55B737DFE6DFE8E2 /* libprotobuf_lite.a */; };
+		3D8A799BE7CF347E30C9A595 /* zero_copy_stream_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 60DC99E681413A25750DDD40 /* zero_copy_stream_impl.cc */; };
+		3FAA74CC5F028460E750B699 /* tokenizer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 062F4AFE1909D2E55A59280C /* tokenizer.cc */; };
+		45D23DF50169BA349E1DABB3 /* importer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 02F2F6A3AFD6900B7B6A86C1 /* importer.cc */; };
+		47ABA340B03A245A3D45E3D1 /* text_format.cc in Sources */ = {isa = PBXBuildFile; fileRef = E798B09F5BE520D18C41C20A /* text_format.cc */; };
+		4BE518F4251E086AAA47FB80 /* java_message.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A187BBB326421C9320EA3BA /* java_message.cc */; };
+		4F386B923E2019752AC820D1 /* message_listener.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = F4CFD9E9BDAB59614E4C390B /* message_listener.py */; };
+		4F5F49BCEC789C4CD2D6B64D /* once.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6F406AFB43A0FB3F1C104C83 /* once.cc */; };
+		4F820188CB6113DDD01CF24B /* extension_set.cc in Sources */ = {isa = PBXBuildFile; fileRef = C7820D2F71BB2E4EE79C0D55 /* extension_set.cc */; };
+		4F991B9EBADA135DD77207FB /* cpp_string_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = AF03C04623C0C32F86FC6814 /* cpp_string_field.cc */; };
+		53511E1B6355BB1F4D1363D5 /* java_message_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 11082E0D5440E45DE841DD9F /* java_message_field.cc */; };
+		56752C7B9247D8D6CE8007EE /* generated_message_reflection.cc in Sources */ = {isa = PBXBuildFile; fileRef = 986ED134087988E474722928 /* generated_message_reflection.cc */; };
+		6594843B8B28477814F031C1 /* message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 5475D9C921DD5E8282580631 /* message.py */; };
+		6A091AB09137812A28F9DC89 /* wire_format_lite.cc in Sources */ = {isa = PBXBuildFile; fileRef = 97E48D025A48D59530DE6FA4 /* wire_format_lite.cc */; };
+		6DBBB264BB08991271E2C848 /* atomicops_internals_x86_msvc.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6A3DC0D7343DEED45767D573 /* atomicops_internals_x86_msvc.cc */; };
+		725AE683A6503C7B442A6A5A /* command_line_interface.cc in Sources */ = {isa = PBXBuildFile; fileRef = 003944DFDA6D708FBE99CE93 /* command_line_interface.cc */; };
+		75D472B13B2BF692572BFB9A /* cpp_service.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4E3AD3CA9B390303049DF4BC /* cpp_service.cc */; };
+		768462583F5A1620C1FFD693 /* cpp_enum_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = EA340F133662E8CBB6400344 /* cpp_enum_field.cc */; };
+		780A58C709A07F00C8F06E64 /* python_message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 630BEEF9B008A3CB10E292A7 /* python_message.py */; };
+		7A701153978DF3125F759EA1 /* api_implementation.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 883C4E222943BE6D64C69307 /* api_implementation.py */; };
+		852A1559912FEEC1946B70D8 /* java_service.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2F2FC46714C4536B00F634E5 /* java_service.cc */; };
+		8550C79C4915EF4AB48ACC0E /* structurally_valid.cc in Sources */ = {isa = PBXBuildFile; fileRef = D0101A87B25090991E8B5614 /* structurally_valid.cc */; };
+		858FF963669215E4313C83AB /* zero_copy_stream_impl_lite.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9CE9326B7FBD546AFEC89CD0 /* zero_copy_stream_impl_lite.cc */; };
+		862D03DC108028C496A1CEB8 /* java_extension.cc in Sources */ = {isa = PBXBuildFile; fileRef = D34E6FD2BDABF9418E559E2F /* java_extension.cc */; };
+		863FF26FEBD3CC1653C00443 /* strutil.cc in Sources */ = {isa = PBXBuildFile; fileRef = 59F30FED391C1B9A2815921D /* strutil.cc */; };
+		8854CDB52BF207801896FB03 /* plugin.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = FE3FF6414121FBFF6C9F5EF5 /* plugin.pb.cc */; };
+		92BF6D8A58294CCECC1923FB /* common.cc in Sources */ = {isa = PBXBuildFile; fileRef = 76F2F7951F1DFCB0577C7F04 /* common.cc */; };
+		9323E30118B1212D979345D0 /* java_enum_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7EBA98D38DD1EC239CDC4AC6 /* java_enum_field.cc */; };
+		938DC7970135200A0243E4A6 /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = FE47D25701B500DB1F5378BB /* __init__.py */; };
+		95F46508DCEB47CF5ECCC78B /* cpp_primitive_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 22477B3C6FE172667FAEE0FD /* cpp_primitive_field.cc */; };
+		98D53133EE6C606339EEFD89 /* generator_test.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = D8D3109C9513D95FF90AEEB4 /* generator_test.py */; };
+		9E8629E13690A89545A7AE59 /* libprotobuf_full_do_not_use.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 915840D83859C0616AD7144B /* libprotobuf_full_do_not_use.a */; };
+		9F2E2AFE3310E491D1C858AE /* text_format.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 7CF2166257167116555939B2 /* text_format.py */; };
+		A0BCBFF7A3BCFDCE986D4719 /* coded_stream.cc in Sources */ = {isa = PBXBuildFile; fileRef = 114CC54F8612710519ED0B40 /* coded_stream.cc */; };
+		A4CC942CF2975A967E04DDC3 /* encoder.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 6244A5D7D6FC8BFFF00801AD /* encoder.py */; };
+		A672197B60FF3827D463F573 /* cpp_enum.cc in Sources */ = {isa = PBXBuildFile; fileRef = BABDDC2BFDBCED527986D699 /* cpp_enum.cc */; };
+		A67CE9F24AC0014C5990F5B3 /* cpp_message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 9AC20D4D320D46D33C023352 /* cpp_message.py */; };
+		A6ADB0559CAAA407973039A3 /* python_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = D6F5270C9EC5062CB07471F1 /* python_generator.cc */; };
+		AB8A3AAD7A749ABB1806731E /* generated_message_util.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2B4269B8730B7056C0BA9F3D /* generated_message_util.cc */; };
+		AE40981FF430041C758A93EA /* cpp_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = 31A7570EE373791DAC554042 /* cpp_field.cc */; };
+		B42EA7B2048AFFAD517A40DF /* plugin.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0629370C935B813AADEE31D5 /* plugin.cc */; };
+		BC99CCEE3C13D50389115B85 /* java_string_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = DC8A9D1AA1C5EFB79109D910 /* java_string_field.cc */; };
+		BD347DB338E4E9E7C77186C2 /* code_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8561054ABB1BEDB65B80ADFB /* code_generator.cc */; };
+		BE220F3654101E67E2D08183 /* printer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9B9CEB4DCF9BF556FDAD7126 /* printer.cc */; };
+		C52A4F82B6EB0736ED387B29 /* message_lite.cc in Sources */ = {isa = PBXBuildFile; fileRef = 24CD65350E6AC88944D9D9C1 /* message_lite.cc */; };
+		C740DDCC95E2136612298A72 /* zip_writer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 93D3BE66FD3482CFF2BAF9DD /* zip_writer.cc */; };
+		C9ADD10EBDF271744316E158 /* subprocess.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9A1D35305EFEEC5AF269D3F5 /* subprocess.cc */; };
+		CBB00B6F468B71992084E902 /* wire_format.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 5E3B8F778D12D91FD241664D /* wire_format.py */; };
+		CE8A95A56336D4335252973D /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/ */ = {isa = PBXBuildFile; fileRef = E68128271B338D1888F9283C /* __init__.py */; };
+		CED27D66484F829FE44DF851 /* java_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = A9684ADF4B22A6F4BE1ECB73 /* java_field.cc */; };
+		D1698961DCB35D23A444EA21 /* service_reflection.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = 9594BE2690A72B32E2EFA05E /* service_reflection.py */; };
+		D43B496290336CCFF2BA8749 /* descriptor_database.cc in Sources */ = {isa = PBXBuildFile; fileRef = F21DDD1A3F2A1944D930134A /* descriptor_database.cc */; };
+		D5EC08A45611FD300F50E71A /* parser.cc in Sources */ = {isa = PBXBuildFile; fileRef = 20EE916ACA5D3BBF7AF24909 /* parser.cc */; };
+		D70F6A46A812B6AA19F56189 /* reflection_ops.cc in Sources */ = {isa = PBXBuildFile; fileRef = F522395F4397BD2EBA5044D2 /* reflection_ops.cc */; };
+		D802CD35A50D883D30D8C898 /* cpp_helpers.cc in Sources */ = {isa = PBXBuildFile; fileRef = AF43334146D9D33995B474E8 /* cpp_helpers.cc */; };
+		D842D0A995E49B71F7626977 /* unknown_field_set.cc in Sources */ = {isa = PBXBuildFile; fileRef = 45ED8425AC366F92C7D382BD /* unknown_field_set.cc */; };
+		D9F0368B8DD27164367523E3 /* java_enum.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1FEE9F2025D5E694192290B5 /* java_enum.cc */; };
+		DB62149C2DAD86BFA1BBE00A /* containers.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 3B884C22DBB515E9EA233C68 /* containers.py */; };
+		DF2BB67A23D51519F93692FC /* repeated_field.cc in Sources */ = {isa = PBXBuildFile; fileRef = EAFF06136EEDCDB88D8EFB7F /* repeated_field.cc */; };
+		E0EDB5B57FB462E4B057D3A1 /* cpp_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = AA8AD69BAFCF0042F87E3407 /* cpp_file.cc */; };
+		E95EDCC273A2EE3B5E00B892 /* wire_format.cc in Sources */ = {isa = PBXBuildFile; fileRef = EE14ED13015875938BD7584D /* wire_format.cc */; };
+		EFA3FD787C3E179873772497 /* descriptor.cc in Sources */ = {isa = PBXBuildFile; fileRef = BC374BAAE53B3072145A66A7 /* descriptor.cc */; };
+		F07F62A7546C6F6D2BA4390B /* cpp_generator.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1F5A72DB71886BDB3F17A2C9 /* cpp_generator.cc */; };
+		F1702406A06C4550E4136CF7 /* descriptor_pb2.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {isa = PBXBuildFile; fileRef = AD9B0E14573D62679DBF543A /* descriptor_pb2.py */; };
+		F43815BE030A53ADDAAE25C1 /* decoder.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {isa = PBXBuildFile; fileRef = 9C29E8FC75BC1794296242E8 /* decoder.py */; };
+		F869DE7409463246382BF05B /* descriptor.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3A0777186BB7DC09F071B2EE /* descriptor.pb.cc */; };
+		F880034D12F44EAB9F3DB575 /* java_file.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5620034544EB8B8AB68EC8BD /* java_file.cc */; };
+		FB88D3F1B4B4E7531B9C4469 /* cpp_message.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6B6F8F7D75E14108A2863551 /* cpp_message.cc */; };
+		FC66EE7F3E208B472E07687D /* main.cc in Sources */ = {isa = PBXBuildFile; fileRef = 050E698F54BC941E82E1A3B4 /* main.cc */; };
+		FC810E2740D8B08EF3E80C33 /* dynamic_message.cc in Sources */ = {isa = PBXBuildFile; fileRef = 96A97B862DA6FEC2B5A2F020 /* dynamic_message.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		025855574AFAC0C455BB1E0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = ED7C855703C0E9AF0CA36907;
+			remoteInfo = protoc;
+		};
+		10D6036925C9A09E567AFB5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A58E876F5C3F311B06BCA5C;
+			remoteInfo = protobuf_lite;
+		};
+		159BFAB27B285F096049B30B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 790FD8255E43A003688436A8;
+			remoteInfo = py_proto;
+		};
+		2CAE1D6D322689AFD77C1529 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2A58E876F5C3F311B06BCA5C;
+			remoteInfo = protobuf_lite;
+		};
+		C746469EE517C51CB8DE0C10 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB24EC6617BFF815874671C9;
+			remoteInfo = protobuf_full_do_not_use;
+		};
+		D0E9B5961385A024B2C3DFF6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FB24EC6617BFF815874671C9;
+			remoteInfo = protobuf_full_do_not_use;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9BB1BE1F240066EB9F37C671 /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/ */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = pyproto/google/;
+			dstSubfolderSpec = 16;
+			files = (
+				CE8A95A56336D4335252973D /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/ */,
+			);
+			name = "Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DFADFFBF321063416BB7793B /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = pyproto/google/protobuf/internal;
+			dstSubfolderSpec = 16;
+			files = (
+				938DC7970135200A0243E4A6 /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				7A701153978DF3125F759EA1 /* api_implementation.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				DB62149C2DAD86BFA1BBE00A /* containers.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				A67CE9F24AC0014C5990F5B3 /* cpp_message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				F43815BE030A53ADDAAE25C1 /* decoder.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				A4CC942CF2975A967E04DDC3 /* encoder.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				98D53133EE6C606339EEFD89 /* generator_test.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				4F386B923E2019752AC820D1 /* message_listener.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				780A58C709A07F00C8F06E64 /* python_message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				2456E97FBF4281CC4B2D63C4 /* type_checkers.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+				CBB00B6F468B71992084E902 /* wire_format.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal */,
+			);
+			name = "Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf/internal";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9D33597A739A23C67DD6252 /* Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = pyproto/google/protobuf;
+			dstSubfolderSpec = 16;
+			files = (
+				2B3D441114DBECC2333D9597 /* __init__.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				0ECDB050007922D37BC0DF21 /* descriptor.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				6594843B8B28477814F031C1 /* message.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				36BAFC054E683AE257151C3A /* reflection.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				213F9BF992862BC9E163832D /* service.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				D1698961DCB35D23A444EA21 /* service_reflection.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				9F2E2AFE3310E491D1C858AE /* text_format.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+				F1702406A06C4550E4136CF7 /* descriptor_pb2.py in Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf */,
+			);
+			name = "Copy to $(BUILT_PRODUCTS_DIR)/pyproto/google/protobuf";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		003944DFDA6D708FBE99CE93 /* command_line_interface.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = command_line_interface.cc; sourceTree = "<group>"; };
+		01620C5972F1653E7A18E8B2 /* type_checkers.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = type_checkers.py; sourceTree = "<group>"; };
+		02F2F6A3AFD6900B7B6A86C1 /* importer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = importer.cc; sourceTree = "<group>"; };
+		050E698F54BC941E82E1A3B4 /* main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
+		0551882FEAAC27A33320BBA5 /* once.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = once.h; sourceTree = "<group>"; };
+		058962AD89682A17A93AA48B /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../build/release.gypi; sourceTree = "<group>"; };
+		05EC8CEDA90B58A40716C399 /* atomicops.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops.h; sourceTree = "<group>"; };
+		0629370C935B813AADEE31D5 /* plugin.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = plugin.cc; sourceTree = "<group>"; };
+		062F4AFE1909D2E55A59280C /* tokenizer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tokenizer.cc; sourceTree = "<group>"; };
+		0850A9008B2477A968893BD1 /* substitute.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = substitute.h; sourceTree = "<group>"; };
+		08C9447C47429FCB2962A46F /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		0A4222AAC281CCCB91617FB0 /* importer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = importer.h; sourceTree = "<group>"; };
+		0AE15E4920CA30EC14D7E7CB /* cpp_message_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_message_field.cc; sourceTree = "<group>"; };
+		0FF8930D1D8E9B9C8C911E06 /* cpp_extension.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_extension.cc; sourceTree = "<group>"; };
+		11082E0D5440E45DE841DD9F /* java_message_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_message_field.cc; sourceTree = "<group>"; };
+		113DC4D3A797A6AB594F455E /* dynamic_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dynamic_message.h; sourceTree = "<group>"; };
+		114CC54F8612710519ED0B40 /* coded_stream.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = coded_stream.cc; sourceTree = "<group>"; };
+		11B121F7C4C7AEC43C40D294 /* descriptor.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = descriptor.py; sourceTree = "<group>"; };
+		122B51F1A2E58A6D6CC987D5 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		125125B3581DC7CDD8FD746B /* atomicops_internals_x86_gcc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops_internals_x86_gcc.h; sourceTree = "<group>"; };
+		12523A153E76B243C62384FF /* java_primitive_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_primitive_field.cc; sourceTree = "<group>"; };
+		171AB3BD012DC391AE4C91D4 /* generated_message_reflection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generated_message_reflection.h; sourceTree = "<group>"; };
+		1A187BBB326421C9320EA3BA /* java_message.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_message.cc; sourceTree = "<group>"; };
+		1D30E875B324597F43C6162A /* java_generator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_generator.cc; sourceTree = "<group>"; };
+		1EEF8430E2EAA9C1F22AAA6F /* map-util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "map-util.h"; sourceTree = "<group>"; };
+		1F5A72DB71886BDB3F17A2C9 /* cpp_generator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_generator.cc; sourceTree = "<group>"; };
+		1FEE9F2025D5E694192290B5 /* java_enum.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_enum.cc; sourceTree = "<group>"; };
+		20D79C06470CBBD555DEAF20 /* reflection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = reflection.py; sourceTree = "<group>"; };
+		20EE916ACA5D3BBF7AF24909 /* parser.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = parser.cc; sourceTree = "<group>"; };
+		214C35B693034C28340B6DCB /* java_primitive_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_primitive_field.h; sourceTree = "<group>"; };
+		22477B3C6FE172667FAEE0FD /* cpp_primitive_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_primitive_field.cc; sourceTree = "<group>"; };
+		240B685B8E5307F5600C7B78 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		24755938655B2A05D7F08C68 /* generated_message_util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generated_message_util.h; sourceTree = "<group>"; };
+		249B928B22EA72A9665DBFF6 /* gzip_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gzip_stream.h; sourceTree = "<group>"; };
+		24BC86504D5CC5899571EC01 /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		24CD65350E6AC88944D9D9C1 /* message_lite.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = message_lite.cc; sourceTree = "<group>"; };
+		28272884E22694369D6F232C /* descriptor.pb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descriptor.pb.h; sourceTree = "<group>"; };
+		2B4269B8730B7056C0BA9F3D /* generated_message_util.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = generated_message_util.cc; sourceTree = "<group>"; };
+		2C2368FC10425DC53E913FDA /* java_helpers.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_helpers.cc; sourceTree = "<group>"; };
+		2DC00F64BC7E22915D0A92F3 /* java_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_message.h; sourceTree = "<group>"; };
+		2F2FC46714C4536B00F634E5 /* java_service.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_service.cc; sourceTree = "<group>"; };
+		2F42EE1759AE2D80AD203B37 /* platform_macros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform_macros.h; sourceTree = "<group>"; };
+		31A7570EE373791DAC554042 /* cpp_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_field.cc; sourceTree = "<group>"; };
+		322D4520D35165E7A94BD2AC /* wire_format_lite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wire_format_lite.h; sourceTree = "<group>"; };
+		3542B063AB15E80F6D28F0FE /* service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = service.h; sourceTree = "<group>"; };
+		36D16D08B29A70807126949E /* wire_format_lite_inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wire_format_lite_inl.h; sourceTree = "<group>"; };
+		3A0777186BB7DC09F071B2EE /* descriptor.pb.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = descriptor.pb.cc; sourceTree = "<group>"; };
+		3B884C22DBB515E9EA233C68 /* containers.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = containers.py; sourceTree = "<group>"; };
+		3B90FC913678119559AC01E3 /* unknown_field_set.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unknown_field_set.h; sourceTree = "<group>"; };
+		3D75255C3926D349C4ABC831 /* stl_util-inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "stl_util-inl.h"; sourceTree = "<group>"; };
+		412EB31562806A204DBC0D91 /* zero_copy_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zero_copy_stream.h; sourceTree = "<group>"; };
+		43194536F36F49FC793F3B15 /* strutil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = strutil.h; sourceTree = "<group>"; };
+		43F6F5AA18E443CF9A5B18BA /* cpp_enum_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_enum_field.h; sourceTree = "<group>"; };
+		45ED8425AC366F92C7D382BD /* unknown_field_set.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unknown_field_set.cc; sourceTree = "<group>"; };
+		460379D691ADE43BA7FA7FC7 /* cpp_enum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_enum.h; sourceTree = "<group>"; };
+		49383754D72B1EE81F492BC6 /* atomicops_internals_arm_gcc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops_internals_arm_gcc.h; sourceTree = "<group>"; };
+		4E3AD3CA9B390303049DF4BC /* cpp_service.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_service.cc; sourceTree = "<group>"; };
+		4F4428DA45177150BFB8AB09 /* wire_format.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wire_format.h; sourceTree = "<group>"; };
+		53BD3F676BC1A7BD66E9EDF1 /* cpp_message_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_message_field.h; sourceTree = "<group>"; };
+		5475D9C921DD5E8282580631 /* message.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = message.py; sourceTree = "<group>"; };
+		54D8319D7B7DF6F7EB917321 /* parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
+		5620034544EB8B8AB68EC8BD /* java_file.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_file.cc; sourceTree = "<group>"; };
+		597BBEB049067492DA235C34 /* java_file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_file.h; sourceTree = "<group>"; };
+		59F30FED391C1B9A2815921D /* strutil.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = strutil.cc; sourceTree = "<group>"; };
+		5C46E39D0698B93F2DDE8A49 /* java_extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_extension.h; sourceTree = "<group>"; };
+		5E3B8F778D12D91FD241664D /* wire_format.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = wire_format.py; sourceTree = "<group>"; };
+		60DC99E681413A25750DDD40 /* zero_copy_stream_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zero_copy_stream_impl.cc; sourceTree = "<group>"; };
+		6244A5D7D6FC8BFFF00801AD /* encoder.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = encoder.py; sourceTree = "<group>"; };
+		62BF602F900E8C77BDE3DF62 /* repeated_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = repeated_field.h; sourceTree = "<group>"; };
+		630BEEF9B008A3CB10E292A7 /* python_message.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = python_message.py; sourceTree = "<group>"; };
+		63646CF35E83F1E0641F8F74 /* protoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = protoc; sourceTree = BUILT_PRODUCTS_DIR; };
+		69429D35882D1239F7FCB5B5 /* service.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = service.cc; sourceTree = "<group>"; };
+		6A3DC0D7343DEED45767D573 /* atomicops_internals_x86_msvc.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomicops_internals_x86_msvc.cc; sourceTree = "<group>"; };
+		6B6F8F7D75E14108A2863551 /* cpp_message.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_message.cc; sourceTree = "<group>"; };
+		6D4CA0D6C8E76001BBC8BE0A /* service.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = service.py; sourceTree = "<group>"; };
+		6ED1A3CE55B737DFE6DFE8E2 /* libprotobuf_lite.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libprotobuf_lite.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F406AFB43A0FB3F1C104C83 /* once.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = once.cc; sourceTree = "<group>"; };
+		719316D753254A0860356BA4 /* protobuf.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = protobuf.gyp; sourceTree = "<group>"; };
+		737FDA8980D6392D5133755F /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		7384938AB8FCB03B82E8B219 /* message.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = message.cc; sourceTree = "<group>"; };
+		7433D4425F93FD16996CCC5A /* message_lite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message_lite.h; sourceTree = "<group>"; };
+		76CD671397BDFF941E71FE78 /* atomicops_internals_x86_msvc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops_internals_x86_msvc.h; sourceTree = "<group>"; };
+		76F2F7951F1DFCB0577C7F04 /* common.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = common.cc; sourceTree = "<group>"; };
+		774F9F3BE31432C905028212 /* cpp_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_message.h; sourceTree = "<group>"; };
+		779DF07D6FBEA6FF7D86A91B /* atomicops_internals_mips_gcc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops_internals_mips_gcc.h; sourceTree = "<group>"; };
+		7CF2166257167116555939B2 /* text_format.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = text_format.py; sourceTree = "<group>"; };
+		7D260C9B3084EBBDDC3C6078 /* zero_copy_stream_impl_lite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zero_copy_stream_impl_lite.h; sourceTree = "<group>"; };
+		7EBA98D38DD1EC239CDC4AC6 /* java_enum_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_enum_field.cc; sourceTree = "<group>"; };
+		7FE84EB732CC4D28298AEC1A /* tokenizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tokenizer.h; sourceTree = "<group>"; };
+		8561054ABB1BEDB65B80ADFB /* code_generator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = code_generator.cc; sourceTree = "<group>"; };
+		883C4E222943BE6D64C69307 /* api_implementation.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = api_implementation.py; sourceTree = "<group>"; };
+		891F294398C60CBABDB446B0 /* coded_stream_inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coded_stream_inl.h; sourceTree = "<group>"; };
+		8A65D85BB242420AA87916EE /* java_message_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_message_field.h; sourceTree = "<group>"; };
+		8A8A19654AAF42599C33EF83 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		915840D83859C0616AD7144B /* libprotobuf_full_do_not_use.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libprotobuf_full_do_not_use.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		93D3BE66FD3482CFF2BAF9DD /* zip_writer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zip_writer.cc; sourceTree = "<group>"; };
+		942A054DF9D732DFDD8C741B /* java_helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_helpers.h; sourceTree = "<group>"; };
+		9444182A7E485FD8A1A3E6FA /* substitute.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = substitute.cc; sourceTree = "<group>"; };
+		9594BE2690A72B32E2EFA05E /* service_reflection.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = service_reflection.py; sourceTree = "<group>"; };
+		96A97B862DA6FEC2B5A2F020 /* dynamic_message.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dynamic_message.cc; sourceTree = "<group>"; };
+		97E48D025A48D59530DE6FA4 /* wire_format_lite.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wire_format_lite.cc; sourceTree = "<group>"; };
+		986ED134087988E474722928 /* generated_message_reflection.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = generated_message_reflection.cc; sourceTree = "<group>"; };
+		9A1D35305EFEEC5AF269D3F5 /* subprocess.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = subprocess.cc; sourceTree = "<group>"; };
+		9AC20D4D320D46D33C023352 /* cpp_message.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = cpp_message.py; sourceTree = "<group>"; };
+		9B9CEB4DCF9BF556FDAD7126 /* printer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = printer.cc; sourceTree = "<group>"; };
+		9C29E8FC75BC1794296242E8 /* decoder.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = decoder.py; sourceTree = "<group>"; };
+		9CE9326B7FBD546AFEC89CD0 /* zero_copy_stream_impl_lite.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zero_copy_stream_impl_lite.cc; sourceTree = "<group>"; };
+		A0243B53BF1D30401B6070C4 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../build/common.gypi; sourceTree = "<group>"; };
+		A751888B8330D76F2D0F4BF6 /* cpp_file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_file.h; sourceTree = "<group>"; };
+		A864505268B58635E3000CB2 /* descriptor_database.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descriptor_database.h; sourceTree = "<group>"; };
+		A9684ADF4B22A6F4BE1ECB73 /* java_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_field.cc; sourceTree = "<group>"; };
+		AA079E0363A364ABC2BFC176 /* java_string_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_string_field.h; sourceTree = "<group>"; };
+		AA8AD69BAFCF0042F87E3407 /* cpp_file.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_file.cc; sourceTree = "<group>"; };
+		ACB0CDFD3B629003DFE94768 /* message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = message.h; sourceTree = "<group>"; };
+		AD9B0E14573D62679DBF543A /* descriptor_pb2.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = descriptor_pb2.py; sourceTree = "<group>"; };
+		ADFCF7C5137EA11FACE15052 /* java_enum.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_enum.h; sourceTree = "<group>"; };
+		AF03C04623C0C32F86FC6814 /* cpp_string_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_string_field.cc; sourceTree = "<group>"; };
+		AF43334146D9D33995B474E8 /* cpp_helpers.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_helpers.cc; sourceTree = "<group>"; };
+		B813110EDDACA2A516B5FA9A /* extension_set.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = extension_set.h; sourceTree = "<group>"; };
+		BABDDC2BFDBCED527986D699 /* cpp_enum.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_enum.cc; sourceTree = "<group>"; };
+		BB328BEA8DA25B1F2FFFA816 /* cpp_extension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_extension.h; sourceTree = "<group>"; };
+		BC374BAAE53B3072145A66A7 /* descriptor.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = descriptor.cc; sourceTree = "<group>"; };
+		BDF0BF61661873FD8BD3A8DB /* java_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_field.h; sourceTree = "<group>"; };
+		C17E4AA580806E782C344809 /* java_enum_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_enum_field.h; sourceTree = "<group>"; };
+		C410433B6F03AA07EE5474AA /* cpp_helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_helpers.h; sourceTree = "<group>"; };
+		C463B27742F8E7559B15648B /* atomicops_internals_x86_macosx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = atomicops_internals_x86_macosx.h; sourceTree = "<group>"; };
+		C73D90465E16DA95722F5FBD /* zero_copy_stream_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zero_copy_stream_impl.h; sourceTree = "<group>"; };
+		C7820D2F71BB2E4EE79C0D55 /* extension_set.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = extension_set.cc; sourceTree = "<group>"; };
+		D0101A87B25090991E8B5614 /* structurally_valid.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = structurally_valid.cc; sourceTree = "<group>"; };
+		D21B8802249CE526A2DF4052 /* filename_rules.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = filename_rules.gypi; path = ../../build/filename_rules.gypi; sourceTree = "<group>"; };
+		D34E6FD2BDABF9418E559E2F /* java_extension.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_extension.cc; sourceTree = "<group>"; };
+		D3CB0730BF410D831A1115AD /* extension_set_heavy.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = extension_set_heavy.cc; sourceTree = "<group>"; };
+		D6F5270C9EC5062CB07471F1 /* python_generator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = python_generator.cc; sourceTree = "<group>"; };
+		D8712A7851DF7FE678B34D9F /* code_generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = code_generator.h; sourceTree = "<group>"; };
+		D8D3109C9513D95FF90AEEB4 /* generator_test.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = generator_test.py; sourceTree = "<group>"; };
+		DA4BDDC30B26E03285FBDF01 /* cpp_primitive_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_primitive_field.h; sourceTree = "<group>"; };
+		DC8A9D1AA1C5EFB79109D910 /* java_string_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = java_string_field.cc; sourceTree = "<group>"; };
+		DF57391501BDF4D264D84FE6 /* coded_stream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coded_stream.h; sourceTree = "<group>"; };
+		E0B99F36701EC1D704F2C04A /* atomicops_internals_x86_gcc.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = atomicops_internals_x86_gcc.cc; sourceTree = "<group>"; };
+		E28A6CCC2325E6F331498E68 /* hash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hash.h; sourceTree = "<group>"; };
+		E49498B3764DD2345965D048 /* zero_copy_stream.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zero_copy_stream.cc; sourceTree = "<group>"; };
+		E58035C6D9ADF81EEFD873F2 /* subprocess.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = subprocess.h; sourceTree = "<group>"; };
+		E68128271B338D1888F9283C /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		E798B09F5BE520D18C41C20A /* text_format.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = text_format.cc; sourceTree = "<group>"; };
+		E8E3BC4931E127F7C22E9E00 /* java_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = java_service.h; sourceTree = "<group>"; };
+		E99ADA57A6781F78A72CF84D /* command_line_interface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = command_line_interface.h; sourceTree = "<group>"; };
+		EA340F133662E8CBB6400344 /* cpp_enum_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = cpp_enum_field.cc; sourceTree = "<group>"; };
+		EA74A36321BB5BAC1A7682F2 /* zip_writer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip_writer.h; sourceTree = "<group>"; };
+		EAFF06136EEDCDB88D8EFB7F /* repeated_field.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = repeated_field.cc; sourceTree = "<group>"; };
+		EE14ED13015875938BD7584D /* wire_format.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = wire_format.cc; sourceTree = "<group>"; };
+		F15DD18D5AF2E0C5CCE45DCE /* printer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = printer.h; sourceTree = "<group>"; };
+		F1E730844B3A371B0975C44D /* cpp_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_field.h; sourceTree = "<group>"; };
+		F21DDD1A3F2A1944D930134A /* descriptor_database.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = descriptor_database.cc; sourceTree = "<group>"; };
+		F49DE20F8DFFB7395B90233A /* descriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = descriptor.h; sourceTree = "<group>"; };
+		F4CFD9E9BDAB59614E4C390B /* message_listener.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = message_listener.py; sourceTree = "<group>"; };
+		F522395F4397BD2EBA5044D2 /* reflection_ops.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = reflection_ops.cc; sourceTree = "<group>"; };
+		F5F3B7333F0FA681B9F34C72 /* cpp_service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_service.h; sourceTree = "<group>"; };
+		FADB38798FCC3DB32F1811D9 /* reflection_ops.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = reflection_ops.h; sourceTree = "<group>"; };
+		FCC0AB844F8112A36DD069CE /* cpp_string_field.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cpp_string_field.h; sourceTree = "<group>"; };
+		FE3FF6414121FBFF6C9F5EF5 /* plugin.pb.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = plugin.pb.cc; sourceTree = "<group>"; };
+		FE47D25701B500DB1F5378BB /* __init__.py */ = {isa = PBXFileReference; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		FEA8227EF3EF69786E09FA52 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../src/supplement.gypi; sourceTree = "<group>"; };
+		FF19BF13E5F0E61DBC84E6E2 /* text_format.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = text_format.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9933452F32A03380C4492B89 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9CE5324B14E80B43665E3677 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FDC6507F0769195A9545C7CD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9E8629E13690A89545A7AE59 /* libprotobuf_full_do_not_use.a in Frameworks */,
+				3B91D2113449D663E3E97F63 /* libprotobuf_lite.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		37203D04231D1B41F63D47C0 = {
+			isa = PBXGroup;
+			children = (
+				B8FEC4E340C3A0CDAB5E1090 /* Source */,
+				8374DA70F38B6AE4B22FD340 /* Products */,
+				9F202BB1B916A65F848DE0E9 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		43377AB9B3FD12B842F63834 /* java */ = {
+			isa = PBXGroup;
+			children = (
+				1FEE9F2025D5E694192290B5 /* java_enum.cc */,
+				ADFCF7C5137EA11FACE15052 /* java_enum.h */,
+				7EBA98D38DD1EC239CDC4AC6 /* java_enum_field.cc */,
+				C17E4AA580806E782C344809 /* java_enum_field.h */,
+				D34E6FD2BDABF9418E559E2F /* java_extension.cc */,
+				5C46E39D0698B93F2DDE8A49 /* java_extension.h */,
+				A9684ADF4B22A6F4BE1ECB73 /* java_field.cc */,
+				BDF0BF61661873FD8BD3A8DB /* java_field.h */,
+				5620034544EB8B8AB68EC8BD /* java_file.cc */,
+				597BBEB049067492DA235C34 /* java_file.h */,
+				1D30E875B324597F43C6162A /* java_generator.cc */,
+				2C2368FC10425DC53E913FDA /* java_helpers.cc */,
+				942A054DF9D732DFDD8C741B /* java_helpers.h */,
+				1A187BBB326421C9320EA3BA /* java_message.cc */,
+				2DC00F64BC7E22915D0A92F3 /* java_message.h */,
+				11082E0D5440E45DE841DD9F /* java_message_field.cc */,
+				8A65D85BB242420AA87916EE /* java_message_field.h */,
+				12523A153E76B243C62384FF /* java_primitive_field.cc */,
+				214C35B693034C28340B6DCB /* java_primitive_field.h */,
+				2F2FC46714C4536B00F634E5 /* java_service.cc */,
+				E8E3BC4931E127F7C22E9E00 /* java_service.h */,
+				DC8A9D1AA1C5EFB79109D910 /* java_string_field.cc */,
+				AA079E0363A364ABC2BFC176 /* java_string_field.h */,
+			);
+			path = java;
+			sourceTree = "<group>";
+		};
+		54881095D055A1ED12F4D5D1 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				BABDDC2BFDBCED527986D699 /* cpp_enum.cc */,
+				460379D691ADE43BA7FA7FC7 /* cpp_enum.h */,
+				EA340F133662E8CBB6400344 /* cpp_enum_field.cc */,
+				43F6F5AA18E443CF9A5B18BA /* cpp_enum_field.h */,
+				0FF8930D1D8E9B9C8C911E06 /* cpp_extension.cc */,
+				BB328BEA8DA25B1F2FFFA816 /* cpp_extension.h */,
+				31A7570EE373791DAC554042 /* cpp_field.cc */,
+				F1E730844B3A371B0975C44D /* cpp_field.h */,
+				AA8AD69BAFCF0042F87E3407 /* cpp_file.cc */,
+				A751888B8330D76F2D0F4BF6 /* cpp_file.h */,
+				1F5A72DB71886BDB3F17A2C9 /* cpp_generator.cc */,
+				AF43334146D9D33995B474E8 /* cpp_helpers.cc */,
+				C410433B6F03AA07EE5474AA /* cpp_helpers.h */,
+				6B6F8F7D75E14108A2863551 /* cpp_message.cc */,
+				774F9F3BE31432C905028212 /* cpp_message.h */,
+				0AE15E4920CA30EC14D7E7CB /* cpp_message_field.cc */,
+				53BD3F676BC1A7BD66E9EDF1 /* cpp_message_field.h */,
+				22477B3C6FE172667FAEE0FD /* cpp_primitive_field.cc */,
+				DA4BDDC30B26E03285FBDF01 /* cpp_primitive_field.h */,
+				4E3AD3CA9B390303049DF4BC /* cpp_service.cc */,
+				F5F3B7333F0FA681B9F34C72 /* cpp_service.h */,
+				AF03C04623C0C32F86FC6814 /* cpp_string_field.cc */,
+				FCC0AB844F8112A36DD069CE /* cpp_string_field.h */,
+			);
+			path = cpp;
+			sourceTree = "<group>";
+		};
+		7517286A52C17768E8057A79 /* stubs */ = {
+			isa = PBXGroup;
+			children = (
+				05EC8CEDA90B58A40716C399 /* atomicops.h */,
+				49383754D72B1EE81F492BC6 /* atomicops_internals_arm_gcc.h */,
+				779DF07D6FBEA6FF7D86A91B /* atomicops_internals_mips_gcc.h */,
+				E0B99F36701EC1D704F2C04A /* atomicops_internals_x86_gcc.cc */,
+				125125B3581DC7CDD8FD746B /* atomicops_internals_x86_gcc.h */,
+				C463B27742F8E7559B15648B /* atomicops_internals_x86_macosx.h */,
+				6A3DC0D7343DEED45767D573 /* atomicops_internals_x86_msvc.cc */,
+				76CD671397BDFF941E71FE78 /* atomicops_internals_x86_msvc.h */,
+				76F2F7951F1DFCB0577C7F04 /* common.cc */,
+				08C9447C47429FCB2962A46F /* common.h */,
+				E28A6CCC2325E6F331498E68 /* hash.h */,
+				1EEF8430E2EAA9C1F22AAA6F /* map-util.h */,
+				6F406AFB43A0FB3F1C104C83 /* once.cc */,
+				0551882FEAAC27A33320BBA5 /* once.h */,
+				2F42EE1759AE2D80AD203B37 /* platform_macros.h */,
+				3D75255C3926D349C4ABC831 /* stl_util-inl.h */,
+				D0101A87B25090991E8B5614 /* structurally_valid.cc */,
+				59F30FED391C1B9A2815921D /* strutil.cc */,
+				43194536F36F49FC793F3B15 /* strutil.h */,
+				9444182A7E485FD8A1A3E6FA /* substitute.cc */,
+				0850A9008B2477A968893BD1 /* substitute.h */,
+			);
+			path = stubs;
+			sourceTree = "<group>";
+		};
+		8374DA70F38B6AE4B22FD340 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6ED1A3CE55B737DFE6DFE8E2 /* libprotobuf_lite.a */,
+				915840D83859C0616AD7144B /* libprotobuf_full_do_not_use.a */,
+				63646CF35E83F1E0641F8F74 /* protoc */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8A169928442806F378EE730A /* compiler */ = {
+			isa = PBXGroup;
+			children = (
+				54881095D055A1ED12F4D5D1 /* cpp */,
+				43377AB9B3FD12B842F63834 /* java */,
+				90E14E719EA8A613675FA311 /* python */,
+				8561054ABB1BEDB65B80ADFB /* code_generator.cc */,
+				D8712A7851DF7FE678B34D9F /* code_generator.h */,
+				003944DFDA6D708FBE99CE93 /* command_line_interface.cc */,
+				E99ADA57A6781F78A72CF84D /* command_line_interface.h */,
+				02F2F6A3AFD6900B7B6A86C1 /* importer.cc */,
+				0A4222AAC281CCCB91617FB0 /* importer.h */,
+				050E698F54BC941E82E1A3B4 /* main.cc */,
+				20EE916ACA5D3BBF7AF24909 /* parser.cc */,
+				54D8319D7B7DF6F7EB917321 /* parser.h */,
+				0629370C935B813AADEE31D5 /* plugin.cc */,
+				FE3FF6414121FBFF6C9F5EF5 /* plugin.pb.cc */,
+				9A1D35305EFEEC5AF269D3F5 /* subprocess.cc */,
+				E58035C6D9ADF81EEFD873F2 /* subprocess.h */,
+				93D3BE66FD3482CFF2BAF9DD /* zip_writer.cc */,
+				EA74A36321BB5BAC1A7682F2 /* zip_writer.h */,
+			);
+			path = compiler;
+			sourceTree = "<group>";
+		};
+		90E14E719EA8A613675FA311 /* python */ = {
+			isa = PBXGroup;
+			children = (
+				D6F5270C9EC5062CB07471F1 /* python_generator.cc */,
+			);
+			path = python;
+			sourceTree = "<group>";
+		};
+		9F202BB1B916A65F848DE0E9 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				A0243B53BF1D30401B6070C4 /* common.gypi */,
+				D21B8802249CE526A2DF4052 /* filename_rules.gypi */,
+				719316D753254A0860356BA4 /* protobuf.gyp */,
+				058962AD89682A17A93AA48B /* release.gypi */,
+				8A8A19654AAF42599C33EF83 /* release_defaults.gypi */,
+				122B51F1A2E58A6D6CC987D5 /* release_impl.gypi */,
+				240B685B8E5307F5600C7B78 /* release_impl_official.gypi */,
+				FEA8227EF3EF69786E09FA52 /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		A607B162FD47F371023B8DC2 /* python/google/protobuf */ = {
+			isa = PBXGroup;
+			children = (
+				B2F61030A58C999B0A08524C /* internal */,
+				24BC86504D5CC5899571EC01 /* __init__.py */,
+				11B121F7C4C7AEC43C40D294 /* descriptor.py */,
+				5475D9C921DD5E8282580631 /* message.py */,
+				20D79C06470CBBD555DEAF20 /* reflection.py */,
+				6D4CA0D6C8E76001BBC8BE0A /* service.py */,
+				9594BE2690A72B32E2EFA05E /* service_reflection.py */,
+				7CF2166257167116555939B2 /* text_format.py */,
+			);
+			path = python/google/protobuf;
+			sourceTree = "<group>";
+		};
+		B2F61030A58C999B0A08524C /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				FE47D25701B500DB1F5378BB /* __init__.py */,
+				883C4E222943BE6D64C69307 /* api_implementation.py */,
+				3B884C22DBB515E9EA233C68 /* containers.py */,
+				9AC20D4D320D46D33C023352 /* cpp_message.py */,
+				9C29E8FC75BC1794296242E8 /* decoder.py */,
+				6244A5D7D6FC8BFFF00801AD /* encoder.py */,
+				D8D3109C9513D95FF90AEEB4 /* generator_test.py */,
+				F4CFD9E9BDAB59614E4C390B /* message_listener.py */,
+				630BEEF9B008A3CB10E292A7 /* python_message.py */,
+				01620C5972F1653E7A18E8B2 /* type_checkers.py */,
+				5E3B8F778D12D91FD241664D /* wire_format.py */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		B8FEC4E340C3A0CDAB5E1090 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				D32B600AF0B4EB2E4897F7B9 /* . */,
+				A607B162FD47F371023B8DC2 /* python/google/protobuf */,
+				D904D1964026BFC350574786 /* src/google/protobuf */,
+				E68128271B338D1888F9283C /* __init__.py */,
+				AD9B0E14573D62679DBF543A /* descriptor_pb2.py */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		BE037D51E148679DA06CEBC1 /* io */ = {
+			isa = PBXGroup;
+			children = (
+				114CC54F8612710519ED0B40 /* coded_stream.cc */,
+				DF57391501BDF4D264D84FE6 /* coded_stream.h */,
+				891F294398C60CBABDB446B0 /* coded_stream_inl.h */,
+				249B928B22EA72A9665DBFF6 /* gzip_stream.h */,
+				9B9CEB4DCF9BF556FDAD7126 /* printer.cc */,
+				F15DD18D5AF2E0C5CCE45DCE /* printer.h */,
+				062F4AFE1909D2E55A59280C /* tokenizer.cc */,
+				7FE84EB732CC4D28298AEC1A /* tokenizer.h */,
+				E49498B3764DD2345965D048 /* zero_copy_stream.cc */,
+				412EB31562806A204DBC0D91 /* zero_copy_stream.h */,
+				60DC99E681413A25750DDD40 /* zero_copy_stream_impl.cc */,
+				C73D90465E16DA95722F5FBD /* zero_copy_stream_impl.h */,
+				9CE9326B7FBD546AFEC89CD0 /* zero_copy_stream_impl_lite.cc */,
+				7D260C9B3084EBBDDC3C6078 /* zero_copy_stream_impl_lite.h */,
+			);
+			path = io;
+			sourceTree = "<group>";
+		};
+		D32B600AF0B4EB2E4897F7B9 /* . */ = {
+			isa = PBXGroup;
+			children = (
+				737FDA8980D6392D5133755F /* config.h */,
+			);
+			path = .;
+			sourceTree = "<group>";
+		};
+		D904D1964026BFC350574786 /* src/google/protobuf */ = {
+			isa = PBXGroup;
+			children = (
+				8A169928442806F378EE730A /* compiler */,
+				BE037D51E148679DA06CEBC1 /* io */,
+				7517286A52C17768E8057A79 /* stubs */,
+				BC374BAAE53B3072145A66A7 /* descriptor.cc */,
+				F49DE20F8DFFB7395B90233A /* descriptor.h */,
+				3A0777186BB7DC09F071B2EE /* descriptor.pb.cc */,
+				28272884E22694369D6F232C /* descriptor.pb.h */,
+				F21DDD1A3F2A1944D930134A /* descriptor_database.cc */,
+				A864505268B58635E3000CB2 /* descriptor_database.h */,
+				96A97B862DA6FEC2B5A2F020 /* dynamic_message.cc */,
+				113DC4D3A797A6AB594F455E /* dynamic_message.h */,
+				C7820D2F71BB2E4EE79C0D55 /* extension_set.cc */,
+				B813110EDDACA2A516B5FA9A /* extension_set.h */,
+				D3CB0730BF410D831A1115AD /* extension_set_heavy.cc */,
+				986ED134087988E474722928 /* generated_message_reflection.cc */,
+				171AB3BD012DC391AE4C91D4 /* generated_message_reflection.h */,
+				2B4269B8730B7056C0BA9F3D /* generated_message_util.cc */,
+				24755938655B2A05D7F08C68 /* generated_message_util.h */,
+				7384938AB8FCB03B82E8B219 /* message.cc */,
+				ACB0CDFD3B629003DFE94768 /* message.h */,
+				24CD65350E6AC88944D9D9C1 /* message_lite.cc */,
+				7433D4425F93FD16996CCC5A /* message_lite.h */,
+				F522395F4397BD2EBA5044D2 /* reflection_ops.cc */,
+				FADB38798FCC3DB32F1811D9 /* reflection_ops.h */,
+				EAFF06136EEDCDB88D8EFB7F /* repeated_field.cc */,
+				62BF602F900E8C77BDE3DF62 /* repeated_field.h */,
+				69429D35882D1239F7FCB5B5 /* service.cc */,
+				3542B063AB15E80F6D28F0FE /* service.h */,
+				E798B09F5BE520D18C41C20A /* text_format.cc */,
+				FF19BF13E5F0E61DBC84E6E2 /* text_format.h */,
+				45ED8425AC366F92C7D382BD /* unknown_field_set.cc */,
+				3B90FC913678119559AC01E3 /* unknown_field_set.h */,
+				EE14ED13015875938BD7584D /* wire_format.cc */,
+				4F4428DA45177150BFB8AB09 /* wire_format.h */,
+				97E48D025A48D59530DE6FA4 /* wire_format_lite.cc */,
+				322D4520D35165E7A94BD2AC /* wire_format_lite.h */,
+				36D16D08B29A70807126949E /* wire_format_lite_inl.h */,
+			);
+			path = src/google/protobuf;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2A58E876F5C3F311B06BCA5C /* protobuf_lite */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 142D34663CFD0FB46A06DB6B /* Build configuration list for PBXNativeTarget "protobuf_lite" */;
+			buildPhases = (
+				C042A69A9684134E6858032D /* Sources */,
+				9933452F32A03380C4492B89 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = protobuf_lite;
+			productName = protobuf_lite;
+			productReference = 6ED1A3CE55B737DFE6DFE8E2 /* libprotobuf_lite.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		ED7C855703C0E9AF0CA36907 /* protoc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1FCEE452172CB683AB9E7DD9 /* Build configuration list for PBXNativeTarget "protoc" */;
+			buildPhases = (
+				862E849F73B96B7A3738C202 /* Sources */,
+				FDC6507F0769195A9545C7CD /* Frameworks */,
+				09E6B8BA2CFD83D4AC488B41 /* Postbuild "Change Mach-O Flags" */,
+				7AC9923F7CDD2087661C69AB /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5DBD66E55B4094064E0F9C90 /* PBXTargetDependency */,
+				9BBFD48850E66A0245EB30B0 /* PBXTargetDependency */,
+			);
+			name = protoc;
+			productName = protoc;
+			productReference = 63646CF35E83F1E0641F8F74 /* protoc */;
+			productType = "com.apple.product-type.tool";
+		};
+		FB24EC6617BFF815874671C9 /* protobuf_full_do_not_use */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 519E08DCCC61AE79BA81E251 /* Build configuration list for PBXNativeTarget "protobuf_full_do_not_use" */;
+			buildPhases = (
+				6211B87C0833B1EFA0D5B56B /* Sources */,
+				9CE5324B14E80B43665E3677 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = protobuf_full_do_not_use;
+			productName = protobuf_full_do_not_use;
+			productReference = 915840D83859C0616AD7144B /* libprotobuf_full_do_not_use.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		297FA540BECBEBEEBD97C3C0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 5C8CCB5E799441C7FC5DF321 /* Build configuration list for PBXProject "protobuf" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 37203D04231D1B41F63D47C0;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				17D5580949FDA8CAC7C2CAF8 /* All */,
+				2A58E876F5C3F311B06BCA5C /* protobuf_lite */,
+				FB24EC6617BFF815874671C9 /* protobuf_full_do_not_use */,
+				ED7C855703C0E9AF0CA36907 /* protoc */,
+				790FD8255E43A003688436A8 /* py_proto */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		09E6B8BA2CFD83D4AC488B41 /* Postbuild "Change Mach-O Flags" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Change Mach-O Flags\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../build/mac/change_mach_o_flags_from_xcode.sh\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		7AC9923F7CDD2087661C69AB /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6211B87C0833B1EFA0D5B56B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				863FF26FEBD3CC1653C00443 /* strutil.cc in Sources */,
+				0F860140A5C074C8529B0FB9 /* substitute.cc in Sources */,
+				8550C79C4915EF4AB48ACC0E /* structurally_valid.cc in Sources */,
+				EFA3FD787C3E179873772497 /* descriptor.cc in Sources */,
+				F869DE7409463246382BF05B /* descriptor.pb.cc in Sources */,
+				D43B496290336CCFF2BA8749 /* descriptor_database.cc in Sources */,
+				FC810E2740D8B08EF3E80C33 /* dynamic_message.cc in Sources */,
+				0384E7ED8D304FBE82B8D696 /* extension_set_heavy.cc in Sources */,
+				56752C7B9247D8D6CE8007EE /* generated_message_reflection.cc in Sources */,
+				0198D62F626140F53CD2CB24 /* message.cc in Sources */,
+				D70F6A46A812B6AA19F56189 /* reflection_ops.cc in Sources */,
+				0CF0CCAC07DDB1849F66568E /* service.cc in Sources */,
+				47ABA340B03A245A3D45E3D1 /* text_format.cc in Sources */,
+				E95EDCC273A2EE3B5E00B892 /* wire_format.cc in Sources */,
+				BE220F3654101E67E2D08183 /* printer.cc in Sources */,
+				3FAA74CC5F028460E750B699 /* tokenizer.cc in Sources */,
+				3D8A799BE7CF347E30C9A595 /* zero_copy_stream_impl.cc in Sources */,
+				45D23DF50169BA349E1DABB3 /* importer.cc in Sources */,
+				D5EC08A45611FD300F50E71A /* parser.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		862E849F73B96B7A3738C202 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BD347DB338E4E9E7C77186C2 /* code_generator.cc in Sources */,
+				725AE683A6503C7B442A6A5A /* command_line_interface.cc in Sources */,
+				B42EA7B2048AFFAD517A40DF /* plugin.cc in Sources */,
+				8854CDB52BF207801896FB03 /* plugin.pb.cc in Sources */,
+				C9ADD10EBDF271744316E158 /* subprocess.cc in Sources */,
+				C740DDCC95E2136612298A72 /* zip_writer.cc in Sources */,
+				A672197B60FF3827D463F573 /* cpp_enum.cc in Sources */,
+				768462583F5A1620C1FFD693 /* cpp_enum_field.cc in Sources */,
+				3447271C7DAD3415BDD83C5D /* cpp_extension.cc in Sources */,
+				AE40981FF430041C758A93EA /* cpp_field.cc in Sources */,
+				E0EDB5B57FB462E4B057D3A1 /* cpp_file.cc in Sources */,
+				F07F62A7546C6F6D2BA4390B /* cpp_generator.cc in Sources */,
+				D802CD35A50D883D30D8C898 /* cpp_helpers.cc in Sources */,
+				FB88D3F1B4B4E7531B9C4469 /* cpp_message.cc in Sources */,
+				171291855B44D41ECF934644 /* cpp_message_field.cc in Sources */,
+				95F46508DCEB47CF5ECCC78B /* cpp_primitive_field.cc in Sources */,
+				75D472B13B2BF692572BFB9A /* cpp_service.cc in Sources */,
+				4F991B9EBADA135DD77207FB /* cpp_string_field.cc in Sources */,
+				D9F0368B8DD27164367523E3 /* java_enum.cc in Sources */,
+				9323E30118B1212D979345D0 /* java_enum_field.cc in Sources */,
+				862D03DC108028C496A1CEB8 /* java_extension.cc in Sources */,
+				CED27D66484F829FE44DF851 /* java_field.cc in Sources */,
+				F880034D12F44EAB9F3DB575 /* java_file.cc in Sources */,
+				3B0838A2BC0C47B33CF51DA5 /* java_generator.cc in Sources */,
+				2AAB52200FF660D668126163 /* java_helpers.cc in Sources */,
+				4BE518F4251E086AAA47FB80 /* java_message.cc in Sources */,
+				53511E1B6355BB1F4D1363D5 /* java_message_field.cc in Sources */,
+				134448A90B32304E46499378 /* java_primitive_field.cc in Sources */,
+				852A1559912FEEC1946B70D8 /* java_service.cc in Sources */,
+				BC99CCEE3C13D50389115B85 /* java_string_field.cc in Sources */,
+				A6ADB0559CAAA407973039A3 /* python_generator.cc in Sources */,
+				FC66EE7F3E208B472E07687D /* main.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C042A69A9684134E6858032D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				399E6719BEC022D2615CABFA /* atomicops_internals_x86_gcc.cc in Sources */,
+				6DBBB264BB08991271E2C848 /* atomicops_internals_x86_msvc.cc in Sources */,
+				D842D0A995E49B71F7626977 /* unknown_field_set.cc in Sources */,
+				92BF6D8A58294CCECC1923FB /* common.cc in Sources */,
+				4F5F49BCEC789C4CD2D6B64D /* once.cc in Sources */,
+				4F820188CB6113DDD01CF24B /* extension_set.cc in Sources */,
+				AB8A3AAD7A749ABB1806731E /* generated_message_util.cc in Sources */,
+				C52A4F82B6EB0736ED387B29 /* message_lite.cc in Sources */,
+				DF2BB67A23D51519F93692FC /* repeated_field.cc in Sources */,
+				6A091AB09137812A28F9DC89 /* wire_format_lite.cc in Sources */,
+				A0BCBFF7A3BCFDCE986D4719 /* coded_stream.cc in Sources */,
+				1DAD7714EB1C4B1BA49060E2 /* zero_copy_stream.cc in Sources */,
+				858FF963669215E4313C83AB /* zero_copy_stream_impl_lite.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3993E2C40D082EDAAA850095 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 790FD8255E43A003688436A8 /* py_proto */;
+			targetProxy = 159BFAB27B285F096049B30B /* PBXContainerItemProxy */;
+		};
+		4B2A78FEA80B5BBBE624A811 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2A58E876F5C3F311B06BCA5C /* protobuf_lite */;
+			targetProxy = 2CAE1D6D322689AFD77C1529 /* PBXContainerItemProxy */;
+		};
+		5DBD66E55B4094064E0F9C90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB24EC6617BFF815874671C9 /* protobuf_full_do_not_use */;
+			targetProxy = C746469EE517C51CB8DE0C10 /* PBXContainerItemProxy */;
+		};
+		665221EF988E43B37831F9A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FB24EC6617BFF815874671C9 /* protobuf_full_do_not_use */;
+			targetProxy = D0E9B5961385A024B2C3DFF6 /* PBXContainerItemProxy */;
+		};
+		9BBFD48850E66A0245EB30B0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2A58E876F5C3F311B06BCA5C /* protobuf_lite */;
+			targetProxy = 10D6036925C9A09E567AFB5C /* PBXContainerItemProxy */;
+		};
+		BA1BA221E8BD1FE4685AB481 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = ED7C855703C0E9AF0CA36907 /* protoc */;
+			targetProxy = 025855574AFAC0C455BB1E0E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		22E762CD5EE984670E968BBE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = "-Wl,-search_paths_first";
+				PRODUCT_NAME = py_proto;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
+		4412C004D970D11463BED858 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Debug;
+		};
+		52C6DF050E1A32FFFD68F716 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PRODUCT_NAME = protobuf_lite;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+		5A6FD5FE5CC716167E5CFB2A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+			};
+			name = Release;
+		};
+		67D65432676C33B35E21D9C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PRODUCT_NAME = protobuf_full_do_not_use;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
+		7AB629C6A7EE7620B8D29175 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+			};
+			name = Debug;
+		};
+		881B6261942E6F8B0140BB34 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PRODUCT_NAME = protobuf_full_do_not_use;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+		967824A15666B54BED1C2F3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = "-Wl,-search_paths_first";
+				PRODUCT_NAME = py_proto;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+		9D7087CDAE9826BCF16F8A5C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PRODUCT_NAME = protobuf_lite;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
+		B17D9B19363249E653D7A52A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Release;
+		};
+		B818B001D8A7DBF2FD15C598 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src/src,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = protoc;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+		D1BA6ED5B92333F9DBAB05D0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GOOGLE_PROTOBUF_NO_RTTI\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					.,
+					src/src,
+					src,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = protoc;
+				SDKROOT = macosx;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		142D34663CFD0FB46A06DB6B /* Build configuration list for PBXNativeTarget "protobuf_lite" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52C6DF050E1A32FFFD68F716 /* Debug */,
+				9D7087CDAE9826BCF16F8A5C /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		1FCEE452172CB683AB9E7DD9 /* Build configuration list for PBXNativeTarget "protoc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B818B001D8A7DBF2FD15C598 /* Debug */,
+				D1BA6ED5B92333F9DBAB05D0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		22A8079D09FCEE5CEA3EDD86 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4412C004D970D11463BED858 /* Debug */,
+				B17D9B19363249E653D7A52A /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		519E08DCCC61AE79BA81E251 /* Build configuration list for PBXNativeTarget "protobuf_full_do_not_use" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				881B6261942E6F8B0140BB34 /* Debug */,
+				67D65432676C33B35E21D9C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		5C8CCB5E799441C7FC5DF321 /* Build configuration list for PBXProject "protobuf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AB629C6A7EE7620B8D29175 /* Debug */,
+				5A6FD5FE5CC716167E5CFB2A /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		817F9014C5E45829895C251F /* Build configuration list for PBXAggregateTarget "py_proto" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				967824A15666B54BED1C2F3C /* Debug */,
+				22E762CD5EE984670E968BBE /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 297FA540BECBEBEEBD97C3C0 /* Project object */;
+}

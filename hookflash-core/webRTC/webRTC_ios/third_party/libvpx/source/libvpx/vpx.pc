@@ -1,0 +1,13 @@
+# pkg-config file from libvpx FOR
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: vpx
+Description: WebM Project VPx codec implementation
+Version: FOR.FOR.FOR
+Requires:
+Conflicts:
+Libs: -L${libdir} -lvpx
+Cflags: -I${includedir}

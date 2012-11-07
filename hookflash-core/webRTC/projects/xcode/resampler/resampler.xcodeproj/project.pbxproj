@@ -1,0 +1,264 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A87106713E6BAA600BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A87106613E6BAA600BCA399 /* Foundation.framework */; };
+		E2FF97A3150A4D59009A26A3 /* resampler.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2FF97A2150A4D59009A26A3 /* resampler.cc */; };
+		E2FF97A5150A4D65009A26A3 /* resampler.h in Headers */ = {isa = PBXBuildFile; fileRef = E2FF97A4150A4D65009A26A3 /* resampler.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A87106313E6BAA600BCA399 /* libresampler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libresampler.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A87106613E6BAA600BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E2FF97A2150A4D59009A26A3 /* resampler.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = resampler.cc; path = ../../../webRTC/src/common_audio/resampler/main/source/resampler.cc; sourceTree = "<group>"; };
+		E2FF97A4150A4D65009A26A3 /* resampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = resampler.h; path = ../../../webRTC/src/common_audio/resampler/main/interface/resampler.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A87106013E6BAA600BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A87106713E6BAA600BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A87105813E6BAA600BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E2FF97A0150A4D2A009A26A3 /* Source */,
+				2A87106513E6BAA600BCA399 /* Frameworks */,
+				2A87106413E6BAA600BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A87106413E6BAA600BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A87106313E6BAA600BCA399 /* libresampler.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A87106513E6BAA600BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A87106613E6BAA600BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E2FF97A0150A4D2A009A26A3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF97A1150A4D34009A26A3 /* ../interface */,
+				E2FF97A2150A4D59009A26A3 /* resampler.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E2FF97A1150A4D34009A26A3 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF97A4150A4D65009A26A3 /* resampler.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A87106113E6BAA600BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF97A5150A4D65009A26A3 /* resampler.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A87106213E6BAA600BCA399 /* resampler */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A87106D13E6BAA600BCA399 /* Build configuration list for PBXNativeTarget "resampler" */;
+			buildPhases = (
+				2A87105F13E6BAA600BCA399 /* Sources */,
+				2A87106013E6BAA600BCA399 /* Frameworks */,
+				2A87106113E6BAA600BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = resampler;
+			productName = resampler;
+			productReference = 2A87106313E6BAA600BCA399 /* libresampler.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A87105A13E6BAA600BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A87105D13E6BAA600BCA399 /* Build configuration list for PBXProject "resampler" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A87105813E6BAA600BCA399;
+			productRefGroup = 2A87106413E6BAA600BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A87106213E6BAA600BCA399 /* resampler */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A87105F13E6BAA600BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF97A3150A4D59009A26A3 /* resampler.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A87106B13E6BAA600BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A87106C13E6BAA600BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A87106E13E6BAA600BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/resampler.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv6 armv7 i386";
+			};
+			name = Debug;
+		};
+		2A87106F13E6BAA600BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/resampler.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv6 armv7 i386";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A87105D13E6BAA600BCA399 /* Build configuration list for PBXProject "resampler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87106B13E6BAA600BCA399 /* Debug */,
+				2A87106C13E6BAA600BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A87106D13E6BAA600BCA399 /* Build configuration list for PBXNativeTarget "resampler" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87106E13E6BAA600BCA399 /* Debug */,
+				2A87106F13E6BAA600BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A87105A13E6BAA600BCA399 /* Project object */;
+}

@@ -1,0 +1,433 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E29FCF011432846700999BFE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E29FCF001432846700999BFE /* Foundation.framework */; };
+		E29FD0501432937500999BFE /* jcapimin.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0181432937500999BFE /* jcapimin.c */; };
+		E29FD0511432937500999BFE /* jcapistd.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0191432937500999BFE /* jcapistd.c */; };
+		E29FD0521432937500999BFE /* jccoefct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD01A1432937500999BFE /* jccoefct.c */; };
+		E29FD0531432937500999BFE /* jccolor.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD01B1432937500999BFE /* jccolor.c */; };
+		E29FD0541432937500999BFE /* jcdctmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD01C1432937500999BFE /* jcdctmgr.c */; };
+		E29FD0551432937500999BFE /* jchuff.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD01D1432937500999BFE /* jchuff.c */; };
+		E29FD0561432937500999BFE /* jchuff.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD01E1432937500999BFE /* jchuff.h */; };
+		E29FD0571432937500999BFE /* jcinit.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD01F1432937500999BFE /* jcinit.c */; };
+		E29FD0581432937500999BFE /* jcmainct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0201432937500999BFE /* jcmainct.c */; };
+		E29FD0591432937500999BFE /* jcmarker.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0211432937500999BFE /* jcmarker.c */; };
+		E29FD05A1432937500999BFE /* jcmaster.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0221432937500999BFE /* jcmaster.c */; };
+		E29FD05B1432937500999BFE /* jcomapi.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0231432937500999BFE /* jcomapi.c */; };
+		E29FD05C1432937500999BFE /* jconfig.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0241432937500999BFE /* jconfig.h */; };
+		E29FD05D1432937500999BFE /* jcparam.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0251432937500999BFE /* jcparam.c */; };
+		E29FD05E1432937500999BFE /* jcphuff.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0261432937500999BFE /* jcphuff.c */; };
+		E29FD05F1432937500999BFE /* jcprepct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0271432937500999BFE /* jcprepct.c */; };
+		E29FD0601432937500999BFE /* jcsample.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0281432937500999BFE /* jcsample.c */; };
+		E29FD0611432937500999BFE /* jdapimin.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0291432937500999BFE /* jdapimin.c */; };
+		E29FD0621432937500999BFE /* jdapistd.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD02A1432937500999BFE /* jdapistd.c */; };
+		E29FD0631432937500999BFE /* jdatadst.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD02B1432937500999BFE /* jdatadst.c */; };
+		E29FD0641432937500999BFE /* jdatasrc.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD02C1432937500999BFE /* jdatasrc.c */; };
+		E29FD0651432937500999BFE /* jdcoefct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD02D1432937500999BFE /* jdcoefct.c */; };
+		E29FD0661432937500999BFE /* jdcolor.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD02E1432937500999BFE /* jdcolor.c */; };
+		E29FD0671432937500999BFE /* jdct.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD02F1432937500999BFE /* jdct.h */; };
+		E29FD0681432937500999BFE /* jddctmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0301432937500999BFE /* jddctmgr.c */; };
+		E29FD0691432937500999BFE /* jdhuff.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0311432937500999BFE /* jdhuff.c */; };
+		E29FD06A1432937500999BFE /* jdhuff.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0321432937500999BFE /* jdhuff.h */; };
+		E29FD06B1432937500999BFE /* jdinput.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0331432937500999BFE /* jdinput.c */; };
+		E29FD06C1432937500999BFE /* jdmainct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0341432937500999BFE /* jdmainct.c */; };
+		E29FD06D1432937500999BFE /* jdmarker.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0351432937500999BFE /* jdmarker.c */; };
+		E29FD06E1432937500999BFE /* jdmaster.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0361432937500999BFE /* jdmaster.c */; };
+		E29FD06F1432937500999BFE /* jdmerge.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0371432937500999BFE /* jdmerge.c */; };
+		E29FD0701432937500999BFE /* jdphuff.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0381432937500999BFE /* jdphuff.c */; };
+		E29FD0711432937500999BFE /* jdpostct.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0391432937500999BFE /* jdpostct.c */; };
+		E29FD0721432937500999BFE /* jdsample.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD03A1432937500999BFE /* jdsample.c */; };
+		E29FD0731432937500999BFE /* jerror.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD03B1432937500999BFE /* jerror.c */; };
+		E29FD0741432937500999BFE /* jerror.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD03C1432937500999BFE /* jerror.h */; };
+		E29FD0751432937500999BFE /* jfdctflt.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD03D1432937500999BFE /* jfdctflt.c */; };
+		E29FD0761432937500999BFE /* jfdctfst.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD03E1432937500999BFE /* jfdctfst.c */; };
+		E29FD0771432937500999BFE /* jfdctint.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD03F1432937500999BFE /* jfdctint.c */; };
+		E29FD0781432937500999BFE /* jidctflt.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0401432937500999BFE /* jidctflt.c */; };
+		E29FD0791432937500999BFE /* jidctfst.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0411432937500999BFE /* jidctfst.c */; };
+		E29FD07A1432937500999BFE /* jidctint.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0421432937500999BFE /* jidctint.c */; };
+		E29FD07B1432937500999BFE /* jidctred.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0431432937500999BFE /* jidctred.c */; };
+		E29FD07C1432937500999BFE /* jinclude.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0441432937500999BFE /* jinclude.h */; };
+		E29FD07D1432937500999BFE /* jmemmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0451432937500999BFE /* jmemmgr.c */; };
+		E29FD07E1432937500999BFE /* jmemnobs.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD0461432937500999BFE /* jmemnobs.c */; };
+		E29FD07F1432937500999BFE /* jmemsys.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0471432937500999BFE /* jmemsys.h */; };
+		E29FD0801432937500999BFE /* jmorecfg.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0481432937500999BFE /* jmorecfg.h */; };
+		E29FD0811432937500999BFE /* jpegint.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD0491432937500999BFE /* jpegint.h */; };
+		E29FD0821432937500999BFE /* jpeglib.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD04A1432937500999BFE /* jpeglib.h */; };
+		E29FD0831432937500999BFE /* jpeglibmangler.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD04B1432937500999BFE /* jpeglibmangler.h */; };
+		E29FD0841432937500999BFE /* jquant1.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD04C1432937500999BFE /* jquant1.c */; };
+		E29FD0851432937500999BFE /* jquant2.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD04D1432937500999BFE /* jquant2.c */; };
+		E29FD0861432937500999BFE /* jutils.c in Sources */ = {isa = PBXBuildFile; fileRef = E29FD04E1432937500999BFE /* jutils.c */; };
+		E29FD0871432937500999BFE /* jversion.h in Headers */ = {isa = PBXBuildFile; fileRef = E29FD04F1432937500999BFE /* jversion.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E29FCEFD1432846700999BFE /* libjpeg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjpeg.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E29FCF001432846700999BFE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E29FD0181432937500999BFE /* jcapimin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcapimin.c; path = ../../../webRTC/third_party/libjpeg/jcapimin.c; sourceTree = "<group>"; };
+		E29FD0191432937500999BFE /* jcapistd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcapistd.c; path = ../../../webRTC/third_party/libjpeg/jcapistd.c; sourceTree = "<group>"; };
+		E29FD01A1432937500999BFE /* jccoefct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jccoefct.c; path = ../../../webRTC/third_party/libjpeg/jccoefct.c; sourceTree = "<group>"; };
+		E29FD01B1432937500999BFE /* jccolor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jccolor.c; path = ../../../webRTC/third_party/libjpeg/jccolor.c; sourceTree = "<group>"; };
+		E29FD01C1432937500999BFE /* jcdctmgr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcdctmgr.c; path = ../../../webRTC/third_party/libjpeg/jcdctmgr.c; sourceTree = "<group>"; };
+		E29FD01D1432937500999BFE /* jchuff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jchuff.c; path = ../../../webRTC/third_party/libjpeg/jchuff.c; sourceTree = "<group>"; };
+		E29FD01E1432937500999BFE /* jchuff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jchuff.h; path = ../../../webRTC/third_party/libjpeg/jchuff.h; sourceTree = "<group>"; };
+		E29FD01F1432937500999BFE /* jcinit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcinit.c; path = ../../../webRTC/third_party/libjpeg/jcinit.c; sourceTree = "<group>"; };
+		E29FD0201432937500999BFE /* jcmainct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcmainct.c; path = ../../../webRTC/third_party/libjpeg/jcmainct.c; sourceTree = "<group>"; };
+		E29FD0211432937500999BFE /* jcmarker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcmarker.c; path = ../../../webRTC/third_party/libjpeg/jcmarker.c; sourceTree = "<group>"; };
+		E29FD0221432937500999BFE /* jcmaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcmaster.c; path = ../../../webRTC/third_party/libjpeg/jcmaster.c; sourceTree = "<group>"; };
+		E29FD0231432937500999BFE /* jcomapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcomapi.c; path = ../../../webRTC/third_party/libjpeg/jcomapi.c; sourceTree = "<group>"; };
+		E29FD0241432937500999BFE /* jconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jconfig.h; path = ../../../webRTC/third_party/libjpeg/jconfig.h; sourceTree = "<group>"; };
+		E29FD0251432937500999BFE /* jcparam.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcparam.c; path = ../../../webRTC/third_party/libjpeg/jcparam.c; sourceTree = "<group>"; };
+		E29FD0261432937500999BFE /* jcphuff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcphuff.c; path = ../../../webRTC/third_party/libjpeg/jcphuff.c; sourceTree = "<group>"; };
+		E29FD0271432937500999BFE /* jcprepct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcprepct.c; path = ../../../webRTC/third_party/libjpeg/jcprepct.c; sourceTree = "<group>"; };
+		E29FD0281432937500999BFE /* jcsample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jcsample.c; path = ../../../webRTC/third_party/libjpeg/jcsample.c; sourceTree = "<group>"; };
+		E29FD0291432937500999BFE /* jdapimin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdapimin.c; path = ../../../webRTC/third_party/libjpeg/jdapimin.c; sourceTree = "<group>"; };
+		E29FD02A1432937500999BFE /* jdapistd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdapistd.c; path = ../../../webRTC/third_party/libjpeg/jdapistd.c; sourceTree = "<group>"; };
+		E29FD02B1432937500999BFE /* jdatadst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdatadst.c; path = ../../../webRTC/third_party/libjpeg/jdatadst.c; sourceTree = "<group>"; };
+		E29FD02C1432937500999BFE /* jdatasrc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdatasrc.c; path = ../../../webRTC/third_party/libjpeg/jdatasrc.c; sourceTree = "<group>"; };
+		E29FD02D1432937500999BFE /* jdcoefct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdcoefct.c; path = ../../../webRTC/third_party/libjpeg/jdcoefct.c; sourceTree = "<group>"; };
+		E29FD02E1432937500999BFE /* jdcolor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdcolor.c; path = ../../../webRTC/third_party/libjpeg/jdcolor.c; sourceTree = "<group>"; };
+		E29FD02F1432937500999BFE /* jdct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jdct.h; path = ../../../webRTC/third_party/libjpeg/jdct.h; sourceTree = "<group>"; };
+		E29FD0301432937500999BFE /* jddctmgr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jddctmgr.c; path = ../../../webRTC/third_party/libjpeg/jddctmgr.c; sourceTree = "<group>"; };
+		E29FD0311432937500999BFE /* jdhuff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdhuff.c; path = ../../../webRTC/third_party/libjpeg/jdhuff.c; sourceTree = "<group>"; };
+		E29FD0321432937500999BFE /* jdhuff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jdhuff.h; path = ../../../webRTC/third_party/libjpeg/jdhuff.h; sourceTree = "<group>"; };
+		E29FD0331432937500999BFE /* jdinput.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdinput.c; path = ../../../webRTC/third_party/libjpeg/jdinput.c; sourceTree = "<group>"; };
+		E29FD0341432937500999BFE /* jdmainct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdmainct.c; path = ../../../webRTC/third_party/libjpeg/jdmainct.c; sourceTree = "<group>"; };
+		E29FD0351432937500999BFE /* jdmarker.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdmarker.c; path = ../../../webRTC/third_party/libjpeg/jdmarker.c; sourceTree = "<group>"; };
+		E29FD0361432937500999BFE /* jdmaster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdmaster.c; path = ../../../webRTC/third_party/libjpeg/jdmaster.c; sourceTree = "<group>"; };
+		E29FD0371432937500999BFE /* jdmerge.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdmerge.c; path = ../../../webRTC/third_party/libjpeg/jdmerge.c; sourceTree = "<group>"; };
+		E29FD0381432937500999BFE /* jdphuff.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdphuff.c; path = ../../../webRTC/third_party/libjpeg/jdphuff.c; sourceTree = "<group>"; };
+		E29FD0391432937500999BFE /* jdpostct.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdpostct.c; path = ../../../webRTC/third_party/libjpeg/jdpostct.c; sourceTree = "<group>"; };
+		E29FD03A1432937500999BFE /* jdsample.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jdsample.c; path = ../../../webRTC/third_party/libjpeg/jdsample.c; sourceTree = "<group>"; };
+		E29FD03B1432937500999BFE /* jerror.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jerror.c; path = ../../../webRTC/third_party/libjpeg/jerror.c; sourceTree = "<group>"; };
+		E29FD03C1432937500999BFE /* jerror.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jerror.h; path = ../../../webRTC/third_party/libjpeg/jerror.h; sourceTree = "<group>"; };
+		E29FD03D1432937500999BFE /* jfdctflt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jfdctflt.c; path = ../../../webRTC/third_party/libjpeg/jfdctflt.c; sourceTree = "<group>"; };
+		E29FD03E1432937500999BFE /* jfdctfst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jfdctfst.c; path = ../../../webRTC/third_party/libjpeg/jfdctfst.c; sourceTree = "<group>"; };
+		E29FD03F1432937500999BFE /* jfdctint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jfdctint.c; path = ../../../webRTC/third_party/libjpeg/jfdctint.c; sourceTree = "<group>"; };
+		E29FD0401432937500999BFE /* jidctflt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jidctflt.c; path = ../../../webRTC/third_party/libjpeg/jidctflt.c; sourceTree = "<group>"; };
+		E29FD0411432937500999BFE /* jidctfst.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jidctfst.c; path = ../../../webRTC/third_party/libjpeg/jidctfst.c; sourceTree = "<group>"; };
+		E29FD0421432937500999BFE /* jidctint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jidctint.c; path = ../../../webRTC/third_party/libjpeg/jidctint.c; sourceTree = "<group>"; };
+		E29FD0431432937500999BFE /* jidctred.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jidctred.c; path = ../../../webRTC/third_party/libjpeg/jidctred.c; sourceTree = "<group>"; };
+		E29FD0441432937500999BFE /* jinclude.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jinclude.h; path = ../../../webRTC/third_party/libjpeg/jinclude.h; sourceTree = "<group>"; };
+		E29FD0451432937500999BFE /* jmemmgr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jmemmgr.c; path = ../../../webRTC/third_party/libjpeg/jmemmgr.c; sourceTree = "<group>"; };
+		E29FD0461432937500999BFE /* jmemnobs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jmemnobs.c; path = ../../../webRTC/third_party/libjpeg/jmemnobs.c; sourceTree = "<group>"; };
+		E29FD0471432937500999BFE /* jmemsys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jmemsys.h; path = ../../../webRTC/third_party/libjpeg/jmemsys.h; sourceTree = "<group>"; };
+		E29FD0481432937500999BFE /* jmorecfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jmorecfg.h; path = ../../../webRTC/third_party/libjpeg/jmorecfg.h; sourceTree = "<group>"; };
+		E29FD0491432937500999BFE /* jpegint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpegint.h; path = ../../../webRTC/third_party/libjpeg/jpegint.h; sourceTree = "<group>"; };
+		E29FD04A1432937500999BFE /* jpeglib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglib.h; path = ../../../webRTC/third_party/libjpeg/jpeglib.h; sourceTree = "<group>"; };
+		E29FD04B1432937500999BFE /* jpeglibmangler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jpeglibmangler.h; path = ../../../webRTC/third_party/libjpeg/jpeglibmangler.h; sourceTree = "<group>"; };
+		E29FD04C1432937500999BFE /* jquant1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jquant1.c; path = ../../../webRTC/third_party/libjpeg/jquant1.c; sourceTree = "<group>"; };
+		E29FD04D1432937500999BFE /* jquant2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jquant2.c; path = ../../../webRTC/third_party/libjpeg/jquant2.c; sourceTree = "<group>"; };
+		E29FD04E1432937500999BFE /* jutils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = jutils.c; path = ../../../webRTC/third_party/libjpeg/jutils.c; sourceTree = "<group>"; };
+		E29FD04F1432937500999BFE /* jversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jversion.h; path = ../../../webRTC/third_party/libjpeg/jversion.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E29FCEFA1432846700999BFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29FCF011432846700999BFE /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E29FCEF21432846700999BFE = {
+			isa = PBXGroup;
+			children = (
+				E29FCF0A1432863F00999BFE /* Source */,
+				E29FCEFF1432846700999BFE /* Frameworks */,
+				E29FCEFE1432846700999BFE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E29FCEFE1432846700999BFE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E29FCEFD1432846700999BFE /* libjpeg.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E29FCEFF1432846700999BFE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E29FCF001432846700999BFE /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E29FCF0A1432863F00999BFE /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E29FD0181432937500999BFE /* jcapimin.c */,
+				E29FD0191432937500999BFE /* jcapistd.c */,
+				E29FD01A1432937500999BFE /* jccoefct.c */,
+				E29FD01B1432937500999BFE /* jccolor.c */,
+				E29FD01C1432937500999BFE /* jcdctmgr.c */,
+				E29FD01D1432937500999BFE /* jchuff.c */,
+				E29FD01E1432937500999BFE /* jchuff.h */,
+				E29FD01F1432937500999BFE /* jcinit.c */,
+				E29FD0201432937500999BFE /* jcmainct.c */,
+				E29FD0211432937500999BFE /* jcmarker.c */,
+				E29FD0221432937500999BFE /* jcmaster.c */,
+				E29FD0231432937500999BFE /* jcomapi.c */,
+				E29FD0241432937500999BFE /* jconfig.h */,
+				E29FD0251432937500999BFE /* jcparam.c */,
+				E29FD0261432937500999BFE /* jcphuff.c */,
+				E29FD0271432937500999BFE /* jcprepct.c */,
+				E29FD0281432937500999BFE /* jcsample.c */,
+				E29FD0291432937500999BFE /* jdapimin.c */,
+				E29FD02A1432937500999BFE /* jdapistd.c */,
+				E29FD02B1432937500999BFE /* jdatadst.c */,
+				E29FD02C1432937500999BFE /* jdatasrc.c */,
+				E29FD02D1432937500999BFE /* jdcoefct.c */,
+				E29FD02E1432937500999BFE /* jdcolor.c */,
+				E29FD02F1432937500999BFE /* jdct.h */,
+				E29FD0301432937500999BFE /* jddctmgr.c */,
+				E29FD0311432937500999BFE /* jdhuff.c */,
+				E29FD0321432937500999BFE /* jdhuff.h */,
+				E29FD0331432937500999BFE /* jdinput.c */,
+				E29FD0341432937500999BFE /* jdmainct.c */,
+				E29FD0351432937500999BFE /* jdmarker.c */,
+				E29FD0361432937500999BFE /* jdmaster.c */,
+				E29FD0371432937500999BFE /* jdmerge.c */,
+				E29FD0381432937500999BFE /* jdphuff.c */,
+				E29FD0391432937500999BFE /* jdpostct.c */,
+				E29FD03A1432937500999BFE /* jdsample.c */,
+				E29FD03B1432937500999BFE /* jerror.c */,
+				E29FD03C1432937500999BFE /* jerror.h */,
+				E29FD03D1432937500999BFE /* jfdctflt.c */,
+				E29FD03E1432937500999BFE /* jfdctfst.c */,
+				E29FD03F1432937500999BFE /* jfdctint.c */,
+				E29FD0401432937500999BFE /* jidctflt.c */,
+				E29FD0411432937500999BFE /* jidctfst.c */,
+				E29FD0421432937500999BFE /* jidctint.c */,
+				E29FD0431432937500999BFE /* jidctred.c */,
+				E29FD0441432937500999BFE /* jinclude.h */,
+				E29FD0451432937500999BFE /* jmemmgr.c */,
+				E29FD0461432937500999BFE /* jmemnobs.c */,
+				E29FD0471432937500999BFE /* jmemsys.h */,
+				E29FD0481432937500999BFE /* jmorecfg.h */,
+				E29FD0491432937500999BFE /* jpegint.h */,
+				E29FD04A1432937500999BFE /* jpeglib.h */,
+				E29FD04B1432937500999BFE /* jpeglibmangler.h */,
+				E29FD04C1432937500999BFE /* jquant1.c */,
+				E29FD04D1432937500999BFE /* jquant2.c */,
+				E29FD04E1432937500999BFE /* jutils.c */,
+				E29FD04F1432937500999BFE /* jversion.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E29FCEFB1432846700999BFE /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29FD0561432937500999BFE /* jchuff.h in Headers */,
+				E29FD05C1432937500999BFE /* jconfig.h in Headers */,
+				E29FD0671432937500999BFE /* jdct.h in Headers */,
+				E29FD06A1432937500999BFE /* jdhuff.h in Headers */,
+				E29FD0741432937500999BFE /* jerror.h in Headers */,
+				E29FD07C1432937500999BFE /* jinclude.h in Headers */,
+				E29FD07F1432937500999BFE /* jmemsys.h in Headers */,
+				E29FD0801432937500999BFE /* jmorecfg.h in Headers */,
+				E29FD0811432937500999BFE /* jpegint.h in Headers */,
+				E29FD0821432937500999BFE /* jpeglib.h in Headers */,
+				E29FD0831432937500999BFE /* jpeglibmangler.h in Headers */,
+				E29FD0871432937500999BFE /* jversion.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E29FCEFC1432846700999BFE /* libjpeg */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E29FCF071432846700999BFE /* Build configuration list for PBXNativeTarget "libjpeg" */;
+			buildPhases = (
+				E29FCEF91432846700999BFE /* Sources */,
+				E29FCEFA1432846700999BFE /* Frameworks */,
+				E29FCEFB1432846700999BFE /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libjpeg;
+			productName = libjpeg;
+			productReference = E29FCEFD1432846700999BFE /* libjpeg.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E29FCEF41432846700999BFE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = E29FCEF71432846700999BFE /* Build configuration list for PBXProject "libjpeg" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E29FCEF21432846700999BFE;
+			productRefGroup = E29FCEFE1432846700999BFE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E29FCEFC1432846700999BFE /* libjpeg */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E29FCEF91432846700999BFE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E29FD0501432937500999BFE /* jcapimin.c in Sources */,
+				E29FD0511432937500999BFE /* jcapistd.c in Sources */,
+				E29FD0521432937500999BFE /* jccoefct.c in Sources */,
+				E29FD0531432937500999BFE /* jccolor.c in Sources */,
+				E29FD0541432937500999BFE /* jcdctmgr.c in Sources */,
+				E29FD0551432937500999BFE /* jchuff.c in Sources */,
+				E29FD0571432937500999BFE /* jcinit.c in Sources */,
+				E29FD0581432937500999BFE /* jcmainct.c in Sources */,
+				E29FD0591432937500999BFE /* jcmarker.c in Sources */,
+				E29FD05A1432937500999BFE /* jcmaster.c in Sources */,
+				E29FD05B1432937500999BFE /* jcomapi.c in Sources */,
+				E29FD05D1432937500999BFE /* jcparam.c in Sources */,
+				E29FD05E1432937500999BFE /* jcphuff.c in Sources */,
+				E29FD05F1432937500999BFE /* jcprepct.c in Sources */,
+				E29FD0601432937500999BFE /* jcsample.c in Sources */,
+				E29FD0611432937500999BFE /* jdapimin.c in Sources */,
+				E29FD0621432937500999BFE /* jdapistd.c in Sources */,
+				E29FD0631432937500999BFE /* jdatadst.c in Sources */,
+				E29FD0641432937500999BFE /* jdatasrc.c in Sources */,
+				E29FD0651432937500999BFE /* jdcoefct.c in Sources */,
+				E29FD0661432937500999BFE /* jdcolor.c in Sources */,
+				E29FD0681432937500999BFE /* jddctmgr.c in Sources */,
+				E29FD0691432937500999BFE /* jdhuff.c in Sources */,
+				E29FD06B1432937500999BFE /* jdinput.c in Sources */,
+				E29FD06C1432937500999BFE /* jdmainct.c in Sources */,
+				E29FD06D1432937500999BFE /* jdmarker.c in Sources */,
+				E29FD06E1432937500999BFE /* jdmaster.c in Sources */,
+				E29FD06F1432937500999BFE /* jdmerge.c in Sources */,
+				E29FD0701432937500999BFE /* jdphuff.c in Sources */,
+				E29FD0711432937500999BFE /* jdpostct.c in Sources */,
+				E29FD0721432937500999BFE /* jdsample.c in Sources */,
+				E29FD0731432937500999BFE /* jerror.c in Sources */,
+				E29FD0751432937500999BFE /* jfdctflt.c in Sources */,
+				E29FD0761432937500999BFE /* jfdctfst.c in Sources */,
+				E29FD0771432937500999BFE /* jfdctint.c in Sources */,
+				E29FD0781432937500999BFE /* jidctflt.c in Sources */,
+				E29FD0791432937500999BFE /* jidctfst.c in Sources */,
+				E29FD07A1432937500999BFE /* jidctint.c in Sources */,
+				E29FD07B1432937500999BFE /* jidctred.c in Sources */,
+				E29FD07D1432937500999BFE /* jmemmgr.c in Sources */,
+				E29FD07E1432937500999BFE /* jmemnobs.c in Sources */,
+				E29FD0841432937500999BFE /* jquant1.c in Sources */,
+				E29FD0851432937500999BFE /* jquant2.c in Sources */,
+				E29FD0861432937500999BFE /* jutils.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E29FCF051432846700999BFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		E29FCF061432846700999BFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		E29FCF081432846700999BFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/libjpeg.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = jpeg;
+			};
+			name = Debug;
+		};
+		E29FCF091432846700999BFE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/libjpeg.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = jpeg;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E29FCEF71432846700999BFE /* Build configuration list for PBXProject "libjpeg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E29FCF051432846700999BFE /* Debug */,
+				E29FCF061432846700999BFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E29FCF071432846700999BFE /* Build configuration list for PBXNativeTarget "libjpeg" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E29FCF081432846700999BFE /* Debug */,
+				E29FCF091432846700999BFE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E29FCEF41432846700999BFE /* Project object */;
+}

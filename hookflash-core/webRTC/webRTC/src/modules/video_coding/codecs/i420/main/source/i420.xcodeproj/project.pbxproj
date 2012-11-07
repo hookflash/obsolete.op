@@ -1,0 +1,314 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C9D5DD18B233E6F6924367DA /* i420.cc in Sources */ = {isa = PBXBuildFile; fileRef = B491651A3A5ED7763DE32CAB /* i420.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03F0EC7C60EBDC7C94B0A93C /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		10DB92D320E4698A80E5680E /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../../build/common.gypi; sourceTree = "<group>"; };
+		1B1429364B8F4CC5147BC711 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../../../../build/release.gypi; sourceTree = "<group>"; };
+		22F215B1AD4C9BFE613CE142 /* libwebrtc_i420.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libwebrtc_i420.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		50EEE3DCA75B1949F9BFB0D8 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		6BA81387189CCE98D268B44D /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../../../../supplement.gypi; sourceTree = "<group>"; };
+		913981C9877BE95867F1E5F4 /* i420.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = i420.gyp; sourceTree = "<group>"; };
+		B491651A3A5ED7763DE32CAB /* i420.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = i420.cc; sourceTree = "<group>"; };
+		E0A9428705588A77503CC589 /* i420.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = i420.h; sourceTree = "<group>"; };
+		F2420D561319D3D62B952FE7 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		F2AD1E3ECD2F281E7552C01D /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../../../../common_settings.gypi; sourceTree = "<group>"; };
+		FBE12FFC67DB5CD2296AF13D /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../build/common.gypi; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5D96B6EF4BA84D3E8C48B644 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6BD24FFC6E2AD0B80180A1D4 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E0A9428705588A77503CC589 /* i420.h */,
+			);
+			path = ../interface;
+			sourceTree = "<group>";
+		};
+		91CBF53E934F16667830CDC3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6BD24FFC6E2AD0B80180A1D4 /* ../interface */,
+				B491651A3A5ED7763DE32CAB /* i420.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		B7F7705A72DBA598B8CCB378 = {
+			isa = PBXGroup;
+			children = (
+				91CBF53E934F16667830CDC3 /* Source */,
+				E37A394069A707E27A5A96F2 /* Products */,
+				CAF376B34F96D8A07741DC52 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		CAF376B34F96D8A07741DC52 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				10DB92D320E4698A80E5680E /* common.gypi */,
+				FBE12FFC67DB5CD2296AF13D /* common.gypi */,
+				F2AD1E3ECD2F281E7552C01D /* common_settings.gypi */,
+				913981C9877BE95867F1E5F4 /* i420.gyp */,
+				1B1429364B8F4CC5147BC711 /* release.gypi */,
+				03F0EC7C60EBDC7C94B0A93C /* release_defaults.gypi */,
+				50EEE3DCA75B1949F9BFB0D8 /* release_impl.gypi */,
+				F2420D561319D3D62B952FE7 /* release_impl_official.gypi */,
+				6BA81387189CCE98D268B44D /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		E37A394069A707E27A5A96F2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				22F215B1AD4C9BFE613CE142 /* libwebrtc_i420.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03A8D4F2AD780485AC76728E /* webrtc_i420 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B430D5703729AED5590BC9C /* Build configuration list for PBXNativeTarget "webrtc_i420" */;
+			buildPhases = (
+				32C3C063537742A47B5688AB /* Sources */,
+				5D96B6EF4BA84D3E8C48B644 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = webrtc_i420;
+			productName = webrtc_i420;
+			productReference = 22F215B1AD4C9BFE613CE142 /* libwebrtc_i420.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		09C4D77025C754422F663FAC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 33C395117FB02846111F8305 /* Build configuration list for PBXProject "i420" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B7F7705A72DBA598B8CCB378;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03A8D4F2AD780485AC76728E /* webrtc_i420 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		32C3C063537742A47B5688AB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C9D5DD18B233E6F6924367DA /* i420.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		77AA843D4E4C09B0B3085639 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../../xcodebuild;
+			};
+			name = Release;
+		};
+		94987CD72FCC37EE18554C23 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		B9CAABD62C47484569ACDE90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../interface,
+					../../../../../../common_video/interface,
+					../../../../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = webrtc_i420;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		EA9950A63DEBD75A48514E0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../interface,
+					../../../../../../common_video/interface,
+					../../../../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = webrtc_i420;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		33C395117FB02846111F8305 /* Build configuration list for PBXProject "i420" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94987CD72FCC37EE18554C23 /* Debug */,
+				77AA843D4E4C09B0B3085639 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		7B430D5703729AED5590BC9C /* Build configuration list for PBXNativeTarget "webrtc_i420" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B9CAABD62C47484569ACDE90 /* Debug */,
+				EA9950A63DEBD75A48514E0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 09C4D77025C754422F663FAC /* Project object */;
+}

@@ -1,0 +1,130 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template linear_congruential</title>
+<link rel="stylesheet" href="../../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../../boost_random/reference.html#header.boost.random.linear_congruential_hpp" title="Header &lt;boost/random/linear_congruential.hpp&gt;">
+<link rel="prev" href="../lagged_fibonacci44497.html" title="Type definition lagged_fibonacci44497">
+<link rel="next" href="../rand48.html" title="Class rand48">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../../boost.png"></td>
+<td align="center"><a href="../../../../index.html">Home</a></td>
+<td align="center"><a href="../../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../lagged_fibonacci44497.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/reference.html#header.boost.random.linear_congruential_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../rand48.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.random.linear_congruential"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template linear_congruential</span></h2>
+<p>boost::random::linear_congruential</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../../boost_random/reference.html#header.boost.random.linear_congruential_hpp" title="Header &lt;boost/random/linear_congruential.hpp&gt;">boost/random/linear_congruential.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> IntType<span class="special">,</span> <span class="identifier">IntType</span> a<span class="special">,</span> <span class="identifier">IntType</span> c<span class="special">,</span> <span class="identifier">IntType</span> m<span class="special">,</span> <span class="identifier">IntType</span> val<span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="linear_congruential.html" title="Class template linear_congruential">linear_congruential</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">IntType</span> <a name="boost.random.linear_congruential.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="linear_congruential.html#boost.random.linear_congruentialconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="linear_congruential.html#id1158784-bb"><span class="identifier">linear_congruential</span></a><span class="special">(</span><span class="identifier">IntType</span> <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a class="link" href="linear_congruential.html#id1158801-bb"><span class="identifier">linear_congruential</span></a><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">It</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="linear_congruential.html#id1158657-bb">public member functions</a></span>
+  <span class="keyword">void</span> <a class="link" href="linear_congruential.html#id1158660-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">IntType</span> <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a class="link" href="linear_congruential.html#id1158684-bb"><span class="identifier">seed</span></a><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span><span class="special">,</span> <span class="identifier">It</span><span class="special">)</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="linear_congruential.html#id1158736-bb"><span class="identifier">min</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="linear_congruential.html#id1158752-bb"><span class="identifier">max</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">IntType</span> <a class="link" href="linear_congruential.html#id1158768-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="linear_congruential.html#id1158837-bb">public static functions</a></span>
+  <span class="keyword">static</span> <span class="keyword">bool</span> <a class="link" href="linear_congruential.html#id1158841-bb"><span class="identifier">validation</span></a><span class="special">(</span><span class="identifier">IntType</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> has_fixed_range<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> min_value<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> max_value<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">IntType</span> multiplier<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">IntType</span> increment<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">IntType</span> modulus<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2650439"></a><h2>Description</h2>
+<p>Instantiations of class template linear_congruential model a  <a class="link" href="../../boost_random/reference.html#boost_random.reference.concepts.pseudo_random_number_generator" title="Pseudo-Random Number Generator">pseudo-random number generator</a> . Linear congruential pseudo-random number generators are described in:</p>
+<p>"Mathematical methods in large-scale computing units", D. H. Lehmer, Proc. 2nd Symposium on Large-Scale Digital Calculating Machines, Harvard University Press, 1951, pp. 141-146</p>
+<p>Let x(n) denote the sequence of numbers returned by some pseudo-random number generator. Then for the linear congruential generator, x(n+1) := (a * x(n) + c) mod m. Parameters for the generator are x(0), a, c, m. The template parameter IntType shall denote an integral type. It must be large enough to hold values a, c, and m. The template parameters a and c must be smaller than m.</p>
+<p>Note: The quality of the generator crucially depends on the choice of the parameters. User code should use one of the sensibly parameterized generators such as minstd_rand instead. </p>
+<div class="refsect2">
+<a name="id2650475"></a><h3>
+<a name="boost.random.linear_congruentialconstruct-copy-destruct"></a><code class="computeroutput">linear_congruential</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="id1158784-bb"></a><span class="identifier">linear_congruential</span><span class="special">(</span><span class="identifier">IntType</span> x0 <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs a linear_congruential generator, seeding it with <code class="computeroutput">x0</code>. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <a name="id1158801-bb"></a><span class="identifier">linear_congruential</span><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span> first<span class="special">,</span> <span class="identifier">It</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs a <code class="computeroutput">linear_congruential</code> generator and seeds it with values taken from the itrator range [first, last) and adjusts first to point to the element after the last one used. If there are not enough elements, throws <code class="computeroutput">std::invalid_argument</code>.</p>
+<p>first and last must be input iterators. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2650641"></a><h3>
+<a name="id1158657-bb"></a><code class="computeroutput">linear_congruential</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">void</span> <a name="id1158660-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">IntType</span> x0 <span class="special">=</span> <span class="number">1</span><span class="special">)</span><span class="special">;</span></pre>
+<p>If c mod m is zero and x0 mod m is zero, changes the current value of the generator to 1. Otherwise, changes it to x0 mod m. If c is zero, distinct seeds in the range [1,m) will leave the generator in distinct states. If c is not zero, the range is [0,m). </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> It<span class="special">&gt;</span> <span class="keyword">void</span> <a name="id1158684-bb"></a><span class="identifier">seed</span><span class="special">(</span><span class="identifier">It</span> <span class="special">&amp;</span> first<span class="special">,</span> <span class="identifier">It</span> last<span class="special">)</span><span class="special">;</span></pre>
+<p>seeds a <code class="computeroutput">linear_congruential</code> generator with values taken from the itrator range [first, last) and adjusts <code class="computeroutput">first</code> to point to the element after the last one used. If there are not enough elements, throws <code class="computeroutput">std::invalid_argument</code>.</p>
+<p><code class="computeroutput">first</code> and <code class="computeroutput">last</code> must be input iterators. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1158736-bb"></a><span class="identifier">min</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns the smallest value that the <code class="computeroutput">linear_congruential</code> generator can produce. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1158752-bb"></a><span class="identifier">max</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns the largest value that the <code class="computeroutput">linear_congruential</code> generator can produce. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">IntType</span> <a name="id1158768-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Returns the next value of the <code class="computeroutput">linear_congruential</code> generator. </p>
+</li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2650981"></a><h3>
+<a name="id1158837-bb"></a><code class="computeroutput">linear_congruential</code> public static functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><pre class="literallayout"><span class="keyword">static</span> <span class="keyword">bool</span> <a name="id1158841-bb"></a><span class="identifier">validation</span><span class="special">(</span><span class="identifier">IntType</span> x<span class="special">)</span><span class="special">;</span></pre></li></ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../lagged_fibonacci44497.html"><img src="../../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../../boost_random/reference.html#header.boost.random.linear_congruential_hpp"><img src="../../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../../index.html"><img src="../../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="../rand48.html"><img src="../../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

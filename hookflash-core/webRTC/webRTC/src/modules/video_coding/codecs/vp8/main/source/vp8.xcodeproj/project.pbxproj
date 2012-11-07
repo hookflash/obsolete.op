@@ -1,0 +1,865 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		8F5C1330FDA6327FC786125D /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 8EC9C5B4F8FA0266A56AE0A0 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				90E7F879D41EC41EE6B5DF23 /* PBXTargetDependency */,
+				96D69E0677626CCE1CF06446 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		012C9004C1D9B4D5F8EE81A8 /* benchmark.cc in Sources */ = {isa = PBXBuildFile; fileRef = 82E98CD19AA9A6DB2B9F9103 /* benchmark.cc */; };
+		05847D06088816299EAF2A5B /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C38C39051406EFA362BB96D /* libvpx.a */; };
+		86A0A75420550E24C6EE6740 /* dual_decoder_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 29815E4991FB6BC071C67498 /* dual_decoder_test.cc */; };
+		87F3A4722E9D00C285442901 /* libtest_framework.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 232FB39E9C796B3E66388468 /* libtest_framework.a */; };
+		8A21A35CCFEE9181CEEEF61D /* libwebrtc_vplib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 317E95068B81C875F54940B5 /* libwebrtc_vplib.a */; };
+		8A26CEEC072A0C2B657EC986 /* normal_async_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 131815DBF2447FF066CEDC77 /* normal_async_test.cc */; };
+		8E3F33A4B2CBBDA1984AA4D6 /* vp8.cc in Sources */ = {isa = PBXBuildFile; fileRef = 76F59E2EB3719B8BF3CF99E1 /* vp8.cc */; };
+		BCFE5F2E58AB5001D6340C90 /* tester.cc in Sources */ = {isa = PBXBuildFile; fileRef = F0F361D7152DDEA877EAC7C7 /* tester.cc */; };
+		C4E1F0AEF028EF1E7880A87B /* libwebrtc_vp8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B2AFE48B3D5505B23FD2CA5 /* libwebrtc_vp8.a */; };
+		D153FF47AE5CD2B3AD78DD4A /* libsystem_wrappers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EEEA49C8D3245572CC85938F /* libsystem_wrappers.a */; };
+		E61D12FA53F8851F5EF79566 /* packet_loss_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = ED0B142B2CD01A667B4390A0 /* packet_loss_test.cc */; };
+		F2B735777641A995810328E9 /* unit_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 723424E8529C3CD99A7C0F2E /* unit_test.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		00FEB04E1DF8DE7B1D94BFFC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92E42C4138D79CA125D36ECA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 61861C01375C49911C9E6AD6;
+			remoteInfo = vp8_test;
+		};
+		0E148546587ECFBB9A4A5F1C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92E42C4138D79CA125D36ECA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8574C931F99AA24A5EFF48C0;
+			remoteInfo = webrtc_vp8;
+		};
+		0F702BA7FB2C26DC4B653EE2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9456155E6E1043F2BD9BBA5 /* test_framework.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E9357D05B3169A329638FF69;
+			remoteInfo = test_framework;
+		};
+		2412A34B901CF3BD54F36483 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = A90C38EB85BBCA777F09AE0D;
+			remoteInfo = webrtc_vplib;
+		};
+		4829E50C861B5474D2565CEC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7B55B6203F5C2B47E025B9F4;
+			remoteInfo = system_wrappers;
+		};
+		563AE3ACDDB4B7786C165446 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6A7796B3BA0CBAB218862A2D;
+			remoteInfo = system_wrappersTest;
+		};
+		9EC4B7A8944114B76421B8AB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F9456155E6E1043F2BD9BBA5 /* test_framework.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E31BC19B837E3A523A3ACE31;
+			remoteInfo = test_framework;
+		};
+		C8E918753C2DDC26A9523589 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92E42C4138D79CA125D36ECA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8574C931F99AA24A5EFF48C0;
+			remoteInfo = webrtc_vp8;
+		};
+		CBA38BF5C3461995DD8DF9E5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4370262DA151E3E76C3D8F94;
+			remoteInfo = vplib_test;
+		};
+		D43BC5E753C94FFCA52F019D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 455BC70E81E4CAFA527F91CD;
+			remoteInfo = system_wrappers;
+		};
+		D78C63E9D807EA737310C640 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0AB42578C714E8D75CAFAA18;
+			remoteInfo = webrtc_vplib;
+		};
+		DF5724E0831A51E38F05206B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 094A73F962E30158B1BB6C94 /* libvpx.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 98E87CAEFCF9A906003B5768;
+			remoteInfo = libvpx;
+		};
+		FFE3223735976A07E0B7BA55 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 094A73F962E30158B1BB6C94 /* libvpx.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 4C4087667062357B0DBB9779;
+			remoteInfo = libvpx;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		094A73F962E30158B1BB6C94 /* libvpx.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvpx.xcodeproj; path = ../../../../../../../third_party/libvpx/libvpx.xcodeproj; sourceTree = SOURCE_ROOT; };
+		131815DBF2447FF066CEDC77 /* normal_async_test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = normal_async_test.cc; sourceTree = "<group>"; };
+		133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers.xcodeproj; path = ../../../../../../system_wrappers/source/system_wrappers.xcodeproj; sourceTree = SOURCE_ROOT; };
+		138C326943F1C8C690DF49F6 /* vp8.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vp8.h; sourceTree = "<group>"; };
+		1EBAA308F0E2B2F21072D541 /* dual_decoder_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dual_decoder_test.h; sourceTree = "<group>"; };
+		25B46C1EAF9289BC3412A890 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		29815E4991FB6BC071C67498 /* dual_decoder_test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dual_decoder_test.cc; sourceTree = "<group>"; };
+		3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = vplib.xcodeproj; path = ../../../../../../common_video/vplib/main/source/vplib.xcodeproj; sourceTree = SOURCE_ROOT; };
+		55614CB9B6D444EB6ADF5481 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		723424E8529C3CD99A7C0F2E /* unit_test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unit_test.cc; sourceTree = "<group>"; };
+		76F59E2EB3719B8BF3CF99E1 /* vp8.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vp8.cc; sourceTree = "<group>"; };
+		82E98CD19AA9A6DB2B9F9103 /* benchmark.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = benchmark.cc; sourceTree = "<group>"; };
+		8F3B7781ABC0781B763F4139 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../../../../build/release.gypi; sourceTree = "<group>"; };
+		9B2AFE48B3D5505B23FD2CA5 /* libwebrtc_vp8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libwebrtc_vp8.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9DF51A0548E43D9750F71AC1 /* vp8.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = vp8.gyp; sourceTree = "<group>"; };
+		9E2381D94E50AD2B6B704948 /* vp8_test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = vp8_test; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52B2DD60145565E724745DF /* packet_loss_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = packet_loss_test.h; sourceTree = "<group>"; };
+		A70470308CE96B606F448FB4 /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../../../../common_settings.gypi; sourceTree = "<group>"; };
+		B3551BC910584E0162A78135 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../../build/common.gypi; sourceTree = "<group>"; };
+		B9D565AF51A495B68A0E1904 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../../../../supplement.gypi; sourceTree = "<group>"; };
+		BA54073DDABE8BA73A96EC83 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		CBDF0C9BF0F7902E587E8534 /* normal_async_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = normal_async_test.h; sourceTree = "<group>"; };
+		CF15F9FC5B318D5ACCB8ACAA /* benchmark.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = benchmark.h; sourceTree = "<group>"; };
+		D1ADF0233BF88DEDD31C5078 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../build/common.gypi; sourceTree = "<group>"; };
+		ED0B142B2CD01A667B4390A0 /* packet_loss_test.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = packet_loss_test.cc; sourceTree = "<group>"; };
+		F0F361D7152DDEA877EAC7C7 /* tester.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = tester.cc; sourceTree = "<group>"; };
+		F46A4A85A6FE94F452C51994 /* unit_test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = unit_test.h; sourceTree = "<group>"; };
+		F9456155E6E1043F2BD9BBA5 /* test_framework.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = test_framework.xcodeproj; path = ../../../test_framework/test_framework.xcodeproj; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3F41CCEF2F94816A9588DFC2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A97BD9D6E70833FE1B416D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C4E1F0AEF028EF1E7880A87B /* libwebrtc_vp8.a in Frameworks */,
+				D153FF47AE5CD2B3AD78DD4A /* libsystem_wrappers.a in Frameworks */,
+				87F3A4722E9D00C285442901 /* libtest_framework.a in Frameworks */,
+				8A21A35CCFEE9181CEEEF61D /* libwebrtc_vplib.a in Frameworks */,
+				05847D06088816299EAF2A5B /* libvpx.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		36518582A7D99702BD27F2CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				232FB39E9C796B3E66388468 /* libtest_framework.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		509E359236527772F6768935 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				82E98CD19AA9A6DB2B9F9103 /* benchmark.cc */,
+				CF15F9FC5B318D5ACCB8ACAA /* benchmark.h */,
+				29815E4991FB6BC071C67498 /* dual_decoder_test.cc */,
+				1EBAA308F0E2B2F21072D541 /* dual_decoder_test.h */,
+				131815DBF2447FF066CEDC77 /* normal_async_test.cc */,
+				CBDF0C9BF0F7902E587E8534 /* normal_async_test.h */,
+				ED0B142B2CD01A667B4390A0 /* packet_loss_test.cc */,
+				A52B2DD60145565E724745DF /* packet_loss_test.h */,
+				F0F361D7152DDEA877EAC7C7 /* tester.cc */,
+				723424E8529C3CD99A7C0F2E /* unit_test.cc */,
+				F46A4A85A6FE94F452C51994 /* unit_test.h */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
+		9043C01EE9702D5297B571CB /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				EE49D74BEB238CA0EDB09C77 /* interface */,
+				509E359236527772F6768935 /* test */,
+			);
+			path = ..;
+			sourceTree = "<group>";
+		};
+		99999BF029BCD1ABD789BAE0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9B2AFE48B3D5505B23FD2CA5 /* libwebrtc_vp8.a */,
+				9E2381D94E50AD2B6B704948 /* vp8_test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A6E6D46B185C57C46A932F3C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EEEA49C8D3245572CC85938F /* libsystem_wrappers.a */,
+				D418E2F2BBF80574DE26D915 /* system_wrappersTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ADBE52A11EA1ADFE5A1192E5 = {
+			isa = PBXGroup;
+			children = (
+				B8B9627CD31AA76174FDFCDD /* Source */,
+				B50EA2FA7BAC44CA00E6C850 /* Projects */,
+				99999BF029BCD1ABD789BAE0 /* Products */,
+				B086CFB40B205DAEDEB78113 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		B086CFB40B205DAEDEB78113 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				B3551BC910584E0162A78135 /* common.gypi */,
+				D1ADF0233BF88DEDD31C5078 /* common.gypi */,
+				A70470308CE96B606F448FB4 /* common_settings.gypi */,
+				8F3B7781ABC0781B763F4139 /* release.gypi */,
+				55614CB9B6D444EB6ADF5481 /* release_defaults.gypi */,
+				BA54073DDABE8BA73A96EC83 /* release_impl.gypi */,
+				25B46C1EAF9289BC3412A890 /* release_impl_official.gypi */,
+				B9D565AF51A495B68A0E1904 /* supplement.gypi */,
+				9DF51A0548E43D9750F71AC1 /* vp8.gyp */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		B50EA2FA7BAC44CA00E6C850 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				094A73F962E30158B1BB6C94 /* libvpx.xcodeproj */,
+				133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */,
+				F9456155E6E1043F2BD9BBA5 /* test_framework.xcodeproj */,
+				3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		B87CD61506C31E09F9B2D271 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				317E95068B81C875F54940B5 /* libwebrtc_vplib.a */,
+				C01CFEFD70CDA4695F20F65D /* vplib_test */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B8B9627CD31AA76174FDFCDD /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				9043C01EE9702D5297B571CB /* .. */,
+				76F59E2EB3719B8BF3CF99E1 /* vp8.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		DB1759BB243E677603367D78 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C38C39051406EFA362BB96D /* libvpx.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE49D74BEB238CA0EDB09C77 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				138C326943F1C8C690DF49F6 /* vp8.h */,
+			);
+			path = interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		61861C01375C49911C9E6AD6 /* vp8_test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BD2F48A5E3D1E2111129D8EF /* Build configuration list for PBXNativeTarget "vp8_test" */;
+			buildPhases = (
+				2522E541D64BA2D002F60B54 /* Sources */,
+				9A97BD9D6E70833FE1B416D8 /* Frameworks */,
+				7A0D5710EC0C8DFDB6F85D81 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				541B44F55FC88954D67CCE8C /* PBXTargetDependency */,
+				6AB8159F189889786EF06AAA /* PBXTargetDependency */,
+				3265A14D3600BF69002C24C4 /* PBXTargetDependency */,
+				A3C4FE3BA0D3FF4D22EBE552 /* PBXTargetDependency */,
+				2AB4743B03B26F9B4D8560F4 /* PBXTargetDependency */,
+			);
+			name = vp8_test;
+			productName = vp8_test;
+			productReference = 9E2381D94E50AD2B6B704948 /* vp8_test */;
+			productType = "com.apple.product-type.tool";
+		};
+		8574C931F99AA24A5EFF48C0 /* webrtc_vp8 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DDA8A2874A2E604EC1A7645 /* Build configuration list for PBXNativeTarget "webrtc_vp8" */;
+			buildPhases = (
+				B4730002DF0E02DA82CE892E /* Sources */,
+				3F41CCEF2F94816A9588DFC2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = webrtc_vp8;
+			productName = webrtc_vp8;
+			productReference = 9B2AFE48B3D5505B23FD2CA5 /* libwebrtc_vp8.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		92E42C4138D79CA125D36ECA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = B1DB23C410D9D4D350402762 /* Build configuration list for PBXProject "vp8" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = ADBE52A11EA1ADFE5A1192E5;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = DB1759BB243E677603367D78 /* Products */;
+					ProjectRef = 094A73F962E30158B1BB6C94 /* libvpx.xcodeproj */;
+				},
+				{
+					ProductGroup = A6E6D46B185C57C46A932F3C /* Products */;
+					ProjectRef = 133B8F4BBFF8AC48929C3A39 /* system_wrappers.xcodeproj */;
+				},
+				{
+					ProductGroup = 36518582A7D99702BD27F2CF /* Products */;
+					ProjectRef = F9456155E6E1043F2BD9BBA5 /* test_framework.xcodeproj */;
+				},
+				{
+					ProductGroup = B87CD61506C31E09F9B2D271 /* Products */;
+					ProjectRef = 3861C4A1B425EB83D3814C8F /* vplib.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8F5C1330FDA6327FC786125D /* All */,
+				8574C931F99AA24A5EFF48C0 /* webrtc_vp8 */,
+				61861C01375C49911C9E6AD6 /* vp8_test */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1C38C39051406EFA362BB96D /* libvpx.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvpx.a;
+			remoteRef = DF5724E0831A51E38F05206B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		232FB39E9C796B3E66388468 /* libtest_framework.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_framework.a;
+			remoteRef = 0F702BA7FB2C26DC4B653EE2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		317E95068B81C875F54940B5 /* libwebrtc_vplib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_vplib.a;
+			remoteRef = D78C63E9D807EA737310C640 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C01CFEFD70CDA4695F20F65D /* vplib_test */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = vplib_test;
+			remoteRef = CBA38BF5C3461995DD8DF9E5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D418E2F2BBF80574DE26D915 /* system_wrappersTest */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = system_wrappersTest;
+			remoteRef = 563AE3ACDDB4B7786C165446 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		EEEA49C8D3245572CC85938F /* libsystem_wrappers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsystem_wrappers.a;
+			remoteRef = 4829E50C861B5474D2565CEC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7A0D5710EC0C8DFDB6F85D81 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../../../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2522E541D64BA2D002F60B54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				012C9004C1D9B4D5F8EE81A8 /* benchmark.cc in Sources */,
+				8A26CEEC072A0C2B657EC986 /* normal_async_test.cc in Sources */,
+				E61D12FA53F8851F5EF79566 /* packet_loss_test.cc in Sources */,
+				BCFE5F2E58AB5001D6340C90 /* tester.cc in Sources */,
+				F2B735777641A995810328E9 /* unit_test.cc in Sources */,
+				86A0A75420550E24C6EE6740 /* dual_decoder_test.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B4730002DF0E02DA82CE892E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8E3F33A4B2CBBDA1984AA4D6 /* vp8.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2AB4743B03B26F9B4D8560F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libvpx;
+			targetProxy = FFE3223735976A07E0B7BA55 /* PBXContainerItemProxy */;
+		};
+		3265A14D3600BF69002C24C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = test_framework;
+			targetProxy = 9EC4B7A8944114B76421B8AB /* PBXContainerItemProxy */;
+		};
+		541B44F55FC88954D67CCE8C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8574C931F99AA24A5EFF48C0 /* webrtc_vp8 */;
+			targetProxy = 0E148546587ECFBB9A4A5F1C /* PBXContainerItemProxy */;
+		};
+		6AB8159F189889786EF06AAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = system_wrappers;
+			targetProxy = D43BC5E753C94FFCA52F019D /* PBXContainerItemProxy */;
+		};
+		90E7F879D41EC41EE6B5DF23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8574C931F99AA24A5EFF48C0 /* webrtc_vp8 */;
+			targetProxy = C8E918753C2DDC26A9523589 /* PBXContainerItemProxy */;
+		};
+		96D69E0677626CCE1CF06446 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 61861C01375C49911C9E6AD6 /* vp8_test */;
+			targetProxy = 00FEB04E1DF8DE7B1D94BFFC /* PBXContainerItemProxy */;
+		};
+		A3C4FE3BA0D3FF4D22EBE552 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_vplib;
+			targetProxy = 2412A34B901CF3BD54F36483 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		8184087DEFF2C527A05A717A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../../../../common_video/interface,
+					../../../interface,
+					../../../../../../system_wrappers/interface,
+					../../../../../../common_video/vplib/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = vp8_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		836B8C14EB873BF743E5DB9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Debug;
+		};
+		96D98EE3DF2A3462493B6F41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../../xcodebuild;
+			};
+			name = Release;
+		};
+		AA6619EE1766AD343469EEA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../../../../common_video/interface,
+					../../../interface,
+					../../../../../interface,
+					../../../../../../../third_party/libvpx/source/libvpx,
+					../../../../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = webrtc_vp8;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		C0882059EA2E602BB8F799C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Release;
+		};
+		C208CCEFDE480F4EBA7458C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		CD8A4C613CE90FEAB443BC40 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../../../../common_video/interface,
+					../../../interface,
+					../../../../../../system_wrappers/interface,
+					../../../../../../common_video/vplib/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = vp8_test;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		F6948E875AAE953504AA880B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../../..,
+					../../../../../../..,
+					../interface,
+					../../../../../../common_video/interface,
+					../../../interface,
+					../../../../../interface,
+					../../../../../../../third_party/libvpx/source/libvpx,
+					../../../../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = webrtc_vp8;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4DDA8A2874A2E604EC1A7645 /* Build configuration list for PBXNativeTarget "webrtc_vp8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AA6619EE1766AD343469EEA0 /* Debug */,
+				F6948E875AAE953504AA880B /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		8EC9C5B4F8FA0266A56AE0A0 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				836B8C14EB873BF743E5DB9F /* Debug */,
+				C0882059EA2E602BB8F799C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		B1DB23C410D9D4D350402762 /* Build configuration list for PBXProject "vp8" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C208CCEFDE480F4EBA7458C3 /* Debug */,
+				96D98EE3DF2A3462493B6F41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		BD2F48A5E3D1E2111129D8EF /* Build configuration list for PBXNativeTarget "vp8_test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD8A4C613CE90FEAB443BC40 /* Debug */,
+				8184087DEFF2C527A05A717A /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 92E42C4138D79CA125D36ECA /* Project object */;
+}

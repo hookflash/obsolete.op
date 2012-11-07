@@ -1,0 +1,96 @@
+# HookflashCore
+#
+
+if [ -z "$(PREFIX)" ]; then PREFIX=/usr; fi
+
+
+LIB_NAME=hookflash_services
+ARNAME=lib$(LIB_NAME).a
+
+CC=gcc
+CFLAGS=#-fPIC
+LDFLAGS=#-D_LINUX
+INC=-I../../ -I$(PREFIX)/include
+
+SRC_CORE=../../hookflash/cpp
+SRC_OPENPEER=../../hookflash/openpeer/cpp
+SRC_PROVISIONING=../../hookflash/provisioning/cpp
+SRC_SIP=../../hookflash/sip/cpp
+SRC_WRAPPER=../../hookflash/wrapper/cpp
+
+OUT_DIR=out
+OUT_BIN_DIR=$(OUT_DIR)/bin
+OUT_OBJ_DIR=$(OUT_DIR)/obj
+OUT_LIB_DIR=$(OUT_DIR)/lib
+OUT_INCLUDE_DIR=$(OUT_DIR)/include
+
+OBJS_CORE=$(patsubst %.cpp, %.o, $(wildcard $(SRC_CORE)/*.cpp))
+OBJS_OPENPEER=$(patsubst %.cpp, %.o,$(wildcard $(SRC_OPENPEER)/*.cpp))
+OBJS_PROVISIONING=$(patsubst %.cpp, %.o,$(wildcard $(SRC_PROVISIONING)/*.cpp))
+OBJS_SIP=$(patsubst %.cpp, %.o,$(wildcard $(SRC_SIP)/*.cpp))
+OBJS_WRAPPER=$(patsubst %.cpp, %.o,$(wildcard $(SRC_WRAPPER)/*.cpp))
+
+
+all:prepare copy_headers build
+
+copy_headers:
+	cp ../../hookflash/*.h $(OUT_INCLUDE_DIR)/hookflash
+	cp ../../hookflash/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/internal
+
+	cp ../../hookflash/openpeer/*.h $(OUT_INCLUDE_DIR)/hookflash/openpeer
+	cp ../../hookflash/openpeer/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/openpeer/internal
+
+	cp ../../hookflash/provisioning/*.h $(OUT_INCLUDE_DIR)/hookflash/provisioning
+	cp ../../hookflash/provisioning/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/provisioning/internal
+
+	cp ../../hookflash/sip/*.h $(OUT_INCLUDE_DIR)/hookflash/sip
+	cp ../../hookflash/sip/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/sip/internal
+
+	#cp ../../hookflash/wrapper/*.h $(OUT_INCLUDE_DIR)/hookflash/wrapper
+	#cp ../../hookflash/wrapper/internal/*.h $(OUT_INCLUDE_DIR)/hookflash/wrapper/internal
+
+build: $(OBJS_CORE) $(OBJS_OPENPEER) $(OBJS_PROVISIONING) $(OBJS_SIP)
+	#$(OBJS_WRAPPER)
+	#archive
+
+#%.o: $(SRC)/%.cpp
+#	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$@ $<
+
+#%.o: %.cpp
+#	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$(shell basename $@) $<
+
+%.o: %.cpp
+	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $@ $<
+
+
+
+
+#archive:
+#	ar rcs $(OUT_LIB_DIR)/$(ARNAME) $(OBJ_PATHS) $(OBJ_PATHS_HTTP)
+
+
+prepare:
+	#mkdir -p $(OUT_OBJ_DIR)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)/hookflash/internal
+	mkdir -p $(OUT_INCLUDE_DIR)/hookflash/openpeer/internal
+	mkdir -p $(OUT_INCLUDE_DIR)/hookflash/provisioning/internal
+	mkdir -p $(OUT_INCLUDE_DIR)/hookflash/sip/internal
+	#mkdir -p $(OUT_INCLUDE_DIR)/hookflash/wrapper/internal
+
+install:
+	#mkdir -p $(PREFIX)
+	#cp -R $(OUT_INCLUDE_DIR) $(PREFIX)
+	#cp -R $(OUT_LIB_DIR) $(PREFIX)
+	#cp -R $(OUT_BIN_DIR) $(PREFIX)
+
+clean:
+	rm -f $(SRC_CORE)/*.o
+	rm -f $(SRC_OPENPEER)/*.o
+	rm -f $(SRC_PROVISIONING)/*.o
+	rm -f $(SRC_SIP)/*.o
+	rm -f $(SRC_WRAPPER)/*.o
+	rm -rf $(OUT_DIR)
+	rm -f build.log
+
+

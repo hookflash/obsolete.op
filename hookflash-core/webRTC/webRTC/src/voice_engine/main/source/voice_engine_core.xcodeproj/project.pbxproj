@@ -1,0 +1,556 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03C3E36989644C561B91FE7C /* channel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5F490EEED6DECB3297FF00BB /* channel.cc */; };
+		0F131CE3F62EBF611D9864E3 /* voe_base_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3F4D54528B46B54396F1FB1A /* voe_base_impl.cc */; };
+		11BF9430F077EA8842428C17 /* voe_hardware_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6279FC67FECA5656EE727231 /* voe_hardware_impl.cc */; };
+		163523D0F85865A40808E0AA /* audio_frame_operations.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1D6F0CD50ED6A6564C009A88 /* audio_frame_operations.cc */; };
+		363EC92BDF52126D2A1396DE /* statistics.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3FB421E429D47FC33D0540E5 /* statistics.cc */; };
+		38C4B6828A2449D568B4E5B8 /* voe_rtp_rtcp_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = DCE46C701BF7C0A70C7F6588 /* voe_rtp_rtcp_impl.cc */; };
+		3E84FEB435FBB17E70584496 /* voe_external_media_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9C05F1782E1D94F4614E970D /* voe_external_media_impl.cc */; };
+		3F4FCEC4334C29B701E09DFD /* shared_data.cc in Sources */ = {isa = PBXBuildFile; fileRef = 94079CA3B4463A3E9008F2BA /* shared_data.cc */; };
+		45233FA0E8EB7A77EFFB0904 /* channel_manager_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 192C9338AA0A6B49E34A4FE6 /* channel_manager_base.cc */; };
+		4570111E2D889329F15DBA77 /* monitor_module.cc in Sources */ = {isa = PBXBuildFile; fileRef = 12E411B047D3FC7ED94D6693 /* monitor_module.cc */; };
+		49EC82B2573AC1C37F5369B9 /* voe_codec_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = D02FC71951A8C90998BA9699 /* voe_codec_impl.cc */; };
+		5251481F4B0F3423BC8B42F7 /* voice_engine_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 8046737CE8AFE84219083F6A /* voice_engine_impl.cc */; };
+		5DA6F68AFB41BA8DB71FF922 /* ref_count.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5B11AAC28FA101F6D368071C /* ref_count.cc */; };
+		6D6797177B296C5AB27C777D /* dtmf_inband_queue.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9679DD77EB9871F9E56F3012 /* dtmf_inband_queue.cc */; };
+		7A02A84BA12A2E76728CF731 /* voe_volume_control_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 54AFFDED2A967AC62401DB5B /* voe_volume_control_impl.cc */; };
+		940724E6A0A8445E0DD9B858 /* voe_encryption_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7641B15988187F89F28B6BB1 /* voe_encryption_impl.cc */; };
+		A392D53BB2783A8662C64542 /* voe_network_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 81AAD89F5A733E3A881C9CDF /* voe_network_impl.cc */; };
+		AD9864D26911C8E4E3DA4606 /* dtmf_inband.cc in Sources */ = {isa = PBXBuildFile; fileRef = BD1751A1DB13ACB5B08CECD6 /* dtmf_inband.cc */; };
+		B3D85B24D780B430CE749775 /* voe_dtmf_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2CFE424392265C6861C05051 /* voe_dtmf_impl.cc */; };
+		C8F3F4BB87A6CE79CF96630C /* output_mixer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 15D5E09E9324CFF2FE788AAB /* output_mixer.cc */; };
+		CB1B25930E9E9A16356F676D /* utility.cc in Sources */ = {isa = PBXBuildFile; fileRef = 952CB50DCB02A4FF31C86F8A /* utility.cc */; };
+		CF47F1A8A687C5D452A9C1A4 /* voe_video_sync_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9B75D9813887769271388E2A /* voe_video_sync_impl.cc */; };
+		D6FB719AF7902847A7F3ED5A /* voe_audio_processing_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 04298483EAE7B424FC63AB05 /* voe_audio_processing_impl.cc */; };
+		D7918156FD9CD8FE682A9B85 /* channel_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E821916C7FC2618D2190E569 /* channel_manager.cc */; };
+		DF4542BE764D0CE9E4D9FDA6 /* voe_file_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = C2F3CD4EFE70FC5F3E9879E8 /* voe_file_impl.cc */; };
+		E705A127E2901BCA8A613B83 /* voe_call_report_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = CBE2167546F2BADF96B152B9 /* voe_call_report_impl.cc */; };
+		E93CC6CFB2E8EE149841A0B0 /* transmit_mixer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 41D007ED1D5EE04B585CD38E /* transmit_mixer.cc */; };
+		F48C0D63F35B5A20C3D2607D /* voe_neteq_stats_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = C7E0283938CDB01423A2C750 /* voe_neteq_stats_impl.cc */; };
+		F998F132CDE83C62A72DE703 /* level_indicator.cc in Sources */ = {isa = PBXBuildFile; fileRef = A125941709E6BE1B879D9091 /* level_indicator.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		03F941AE7CA64E91A98379A8 /* voe_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_errors.h; sourceTree = "<group>"; };
+		04298483EAE7B424FC63AB05 /* voe_audio_processing_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_audio_processing_impl.cc; sourceTree = "<group>"; };
+		06F598DBB0C3598DA227738A /* voe_file_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_file_impl.h; sourceTree = "<group>"; };
+		0D26819BAD6BF6875DA72A97 /* voe_encryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_encryption.h; sourceTree = "<group>"; };
+		0EF9DBBD6AEA3FC9F05FB36E /* voe_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_base.h; sourceTree = "<group>"; };
+		12E411B047D3FC7ED94D6693 /* monitor_module.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = monitor_module.cc; sourceTree = "<group>"; };
+		15D5E09E9324CFF2FE788AAB /* output_mixer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = output_mixer.cc; sourceTree = "<group>"; };
+		17119112FFE40A8DC20CE5CF /* ref_count.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ref_count.h; sourceTree = "<group>"; };
+		192C9338AA0A6B49E34A4FE6 /* channel_manager_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = channel_manager_base.cc; sourceTree = "<group>"; };
+		1D6F0CD50ED6A6564C009A88 /* audio_frame_operations.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = audio_frame_operations.cc; sourceTree = "<group>"; };
+		1F842730A90CB0281394A790 /* voice_engine_core.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = voice_engine_core.gyp; sourceTree = "<group>"; };
+		21AA3913BC5E91C0740EB87E /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		235C425F4E45B9B2D9426A59 /* voe_hardware.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_hardware.h; sourceTree = "<group>"; };
+		26769E92617875134FD09DFD /* voe_call_report.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_call_report.h; sourceTree = "<group>"; };
+		29BA8F322851D34A71057805 /* voe_codec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_codec.h; sourceTree = "<group>"; };
+		2A6F9F436BE1F9936DC20E9C /* audio_frame_operations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio_frame_operations.h; sourceTree = "<group>"; };
+		2AB7BB43A231C83723E658FE /* dtmf_inband_queue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtmf_inband_queue.h; sourceTree = "<group>"; };
+		2CFE424392265C6861C05051 /* voe_dtmf_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_dtmf_impl.cc; sourceTree = "<group>"; };
+		3B1F43CD6CFE41EFF93BF7C5 /* voe_volume_control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_volume_control.h; sourceTree = "<group>"; };
+		3F4D54528B46B54396F1FB1A /* voe_base_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_base_impl.cc; sourceTree = "<group>"; };
+		3FB421E429D47FC33D0540E5 /* statistics.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = statistics.cc; sourceTree = "<group>"; };
+		41D007ED1D5EE04B585CD38E /* transmit_mixer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = transmit_mixer.cc; sourceTree = "<group>"; };
+		452A6AF3C6CEEC0CA28FA1A7 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../build/common.gypi; sourceTree = "<group>"; };
+		46D42C8C5ED6FD3673A4D2BC /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../build/release.gypi; sourceTree = "<group>"; };
+		4871B4796941E088DCFDE876 /* voe_neteq_stats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_neteq_stats.h; sourceTree = "<group>"; };
+		4C6D60186E0DD357F7FDDFEC /* voe_file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_file.h; sourceTree = "<group>"; };
+		4EA6241827D699CC00EDCAA1 /* voe_audio_processing_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_audio_processing_impl.h; sourceTree = "<group>"; };
+		4EA8218724A4A86A6502D489 /* voe_neteq_stats_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_neteq_stats_impl.h; sourceTree = "<group>"; };
+		501C5DF7D475ACDD3D9E1A66 /* voe_dtmf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_dtmf.h; sourceTree = "<group>"; };
+		50F3F376307BDB1568D4D18C /* channel_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = channel_manager.h; sourceTree = "<group>"; };
+		51F822C00BEED3532021FBE9 /* dtmf_inband.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dtmf_inband.h; sourceTree = "<group>"; };
+		54AFFDED2A967AC62401DB5B /* voe_volume_control_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_volume_control_impl.cc; sourceTree = "<group>"; };
+		5AA9AFE921B200961DEA2854 /* monitor_module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = monitor_module.h; sourceTree = "<group>"; };
+		5B11AAC28FA101F6D368071C /* ref_count.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ref_count.cc; sourceTree = "<group>"; };
+		5F490EEED6DECB3297FF00BB /* channel.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = channel.cc; sourceTree = "<group>"; };
+		6279FC67FECA5656EE727231 /* voe_hardware_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_hardware_impl.cc; sourceTree = "<group>"; };
+		62FD98D92325417DD7D9932F /* output_mixer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = output_mixer.h; sourceTree = "<group>"; };
+		6939EABEAB710C05BD75054A /* voe_call_report_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_call_report_impl.h; sourceTree = "<group>"; };
+		6AD6B19351CA4E99600F1E4C /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		6D7973A6FEEB6CD6F5E40E24 /* voe_network_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_network_impl.h; sourceTree = "<group>"; };
+		7641B15988187F89F28B6BB1 /* voe_encryption_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_encryption_impl.cc; sourceTree = "<group>"; };
+		76B85AAD7C4FFD1C12CECBDD /* voe_external_media.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_external_media.h; sourceTree = "<group>"; };
+		778D7EB278962C996E472A8A /* voe_audio_processing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_audio_processing.h; sourceTree = "<group>"; };
+		78E4E1B084A0A3B48241D69E /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../common_settings.gypi; sourceTree = "<group>"; };
+		8046737CE8AFE84219083F6A /* voice_engine_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voice_engine_impl.cc; sourceTree = "<group>"; };
+		81AAD89F5A733E3A881C9CDF /* voe_network_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_network_impl.cc; sourceTree = "<group>"; };
+		82EBB0F70FA1DC8EBD5253C3 /* voe_codec_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_codec_impl.h; sourceTree = "<group>"; };
+		8688D1367F08F0C5414EC7FA /* voe_hardware_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_hardware_impl.h; sourceTree = "<group>"; };
+		8CB6CE297BFC5C03089E9413 /* voe_network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_network.h; sourceTree = "<group>"; };
+		94079CA3B4463A3E9008F2BA /* shared_data.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = shared_data.cc; sourceTree = "<group>"; };
+		952CB50DCB02A4FF31C86F8A /* utility.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utility.cc; sourceTree = "<group>"; };
+		9679DD77EB9871F9E56F3012 /* dtmf_inband_queue.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dtmf_inband_queue.cc; sourceTree = "<group>"; };
+		9B75D9813887769271388E2A /* voe_video_sync_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_video_sync_impl.cc; sourceTree = "<group>"; };
+		9C05F1782E1D94F4614E970D /* voe_external_media_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_external_media_impl.cc; sourceTree = "<group>"; };
+		9DC9967DC50E698CDFE30588 /* common_types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common_types.h; sourceTree = "<group>"; };
+		A1066E52228E02A05B4BC278 /* voe_rtp_rtcp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_rtp_rtcp.h; sourceTree = "<group>"; };
+		A125941709E6BE1B879D9091 /* level_indicator.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = level_indicator.cc; sourceTree = "<group>"; };
+		A2C05F9149DEBCA44AA5426A /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../build/common.gypi; sourceTree = "<group>"; };
+		A2DC3AEA5745A3CBBF415189 /* level_indicator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = level_indicator.h; sourceTree = "<group>"; };
+		A4864FE5F26F09D2BD23EAD2 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../supplement.gypi; sourceTree = "<group>"; };
+		A6EB24D4D4E689DBBA689E98 /* statistics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = statistics.h; sourceTree = "<group>"; };
+		ACA57093FF7FD512D51BBB3B /* voe_video_sync.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_video_sync.h; sourceTree = "<group>"; };
+		B305862C34BF3E350FCE134F /* voe_encryption_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_encryption_impl.h; sourceTree = "<group>"; };
+		B543B3EFE99BED8CD08926EA /* voice_engine_defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voice_engine_defines.h; sourceTree = "<group>"; };
+		BCD45D547C5588AA2C6173F5 /* libvoice_engine_core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvoice_engine_core.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD1751A1DB13ACB5B08CECD6 /* dtmf_inband.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = dtmf_inband.cc; sourceTree = "<group>"; };
+		BD380802396CA175323B535F /* transmit_mixer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = transmit_mixer.h; sourceTree = "<group>"; };
+		BFBD7013C4267AD9563D59B4 /* voe_dtmf_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_dtmf_impl.h; sourceTree = "<group>"; };
+		C2F3CD4EFE70FC5F3E9879E8 /* voe_file_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_file_impl.cc; sourceTree = "<group>"; };
+		C7E0283938CDB01423A2C750 /* voe_neteq_stats_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_neteq_stats_impl.cc; sourceTree = "<group>"; };
+		C8671860694B791F292989EC /* shared_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shared_data.h; sourceTree = "<group>"; };
+		CBE2167546F2BADF96B152B9 /* voe_call_report_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_call_report_impl.cc; sourceTree = "<group>"; };
+		D02FC71951A8C90998BA9699 /* voe_codec_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_codec_impl.cc; sourceTree = "<group>"; };
+		D31C4204EA3DEFF02E1D84EE /* voe_rtp_rtcp_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_rtp_rtcp_impl.h; sourceTree = "<group>"; };
+		D7BE5CBD970EC43101842295 /* channel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
+		DA78412B821FA80B96943F81 /* voe_base_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_base_impl.h; sourceTree = "<group>"; };
+		DB6220223A03FF652FCD990E /* voice_engine_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voice_engine_impl.h; sourceTree = "<group>"; };
+		DC4D37CF63AAB4274DFC8D08 /* channel_manager_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = channel_manager_base.h; sourceTree = "<group>"; };
+		DCE46C701BF7C0A70C7F6588 /* voe_rtp_rtcp_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = voe_rtp_rtcp_impl.cc; sourceTree = "<group>"; };
+		DE5D4A7A692E7A21EA442CE3 /* voe_video_sync_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_video_sync_impl.h; sourceTree = "<group>"; };
+		E260DFA36E7F5B579C4B7832 /* voe_volume_control_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_volume_control_impl.h; sourceTree = "<group>"; };
+		E637CB8B4BA9C68A1A8E99B5 /* typedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = typedefs.h; sourceTree = "<group>"; };
+		E7218E62A29AB2CBFA9412B4 /* utility.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		E821916C7FC2618D2190E569 /* channel_manager.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = channel_manager.cc; sourceTree = "<group>"; };
+		E95619C895B6759DED357803 /* voe_external_media_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = voe_external_media_impl.h; sourceTree = "<group>"; };
+		E968188B3A9D6A6D45579A9B /* engine_configurations.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = engine_configurations.h; sourceTree = "<group>"; };
+		F63D952DEC21878C45CE5E13 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4E60685A05D10D58402220F9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A21909D164DD47D50642662 /* ../.. */ = {
+			isa = PBXGroup;
+			children = (
+				9DC9967DC50E698CDFE30588 /* common_types.h */,
+				E968188B3A9D6A6D45579A9B /* engine_configurations.h */,
+				E637CB8B4BA9C68A1A8E99B5 /* typedefs.h */,
+			);
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		20B93AAC9858BABC0A306B95 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				0A21909D164DD47D50642662 /* ../.. */,
+				F3BE1AF63FF461691D657113 /* interface */,
+			);
+			path = ..;
+			sourceTree = "<group>";
+		};
+		64B3B59AB3291322B54E7E43 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				452A6AF3C6CEEC0CA28FA1A7 /* common.gypi */,
+				A2C05F9149DEBCA44AA5426A /* common.gypi */,
+				78E4E1B084A0A3B48241D69E /* common_settings.gypi */,
+				46D42C8C5ED6FD3673A4D2BC /* release.gypi */,
+				F63D952DEC21878C45CE5E13 /* release_defaults.gypi */,
+				6AD6B19351CA4E99600F1E4C /* release_impl.gypi */,
+				21AA3913BC5E91C0740EB87E /* release_impl_official.gypi */,
+				A4864FE5F26F09D2BD23EAD2 /* supplement.gypi */,
+				1F842730A90CB0281394A790 /* voice_engine_core.gyp */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		6739752628FAC927D6C24376 = {
+			isa = PBXGroup;
+			children = (
+				838EDEC6B8F96BB267A43692 /* Source */,
+				9742311FF53DC84B8C2D874C /* Products */,
+				64B3B59AB3291322B54E7E43 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		838EDEC6B8F96BB267A43692 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				20B93AAC9858BABC0A306B95 /* .. */,
+				1D6F0CD50ED6A6564C009A88 /* audio_frame_operations.cc */,
+				2A6F9F436BE1F9936DC20E9C /* audio_frame_operations.h */,
+				5F490EEED6DECB3297FF00BB /* channel.cc */,
+				D7BE5CBD970EC43101842295 /* channel.h */,
+				E821916C7FC2618D2190E569 /* channel_manager.cc */,
+				50F3F376307BDB1568D4D18C /* channel_manager.h */,
+				192C9338AA0A6B49E34A4FE6 /* channel_manager_base.cc */,
+				DC4D37CF63AAB4274DFC8D08 /* channel_manager_base.h */,
+				BD1751A1DB13ACB5B08CECD6 /* dtmf_inband.cc */,
+				51F822C00BEED3532021FBE9 /* dtmf_inband.h */,
+				9679DD77EB9871F9E56F3012 /* dtmf_inband_queue.cc */,
+				2AB7BB43A231C83723E658FE /* dtmf_inband_queue.h */,
+				A125941709E6BE1B879D9091 /* level_indicator.cc */,
+				A2DC3AEA5745A3CBBF415189 /* level_indicator.h */,
+				12E411B047D3FC7ED94D6693 /* monitor_module.cc */,
+				5AA9AFE921B200961DEA2854 /* monitor_module.h */,
+				15D5E09E9324CFF2FE788AAB /* output_mixer.cc */,
+				62FD98D92325417DD7D9932F /* output_mixer.h */,
+				5B11AAC28FA101F6D368071C /* ref_count.cc */,
+				17119112FFE40A8DC20CE5CF /* ref_count.h */,
+				94079CA3B4463A3E9008F2BA /* shared_data.cc */,
+				C8671860694B791F292989EC /* shared_data.h */,
+				3FB421E429D47FC33D0540E5 /* statistics.cc */,
+				A6EB24D4D4E689DBBA689E98 /* statistics.h */,
+				41D007ED1D5EE04B585CD38E /* transmit_mixer.cc */,
+				BD380802396CA175323B535F /* transmit_mixer.h */,
+				952CB50DCB02A4FF31C86F8A /* utility.cc */,
+				E7218E62A29AB2CBFA9412B4 /* utility.h */,
+				04298483EAE7B424FC63AB05 /* voe_audio_processing_impl.cc */,
+				4EA6241827D699CC00EDCAA1 /* voe_audio_processing_impl.h */,
+				3F4D54528B46B54396F1FB1A /* voe_base_impl.cc */,
+				DA78412B821FA80B96943F81 /* voe_base_impl.h */,
+				CBE2167546F2BADF96B152B9 /* voe_call_report_impl.cc */,
+				6939EABEAB710C05BD75054A /* voe_call_report_impl.h */,
+				D02FC71951A8C90998BA9699 /* voe_codec_impl.cc */,
+				82EBB0F70FA1DC8EBD5253C3 /* voe_codec_impl.h */,
+				2CFE424392265C6861C05051 /* voe_dtmf_impl.cc */,
+				BFBD7013C4267AD9563D59B4 /* voe_dtmf_impl.h */,
+				7641B15988187F89F28B6BB1 /* voe_encryption_impl.cc */,
+				B305862C34BF3E350FCE134F /* voe_encryption_impl.h */,
+				9C05F1782E1D94F4614E970D /* voe_external_media_impl.cc */,
+				E95619C895B6759DED357803 /* voe_external_media_impl.h */,
+				C2F3CD4EFE70FC5F3E9879E8 /* voe_file_impl.cc */,
+				06F598DBB0C3598DA227738A /* voe_file_impl.h */,
+				6279FC67FECA5656EE727231 /* voe_hardware_impl.cc */,
+				8688D1367F08F0C5414EC7FA /* voe_hardware_impl.h */,
+				C7E0283938CDB01423A2C750 /* voe_neteq_stats_impl.cc */,
+				4EA8218724A4A86A6502D489 /* voe_neteq_stats_impl.h */,
+				81AAD89F5A733E3A881C9CDF /* voe_network_impl.cc */,
+				6D7973A6FEEB6CD6F5E40E24 /* voe_network_impl.h */,
+				DCE46C701BF7C0A70C7F6588 /* voe_rtp_rtcp_impl.cc */,
+				D31C4204EA3DEFF02E1D84EE /* voe_rtp_rtcp_impl.h */,
+				9B75D9813887769271388E2A /* voe_video_sync_impl.cc */,
+				DE5D4A7A692E7A21EA442CE3 /* voe_video_sync_impl.h */,
+				54AFFDED2A967AC62401DB5B /* voe_volume_control_impl.cc */,
+				E260DFA36E7F5B579C4B7832 /* voe_volume_control_impl.h */,
+				B543B3EFE99BED8CD08926EA /* voice_engine_defines.h */,
+				8046737CE8AFE84219083F6A /* voice_engine_impl.cc */,
+				DB6220223A03FF652FCD990E /* voice_engine_impl.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		9742311FF53DC84B8C2D874C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BCD45D547C5588AA2C6173F5 /* libvoice_engine_core.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F3BE1AF63FF461691D657113 /* interface */ = {
+			isa = PBXGroup;
+			children = (
+				778D7EB278962C996E472A8A /* voe_audio_processing.h */,
+				0EF9DBBD6AEA3FC9F05FB36E /* voe_base.h */,
+				26769E92617875134FD09DFD /* voe_call_report.h */,
+				29BA8F322851D34A71057805 /* voe_codec.h */,
+				501C5DF7D475ACDD3D9E1A66 /* voe_dtmf.h */,
+				0D26819BAD6BF6875DA72A97 /* voe_encryption.h */,
+				03F941AE7CA64E91A98379A8 /* voe_errors.h */,
+				76B85AAD7C4FFD1C12CECBDD /* voe_external_media.h */,
+				4C6D60186E0DD357F7FDDFEC /* voe_file.h */,
+				235C425F4E45B9B2D9426A59 /* voe_hardware.h */,
+				4871B4796941E088DCFDE876 /* voe_neteq_stats.h */,
+				8CB6CE297BFC5C03089E9413 /* voe_network.h */,
+				A1066E52228E02A05B4BC278 /* voe_rtp_rtcp.h */,
+				ACA57093FF7FD512D51BBB3B /* voe_video_sync.h */,
+				3B1F43CD6CFE41EFF93BF7C5 /* voe_volume_control.h */,
+			);
+			path = interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BA53F417CE5C253DB3963A86 /* voice_engine_core */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EBBD69676D1C66BF31D37F60 /* Build configuration list for PBXNativeTarget "voice_engine_core" */;
+			buildPhases = (
+				3B2760A5FF8121A23AFD596F /* Sources */,
+				4E60685A05D10D58402220F9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = voice_engine_core;
+			productName = voice_engine_core;
+			productReference = BCD45D547C5588AA2C6173F5 /* libvoice_engine_core.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		21E564E2A0A9739865E5B4CB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 8293606A97C65D0A72E1F285 /* Build configuration list for PBXProject "voice_engine_core" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6739752628FAC927D6C24376;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BA53F417CE5C253DB3963A86 /* voice_engine_core */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3B2760A5FF8121A23AFD596F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				163523D0F85865A40808E0AA /* audio_frame_operations.cc in Sources */,
+				03C3E36989644C561B91FE7C /* channel.cc in Sources */,
+				D7918156FD9CD8FE682A9B85 /* channel_manager.cc in Sources */,
+				45233FA0E8EB7A77EFFB0904 /* channel_manager_base.cc in Sources */,
+				AD9864D26911C8E4E3DA4606 /* dtmf_inband.cc in Sources */,
+				6D6797177B296C5AB27C777D /* dtmf_inband_queue.cc in Sources */,
+				F998F132CDE83C62A72DE703 /* level_indicator.cc in Sources */,
+				4570111E2D889329F15DBA77 /* monitor_module.cc in Sources */,
+				C8F3F4BB87A6CE79CF96630C /* output_mixer.cc in Sources */,
+				5DA6F68AFB41BA8DB71FF922 /* ref_count.cc in Sources */,
+				3F4FCEC4334C29B701E09DFD /* shared_data.cc in Sources */,
+				363EC92BDF52126D2A1396DE /* statistics.cc in Sources */,
+				E93CC6CFB2E8EE149841A0B0 /* transmit_mixer.cc in Sources */,
+				CB1B25930E9E9A16356F676D /* utility.cc in Sources */,
+				D6FB719AF7902847A7F3ED5A /* voe_audio_processing_impl.cc in Sources */,
+				0F131CE3F62EBF611D9864E3 /* voe_base_impl.cc in Sources */,
+				E705A127E2901BCA8A613B83 /* voe_call_report_impl.cc in Sources */,
+				49EC82B2573AC1C37F5369B9 /* voe_codec_impl.cc in Sources */,
+				B3D85B24D780B430CE749775 /* voe_dtmf_impl.cc in Sources */,
+				940724E6A0A8445E0DD9B858 /* voe_encryption_impl.cc in Sources */,
+				3E84FEB435FBB17E70584496 /* voe_external_media_impl.cc in Sources */,
+				DF4542BE764D0CE9E4D9FDA6 /* voe_file_impl.cc in Sources */,
+				11BF9430F077EA8842428C17 /* voe_hardware_impl.cc in Sources */,
+				F48C0D63F35B5A20C3D2607D /* voe_neteq_stats_impl.cc in Sources */,
+				A392D53BB2783A8662C64542 /* voe_network_impl.cc in Sources */,
+				38C4B6828A2449D568B4E5B8 /* voe_rtp_rtcp_impl.cc in Sources */,
+				CF47F1A8A687C5D452A9C1A4 /* voe_video_sync_impl.cc in Sources */,
+				7A02A84BA12A2E76728CF731 /* voe_volume_control_impl.cc in Sources */,
+				5251481F4B0F3423BC8B42F7 /* voice_engine_impl.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2E9791C63767C6E78F73A7F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		347BCE4568A373D347354719 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					../../../..,
+					../interface,
+					../../../common_audio/resampler/main/interface,
+					../../../common_audio/signal_processing_library/main/interface,
+					../../../modules/audio_coding/main/interface,
+					../../../modules/interface,
+					../../../modules/audio_conference_mixer/interface,
+					../../../,
+					../../../modules/audio_device/main/interface,
+					../../../modules/audio_processing/main/interface,
+					../../../modules/media_file/interface,
+					../../../modules/rtp_rtcp/interface,
+					../../../modules/udp_transport/interface,
+					../../../modules/utility/interface,
+					../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = voice_engine_core;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		5FE34E4D508DF957445E8355 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					../../../..,
+					../interface,
+					../../../common_audio/resampler/main/interface,
+					../../../common_audio/signal_processing_library/main/interface,
+					../../../modules/audio_coding/main/interface,
+					../../../modules/interface,
+					../../../modules/audio_conference_mixer/interface,
+					../../../,
+					../../../modules/audio_device/main/interface,
+					../../../modules/audio_processing/main/interface,
+					../../../modules/media_file/interface,
+					../../../modules/rtp_rtcp/interface,
+					../../../modules/udp_transport/interface,
+					../../../modules/utility/interface,
+					../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = voice_engine_core;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		86BA0F62287093773DCB3509 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../xcodebuild;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8293606A97C65D0A72E1F285 /* Build configuration list for PBXProject "voice_engine_core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E9791C63767C6E78F73A7F7 /* Debug */,
+				86BA0F62287093773DCB3509 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		EBBD69676D1C66BF31D37F60 /* Build configuration list for PBXNativeTarget "voice_engine_core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				347BCE4568A373D347354719 /* Debug */,
+				5FE34E4D508DF957445E8355 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 21E564E2A0A9739865E5B4CB /* Project object */;
+}

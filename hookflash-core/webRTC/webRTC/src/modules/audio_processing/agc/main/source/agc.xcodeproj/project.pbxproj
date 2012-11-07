@@ -1,0 +1,318 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		81A3BC5E9A06F356357F9EDA /* digital_agc.c in Sources */ = {isa = PBXBuildFile; fileRef = DF7F732F80BB008D53D3A852 /* digital_agc.c */; };
+		FAEB6592C1098FD727F2331D /* analog_agc.c in Sources */ = {isa = PBXBuildFile; fileRef = 59903D5D57E6DD87C52D084A /* analog_agc.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0BA32F3A2990CEE482D71F1D /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../../build/common.gypi; sourceTree = "<group>"; };
+		1EEB7B3FB210EE0951A23D07 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		1F87A996066C540B2E84084C /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		3FC9A12A0A21F5F380A82454 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../../../supplement.gypi; sourceTree = "<group>"; };
+		54D91E2F7A364A73339112DB /* libagc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libagc.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		59903D5D57E6DD87C52D084A /* analog_agc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = analog_agc.c; sourceTree = "<group>"; };
+		758E489B7A67C7C6780ECA63 /* digital_agc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = digital_agc.h; sourceTree = "<group>"; };
+		78A7060D4B2CC3179F5F41FC /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../../../build/release.gypi; sourceTree = "<group>"; };
+		9ABB210137ED5749B10C36BC /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../../../common_settings.gypi; sourceTree = "<group>"; };
+		A0FC4B2A6C9B2FED1D2F7EE5 /* gain_control.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gain_control.h; sourceTree = "<group>"; };
+		A96B5186F1E934596CBBCAD3 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../../build/common.gypi; sourceTree = "<group>"; };
+		AF978AAC7422B67E511F4AEA /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		D69B53DED09252D5654F3A1F /* analog_agc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = analog_agc.h; sourceTree = "<group>"; };
+		DF7F732F80BB008D53D3A852 /* digital_agc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = digital_agc.c; sourceTree = "<group>"; };
+		F710E80B29EAC9FA94B44B55 /* agc.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = agc.gyp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C911D2BE52AF46B12A067373 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A16ACC9BD1F6D5E1115B1EE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				54D91E2F7A364A73339112DB /* libagc.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A41E16262DF3F4998B475C9 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				F710E80B29EAC9FA94B44B55 /* agc.gyp */,
+				0BA32F3A2990CEE482D71F1D /* common.gypi */,
+				A96B5186F1E934596CBBCAD3 /* common.gypi */,
+				9ABB210137ED5749B10C36BC /* common_settings.gypi */,
+				78A7060D4B2CC3179F5F41FC /* release.gypi */,
+				1EEB7B3FB210EE0951A23D07 /* release_defaults.gypi */,
+				1F87A996066C540B2E84084C /* release_impl.gypi */,
+				AF978AAC7422B67E511F4AEA /* release_impl_official.gypi */,
+				3FC9A12A0A21F5F380A82454 /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		AB68798F0EF6B45360EEA7BA = {
+			isa = PBXGroup;
+			children = (
+				D659D58893FB552A3723096C /* Source */,
+				0A16ACC9BD1F6D5E1115B1EE /* Products */,
+				2A41E16262DF3F4998B475C9 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		D659D58893FB552A3723096C /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				DC15C67B2447CD80051C2ADF /* ../interface */,
+				59903D5D57E6DD87C52D084A /* analog_agc.c */,
+				D69B53DED09252D5654F3A1F /* analog_agc.h */,
+				DF7F732F80BB008D53D3A852 /* digital_agc.c */,
+				758E489B7A67C7C6780ECA63 /* digital_agc.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		DC15C67B2447CD80051C2ADF /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				A0FC4B2A6C9B2FED1D2F7EE5 /* gain_control.h */,
+			);
+			path = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2DDCCEB39F626C52B0B7642A /* agc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2896294322ECE270B7339AC1 /* Build configuration list for PBXNativeTarget "agc" */;
+			buildPhases = (
+				74D1D54F7C382882E8C2FEFB /* Sources */,
+				C911D2BE52AF46B12A067373 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = agc;
+			productName = agc;
+			productReference = 54D91E2F7A364A73339112DB /* libagc.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F1762F2EF65568F4A6155AAC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 5536F5C11CF7C17ABA1D1D8E /* Build configuration list for PBXProject "agc" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = AB68798F0EF6B45360EEA7BA;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2DDCCEB39F626C52B0B7642A /* agc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		74D1D54F7C382882E8C2FEFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FAEB6592C1098FD727F2331D /* analog_agc.c in Sources */,
+				81A3BC5E9A06F356357F9EDA /* digital_agc.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		059C74C3398B430D7520660C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		35FF86209394B60BE20F143D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../../../xcodebuild;
+			};
+			name = Release;
+		};
+		57B2617225DF6D6CB41B58C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../../../common_audio/signal_processing_library/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = agc;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		7A49BB311CD0747D73FB4296 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../../../..,
+					../../../../../..,
+					../interface,
+					../../../../../common_audio/signal_processing_library/main/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = agc;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2896294322ECE270B7339AC1 /* Build configuration list for PBXNativeTarget "agc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57B2617225DF6D6CB41B58C2 /* Debug */,
+				7A49BB311CD0747D73FB4296 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		5536F5C11CF7C17ABA1D1D8E /* Build configuration list for PBXProject "agc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				059C74C3398B430D7520660C /* Debug */,
+				35FF86209394B60BE20F143D /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F1762F2EF65568F4A6155AAC /* Project object */;
+}

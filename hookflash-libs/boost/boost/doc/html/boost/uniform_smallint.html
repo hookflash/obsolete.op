@@ -1,0 +1,92 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class template uniform_smallint</title>
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../boost_random/reference.html#header.boost.random.uniform_smallint_hpp" title="Header &lt;boost/random/uniform_smallint.hpp&gt;">
+<link rel="prev" href="uniform_real.html" title="Class template uniform_real">
+<link rel="next" href="variate_generator.html" title="Class template variate_generator">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
+<td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="uniform_real.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_random/reference.html#header.boost.random.uniform_smallint_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="variate_generator.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.uniform_smallint"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class template uniform_smallint</span></h2>
+<p>boost::uniform_smallint</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../boost_random/reference.html#header.boost.random.uniform_smallint_hpp" title="Header &lt;boost/random/uniform_smallint.hpp&gt;">boost/random/uniform_smallint.hpp</a>&gt;
+
+</span><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> IntType <span class="special">=</span> <span class="keyword">int</span><span class="special">&gt;</span> 
+<span class="keyword">class</span> <a class="link" href="uniform_smallint.html" title="Class template uniform_smallint">uniform_smallint</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="identifier">IntType</span> <a name="boost.uniform_smallint.input_type"></a><span class="identifier">input_type</span><span class="special">;</span> 
+  <span class="keyword">typedef</span> <span class="identifier">IntType</span> <a name="boost.uniform_smallint.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="uniform_smallint.html#boost.uniform_smallintconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="uniform_smallint.html#id1162573-bb"><span class="identifier">uniform_smallint</span></a><span class="special">(</span><span class="identifier">IntType</span> <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">IntType</span> <span class="special">=</span> <span class="number">9</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="uniform_smallint.html#id1162526-bb">public member functions</a></span>
+  <span class="identifier">result_type</span> <a class="link" href="uniform_smallint.html#id1162530-bb"><span class="identifier">min</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="uniform_smallint.html#id1162537-bb"><span class="identifier">max</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="keyword">void</span> <a class="link" href="uniform_smallint.html#id1162545-bb"><span class="identifier">reset</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">&gt;</span> <span class="identifier">result_type</span> <a class="link" href="uniform_smallint.html#id1162553-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="identifier">Engine</span> <span class="special">&amp;</span><span class="special">)</span><span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2672402"></a><h2>Description</h2>
+<p>The distribution function uniform_smallint models a  <a class="link" href="../boost_random/reference.html#boost_random.reference.concepts.random_distribution" title="Random Distribution">random distribution</a> . On each invocation, it returns a random integer value uniformly distributed in the set of integer numbers {min, min+1, min+2, ..., max}. It assumes that the desired range (max-min+1) is small compared to the range of the underlying source of random numbers and thus makes no attempt to limit quantization errors.</p>
+<p>Let r<sub>out</sub>=(max-min+1) the desired range of integer numbers, and let r<sub>base</sub> be the range of the underlying source of random numbers. Then, for the uniform distribution, the theoretical probability for any number i in the range r<sub>out</sub> will be p<sub>out</sub>(i) = 1/r<sub>out</sub>. Likewise, assume a uniform distribution on r<sub>base</sub> for the underlying source of random numbers, i.e. p<sub>base</sub>(i) = 1/r<sub>base</sub>. Let p<sub>out_s</sub>(i) denote the random distribution generated by <code class="computeroutput">uniform_smallint</code>. Then the sum over all i in r<sub>out</sub> of (p<sub>out_s</sub>(i)/p<sub>out</sub>(i) - 1)<sup>2</sup> shall not exceed r<sub>out</sub>/r<sub>base</sub><sup>2</sup> (r<sub>base</sub> mod r<sub>out</sub>)(r<sub>out</sub> - r<sub>base</sub> mod r<sub>out</sub>).</p>
+<p>The template parameter IntType shall denote an integer-like value type.</p>
+<p>Note: The property above is the square sum of the relative differences in probabilities between the desired uniform distribution p<sub>out</sub>(i) and the generated distribution p<sub>out_s</sub>(i). The property can be fulfilled with the calculation (base_rng mod r<sub>out</sub>), as follows: Let r = r<sub>base</sub> mod r<sub>out</sub>. The base distribution on r<sub>base</sub> is folded onto the range r<sub>out</sub>. The numbers i &lt; r have assigned (r<sub>base</sub> div r<sub>out</sub>)+1 numbers of the base distribution, the rest has only (r<sub>base</sub> div r<sub>out</sub>). Therefore, p<sub>out_s</sub>(i) = ((r<sub>base</sub> div r<sub>out</sub>)+1) / r<sub>base</sub> for i &lt; r and p<sub>out_s</sub>(i) = (r<sub>base</sub> div r<sub>out</sub>)/r<sub>base</sub> otherwise. Substituting this in the above sum formula leads to the desired result.</p>
+<p>Note: The upper bound for (r<sub>base</sub> mod r<sub>out</sub>) (r<sub>out</sub> - r<sub>base</sub> mod r<sub>out</sub>) is r<sub>out</sub><sup>2</sup>/4. Regarding the upper bound for the square sum of the relative quantization error of r<sub>out</sub><sup>3</sup>/(4*r<sub>base</sub><sup>2</sup>), it seems wise to either choose r<sub>base</sub> so that r<sub>base</sub> &gt; 10*r<sub>out</sub><sup>2</sup> or ensure that r<sub>base</sub> is divisible by r<sub>out</sub>. </p>
+<div class="refsect2">
+<a name="id2672656"></a><h3>
+<a name="boost.uniform_smallintconstruct-copy-destruct"></a><code class="computeroutput">uniform_smallint</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+<pre class="literallayout"><a name="id1162573-bb"></a><span class="identifier">uniform_smallint</span><span class="special">(</span><span class="identifier">IntType</span> min_arg <span class="special">=</span> <span class="number">0</span><span class="special">,</span> <span class="identifier">IntType</span> max_arg <span class="special">=</span> <span class="number">9</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs a <code class="computeroutput">uniform_smallint</code>. <code class="computeroutput">min</code> and <code class="computeroutput">max</code> are the lower and upper bounds of the output range, respectively. </p>
+</li></ol></div>
+</div>
+<div class="refsect2">
+<a name="id2672762"></a><h3>
+<a name="id1162526-bb"></a><code class="computeroutput">uniform_smallint</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id1162530-bb"></a><span class="identifier">min</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="identifier">result_type</span> <a name="id1162537-bb"></a><span class="identifier">max</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">void</span> <a name="id1162545-bb"></a><span class="identifier">reset</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+<li class="listitem"><pre class="literallayout"><span class="keyword">template</span><span class="special">&lt;</span><span class="keyword">typename</span> Engine<span class="special">&gt;</span> <span class="identifier">result_type</span> <a name="id1162553-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="identifier">Engine</span> <span class="special">&amp;</span> eng<span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="uniform_real.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_random/reference.html#header.boost.random.uniform_smallint_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="variate_generator.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

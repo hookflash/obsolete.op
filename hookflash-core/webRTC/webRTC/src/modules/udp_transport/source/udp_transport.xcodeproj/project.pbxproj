@@ -1,0 +1,360 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0F4B4B56F0B82716CC07A608 /* udp_socket_manager_wrapper.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0BBCA19932CE7F1274BA6 /* udp_socket_manager_wrapper.cc */; };
+		57F803A9341A142694DE6F61 /* udp_socket_posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1F080287A4E49E839118C546 /* udp_socket_posix.cc */; };
+		6508A72AEF12BBCB1EC15076 /* udp_socket_wrapper.cc in Sources */ = {isa = PBXBuildFile; fileRef = 55D9F04FDCFB0EB6D5499DB0 /* udp_socket_wrapper.cc */; };
+		98F6B201FC97BAF861A38F87 /* udp_socket_manager_posix.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4596C1225C567606AA899E82 /* udp_socket_manager_posix.cc */; };
+		AA9229CDFE6C22DE5477BDE2 /* udp_transport_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 7DB2E13A52A5DE2D7F6408CF /* udp_transport_impl.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		11C85E3A440DEDA112D0A763 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../../supplement.gypi; sourceTree = "<group>"; };
+		1F080287A4E49E839118C546 /* udp_socket_posix.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_posix.cc; sourceTree = "<group>"; };
+		225C9CB254556C3B1B1F3A02 /* udp_socket2_windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket2_windows.h; sourceTree = "<group>"; };
+		3D4A9B89E222C1B45B2FA67D /* traffic_control_windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = traffic_control_windows.h; sourceTree = "<group>"; };
+		4205A0E4EBC5962F4CB27190 /* udp_transport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_transport.h; sourceTree = "<group>"; };
+		4462CB93CAC6B61C27DC9EC0 /* udp_socket_manager_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_manager_wrapper.h; sourceTree = "<group>"; };
+		4596C1225C567606AA899E82 /* udp_socket_manager_posix.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_manager_posix.cc; sourceTree = "<group>"; };
+		47D6FD5936634B62B596A56B /* common_settings.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common_settings.gypi; path = ../../../common_settings.gypi; sourceTree = "<group>"; };
+		48CDCB75F44EF60BE88FE093 /* traffic_control_windows.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = traffic_control_windows.cc; sourceTree = "<group>"; };
+		54AA13CE3A7AEAA91068916F /* udp_socket_manager_windows.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_manager_windows.cc; sourceTree = "<group>"; };
+		55D9F04FDCFB0EB6D5499DB0 /* udp_socket_wrapper.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_wrapper.cc; sourceTree = "<group>"; };
+		5B270D90C5FAC122AB3750C7 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		5E97EA2D759047B50BD8DE09 /* udp_socket_posix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_posix.h; sourceTree = "<group>"; };
+		61BCFA13C2216B6C68371DDE /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		6A58A247FE7836F4000EB1DF /* udp_socket_manager_posix.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_manager_posix.h; sourceTree = "<group>"; };
+		6CFC9E90EEEAB474E91D5A9E /* libudp_transport.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libudp_transport.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7DB2E13A52A5DE2D7F6408CF /* udp_transport_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_transport_impl.cc; sourceTree = "<group>"; };
+		7EF0BBCA19932CE7F1274BA6 /* udp_socket_manager_wrapper.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_manager_wrapper.cc; sourceTree = "<group>"; };
+		8B10EF2270D988D3C6566908 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../../build/common.gypi; sourceTree = "<group>"; };
+		9BDDE8756EC8B345900D864B /* udp_socket_manager_windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_manager_windows.h; sourceTree = "<group>"; };
+		9F5FB7E7A8455B657B1816F0 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		A093D6DBD8D32EFB0E437576 /* udp_socket2_windows.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket2_windows.cc; sourceTree = "<group>"; };
+		A92419CE1980FE4D684A83C0 /* udp_socket2_manager_windows.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket2_manager_windows.cc; sourceTree = "<group>"; };
+		B7B711D03B6100387CEA7710 /* udp_socket_windows.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = udp_socket_windows.cc; sourceTree = "<group>"; };
+		B963EAAFEDC5FD5F02E839C3 /* udp_socket2_manager_windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket2_manager_windows.h; sourceTree = "<group>"; };
+		BD18F59CE4823F820B79C748 /* udp_transport.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = udp_transport.gyp; sourceTree = "<group>"; };
+		C6CFCF3E06385539B55F49E5 /* udp_transport_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_transport_impl.h; sourceTree = "<group>"; };
+		D2A420DCC74965F5F3300593 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../../build/release.gypi; sourceTree = "<group>"; };
+		DF0DC74DB8F07C3EF5E4FC0A /* udp_socket_wrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_wrapper.h; sourceTree = "<group>"; };
+		E365A9513C58C1DD5FFCD898 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../build/common.gypi; sourceTree = "<group>"; };
+		FF9A987B25ACD6A171C1ADCF /* udp_socket_windows.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = udp_socket_windows.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3BC14E540294963B30081399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		495615ADA9E5B28DCB6BD282 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6CFC9E90EEEAB474E91D5A9E /* libudp_transport.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BA9230014BAB83C42DA683C6 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				8B10EF2270D988D3C6566908 /* common.gypi */,
+				E365A9513C58C1DD5FFCD898 /* common.gypi */,
+				47D6FD5936634B62B596A56B /* common_settings.gypi */,
+				D2A420DCC74965F5F3300593 /* release.gypi */,
+				9F5FB7E7A8455B657B1816F0 /* release_defaults.gypi */,
+				61BCFA13C2216B6C68371DDE /* release_impl.gypi */,
+				5B270D90C5FAC122AB3750C7 /* release_impl_official.gypi */,
+				11C85E3A440DEDA112D0A763 /* supplement.gypi */,
+				BD18F59CE4823F820B79C748 /* udp_transport.gyp */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		E917E7D85AA52E5A03FAF6C0 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				4205A0E4EBC5962F4CB27190 /* udp_transport.h */,
+			);
+			path = ../interface;
+			sourceTree = "<group>";
+		};
+		ECE684A2FFD6E1F56FC2657A /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E917E7D85AA52E5A03FAF6C0 /* ../interface */,
+				48CDCB75F44EF60BE88FE093 /* traffic_control_windows.cc */,
+				3D4A9B89E222C1B45B2FA67D /* traffic_control_windows.h */,
+				A92419CE1980FE4D684A83C0 /* udp_socket2_manager_windows.cc */,
+				B963EAAFEDC5FD5F02E839C3 /* udp_socket2_manager_windows.h */,
+				A093D6DBD8D32EFB0E437576 /* udp_socket2_windows.cc */,
+				225C9CB254556C3B1B1F3A02 /* udp_socket2_windows.h */,
+				4596C1225C567606AA899E82 /* udp_socket_manager_posix.cc */,
+				6A58A247FE7836F4000EB1DF /* udp_socket_manager_posix.h */,
+				54AA13CE3A7AEAA91068916F /* udp_socket_manager_windows.cc */,
+				9BDDE8756EC8B345900D864B /* udp_socket_manager_windows.h */,
+				7EF0BBCA19932CE7F1274BA6 /* udp_socket_manager_wrapper.cc */,
+				4462CB93CAC6B61C27DC9EC0 /* udp_socket_manager_wrapper.h */,
+				1F080287A4E49E839118C546 /* udp_socket_posix.cc */,
+				5E97EA2D759047B50BD8DE09 /* udp_socket_posix.h */,
+				B7B711D03B6100387CEA7710 /* udp_socket_windows.cc */,
+				FF9A987B25ACD6A171C1ADCF /* udp_socket_windows.h */,
+				55D9F04FDCFB0EB6D5499DB0 /* udp_socket_wrapper.cc */,
+				DF0DC74DB8F07C3EF5E4FC0A /* udp_socket_wrapper.h */,
+				7DB2E13A52A5DE2D7F6408CF /* udp_transport_impl.cc */,
+				C6CFCF3E06385539B55F49E5 /* udp_transport_impl.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		FFA413FB294353F28E356BBE = {
+			isa = PBXGroup;
+			children = (
+				ECE684A2FFD6E1F56FC2657A /* Source */,
+				495615ADA9E5B28DCB6BD282 /* Products */,
+				BA9230014BAB83C42DA683C6 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AEDCE1FE5D3C08E5B7FA2925 /* udp_transport */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E32FA856CCE28E515B3D1E92 /* Build configuration list for PBXNativeTarget "udp_transport" */;
+			buildPhases = (
+				64E47FA66B68CFCAB80A36E3 /* Sources */,
+				3BC14E540294963B30081399 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = udp_transport;
+			productName = udp_transport;
+			productReference = 6CFC9E90EEEAB474E91D5A9E /* libudp_transport.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		560C43E7294CC2C66010E414 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 475CF15143B06B46A95C3360 /* Build configuration list for PBXProject "udp_transport" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FFA413FB294353F28E356BBE;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AEDCE1FE5D3C08E5B7FA2925 /* udp_transport */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		64E47FA66B68CFCAB80A36E3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA9229CDFE6C22DE5477BDE2 /* udp_transport_impl.cc in Sources */,
+				6508A72AEF12BBCB1EC15076 /* udp_socket_wrapper.cc in Sources */,
+				0F4B4B56F0B82716CC07A608 /* udp_socket_manager_wrapper.cc in Sources */,
+				57F803A9341A142694DE6F61 /* udp_socket_posix.cc in Sources */,
+				98F6B201FC97BAF861A38F87 /* udp_socket_manager_posix.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEE405A57E65FF4AF08310E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					../../../..,
+					../interface,
+					../../interface,
+					../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = udp_transport;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Release;
+		};
+		563336D0F7E93A318901DE17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../xcodebuild;
+			};
+			name = Debug;
+		};
+		7A9DCD1984460D876EA8F73F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"WEBRTC_TARGET_MAC_INTEL\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					../../../..,
+					../interface,
+					../../interface,
+					../../../system_wrappers/interface,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = "-fno-strict-aliasing";
+				PREBINDING = NO;
+				PRODUCT_NAME = udp_transport;
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+				);
+			};
+			name = Debug;
+		};
+		DD26AB6501372D594A75EF90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../../../xcodebuild;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		475CF15143B06B46A95C3360 /* Build configuration list for PBXProject "udp_transport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				563336D0F7E93A318901DE17 /* Debug */,
+				DD26AB6501372D594A75EF90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		E32FA856CCE28E515B3D1E92 /* Build configuration list for PBXNativeTarget "udp_transport" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A9DCD1984460D876EA8F73F /* Debug */,
+				1DEE405A57E65FF4AF08310E /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 560C43E7294CC2C66010E414 /* Project object */;
+}

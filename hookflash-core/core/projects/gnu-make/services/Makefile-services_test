@@ -1,0 +1,90 @@
+# HookflashServices
+#
+
+if [ -z "$(PREFIX)" ]; then PREFIX=/usr; fi
+
+
+LIB_NAME=hookflash_services_test
+ARNAME=lib$(LIB_NAME).a
+
+CC=g++
+CFLAGS=-fPIC#-fPIC
+#CFLAGS=-g -fPIC#-fPIC
+LDFLAGS=-D_LINUX
+
+INC=-I../../ -I../../hookflash/servicesTest -I$(PREFIX)/include
+SRC=../../../core/hookflash/services/test
+
+LIB= -lbz2# -licuio
+LIB+= -L$(PREFIX)/lib
+LIB+= -lhookflash_services
+LIB+= -lboost_date_time
+#LIB+= -lboost_graph
+#LIB+= -lboost_iostreams
+#LIB+= -lboost_math_c99l
+#LIB+= -lboost_math_tr1l
+#LIB+= -lboost_serialization
+LIB+= -lboost_thread
+#LIB+= -lboost_filesystem
+#LIB+= -lboost_math_c99
+#LIB+= -lboost_math_c99f
+#LIB+= -lboost_math_tr1
+#LIB+= -lboost_math_tr1f
+#LIB+= -lboost_random
+#LIB+= -lboost_regex
+#LIB+= -lboost_signals
+#LIB+= -lboost_system
+#LIB+= -lboost_wave
+#LIB+= -lboost_wserialization
+LIB+= -lcurl
+LIB+= -lrt
+LIB+= -lcryptopp
+LIB+= -lopenpeerstack
+LIB+= -ludns
+LIB+= -lzsLib
+
+
+OUT_DIR=out
+OUT_BIN_DIR=$(OUT_DIR)/bin
+OUT_OBJ_DIR=$(OUT_DIR)/obj
+OUT_LIB_DIR=$(OUT_DIR)/lib
+OUT_INCLUDE_DIR=$(OUT_DIR)/include
+
+
+OBJS=$(patsubst $(SRC)/%.cpp,%.o,$(wildcard $(SRC)/*.cpp))
+OBJ_PATHS=$(addprefix $(OUT_OBJ_DIR)/,$(OBJS))
+
+
+
+
+all:prepare copy_headers build
+
+
+copy_headers:
+	cp ../../../core/hookflash/services/test/*.h $(OUT_INCLUDE_DIR)/hookflash/services/test
+
+
+
+build: $(OBJS) link
+
+%.o: $(SRC)/%.cpp
+	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$@ $<
+
+link:
+	$(CC) $(OBJ_PATHS) -o $(OUT_BIN_DIR)/$(LIB_NAME) -pthread $(LIB)
+
+
+
+prepare:
+	mkdir -p $(OUT_BIN_DIR)
+	mkdir -p $(OUT_OBJ_DIR)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)
+
+
+install:
+	mkdir -p $(PREFIX)
+	cp -R $(OUT_INCLUDE_DIR) $(PREFIX)
+	cp -R $(OUT_LIB_DIR) $(PREFIX)
+	cp -R $(OUT_BIN_DIR) $(PREFIX)
+

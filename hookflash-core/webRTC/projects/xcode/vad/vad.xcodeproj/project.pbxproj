@@ -1,0 +1,308 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A87110313E6BF5500BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A87110213E6BF5500BCA399 /* Foundation.framework */; };
+		E27B27BD144256160030DDF2 /* webrtc_vad.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27BC144256160030DDF2 /* webrtc_vad.h */; };
+		E27B27CA1442562B0030DDF2 /* vad_const.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27BE1442562B0030DDF2 /* vad_const.c */; };
+		E27B27CB1442562B0030DDF2 /* vad_const.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27BF1442562B0030DDF2 /* vad_const.h */; };
+		E27B27CC1442562B0030DDF2 /* vad_core.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27C01442562B0030DDF2 /* vad_core.c */; };
+		E27B27CD1442562B0030DDF2 /* vad_core.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27C11442562B0030DDF2 /* vad_core.h */; };
+		E27B27CE1442562B0030DDF2 /* vad_defines.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27C21442562B0030DDF2 /* vad_defines.h */; };
+		E27B27CF1442562B0030DDF2 /* vad_filterbank.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27C31442562B0030DDF2 /* vad_filterbank.c */; };
+		E27B27D01442562B0030DDF2 /* vad_filterbank.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27C41442562B0030DDF2 /* vad_filterbank.h */; };
+		E27B27D11442562B0030DDF2 /* vad_gmm.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27C51442562B0030DDF2 /* vad_gmm.c */; };
+		E27B27D21442562B0030DDF2 /* vad_gmm.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27C61442562B0030DDF2 /* vad_gmm.h */; };
+		E27B27D31442562B0030DDF2 /* vad_sp.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27C71442562B0030DDF2 /* vad_sp.c */; };
+		E27B27D41442562B0030DDF2 /* vad_sp.h in Headers */ = {isa = PBXBuildFile; fileRef = E27B27C81442562B0030DDF2 /* vad_sp.h */; };
+		E27B27D51442562B0030DDF2 /* webrtc_vad.c in Sources */ = {isa = PBXBuildFile; fileRef = E27B27C91442562B0030DDF2 /* webrtc_vad.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A8710FF13E6BF5500BCA399 /* libvad.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvad.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A87110213E6BF5500BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E27B27BC144256160030DDF2 /* webrtc_vad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = webrtc_vad.h; path = ../../../webRTC/src/common_audio/vad/main/interface/webrtc_vad.h; sourceTree = "<group>"; };
+		E27B27BE1442562B0030DDF2 /* vad_const.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vad_const.c; path = ../../../webRTC/src/common_audio/vad/main/source/vad_const.c; sourceTree = "<group>"; };
+		E27B27BF1442562B0030DDF2 /* vad_const.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_const.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_const.h; sourceTree = "<group>"; };
+		E27B27C01442562B0030DDF2 /* vad_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vad_core.c; path = ../../../webRTC/src/common_audio/vad/main/source/vad_core.c; sourceTree = "<group>"; };
+		E27B27C11442562B0030DDF2 /* vad_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_core.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_core.h; sourceTree = "<group>"; };
+		E27B27C21442562B0030DDF2 /* vad_defines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_defines.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_defines.h; sourceTree = "<group>"; };
+		E27B27C31442562B0030DDF2 /* vad_filterbank.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vad_filterbank.c; path = ../../../webRTC/src/common_audio/vad/main/source/vad_filterbank.c; sourceTree = "<group>"; };
+		E27B27C41442562B0030DDF2 /* vad_filterbank.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_filterbank.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_filterbank.h; sourceTree = "<group>"; };
+		E27B27C51442562B0030DDF2 /* vad_gmm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vad_gmm.c; path = ../../../webRTC/src/common_audio/vad/main/source/vad_gmm.c; sourceTree = "<group>"; };
+		E27B27C61442562B0030DDF2 /* vad_gmm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_gmm.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_gmm.h; sourceTree = "<group>"; };
+		E27B27C71442562B0030DDF2 /* vad_sp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vad_sp.c; path = ../../../webRTC/src/common_audio/vad/main/source/vad_sp.c; sourceTree = "<group>"; };
+		E27B27C81442562B0030DDF2 /* vad_sp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vad_sp.h; path = ../../../webRTC/src/common_audio/vad/main/source/vad_sp.h; sourceTree = "<group>"; };
+		E27B27C91442562B0030DDF2 /* webrtc_vad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = webrtc_vad.c; path = ../../../webRTC/src/common_audio/vad/main/source/webrtc_vad.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A8710FC13E6BF5500BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A87110313E6BF5500BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A8710F413E6BF5400BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E27B27BA144255EE0030DDF2 /* Source */,
+				2A87110113E6BF5500BCA399 /* Frameworks */,
+				2A87110013E6BF5500BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A87110013E6BF5500BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A8710FF13E6BF5500BCA399 /* libvad.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A87110113E6BF5500BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A87110213E6BF5500BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E27B27BA144255EE0030DDF2 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27BB144255F60030DDF2 /* ../interface */,
+				E27B27BE1442562B0030DDF2 /* vad_const.c */,
+				E27B27BF1442562B0030DDF2 /* vad_const.h */,
+				E27B27C01442562B0030DDF2 /* vad_core.c */,
+				E27B27C11442562B0030DDF2 /* vad_core.h */,
+				E27B27C21442562B0030DDF2 /* vad_defines.h */,
+				E27B27C31442562B0030DDF2 /* vad_filterbank.c */,
+				E27B27C41442562B0030DDF2 /* vad_filterbank.h */,
+				E27B27C51442562B0030DDF2 /* vad_gmm.c */,
+				E27B27C61442562B0030DDF2 /* vad_gmm.h */,
+				E27B27C71442562B0030DDF2 /* vad_sp.c */,
+				E27B27C81442562B0030DDF2 /* vad_sp.h */,
+				E27B27C91442562B0030DDF2 /* webrtc_vad.c */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E27B27BB144255F60030DDF2 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E27B27BC144256160030DDF2 /* webrtc_vad.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A8710FD13E6BF5500BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B27BD144256160030DDF2 /* webrtc_vad.h in Headers */,
+				E27B27CB1442562B0030DDF2 /* vad_const.h in Headers */,
+				E27B27CD1442562B0030DDF2 /* vad_core.h in Headers */,
+				E27B27CE1442562B0030DDF2 /* vad_defines.h in Headers */,
+				E27B27D01442562B0030DDF2 /* vad_filterbank.h in Headers */,
+				E27B27D21442562B0030DDF2 /* vad_gmm.h in Headers */,
+				E27B27D41442562B0030DDF2 /* vad_sp.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A8710FE13E6BF5500BCA399 /* vad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A87110913E6BF5500BCA399 /* Build configuration list for PBXNativeTarget "vad" */;
+			buildPhases = (
+				2A8710FB13E6BF5500BCA399 /* Sources */,
+				2A8710FC13E6BF5500BCA399 /* Frameworks */,
+				2A8710FD13E6BF5500BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = vad;
+			productName = vad;
+			productReference = 2A8710FF13E6BF5500BCA399 /* libvad.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A8710F613E6BF5400BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A8710F913E6BF5400BCA399 /* Build configuration list for PBXProject "vad" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A8710F413E6BF5400BCA399;
+			productRefGroup = 2A87110013E6BF5500BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A8710FE13E6BF5500BCA399 /* vad */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A8710FB13E6BF5500BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E27B27CA1442562B0030DDF2 /* vad_const.c in Sources */,
+				E27B27CC1442562B0030DDF2 /* vad_core.c in Sources */,
+				E27B27CF1442562B0030DDF2 /* vad_filterbank.c in Sources */,
+				E27B27D11442562B0030DDF2 /* vad_gmm.c in Sources */,
+				E27B27D31442562B0030DDF2 /* vad_sp.c in Sources */,
+				E27B27D51442562B0030DDF2 /* webrtc_vad.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A87110713E6BF5500BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A87110813E6BF5500BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A87110A13E6BF5500BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/vad.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A87110B13E6BF5500BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/vad.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../..,
+					../interface,
+					../../../webRTC/src/common_audio/signal_processing_library/main/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A8710F913E6BF5400BCA399 /* Build configuration list for PBXProject "vad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87110713E6BF5500BCA399 /* Debug */,
+				2A87110813E6BF5500BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A87110913E6BF5500BCA399 /* Build configuration list for PBXNativeTarget "vad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A87110A13E6BF5500BCA399 /* Debug */,
+				2A87110B13E6BF5500BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A8710F613E6BF5400BCA399 /* Project object */;
+}

@@ -1,0 +1,25 @@
+#!/bin/sh
+# -*- coding: UTF-8 -*-
+
+# Script for building openpeerstack static library on linux.
+
+BASEDIR=$(dirname $0)
+if [ $BASEDIR = '.' ]; then BASEDIR=`pwd`; fi
+if [ -z "$HF_OUT_DIR" ]; then HF_OUT_DIR=$BASEDIR/../../../../../hf; fi
+
+
+if [ `uname` = 'Linux' ]; then
+	mkdir -p $HF_OUT_DIR
+
+	echo "\nBuilding openpeerstack...\n----------------------------------------" 2>&1 | tee $BASEDIR/build.log
+
+	cd $BASEDIR
+
+		make -f $BASEDIR/Makefile-stack_message PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+		make -f $BASEDIR/Makefile-stack_message install PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+		make -f $BASEDIR/Makefile-stack PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+		make -f $BASEDIR/Makefile-stack install PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+		
+	cd -
+fi
+

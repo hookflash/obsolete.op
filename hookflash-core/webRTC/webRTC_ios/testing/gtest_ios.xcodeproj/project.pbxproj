@@ -1,0 +1,491 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		E25573661558202100CA2903 /* gtest-death-test-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E255735C1558202100CA2903 /* gtest-death-test-internal.h */; };
+		E25573671558202100CA2903 /* gtest-filepath.h in Headers */ = {isa = PBXBuildFile; fileRef = E255735D1558202100CA2903 /* gtest-filepath.h */; };
+		E25573681558202100CA2903 /* gtest-internal.h in Headers */ = {isa = PBXBuildFile; fileRef = E255735E1558202100CA2903 /* gtest-internal.h */; };
+		E25573691558202100CA2903 /* gtest-linked_ptr.h in Headers */ = {isa = PBXBuildFile; fileRef = E255735F1558202100CA2903 /* gtest-linked_ptr.h */; };
+		E255736A1558202100CA2903 /* gtest-param-util-generated.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573601558202100CA2903 /* gtest-param-util-generated.h */; };
+		E255736B1558202100CA2903 /* gtest-param-util.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573611558202100CA2903 /* gtest-param-util.h */; };
+		E255736C1558202100CA2903 /* gtest-port.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573621558202100CA2903 /* gtest-port.h */; };
+		E255736D1558202100CA2903 /* gtest-string.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573631558202100CA2903 /* gtest-string.h */; };
+		E255736E1558202100CA2903 /* gtest-tuple.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573641558202100CA2903 /* gtest-tuple.h */; };
+		E255736F1558202100CA2903 /* gtest-type-util.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573651558202100CA2903 /* gtest-type-util.h */; };
+		E255737A1558203B00CA2903 /* gtest_pred_impl.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573701558203B00CA2903 /* gtest_pred_impl.h */; };
+		E255737B1558203B00CA2903 /* gtest_prod.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573711558203B00CA2903 /* gtest_prod.h */; };
+		E255737C1558203B00CA2903 /* gtest-death-test.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573721558203B00CA2903 /* gtest-death-test.h */; };
+		E255737D1558203B00CA2903 /* gtest-message.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573731558203B00CA2903 /* gtest-message.h */; };
+		E255737E1558203B00CA2903 /* gtest-param-test.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573741558203B00CA2903 /* gtest-param-test.h */; };
+		E255737F1558203B00CA2903 /* gtest-printers.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573751558203B00CA2903 /* gtest-printers.h */; };
+		E25573801558203B00CA2903 /* gtest-spi.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573761558203B00CA2903 /* gtest-spi.h */; };
+		E25573811558203B00CA2903 /* gtest-test-part.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573771558203B00CA2903 /* gtest-test-part.h */; };
+		E25573821558203B00CA2903 /* gtest-typed-test.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573781558203B00CA2903 /* gtest-typed-test.h */; };
+		E25573831558203B00CA2903 /* gtest.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573791558203B00CA2903 /* gtest.h */; };
+		E25573901558206700CA2903 /* gtest-death-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = E25573861558206700CA2903 /* gtest-death-test.cc */; };
+		E25573911558206700CA2903 /* gtest-filepath.cc in Sources */ = {isa = PBXBuildFile; fileRef = E25573871558206700CA2903 /* gtest-filepath.cc */; };
+		E25573921558206700CA2903 /* gtest-internal-inl.h in Headers */ = {isa = PBXBuildFile; fileRef = E25573881558206700CA2903 /* gtest-internal-inl.h */; };
+		E25573931558206700CA2903 /* gtest-port.cc in Sources */ = {isa = PBXBuildFile; fileRef = E25573891558206700CA2903 /* gtest-port.cc */; };
+		E25573941558206700CA2903 /* gtest-printers.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255738A1558206700CA2903 /* gtest-printers.cc */; };
+		E25573951558206700CA2903 /* gtest-test-part.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255738B1558206700CA2903 /* gtest-test-part.cc */; };
+		E25573961558206700CA2903 /* gtest-typed-test.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255738C1558206700CA2903 /* gtest-typed-test.cc */; };
+		E25573971558206700CA2903 /* gtest.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255738D1558206700CA2903 /* gtest.cc */; };
+		E255739E155820A600CA2903 /* gtest_mac.h in Headers */ = {isa = PBXBuildFile; fileRef = E2557398155820A600CA2903 /* gtest_mac.h */; };
+		E255739F155820A600CA2903 /* gtest_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2557399155820A600CA2903 /* gtest_mac.mm */; };
+		E25573A0155820A600CA2903 /* multiprocess_func_list.cc in Sources */ = {isa = PBXBuildFile; fileRef = E255739A155820A600CA2903 /* multiprocess_func_list.cc */; };
+		E25573A1155820A600CA2903 /* multiprocess_func_list.h in Headers */ = {isa = PBXBuildFile; fileRef = E255739B155820A600CA2903 /* multiprocess_func_list.h */; };
+		E25573A2155820A600CA2903 /* platform_test_mac.mm in Sources */ = {isa = PBXBuildFile; fileRef = E255739C155820A600CA2903 /* platform_test_mac.mm */; };
+		E25573A3155820A600CA2903 /* platform_test.h in Headers */ = {isa = PBXBuildFile; fileRef = E255739D155820A600CA2903 /* platform_test.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		E255734315581F4600CA2903 /* libgtest_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libgtest_ios.a; path = libgtest_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E255735C1558202100CA2903 /* gtest-death-test-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-death-test-internal.h"; path = "gtest/include/gtest/internal/gtest-death-test-internal.h"; sourceTree = "<group>"; };
+		E255735D1558202100CA2903 /* gtest-filepath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-filepath.h"; path = "gtest/include/gtest/internal/gtest-filepath.h"; sourceTree = "<group>"; };
+		E255735E1558202100CA2903 /* gtest-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-internal.h"; path = "gtest/include/gtest/internal/gtest-internal.h"; sourceTree = "<group>"; };
+		E255735F1558202100CA2903 /* gtest-linked_ptr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-linked_ptr.h"; path = "gtest/include/gtest/internal/gtest-linked_ptr.h"; sourceTree = "<group>"; };
+		E25573601558202100CA2903 /* gtest-param-util-generated.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-param-util-generated.h"; path = "gtest/include/gtest/internal/gtest-param-util-generated.h"; sourceTree = "<group>"; };
+		E25573611558202100CA2903 /* gtest-param-util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-param-util.h"; path = "gtest/include/gtest/internal/gtest-param-util.h"; sourceTree = "<group>"; };
+		E25573621558202100CA2903 /* gtest-port.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-port.h"; path = "gtest/include/gtest/internal/gtest-port.h"; sourceTree = "<group>"; };
+		E25573631558202100CA2903 /* gtest-string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-string.h"; path = "gtest/include/gtest/internal/gtest-string.h"; sourceTree = "<group>"; };
+		E25573641558202100CA2903 /* gtest-tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-tuple.h"; path = "gtest/include/gtest/internal/gtest-tuple.h"; sourceTree = "<group>"; };
+		E25573651558202100CA2903 /* gtest-type-util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-type-util.h"; path = "gtest/include/gtest/internal/gtest-type-util.h"; sourceTree = "<group>"; };
+		E25573701558203B00CA2903 /* gtest_pred_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gtest_pred_impl.h; path = gtest/include/gtest/gtest_pred_impl.h; sourceTree = "<group>"; };
+		E25573711558203B00CA2903 /* gtest_prod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gtest_prod.h; path = gtest/include/gtest/gtest_prod.h; sourceTree = "<group>"; };
+		E25573721558203B00CA2903 /* gtest-death-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-death-test.h"; path = "gtest/include/gtest/gtest-death-test.h"; sourceTree = "<group>"; };
+		E25573731558203B00CA2903 /* gtest-message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-message.h"; path = "gtest/include/gtest/gtest-message.h"; sourceTree = "<group>"; };
+		E25573741558203B00CA2903 /* gtest-param-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-param-test.h"; path = "gtest/include/gtest/gtest-param-test.h"; sourceTree = "<group>"; };
+		E25573751558203B00CA2903 /* gtest-printers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-printers.h"; path = "gtest/include/gtest/gtest-printers.h"; sourceTree = "<group>"; };
+		E25573761558203B00CA2903 /* gtest-spi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-spi.h"; path = "gtest/include/gtest/gtest-spi.h"; sourceTree = "<group>"; };
+		E25573771558203B00CA2903 /* gtest-test-part.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-test-part.h"; path = "gtest/include/gtest/gtest-test-part.h"; sourceTree = "<group>"; };
+		E25573781558203B00CA2903 /* gtest-typed-test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-typed-test.h"; path = "gtest/include/gtest/gtest-typed-test.h"; sourceTree = "<group>"; };
+		E25573791558203B00CA2903 /* gtest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gtest.h; path = gtest/include/gtest/gtest.h; sourceTree = "<group>"; };
+		E25573841558206700CA2903 /* gtest_main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest_main.cc; path = gtest/src/gtest_main.cc; sourceTree = "<group>"; };
+		E25573851558206700CA2903 /* gtest-all.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-all.cc"; path = "gtest/src/gtest-all.cc"; sourceTree = "<group>"; };
+		E25573861558206700CA2903 /* gtest-death-test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-death-test.cc"; path = "gtest/src/gtest-death-test.cc"; sourceTree = "<group>"; };
+		E25573871558206700CA2903 /* gtest-filepath.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-filepath.cc"; path = "gtest/src/gtest-filepath.cc"; sourceTree = "<group>"; };
+		E25573881558206700CA2903 /* gtest-internal-inl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gtest-internal-inl.h"; path = "gtest/src/gtest-internal-inl.h"; sourceTree = "<group>"; };
+		E25573891558206700CA2903 /* gtest-port.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-port.cc"; path = "gtest/src/gtest-port.cc"; sourceTree = "<group>"; };
+		E255738A1558206700CA2903 /* gtest-printers.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-printers.cc"; path = "gtest/src/gtest-printers.cc"; sourceTree = "<group>"; };
+		E255738B1558206700CA2903 /* gtest-test-part.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-test-part.cc"; path = "gtest/src/gtest-test-part.cc"; sourceTree = "<group>"; };
+		E255738C1558206700CA2903 /* gtest-typed-test.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "gtest-typed-test.cc"; path = "gtest/src/gtest-typed-test.cc"; sourceTree = "<group>"; };
+		E255738D1558206700CA2903 /* gtest.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = gtest.cc; path = gtest/src/gtest.cc; sourceTree = "<group>"; };
+		E2557398155820A600CA2903 /* gtest_mac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gtest_mac.h; sourceTree = "<group>"; };
+		E2557399155820A600CA2903 /* gtest_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = gtest_mac.mm; sourceTree = "<group>"; };
+		E255739A155820A600CA2903 /* multiprocess_func_list.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multiprocess_func_list.cc; sourceTree = "<group>"; };
+		E255739B155820A600CA2903 /* multiprocess_func_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multiprocess_func_list.h; sourceTree = "<group>"; };
+		E255739C155820A600CA2903 /* platform_test_mac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = platform_test_mac.mm; sourceTree = "<group>"; };
+		E255739D155820A600CA2903 /* platform_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform_test.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E255734015581F4600CA2903 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E255733815581F4600CA2903 = {
+			isa = PBXGroup;
+			children = (
+				E255735615581FB400CA2903 /* Source */,
+				E255734415581F4600CA2903 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E255734415581F4600CA2903 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E255734315581F4600CA2903 /* libgtest.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E255735615581FB400CA2903 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E255735815581FBC00CA2903 /* gtest */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E255735815581FBC00CA2903 /* gtest */ = {
+			isa = PBXGroup;
+			children = (
+				E255735915581FC900CA2903 /* include/gtest */,
+				E255735B15581FE000CA2903 /* src */,
+				E2557398155820A600CA2903 /* gtest_mac.h */,
+				E2557399155820A600CA2903 /* gtest_mac.mm */,
+				E255739A155820A600CA2903 /* multiprocess_func_list.cc */,
+				E255739B155820A600CA2903 /* multiprocess_func_list.h */,
+				E255739C155820A600CA2903 /* platform_test_mac.mm */,
+				E255739D155820A600CA2903 /* platform_test.h */,
+			);
+			name = gtest;
+			sourceTree = "<group>";
+		};
+		E255735915581FC900CA2903 /* include/gtest */ = {
+			isa = PBXGroup;
+			children = (
+				E255735A15581FD600CA2903 /* internal */,
+				E25573701558203B00CA2903 /* gtest_pred_impl.h */,
+				E25573711558203B00CA2903 /* gtest_prod.h */,
+				E25573721558203B00CA2903 /* gtest-death-test.h */,
+				E25573731558203B00CA2903 /* gtest-message.h */,
+				E25573741558203B00CA2903 /* gtest-param-test.h */,
+				E25573751558203B00CA2903 /* gtest-printers.h */,
+				E25573761558203B00CA2903 /* gtest-spi.h */,
+				E25573771558203B00CA2903 /* gtest-test-part.h */,
+				E25573781558203B00CA2903 /* gtest-typed-test.h */,
+				E25573791558203B00CA2903 /* gtest.h */,
+			);
+			name = include/gtest;
+			sourceTree = "<group>";
+		};
+		E255735A15581FD600CA2903 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				E255735C1558202100CA2903 /* gtest-death-test-internal.h */,
+				E255735D1558202100CA2903 /* gtest-filepath.h */,
+				E255735E1558202100CA2903 /* gtest-internal.h */,
+				E255735F1558202100CA2903 /* gtest-linked_ptr.h */,
+				E25573601558202100CA2903 /* gtest-param-util-generated.h */,
+				E25573611558202100CA2903 /* gtest-param-util.h */,
+				E25573621558202100CA2903 /* gtest-port.h */,
+				E25573631558202100CA2903 /* gtest-string.h */,
+				E25573641558202100CA2903 /* gtest-tuple.h */,
+				E25573651558202100CA2903 /* gtest-type-util.h */,
+			);
+			name = internal;
+			sourceTree = "<group>";
+		};
+		E255735B15581FE000CA2903 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				E25573841558206700CA2903 /* gtest_main.cc */,
+				E25573851558206700CA2903 /* gtest-all.cc */,
+				E25573861558206700CA2903 /* gtest-death-test.cc */,
+				E25573871558206700CA2903 /* gtest-filepath.cc */,
+				E25573881558206700CA2903 /* gtest-internal-inl.h */,
+				E25573891558206700CA2903 /* gtest-port.cc */,
+				E255738A1558206700CA2903 /* gtest-printers.cc */,
+				E255738B1558206700CA2903 /* gtest-test-part.cc */,
+				E255738C1558206700CA2903 /* gtest-typed-test.cc */,
+				E255738D1558206700CA2903 /* gtest.cc */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E255734115581F4600CA2903 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E25573661558202100CA2903 /* gtest-death-test-internal.h in Headers */,
+				E25573671558202100CA2903 /* gtest-filepath.h in Headers */,
+				E25573681558202100CA2903 /* gtest-internal.h in Headers */,
+				E25573691558202100CA2903 /* gtest-linked_ptr.h in Headers */,
+				E255736A1558202100CA2903 /* gtest-param-util-generated.h in Headers */,
+				E255736B1558202100CA2903 /* gtest-param-util.h in Headers */,
+				E255736C1558202100CA2903 /* gtest-port.h in Headers */,
+				E255736D1558202100CA2903 /* gtest-string.h in Headers */,
+				E255736E1558202100CA2903 /* gtest-tuple.h in Headers */,
+				E255736F1558202100CA2903 /* gtest-type-util.h in Headers */,
+				E255737A1558203B00CA2903 /* gtest_pred_impl.h in Headers */,
+				E255737B1558203B00CA2903 /* gtest_prod.h in Headers */,
+				E255737C1558203B00CA2903 /* gtest-death-test.h in Headers */,
+				E255737D1558203B00CA2903 /* gtest-message.h in Headers */,
+				E255737E1558203B00CA2903 /* gtest-param-test.h in Headers */,
+				E255737F1558203B00CA2903 /* gtest-printers.h in Headers */,
+				E25573801558203B00CA2903 /* gtest-spi.h in Headers */,
+				E25573811558203B00CA2903 /* gtest-test-part.h in Headers */,
+				E25573821558203B00CA2903 /* gtest-typed-test.h in Headers */,
+				E25573831558203B00CA2903 /* gtest.h in Headers */,
+				E25573921558206700CA2903 /* gtest-internal-inl.h in Headers */,
+				E255739E155820A600CA2903 /* gtest_mac.h in Headers */,
+				E25573A1155820A600CA2903 /* multiprocess_func_list.h in Headers */,
+				E25573A3155820A600CA2903 /* platform_test.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		E255734215581F4600CA2903 /* gtest_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E255735015581F4600CA2903 /* Build configuration list for PBXNativeTarget "gtest_ios" */;
+			buildPhases = (
+				E255733F15581F4600CA2903 /* Sources */,
+				E255734015581F4600CA2903 /* Frameworks */,
+				E255734115581F4600CA2903 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = gtest_ios;
+			productName = gtest_ios;
+			productReference = E255734315581F4600CA2903 /* libgtest.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E255733A15581F4600CA2903 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+			};
+			buildConfigurationList = E255733D15581F4600CA2903 /* Build configuration list for PBXProject "gtest_ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = E255733815581F4600CA2903;
+			productRefGroup = E255734415581F4600CA2903 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E255734215581F4600CA2903 /* gtest_ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E255733F15581F4600CA2903 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E25573901558206700CA2903 /* gtest-death-test.cc in Sources */,
+				E25573911558206700CA2903 /* gtest-filepath.cc in Sources */,
+				E25573931558206700CA2903 /* gtest-port.cc in Sources */,
+				E25573941558206700CA2903 /* gtest-printers.cc in Sources */,
+				E25573951558206700CA2903 /* gtest-test-part.cc in Sources */,
+				E25573961558206700CA2903 /* gtest-typed-test.cc in Sources */,
+				E25573971558206700CA2903 /* gtest.cc in Sources */,
+				E255739F155820A600CA2903 /* gtest_mac.mm in Sources */,
+				E25573A0155820A600CA2903 /* multiprocess_func_list.cc in Sources */,
+				E25573A2155820A600CA2903 /* platform_test_mac.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E255734E15581F4600CA2903 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		E255734F15581F4600CA2903 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		E255735115581F4600CA2903 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DSTROOT = /tmp/gtest_ios.dst;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					gtest,
+					gtest/include,
+				);
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Debug;
+		};
+		E255735215581F4600CA2903 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DSTROOT = /tmp/gtest_ios.dst;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					gtest,
+					gtest/include,
+				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		E255733D15581F4600CA2903 /* Build configuration list for PBXProject "gtest_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E255734E15581F4600CA2903 /* Debug */,
+				E255734F15581F4600CA2903 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		E255735015581F4600CA2903 /* Build configuration list for PBXNativeTarget "gtest_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E255735115581F4600CA2903 /* Debug */,
+				E255735215581F4600CA2903 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E255733A15581F4600CA2903 /* Project object */;
+}

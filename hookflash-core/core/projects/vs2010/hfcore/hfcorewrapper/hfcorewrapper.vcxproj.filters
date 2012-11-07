@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="provisioning">
+      <UniqueIdentifier>{17db1a70-4997-45cb-8dc5-5667aa69c9f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="provisioning\cpp">
+      <UniqueIdentifier>{8f08357b-397d-4b62-b846-cb795de3a712}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="provisioning\internal">
+      <UniqueIdentifier>{7fdf957f-9a93-4349-97ae-1b8df2933aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrapper">
+      <UniqueIdentifier>{488f1c6e-8c2d-4cf7-8ed7-17f15a19a321}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="wrapper\cpp">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="wrapper\internal">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\hookflashTypes.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IAccount.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IAuthorizationList.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\ICall.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\ICaptcha.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IClient.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IContact.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IConversationThread.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IGroup.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IMedia.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IParticipant.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IStack.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IVideoViewPort.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\PairParticipantContact.h">
+      <Filter>wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IAccount.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IAuthorizationList.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\ICall.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\ICaptcha.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IClient.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IContact.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IConversationThread.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IGroup.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IMedia.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IParticipant.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IStack.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IVideoViewPort.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\PairParticipantContact.h">
+      <Filter>wrapper\internal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IAccountLinkSocialSigninProvisioning.cpp">
+      <Filter>provisioning\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IAccountSocialInformationProvisioning.cpp">
+      <Filter>provisioning\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IBootstrapperClientProvisioning.cpp">
+      <Filter>provisioning\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IAccount.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IAuthorizationList.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_ICall.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_ICaptcha.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IClient.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IContact.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IConversationThread.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IMedia.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IParticipant.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IStack.cpp">
+      <Filter>wrapper\cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountLinkSocialSigninProvisioning.h">
+      <Filter>provisioning</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountProvisioning.h">
+      <Filter>provisioning</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountSocialInformationProvisioning.h">
+      <Filter>provisioning</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IBootstrapperClientProvisioning.h">
+      <Filter>provisioning</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IAccountLinkSocialSigninProvisioning.h">
+      <Filter>provisioning\internal</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IAccountSocialInformationProvisioning.h">
+      <Filter>provisioning\internal</Filter>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IBootstrapperClientProvisioning.h">
+      <Filter>provisioning\internal</Filter>
+    </CustomBuildStep>
+  </ItemGroup>
+</Project>

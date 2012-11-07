@@ -1,0 +1,93 @@
+#
+#  Makefile for zsLib
+#  Copyright 2009-2011. Robin Raymond. All rights reserved.
+#
+# This file is part of zsLib.
+#
+# zsLib is free software; you can redistribute it and/or modify it under the
+# terms of the GNU Lesser General Public License (LGPL) as published by the
+# Free Software Foundation; either version 3 of the License, or (at your
+# option) any later version.
+#
+# zsLib is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+# more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with zsLib; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+#
+
+if [ -z "$(PREFIX)" ]; then PREFIX=/usr; fi
+
+
+LIB_NAME=zsLibTest
+ARNAME=lib$(LIB_NAME).a
+
+CC=g++
+CFLAGS=-fPIC#-Wall -fPIC
+LDFLAGS=-D_LINUX
+
+INC=-I../../ -I$(PREFIX)/include
+SRC=../../zsLibTest
+
+OUT_DIR=out
+OUT_BIN_DIR=$(OUT_DIR)/bin
+OUT_OBJ_DIR=$(OUT_DIR)/obj
+OUT_LIB_DIR=$(OUT_DIR)/lib
+OUT_INCLUDE_DIR=$(OUT_DIR)/include
+
+OBJS=$(patsubst $(SRC)/%.cpp,%.o,$(wildcard $(SRC)/*.cpp))
+OBJ_PATHS=$(addprefix $(OUT_OBJ_DIR)/,$(OBJS))
+
+
+
+
+all:prepare copy_headers build
+
+
+copy_headers:
+	cp ../../$(LIB_NAME)/*.h $(OUT_INCLUDE_DIR)/$(LIB_NAME)
+
+
+build: $(OBJS) archive
+
+
+%.o: $(SRC)/%.cpp
+	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$@ $<
+
+
+archive:
+	#$(CC) $(OBJ_PATHS) -static -pthread -L$(PREFIX)/lib -lzsLib -lboost_date_time -lboost_filesystem -lboost_graph -lboost_iostreams -lboost_math_c99 -lboost_math_c99f -lboost_math_c99l -lboost_math_tr1 -lboost_math_tr1f -lboost_math_tr1l -lboost_prg_exec_monitor -lboost_program_options -lboost_python -lboost_random -lboost_regex -lboost_serialization -lboost_signals -lboost_system -lboost_test_exec_monitor -lboost_thread -lboost_unit_test_framework -lboost_wave -lboost_wserialization -o $(OUT_BIN_DIR)/$(LIB_NAME)
+	$(CC) $(OBJ_PATHS) -static -pthread -L$(PREFIX)/lib -lzsLib -lboost_date_time -lboost_thread -o $(OUT_BIN_DIR)/$(LIB_NAME)
+
+prepare:
+	mkdir -p $(OUT_BIN_DIR)
+	mkdir -p $(OUT_OBJ_DIR)
+	#mkdir -p $(OUT_LIB_DIR)/$(LIB_NAME)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)/$(LIB_NAME)
+
+
+clean:
+	#mkdir -p $(OUT_BIN_DIR)
+	mkdir -p $(OUT_OBJ_DIR)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)
+	#rm -r $(OUT_BIN_DIR)
+	rm -r $(OUT_OBJ_DIR)
+	rm -r $(OUT_LIB_DIR)
+	rm -r $(OUT_INCLUDE_DIR)
+
+
+install:
+	mkdir -p $(PREFIX)
+	cp -R $(OUT_BIN_DIR) $(PREFIX)
+
+
+#uninstall:
+#	sudo -S rm -rf $(PREFIX)/include/$(LIB_NAME)
+#	sudo -S rm $(PREFIX)/lib/$(SO_FULL_NAME)
+
+

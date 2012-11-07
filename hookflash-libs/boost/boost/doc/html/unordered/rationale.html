@@ -1,0 +1,216 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Implementation Rationale</title>
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../unordered.html" title="Chapter&#160;27.&#160;Boost.Unordered">
+<link rel="prev" href="comparison.html" title="Comparison with Associative Containers">
+<link rel="next" href="changes.html" title="Change Log">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
+<td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="comparison.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="changes.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="section">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="unordered.rationale"></a><a class="link" href="rationale.html" title="Implementation Rationale">Implementation Rationale</a>
+</h2></div></div></div>
+<p>
+      The intent of this library is to implement the unordered containers in the
+      draft standard, so the interface was fixed. But there are still some implementation
+      decisions to make. The priorities are conformance to the standard and portability.
+    </p>
+<p>
+      The <a href="http://en.wikipedia.org/wiki/Hash_table" target="_top">wikipedia article
+      on hash tables</a> has a good summary of the implementation issues for
+      hash tables in general.
+    </p>
+<a name="unordered.rationale.data_structure"></a><h3>
+<a name="id3182385"></a>
+      <a class="link" href="rationale.html#unordered.rationale.data_structure">Data Structure</a>
+    </h3>
+<p>
+      By specifying an interface for accessing the buckets of the container the standard
+      pretty much requires that the hash table uses chained addressing.
+    </p>
+<p>
+      It would be conceivable to write a hash table that uses another method. For
+      example, it could use open addressing, and use the lookup chain to act as a
+      bucket but there are a some serious problems with this:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          The draft standard requires that pointers to elements aren't invalidated,
+          so the elements can't be stored in one array, but will need a layer of
+          indirection instead - losing the efficiency and most of the memory gain,
+          the main advantages of open addressing.
+        </li>
+<li class="listitem">
+          Local iterators would be very inefficient and may not be able to meet the
+          complexity requirements.
+        </li>
+<li class="listitem">
+          There are also the restrictions on when iterators can be invalidated. Since
+          open addressing degrades badly when there are a high number of collisions
+          the restrictions could prevent a rehash when it's really needed. The maximum
+          load factor could be set to a fairly low value to work around this - but
+          the standard requires that it is initially set to 1.0.
+        </li>
+<li class="listitem">
+          And since the standard is written with a eye towards chained addressing,
+          users will be surprised if the performance doesn't reflect that.
+        </li>
+</ul></div>
+<p>
+      So chained addressing is used.
+    </p>
+<p>
+      For containers with unique keys I store the buckets in a single-linked list.
+      There are other possible data structures (such as a double-linked list) that
+      allow for some operations to be faster (such as erasing and iteration) but
+      the possible gain seems small compared to the extra memory needed. The most
+      commonly used operations (insertion and lookup) would not be improved at all.
+    </p>
+<p>
+      But for containers with equivalent keys a single-linked list can degrade badly
+      when a large number of elements with equivalent keys are inserted. I think
+      it's reasonable to assume that users who choose to use <code class="computeroutput"><span class="identifier">unordered_multiset</span></code>
+      or <code class="computeroutput"><span class="identifier">unordered_multimap</span></code> do so
+      because they are likely to insert elements with equivalent keys. So I have
+      used an alternative data structure that doesn't degrade, at the expense of
+      an extra pointer per node.
+    </p>
+<p>
+      This works by adding storing a circular linked list for each group of equivalent
+      nodes in reverse order. This allows quick navigation to the end of a group
+      (since the first element points to the last) and can be quickly updated when
+      elements are inserted or erased. The main disadvantage of this approach is
+      some hairy code for erasing elements.
+    </p>
+<a name="unordered.rationale.number_of_buckets"></a><h3>
+<a name="id3182519"></a>
+      <a class="link" href="rationale.html#unordered.rationale.number_of_buckets">Number of Buckets</a>
+    </h3>
+<p>
+      There are two popular methods for choosing the number of buckets in a hash
+      table. One is to have a prime number of buckets, another is to use a power
+      of 2.
+    </p>
+<p>
+      Using a prime number of buckets, and choosing a bucket by using the modulus
+      of the hash function's result will usually give a good result. The downside
+      is that the required modulus operation is fairly expensive.
+    </p>
+<p>
+      Using a power of 2 allows for much quicker selection of the bucket to use,
+      but at the expense of loosing the upper bits of the hash value. For some specially
+      designed hash functions it is possible to do this and still get a good result
+      but as the containers can take arbitrary hash functions this can't be relied
+      on.
+    </p>
+<p>
+      To avoid this a transformation could be applied to the hash function, for an
+      example see <a href="http://www.concentric.net/~Ttwang/tech/inthash.htm" target="_top">Thomas
+      Wang's article on integer hash functions</a>. Unfortunately, a transformation
+      like Wang's requires knowledge of the number of bits in the hash value, so
+      it isn't portable enough. This leaves more expensive methods, such as Knuth's
+      Multiplicative Method (mentioned in Wang's article). These don't tend to work
+      as well as taking the modulus of a prime, and the extra computation required
+      might negate efficiency advantage of power of 2 hash tables.
+    </p>
+<p>
+      So, this implementation uses a prime number for the hash table size.
+    </p>
+<a name="unordered.rationale.equality_operators"></a><h3>
+<a name="id3182581"></a>
+      <a class="link" href="rationale.html#unordered.rationale.equality_operators">Equality operators</a>
+    </h3>
+<p>
+      <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>
+      and <code class="computeroutput"><span class="keyword">operator</span><span class="special">!=</span></code>
+      are not included in the standard, but I've added them as I think they could
+      be useful and can be implemented fairly efficiently. They are specified differently
+      to the other standard containers, comparing keys using the equality predicate
+      rather than <code class="computeroutput"><span class="keyword">operator</span><span class="special">==</span></code>.
+    </p>
+<p>
+      It's also different to the proposal <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2944.pdf" target="_top">n2944</a>.
+      which uses the equality operators for the whole of <code class="computeroutput"><span class="identifier">value_type</span></code>.
+      This implementation just uses the key equality function for the key, and <code class="computeroutput"><span class="identifier">mapped_type</span></code>'s equality operator in <code class="computeroutput"><span class="identifier">unordered_map</span></code> and <code class="computeroutput"><span class="identifier">unordered_multimap</span></code>
+      for the mapped part of the element.
+    </p>
+<p>
+      Also, in <code class="computeroutput"><span class="identifier">unordered_multimap</span></code>,
+      the mapped values for a group of elements with equivalent keys are only considered
+      equal if they are in the same order, in n2944 they just need to be a permutation
+      of each other. Since the order of elements with equal keys is now defined to
+      be stable, it seems to me that their order can be considered part of the container's
+      value.
+    </p>
+<a name="unordered.rationale.active_issues_and_proposals"></a><h3>
+<a name="id3182719"></a>
+      <a class="link" href="rationale.html#unordered.rationale.active_issues_and_proposals">Active Issues
+      and Proposals</a>
+    </h3>
+<a name="unordered.rationale.c__0x_allocators"></a><h4>
+<a name="id3182741"></a>
+      <a class="link" href="rationale.html#unordered.rationale.c__0x_allocators">C++0x allocators</a>
+    </h4>
+<p>
+      Recent drafts have included an overhaul of the allocators, but this was dependent
+      on concepts which are no longer in the standard. <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2946.pdf" target="_top">n2946</a>
+      attempts to respecify them without concepts. I'll try to implement this (or
+      an appropriate later version) in a future version of boost, possibly changed
+      a little to accomodate non-C++0x compilers.
+    </p>
+<a name="unordered.rationale.swapping_containers_with_unequal_allocators"></a><h4>
+<a name="id3182778"></a>
+      <a class="link" href="rationale.html#unordered.rationale.swapping_containers_with_unequal_allocators">Swapping
+      containers with unequal allocators</a>
+    </h4>
+<p>
+      It isn't clear how to swap containers when their allocators aren't equal. This
+      is <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/lwg-active.html#431" target="_top">Issue
+      431: Swapping containers with unequal allocators</a>. This has been resolved
+      with the new allocator specification, so this should be fixed when support
+      is added.
+    </p>
+<a name="unordered.rationale.are_insert_and_erase_stable_for_unordered_multiset_and_unordered_multimap_"></a><h4>
+<a name="id3182817"></a>
+      <a class="link" href="rationale.html#unordered.rationale.are_insert_and_erase_stable_for_unordered_multiset_and_unordered_multimap_">Are
+      insert and erase stable for unordered_multiset and unordered_multimap?</a>
+    </h4>
+<p>
+      It wan't specified if <code class="computeroutput"><span class="identifier">unordered_multiset</span></code>
+      and <code class="computeroutput"><span class="identifier">unordered_multimap</span></code> preserve
+      the order of elements with equivalent keys (i.e. if they're stable under <code class="computeroutput"><span class="identifier">insert</span></code> and <code class="computeroutput"><span class="identifier">erase</span></code>).
+      Since <a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2691.pdf" target="_top">n2691</a>
+      it's been specified that they do and this implementation follows that.
+    </p>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2003, 2004 Jeremy B. Maitin-Shepard<br>Copyright &#169; 2005-2008 Daniel
+      James<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="comparison.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../unordered.html"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="changes.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

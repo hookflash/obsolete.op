@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1FF54A1F-7081-4161-BD4D-7CC5C2A4A908}</ProjectGuid>
+    <RootNamespace>hfcorewrapper</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\..\..\..\..\hookflash-libs\boost\boost;$(ProjectDir)\..\..\..\..\;$(ProjectDir)\..\..\..\..\..\..\hookflash-libs\zsLib;$(ProjectDir)\..\..\..\..\hookflash;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ErrorReporting>Prompt</ErrorReporting>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\..\..\..\hookflash-libs\boost\boost;$(ProjectDir)\..\..\..\;$(ProjectDir)\..\..\..\..\..\hookflash-libs\zsLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountLinkSocialSigninProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IAccountSocialInformationProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\IBootstrapperClientProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IAccountLinkSocialSigninProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IAccountSocialInformationProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <CustomBuildStep Include="..\..\..\hookflash\wrapper\provisioning\internal\IBootstrapperClientProvisioning.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\hookflashTypes.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IAccount.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IAuthorizationList.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\ICall.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\ICaptcha.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IClient.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IContact.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IConversationThread.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IGroup.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IMedia.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IAccount.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IAuthorizationList.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\ICall.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\ICaptcha.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IClient.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IContact.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IConversationThread.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IGroup.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IMedia.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IParticipant.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IStack.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\IVideoViewPort.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\internal\PairParticipantContact.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IParticipant.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IStack.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\IVideoViewPort.h" />
+    <ClInclude Include="..\..\..\..\hookflash\wrapper\PairParticipantContact.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IAccount.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IAuthorizationList.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_ICall.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_ICaptcha.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IClient.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IContact.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IConversationThread.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IMedia.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IParticipant.cpp" />
+    <ClCompile Include="..\..\..\..\hookflash\wrapper\cpp\wrapper_IStack.cpp" />
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IAccountLinkSocialSigninProvisioning.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IAccountSocialInformationProvisioning.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\hookflash\wrapper\provisioning\cpp\wrapper_IBootstrapperClientProvisioning.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

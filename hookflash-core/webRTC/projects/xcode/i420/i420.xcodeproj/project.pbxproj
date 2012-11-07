@@ -1,0 +1,268 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A870D2A13E6966600BCA399 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A870D2913E6966600BCA399 /* Foundation.framework */; };
+		E2FF9545150A47ED009A26A3 /* i420.h in Headers */ = {isa = PBXBuildFile; fileRef = E2FF9544150A47ED009A26A3 /* i420.h */; };
+		E2FF9547150A47F7009A26A3 /* i420.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2FF9546150A47F7009A26A3 /* i420.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2A870D2613E6966600BCA399 /* libi420.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libi420.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A870D2913E6966600BCA399 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		E2FF9544150A47ED009A26A3 /* i420.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = i420.h; path = ../../../webRTC/src/modules/video_coding/codecs/i420/main/interface/i420.h; sourceTree = "<group>"; };
+		E2FF9546150A47F7009A26A3 /* i420.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = i420.cc; path = ../../../webRTC/src/modules/video_coding/codecs/i420/main/source/i420.cc; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A870D2313E6966600BCA399 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A870D2A13E6966600BCA399 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A870D1B13E6966600BCA399 = {
+			isa = PBXGroup;
+			children = (
+				E2FF9542150A47C0009A26A3 /* Source */,
+				2A870D2813E6966600BCA399 /* Frameworks */,
+				2A870D2713E6966600BCA399 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2A870D2713E6966600BCA399 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A870D2613E6966600BCA399 /* libi420.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A870D2813E6966600BCA399 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A870D2913E6966600BCA399 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E2FF9542150A47C0009A26A3 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF9543150A47DF009A26A3 /* ../interface */,
+				E2FF9546150A47F7009A26A3 /* i420.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E2FF9543150A47DF009A26A3 /* ../interface */ = {
+			isa = PBXGroup;
+			children = (
+				E2FF9544150A47ED009A26A3 /* i420.h */,
+			);
+			name = ../interface;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2A870D2413E6966600BCA399 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF9545150A47ED009A26A3 /* i420.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2A870D2513E6966600BCA399 /* i420 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2A870D3013E6966600BCA399 /* Build configuration list for PBXNativeTarget "i420" */;
+			buildPhases = (
+				2A870D2213E6966600BCA399 /* Sources */,
+				2A870D2313E6966600BCA399 /* Frameworks */,
+				2A870D2413E6966600BCA399 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = i420;
+			productName = i420;
+			productReference = 2A870D2613E6966600BCA399 /* libi420.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A870D1D13E6966600BCA399 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 2A870D2013E6966600BCA399 /* Build configuration list for PBXProject "i420" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2A870D1B13E6966600BCA399;
+			productRefGroup = 2A870D2713E6966600BCA399 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2A870D2513E6966600BCA399 /* i420 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2A870D2213E6966600BCA399 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2FF9547150A47F7009A26A3 /* i420.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2A870D2E13E6966600BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2A870D2F13E6966600BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2A870D3113E6966600BCA399 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/i420.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+					../../../webRTC/src/modules/video_coding/codecs/interface,
+					../../../webRTC/src/common_video/interface,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2A870D3213E6966600BCA399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DSTROOT = /tmp/i420.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"MAC_IPHONE\"",
+				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = (
+					../../../webRTC/src,
+					../../../../../../..,
+					../interface,
+					../../../webRTC/src/modules/video_coding/codecs/interface,
+					../../../webRTC/src/common_video/interface,
+					../../../webRTC/src/system_wrappers/interface,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2A870D2013E6966600BCA399 /* Build configuration list for PBXProject "i420" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870D2E13E6966600BCA399 /* Debug */,
+				2A870D2F13E6966600BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2A870D3013E6966600BCA399 /* Build configuration list for PBXNativeTarget "i420" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2A870D3113E6966600BCA399 /* Debug */,
+				2A870D3213E6966600BCA399 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A870D1D13E6966600BCA399 /* Project object */;
+}

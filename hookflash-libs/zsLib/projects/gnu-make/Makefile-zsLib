@@ -1,0 +1,93 @@
+#
+#  Makefile for zsLib
+#  Copyright 2009-2011. Robin Raymond. All rights reserved.
+#
+# This file is part of zsLib.
+#
+# zsLib is free software; you can redistribute it and/or modify it under the
+# terms of the GNU Lesser General Public License (LGPL) as published by the
+# Free Software Foundation; either version 3 of the License, or (at your
+# option) any later version.
+#
+# zsLib is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License for
+# more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with zsLib; if not, write to the Free Software Foundation, Inc., 51
+# Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+#
+
+if [ -z "$(PREFIX)" ]; then PREFIX=/usr; fi
+
+
+LIB_NAME=zsLib
+ARNAME=lib$(LIB_NAME).a
+
+CC=g++
+CFLAGS=-fPIC#-Wall -fPIC
+LDFLAGS=-D_LINUX
+
+INC=-I../../ -I$(PREFIX)/include
+SRC=../../zsLib/cpp
+
+OUT_DIR=out
+OUT_BIN_DIR=$(OUT_DIR)/bin
+OUT_OBJ_DIR=$(OUT_DIR)/obj
+OUT_LIB_DIR=$(OUT_DIR)/lib
+OUT_INCLUDE_DIR=$(OUT_DIR)/include
+
+OBJS=$(patsubst $(SRC)/%.cpp,%.o,$(wildcard $(SRC)/*.cpp))
+OBJ_PATHS=$(addprefix $(OUT_OBJ_DIR)/,$(OBJS))
+
+
+
+
+all:prepare copy_headers build
+
+
+copy_headers:
+	cp ../../$(LIB_NAME)/*.h $(OUT_INCLUDE_DIR)/$(LIB_NAME)
+	cp ../../$(LIB_NAME)/internal/*.h $(OUT_INCLUDE_DIR)/$(LIB_NAME)/internal
+
+
+build: $(OBJS) archive
+
+
+%.o: $(SRC)/%.cpp
+	$(CC) $(INC) $(LDFLAGS) $(CFLAGS) -c -o $(OUT_OBJ_DIR)/$@ $<
+
+
+archive:
+	#ar rcs $(OUT_LIB_DIR)/$(LIB_NAME)/$(ARNAME) $(OBJ_PATHS)
+	ar rcs $(OUT_LIB_DIR)/$(ARNAME) $(OBJ_PATHS)
+
+prepare:
+	mkdir -p $(OUT_OBJ_DIR)
+	#mkdir -p $(OUT_LIB_DIR)/$(LIB_NAME)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)/$(LIB_NAME)/internal
+
+
+clean:
+	#mkdir -p $(OUT_BIN_DIR)
+	mkdir -p $(OUT_OBJ_DIR)
+	mkdir -p $(OUT_LIB_DIR)
+	mkdir -p $(OUT_INCLUDE_DIR)
+	#rm -r $(OUT_BIN_DIR)
+	rm -r $(OUT_OBJ_DIR)
+	rm -r $(OUT_LIB_DIR)
+	rm -r $(OUT_INCLUDE_DIR)
+
+
+install:
+	mkdir -p $(PREFIX)
+	cp -R $(OUT_INCLUDE_DIR) $(PREFIX)
+	cp -R $(OUT_LIB_DIR) $(PREFIX)
+
+#uninstall:
+#	sudo -S rm -rf $(PREFIX)/include/$(LIB_NAME)
+#	sudo -S rm $(PREFIX)/lib/$(SO_FULL_NAME)
+
+

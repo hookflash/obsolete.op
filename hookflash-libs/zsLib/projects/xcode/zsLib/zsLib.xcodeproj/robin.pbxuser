@@ -1,0 +1,287 @@
+// !$*UTF8*$!
+{
+	00ADB60D13D2FDB0002DE6A7 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	00ADB60E13D2FDB0002DE6A7 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	00ADB61113D2FDCF002DE6A7 /* Exception.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2259, 1573}}";
+			sepNavSelRange = "{3210, 0}";
+			sepNavVisRange = "{2944, 6815}";
+		};
+	};
+	00ADB61213D2FDCF002DE6A7 /* IPAddress.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1482, 2405}}";
+			sepNavSelRange = "{4216, 0}";
+			sepNavVisRange = "{3639, 2747}";
+		};
+	};
+	00ADB61413D2FDCF002DE6A7 /* lgpl-3.0.txt */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {886, 2210}}";
+			sepNavSelRange = "{513, 0}";
+			sepNavVisRange = "{0, 1288}";
+		};
+	};
+	00ADB61A13D2FDCF002DE6A7 /* Proxy.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2126, 3445}}";
+			sepNavSelRange = "{12164, 0}";
+			sepNavVisRange = "{8581, 8467}";
+		};
+	};
+	00ADB61C13D2FDCF002DE6A7 /* String.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {806, 1040}}";
+			sepNavSelRange = "{1392, 0}";
+			sepNavVisRange = "{1151, 975}";
+		};
+	};
+	00ADB61D13D2FDCF002DE6A7 /* Stringize.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {886, 676}}";
+			sepNavSelRange = "{1017, 0}";
+			sepNavVisRange = "{876, 667}";
+		};
+	};
+	00ADB61E13D2FDCF002DE6A7 /* Timer.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1034, 754}}";
+			sepNavSelRange = "{1072, 46}";
+			sepNavVisRange = "{718, 1036}";
+		};
+	};
+	00ADB61F13D2FDCF002DE6A7 /* XML.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 7332}}";
+			sepNavSelRange = "{1018, 0}";
+			sepNavVisRange = "{718, 338}";
+		};
+	};
+	00ADB63513D2FE35002DE6A7 /* ISocket.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1079}}";
+			sepNavSelRange = "{1097, 0}";
+			sepNavVisRange = "{877, 376}";
+		};
+	};
+	00ADB63613D2FE35002DE6A7 /* Log.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1781}}";
+			sepNavSelRange = "{1080, 0}";
+			sepNavVisRange = "{945, 281}";
+		};
+	};
+	00ADB63713D2FE35002DE6A7 /* MessageQueue.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 650}}";
+			sepNavSelRange = "{1065, 0}";
+			sepNavVisRange = "{877, 370}";
+		};
+	};
+	00ADB63B13D2FE35002DE6A7 /* MessageQueueThreadUsingMainThreadMessageQueueForApple.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1261}}";
+			sepNavSelRange = "{1220, 0}";
+			sepNavVisRange = "{1007, 458}";
+		};
+	};
+	00ADB63F13D2FE35002DE6A7 /* Socket.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 741}}";
+			sepNavSelRange = "{1068, 0}";
+			sepNavVisRange = "{795, 308}";
+		};
+	};
+	00ADB64013D2FE35002DE6A7 /* SocketMonitor.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1560}}";
+			sepNavSelRange = "{1193, 0}";
+			sepNavVisRange = "{877, 351}";
+		};
+	};
+	00ADB64113D2FE35002DE6A7 /* Stringize.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1989}}";
+			sepNavSelRange = "{1122, 0}";
+			sepNavVisRange = "{858, 308}";
+		};
+	};
+	00ADB64313D2FE35002DE6A7 /* TimerMonitor.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1040}}";
+			sepNavSelRange = "{1114, 0}";
+			sepNavVisRange = "{877, 364}";
+		};
+	};
+	00ADB64413D2FE35002DE6A7 /* XML.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 4615}}";
+			sepNavSelRange = "{1019, 0}";
+			sepNavVisRange = "{862, 273}";
+		};
+	};
+	00ADB64513D2FE35002DE6A7 /* zsTypes.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 2093}}";
+			sepNavSelRange = "{1407, 0}";
+			sepNavVisRange = "{1187, 296}";
+		};
+	};
+	00ADB64713D2FE50002DE6A7 /* IPAddress.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1062, 12584}}";
+			sepNavSelRange = "{10232, 0}";
+			sepNavVisRange = "{10106, 967}";
+		};
+	};
+	00ADB64B13D2FE50002DE6A7 /* MessageQueueThreadBasic.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 1651}}";
+			sepNavSelRange = "{1021, 0}";
+			sepNavVisRange = "{718, 369}";
+		};
+	};
+	00ADB64C13D2FE50002DE6A7 /* MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 3211}}";
+			sepNavSelRange = "{1125, 0}";
+			sepNavVisRange = "{962, 272}";
+		};
+	};
+	00ADB64D13D2FE50002DE6A7 /* MessageQueueThreadUsingMainThreadMessageQueueForApple.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 2990}}";
+			sepNavSelRange = "{1098, 0}";
+			sepNavVisRange = "{880, 310}";
+		};
+	};
+	00ADB64E13D2FE50002DE6A7 /* Numeric.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 4992}}";
+			sepNavSelRange = "{1024, 0}";
+			sepNavVisRange = "{718, 360}";
+		};
+	};
+	00ADB65113D2FE50002DE6A7 /* SocketMonitor.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 7852}}";
+			sepNavSelRange = "{963, 0}";
+			sepNavVisRange = "{718, 332}";
+		};
+	};
+	00ADB65213D2FE50002DE6A7 /* String.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 8775}}";
+			sepNavSelRange = "{1116, 0}";
+			sepNavVisRange = "{862, 378}";
+		};
+	};
+	00ADB65313D2FE50002DE6A7 /* Stringize.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 728}}";
+			sepNavSelRange = "{956, 0}";
+			sepNavVisRange = "{858, 230}";
+		};
+	};
+	00ADB65513D2FE50002DE6A7 /* TimerMonitor.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 2353}}";
+			sepNavSelRange = "{980, 0}";
+			sepNavVisRange = "{718, 349}";
+		};
+	};
+	00ADB66213D2FE50002DE6A7 /* zsHelpers.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1176, 923}}";
+			sepNavSelRange = "{1005, 0}";
+			sepNavVisRange = "{718, 421}";
+		};
+	};
+	08FB7793FE84155DC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeTarget = D2AAC045055464E500DB518D /* zsLib */;
+		addToTargets = (
+			D2AAC045055464E500DB518D /* zsLib */,
+		);
+		codeSenseManager = 00ADB60E13D2FDB0002DE6A7 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					628,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFindDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFindDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					200,
+					722,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFindDataSource_MessageID,
+					PBXFindDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					668,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 332632295;
+			PBXWorkspaceStateSaveDate = 332632295;
+		};
+		sourceControlManager = 00ADB60D13D2FDB0002DE6A7 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	D2AAC045055464E500DB518D /* zsLib */ = {
+		activeExec = 0;
+	};
+}

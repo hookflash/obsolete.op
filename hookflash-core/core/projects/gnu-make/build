@@ -1,0 +1,28 @@
+#!/bin/sh
+# -*- coding: UTF-8 -*-
+
+# Script for building/installing hookflash core library.
+
+BASEDIR=$(dirname "`[[ $0 == /* ]] && echo "$0" || echo "${PWD}/${0#./}"`")
+if [ -z "$HF_OUT_DIR" ]; then HF_OUT_DIR=$BASEDIR/../../../../hf; fi
+
+
+if [ `uname` = 'Linux' ]; then
+	mkdir -p $HF_OUT_DIR
+
+	echo "\nBuilding hookflash core...\n----------------------------------------" 2>&1 | tee $BASEDIR/build.log
+
+#	cd $BASEDIR/../swig
+#		rm -rf java
+#		mkdir java java/src
+#		swig -c++ -java -o java/hfservices_wrap.cpp -oh java/hfservices_wrap.h -outdir java/src -package hookflash hfservicesBase.i 2>&1 | tee -a $BASEDIR/build.log
+#	cd $BASEDIR/
+	
+#	cp $BASEDIR/../swig/java/hfservices_wrap.h $BASEDIR/../../hookflash/services/wrapper/cpp/
+#	cp $BASEDIR/../swig/java/hfservices_wrap.cpp $BASEDIR/../../hookflash/services/wrapper/cpp/
+	
+	make -f $BASEDIR/Makefile-core PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+#	make -f $BASEDIR/Makefile-core install PREFIX=$HF_OUT_DIR 2>&1 | tee -a $BASEDIR/build.log
+fi
+
+

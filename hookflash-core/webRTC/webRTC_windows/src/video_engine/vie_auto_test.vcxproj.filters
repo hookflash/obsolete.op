@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="test">
+      <UniqueIdentifier>{5763B17F-46DA-9ED7-179F-9C9F273B791C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test">
+      <UniqueIdentifier>{FD874F67-9FA1-76B4-5917-2A817653C4B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\source">
+      <UniqueIdentifier>{8A6F5E6E-316F-22D4-1547-253B04CB32E7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\source\_excluded_files">
+      <UniqueIdentifier>{158E591E-B6EA-0C85-8F5A-18EAFA09B4CE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\media">
+      <UniqueIdentifier>{2699B576-DA2C-16EE-9C4A-F0CAB500D719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\primitives">
+      <UniqueIdentifier>{1B6C148C-6E64-09B5-DF4F-9752B1742554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\helpers">
+      <UniqueIdentifier>{7EE98CE8-2345-EC4F-120C-CFF181657498}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\automated">
+      <UniqueIdentifier>{40E3C12D-ADB9-666C-C876-45676111E10E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\interface">
+      <UniqueIdentifier>{D45E0FBD-84A7-45CA-36AC-7A06BD0C9BF7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="test\auto_test\interface\_excluded_files">
+      <UniqueIdentifier>{158E591E-B6EA-0C85-8F5A-18EAFA09B4CE}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="video_engine.gyp" />
+    <ClCompile Include="test\auto_test\source\vie_autotest_network.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_windows.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_base.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_main.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\tb_interfaces.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_window_manager_factory_win.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_render.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_codec.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\tb_capture_device.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_encryption.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_file_based_comparison_tests.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_loopback.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_rtp_rtcp.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\tb_I420_codec.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_capture.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_simulcast.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\tb_video_channel.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\tb_external_transport.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_custom_call.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_image_process.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_file.cc">
+      <Filter>test\auto_test\source</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_linux.cc">
+      <Filter>test\auto_test\source\_excluded_files</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\source\vie_autotest_mac_carbon.cc">
+      <Filter>test\auto_test\source\_excluded_files</Filter>
+    </ClCompile>
+    <None Include="test\auto_test\source\vie_autotest_mac_cocoa.mm">
+      <Filter>test\auto_test\source\_excluded_files</Filter>
+    </None>
+    <None Include="test\auto_test\source\vie_window_manager_factory_mac.mm">
+      <Filter>test\auto_test\source\_excluded_files</Filter>
+    </None>
+    <ClCompile Include="test\auto_test\source\vie_window_manager_factory_linux.cc">
+      <Filter>test\auto_test\source\_excluded_files</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\primitives\framedrop_primitives.h">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\primitives\framedrop_primitives.cc">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\primitives\general_primitives.h">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\primitives\base_primitives.cc">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\primitives\codec_primitives.cc">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\primitives\base_primitives.h">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\primitives\general_primitives.cc">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\primitives\codec_primitives.h">
+      <Filter>test\auto_test\primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\helpers\vie_window_creator.h">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\helpers\vie_file_capture_device.cc">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\helpers\vie_to_file_renderer.cc">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\helpers\vie_fake_camera.h">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\helpers\vie_window_creator.cc">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\helpers\vie_file_capture_device.h">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\helpers\vie_fake_camera.cc">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\helpers\vie_to_file_renderer.h">
+      <Filter>test\auto_test\helpers</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\automated\vie_api_integration_test.cc">
+      <Filter>test\auto_test\automated</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\automated\vie_extended_integration_test.cc">
+      <Filter>test\auto_test\automated</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\automated\vie_integration_test_base.cc">
+      <Filter>test\auto_test\automated</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\automated\vie_integration_test_base.h">
+      <Filter>test\auto_test\automated</Filter>
+    </ClInclude>
+    <ClCompile Include="test\auto_test\automated\vie_video_verification_test.cc">
+      <Filter>test\auto_test\automated</Filter>
+    </ClCompile>
+    <ClCompile Include="test\auto_test\automated\vie_standard_integration_test.cc">
+      <Filter>test\auto_test\automated</Filter>
+    </ClCompile>
+    <ClInclude Include="test\auto_test\interface\vie_window_manager_factory.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\tb_interfaces.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_mac_carbon.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_window_manager_interface.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\tb_capture_device.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_main.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_file_based_comparison_tests.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\tb_video_channel.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_defines.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\tb_I420_codec.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_windows.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\tb_external_transport.h">
+      <Filter>test\auto_test\interface</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_mac_cocoa.h">
+      <Filter>test\auto_test\interface\_excluded_files</Filter>
+    </ClInclude>
+    <ClInclude Include="test\auto_test\interface\vie_autotest_linux.h">
+      <Filter>test\auto_test\interface\_excluded_files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="test\auto_test\media\captureDeviceImage.jpg" />
+    <CustomBuild Include="test\auto_test\media\captureDeviceImage.bmp" />
+    <CustomBuild Include="test\auto_test\media\renderStartImage.jpg" />
+    <CustomBuild Include="test\auto_test\media\renderStartImage.bmp" />
+    <CustomBuild Include="test\auto_test\media\renderTimeoutImage.bmp" />
+    <CustomBuild Include="test\auto_test\media\renderTimeoutImage.jpg" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1 @@
+Double mouse click on .bat which is related to your VS version

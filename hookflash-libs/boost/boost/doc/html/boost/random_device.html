@@ -1,0 +1,145 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<title>Class random_device</title>
+<link rel="stylesheet" href="../../../doc/src/boostbook.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.76.1">
+<link rel="home" href="../index.html" title="The Boost C++ Libraries BoostBook Documentation Subset">
+<link rel="up" href="../boost_random/reference.html#header.boost.nondet_random_hpp" title="Header &lt;boost/nondet_random.hpp&gt;">
+<link rel="prev" href="../boost_random/reference.html" title="Reference">
+<link rel="next" href="taus88.html" title="Type definition taus88">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table cellpadding="2" width="100%"><tr>
+<td valign="top"><img alt="Boost C++ Libraries" width="277" height="86" src="../../../boost.png"></td>
+<td align="center"><a href="../../../index.html">Home</a></td>
+<td align="center"><a href="../../../libs/libraries.htm">Libraries</a></td>
+<td align="center"><a href="http://www.boost.org/users/people.html">People</a></td>
+<td align="center"><a href="http://www.boost.org/users/faq.html">FAQ</a></td>
+<td align="center"><a href="../../../more/index.htm">More</a></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../boost_random/reference.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_random/reference.html#header.boost.nondet_random_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="taus88.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+<div class="refentry">
+<a name="boost.random_device"></a><div class="titlepage"></div>
+<div class="refnamediv">
+<h2><span class="refentrytitle">Class random_device</span></h2>
+<p>boost::random_device</p>
+</div>
+<h2 xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv-title">Synopsis</h2>
+<div xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" class="refsynopsisdiv"><pre class="synopsis"><span class="comment">// In header: &lt;<a class="link" href="../boost_random/reference.html#header.boost.nondet_random_hpp" title="Header &lt;boost/nondet_random.hpp&gt;">boost/nondet_random.hpp</a>&gt;
+
+</span>
+<span class="keyword">class</span> <a class="link" href="random_device.html" title="Class random_device">random_device</a> <span class="special">{</span>
+<span class="keyword">public</span><span class="special">:</span>
+  <span class="comment">// types</span>
+  <span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <a name="boost.random_device.result_type"></a><span class="identifier">result_type</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="random_device.html#boost.random_deviceconstruct-copy-destruct">construct/copy/destruct</a></span>
+  <a class="link" href="random_device.html#id1181245-bb"><span class="identifier">random_device</span></a><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> <span class="special">=</span> <span class="identifier">default_token</span><span class="special">)</span><span class="special">;</span>
+  <a class="link" href="random_device.html#id1181264-bb"><span class="special">~</span><span class="identifier">random_device</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+
+  <span class="comment">// <a class="link" href="random_device.html#id1181176-bb">public member functions</a></span>
+  <span class="identifier">result_type</span> <a class="link" href="random_device.html#id1181180-bb"><span class="identifier">min</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">result_type</span> <a class="link" href="random_device.html#id1181198-bb"><span class="identifier">max</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">BOOST_RANDOM_DECL</span> <span class="keyword">double</span> <a class="link" href="random_device.html#id1181216-bb"><span class="identifier">entropy</span></a><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span>
+  <span class="identifier">BOOST_RANDOM_DECL</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <a class="link" href="random_device.html#id1181233-bb"><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span></a><span class="special">(</span><span class="special">)</span><span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">bool</span> has_fixed_range<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> min_value<span class="special">;</span>
+  <span class="keyword">static</span> <span class="keyword">const</span> <span class="identifier">result_type</span> max_value<span class="special">;</span>
+<span class="special">}</span><span class="special">;</span></pre></div>
+<div class="refsect1">
+<a name="id2628594"></a><h2>Description</h2>
+<p>Class  <a class="link" href="random_device.html" title="Class random_device">random_device</a> models a  <a class="link" href="../boost_random/reference.html#boost_random.reference.concepts.non_deterministic_uniform_random_number_generator" title="Non-deterministic Uniform Random Number Generator">non-deterministic random number generator</a> . It uses one or more implementation-defined stochastic processes to generate a sequence of uniformly distributed non-deterministic random numbers. For those environments where a non-deterministic random number generator is not available, class random_device must not be implemented. See</p>
+<p> </p>
+<div class="blockquote"><blockquote class="blockquote"><p>  "Randomness Recommendations for Security", D. Eastlake, S. Crocker, J. Schiller, Network Working Group, RFC 1750, December 1994  </p></blockquote></div>
+<p> </p>
+<p>for further discussions.</p>
+<p> </p>
+<div class="note"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../../../doc/src/images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>  Some operating systems abstract the computer hardware enough to make it difficult to non-intrusively monitor stochastic processes. However, several do provide a special device for exactly this purpose. It seems to be impossible to emulate the functionality using Standard C++ only, so users should be aware that this class may not be available on all platforms.  </p></td></tr>
+</table></div>
+<p> </p>
+<p><span class="bold"><strong>Implementation Note for Linux</strong></span></p>
+<p>On the Linux operating system, token is interpreted as a filesystem path. It is assumed that this path denotes an operating system pseudo-device which generates a stream of non-deterministic random numbers. The pseudo-device should never signal an error or end-of-file. Otherwise, <code class="computeroutput">std::ios_base::failure</code> is thrown. By default,  <a class="link" href="random_device.html" title="Class random_device">random_device</a> uses the /dev/urandom pseudo-device to retrieve the random numbers. Another option would be to specify the /dev/random pseudo-device, which blocks on reads if the entropy pool has no more random bits available.</p>
+<p><span class="bold"><strong>Implementation Note for Windows</strong></span></p>
+<p>On the Windows operating system, token is interpreted as the name of a cryptographic service provider. By default  <a class="link" href="random_device.html" title="Class random_device">random_device</a> uses MS_DEF_PROV.</p>
+<p><span class="bold"><strong>Performance</strong></span></p>
+<p>The test program <a href="../../../libs/random/performance/nondet_random_speed.cpp" target="_top">nondet_random_speed.cpp</a> measures the execution times of the nondet_random.hpp implementation of the above algorithms in a tight loop. The performance has been evaluated on a Pentium Pro 200 MHz with gcc 2.95.2, Linux 2.2.13, glibc 2.1.2.</p>
+<div class="informaltable"><table class="table">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>class</strong></span></td>
+<td><span class="bold"><strong>time per invocation [usec] </strong></span></td>
+</tr>
+<tr>
+<td> <a class="link" href="random_device.html" title="Class random_device">random_device</a>  </td>
+<td>92.0 </td>
+</tr>
+</tbody>
+</table></div>
+<p>
+</p>
+<p>The measurement error is estimated at +/- 1 usec. </p>
+<div class="refsect2">
+<a name="id2628753"></a><h3>
+<a name="boost.random_deviceconstruct-copy-destruct"></a><code class="computeroutput">random_device</code> 
+        public
+       construct/copy/destruct</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><a name="id1181245-bb"></a><span class="identifier">random_device</span><span class="special">(</span><span class="keyword">const</span> <span class="identifier">std</span><span class="special">::</span><span class="identifier">string</span> <span class="special">&amp;</span> token <span class="special">=</span> <span class="identifier">default_token</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Constructs a <code class="computeroutput">random_device</code>, optionally using the given token as an access specification (for example, a URL) to some implementation-defined service for monitoring a stochastic process. </p>
+</li>
+<li class="listitem"><pre class="literallayout"><a name="id1181264-bb"></a><span class="special">~</span><span class="identifier">random_device</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre></li>
+</ol></div>
+</div>
+<div class="refsect2">
+<a name="id2628881"></a><h3>
+<a name="id1181176-bb"></a><code class="computeroutput">random_device</code> public member functions</h3>
+<div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1181180-bb"></a><span class="identifier">min</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns: The smallest value that the  <code class="computeroutput"><a class="link" href="random_device.html" title="Class random_device">random_device</a></code> can produce. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">result_type</span> <a name="id1181198-bb"></a><span class="identifier">max</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns: The largest value that the  <code class="computeroutput"><a class="link" href="random_device.html" title="Class random_device">random_device</a></code> can produce. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">BOOST_RANDOM_DECL</span> <span class="keyword">double</span> <a name="id1181216-bb"></a><span class="identifier">entropy</span><span class="special">(</span><span class="special">)</span> <span class="keyword">const</span><span class="special">;</span></pre>
+<p>Returns: An entropy estimate for the random numbers returned by operator(), in the range min() to log2( max()+1). A deterministic random number generator (e.g. a pseudo-random number engine) has entropy 0.</p>
+<p>Throws: Nothing. </p>
+</li>
+<li class="listitem">
+<pre class="literallayout"><span class="identifier">BOOST_RANDOM_DECL</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> <a name="id1181233-bb"></a><span class="keyword">operator</span><span class="special">(</span><span class="special">)</span><span class="special">(</span><span class="special">)</span><span class="special">;</span></pre>
+<p>Returns: A random value in the range [min, max] </p>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<table xmlns:rev="http://www.cs.rpi.edu/~gregod/boost/tools/doc/revision" width="100%"><tr>
+<td align="left"></td>
+<td align="right"><div class="copyright-footer">Copyright &#169; 2000 -2005 Jens Maurer, 2009 Steven Watanabe<p>
+        Distributed under the Boost Software License, Version 1.0. (See accompanying
+        file LICENSE_1_0.txt or copy at <a href="http://www.boost.org/LICENSE_1_0.txt" target="_top">http://www.boost.org/LICENSE_1_0.txt</a>)
+      </p>
+</div></td>
+</tr></table>
+<hr>
+<div class="spirit-nav">
+<a accesskey="p" href="../boost_random/reference.html"><img src="../../../doc/src/images/prev.png" alt="Prev"></a><a accesskey="u" href="../boost_random/reference.html#header.boost.nondet_random_hpp"><img src="../../../doc/src/images/up.png" alt="Up"></a><a accesskey="h" href="../index.html"><img src="../../../doc/src/images/home.png" alt="Home"></a><a accesskey="n" href="taus88.html"><img src="../../../doc/src/images/next.png" alt="Next"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="internal">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="cpp">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="http">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="http\cpp">
+      <UniqueIdentifier>{47b2a4c8-ba5e-4251-94a8-55d9cef599bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="http\internal">
+      <UniqueIdentifier>{ee24fee8-f449-40b5-b1dd-bc44355aafdb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\hookflashTypes.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_CanonicalXML.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_DNSMonitor.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_Helper.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_ICESocket.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_ICESocketSession.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPChannel.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPChannelStream.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPICESocket.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPICESocketSession.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPListener.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_RUDPMessaging.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_STUNDiscovery.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_STUNRequester.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_STUNRequesterManager.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\internal\services_TURNSocket.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\hookflashTypes.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\services.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\ICanonicalXML.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IDNS.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IHelper.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IICESocket.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IICESocketSession.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPChannel.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPChannelStream.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPICESocket.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPICESocketSession.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPListener.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\IRUDPMessaging.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\ISTUNDiscovery.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\ISTUNRequester.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\ISTUNRequesterManager.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\ITURNSocket.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\RUDPPacket.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\RUDPProtocol.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\STUNPacket.h" />
+    <ClInclude Include="..\..\..\..\hookflash\services\http\hookflashTypes.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\http\IHttp.h">
+      <Filter>http</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\http\internal\hookflashTypes.h">
+      <Filter>http\internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\hookflash\services\http\internal\http_Http.h">
+      <Filter>http\internal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_CanonicalXML.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_DNS.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_DNSMonitor.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_Helper.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_ICESocket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_ICESocketSession.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPChannel.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPChannelStream.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPICESocketSession.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPListener.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPMessaging.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPPacket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_Services.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_STUNDiscovery.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_STUNPacket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_STUNRequester.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_STUNRequesterManager.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_TURNSocket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\http\cpp\http_Http.cpp">
+      <Filter>http\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\hookflash\services\cpp\services_RUDPICESocket.cpp">
+      <Filter>cpp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

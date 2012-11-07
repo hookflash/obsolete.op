@@ -1,0 +1,62 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(modules)", "..\..\..\..\..\modules", "{ABA814CE-769C-A7C4-7A0D-B2A09A6EE486}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(source)", "..\..\..\..\..\modules\udp_transport\source", "{62AA2099-4326-4102-6C3B-D745CE8718D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(source)", "..\..\..\..\..\system_wrappers\source", "{F90A7E5F-E308-9A0D-FC3F-C270ED3163D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(system_wrappers)", "..\..\..\..\..\system_wrappers", "{3E24422E-CE67-D18B-51FA-269330E86C12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "(udp_transport)", "..\..\..\..\..\modules\udp_transport", "{5C77B3D8-69E6-EF38-6314-F3508C34C7D8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "system_wrappers", "..\..\..\system_wrappers\source\system_wrappers.vcproj", "{0D4CE1EE-8796-ED90-75DD-979942D117BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "udp_transport", "udp_transport.vcproj", "{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|x64 = Release|x64
+		Purify|Win32 = Purify|Win32
+		Purify|x64 = Purify|x64
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Debug|Win32.Build.0 = Debug|Win32
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Release|x64.ActiveCfg = Release|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Release|x64.Build.0 = Release|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Purify|Win32.ActiveCfg = Purify|Win32
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Purify|Win32.Build.0 = Purify|Win32
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Purify|x64.ActiveCfg = Purify|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Purify|x64.Build.0 = Purify|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Debug|x64.ActiveCfg = Debug|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Debug|x64.Build.0 = Debug|x64
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Release|Win32.ActiveCfg = Release|Win32
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD}.Release|Win32.Build.0 = Release|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Debug|Win32.Build.0 = Debug|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Release|x64.ActiveCfg = Release|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Release|x64.Build.0 = Release|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Purify|Win32.ActiveCfg = Purify|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Purify|Win32.Build.0 = Purify|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Purify|x64.ActiveCfg = Purify|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Purify|x64.Build.0 = Purify|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Debug|x64.ActiveCfg = Debug|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Debug|x64.Build.0 = Debug|x64
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Release|Win32.ActiveCfg = Release|Win32
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5C77B3D8-69E6-EF38-6314-F3508C34C7D8} = {ABA814CE-769C-A7C4-7A0D-B2A09A6EE486}
+		{CE89DE8D-03E1-4E14-B287-431CCFCCE75E} = {62AA2099-4326-4102-6C3B-D745CE8718D9}
+		{0D4CE1EE-8796-ED90-75DD-979942D117BD} = {F90A7E5F-E308-9A0D-FC3F-C270ED3163D6}
+		{F90A7E5F-E308-9A0D-FC3F-C270ED3163D6} = {3E24422E-CE67-D18B-51FA-269330E86C12}
+		{62AA2099-4326-4102-6C3B-D745CE8718D9} = {5C77B3D8-69E6-EF38-6314-F3508C34C7D8}
+	EndGlobalSection
+EndGlobal

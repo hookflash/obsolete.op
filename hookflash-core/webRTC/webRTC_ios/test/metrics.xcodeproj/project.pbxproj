@@ -1,0 +1,1176 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		17F5EF9FD290A50AFA0813BC /* All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 14188457A703954BB5DD80B2 /* Build configuration list for PBXAggregateTarget "All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				3262139D35DCEA423DDD2F96 /* PBXTargetDependency */,
+				05A9A3C198B438E818D74294 /* PBXTargetDependency */,
+			);
+			name = All;
+			productName = All;
+		};
+		B5C83ED630524AF7A5042296 /* Run metrics_unittests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A70E0161AEE7E95C5FF1653F /* Build configuration list for PBXAggregateTarget "Run metrics_unittests" */;
+			buildPhases = (
+				670A0415CEEB9CBB4498EF1E /* ShellScript */,
+			);
+			dependencies = (
+				71D064C646FA53582A478598 /* PBXTargetDependency */,
+			);
+			name = "Run metrics_unittests";
+			productName = metrics_unittests;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		0E810EA30A0528E755F70538 /* libjpeg_turbo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4588ED7165D6432973ED22BC /* libjpeg_turbo.a */; };
+		1374093DE7E2361AF25C13E4 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B33B09DA4B43378075A2467B /* libgtest.a */; };
+		3EC297FCF68623C49531E173 /* libmetrics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFAEB593986A75977A14533A /* libmetrics.a */; };
+		59BF7666A312B74A2B7A9CC7 /* libgmock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A73C5A46114A810BD50D941 /* libgmock.a */; };
+		7230199F166EC4FA1864481E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60FAB23197447715909653F1 /* Foundation.framework */; };
+		743EC3723045072958C5865D /* libyuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0F877086B0D2936F89DCCD /* libyuv.a */; };
+		8BBD08E87E8DBF5AD7FFE2D6 /* video_metrics_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4E28C8BE6D4A7239AEBFE28D /* video_metrics_unittest.cc */; };
+		9311658B2293C46269A00712 /* video_metrics.cc in Sources */ = {isa = PBXBuildFile; fileRef = B2DB595055DFC002FD2B16F8 /* video_metrics.cc */; };
+		A17FCADA02326D612BA26D3B /* libtest_support_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6840FE80A38A97AD5A6AF9D8 /* libtest_support_main.a */; };
+		EAF2C80D64D568042FC5C350 /* libtest_support.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6C0613996BD4A2B42B737C47 /* libtest_support.a */; };
+		FAADA891D680EA2D655CB4EF /* libwebrtc_libyuv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BED69C6FB70D1ECCC4119C4 /* libwebrtc_libyuv.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		19714A5B9B9CB8BC06A939C5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3CBDC5E992ADCFCFA0DB54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 079685297056518FD68EFF46;
+			remoteInfo = metrics_unittests;
+		};
+		30F5208276A7426CD51FDDF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 678F8284E1ADA4710A465D8E /* gmock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 047880FF10396F6860BD2A6C;
+			remoteInfo = gmock_main;
+		};
+		3FED578F06130DDCEEC7113C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6C629F823B4F3503045A3E88;
+			remoteInfo = jpeg_unittests;
+		};
+		4301F296D73BCD0F6E58F942 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D06A7880BDFE0FFA2C61254;
+			remoteInfo = test_support;
+		};
+		472C1AF1F7CEB37BE0FC6160 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E995122D09A9871204CAFD1C;
+			remoteInfo = test_support;
+		};
+		4B6263376493E065B30DC409 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 203C595AB0E93BB1CB960E12;
+			remoteInfo = gtest;
+		};
+		4CAE107BA93E44FBA85E2C85 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 047F1F75D402364FCD5FEF44;
+			remoteInfo = webrtc_jpeg;
+		};
+		4DC60B0D766658A92F02EEEB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DBF867C58B0D54B446EE992E;
+			remoteInfo = test_support_unittests;
+		};
+		586EE71D56AAF40F6B86CBBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 00D2C9C22C7F534743FD667C;
+			remoteInfo = libyuv_unittests;
+		};
+		5ADE1397F0779FD60492929F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 522FCCC48AFA05CC86AA7BA7 /* libyuv.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BFCB3C407E427151B276345A;
+			remoteInfo = libyuv;
+		};
+		63961E6B749919B0AC15A77D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 678F8284E1ADA4710A465D8E /* gmock.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F53C51184A2F821FEADA91FE;
+			remoteInfo = gmock;
+		};
+		66989B68CBE007352C454ADE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 16FE1B8019413384C8E03D7E;
+			remoteInfo = test_support_main;
+		};
+		7090CBE8B89290340FCD851C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 678F8284E1ADA4710A465D8E /* gmock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CCAC1D500579CCE4A4B3DF89;
+			remoteInfo = gmock;
+		};
+		733B6245A3439252A8E2A943 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E0B3F1FB50FAAB76B5E11021;
+			remoteInfo = gtest;
+		};
+		8DE628634EC9770764A19B52 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D22CB0E3E1C7BFFE5177D82E;
+			remoteInfo = gtest_main;
+		};
+		90B4BE1896CBF80729B2B77C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 677AFFE3717A006BFE45BC10;
+			remoteInfo = test_support_main;
+		};
+		A08EA8977BA87519BC52E06B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2999131A71FAFE50515AD0ED;
+			remoteInfo = gtest_prod;
+		};
+		A15636B26E2C745F2220EDA1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20A1FACBA458B3C69F05338C /* libjpeg.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 601B21A7E1158587BDCD494D;
+			remoteInfo = libjpeg;
+		};
+		A28BDE83B1F311A26DB53361 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 82907D5C9F349AAA4B9DA6B8;
+			remoteInfo = webrtc_libyuv;
+		};
+		A3392923907F4EF38A9CB2A1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 522FCCC48AFA05CC86AA7BA7 /* libyuv.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 568E3016DD2F308A82671925;
+			remoteInfo = libyuv;
+		};
+		AF484D158053C4B4C9412374 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 3D45776E3B903EE64DBBAC9B;
+			remoteInfo = webrtc_libyuv;
+		};
+		BABBE1581E6369A88504B292 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3CBDC5E992ADCFCFA0DB54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 079685297056518FD68EFF46;
+			remoteInfo = metrics_unittests;
+		};
+		C477ED8DBC8B2E415C5980FA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3CBDC5E992ADCFCFA0DB54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C040E98E018A564003FAF09A;
+			remoteInfo = metrics;
+		};
+		D060F4DA10BA49A6009C825F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 20A1FACBA458B3C69F05338C /* libjpeg.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5C93544605CE3CDDF76F4A1E;
+			remoteInfo = libjpeg;
+		};
+		F58C12B9873DA7C9C9D37971 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8C3CBDC5E992ADCFCFA0DB54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C040E98E018A564003FAF09A;
+			remoteInfo = metrics;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		01EDCE7F2CE9A4FB4C63EA83 /* filename_rules.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = filename_rules.gypi; path = ../build/filename_rules.gypi; sourceTree = "<group>"; };
+		02DB743817E43754F9F37830 /* test.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = test.xcodeproj; sourceTree = SOURCE_ROOT; };
+		079F6B9C935297AE6F3E5A5C /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../src/build/common.gypi; sourceTree = "<group>"; };
+		18227E9059F8EA5BBC794625 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../src/supplement.gypi; sourceTree = "<group>"; };
+		20A1FACBA458B3C69F05338C /* libjpeg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg.xcodeproj; path = ../third_party/libjpeg_turbo/libjpeg.xcodeproj; sourceTree = SOURCE_ROOT; };
+		38CA88AD17651001723F284B /* metrics_unittests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = metrics_unittests; sourceTree = BUILT_PRODUCTS_DIR; };
+		4A18AF43AF4D671AC96EFDEF /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../build/common.gypi; sourceTree = "<group>"; };
+		4E28C8BE6D4A7239AEBFE28D /* video_metrics_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = video_metrics_unittest.cc; sourceTree = "<group>"; };
+		4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video.xcodeproj; path = ../src/common_video/common_video.xcodeproj; sourceTree = SOURCE_ROOT; };
+		522FCCC48AFA05CC86AA7BA7 /* libyuv.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libyuv.xcodeproj; path = ../third_party/libyuv/libyuv.xcodeproj; sourceTree = SOURCE_ROOT; };
+		5D1B815CEDA1478682F73B96 /* video_metrics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = video_metrics.h; sourceTree = "<group>"; };
+		60FAB23197447715909653F1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		678F8284E1ADA4710A465D8E /* gmock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = gmock.xcodeproj; path = ../testing/gmock.xcodeproj; sourceTree = SOURCE_ROOT; };
+		68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = gtest.xcodeproj; path = ../testing/gtest.xcodeproj; sourceTree = SOURCE_ROOT; };
+		A71907544A80D04BED7B9BEB /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../build/release.gypi; sourceTree = "<group>"; };
+		AFAEB593986A75977A14533A /* libmetrics.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmetrics.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2DB595055DFC002FD2B16F8 /* video_metrics.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = video_metrics.cc; sourceTree = "<group>"; };
+		B3580714978B79D305416D65 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		C96D6551C8C521BD177934E5 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		EAFCB4484D5638413BC63EA5 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		FBDA4064832FD3E498A62E05 /* metrics.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = metrics.gyp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A8A23DDB8051FE502747339 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3EC297FCF68623C49531E173 /* libmetrics.a in Frameworks */,
+				A17FCADA02326D612BA26D3B /* libtest_support_main.a in Frameworks */,
+				1374093DE7E2361AF25C13E4 /* libgtest.a in Frameworks */,
+				FAADA891D680EA2D655CB4EF /* libwebrtc_libyuv.a in Frameworks */,
+				743EC3723045072958C5865D /* libyuv.a in Frameworks */,
+				0E810EA30A0528E755F70538 /* libjpeg_turbo.a in Frameworks */,
+				EAF2C80D64D568042FC5C350 /* libtest_support.a in Frameworks */,
+				59BF7666A312B74A2B7A9CC7 /* libgmock.a in Frameworks */,
+				7230199F166EC4FA1864481E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E6AD3C80D4235670F90F0CEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0CFA5E66745F623886D0A17F /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				4A18AF43AF4D671AC96EFDEF /* common.gypi */,
+				079F6B9C935297AE6F3E5A5C /* common.gypi */,
+				01EDCE7F2CE9A4FB4C63EA83 /* filename_rules.gypi */,
+				FBDA4064832FD3E498A62E05 /* metrics.gyp */,
+				A71907544A80D04BED7B9BEB /* release.gypi */,
+				B3580714978B79D305416D65 /* release_defaults.gypi */,
+				C96D6551C8C521BD177934E5 /* release_impl.gypi */,
+				EAFCB4484D5638413BC63EA5 /* release_impl_official.gypi */,
+				18227E9059F8EA5BBC794625 /* supplement.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		0F31CEBB9CF1B6A6413989DC /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				B2DB595055DFC002FD2B16F8 /* video_metrics.cc */,
+				5D1B815CEDA1478682F73B96 /* video_metrics.h */,
+				4E28C8BE6D4A7239AEBFE28D /* video_metrics_unittest.cc */,
+			);
+			name = Source;
+			path = testsupport/metrics;
+			sourceTree = "<group>";
+		};
+		2552BFC8F44E06FE24C40AAC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9BED69C6FB70D1ECCC4119C4 /* libwebrtc_libyuv.a */,
+				6D2CFB6F42B167D3BEC765E9 /* libwebrtc_jpeg.a */,
+				1B0FABD486381EE1D1B09062 /* libyuv_unittests */,
+				F0270064997460D2367A9AE3 /* jpeg_unittests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7D9ED4105A7D85036F6B2E9A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B33B09DA4B43378075A2467B /* libgtest.a */,
+				5F1A3D1EFC9FBF8395194A56 /* libgtest_main.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		949A4FBE44F7F1B7326257F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6C0613996BD4A2B42B737C47 /* libtest_support.a */,
+				6840FE80A38A97AD5A6AF9D8 /* libtest_support_main.a */,
+				722004FDD0A56A17545A0FF8 /* test_support_unittests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9DBB3645B5768451E5CA02B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				60FAB23197447715909653F1 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C6EA83439BDE3A36B7379008 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AFAEB593986A75977A14533A /* libmetrics.a */,
+				38CA88AD17651001723F284B /* metrics_unittests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C98CAD5B77D6359E854E9140 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4588ED7165D6432973ED22BC /* libjpeg_turbo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D9417DBD8822913E848FEFE8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F0F877086B0D2936F89DCCD /* libyuv.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DE0D6102A35516C084FF190F = {
+			isa = PBXGroup;
+			children = (
+				0F31CEBB9CF1B6A6413989DC /* Source */,
+				EFE196F1D128336555E2CBE6 /* Projects */,
+				9DBB3645B5768451E5CA02B9 /* Frameworks */,
+				C6EA83439BDE3A36B7379008 /* Products */,
+				0CFA5E66745F623886D0A17F /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		E5890CC867BC335DCEF505B3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2A73C5A46114A810BD50D941 /* libgmock.a */,
+				0103747605F7D790844BDF0B /* libgmock_main.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EFE196F1D128336555E2CBE6 /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */,
+				678F8284E1ADA4710A465D8E /* gmock.xcodeproj */,
+				68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */,
+				20A1FACBA458B3C69F05338C /* libjpeg.xcodeproj */,
+				522FCCC48AFA05CC86AA7BA7 /* libyuv.xcodeproj */,
+				02DB743817E43754F9F37830 /* test.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		079685297056518FD68EFF46 /* metrics_unittests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 11554CB87E60824233B9BA56 /* Build configuration list for PBXNativeTarget "metrics_unittests" */;
+			buildPhases = (
+				49B3F598A9DDFFFDB17EBD24 /* Sources */,
+				1A8A23DDB8051FE502747339 /* Frameworks */,
+				B61F3B4D59B771BFA0263143 /* Postbuild "Change Mach-O Flags" */,
+				8BD0298F1FA7EB3128E7F502 /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				09E70F260C3036CA08A6A852 /* PBXTargetDependency */,
+				C27D3F4E71EA9C89E4909BF9 /* PBXTargetDependency */,
+				1A3F148B231B015E3DB12962 /* PBXTargetDependency */,
+				4B5882837DC3016812522D90 /* PBXTargetDependency */,
+				52E76A1060F7387A25E9A220 /* PBXTargetDependency */,
+				F02AB67C0C3A06C9EAB19A0B /* PBXTargetDependency */,
+				DE3A876F694589E6E6F95DDD /* PBXTargetDependency */,
+				A3162F7740A0FAF12E5B5F94 /* PBXTargetDependency */,
+				CF93F348091786E71AD273E8 /* PBXTargetDependency */,
+			);
+			name = metrics_unittests;
+			productName = metrics_unittests;
+			productReference = 38CA88AD17651001723F284B /* metrics_unittests */;
+			productType = "com.apple.product-type.tool";
+		};
+		C040E98E018A564003FAF09A /* metrics */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7780F813BEEFDBB93F27B301 /* Build configuration list for PBXNativeTarget "metrics" */;
+			buildPhases = (
+				8B1543407857E3642A1087A2 /* Sources */,
+				E6AD3C80D4235670F90F0CEB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = metrics;
+			productName = metrics;
+			productReference = AFAEB593986A75977A14533A /* libmetrics.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C3CBDC5E992ADCFCFA0DB54 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 1D210097146B82C539665D49 /* Build configuration list for PBXProject "metrics" */;
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 1;
+			mainGroup = DE0D6102A35516C084FF190F;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 2552BFC8F44E06FE24C40AAC /* Products */;
+					ProjectRef = 4FF61AE222963ECB8DDD3E90 /* common_video.xcodeproj */;
+				},
+				{
+					ProductGroup = E5890CC867BC335DCEF505B3 /* Products */;
+					ProjectRef = 678F8284E1ADA4710A465D8E /* gmock.xcodeproj */;
+				},
+				{
+					ProductGroup = 7D9ED4105A7D85036F6B2E9A /* Products */;
+					ProjectRef = 68D0D024ACF64ADFEEDD09CA /* gtest.xcodeproj */;
+				},
+				{
+					ProductGroup = C98CAD5B77D6359E854E9140 /* Products */;
+					ProjectRef = 20A1FACBA458B3C69F05338C /* libjpeg.xcodeproj */;
+				},
+				{
+					ProductGroup = D9417DBD8822913E848FEFE8 /* Products */;
+					ProjectRef = 522FCCC48AFA05CC86AA7BA7 /* libyuv.xcodeproj */;
+				},
+				{
+					ProductGroup = 949A4FBE44F7F1B7326257F4 /* Products */;
+					ProjectRef = 02DB743817E43754F9F37830 /* test.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				17F5EF9FD290A50AFA0813BC /* All */,
+				C040E98E018A564003FAF09A /* metrics */,
+				079685297056518FD68EFF46 /* metrics_unittests */,
+				B5C83ED630524AF7A5042296 /* Run metrics_unittests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		0103747605F7D790844BDF0B /* libgmock_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgmock_main.a;
+			remoteRef = 30F5208276A7426CD51FDDF0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1B0FABD486381EE1D1B09062 /* libyuv_unittests */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = libyuv_unittests;
+			remoteRef = 586EE71D56AAF40F6B86CBBB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2A73C5A46114A810BD50D941 /* libgmock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgmock.a;
+			remoteRef = 7090CBE8B89290340FCD851C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		4588ED7165D6432973ED22BC /* libjpeg_turbo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjpeg_turbo.a;
+			remoteRef = D060F4DA10BA49A6009C825F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5F1A3D1EFC9FBF8395194A56 /* libgtest_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest_main.a;
+			remoteRef = 8DE628634EC9770764A19B52 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6840FE80A38A97AD5A6AF9D8 /* libtest_support_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_support_main.a;
+			remoteRef = 90B4BE1896CBF80729B2B77C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6C0613996BD4A2B42B737C47 /* libtest_support.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_support.a;
+			remoteRef = 472C1AF1F7CEB37BE0FC6160 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6D2CFB6F42B167D3BEC765E9 /* libwebrtc_jpeg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_jpeg.a;
+			remoteRef = 4CAE107BA93E44FBA85E2C85 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		6F0F877086B0D2936F89DCCD /* libyuv.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libyuv.a;
+			remoteRef = A3392923907F4EF38A9CB2A1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		722004FDD0A56A17545A0FF8 /* test_support_unittests */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_support_unittests;
+			remoteRef = 4DC60B0D766658A92F02EEEB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		9BED69C6FB70D1ECCC4119C4 /* libwebrtc_libyuv.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libwebrtc_libyuv.a;
+			remoteRef = A28BDE83B1F311A26DB53361 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B33B09DA4B43378075A2467B /* libgtest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest.a;
+			remoteRef = 733B6245A3439252A8E2A943 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0270064997460D2367A9AE3 /* jpeg_unittests */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = jpeg_unittests;
+			remoteRef = 3FED578F06130DDCEEC7113C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		670A0415CEEB9CBB4498EF1E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec python -c \"import fcntl, subprocess, sys\nfile = open('$TMPDIR/GYP_serialize_test_runs', 'a')\nfcntl.flock(file.fileno(), fcntl.LOCK_EX)\nsys.exit(subprocess.call(sys.argv[1:]))\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}\"\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		8BD0298F1FA7EB3128E7F502 /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		B61F3B4D59B771BFA0263143 /* Postbuild "Change Mach-O Flags" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Change Mach-O Flags\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../build/mac/change_mach_o_flags_from_xcode.sh\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		49B3F598A9DDFFFDB17EBD24 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8BBD08E87E8DBF5AD7FFE2D6 /* video_metrics_unittest.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8B1543407857E3642A1087A2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9311658B2293C46269A00712 /* video_metrics.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		05A9A3C198B438E818D74294 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 079685297056518FD68EFF46 /* metrics_unittests */;
+			targetProxy = BABBE1581E6369A88504B292 /* PBXContainerItemProxy */;
+		};
+		09E70F260C3036CA08A6A852 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C040E98E018A564003FAF09A /* metrics */;
+			targetProxy = F58C12B9873DA7C9C9D37971 /* PBXContainerItemProxy */;
+		};
+		1A3F148B231B015E3DB12962 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gtest;
+			targetProxy = 4B6263376493E065B30DC409 /* PBXContainerItemProxy */;
+		};
+		3262139D35DCEA423DDD2F96 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C040E98E018A564003FAF09A /* metrics */;
+			targetProxy = C477ED8DBC8B2E415C5980FA /* PBXContainerItemProxy */;
+		};
+		4B5882837DC3016812522D90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = webrtc_libyuv;
+			targetProxy = AF484D158053C4B4C9412374 /* PBXContainerItemProxy */;
+		};
+		52E76A1060F7387A25E9A220 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libyuv;
+			targetProxy = 5ADE1397F0779FD60492929F /* PBXContainerItemProxy */;
+		};
+		71D064C646FA53582A478598 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 079685297056518FD68EFF46 /* metrics_unittests */;
+			targetProxy = 19714A5B9B9CB8BC06A939C5 /* PBXContainerItemProxy */;
+		};
+		A3162F7740A0FAF12E5B5F94 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gtest_prod;
+			targetProxy = A08EA8977BA87519BC52E06B /* PBXContainerItemProxy */;
+		};
+		C27D3F4E71EA9C89E4909BF9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = test_support_main;
+			targetProxy = 66989B68CBE007352C454ADE /* PBXContainerItemProxy */;
+		};
+		CF93F348091786E71AD273E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gmock;
+			targetProxy = 63961E6B749919B0AC15A77D /* PBXContainerItemProxy */;
+		};
+		DE3A876F694589E6E6F95DDD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = test_support;
+			targetProxy = 4301F296D73BCD0F6E58F942 /* PBXContainerItemProxy */;
+		};
+		F02AB67C0C3A06C9EAB19A0B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libjpeg;
+			targetProxy = A15636B26E2C745F2220EDA1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		09FE7962C05B9876DFC63578 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Debug;
+		};
+		0A40AAE95B4FC95A064F9407 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = metrics_unittests;
+			};
+			name = Release;
+		};
+		102E666F19E534BCDDE0047B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					..,
+					.,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				PRODUCT_NAME = metrics;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Debug;
+		};
+		36726CAA34983AB8B6AF966C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"UNIT_TEST\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					..,
+					.,
+					../testing/gtest/include,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = metrics_unittests;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Debug;
+		};
+		3D2E2A8B66E684C4B40B57C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"UNIT_TEST\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					..,
+					.,
+					../testing/gtest/include,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = metrics_unittests;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Release;
+		};
+		63BAF23165F3459FD09A54E3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = All;
+			};
+			name = Release;
+		};
+		69369083B348741011F976C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"2139M\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_MAC_INTEL\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../src,
+					..,
+					.,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				PRODUCT_NAME = metrics;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-literal-conversion",
+				);
+			};
+			name = Release;
+		};
+		851BDA8D5283BE5010B181BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../xcodebuild;
+			};
+			name = Release;
+		};
+		8BCA2EFBD903299FE933C94A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.6;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../xcodebuild;
+			};
+			name = Debug;
+		};
+		B4194C83D172222F7A0E2827 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = metrics_unittests;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11554CB87E60824233B9BA56 /* Build configuration list for PBXNativeTarget "metrics_unittests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				36726CAA34983AB8B6AF966C /* Debug */,
+				3D2E2A8B66E684C4B40B57C9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		14188457A703954BB5DD80B2 /* Build configuration list for PBXAggregateTarget "All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				09FE7962C05B9876DFC63578 /* Debug */,
+				63BAF23165F3459FD09A54E3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		1D210097146B82C539665D49 /* Build configuration list for PBXProject "metrics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8BCA2EFBD903299FE933C94A /* Debug */,
+				851BDA8D5283BE5010B181BA /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		7780F813BEEFDBB93F27B301 /* Build configuration list for PBXNativeTarget "metrics" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				102E666F19E534BCDDE0047B /* Debug */,
+				69369083B348741011F976C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		A70E0161AEE7E95C5FF1653F /* Build configuration list for PBXAggregateTarget "Run metrics_unittests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B4194C83D172222F7A0E2827 /* Debug */,
+				0A40AAE95B4FC95A064F9407 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C3CBDC5E992ADCFCFA0DB54 /* Project object */;
+}
