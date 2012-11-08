@@ -1,9 +1,7 @@
-## Welcome to Open Peer
+## Introduction to Open Peer
 
 * Open Peer Overview Video: http://hookflash.com/open-peer/
 * Open Peer Specification: http://openpeer.org
-
-Introduction
 
 Open Peer is peer-to-peer signalling protocol taking advantages of the IETF advances of firewall penetration techniques for moving media and adds a layer to performs the media signalling in a peer-to-peer fashion but does expect that a minimal requirement of rendezvous servers existing. Beyond the initial rendezvous to get past firewalls, the servers should drop out of the protocol flow and are no longer required.
 
