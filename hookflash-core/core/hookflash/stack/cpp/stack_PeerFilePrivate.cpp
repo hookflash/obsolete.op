@@ -313,7 +313,7 @@ namespace hookflash
         static const char *skeletonSignature =
         "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">\n"
         " <SignedInfo>\n"
-        "  <SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#dsa-sha1\" />\n"
+        "  <SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\" />\n"
         "  <Reference>\n"
         "   <DigestMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#sha1\" />\n"
         "   <DigestValue></DigestValue>\n"

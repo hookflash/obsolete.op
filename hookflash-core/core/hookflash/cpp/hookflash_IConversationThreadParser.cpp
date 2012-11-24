@@ -291,7 +291,7 @@ namespace hookflash
     //    </message>
     //    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     //     <SignedInfo>
-    //      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1" />
+    //      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
     //      <Reference URI="#e041038922edbc0638cebbded884896">
     //       <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
     //       <DigestValue>YUZSaWJFcFhXVzEwUzJOR2JITmFSazVYVm0xU2VsZHJWVFZpUmxwMVVXeHdW</DigestValue>
@@ -758,7 +758,7 @@ namespace hookflash
     //    </dialog>
     //    <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     //     <SignedInfo>
-    //      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1" />
+    //      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
     //      <Reference URI="#5dc367c8392dfba2d08a27d8a2139ef7232b1df1">
     //       <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
     //       <DigestValue>YUZSaWJFcFhXVzEwUzJOR2JITmFSazVYVm0xU2VsZHJWVFZpUmxwMVVXeHdW</DigestValue>

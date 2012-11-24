@@ -172,6 +172,7 @@ namespace hookflash
       mVoiceVolumeControl(NULL),
       mVoiceHardware(NULL),
       mVoiceFile(NULL),
+      mVoiceEngineReady(false),
       mVcpm(NULL),
       mVideoEngine(NULL),
       mVideoBase(NULL),
@@ -180,6 +181,7 @@ namespace hookflash
       mVideoCapture(NULL),
       mVideoRtpRtcp(NULL),
       mVideoCodec(NULL),
+      mVideoEngineReady(false),
       mIPhoneCaptureRenderView(NULL),
       mIPhoneChannelRenderView(NULL),
       mRedirectVoiceTransport("voice"),
@@ -914,14 +916,16 @@ namespace hookflash
 #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
       ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
 #endif
+
       int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
       {
-        AutoRecursiveLock lock(mLock);
-        channel = mVoiceChannel;
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        if (mVoiceEngineReady)
+          channel = mVoiceChannel;
       }
 
       if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
-        ZS_LOG_WARNING(Debug, log("voice channel is not valid"))
+        ZS_LOG_WARNING(Debug, log("voice channel is not ready yet"))
         return -1;
       }
 
@@ -940,14 +944,16 @@ namespace hookflash
 #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
       ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
 #endif
+      
       int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
       {
-        AutoRecursiveLock lock(mLock);
-        channel = mVoiceChannel;
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        if (mVoiceEngineReady)
+          channel = mVoiceChannel;
       }
-      
+
       if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
-        ZS_LOG_WARNING(Debug, log("voice channel is not valid"))
+        ZS_LOG_WARNING(Debug, log("voice channel is not ready yet"))
         return -1;
       }
       
@@ -996,14 +1002,16 @@ namespace hookflash
 #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
       ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
 #endif
+      
       int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
       {
-        AutoRecursiveLock lock(mLock);
-        channel = mVideoChannel;
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        if (mVideoEngineReady)
+          channel = mVideoChannel;
       }
       
       if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
-        ZS_LOG_WARNING(Debug, log("video channel is not valid"))
+        ZS_LOG_WARNING(Debug, log("video channel is not ready yet"))
         return -1;
       }
 
@@ -1022,14 +1030,16 @@ namespace hookflash
 #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
       ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
 #endif
+
       int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
       {
-        AutoRecursiveLock lock(mLock);
-        channel = mVideoChannel;
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        if (mVideoEngineReady)
+          channel = mVideoChannel;
       }
       
       if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
-        ZS_LOG_WARNING(Debug, log("video channel is not valid"))
+        ZS_LOG_WARNING(Debug, log("video channel is not ready yet"))
         return -1;
       }
 
@@ -1295,483 +1305,513 @@ namespace hookflash
     //-------------------------------------------------------------------------
     void MediaEngine::internalStartVoice()
     {
-      AutoRecursiveLock lock(mLock);
-      
-      ZS_LOG_DEBUG(log("start voice"))
-
-      mVoiceChannel = mVoiceBase->CreateChannel();
-      if (mVoiceCodec < 0) {
-        ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
-        return;
-      }
-      
+      {
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("start voice"))
+        
+        mVoiceChannel = mVoiceBase->CreateChannel();
+        if (mVoiceCodec < 0) {
+          ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+          return;
+        }
+        
 #ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-      mVoiceStatisticsTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
+        mVoiceStatisticsTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
 #endif
-      
+        
 #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-      if (NULL != mVoiceTransport) {
-        mError = mVoiceNetwork->RegisterExternalTransport(mVoiceChannel, *mVoiceTransport);
-        if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-          return;
-        }
-      } else {
-        ZS_LOG_ERROR(Detail, log("external voice transport is not set"))
-        return;
-      }
-#endif
-      webrtc::EcModes ecMode = getEcMode();
-      if (ecMode == webrtc::kEcUnchanged) {
-        ZS_LOG_ERROR(Detail, log("machine name is not supported"))
-        return;
-      }
-      mError = mVoiceAudioProcessing->SetEcStatus(mEcEnabled, ecMode);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      if (ecMode == webrtc::kEcAecm && mEcEnabled) {
-        mError = mVoiceAudioProcessing->SetAecmMode(webrtc::kAecmSpeakerphone);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-          return;
-        }
-      }
-      mError = mVoiceAudioProcessing->SetAgcStatus(mAgcEnabled, webrtc::kAgcAdaptiveDigital);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceAudioProcessing->SetNsStatus(mNsEnabled, webrtc::kNsLowSuppression);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceVolumeControl->SetInputMute(-1, false);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }      
-      mError = mVoiceHardware->SetLoudspeakerStatus(false);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      
-      webrtc::CodecInst cinst;
-      memset(&cinst, 0, sizeof(webrtc::CodecInst));
-      for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
-        mError = mVoiceCodec->GetCodec(idx, cinst);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-          return;
-        }
-        if (strcmp(cinst.plname, "ISAC") == 0) {
-          strcpy(cinst.plname, "ISAC");
-          cinst.pltype = 103;
-          cinst.rate = 32000;
-          cinst.pacsize = 480; // 30ms
-          cinst.plfreq = 16000;
-          cinst.channels = 1;
-          mError = mVoiceCodec->SetSendCodec(mVoiceChannel, cinst);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        if (NULL != mVoiceTransport) {
+          mError = mVoiceNetwork->RegisterExternalTransport(mVoiceChannel, *mVoiceTransport);
+          if (0 != mError) {
+            ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
             return;
           }
-          break;
-        }
-      }
-      
-      webrtc::CodecInst cfinst;
-      memset(&cfinst, 0, sizeof(webrtc::CodecInst));
-      for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
-        mError = mVoiceCodec->GetCodec(idx, cfinst);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        } else {
+          ZS_LOG_ERROR(Detail, log("external voice transport is not set"))
           return;
         }
-        if (strcmp(cfinst.plname, "VORBIS") == 0) {
-          strcpy(cfinst.plname, "VORBIS");
-          cfinst.pltype = 109;
-          cfinst.rate = 32000;
-          cfinst.pacsize = 480; // 30ms
-          cfinst.plfreq = 16000;
-          cfinst.channels = 1;
-          break;
-        }
-      }
-      
-#ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-      mVoiceBase->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
-      mVoiceBase->SetLocalReceiver(mVoiceChannel, 20010);
 #endif
-      
-      mError = mVoiceBase->StartSend(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVoiceBase->StartReceive(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceBase->StartPlayout(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      if (!mRecordFile.empty()) {
-        mError = mVoiceFile->StartRecordingCall(mRecordFile, &cfinst);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to start call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        webrtc::EcModes ecMode = getEcMode();
+        if (ecMode == webrtc::kEcUnchanged) {
+          ZS_LOG_ERROR(Detail, log("machine name is not supported"))
+          return;
         }
+        mError = mVoiceAudioProcessing->SetEcStatus(mEcEnabled, ecMode);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        if (ecMode == webrtc::kEcAecm && mEcEnabled) {
+          mError = mVoiceAudioProcessing->SetAecmMode(webrtc::kAecmSpeakerphone);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            return;
+          }
+        }
+        mError = mVoiceAudioProcessing->SetAgcStatus(mAgcEnabled, webrtc::kAgcAdaptiveDigital);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVoiceAudioProcessing->SetNsStatus(mNsEnabled, webrtc::kNsLowSuppression);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+
+        mError = mVoiceVolumeControl->SetInputMute(-1, false);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }      
+        mError = mVoiceHardware->SetLoudspeakerStatus(false);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        
+        webrtc::CodecInst cinst;
+        memset(&cinst, 0, sizeof(webrtc::CodecInst));
+        for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
+          mError = mVoiceCodec->GetCodec(idx, cinst);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            return;
+          }
+          if (strcmp(cinst.plname, "ISAC") == 0) {
+            strcpy(cinst.plname, "ISAC");
+            cinst.pltype = 103;
+            cinst.rate = 32000;
+            cinst.pacsize = 480; // 30ms
+            cinst.plfreq = 16000;
+            cinst.channels = 1;
+            mError = mVoiceCodec->SetSendCodec(mVoiceChannel, cinst);
+            if (mError != 0) {
+              ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+            break;
+          }
+        }
+        
+        webrtc::CodecInst cfinst;
+        memset(&cfinst, 0, sizeof(webrtc::CodecInst));
+        for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
+          mError = mVoiceCodec->GetCodec(idx, cfinst);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            return;
+          }
+          if (strcmp(cfinst.plname, "VORBIS") == 0) {
+            strcpy(cfinst.plname, "VORBIS");
+            cfinst.pltype = 109;
+            cfinst.rate = 32000;
+            cfinst.pacsize = 480; // 30ms
+            cfinst.plfreq = 16000;
+            cfinst.channels = 1;
+            break;
+          }
+        }
+        
+#ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
+        mVoiceBase->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
+        mVoiceBase->SetLocalReceiver(mVoiceChannel, 20010);
+#endif
+        
+        mError = mVoiceBase->StartSend(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVoiceBase->StartReceive(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVoiceBase->StartPlayout(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        if (!mRecordFile.empty()) {
+          mError = mVoiceFile->StartRecordingCall(mRecordFile, &cfinst);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to start call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          }
+        }
+      }
+      
+      {
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        mVoiceEngineReady = true;
       }
     }
     
     //-------------------------------------------------------------------------
     void MediaEngine::internalStopVoice()
     {
-      AutoRecursiveLock lock(mLock);
+      {
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        mVoiceEngineReady = false;
+      }
       
-      ZS_LOG_DEBUG(log("stop voice"))
-      
+      {
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("stop voice"))
+        
 #ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-      if (mVoiceStatisticsTimer) {
-        mVoiceStatisticsTimer->cancel();
-        mVoiceStatisticsTimer.reset();
-      }
-#endif
-      
-      mError = mVoiceBase->StopSend(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceBase->StopPlayout(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceBase->StopReceive(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      if (!mRecordFile.empty()) {
-        mError = mVoiceFile->StopRecordingCall();
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to stop call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        if (mVoiceStatisticsTimer) {
+          mVoiceStatisticsTimer->cancel();
+          mVoiceStatisticsTimer.reset();
         }
-        mRecordFile.erase();
+#endif
+        
+        mError = mVoiceBase->StopSend(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVoiceBase->StopPlayout(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVoiceBase->StopReceive(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        if (!mRecordFile.empty()) {
+          mError = mVoiceFile->StopRecordingCall();
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to stop call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          }
+          mRecordFile.erase();
+        }
+        mError = mVoiceNetwork->DeRegisterExternalTransport(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to deregister voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVoiceBase->DeleteChannel(mVoiceChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to delete voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
       }
-      mError = mVoiceNetwork->DeRegisterExternalTransport(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to deregister voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVoiceBase->DeleteChannel(mVoiceChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to delete voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
     }
     
     //-------------------------------------------------------------------------
     void MediaEngine::internalStartVideo(CameraTypes cameraType)
     {
-      AutoRecursiveLock lock(mLock);
-      
-      ZS_LOG_DEBUG(log("start video - camera type: ") + (cameraType == CameraType_Back ? "back" : "front"))
-      
-      mCameraType = cameraType;
-      
-      const unsigned int KMaxDeviceNameLength = 128;
-      const unsigned int KMaxUniqueIdLength = 256;
-      char deviceName[KMaxDeviceNameLength];
-      memset(deviceName, 0, KMaxDeviceNameLength);
-      char uniqueId[KMaxUniqueIdLength];
-      memset(uniqueId, 0, KMaxUniqueIdLength);
-      WebRtc_UWord32 captureIdx;
-      
-      if (cameraType == CameraType_Back)
       {
-        captureIdx = 0;
-      }
-      else if (cameraType == CameraType_Front)
-      {
-        captureIdx = 1;
-      }
-      else
-      {
-        ZS_LOG_ERROR(Detail, log("camera type is not set"))
-        return;
-      }
-      
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("start video - camera type: ") + (cameraType == CameraType_Back ? "back" : "front"))
+        
+        mCameraType = cameraType;
+        
+        const unsigned int KMaxDeviceNameLength = 128;
+        const unsigned int KMaxUniqueIdLength = 256;
+        char deviceName[KMaxDeviceNameLength];
+        memset(deviceName, 0, KMaxDeviceNameLength);
+        char uniqueId[KMaxUniqueIdLength];
+        memset(uniqueId, 0, KMaxUniqueIdLength);
+        WebRtc_UWord32 captureIdx;
+        
+        if (cameraType == CameraType_Back)
+        {
+          captureIdx = 0;
+        }
+        else if (cameraType == CameraType_Front)
+        {
+          captureIdx = 1;
+        }
+        else
+        {
+          ZS_LOG_ERROR(Detail, log("camera type is not set"))
+          return;
+        }
+        
 #ifdef _IPHONE_
-      IPhoneRenderView *captureView = (IPhoneRenderView*)mIPhoneCaptureRenderView;
-      IPhoneRenderView *channelView = (IPhoneRenderView*)mIPhoneChannelRenderView;
+        IPhoneRenderView *captureView = (IPhoneRenderView*)mIPhoneCaptureRenderView;
+        IPhoneRenderView *channelView = (IPhoneRenderView*)mIPhoneChannelRenderView;
 #else
-      void *captureView = mIPhoneCaptureRenderView;
-      void *channelView = mIPhoneChannelRenderView;
+        void *captureView = mIPhoneCaptureRenderView;
+        void *channelView = mIPhoneChannelRenderView;
 #endif
-      if (captureView == NULL) {
-        ZS_LOG_ERROR(Detail, log("capture view is not set"))
-        return;
-      }
-      if (channelView == NULL) {
-        ZS_LOG_ERROR(Detail, log("channel view is not set"))
-        return;
-      }
-      
-      webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
-      if (devInfo == NULL) {
-        ZS_LOG_ERROR(Detail, log("failed to create video capture device info"))
-        return;
-      }
-      
-      mError = devInfo->GetDeviceName(captureIdx, deviceName,
-                                      KMaxDeviceNameLength, uniqueId,
-                                      KMaxUniqueIdLength);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to get video device name"))
-        return;
-      }
-      
-      mVcpm = webrtc::VideoCaptureFactory::Create(1, uniqueId);
-      if (mVcpm == NULL) {
-        ZS_LOG_ERROR(Detail, log("failed to create video capture module"))
-        return;
-      }
-      
-      mError = mVideoCapture->AllocateCaptureDevice(*mVcpm, mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to allocate video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mVcpm->AddRef();
-      delete devInfo;
-      
-      webrtc::RotateCapturedFrame orientation;
-      mError = mVideoCapture->GetOrientation(NULL, orientation);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoCapture->StartCapture(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoBase->CreateChannel(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("could not create video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
+
+        if (captureView == NULL) {
+          ZS_LOG_ERROR(Detail, log("capture view is not set"))
+          return;
+        }
+        if (channelView == NULL) {
+          ZS_LOG_ERROR(Detail, log("channel view is not set"))
+          return;
+        }
+        
+        webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
+        if (devInfo == NULL) {
+          ZS_LOG_ERROR(Detail, log("failed to create video capture device info"))
+          return;
+        }
+        
+        mError = devInfo->GetDeviceName(captureIdx, deviceName,
+                                        KMaxDeviceNameLength, uniqueId,
+                                        KMaxUniqueIdLength);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to get video device name"))
+          return;
+        }
+        
+        mVcpm = webrtc::VideoCaptureFactory::Create(1, uniqueId);
+        if (mVcpm == NULL) {
+          ZS_LOG_ERROR(Detail, log("failed to create video capture module"))
+          return;
+        }
+        
+        mError = mVideoCapture->AllocateCaptureDevice(*mVcpm, mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to allocate video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mVcpm->AddRef();
+        delete devInfo;
+        
+        webrtc::RotateCapturedFrame orientation;
+        mError = mVideoCapture->GetOrientation(NULL, orientation);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoCapture->StartCapture(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoBase->CreateChannel(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("could not create video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
 #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-      if (NULL != mVideoTransport) {
-        mError = mVideoNetwork->RegisterSendTransport(mVideoChannel, *mVideoTransport);
-        if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
-      } else {
-        ZS_LOG_ERROR(Detail, log("external video transport is not set"))
-        return;
-      }
-#endif
-      
-      mError = mVideoNetwork->SetMTU(mVideoChannel, mMtu);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to set MTU for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoCapture->ConnectCaptureDevice(mCaptureId, mVideoChannel);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to connect capture device to video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoRtpRtcp->SetRTCPStatus(mVideoChannel, webrtc::kRtcpCompound_RFC4585);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to set video RTCP status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoRtpRtcp->SetKeyFrameRequestMethod(mVideoChannel,
-                                                       webrtc::kViEKeyFrameRequestPliRtcp);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to set key frame request method (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoRtpRtcp->SetTMMBRStatus(mVideoChannel, true);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to set temporary max media bit rate status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      OutputAudioRoute route;
-      mError = mVoiceHardware->GetOutputAudioRoute(route);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-        return;
-      }
-      if (route != webrtc::kOutputAudioRouteHeadphone)
-      {
-        mError = mVoiceHardware->SetLoudspeakerStatus(true);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-          return;
-        }
-      }
-      
-      mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
-                                         1.0F);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoRender->AddRenderer(mVideoChannel, channelView, 0, 0.0F, 0.0F, 1.0F,
-                                         1.0F);
-      if (0 != mError) {
-        ZS_LOG_ERROR(Detail, log("failed to add renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      webrtc::VideoCodec videoCodec;
-      memset(&videoCodec, 0, sizeof(VideoCodec));
-      for (int idx = 0; idx < mVideoCodec->NumberOfCodecs(); idx++) {
-        mError = mVideoCodec->GetCodec(idx, videoCodec);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
-        if (videoCodec.codecType == webrtc::kVideoCodecVP8) {
-          mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        if (NULL != mVideoTransport) {
+          mError = mVideoNetwork->RegisterSendTransport(mVideoChannel, *mVideoTransport);
+          if (0 != mError) {
+            ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          break;
+        } else {
+          ZS_LOG_ERROR(Detail, log("external video transport is not set"))
+          return;
+        }
+#endif
+        
+        mError = mVideoNetwork->SetMTU(mVideoChannel, mMtu);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to set MTU for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoCapture->ConnectCaptureDevice(mCaptureId, mVideoChannel);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to connect capture device to video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoRtpRtcp->SetRTCPStatus(mVideoChannel, webrtc::kRtcpCompound_RFC4585);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to set video RTCP status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoRtpRtcp->SetKeyFrameRequestMethod(mVideoChannel,
+                                                         webrtc::kViEKeyFrameRequestPliRtcp);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to set key frame request method (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoRtpRtcp->SetTMMBRStatus(mVideoChannel, true);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to set temporary max media bit rate status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        OutputAudioRoute route;
+        mError = mVoiceHardware->GetOutputAudioRoute(route);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          return;
+        }
+        if (route != webrtc::kOutputAudioRouteHeadphone)
+        {
+          mError = mVoiceHardware->SetLoudspeakerStatus(true);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            return;
+          }
+        }
+        
+        mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
+                                           1.0F);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoRender->AddRenderer(mVideoChannel, channelView, 0, 0.0F, 0.0F, 1.0F,
+                                           1.0F);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to add renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        webrtc::VideoCodec videoCodec;
+        memset(&videoCodec, 0, sizeof(VideoCodec));
+        for (int idx = 0; idx < mVideoCodec->NumberOfCodecs(); idx++) {
+          mError = mVideoCodec->GetCodec(idx, videoCodec);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          if (videoCodec.codecType == webrtc::kVideoCodecVP8) {
+            mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
+            if (mError != 0) {
+              ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+            break;
+          }
+        }
+        
+        mError = setVideoCaptureRotationAndCodecParameters();
+        if (mError != 0) {
+          return;
+        }
+        
+        mError = mVideoRender->StartRender(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+#ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
+        mError = mVideoNetwork->SetSendDestination(mVideoChannel, mReceiverAddress.c_str(), 20000);
+        mError = mVideoNetwork->SetLocalReceiver(mVideoChannel, 20000);
+#endif
+        
+        mError = mVideoBase->StartSend(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        mError = mVideoBase->StartReceive(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoRender->StartRender(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to start rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
         }
       }
       
-      mError = setVideoCaptureRotationAndCodecParameters();
-      if (mError != 0) {
-        return;
-      }
-      
-      mError = mVideoRender->StartRender(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-#ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-      mError = mVideoNetwork->SetSendDestination(mVideoChannel, mReceiverAddress.c_str(), 20000);
-      mError = mVideoNetwork->SetLocalReceiver(mVideoChannel, 20000);
-#endif
-      
-      mError = mVideoBase->StartSend(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      
-      mError = mVideoBase->StartReceive(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoRender->StartRender(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to start rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
+      {
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        mVideoEngineReady = true;
       }
     }
     
     //-------------------------------------------------------------------------
     void MediaEngine::internalStopVideo()
     {
-      AutoRecursiveLock lock(mLock);
-      
-      ZS_LOG_DEBUG(log("stop video"))
-      
-      mError = mVideoRender->StopRender(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoRender->RemoveRenderer(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoBase->StopSend(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoBase->StopReceive(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoRender->StopRender(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoRender->RemoveRenderer(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to remove renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoCapture->DisconnectCaptureDevice(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to disconnect capture device from video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoNetwork->DeregisterSendTransport(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoBase->DeleteChannel(mVideoChannel);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoCapture->StopCapture(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
-      }
-      mError = mVideoCapture->ReleaseCaptureDevice(mCaptureId);
-      if (mError != 0) {
-        ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-        return;
+      {
+        AutoRecursiveLock lock(mMediaEngineReadyLock);
+        mVideoEngineReady = false;
       }
       
-      if (mVcpm != NULL)
-        mVcpm->Release();
-      
-      mVcpm = NULL;
-      mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+      {
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("stop video"))
+        
+        mError = mVideoRender->StopRender(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoRender->RemoveRenderer(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoBase->StopSend(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoBase->StopReceive(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoRender->StopRender(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoRender->RemoveRenderer(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to remove renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoCapture->DisconnectCaptureDevice(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to disconnect capture device from video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoNetwork->DeregisterSendTransport(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoBase->DeleteChannel(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoCapture->StopCapture(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoCapture->ReleaseCaptureDevice(mCaptureId);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        if (mVcpm != NULL)
+          mVcpm->Release();
+        
+        mVcpm = NULL;
+        mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+      }
     }
 
     //-------------------------------------------------------------------------
@@ -2045,6 +2085,7 @@ namespace hookflash
         ZS_LOG_WARNING(Debug, log("RTP packet cannot be sent as no transport is not registered") + ", channel=" + Stringize<typeof(channel)>(channel).string() + ", length=" + Stringize<typeof(len)>(len).string())
         return 0;
       }
+
       return transport->SendPacket(channel, data, len);
     }
 
@@ -2060,6 +2101,7 @@ namespace hookflash
         ZS_LOG_WARNING(Debug, log("RTCP packet cannot be sent as no transport is not registered") + ", channel=" + Stringize<typeof(channel)>(channel).string() + ", length=" + Stringize<typeof(len)>(len).string())
         return 0;
       }
+
       return transport->SendRTCPPacket(channel, data, len);
     }
 

@@ -60,6 +60,12 @@
 		001E528A1625D16A005FFD8C /* hookflash_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 001E52871625D16A005FFD8C /* hookflash_Helper.cpp */; };
 		0032A56F1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
 		0032A5701555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
+		00393E79165D374F0009527F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E76165D374F0009527F /* hookflashTypes.h */; };
+		00393E7A165D374F0009527F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E76165D374F0009527F /* hookflashTypes.h */; };
+		00393E7B165D374F0009527F /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E77165D374F0009527F /* IAccount.h */; };
+		00393E7C165D374F0009527F /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E77165D374F0009527F /* IAccount.h */; };
+		00393E7D165D374F0009527F /* provisioning.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E78165D374F0009527F /* provisioning.h */; };
+		00393E7E165D374F0009527F /* provisioning.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E78165D374F0009527F /* provisioning.h */; };
 		00403ABF15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */; };
 		00403AC015D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */; };
 		00403AC715D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403AC615D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp */; };
@@ -246,6 +252,9 @@
 		001E52871625D16A005FFD8C /* hookflash_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Helper.cpp; sourceTree = "<group>"; };
 		0032A5451555AEB500F89F96 /* hookflash_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
 		0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
+		00393E76165D374F0009527F /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning2/hookflashTypes.h; sourceTree = "<group>"; };
+		00393E77165D374F0009527F /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/provisioning2/IAccount.h; sourceTree = "<group>"; };
+		00393E78165D374F0009527F /* provisioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = provisioning.h; path = ../../../hookflash/provisioning2/provisioning.h; sourceTree = "<group>"; };
 		00403AB615D5BC77007EB944 /* provisioning_provisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = provisioning_provisioning.h; sourceTree = "<group>"; };
 		00403ABC15D5C330007EB944 /* provisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning.h; path = ../../../hookflash/provisioning/provisioning.h; sourceTree = "<group>"; };
 		00403ABD15D5C415007EB944 /* MessageFactoryProvisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MessageFactoryProvisioning.h; path = ../../../hookflash/provisioning/message/MessageFactoryProvisioning.h; sourceTree = "<group>"; };
@@ -403,6 +412,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00393E74165D37090009527F /* provisioning2 */ = {
+			isa = PBXGroup;
+			children = (
+				00393E76165D374F0009527F /* hookflashTypes.h */,
+				00393E77165D374F0009527F /* IAccount.h */,
+				00393E78165D374F0009527F /* provisioning.h */,
+			);
+			name = provisioning2;
+			sourceTree = "<group>";
+		};
 		00BF50B713FCF664002E9EB5 = {
 			isa = PBXGroup;
 			children = (
@@ -428,6 +447,7 @@
 				00BF50CC13FCF6FE002E9EB5 /* cpp */,
 				00BF50E913FCF6FE002E9EB5 /* internal */,
 				00BF555213FDB4A2002E9EB5 /* provisioning */,
+				00393E74165D37090009527F /* provisioning2 */,
 				00BF50DC13FCF6FE002E9EB5 /* hookflash.h */,
 				00BF50DD13FCF6FE002E9EB5 /* hookflashTypes.h */,
 				00BF50DE13FCF6FE002E9EB5 /* IAccount.h */,
@@ -757,6 +777,9 @@
 				00F3CD3A14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */,
 				AD7F3C8E15C1451D001DEE46 /* hookflashTypes.h in Headers */,
 				AD35A5C315C6B45500DD297F /* hookflashTypes.h in Headers */,
+				00393E79165D374F0009527F /* hookflashTypes.h in Headers */,
+				00393E7B165D374F0009527F /* IAccount.h in Headers */,
+				00393E7D165D374F0009527F /* provisioning.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +805,9 @@
 				00F3CD3714BC068F00EEDCF0 /* hookflash_Account.h in Headers */,
 				00F3CD3B14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */,
 				AD7F3C8F15C1451D001DEE46 /* hookflashTypes.h in Headers */,
+				00393E7A165D374F0009527F /* hookflashTypes.h in Headers */,
+				00393E7C165D374F0009527F /* IAccount.h in Headers */,
+				00393E7E165D374F0009527F /* provisioning.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,7 +1,0 @@
-*.sdf
-*.suo
-*.vcxproj.user
-/Debug
-/build/Debug
-/src/video_engine/trace.txt
-/src/voice_engine/ve_win_test.txt

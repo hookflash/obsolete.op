@@ -403,6 +403,7 @@ namespace hookflash
       VoiceVolumeControl *mVoiceVolumeControl;
       VoiceHardware *mVoiceHardware;
       VoiceFile *mVoiceFile;
+      bool mVoiceEngineReady;
 
       int mVideoChannel;
       Transport *mVideoTransport;
@@ -418,6 +419,7 @@ namespace hookflash
       VideoCodec *mVideoCodec;
       void *mIPhoneCaptureRenderView;
       void *mIPhoneChannelRenderView;
+      bool mVideoEngineReady;
 
       RedirectTransport mRedirectVoiceTransport;
       RedirectTransport mRedirectVideoTransport;
@@ -433,6 +435,8 @@ namespace hookflash
 
       bool mLifetimeInProgress;
       CameraTypes mLifetimeWantCameraType;
+
+      mutable RecursiveLock mMediaEngineReadyLock;
 
     private:
       TimerPtr mVoiceStatisticsTimer;

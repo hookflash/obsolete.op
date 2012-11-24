@@ -29,9 +29,7 @@
  
  */
 
-#include <hookflash/provisioning/internal/provisioning_provisioning.h>
-#include <zsLib/Log.h>
+#pragma once
 
-#include <hookflash/provisioning2/provisioning.h>
-
-namespace hookflash { namespace provisioning { ZS_IMPLEMENT_SUBSYSTEM(hookflash_provisioning) } }
+#include <hookflash/provisioning2/hookflashTypes.h>
+#include <hookflash/provisioning2/IAccount.h>

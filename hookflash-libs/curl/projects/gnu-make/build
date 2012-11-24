@@ -73,7 +73,8 @@ build_darwin(){
 	cd $BASEDIR/../../curl
 		cp include/curl/curlbuild.h.template include/curl/curlbuild.h
 		cat Makefile.template > Makefile; validate_before
-        CFLAGS="-m32" ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn --enable-static=yes --enable-shared=no ; validate_before
+        #CFLAGS="-m32" ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn --enable-static=yes --enable-shared=no ; validate_before
+        CFLAGS="-m32" ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-zlib --without-libidn --enable-static=yes --enable-shared=no ; validate_before
         make; validate_before
 		make install prefix=$STAGING_PREFIX; validate_before
 		rm Makefile
@@ -123,7 +124,8 @@ build_ios(){
 	mkdir -p $STAGING_PREFIX/iPhoneOS
 	cat $BASEDIR/../../curl/Makefile.template > $BASEDIR/../../curl/Makefile
 
-	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS --without-ssl --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
+	#./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS --without-ssl --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
+	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
 	
 	pushd "lib"
 	make; validate_before
@@ -161,7 +163,8 @@ build_linux(){
 	cd $BASEDIR/../../curl
 		cp include/curl/curlbuild.h.template include/curl/curlbuild.h
         cat Makefile.template > Makefile; validate_before
-        ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn ; validate_before
+        #./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn ; validate_before
+        ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-zlib --without-libidn ; validate_before
         make ; validate_before
         make install prefix=$STAGING_PREFIX; validate_before
 		rm Makefile

@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="Windows-1252"?>
-<VisualStudioToolFile Name="libjpeg" Version="8.00">
-  <Rules>
-    <CustomBuildRule AdditionalDependencies="..\yasm\binaries\win\yasm.exe" CommandLine="call &quot;$(ProjectDir)..\..\third_party\cygwin\setup_env.bat&quot; &amp;&amp; set CYGWIN=nontsec&amp;&amp; set OUTDIR=$(OutDir)&amp;&amp; set INPUTPATH=$(InputPath) &amp;&amp; bash -c &quot;\&quot;../yasm/binaries/win/yasm.exe\&quot; \&quot;-fwin32\&quot; \&quot;-DWIN32\&quot; \&quot;-DMSVC\&quot; \&quot;-Iwin/\&quot; \&quot;-DRGBX_FILLER_0XFF\&quot; \&quot;-DSTRICT_MEMORY_ACCESS\&quot; \&quot;-Isimd/\&quot; \&quot;-o\&quot; \&quot;`cygpath -m \&quot;${OUTDIR}\&quot;`/obj/global_intermediate/third_party/libjpeg_turbo/$(InputName).obj\&quot; \&quot;`cygpath -m \&quot;${INPUTPATH}\&quot;`\&quot;&quot;" ExecutionDescription="Building $(InputName).obj" FileExtensions="asm" Name="assemble" Outputs="$(OutDir)\obj\global_intermediate\third_party\libjpeg_turbo\$(InputName).obj"/>
-  </Rules>
-</VisualStudioToolFile>
