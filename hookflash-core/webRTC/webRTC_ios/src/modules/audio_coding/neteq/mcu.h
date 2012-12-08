@@ -34,6 +34,7 @@ enum TsScaling
 {
     kTSnoScaling = 0,
     kTSscalingTwo,
+    kTSscalingOneThird,
     kTSscalingTwoThirds,
     kTSscalingFourThirds
 };

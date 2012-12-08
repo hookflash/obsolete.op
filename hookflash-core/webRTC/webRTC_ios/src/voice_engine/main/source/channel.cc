@@ -5883,7 +5883,25 @@ Channel::EncodeAndSend()
         return -1;
     }
 
-    _timeStamp += _audioFrame._payloadDataLengthInSamples;
+    CodecInst sendCodec;
+    _audioCodingModule.SendCodec(sendCodec);
+    if (_audioCodingModule.SendCodec(sendCodec) == -1)
+    {
+        _engineStatisticsPtr->SetLastError(
+            VE_CODEC_ERROR, kTraceError,
+            "EncodeAndSend() failed to retrieve send codec");
+        return -1;
+    }
+    if (STR_CASE_CMP(sendCodec.plname, "OPUS") == 0)
+    {
+        // Timestamp is always calculated as 48kHz sampling rate for OPUS codec,
+        // so 16kHz data length should be multiplied with 3.
+        _timeStamp += _audioFrame._payloadDataLengthInSamples * 3;
+    }
+    else
+    {
+        _timeStamp += _audioFrame._payloadDataLengthInSamples;
+    }
 
     // --- Encode if complete frame is ready
 

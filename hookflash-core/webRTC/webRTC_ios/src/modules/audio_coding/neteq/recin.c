@@ -369,6 +369,12 @@ int WebRtcNetEQ_GetTimestampScaling(MCUInst_t *MCU_inst, int rtpPayloadType)
             MCU_inst->scalingFactor = kTSscalingTwo;
             break;
         }
+        case kDecoderOPUS:
+        {
+            /* Use timestamp scaling with factor 1/3 (16kHz OPUS codec) */
+            MCU_inst->scalingFactor = kTSscalingOneThird;
+            break;
+        }
         case kDecoderAVT:
         case kDecoderCNG:
         {
@@ -400,6 +406,12 @@ WebRtc_UWord32 WebRtcNetEQ_ScaleTimestampExternalToInternal(const MCUInst_t *MCU
         {
             /* multiply with 2 */
             timestampDiff = WEBRTC_SPL_LSHIFT_W32(timestampDiff, 1);
+            break;
+        }
+        case kTSscalingOneThird:
+        {
+            /* multiply with 1/3 */
+            timestampDiff = WebRtcSpl_DivW32W16(timestampDiff, 3);
             break;
         }
         case kTSscalingTwoThirds:
@@ -443,6 +455,12 @@ WebRtc_UWord32 WebRtcNetEQ_ScaleTimestampInternalToExternal(const MCUInst_t *MCU
         {
             /* divide by 2 */
             timestampDiff = WEBRTC_SPL_RSHIFT_W32(timestampDiff, 1);
+            break;
+        }
+        case kTSscalingOneThird:
+        {
+            /* multiply with 3/2 */
+            timestampDiff = WEBRTC_SPL_MUL_32_16(timestampDiff, 3);
             break;
         }
         case kTSscalingTwoThirds:

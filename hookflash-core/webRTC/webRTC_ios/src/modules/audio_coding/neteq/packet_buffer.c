@@ -678,6 +678,11 @@ int WebRtcNetEQ_GetDefaultCodecSettings(const enum WebRtcNetEQDecoder *codecID,
             codecBytes = 1250; /* 210ms @ 50kbps */
             codecBuffers = 10;
         }
+        else if (codecID[i] == kDecoderOPUS)
+        {
+            codecBytes = 525; /* 240ms @ 20kbps */
+            codecBuffers = 10;
+        }
         else if (codecID[i] == kDecoderVORBIS)
         {
           codecBytes = 1250; /* 210ms @ 50kbps */

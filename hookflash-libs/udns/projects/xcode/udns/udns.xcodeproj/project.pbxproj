@@ -411,7 +411,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = udns_ios;
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -431,7 +431,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = udns_ios;
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

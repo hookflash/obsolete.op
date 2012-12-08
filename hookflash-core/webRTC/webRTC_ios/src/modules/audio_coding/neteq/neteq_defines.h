@@ -255,6 +255,7 @@
     #define NETEQ_G722_1_CODEC
     #define NETEQ_G729_1_CODEC
     #define NETEQ_SPEEX_CODEC
+    #define NETEQ_OPUS_CODEC
     #define NETEQ_AMRWB_CODEC
     #define NETEQ_WIDEBAND
 #endif
@@ -291,6 +292,7 @@
     #define NETEQ_AMRWB_CODEC
     #define NETEQ_SPEEX_CODEC
     #define NETEQ_VORBIS_CODEC
+    #define NETEQ_OPUS_CODEC
 
     /* Super wideband 32kHz codecs */
     #define NETEQ_ISAC_SWB_CODEC
@@ -324,6 +326,7 @@
     #define NETEQ_G722_1_CODEC
     #define NETEQ_G729_1_CODEC
     #define NETEQ_SPEEX_CODEC
+    #define NETEQ_OPUS_CODEC
     #define NETEQ_AMRWB_CODEC
 
     /* Super wideband 32kHz codecs */

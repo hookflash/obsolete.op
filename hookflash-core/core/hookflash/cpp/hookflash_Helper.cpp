@@ -308,7 +308,7 @@ namespace hookflash
 
       if (inPhoneNumber.isEmpty()) return false;
 
-      // .............. vvvv TODO: PREDRAG REPLACE THIS vvvv ..................
+      // .............. vvvv TODO: REPLACE THIS vvvv ..................
       outNormalizedPhoneNumber = inPhoneNumber;
 
       //strip string from any of these characters " ,.-():"
@@ -347,7 +347,7 @@ namespace hookflash
       outNormalizedPhoneNumber.insert((std::string::size_type) 0, "+");
       
       return phoneNumberIsValid;
-      // .............. ^^^^ TODO: PREDRAG REPLACE THIS ^^^^ ..................
+      // .............. ^^^^ TODO: REPLACE THIS ^^^^ ..................
     }
 
     //-------------------------------------------------------------------------

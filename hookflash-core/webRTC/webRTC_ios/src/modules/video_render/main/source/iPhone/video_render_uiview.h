@@ -25,8 +25,6 @@
 #include	"video_render_defines.h"
 
 #import		"tick_util.h"
-#import		"iphone_render_view.h"
-#import		"iphone_full_screen_window.h"
 
 class Trace;
 
@@ -75,7 +73,6 @@ public:
 
 private:
 
-    IPhoneRenderView * _renderView;  
     UIView* _nsglContext;
     int _id;
     VideoRenderUIView* _owner;
@@ -108,7 +105,7 @@ class VideoRenderUIView
 {
 
 public: // methods
-    VideoRenderUIView(IPhoneRenderView *windowRef, bool fullScreen, int iId);
+    VideoRenderUIView(UIImageView *windowRef, bool fullScreen, int iId);
     ~VideoRenderUIView();
 
     static int GetOpenGLVersion(int& nsglMajor, int& nsglMinor);
@@ -120,7 +117,6 @@ public: // methods
     int DeleteNSGLChannel(int channel);
     int DeleteAllNSGLChannels();
     int StopThread();
-    bool IsFullScreen();
     bool HasChannels();
     bool HasChannel(int channel);
     int GetChannels(std::list<int>& channelList);
@@ -128,7 +124,7 @@ public: // methods
     void UnlockAGLCntx();
 
     // ********** new module functions ************ //
-    int ChangeWindow(IPhoneRenderView* newWindowRef);
+    int ChangeWindow(UIImageView* newWindowRef);
     WebRtc_Word32 ChangeUniqueID(WebRtc_Word32 id);
     WebRtc_Word32 StartRender();
     WebRtc_Word32 StopRender();
@@ -155,7 +151,7 @@ public: // methods
     int configureNSOpenGLView();
     int setRenderTargetWindow();
     int setRenderTargetFullScreen();
-    IPhoneRenderView *getWindowReference (){return _windowRef;};
+    UIImageView *getWindowReference (){return _windowRef;};
 
 protected: // methods
     static bool ScreenUpdateThreadProc(void* obj);
@@ -171,15 +167,13 @@ private: // methods
 private: // variables
 
 
-    IPhoneRenderView* _windowRef;
-    bool _fullScreen;
+    UIImageView* _windowRef;
     int _id;
     CriticalSectionWrapper& _nsglContextCritSec;
     ThreadWrapper* _screenUpdateThread;
     EventWrapper* _screenUpdateEvent;
     UIView* _nsglContext;
     UIView* _nsglFullScreenContext;
-    IPhoneFullScreenWindow* _fullScreenWindow;
     Rect _windowRect; // The size of the window
     int _windowWidth;
     int _windowHeight;

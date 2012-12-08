@@ -56,8 +56,6 @@
 		000265B615E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */; };
 		000265B715E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */; };
 		001648B414137F4B00AFEDD3 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 001648B314137F4B00AFEDD3 /* hookflashTypes.h */; };
-		001E52891625D16A005FFD8C /* hookflash_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 001E52871625D16A005FFD8C /* hookflash_Helper.cpp */; };
-		001E528A1625D16A005FFD8C /* hookflash_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 001E52871625D16A005FFD8C /* hookflash_Helper.cpp */; };
 		0032A56F1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
 		0032A5701555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
 		00393E79165D374F0009527F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E76165D374F0009527F /* hookflashTypes.h */; };
@@ -148,6 +146,7 @@
 		AD7F3C8E15C1451D001DEE46 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */; };
 		AD7F3C8F15C1451D001DEE46 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */; };
 		ADE07B1C15C9138D0003897E /* provisioning_message_messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADE07B1B15C9138D0003897E /* provisioning_message_messages.cpp */; };
+		E2C052641668E84C00C2F319 /* hookflash_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */; };
 		E2DD817E141A639D006D89BE /* hookflash_Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50CF13FCF6FE002E9EB5 /* hookflash_Client.cpp */; };
 		E2DD817F141A639D006D89BE /* hookflash_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D013FCF6FE002E9EB5 /* hookflash_ConversationThread.cpp */; };
 		E2DD8182141A639D006D89BE /* hookflash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D313FCF6FE002E9EB5 /* hookflash.cpp */; };
@@ -247,9 +246,7 @@
 		000265BA15E154EC00E96EE4 /* PasswordGetPart2Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart2Request.h; path = ../../../hookflash/provisioning/message/PasswordGetPart2Request.h; sourceTree = "<group>"; };
 		000265BB15E1550800E96EE4 /* PasswordGetPart2Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart2Result.h; path = ../../../hookflash/provisioning/message/PasswordGetPart2Result.h; sourceTree = "<group>"; };
 		001648B314137F4B00AFEDD3 /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning/hookflashTypes.h; sourceTree = "<group>"; };
-		001E52841625CF2F005FFD8C /* IHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IHelper.h; path = ../../../hookflash/IHelper.h; sourceTree = "<group>"; };
 		001E52861625D122005FFD8C /* hookflash_Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_Helper.h; sourceTree = "<group>"; };
-		001E52871625D16A005FFD8C /* hookflash_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Helper.cpp; sourceTree = "<group>"; };
 		0032A5451555AEB500F89F96 /* hookflash_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
 		0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
 		00393E76165D374F0009527F /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning2/hookflashTypes.h; sourceTree = "<group>"; };
@@ -391,6 +388,8 @@
 		E288B1991419F49000222C2A /* libwebrtc_video_coding.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_video_coding.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B19A1419F49000222C2A /* libwebrtc_vp8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_vp8.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B19B1419F49000222C2A /* libwebrtc_vplib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_vplib.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2C052611668E83000C2F319 /* IHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IHelper.h; path = ../../../hookflash/IHelper.h; sourceTree = "<group>"; };
+		E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Helper.cpp; sourceTree = "<group>"; };
 		E2DD8208141A639D006D89BE /* libhfcore_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -455,10 +454,10 @@
 				00BF50E113FCF6FE002E9EB5 /* IClient.h */,
 				00BF50E213FCF6FE002E9EB5 /* IContact.h */,
 				00BF50E313FCF6FE002E9EB5 /* IConversationThread.h */,
+				E2C052611668E83000C2F319 /* IHelper.h */,
 				E257045F161906E900F3A6F1 /* IMediaEngine.h */,
 				00BF50FF13FCF6FE002E9EB5 /* IStack.h */,
 				00AD958516012500002ABECE /* IXML.h */,
-				001E52841625CF2F005FFD8C /* IHelper.h */,
 			);
 			name = hookflash;
 			sourceTree = "<group>";
@@ -476,11 +475,11 @@
 				00E1D01115501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp */,
 				00E1D03C155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp */,
 				0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */,
+				E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */,
 				0077386515515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp */,
 				00473329141DC110006B8B20 /* hookflash_MediaEngine.cpp */,
 				00BF50D913FCF6FE002E9EB5 /* hookflash_Stack.cpp */,
 				00AD958716012842002ABECE /* hookflash_XML.cpp */,
-				001E52871625D16A005FFD8C /* hookflash_Helper.cpp */,
 			);
 			name = cpp;
 			path = ../../../hookflash/cpp;
@@ -932,7 +931,6 @@
 				00DA670515E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */,
 				00DA670815E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */,
 				00AD958816012842002ABECE /* hookflash_XML.cpp in Sources */,
-				001E52891625D16A005FFD8C /* hookflash_Helper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -996,7 +994,7 @@
 				00DA670615E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */,
 				00DA670915E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */,
 				00AD958916012842002ABECE /* hookflash_XML.cpp in Sources */,
-				001E528A1625D16A005FFD8C /* hookflash_Helper.cpp in Sources */,
+				E2C052641668E84C00C2F319 /* hookflash_Helper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

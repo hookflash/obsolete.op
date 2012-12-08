@@ -59,6 +59,7 @@ enum WebRtcNetEQDecoder
     kDecoderSPEEX_8,
     kDecoderSPEEX_16,
     kDecoderVORBIS,
+    kDecoderOPUS,
     kDecoderCELT_32,
     kDecoderGSMFR,
     kDecoderAMR,

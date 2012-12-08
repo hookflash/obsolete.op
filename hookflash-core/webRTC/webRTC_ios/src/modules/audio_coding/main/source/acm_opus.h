@@ -14,8 +14,8 @@
 #include "acm_generic_codec.h"
 
 // forward declaration
-struct OPUS_inst_t_;
-struct OPUS_inst_t_;
+struct OPUS_encinst_t_;
+struct OPUS_decinst_t_;
 
 namespace webrtc
 {
@@ -68,8 +68,8 @@ protected:
     WebRtc_Word16 SetBitRateSafe(
         const WebRtc_Word32 rate);
 
-    OPUS_inst_t_* _encoderInstPtr;
-    OPUS_inst_t_* _decoderInstPtr;
+    OPUS_encinst_t_* _encoderInstPtr;
+    OPUS_decinst_t_* _decoderInstPtr;
 
     WebRtc_UWord16    _mySampFreq;
     WebRtc_UWord16    _myRate;

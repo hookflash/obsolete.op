@@ -37,6 +37,7 @@
 #define WEBRTC_CODEC_AVT
 #ifdef MAC_IPHONE
 #define WEBRTC_CODEC_VORBIS
+#define WEBRTC_CODEC_OPUS
 #endif
 
 #ifndef WEBRTC_CHROMIUM_BUILD

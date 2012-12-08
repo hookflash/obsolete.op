@@ -610,6 +610,13 @@
 			remoteGlobalIDString = E2C05CA615921FB900CF213C;
 			remoteInfo = vorbis_ios;
 		};
+		E2C572531663F06800714A94 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E234D60F1561377200978808 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E26B79E8165A7FCE003EF625;
+			remoteInfo = opus_ios;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -672,6 +679,7 @@
 				E234D63D1561377300978808 /* libiLBC_ios.a */,
 				E234D63F1561377300978808 /* libPCM16B_ios.a */,
 				E2AE73CE15B4293700809192 /* libvorbis_ios.a */,
+				E2C572541663F06800714A94 /* libopus_ios.a */,
 				E234D6411561377300978808 /* libaudio_coding_module_ios.a */,
 				E234D6431561377300978808 /* libNetEq_ios.a */,
 				E234D6451561377300978808 /* libaudio_conference_mixer_ios.a */,
@@ -1070,6 +1078,13 @@
 			fileType = archive.ar;
 			path = libvorbis_ios.a;
 			remoteRef = E2AE73CD15B4293700809192 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E2C572541663F06800714A94 /* libopus_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopus_ios.a;
+			remoteRef = E2C572531663F06800714A94 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

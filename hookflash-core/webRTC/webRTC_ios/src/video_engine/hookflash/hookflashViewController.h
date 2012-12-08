@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "iphone_render_view.h"
 
-@interface hookflashViewController : UIViewController <VideoRendererDelegate> 
+@interface hookflashViewController : UIViewController
 {
     IBOutlet UIButton* _btnStartTest1;
     IBOutlet UIButton* _btnStartTest2;

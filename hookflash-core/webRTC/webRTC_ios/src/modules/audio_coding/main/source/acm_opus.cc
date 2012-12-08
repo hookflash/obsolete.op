@@ -18,7 +18,7 @@
 #ifdef WEBRTC_CODEC_OPUS
     // NOTE! Opus is not included in the open-source package. Modify this file or your codec
     // API to match the function call and name of used Opus API file.
-    // #include "opus_interface.h"
+    #include "opus_interface.h"
 #endif
 
 namespace webrtc
@@ -150,23 +150,23 @@ ACMOPUS::SetBitRateSafe(
 #else     //===================== Actual Implementation =======================
 
 // Remove when integrating a real Opus wrapper
-extern WebRtc_Word16 WebRtcOpus_CreateEnc(OPUS_inst_t_** inst, WebRtc_Word16 samplFreq);
-extern WebRtc_Word16 WebRtcOpus_CreateDec(OPUS_inst_t_** inst, WebRtc_Word16 samplFreq);
-extern WebRtc_Word16 WebRtcOpus_FreeEnc(OPUS_inst_t_* inst);
-extern WebRtc_Word16 WebRtcOpus_FreeDec(OPUS_inst_t_* inst);
-extern WebRtc_Word16 WebRtcOpus_Encode(OPUS_inst_t_* encInst,
-                                       WebRtc_Word16* input,
-                                       WebRtc_Word16* output,
-                                       WebRtc_Word16 len,
-                                       WebRtc_Word16 byteLen);
-extern WebRtc_Word16 WebRtcOpus_EncoderInit(OPUS_inst_t_* encInst,
-                                            WebRtc_Word16 samplFreq,
-                                            WebRtc_Word16 mode,
-                                            WebRtc_Word16 vbrFlag);
-extern WebRtc_Word16 WebRtcOpus_Decode(OPUS_inst_t_* decInst);
-extern WebRtc_Word16 WebRtcOpus_DecodeBwe(OPUS_inst_t_* decInst, WebRtc_Word16* input);
-extern WebRtc_Word16 WebRtcOpus_DecodePlc(OPUS_inst_t_* decInst);
-extern WebRtc_Word16 WebRtcOpus_DecoderInit(OPUS_inst_t_* decInst);
+//extern WebRtc_Word16 WebRtcOpus_CreateEnc(OPUS_encinst_t_** inst, WebRtc_Word16 samplFreq);
+//extern WebRtc_Word16 WebRtcOpus_CreateDec(OPUS_decinst_t_** inst, WebRtc_Word16 samplFreq);
+//extern WebRtc_Word16 WebRtcOpus_FreeEnc(OPUS_encinst_t_* inst);
+//extern WebRtc_Word16 WebRtcOpus_FreeDec(OPUS_decinst_t_* inst);
+//extern WebRtc_Word16 WebRtcOpus_Encode(OPUS_encinst_t_* encInst,
+//                                       WebRtc_Word16* input,
+//                                       WebRtc_Word16* output,
+//                                       WebRtc_Word16 len,
+//                                       WebRtc_Word16 byteLen);
+//extern WebRtc_Word16 WebRtcOpus_EncoderInit(OPUS_encinst_t_* encInst,
+//                                            WebRtc_Word16 samplFreq,
+//                                            WebRtc_Word16 mode,
+//                                            WebRtc_Word16 vbrFlag);
+//extern WebRtc_Word16 WebRtcOpus_Decode(OPUS_decinst_t_* decInst);
+//extern WebRtc_Word16 WebRtcOpus_DecodeBwe(OPUS_decinst_t_* decInst, WebRtc_Word16* input);
+//extern WebRtc_Word16 WebRtcOpus_DecodePlc(OPUS_decinst_t_* decInst);
+//extern WebRtc_Word16 WebRtcOpus_DecoderInit(OPUS_decinst_t_* decInst);
 
 ACMOPUS::ACMOPUS(WebRtc_Word16 codecID)
     : _encoderInstPtr(NULL),
@@ -204,8 +204,8 @@ ACMOPUS::InternalEncode(
     WebRtc_UWord8* bitStream,
     WebRtc_Word16* bitStreamLenByte)
 {
-    WebRtc_Word16 noEncodedSamples = 0;
-    WebRtc_Word16 tmpLenByte = 0;
+    //WebRtc_Word16 noEncodedSamples = 0;
+    //WebRtc_Word16 tmpLenByte = 0;
     *bitStreamLenByte = 0;
 
     WebRtc_Word16 byteLengthFrame = 0;
@@ -288,7 +288,7 @@ ACMOPUS::CodecDef(
     // "SET_CODEC_PAR" & "SET_G729_FUNCTION."
     // Then call NetEQ to add the codec to it's
     // database.
-    SET_CODEC_PAR((codecDef), kDecoderOpus, codecInst.pltype,
+    SET_CODEC_PAR((codecDef), kDecoderOPUS, codecInst.pltype,
         _decoderInstPtr, 16000);
     SET_OPUS_FUNCTIONS((codecDef));
     return 0;
@@ -360,7 +360,7 @@ ACMOPUS::InternalDestructEncoderInst(
 {
     if(ptrInst != NULL)
     {
-        WebRtcOpus_FreeEnc((OPUS_inst_t*)ptrInst);
+        WebRtcOpus_FreeEnc((OPUS_encinst_t_*)ptrInst);
     }
     return;
 }
@@ -381,7 +381,7 @@ the stored payload type",
             _decoderParams.codecInstant.pltype);
         return -1;
     }
-    return netEq->RemoveCodec(kDecoderOpus);
+    return netEq->RemoveCodec(kDecoderOPUS);
 }
 
 WebRtc_Word16

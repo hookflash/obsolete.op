@@ -94,6 +94,10 @@
     #include "acm_vorbis.h"
     #include "vorbis_interface.h"
 #endif
+#ifdef WEBRTC_CODEC_OPUS
+    #include "acm_opus.h"
+    #include "opus_interface.h"
+#endif
 #ifdef WEBRTC_CODEC_AVT
     #include "acm_dtmf_playout.h"
 #endif
@@ -121,7 +125,8 @@ const int kDynamicPayloadtypes[ACMCodecDB::kMaxNumCodecs] = {
      defined(WEBRTC_CODEC_AMR) || defined(WEBRTC_CODEC_AMRWB) || \
      defined(WEBRTC_CODEC_CELT) || defined(WEBRTC_CODEC_G729_1) || \
      defined(WEBRTC_CODEC_SPEEX) || defined(WEBRTC_CODEC_VORBIS) || \
-     defined(WEBRTC_CODEC_G722_1) || defined(WEBRTC_CODEC_G722_1C))
+     defined(WEBRTC_CODEC_OPUS) || defined(WEBRTC_CODEC_G722_1) || \
+     defined(WEBRTC_CODEC_G722_1C))
 static int count_database = 0;
 #endif
 
@@ -180,6 +185,9 @@ const CodecInst ACMCodecDB::database_[] = {
 #endif
 #ifdef WEBRTC_CODEC_VORBIS
   {kDynamicPayloadtypes[count_database++], "VORBIS", 16000, 480, 1, 32000},
+#endif
+#ifdef WEBRTC_CODEC_OPUS
+  {kDynamicPayloadtypes[count_database++], "OPUS", 16000, 320, 1, 20000},
 #endif
   // Comfort noise for three different sampling frequencies.
   {13, "CN", 8000, 240, 1, 0},
@@ -255,6 +263,9 @@ const ACMCodecDB::CodecSettings ACMCodecDB::codec_settings_[] = {
 #ifdef WEBRTC_CODEC_VORBIS
   {1, {480}, 0, 1},
 #endif
+#ifdef WEBRTC_CODEC_OPUS
+  {1, {320}, 0, 1},
+#endif
   // Comfort noise for three different sampling frequencies.
   {1, {240}, 240, 1},
   {1, {480}, 480, 1},
@@ -325,6 +336,9 @@ const WebRtcNetEQDecoder ACMCodecDB::neteq_decoders_[] = {
 #endif
 #ifdef WEBRTC_CODEC_VORBIS
   kDecoderVORBIS,
+#endif
+#ifdef WEBRTC_CODEC_OPUS
+  kDecoderOPUS,
 #endif
   // Comfort noise for three different sampling frequencies.
   kDecoderCNG,
@@ -505,6 +519,12 @@ int ACMCodecDB::CodecNumber(const CodecInst* codec_inst, int* mirror_id) {
   } else if (STR_CASE_CMP("speex", codec_inst->plname) == 0) {
     return IsSpeexRateValid(codec_inst->rate)
         ? codec_number : kInvalidRate;
+  } else if (STR_CASE_CMP("vorbis", codec_inst->plname) == 0) {
+    return IsVorbisRateValid(codec_inst->rate)
+        ? codec_number : kInvalidRate;
+  } else if (STR_CASE_CMP("opus", codec_inst->plname) == 0) {
+    return IsOpusRateValid(codec_inst->rate)
+        ? codec_number : kInvalidRate;
   } else if (STR_CASE_CMP("celt", codec_inst->plname) == 0) {
     return IsCeltRateValid(codec_inst->rate)
         ? codec_number : kInvalidRate;
@@ -684,6 +704,13 @@ int ACMCodecDB::CodecsVersion(char* version, size_t* remaining_buffer_bytes,
   remaining_size = kVersionBufferSize - strlen(versions_buffer);
   strncat(versions_buffer, version_num_buf, remaining_size);
 #endif
+#ifdef WEBRTC_CODEC_OPUS
+  remaining_size = kVersionBufferSize - strlen(versions_buffer);
+  WebRtcOpus_Version(version_num_buf);
+  strncat(versions_buffer, "Opus\t\t", remaining_size);
+  remaining_size = kVersionBufferSize - strlen(versions_buffer);
+  strncat(versions_buffer, version_num_buf, remaining_size);
+#endif
   remaining_size = kVersionBufferSize - strlen(versions_buffer);
   WebRtcCng_Version(version_num_buf);
   strncat(versions_buffer, "CNG\t\t", remaining_size);
@@ -854,6 +881,20 @@ ACMGenericCodec* ACMCodecDB::CreateCodecInstance(const CodecInst* codec_inst) {
     }
     return new ACMVORBIS(codec_id);
 #endif
+  } else if (!STR_CASE_CMP(codec_inst->plname, "OPUS")) {
+#ifdef WEBRTC_CODEC_OPUS
+    int codec_id;
+    switch (codec_inst->plfreq) {
+      case 16000: {
+        codec_id = kOPUS;
+        break;
+      }
+      default: {
+        return NULL;
+      }
+    }
+    return new ACMOPUS(codec_id);
+#endif
   } else if (!STR_CASE_CMP(codec_inst->plname, "CN")) {
     // For CN we need to check sampling frequency to know what codec to create.
     int codec_id;
@@ -1006,6 +1047,24 @@ bool ACMCodecDB::IsG7291RateValid(int rate) {
 // Checks if the bitrate is valid for Speex.
 bool ACMCodecDB::IsSpeexRateValid(int rate) {
   if (rate > 2000) {
+    return true;
+  } else {
+    return false;
+  }
+}
+  
+// Checks if the bitrate is valid for Vorbis.
+bool ACMCodecDB::IsVorbisRateValid(int rate) {
+  if (rate == 32000) {
+    return true;
+  } else {
+    return false;
+  }
+}
+  
+// Checks if the bitrate is valid for Opus.
+bool ACMCodecDB::IsOpusRateValid(int rate) {
+  if (rate == 20000) {
     return true;
   } else {
     return false;

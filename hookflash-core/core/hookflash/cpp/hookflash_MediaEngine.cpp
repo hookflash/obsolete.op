@@ -29,10 +29,6 @@
  
  */
 
-#ifdef _IPHONE_
-#include <iphone_render_view.h>
-#endif
-
 #include <hookflash/internal/hookflash_MediaEngine.h>
 #include <hookflash/internal/hookflash_Client.h>
 
@@ -48,6 +44,8 @@
 #define HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
 //#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
 //#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
+#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
+//#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
 #define HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL (-1)
 #define HOOKFLASH_MEDIA_ENGINE_MTU (576)
 
@@ -1311,7 +1309,7 @@ namespace hookflash
         ZS_LOG_DEBUG(log("start voice"))
         
         mVoiceChannel = mVoiceBase->CreateChannel();
-        if (mVoiceCodec < 0) {
+        if (mVoiceChannel < 0) {
           ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
           mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
           return;
@@ -1380,6 +1378,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
             return;
           }
+#ifdef HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
           if (strcmp(cinst.plname, "ISAC") == 0) {
             strcpy(cinst.plname, "ISAC");
             cinst.pltype = 103;
@@ -1394,6 +1393,22 @@ namespace hookflash
             }
             break;
           }
+#elif defined HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
+          if (strcmp(cinst.plname, "OPUS") == 0) {
+            strcpy(cinst.plname, "OPUS");
+            cinst.pltype = 110;
+            cinst.rate = 20000;
+            cinst.pacsize = 320; // 20ms
+            cinst.plfreq = 16000;
+            cinst.channels = 1;
+            mError = mVoiceCodec->SetSendCodec(mVoiceChannel, cinst);
+            if (mError != 0) {
+              ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+            break;
+          }
+#endif
         }
         
         webrtc::CodecInst cfinst;
@@ -1539,8 +1554,8 @@ namespace hookflash
         }
         
 #ifdef _IPHONE_
-        IPhoneRenderView *captureView = (IPhoneRenderView*)mIPhoneCaptureRenderView;
-        IPhoneRenderView *channelView = (IPhoneRenderView*)mIPhoneChannelRenderView;
+        void *captureView = mIPhoneCaptureRenderView;
+        void *channelView = mIPhoneChannelRenderView;
 #else
         void *captureView = mIPhoneCaptureRenderView;
         void *channelView = mIPhoneChannelRenderView;
