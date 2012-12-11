@@ -308,6 +308,8 @@ namespace hookflash
       #pragma mark
       #pragma mark Account => IAccount
       #pragma mark
+      
+      virtual PUID getID() const {return mID;}
 
       virtual void shutdown();
 
@@ -590,7 +592,7 @@ namespace hookflash
 
         static AccountSubscriptionPtr create(AccountPtr outer);
 
-        PUID getID() const {return mID;}
+        virtual PUID getID() const {return mID;}
 
       public:
         //---------------------------------------------------------------------
@@ -758,7 +760,7 @@ namespace hookflash
         bool isShutdown() const {return ContactSubscriptionState_Shutdown == mCurrentState;}
 
       private:
-        PUID getID() const {return mID;}
+        virtual PUID getID() const {return mID;}
 
       protected:
         RecursiveLock &getLock() const;
@@ -888,7 +890,7 @@ namespace hookflash
 
       private:
         RecursiveLock &getLock() const;
-        PUID getID() const {return mID;}
+        virtual PUID getID() const {return mID;}
         String log(const char *message) const;
 
         String getContactID() const;

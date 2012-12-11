@@ -32,6 +32,7 @@
 #pragma once
 
 #include <hookflash/hookflashTypes.h>
+#include <hookflash/provisioning2/hookflashTypes.h>
 #include <zsLib/Proxy.h>
 #include <zsLib/XML.h>
 

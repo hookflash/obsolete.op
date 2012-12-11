@@ -51,6 +51,7 @@ namespace hookflash
 
     interaction IAccount
     {
+      typedef zsLib::PUID PUID;
       typedef zsLib::WORD WORD;
       typedef zsLib::String String;
       typedef zsLib::Time Time;
@@ -219,6 +220,8 @@ namespace hookflash
                                  const IdentityInfoList &previousIdentities
                                  );
 
+      virtual PUID getID() const = 0;
+
       virtual void shutdown() = 0;
 
       virtual IdentityID getAuthorizationPINIdentity() const = 0;
@@ -317,9 +320,12 @@ namespace hookflash
 
     interaction IAccountOAuthIdentityAssociation
     {
+      typedef zsLib::PUID PUID;
       typedef zsLib::String String;
       typedef IAccount::IdentityTypes IdentityTypes;
       typedef zsLib::XML::ElementPtr ElementPtr;
+
+      virtual PUID getID() const = 0;
 
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;
@@ -361,6 +367,10 @@ namespace hookflash
 
     interaction IAccountPush
     {
+      typedef zsLib::PUID PUID;
+
+      virtual PUID getID() const = 0;
+
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;
 
@@ -391,11 +401,14 @@ namespace hookflash
 
     interaction IAccountIdentityLookupQuery
     {
+      typedef zsLib::PUID PUID;
       typedef zsLib::String String;
       typedef zsLib::Time Time;
       typedef IAccount::IdentityID IdentityID;
       typedef IAccount::IdentityIDList IdentityIDList;
       typedef IAccount::LookupProfileInfo LookupProfileInfo;
+      
+      virtual PUID getID() const = 0;
 
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;
@@ -432,9 +445,12 @@ namespace hookflash
 
     interaction IAccountPeerFileLookupQuery
     {
+      typedef zsLib::PUID PUID;
       typedef zsLib::String String;
       typedef IAccount::UserID UserID;
       typedef IAccount::UserIDList UserIDList;
+
+      virtual PUID getID() const = 0;
 
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;

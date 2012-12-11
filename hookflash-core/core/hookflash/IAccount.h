@@ -41,6 +41,7 @@ namespace hookflash
 {
   interaction IAccount
   {
+    typedef zsLib::PUID PUID;
     typedef zsLib::String String;
     typedef std::list<IConversationThreadPtr> ConversationThreadList;
     typedef zsLib::XML::ElementPtr ElementPtr;
@@ -66,6 +67,8 @@ namespace hookflash
 
     static const char *toString(AccountStates state);
     static const char *toString(AccountErrors errorCode);
+
+    virtual PUID getID() const = 0;
 
     virtual void shutdown() = 0;
 

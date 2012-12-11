@@ -196,6 +196,8 @@ namespace hookflash
                                   const IdentityInfoList &previousIdentities
                                   );
 
+        virtual PUID getID() const {return mID;}
+
         virtual void shutdown();
 
         virtual IdentityID getAuthorizationPINIdentity() const;
@@ -400,6 +402,8 @@ namespace hookflash
           #pragma mark provisioning::Account::AccountOAuthIdentityAssociation => IAccountOAuthIdentityAssociation
           #pragma mark
 
+          virtual PUID getID() const {return mID;}
+
           virtual bool isComplete() const;
           virtual bool didSucceed() const;
           virtual void cancel();
@@ -434,7 +438,7 @@ namespace hookflash
                                                               IdentityTypes type
                                                               );
 
-          PUID getID() const {return mID;}
+          // (duplicate) virtual PUID getID() const;
 
           // (duplicate) virtual void cancel();
 
@@ -514,6 +518,8 @@ namespace hookflash
           #pragma mark provisioning::Account::AccountPush => IAccountPush
           #pragma mark
 
+          virtual PUID getID() const {return mID;}
+
           virtual bool isComplete() const;
           virtual bool didSucceed() const;
 
@@ -541,7 +547,7 @@ namespace hookflash
                                      const char *message
                                      );
 
-          PUID getID() const {return mID;}
+          // (duplicate) virtual PUID getID() const;
 
           // (duplicate) virtual void cancel();
 
@@ -605,6 +611,8 @@ namespace hookflash
           #pragma mark provisioning::Account::AccountIdentityLookupQuery => IAccountIdentityLookupQuery
           #pragma mark
 
+          virtual PUID getID() const {return mID;}
+
           virtual bool isComplete() const;
           virtual bool didSucceed() const;
 
@@ -636,7 +644,7 @@ namespace hookflash
                                                       const IdentityIDList &identities
                                                       );
 
-          PUID getID() const {return mID;}
+          // (duplicate) virtual PUID getID() const;
 
           // (duplicate) virtual void cancel();
 
@@ -703,6 +711,8 @@ namespace hookflash
           #pragma mark provisioning::Account::AccountPeerFileLookupQuery => IAccountPeerFileLookupQuery
           #pragma mark
 
+          virtual PUID getID() const {return mID;}
+
           virtual bool isComplete() const;
           virtual bool didSucceed() const;
 
@@ -732,7 +742,7 @@ namespace hookflash
                                                       const ContactIDList &associatedContactIDs
                                                       );
 
-          PUID getID() const {return mID;}
+          // (duplicate) virtual PUID getID() const;
 
           // (duplicate) virtual void cancel();
 
