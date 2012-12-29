@@ -155,6 +155,7 @@ namespace hookflash
       mNsEnabled(false),
       mRecordFile(""),
       mReceiverAddress(""),
+      mDefaultVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
       mVoiceChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
       mVoiceTransport(&mRedirectVoiceTransport),
       mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
@@ -529,6 +530,16 @@ namespace hookflash
     {
       static MediaEnginePtr engine = create(delegate);
       return engine;
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::setDefaultVideoOrientation(VideoOrientations orientation)
+    {
+      AutoRecursiveLock lock(mLock);
+
+      ZS_LOG_DEBUG(log("set default video orientation - ") + IMediaEngine::toString(orientation))
+      
+      mDefaultVideoOrientation = orientation;
     }
 
     //-------------------------------------------------------------------------
@@ -1333,7 +1344,7 @@ namespace hookflash
 #endif
         webrtc::EcModes ecMode = getEcMode();
         if (ecMode == webrtc::kEcUnchanged) {
-          ZS_LOG_ERROR(Detail, log("machine name is not supported"))
+          ZS_LOG_ERROR(Detail, log("not valid acoustic echo canceller status - kEcUnchanged"))
           return;
         }
         mError = mVoiceAudioProcessing->SetEcStatus(mEcEnabled, ecMode);
@@ -1553,13 +1564,8 @@ namespace hookflash
           return;
         }
         
-#ifdef _IPHONE_
         void *captureView = mIPhoneCaptureRenderView;
         void *channelView = mIPhoneChannelRenderView;
-#else
-        void *captureView = mIPhoneCaptureRenderView;
-        void *channelView = mIPhoneChannelRenderView;
-#endif
 
         if (captureView == NULL) {
           ZS_LOG_ERROR(Detail, log("capture view is not set"))
@@ -1597,18 +1603,6 @@ namespace hookflash
         }
         mVcpm->AddRef();
         delete devInfo;
-        
-        webrtc::RotateCapturedFrame orientation;
-        mError = mVideoCapture->GetOrientation(NULL, orientation);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
-        mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
         
         mError = mVideoCapture->StartCapture(mCaptureId);
         if (mError != 0) {
@@ -1695,6 +1689,30 @@ namespace hookflash
           return;
         }
         
+        webrtc::CapturedFrameOrientation defaultOrientation;
+        switch (mDefaultVideoOrientation) {
+          case IMediaEngine::VideoOrientation_LandscapeLeft:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+            break;
+          case IMediaEngine::VideoOrientation_PortraitUpsideDown:
+            defaultOrientation = webrtc::CapturedFrameOrientation_PortraitUpsideDown;
+            break;
+          case IMediaEngine::VideoOrientation_LandscapeRight:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeRight;
+            break;
+          case IMediaEngine::VideoOrientation_Portrait:
+            defaultOrientation = webrtc::CapturedFrameOrientation_Portrait;
+            break;
+          default:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+            break;
+        }
+        mError = mVideoCapture->SetDefaultCapturedFrameOrientation(mCaptureId, defaultOrientation);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set default orientation onvideo capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+
         webrtc::VideoCodec videoCodec;
         memset(&videoCodec, 0, sizeof(VideoCodec));
         for (int idx = 0; idx < mVideoCodec->NumberOfCodecs(); idx++) {
@@ -1826,14 +1844,52 @@ namespace hookflash
         
         mVcpm = NULL;
         mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+        mCameraType = CameraType_None;
       }
     }
 
     //-------------------------------------------------------------------------
     int MediaEngine::setVideoCaptureRotationAndCodecParameters()
     {
+      const unsigned int KMaxDeviceNameLength = 128;
+      const unsigned int KMaxUniqueIdLength = 256;
+      char deviceName[KMaxDeviceNameLength];
+      memset(deviceName, 0, KMaxDeviceNameLength);
+      char uniqueId[KMaxUniqueIdLength];
+      memset(uniqueId, 0, KMaxUniqueIdLength);
+      WebRtc_UWord32 captureIdx;
+      
+      if (mCameraType == CameraType_Back)
+      {
+        captureIdx = 0;
+      }
+      else if (mCameraType == CameraType_Front)
+      {
+        captureIdx = 1;
+      }
+      else
+      {
+        ZS_LOG_WARNING(Detail, log("camera type is not set"))
+        return -1;
+      }
+
+      webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
+      if (devInfo == NULL) {
+        ZS_LOG_ERROR(Detail, log("failed to create video capture device info"))
+        return -1;
+      }
+      
+      mError = devInfo->GetDeviceName(captureIdx, deviceName,
+                                      KMaxDeviceNameLength, uniqueId,
+                                      KMaxUniqueIdLength);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to get video device name"))
+        return -1;
+      }
+      delete devInfo;
+
       webrtc::RotateCapturedFrame orientation;
-      mError = mVideoCapture->GetOrientation(NULL, orientation);
+      mError = mVideoCapture->GetOrientation(uniqueId, orientation);
       if (mError != 0) {
         ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
         return mError;
@@ -2165,6 +2221,18 @@ namespace hookflash
       case CameraType_None:   return "None";
       case CameraType_Front:  return "Front";
       case CameraType_Back:   return "Back";
+    }
+    return "UNDEFINED";
+  }
+  
+  //---------------------------------------------------------------------------
+  const char *IMediaEngine::toString(VideoOrientations orientation)
+  {
+    switch (orientation) {
+      case VideoOrientation_LandscapeLeft:        return "Landscape left";
+      case VideoOrientation_PortraitUpsideDown:   return "Portrait upside down";
+      case VideoOrientation_LandscapeRight:       return "Landscape right";
+      case VideoOrientation_Portrait:             return "Portrait";
     }
     return "UNDEFINED";
   }

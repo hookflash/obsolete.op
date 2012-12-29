@@ -118,27 +118,77 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundationInfo::GetOrientation(const char* dev
 {
     WEBRTC_TRACE(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, 0,
                  "%s:%d", __FUNCTION__, __LINE__);
-    
+  
+
+    NSNumber* deviceIndex = [_captureInfo getCaptureDeviceIndex:deviceUniqueIdUTF8];
     UIDeviceOrientation deviceOrientation = [_captureInfo getDeviceOrientation];
-    if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+    if ([deviceIndex intValue] == FRONT_CAMERA_INDEX)
     {
-        orientation = kCameraRotate180;
+        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+        {
+            orientation = kCameraRotate180;
+        }
+        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+        {
+            orientation = kCameraRotate270;
+        }
+        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+        {
+            orientation = kCameraRotate0;
+        }
+        else if (deviceOrientation == UIDeviceOrientationPortrait)
+        {
+            orientation = kCameraRotate90;
+        }
+        else
+        {
+            if (_defaultOrientation == kOrientationLandscapeLeft)
+                orientation = kCameraRotate180;
+            else if (_defaultOrientation == kOrientationPortraitUpsideDown)
+                orientation = kCameraRotate270;
+            else if (_defaultOrientation == kOrientationLandscapeRight)
+                orientation = kCameraRotate0;
+            else if (_defaultOrientation == kOrientationPortrait)
+                orientation = kCameraRotate90;
+            else
+                orientation = kCameraRotate180;
+        }
     }
-    else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+    else if ([deviceIndex intValue] == BACK_CAMERA_INDEX)
     {
-        orientation = kCameraRotate270;
-    }
-    else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
-    {
-        orientation = kCameraRotate0;
-    }
-    else if (deviceOrientation == UIDeviceOrientationPortrait)
-    {
-        orientation = kCameraRotate90;
+        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+        {
+            orientation = kCameraRotate0;
+        }
+        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+        {
+            orientation = kCameraRotate270;
+        }
+        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+        {
+            orientation = kCameraRotate180;
+        }
+        else if (deviceOrientation == UIDeviceOrientationPortrait)
+        {
+            orientation = kCameraRotate90;
+        }
+        else
+        {
+            if (_defaultOrientation == kOrientationLandscapeLeft)
+                orientation = kCameraRotate0;
+            else if (_defaultOrientation == kOrientationPortraitUpsideDown)
+                orientation = kCameraRotate270;
+            else if (_defaultOrientation == kOrientationLandscapeRight)
+                orientation = kCameraRotate180;
+            else if (_defaultOrientation == kOrientationPortrait)
+                orientation = kCameraRotate90;
+            else
+                orientation = kCameraRotate0;
+        }
     }
     else
     {
-        orientation = kCameraRotate180;
+        orientation = kCameraRotate0;
     }
     return 0;
 }

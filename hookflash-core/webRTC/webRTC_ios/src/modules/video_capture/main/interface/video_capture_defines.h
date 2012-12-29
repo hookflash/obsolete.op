@@ -35,6 +35,14 @@ enum VideoCaptureRotation
     kCameraRotate270 = 15
 };
 
+enum VideoCaptureOrientation
+{
+    kOrientationLandscapeLeft,
+    kOrientationPortraitUpsideDown,
+    kOrientationLandscapeRight,
+    kOrientationPortrait
+};
+  
 struct VideoCaptureCapability
 {
     WebRtc_Word32 width;

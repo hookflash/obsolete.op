@@ -213,7 +213,16 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
         }
         else
         {
-            rotation = kCameraRotate180;
+            if (_defaultFrameOrientation == kOrientationLandscapeLeft)
+                rotation = kCameraRotate180;
+            else if (_defaultFrameOrientation == kOrientationPortraitUpsideDown)
+                rotation = kCameraRotate270;
+            else if (_defaultFrameOrientation == kOrientationLandscapeRight)
+                rotation = kCameraRotate0;
+            else if (_defaultFrameOrientation == kOrientationPortrait)
+                rotation = kCameraRotate90;
+            else
+                rotation = kCameraRotate180;
         }
     }
     else if (captureIndex == BACK_CAMERA_INDEX)
@@ -236,14 +245,23 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
         }
         else
         {
-            rotation = kCameraRotate0;
+            if (_defaultFrameOrientation == kOrientationLandscapeLeft)
+                rotation = kCameraRotate0;
+            else if (_defaultFrameOrientation == kOrientationPortraitUpsideDown)
+                rotation = kCameraRotate270;
+            else if (_defaultFrameOrientation == kOrientationLandscapeRight)
+                rotation = kCameraRotate180;
+            else if (_defaultFrameOrientation == kOrientationPortrait)
+                rotation = kCameraRotate90;
+            else
+                rotation = kCameraRotate0;
         }
     }
-    else 
+    else
     {
         rotation = kCameraRotate0;
     }
-
+  
     SetCaptureRotation(rotation);
 
     // Capture format is always landscape

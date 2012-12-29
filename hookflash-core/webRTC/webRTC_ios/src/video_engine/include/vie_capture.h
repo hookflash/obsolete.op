@@ -65,6 +65,14 @@ enum RotateCapturedFrame {
   RotateCapturedFrame_180 = 180,
   RotateCapturedFrame_270 = 270
 };
+  
+enum CapturedFrameOrientation
+{
+  CapturedFrameOrientation_LandscapeLeft,
+  CapturedFrameOrientation_PortraitUpsideDown,
+  CapturedFrameOrientation_LandscapeRight,
+  CapturedFrameOrientation_Portrait
+};
 
 struct ViEVideoFrameI420 {
   ViEVideoFrameI420() {
@@ -200,6 +208,12 @@ class WEBRTC_DLLEXPORT ViECapture {
   // Used on mobile devices with rotates cameras.
   virtual int SetRotateCapturedFrames(const int capture_id,
                                       const RotateCapturedFrame rotation) = 0;
+  
+  // Sets default value for video frame orientation. This value is used when a device is in
+  // face up / face down position.
+  // Used on mobile devices with rotates cameras.
+  virtual int SetDefaultCapturedFrameOrientation(const int capture_id,
+                                                 const CapturedFrameOrientation orientation) = 0;
 
   // This function sets the expected delay from when a video frame is captured
   // to when that frame is delivered to VideoEngine.

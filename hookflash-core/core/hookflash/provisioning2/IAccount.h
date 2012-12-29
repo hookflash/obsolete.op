@@ -282,6 +282,9 @@ namespace hookflash
       typedef IAccount::IdentityURI IdentityURI;
       typedef IAccount::IdentityURIList IdentityURIList;
       typedef IAccount::IdentityLookupInfo IdentityLookupInfo;
+      typedef zsLib::PUID PUID;
+        
+      virtual PUID getID() const = 0;
       
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;
@@ -321,6 +324,9 @@ namespace hookflash
       typedef zsLib::String String;
       typedef IAccount::PeerContactURI PeerContactURI;
       typedef IAccount::PeerContactURIList PeerContactURIList;
+      typedef zsLib::PUID PUID;
+        
+      virtual PUID getID() const = 0;
 
       virtual bool isComplete() const = 0;
       virtual bool didSucceed() const = 0;

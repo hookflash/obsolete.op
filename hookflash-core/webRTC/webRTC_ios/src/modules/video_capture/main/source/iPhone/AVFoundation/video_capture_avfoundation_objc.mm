@@ -112,10 +112,6 @@
         return [NSNumber numberWithInt:0];
     }
 
-    if(!_captureSession)
-    {
-    }
-
     if(!name || (0 == strcmp("", name)))
     {
         webrtc::Trace::Add(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, 0,

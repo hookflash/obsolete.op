@@ -66,6 +66,7 @@ public:
     virtual WebRtc_Word32 SetCaptureDelay(WebRtc_Word32 delayMS);
     virtual WebRtc_Word32 CaptureDelay();
     virtual WebRtc_Word32 SetCaptureRotation(VideoCaptureRotation rotation);
+    virtual WebRtc_Word32 SetDefaultCaptureOrientation(VideoCaptureOrientation orientation);
 
     virtual WebRtc_Word32 EnableFrameRateCallback(const bool enable);
     virtual WebRtc_Word32 EnableNoPictureAlarm(const bool enable);
@@ -110,6 +111,7 @@ protected:
     CriticalSectionWrapper& _apiCs;
     WebRtc_Word32 _captureDelay; // Current capture delay. May be changed of platform dependent parts.
     VideoCaptureCapability _requestedCapability; // Should be set by platform dependent code in StartCapture.
+    VideoCaptureOrientation _defaultFrameOrientation;
 private:
     void UpdateFrameCount();
     WebRtc_UWord32 CalculateFrameRate(const TickTime& now);

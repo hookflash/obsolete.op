@@ -30,8 +30,12 @@
 
 #include "video_capture_avfoundation.h"
 
+#ifndef BACK_CAMERA_INDEX
 #define BACK_CAMERA_INDEX               0
+#endif
+#ifndef FRONT_CAMERA_INDEX
 #define FRONT_CAMERA_INDEX              1
+#endif
 
 @interface VideoCaptureIPhoneAVFoundationObjC : NSObject<AVCaptureVideoDataOutputSampleBufferDelegate>{
     // class properties

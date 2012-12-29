@@ -47,8 +47,18 @@ namespace hookflash
       CameraType_Front,
       CameraType_Back
     };
-    
+
     static const char *toString(CameraTypes type);
+
+    enum VideoOrientations
+    {
+      VideoOrientation_LandscapeLeft,
+      VideoOrientation_PortraitUpsideDown,
+      VideoOrientation_LandscapeRight,
+      VideoOrientation_Portrait
+    };
+
+    static const char *toString(VideoOrientations orientation);
 
     enum OutputAudioRoutes
     {
@@ -74,6 +84,7 @@ namespace hookflash
 
     static IMediaEnginePtr singleton();
 
+    virtual void setDefaultVideoOrientation(VideoOrientations orientation) = 0;
     virtual void setVideoOrientation() = 0;
     
     virtual void setCaptureRenderView(void *renderView) = 0;

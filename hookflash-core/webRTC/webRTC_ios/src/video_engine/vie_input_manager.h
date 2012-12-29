@@ -64,6 +64,8 @@ class ViEInputManager : private ViEManagerBase {
                                       WebRtc_UWord32 positionY);
   int GetOrientation(const char* device_unique_idUTF8,
                      RotateCapturedFrame& orientation);
+  int SetDefaultOrientation(const char* device_unique_idUTF8,
+                            CapturedFrameOrientation orientation);
 
   // Creates a capture module for the specified capture device and assigns
   // a capture device id for the device.

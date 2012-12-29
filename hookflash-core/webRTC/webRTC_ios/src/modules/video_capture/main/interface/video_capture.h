@@ -55,6 +55,11 @@ class VideoCaptureModule: public RefCountedModule {
     virtual WebRtc_Word32 GetOrientation(
         const char* deviceUniqueIdUTF8,
         VideoCaptureRotation& orientation) = 0;
+    
+    // Sets default video orientation.
+    virtual WebRtc_Word32 SetDefaultOrientation(
+         const char* deviceUniqueIdUTF8,
+         VideoCaptureOrientation orientation) = 0;
 
     // Gets the capability that best matches the requested width, height and
     // frame rate.
@@ -144,6 +149,9 @@ class VideoCaptureModule: public RefCountedModule {
   // displayed correctly if rendered.
   virtual WebRtc_Word32 SetCaptureRotation(VideoCaptureRotation rotation) = 0;
 
+  // Set the default orientation of the captured frames.
+  virtual WebRtc_Word32 SetDefaultCaptureOrientation(VideoCaptureOrientation orientation) = 0;
+  
   // Gets a pointer to an encode interface if the capture device supports the
   // requested type and size.  NULL otherwise.
   virtual VideoCaptureEncodeInterface* GetEncodeInterface(

@@ -87,6 +87,9 @@ class ViECapturer
 
   // Sets rotation of the incoming captured frame.
   WebRtc_Word32 SetRotateCapturedFrames(const RotateCapturedFrame rotation);
+        
+  // Sets default orientation for incoming captured frames.
+  WebRtc_Word32 SetDefaultCapturedFramesOrientation(const CapturedFrameOrientation orientation);
 
   // Effect filter.
   WebRtc_Word32 RegisterEffectFilter(ViEEffectFilter* effect_filter);

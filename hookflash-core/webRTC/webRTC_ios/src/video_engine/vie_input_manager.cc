@@ -149,6 +149,33 @@ int ViEInputManager::GetOrientation(const char* device_unique_idUTF8,
   }
   return result;
 }
+  
+int ViEInputManager::SetDefaultOrientation(const char* device_unique_idUTF8,
+                                           CapturedFrameOrientation orientation) {
+  WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
+               "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
+               device_unique_idUTF8);
+  assert(capture_device_info_);
+  VideoCaptureOrientation module_orientation;
+  
+  // Copy from module type to public type.
+  switch (orientation) {
+    case CapturedFrameOrientation_LandscapeLeft:
+      module_orientation = kOrientationLandscapeLeft;
+      break;
+    case CapturedFrameOrientation_PortraitUpsideDown:
+      module_orientation = kOrientationPortraitUpsideDown;
+      break;
+    case CapturedFrameOrientation_LandscapeRight:
+      module_orientation = kOrientationLandscapeRight;
+      break;
+    case CapturedFrameOrientation_Portrait:
+      module_orientation = kOrientationPortrait;
+      break;
+  }
+  return capture_device_info_->SetDefaultOrientation(device_unique_idUTF8,
+                                                     module_orientation);
+}
 
 int ViEInputManager::DisplayCaptureSettingsDialogBox(
     const char* device_unique_idUTF8,

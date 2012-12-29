@@ -134,6 +134,7 @@ WebRtc_Word32 VideoCaptureImpl::Process()
 VideoCaptureImpl::VideoCaptureImpl(const WebRtc_Word32 id)
     : _id(id), _deviceUniqueId(NULL), _apiCs(*CriticalSectionWrapper::CreateCriticalSection()),
       _captureDelay(0), _requestedCapability(),
+      _defaultFrameOrientation(kOrientationLandscapeLeft),
       _callBackCs(*CriticalSectionWrapper::CreateCriticalSection()),
       _lastProcessTime(TickTime::Now()),
       _lastFrameRateCallbackTime(TickTime::Now()), _frameRateCallBack(false),
@@ -424,6 +425,14 @@ WebRtc_Word32 VideoCaptureImpl::SetCaptureRotation(VideoCaptureRotation rotation
             _rotateFrame = kRotate270;
             break;
     }
+    return 0;
+}
+  
+WebRtc_Word32 VideoCaptureImpl::SetDefaultCaptureOrientation(VideoCaptureOrientation orientation)
+{
+    CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
+    _defaultFrameOrientation = orientation;
     return 0;
 }
 

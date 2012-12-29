@@ -296,6 +296,26 @@ WebRtc_Word32 ViECapturer::SetRotateCapturedFrames(
   }
   return capture_module_->SetCaptureRotation(converted_rotation);
 }
+  
+WebRtc_Word32 ViECapturer::SetDefaultCapturedFramesOrientation(
+  const CapturedFrameOrientation rotation) {
+  VideoCaptureOrientation converted_orientation = kOrientationLandscapeLeft;
+  switch (rotation) {
+    case CapturedFrameOrientation_LandscapeLeft:
+      converted_orientation = kOrientationLandscapeLeft;
+      break;
+    case CapturedFrameOrientation_PortraitUpsideDown:
+      converted_orientation = kOrientationPortraitUpsideDown;
+      break;
+    case CapturedFrameOrientation_LandscapeRight:
+      converted_orientation = kOrientationLandscapeRight;
+      break;
+    case CapturedFrameOrientation_Portrait:
+      converted_orientation = kOrientationPortrait;
+      break;
+  }
+  return capture_module_->SetDefaultCaptureOrientation(converted_orientation);
+}
 
 int ViECapturer::IncomingFrame(unsigned char* video_frame,
                                unsigned int video_frame_length,

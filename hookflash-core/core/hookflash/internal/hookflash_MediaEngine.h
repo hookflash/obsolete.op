@@ -221,6 +221,7 @@ namespace hookflash
 
       static MediaEnginePtr singleton(IMediaEngineDelegatePtr delegate = IMediaEngineDelegatePtr());
 
+      virtual void setDefaultVideoOrientation(VideoOrientations orientation);
       virtual void setVideoOrientation();
 
       virtual void setCaptureRenderView(void *renderView);
@@ -391,6 +392,7 @@ namespace hookflash
       bool mNsEnabled;
       String mRecordFile;
       String mReceiverAddress;
+      VideoOrientations mDefaultVideoOrientation;
 
       int mVoiceChannel;
       Transport *mVoiceTransport;
