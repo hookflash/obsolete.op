@@ -270,14 +270,14 @@
 		004AEC2F152B2DB4006F4AA8 /* PeerSubscribeResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeerSubscribeResult.h; sourceTree = "<group>"; };
 		004AEC30152B2E13006F4AA8 /* PeerPublishNotifyRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeerPublishNotifyRequest.h; sourceTree = "<group>"; };
 		004AEC31152B2F67006F4AA8 /* PeerPublishNotifyResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeerPublishNotifyResult.h; sourceTree = "<group>"; };
-		004AEC32152B306D006F4AA8 /* stack_message_PeerGetRequest.h */ = {isa = PBXFileReference; path = stack_message_PeerGetRequest.h; sourceTree = "<group>"; };
-		004AEC33152B311D006F4AA8 /* stack_message_PeerGetResult.h */ = {isa = PBXFileReference; path = stack_message_PeerGetResult.h; sourceTree = "<group>"; };
-		004AEC34152B318D006F4AA8 /* stack_message_PeerDeleteRequest.h */ = {isa = PBXFileReference; path = stack_message_PeerDeleteRequest.h; sourceTree = "<group>"; };
-		004AEC35152B31CA006F4AA8 /* stack_message_PeerDeleteResult.h */ = {isa = PBXFileReference; path = stack_message_PeerDeleteResult.h; sourceTree = "<group>"; };
-		004AEC36152B322B006F4AA8 /* stack_message_PeerSubscribeRequest.h */ = {isa = PBXFileReference; path = stack_message_PeerSubscribeRequest.h; sourceTree = "<group>"; };
-		004AEC37152B3267006F4AA8 /* stack_message_PeerSubscribeResult.h */ = {isa = PBXFileReference; path = stack_message_PeerSubscribeResult.h; sourceTree = "<group>"; };
-		004AEC38152B3295006F4AA8 /* stack_message_PeerPublishNotifyRequest.h */ = {isa = PBXFileReference; path = stack_message_PeerPublishNotifyRequest.h; sourceTree = "<group>"; };
-		004AEC39152B32C2006F4AA8 /* stack_message_PeerPublishNotifyResult.h */ = {isa = PBXFileReference; path = stack_message_PeerPublishNotifyResult.h; sourceTree = "<group>"; };
+		004AEC32152B306D006F4AA8 /* stack_message_PeerGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerGetRequest.h; sourceTree = "<group>"; };
+		004AEC33152B311D006F4AA8 /* stack_message_PeerGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerGetResult.h; sourceTree = "<group>"; };
+		004AEC34152B318D006F4AA8 /* stack_message_PeerDeleteRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerDeleteRequest.h; sourceTree = "<group>"; };
+		004AEC35152B31CA006F4AA8 /* stack_message_PeerDeleteResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerDeleteResult.h; sourceTree = "<group>"; };
+		004AEC36152B322B006F4AA8 /* stack_message_PeerSubscribeRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerSubscribeRequest.h; sourceTree = "<group>"; };
+		004AEC37152B3267006F4AA8 /* stack_message_PeerSubscribeResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerSubscribeResult.h; sourceTree = "<group>"; };
+		004AEC38152B3295006F4AA8 /* stack_message_PeerPublishNotifyRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerPublishNotifyRequest.h; sourceTree = "<group>"; };
+		004AEC39152B32C2006F4AA8 /* stack_message_PeerPublishNotifyResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerPublishNotifyResult.h; sourceTree = "<group>"; };
 		004AEC3A152B4567006F4AA8 /* stack_message_PeerGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_PeerGetRequest.cpp; sourceTree = "<group>"; };
 		004AEC3C152B4EFD006F4AA8 /* stack_message_PeerGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_PeerGetResult.cpp; sourceTree = "<group>"; };
 		004AEC40152BCA79006F4AA8 /* stack_message_PeerDeleteRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_PeerDeleteRequest.cpp; sourceTree = "<group>"; };
@@ -301,9 +301,9 @@
 		00AACB7C15673C140065A76F /* stack_message_MessageNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageNotify.cpp; sourceTree = "<group>"; };
 		00AACB80156742A50065A76F /* stack_message_MessageReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageReply.cpp; sourceTree = "<group>"; };
 		00AACB83156745D60065A76F /* stack_message_MessageRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageRequest.cpp; sourceTree = "<group>"; };
-		00AACC601567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindReply.h */ = {isa = PBXFileReference; path = stack_message_PeerToFinderPeerLocationFindReply.h; sourceTree = "<group>"; };
-		00AACC611567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindRequest.h */ = {isa = PBXFileReference; path = stack_message_PeerToFinderPeerLocationFindRequest.h; sourceTree = "<group>"; };
-		00AACC621567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindResult.h */ = {isa = PBXFileReference; path = stack_message_PeerToFinderPeerLocationFindResult.h; sourceTree = "<group>"; };
+		00AACC601567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindReply.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerToFinderPeerLocationFindReply.h; sourceTree = "<group>"; };
+		00AACC611567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerToFinderPeerLocationFindRequest.h; sourceTree = "<group>"; };
+		00AACC621567CFF60065A76F /* stack_message_PeerToFinderPeerLocationFindResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_message_PeerToFinderPeerLocationFindResult.h; sourceTree = "<group>"; };
 		00B7DAE5153DB14F00917DA4 /* IConnectionSubscription.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IConnectionSubscription.h; sourceTree = "<group>"; };
 		00BF53D013FD1B12002E9EB5 /* libhfstack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfstack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		00F3C84214BB725A00EEDCF0 /* stack_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Account.cpp; sourceTree = "<group>"; };
@@ -1085,8 +1085,6 @@
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
-					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1105,8 +1103,6 @@
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
-					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1126,18 +1122,16 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../../,
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;
-				SDKROOT = iphoneos5.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1155,18 +1149,16 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../../,
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;
-				SDKROOT = iphoneos5.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

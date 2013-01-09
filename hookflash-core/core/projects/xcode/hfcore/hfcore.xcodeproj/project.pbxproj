@@ -1203,9 +1203,7 @@
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
-					"~/Library/Frameworks/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../../../../webRTC/webRTC_ios/src,
 					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
 					../../../../webRTC/webRTC_ios/src/video_engine/include,
@@ -1217,13 +1215,11 @@
 					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
 					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
 					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
-					../../../../webRTC/webRTC_ios/src,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
-					"../hfservices/build/Debug-iphoneos",
+					"../hfservices/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -1260,9 +1256,7 @@
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
-					"~/Library/Frameworks/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../../../../webRTC/webRTC_ios/src,
 					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
 					../../../../webRTC/webRTC_ios/src/video_engine/include,
@@ -1274,13 +1268,11 @@
 					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
 					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
 					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
-					../../../../webRTC/webRTC_ios/src,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\\\"$(SRCROOT)\\\"",
-					"../hfservices/build/Debug-iphoneos",
+					"../hfservices/build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

@@ -536,10 +536,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					../../../,
-					"~/Library/Frameworks/include",
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include,
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../,
 				);
 				INSTALL_PATH = /usr/local/lib;
@@ -561,10 +558,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				HEADER_SEARCH_PATHS = (
 					../../../,
-					"~/Library/Frameworks/include",
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
-					/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include,
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../,
 				);
 				INSTALL_PATH = /usr/local/lib;

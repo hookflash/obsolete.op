@@ -501,7 +501,6 @@
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"../../../../../hookflash-libs/curl/curl-7.22.0/include",
-					"~/Library/Frameworks/include",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = hfservices;
@@ -520,7 +519,6 @@
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"../../../../../hookflash-libs/curl/curl-7.22.0/include",
-					"~/Library/Frameworks/include",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = hfservices;
@@ -603,19 +601,17 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../../../,
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"../../../../../hookflash-libs/curl/curl-7.22.0/include",
 					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include",
 				);
 				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
 				PRODUCT_NAME = hfservices_ios;
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -632,19 +628,17 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					"../../../../../hookflash-staging/iPhoneOS5.1/include",
-					"../../../../../hookflash-staging/iPhoneOS5.0/include",
+					"../../../../../hookflash-staging/iPhoneOS/include",
 					../../../,
 					"../../../../../hookflash-libs/zsLib",
 					"../../../../../hookflash-libs/udns",
 					"../../../../../hookflash-libs/cryptopp",
 					"../../../../../hookflash-libs/curl/curl-7.22.0/include",
 					"~/Library/Frameworks/include",
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/usr/include",
 				);
 				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
 				PRODUCT_NAME = hfservices_ios;
-				SDKROOT = iphoneos4.3;
+				SDKROOT = iphoneos;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = dynamic;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
