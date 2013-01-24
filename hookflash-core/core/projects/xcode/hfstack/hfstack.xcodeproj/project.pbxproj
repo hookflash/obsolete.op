@@ -1128,7 +1128,7 @@
 					"../../../../../hookflash-libs/cryptopp",
 					"~/Library/Frameworks/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;
 				SDKROOT = iphoneos;
@@ -1155,7 +1155,7 @@
 					"../../../../../hookflash-libs/cryptopp",
 					"~/Library/Frameworks/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;
 				SDKROOT = iphoneos;

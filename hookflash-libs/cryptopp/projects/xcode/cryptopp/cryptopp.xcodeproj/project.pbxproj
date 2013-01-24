@@ -1345,6 +1345,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = cryptopp_ios;
 				SDKROOT = iphoneos;
@@ -1364,6 +1365,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INSTALL_PATH = /usr/local/lib;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = cryptopp_ios;
 				SDKROOT = iphoneos;

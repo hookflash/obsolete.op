@@ -146,6 +146,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8740DC7616A744D400B9FF5E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E25572A61558107D00CA2903 /* modules_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E26B79E8165A7FCE003EF625;
+			remoteInfo = opus_ios;
+		};
 		E25572981558105200CA2903 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E255726B1558104F00CA2903 /* voice_engine_ios.xcodeproj */;
@@ -1051,6 +1058,7 @@
 				E25572D41558107E00CA2903 /* libiLBC_ios.a */,
 				E25572D61558107E00CA2903 /* libPCM16B_ios.a */,
 				E289343A15AA2BA000A0DF9D /* libvorbis_ios.a */,
+				8740DC7716A744D400B9FF5E /* libopus_ios.a */,
 				E25572D81558107E00CA2903 /* libaudio_coding_module_ios.a */,
 				E25572DA1558107E00CA2903 /* libNetEq_ios.a */,
 				E25572DC1558107E00CA2903 /* libaudio_conference_mixer_ios.a */,
@@ -1514,6 +1522,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		8740DC7716A744D400B9FF5E /* libopus_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libopus_ios.a;
+			remoteRef = 8740DC7616A744D400B9FF5E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		E25572991558105200CA2903 /* libvoice_engine_core_ios.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2358,7 +2373,7 @@
 					../voice_engine/main/interface,
 					../system_wrappers/interface,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -2457,7 +2472,7 @@
 					../voice_engine/main/interface,
 					../system_wrappers/interface,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

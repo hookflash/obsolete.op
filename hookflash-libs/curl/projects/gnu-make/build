@@ -23,7 +23,6 @@ validate_before(){
     [ $? != "0" ] && exit 1 || true
 }
 
-
 caption(){
 	echo -e "\n`$TXT_B`Build script`$TXT_R` for building `$TXT_B`curl`$TXT_R` library for multiple platforms."
 	echo -e "Maintainer: `$TXT_B`Predrag Mandic`$TXT_R` [`$TXT_U``$TXT_C 4`predrag@hookflash.com`$TXT_R`]`$TXT_R`"
@@ -36,7 +35,7 @@ help_darwin(){
 	echo -e "\t`$TXT_B`x86`$TXT_R` | x86_64 | i386"
 	echo -e "\t\tAll of these options build the same libraries that work on OS X on a current processor architecture (32 or 64 bit). They exist separately to solve legacy issues."
 	echo -e "\t`$TXT_B`arm`$TXT_R` | ios"
-	echo -e "\t\tBoth of these options build the same libraries that work on iOS. They exist separately to solve legacy issues."
+	echo -e "\t\tBoth of these options build the same libraries that work on iOS armV7 and armV7s. They exist separately to solve legacy issues."
 	echo -e "\t`$TXT_B`all`$TXT_R`"
 	echo -e "\t\tBuilds both x86 and ios libraries."
 	echo -e "\t`$TXT_B`clean`$TXT_R`"
@@ -46,6 +45,10 @@ help_darwin(){
 
 usage_darwin(){
 	echo "Usage: build {arm|x86|all|clean|help}"
+}
+
+usage_darwin_clean(){
+	echo "Usage: build clean {arm|x86|all}"
 }
 
 help_linux(){
@@ -58,8 +61,8 @@ help_linux(){
 	echo -e "\t\tBoth of these options build the same libraries that work on Android. They exist separately to solve legacy issues."
 	echo -e "\t`$TXT_B`all`$TXT_R`"
 	echo -e "\t\tBuilds both x86 and android libraries."
-	echo -e "\t`$TXT_B`clean`$TXT_R`"
-	echo -e "\t\tDeletes staged libraries for all architectures."
+	echo -e "\t`$TXT_B`clean ARCH`$TXT_R`"
+	echo -e "\t\tDeletes staged libraries, binaries and header files for ARCH architecture."
 	echo ""
 }
 
@@ -67,10 +70,14 @@ usage_linux(){
 	echo "Usage: build {arm|x86|all|clean|help}"
 }
 
+usage_linux_clean(){
+	echo "Usage: build clean {arm|x86|all}"
+}
+
 build_darwin(){
 	echo "`$TXT_B``$TXT_C 2`curl build for OS X started...`$TXT_R`"
 	mkdir -p $STAGING_PREFIX; validate_before
-	cd $BASEDIR/../../curl
+	pushd $BASEDIR/../../curl
 		cp include/curl/curlbuild.h.template include/curl/curlbuild.h
 		cat Makefile.template > Makefile; validate_before
         #CFLAGS="-m32" ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn --enable-static=yes --enable-shared=no ; validate_before
@@ -78,21 +85,57 @@ build_darwin(){
         make; validate_before
 		make install prefix=$STAGING_PREFIX; validate_before
 		rm Makefile
-    cd -
+    popd
+}
+
+clean_darwin(){
+	echo "Cleaning OSX architecture..."
+
+	rm -f $STAGING_PREFIX/lib/libcurl.*
+	rm -f $STAGING_PREFIX/lib/pkgconfig/libcurl.*
+	rm -rf $STAGING_PREFIX/include/curl
+	rm -f $STAGING_PREFIX/bin/curl*
+	rm -f $STAGING_PREFIX/share/man/man1/curl*
+	rm -f $STAGING_PREFIX/share/man/man3/curl*
+	rm -f $STAGING_PREFIX/share/man/man3/libcurl*
+
+	echo "Done!"
 }
 
 build_ios(){
-	echo "`$TXT_B``$TXT_C 2`curl build for iOS started...`$TXT_R`"
-		cd $BASEDIR/../../curl
+	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
+	export ARCH="armv7"
+	build_ios_with_arm_version_set
+	export ARCH="armv7s"
+	build_ios_with_arm_version_set
+	
+	mkdir -p $STAGING_PREFIX/iPhoneOS/lib
+	mkdir -p $STAGING_PREFIX/iPhoneOS/include/curl
+	rm -rf $STAGING_PREFIX/iPhoneOS/include/curl
+
+	cp -R $STAGING_PREFIX/iPhoneOS/$ARCH/include/curl $STAGING_PREFIX/iPhoneOS/include/curl
+	
+	lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libcurl.a -output $STAGING_PREFIX/iPhoneOS/lib/libcurl.a
+}
+
+build_ios_with_arm_version_set() {
+	if [ "$ARCH" == "" ]; then
+		echo "`$TXT_C 1`ARM version not set! Exiting...`$TXT_R`"
+		exit 1
+	fi
+	if [ "$SDK" == "" ]; then
+		echo "`$TXT_C 1`SDK version not set! Exiting...`$TXT_R`"
+		exit 1
+	fi
+	echo "`$TXT_B``$TXT_C 2`curl build for iOS started for arch:$ARCH and SDK:$SDK...`$TXT_R`"
+	pushd $BASEDIR/../../curl
 		cp include/curl/curlbuild.h.template include/curl/curlbuild.h
-		cd -
+	popd
 	
 	set -e
 	#export CURL_VERSION="7.22.0"
 	export PLATFORM="iPhoneOS"
-	export SDK="6.0"
-	export ARCH="armv7"
-	
+
 	export DEVELOPER="/Applications/Xcode.app/Contents/Developer"
 	export DEVROOT="${DEVELOPER}/Platforms/${PLATFORM}.platform/Developer"
 	export SDKROOT="${DEVROOT}/SDKs/${PLATFORM}${SDK}.sdk"
@@ -121,11 +164,12 @@ build_ios(){
 	
 	pushd "../"
 	
-	mkdir -p $STAGING_PREFIX/iPhoneOS
+	mkdir -p $STAGING_PREFIX/iPhoneOS/$ARCH
+	mkdir -p $STAGING_PREFIX/iPhoneOS/$ARCH
 	cat $BASEDIR/../../curl/Makefile.template > $BASEDIR/../../curl/Makefile
 
-	#./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS --without-ssl --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
-	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
+	#./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH --without-ssl --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
+	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
 	
 	pushd "lib"
 	make; validate_before
@@ -141,37 +185,63 @@ build_ios(){
 
 
 	### LEGACY PROBLEM FIX ###################
-	cd "$STAGING_PREFIX"
-		rm -rf iPhoneOS5.0
-		ln -s iPhoneOS iPhoneOS5.0
-		rm -rf iPhoneOS5.1
-		ln -s iPhoneOS iPhoneOS5.1
-		rm -rf iPhoneOS6.0
-		ln -s iPhoneOS iPhoneOS6.0
-	cd -
+	#cd "$STAGING_PREFIX"
+	#	rm -rf iPhoneOS5.0
+	#	ln -s iPhoneOS iPhoneOS5.0
+	#	rm -rf iPhoneOS5.1
+	#	ln -s iPhoneOS iPhoneOS5.1
+	#	rm -rf iPhoneOS6.0
+	#	ln -s iPhoneOS iPhoneOS6.0
+	#cd -
 }
 
-clean_darwin(){
-	echo -e "`$TXT_C 1`This option is not implemented. Use help or contact maintainer for info.`$TXT_R`"
-	exit 1
-	#TODO
+clean_ios(){
+	echo "Cleaning iOS architecture..."
+
+	rm -f $STAGING_PREFIX/iPhoneOS/lib/libcurl.*
+	rm -rf $STAGING_PREFIX/iPhoneOS/include/curl
+
+	rm -f $STAGING_PREFIX/iPhoneOS/armv7/lib/libcurl.*
+	rm -rf $STAGING_PREFIX/iPhoneOS/armv7/include/curl
+
+	rm -f $STAGING_PREFIX/iPhoneOS/armv7s/lib/libcurl.*
+	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s/include/curl
+
+	echo "Done!"
 }
 
 build_linux(){
 	echo "`$TXT_B``$TXT_C 2`curl build for Linux started...`$TXT_R`"
 	mkdir -p $STAGING_PREFIX; validate_before
-	cd $BASEDIR/../../curl
+	pushd $BASEDIR/../../curl
 		cp include/curl/curlbuild.h.template include/curl/curlbuild.h
-        cat Makefile.template > Makefile; validate_before
-        #./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn ; validate_before
-        ./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-zlib --without-libidn ; validate_before
-        make ; validate_before
-        make install prefix=$STAGING_PREFIX; validate_before
+		cat Makefile.template > Makefile; validate_before
+		#./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-ssl --without-zlib --without-libidn ; validate_before
+		./configure --disable-ftp --disable-file --disable-ldap --disable-dict --disable-telnet --disable-tftp --disable-rtsp --disable-pop3 --disable-imap --disable-smtp --disable-gopher --disable-debug --without-zlib --without-libidn ; validate_before
+		make ; validate_before
+		make install prefix=$STAGING_PREFIX; validate_before
 		rm Makefile
-    cd -
+	popd
+}
+
+clean_linux(){
+	#pushd $BASEDIR/../../curl
+	#	make clean
+	#popd
+	
+	echo "Cleaning Linux architecture..."
+	rm -f $STAGING_PREFIX/lib/libcurl.*
+	rm -f $STAGING_PREFIX/lib/pkgconfig/libcurl.*
+	rm -f $STAGING_PREFIX/bin/curl*
+	rm -rf $STAGING_PREFIX/include/curl
+	rm -f $STAGING_PREFIX/share/man/man1/curl*
+	rm -f $STAGING_PREFIX/share/man/man3/curl*
+	rm -f $STAGING_PREFIX/share/man/man3/libcurl*
+	echo "Done!"
 }
 
 build_android(){
+	echo "`$TXT_B``$TXT_C 2`curl build for Android started...`$TXT_R`"
 	echo -e "`$TXT_C 1`This option is not implemented. Use help or contact maintainer for info.`$TXT_R`"
 		#cp include/curl/curlbuild.h.template include/curl/curlbuild.h
 		#TODO: When implementing, don't forget the line above! ^^^
@@ -180,9 +250,11 @@ build_android(){
 	#TODO
 }
 
-clean_linux(){
+clean_android(){
+	echo "Cleaning Android architecture..."
 	echo -e "`$TXT_C 1`This option is not implemented. Use help or contact maintainer for info.`$TXT_R`"
 	exit 1
+	echo "Done!"
 	#TODO
 }
 
@@ -201,7 +273,22 @@ case "$UNAME" in
 				build_android
 				;;
 			clean)
-				clean_linux
+				case "$2" in
+					x86|x86_64|i386)
+						clean_linux
+						;;
+					arm|android)
+						clean_android
+						;;
+					all)
+						clean_linux
+						clean_android
+						;;
+					*)
+						usage_linux_clean
+						exit 1
+						;;
+				esac
 				;;
 			help)
 				help_linux
@@ -226,7 +313,22 @@ case "$UNAME" in
 				build_ios
 				;;
 			clean)
-				clean_darwin
+				case "$2" in
+					arm|ios)
+						clean_ios
+						;;
+					x86|x86_64|i386|osx)
+						clean_darwin
+						;;
+					all)
+						clean_darwin
+						clean_ios
+						;;
+					*)
+						usage_darwin_clean
+						exit 1
+						;;
+				esac
 				;;
 			help)
 				help_darwin
