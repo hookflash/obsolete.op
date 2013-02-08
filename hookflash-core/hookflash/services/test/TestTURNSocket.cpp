@@ -261,7 +261,7 @@ namespace hookflash
           mSocket->sendTo(destination, packet.get(), packetLengthInBytes);
         }
 
-        virtual void onSTUNDiscoveryComplete(ISTUNDiscoveryPtr discovery)
+        virtual void onSTUNDiscoveryCompleted(ISTUNDiscoveryPtr discovery)
         {
           AutoRecursiveLock lock(mLock);
           BOOST_CHECK(discovery);
