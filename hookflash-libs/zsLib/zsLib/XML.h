@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,18 +25,26 @@
 #ifndef ZSLIB_XML_H_58e5a7d8cf6414da70cf4cc573d53693
 #define ZSLIB_XML_H_58e5a7d8cf6414da70cf4cc573d53693
 
+#include <zsLib/types.h>
 #include <zsLib/Exception.h>
 #include <boost/shared_array.hpp>
 
 #pragma warning(push)
 #pragma warning(disable: 4290)
 
-namespace zsLib {
-  namespace XML {
+#define ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX '$'
+#define ZS_JSON_DEFAULT_FORCED_TEXT "#text"
+
+namespace zsLib
+{
+  namespace XML
+  {
 
     enum ParserWarningTypes
     {
       ParserWarningType_None,
+
+      // XML warnings
       ParserWarningType_MismatchedEndTag,
       ParserWarningType_NoEndBracketFound,
       ParserWarningType_ContentAfterCloseSlashInElement,
@@ -52,13 +60,31 @@ namespace zsLib {
       ParserWarningType_NoEndDeclarationFound,
       ParserWarningType_NotProperEndDeclaration,
       ParserWarningType_DuplicateAttribute,
-      ParserWarningType_ElementsNestedTooDeep
+      ParserWarningType_ElementsNestedTooDeep,
+
+      // JSON warnings
+      ParserWarningType_MustOpenWithObject,
+      ParserWarningType_MustCloseRootObject,
+      ParserWarningType_MissingObjectClose,
+      ParserWarningType_DataFoundAfterFinalObjectClose,
+      ParserWarningType_MissingStringQuotes,
+      ParserWarningType_InvalidEscapeSequence,
+      ParserWarningType_InvalidUnicodeEscapeSequence,
+      ParserWarningType_IllegalNumberSequence,
+      ParserWarningType_MissingColonBetweenStringAndValue,
+      ParserWarningType_AttributePrefixWithoutName,
+      ParserWarningType_AttributePrefixAtRoot,
+      ParserWarningType_MissingPairString,
+      ParserWarningType_IllegalValue,
+      ParserWarningType_IllegalArrayAtRoot,
+      ParserWarningType_UnexpectedComma,
+      ParserWarningType_ParserStuck,
     };
 
   } // namespace XML
 } // namespace zsLib
 
-#include <zsLib/internal/XML.h>
+#include <zsLib/internal/zsLib_XML.h>
 
 namespace zsLib
 {
@@ -69,44 +95,14 @@ namespace zsLib
       ZS_DECLARE_CUSTOM_EXCEPTION(CheckFailed)
     };
 
-    class Node;
-    typedef boost::shared_ptr<Node> NodePtr;
-    typedef boost::weak_ptr<Node> NodeWeakPtr;
-
-    class Document;
-    typedef boost::shared_ptr<Document> DocumentPtr;
-    typedef boost::weak_ptr<Document> DocumentWeakPtr;
-
-    class Element;
-    typedef boost::shared_ptr<Element> ElementPtr;
-    typedef boost::weak_ptr<Element> ElementWeakPtr;
-
-    class Attribute;
-    typedef boost::shared_ptr<Attribute> AttributePtr;
-    typedef boost::weak_ptr<Attribute> AttributeWeakPtr;
-
-    class Text;
-    typedef boost::shared_ptr<Text> TextPtr;
-    typedef boost::weak_ptr<Text> TextWeakPtr;
-
-    class Comment;
-    typedef boost::shared_ptr<Comment> CommentPtr;
-    typedef boost::weak_ptr<Comment> CommentWeakPtr;
-
-    class Declaration;
-    typedef boost::shared_ptr<Declaration> DeclarationPtr;
-    typedef boost::weak_ptr<Declaration> DeclarationWeakPtr;
-
-    class Unknown;
-    typedef boost::shared_ptr<Unknown> UnknownPtr;
-    typedef boost::weak_ptr<Unknown> UnknownWeakPtr;
-
-    class ParserPos;
-    class ParserWarning;
-
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark WalkSink
+    #pragma mark
+
     class WalkSink
     {
     public:
@@ -127,6 +123,11 @@ namespace zsLib
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Node
+    #pragma mark
+
     class Node : public internal::Node
     {
     public:
@@ -262,64 +263,60 @@ namespace zsLib
 
       virtual NodePtr clone() const = 0;                    // creates a clone of this object and clone becomes root object
 
-      virtual String getValue() const                 {return String();}
+      virtual String getBalue() const                 {return String();}
 
     protected:
       Node();
-
-      const Node &operator=(const Node &);
     };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Document
+    #pragma mark
+
     class Document : public Node,
                      public internal::Document
     {
     public:
-      typedef std::list<String> StringList;
-      typedef std::list<XML::ParserWarning> Warnings;
+      static DocumentPtr create(
+                                bool inElementNameIsCaseSensative = true,
+                                bool inAttributeNameIsCaseSensative = true
+                                );
 
-      enum WriteFlags
-      {
-        WriteFlag_None =                                    0x00000000,
-        WriteFlag_ForceElementEndTag =                      0x00000001,
-        WriteFlag_NormalizeCDATA =                          0x00000002,
-        WriteFlag_EntityEncodeWindowsCarriageReturnInText = 0x00000004, // requires WriteFlag_NormalizeCDATA is set
-        WriteFlag_NormizeAttributeValue =                   0x00000008,
-      };
+      static DocumentPtr createFromParsedXML(
+                                             const char *inXMLDocument,
+                                             bool inElementNameIsCaseSensative = true,
+                                             bool inAttributeNameIsCaseSensative = true
+                                             );
 
-    public:
-      static DocumentPtr create();
+      static DocumentPtr createFromParsedJSON(
+                                              const char *inJSONDocument,
+                                              const char *forcedText = ZS_JSON_DEFAULT_FORCED_TEXT,
+                                              char attributePrefix = ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX,
+                                              bool inElementNameIsCaseSensative = true,
+                                              bool inAttributeNameIsCaseSensative = true
+                                              );
+
+      static DocumentPtr createFromAutoDetect(
+                                              const char *inDocument,
+                                              const char *forcedText = ZS_JSON_DEFAULT_FORCED_TEXT,
+                                              char attributePrefix = ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX,
+                                              bool inElementNameIsCaseSensative = true,
+                                              bool inAttributeNameIsCaseSensative = true
+                                              );
 
       // additional methods
-      ULONG getTabSize() const;
-      void setTabSize(ULONG inTabSize);
-
-      void addContainsNoChildrenElement(String inElement);
-      const StringList &getContainsNoChildrenElements();
-
       void setElementNameIsCaseSensative(bool inCaseSensative = true);
       bool isElementNameIsCaseSensative() const;
 
       void setAttributeNameIsCaseSensative(bool inCaseSensative = true);
       bool isAttributeNameIsCaseSensative() const;
 
-      void clearWarnings();
-      const Warnings &getWarnings() const;
-      void enableWarnings(bool inEnableWarnings)   {mEnableWarnings = inEnableWarnings;}
-      bool areWarningsEnabled()                    {return mEnableWarnings;}
-
-      void parse(const char *inXMLDocument); // must be terminated with a NUL character
-
-      ULONG getOutputSize() const;
-      boost::shared_array<char> write(ULONG *outLength = NULL) const;
-
-      ULONG getOutputSize(const NodePtr &onlyThisNode) const;
-      boost::shared_array<char> write(const NodePtr &onlyThisNode, ULONG *outLength = NULL) const;
-
-      void setWriteFlags(WriteFlags);
-      WriteFlags getWriteFlags() const;
+      boost::shared_array<char> writeAsXML(ULONG *outLength = NULL) const;
+      boost::shared_array<char> writeAsJSON(ULONG *outLength = NULL) const;
 
       // overrides
       virtual NodePtr clone() const;
@@ -331,13 +328,20 @@ namespace zsLib
       virtual DocumentPtr     toDocument() const   {return mThis.lock();}
 
     protected:
-      Document();
-      const Document &operator=(const Document &) {return *this;}
+      Document(
+               bool inElementNameIsCaseSensative = true,
+               bool inAttributeNameIsCaseSensative = true
+               );
     };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Element
+    #pragma mark
+
     class Element : public Node,
                     public internal::Element
     {
@@ -351,10 +355,10 @@ namespace zsLib
                      bool inIncludeTextOfChildElements = true
                      );
 
-      String getTextAndEntityDecode(
-                                    bool inCompressWhiteSpace = false,
-                                    bool inIncludeTextOfChildElements = true
-                                    );
+      String getTextDecoded(
+                            bool inCompressWhiteSpace = false,
+                            bool inIncludeTextOfChildElements = true
+                            );
 
       AttributePtr findAttribute(String inName) const;
       String getAttributeValue(String inName) const;
@@ -362,7 +366,7 @@ namespace zsLib
       AttributePtr findAttributeChecked(String inName) const throw(Exceptions::CheckFailed);
       String getAttributeValueChecked(String inName) const throw(Exceptions::CheckFailed);
 
-      bool setAttribute(String inName, String inValue);  // returns true if replacing existing attribute
+      bool setAttribute(String inName, String inValue, bool quoted = true);  // returns true if replacing existing attribute
       bool setAttribute(AttributePtr inAttribute);       // returns true if replacing existing attribute
       bool deleteAttribute(String inName);               // remove an existing attribute
 
@@ -388,12 +392,16 @@ namespace zsLib
 
     protected:
       Element();
-      const Element &operator=(const Element &) {return *this;}
     };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Attribute
+    #pragma mark
+
     class Attribute : public Node,
                       public internal::Attribute
     {
@@ -404,6 +412,8 @@ namespace zsLib
       void setName(String inName);     // sets the attribute name
 
       void setValue(String inValue);
+
+      void setQuoted(bool inQuoted);
 
       // overrides
       virtual NodePtr getFirstChild() const  {return NodePtr();}
@@ -424,6 +434,7 @@ namespace zsLib
       virtual void clear();
 
       virtual String getValue() const;
+      virtual String getValueDecoded() const;
 
       virtual NodeType::Type  getNodeType()        {return NodeType::Attribute;}
       virtual bool            isAttribute() const  {return true;}
@@ -432,7 +443,6 @@ namespace zsLib
 
     protected:
       Attribute();
-      const Attribute &operator=(const Attribute &) {return *this;}
 
       virtual void adoptAsFirstChild(NodePtr inNode);       // illegal
       virtual void adoptAsLastChild(NodePtr inNode);        // illegal
@@ -441,17 +451,34 @@ namespace zsLib
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Text
+    #pragma mark
+
     class Text : public Node,
                  public internal::Text
     {
     public:
+      enum Formats
+      {
+        Format_EntityEncoded,
+        Format_CDATA,
+        Format_JSONStringEncoded,
+        Format_JSONNumberEncoded,
+      };
+
+    public:
       static TextPtr create();
 
-      void setValue(const String &inText, bool inCDATAFormat = false);    // should be encoded with entities
+      void setValue(const String &inText, Formats format = Format_EntityEncoded);    // should be encoded with entities
       void setValueAndEntityEncode(const String &inText);
+      void setValueAndJSONEncode(const String &inText);
 
-      bool getOutputCDATA() const;
-      void setOutputCDATA(bool inOutputCDATA = true);
+      Formats getFormat() const;
+
+      Formats getOutputFormat() const;
+      void setOutputFormat(Formats format);
 
       // overrides
       virtual bool hasChildren()    {return false;}
@@ -460,8 +487,13 @@ namespace zsLib
       virtual NodePtr clone() const;
       virtual void clear();
 
-      virtual String getValue() const;       // encoded with entiries
-      virtual String getValueAndEntityDecode() const;
+      virtual String getValue() const;
+      virtual String getValueDecoded() const;
+      virtual String getValueInFormat(
+                                      Formats format,
+                                      bool normalize = false,
+                                      bool encode0xDCharactersInText = false
+                                      ) const;
 
       virtual NodeType::Type  getNodeType()  {return NodeType::Text;}
       virtual bool            isText() const {return true;}
@@ -470,7 +502,6 @@ namespace zsLib
 
     protected:
       Text();
-      const Text &operator=(const Text &) {return *this;}
 
       virtual void adoptAsFirstChild(NodePtr inNode);       // illegal
       virtual void adoptAsLastChild(NodePtr inNode);        // illegal
@@ -479,6 +510,11 @@ namespace zsLib
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Comment
+    #pragma mark
+
     class Comment : public Node,
                     public internal::Comment
     {
@@ -503,7 +539,6 @@ namespace zsLib
 
     protected:
       Comment();
-      const Comment &operator=(const Comment &) {return *this;}
 
       virtual void adoptAsFirstChild(NodePtr inNode);       // illegal
       virtual void adoptAsLastChild(NodePtr inNode);        // illegal
@@ -512,6 +547,11 @@ namespace zsLib
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Declaration
+    #pragma mark
+
     class Declaration : public Node,
                         public internal::Declaration
     {
@@ -548,12 +588,16 @@ namespace zsLib
 
     protected:
       Declaration();
-      const Declaration &operator=(const Declaration &) {return *this;}
     };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Unknown
+    #pragma mark
+
     class Unknown : public Node,
                     public internal::Unknown
     {
@@ -578,16 +622,19 @@ namespace zsLib
 
     protected:
       Unknown();
-      const Unknown &operator=(const Unknown &) {return *this;}
 
       virtual void adoptAsFirstChild(NodePtr inNode);       // illegal
       virtual void adoptAsLastChild(NodePtr inNode);        // illegal
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ParserPos
+    #pragma mark
 
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
     class ParserPos : public internal::ParserPos
     {
     public:
@@ -598,13 +645,19 @@ namespace zsLib
     public:
       ParserPos();
       ParserPos(const ParserPos &);
-      ParserPos(DocumentPtr inDocument);
+      ParserPos(
+                ParserPtr inParser,
+                DocumentPtr inDocument
+                );
 
       bool isSOF() const;  // SOF = start of file
       bool isEOF() const;  // EOF = end of file
 
       void setSOF(); // force the parse pos to the start of the file
       void setEOF(); // force the parse pos to be at the end of the file
+
+      void setParser(ParserPtr inParser);
+      ParserPtr getParser() const;
 
       void setDocument(DocumentPtr inDocument);
       DocumentPtr getDocument() const;
@@ -630,8 +683,10 @@ namespace zsLib
       bool isString(CSTR inString, bool inCaseSensative = true) const;
 
     protected:
+      friend class Parser;
       friend class Document;
-      ParserPos(Document &);
+
+      ParserPos(Parser &, Document &);
     };
 
     ParserPos operator+(const ParserPos &inPos, ULONG inDistance);
@@ -647,6 +702,11 @@ namespace zsLib
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ParserWarning
+    #pragma mark
+
     class ParserWarning
     {
     public:
@@ -664,27 +724,106 @@ namespace zsLib
       String getAsString(bool inIncludeEntireStack = true) const;
 
     protected:
-      friend class XML::internal::Document;
+      friend class XML::internal::Parser;
       ParserWarning(
                     ParserWarningTypes inWarningType,
-                    const XML::internal::Document::ParserStack &inStack
+                    const XML::internal::Parser::ParserStack &inStack
                     );
     };
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Parser
+    #pragma mark
+
     class Parser : public internal::Parser
     {
     public:
+      typedef internal::Parser::NoChildrenElementList NoChildrenElementList;
+
+    public:
+      static ParserPtr createXMLParser();
+      static ParserPtr createJSONParser(
+                                        const char *forcedText = ZS_JSON_DEFAULT_FORCED_TEXT,
+                                        char attributePrefix = ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX
+                                        );
+
+      static ParserPtr createAutoDetectParser(
+                                              const char *jsonForcedTextElement = ZS_JSON_DEFAULT_FORCED_TEXT,
+                                              char jsonAttributePrefix = ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX
+                                              );
+
+      virtual DocumentPtr parse(
+                                const char *inDocument,
+                                bool inElementNameIsCaseSensative = true,
+                                bool inAttributeNameIsCaseSensative = true
+                                );  // must be terminated with a NUL character
+
+      void clearWarnings();
+      const Warnings &getWarnings() const;
+      void enableWarnings(bool inEnableWarnings)   {mEnableWarnings = inEnableWarnings;}
+      bool areWarningsEnabled()                    {return mEnableWarnings;}
+
+      ULONG getTabSize() const;
+      void setTabSize(ULONG inTabSize);
+
+      void setNoChildrenElements(const NoChildrenElementList &noChildrenElementList);
+
+      ParserPtr toParser() const   {return mThis.lock();}
 
       // helper methods
       static String convertFromEntities(const String &inString);
 
-      static String makeTextEntitySafe(const String &inString, bool entityEncodeWindowsCarriageReturn = false);
+      static String makeTextEntitySafe(const String &inString, bool entityEncode0xD = false);
       static String makeAttributeEntitySafe(const String &inString, char willUseSurroundingQuotes = 0);
+
+      static String convertFromJSONEncoding(const String &inString);
+      static String convertToJSONEncoding(const String &inString);
+
+    protected:
+      Parser();
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Generator
+    #pragma mark
+
+    class Generator : public internal::Generator
+    {
+    public:
+      enum XMLWriteFlags
+      {
+        XMLWriteFlag_None =                   0x00000000,
+        XMLWriteFlag_ForceElementEndTag =     0x00000001,
+        XMLWriteFlag_NormalizeCDATA =         0x00000002,
+        XMLWriteFlag_EntityEncode0xDInText =  0x00000004, // requires WriteFlag_NormalizeCDATA is set
+        XMLWriteFlag_NormizeAttributeValue =  0x00000008,
+      };
+
+    public:
+      static GeneratorPtr createXMLGenerator(XMLWriteFlags writeFlags = XMLWriteFlag_None);
+      static GeneratorPtr createJSONGenerator(
+                                              const char *forcedText = ZS_JSON_DEFAULT_FORCED_TEXT,
+                                              char attributePrefix = ZS_JSON_DEFAULT_ATTRIBUTE_PREFIX
+                                              );
+
+      virtual ULONG getOutputSize(const NodePtr &onlyThisNode) const;
+      virtual boost::shared_array<char> write(const NodePtr &onlyThisNode, ULONG *outLength = NULL) const;
+
+      virtual GeneratorPtr toGenerator() const   {return mThis.lock();}
+
+      virtual XMLWriteFlags getXMLWriteFlags() const;
+
+    protected:
+      Generator();
+    };
 
   } // namespace XML
 

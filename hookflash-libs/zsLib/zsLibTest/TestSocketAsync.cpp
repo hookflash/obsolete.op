@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *

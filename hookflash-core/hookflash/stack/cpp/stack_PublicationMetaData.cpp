@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,18 +22,22 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/IPublication.h>
+#include <hookflash/stack/ILocation.h>
+#include <hookflash/stack/IPeer.h>
+#include <hookflash/stack/internal/stack_Location.h>
 
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
@@ -47,10 +51,29 @@ namespace hookflash
     {
       using zsLib::Stringize;
 
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::String String;
-      typedef zsLib::Time Time;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      static String debugNameValue(
+                                   bool &ioFirst,
+                                   const String &name,
+                                   const String &value,
+                                   bool addEquals = true
+                                   )
+      {
+        if (value.isEmpty()) return String();
+        if (ioFirst) {
+          ioFirst = false;
+          return name + "=" + value;
+        }
+        return String(", ") + name + (addEquals ? "=" : "") + value;
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -61,116 +84,64 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationMetaDataForPublicationRepositoryPtr IPublicationMetaDataForPublicationRepository::convert(IPublicationMetaDataPtr metaData)
-      {
-        return boost::dynamic_pointer_cast<IPublicationMetaDataForPublicationRepository>(metaData);
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaDataForPublicationRepositoryPtr IPublicationMetaDataForPublicationRepository::create(
-                                                                                                           ULONG version,
-                                                                                                           ULONG baseVersion,
-                                                                                                           ULONG lineage,
-                                                                                                           Sources source,
-                                                                                                           const char *creatorContactID,
-                                                                                                           const char *creatorLocationID,
-                                                                                                           const char *name,
-                                                                                                           const char *mimeType,
-                                                                                                           Encodings encoding,
-                                                                                                           const PublishToRelationshipsMap &relationships,
-                                                                                                           const char *publishedToContactID,
-                                                                                                           const char *publishedToLocationID,
-                                                                                                           Scopes scope,
-                                                                                                           Lifetimes lifetime,
-                                                                                                           Time expires
-                                                                                                           )
+      PublicationMetaDataPtr IPublicationMetaDataForPublicationRepository::create(
+                                                                                  ULONG version,
+                                                                                  ULONG baseVersion,
+                                                                                  ULONG lineage,
+                                                                                  LocationPtr creatorLocation,
+                                                                                  const char *name,
+                                                                                  const char *mimeType,
+                                                                                  Encodings encoding,
+                                                                                  const PublishToRelationshipsMap &relationships,
+                                                                                  LocationPtr publishedLocation,
+                                                                                  Time expires
+                                                                                  )
       {
         return PublicationMetaData::create(
                                            version,
                                            baseVersion,
                                            lineage,
-                                           source,
-                                           creatorContactID,
-                                           creatorLocationID,
+                                           creatorLocation,
                                            name,
                                            mimeType,
                                            encoding,
                                            relationships,
-                                           publishedToContactID,
-                                           publishedToLocationID,
-                                           scope,
-                                           lifetime,
+                                           publishedLocation,
                                            expires
                                            );
       }
 
       //-----------------------------------------------------------------------
-      IPublicationMetaDataForPublicationRepositoryPtr IPublicationMetaDataForPublicationRepository::createFrom(IPublicationMetaDataPtr metaData)
+      PublicationMetaDataPtr IPublicationMetaDataForPublicationRepository::createFrom(IPublicationMetaDataPtr metaData)
       {
         return PublicationMetaData::create(
                                            metaData->getVersion(),
                                            metaData->getBaseVersion(),
                                            metaData->getLineage(),
-                                           metaData->getSource(),
-                                           metaData->getCreatorContactID(),
-                                           metaData->getCreatorLocationID(),
+                                           Location::convert(metaData->getCreatorLocation()),
                                            metaData->getName(),
                                            metaData->getMimeType(),
                                            metaData->getEncoding(),
                                            metaData->getRelationships(),
-                                           metaData->getPublishedToContactID(),
-                                           metaData->getPublishedToLocationID(),
-                                           metaData->getScope(),
-                                           metaData->getLifetime(),
+                                           Location::convert(metaData->getPublishedLocation()),
                                            metaData->getExpires()
                                            );
       }
 
       //-----------------------------------------------------------------------
-      IPublicationMetaDataForPublicationRepositoryPtr IPublicationMetaDataForPublicationRepository::createFinderSource()
+      PublicationMetaDataPtr IPublicationMetaDataForPublicationRepository::createForSource(LocationPtr location)
       {
         PublishToRelationshipsMap empty;
         return PublicationMetaData::create(
                                            0,
                                            0,
                                            0,
-                                           IPublicationMetaData::Source_Peer,
+                                           location,
                                            "",
                                            "",
-                                           "",
-                                           "",
-                                           IPublicationMetaData::Encoding_XML,
+                                           IPublicationMetaData::Encoding_JSON,
                                            empty,
-                                           "",
-                                           "",
-                                           IPublicationMetaData::Scope_Location,
-                                           IPublicationMetaData::Lifetime_Permanent,
-                                           Time()
-                                           );
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaDataForPublicationRepositoryPtr IPublicationMetaDataForPublicationRepository::createPeerSource(
-                                                                                                                     const char *peerContactID,
-                                                                                                                     const char *peerLocationID
-                                                                                                                     )
-      {
-        PublishToRelationshipsMap empty;
-        return PublicationMetaData::create(
-                                           0,
-                                           0,
-                                           0,
-                                           IPublicationMetaData::Source_Peer,
-                                           peerContactID,
-                                           peerLocationID,
-                                           "",
-                                           "",
-                                           IPublicationMetaData::Encoding_XML,
-                                           empty,
-                                           peerContactID,
-                                           peerLocationID,
-                                           IPublicationMetaData::Scope_Location,
-                                           IPublicationMetaData::Lifetime_Permanent,
+                                           location,
                                            Time()
                                            );
       }
@@ -180,52 +151,37 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPublicationMetaDataForPublicationRepository
+      #pragma mark IPublicationMetaDataForMessages
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationMetaDataForMessagesPtr IPublicationMetaDataForMessages::convert(IPublicationMetaDataPtr metaData)
-      {
-        return boost::dynamic_pointer_cast<IPublicationMetaDataForMessages>(metaData);
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaDataForMessagesPtr IPublicationMetaDataForMessages::create(
-                                                                                 ULONG version,
-                                                                                 ULONG baseVersion,
-                                                                                 ULONG lineage,
-                                                                                 Sources source,
-                                                                                 const char *creatorContactID,
-                                                                                 const char *creatorLocationID,
-                                                                                 const char *name,
-                                                                                 const char *mimeType,
-                                                                                 Encodings encoding,
-                                                                                 const PublishToRelationshipsMap &relationships,
-                                                                                 const char *publishedToContactID,
-                                                                                 const char *publishedToLocationID,
-                                                                                 Scopes scope,
-                                                                                 Lifetimes lifetime,
-                                                                                 Time expires
-                                                                                 )
+      PublicationMetaDataPtr IPublicationMetaDataForMessages::create(
+                                                                     ULONG version,
+                                                                     ULONG baseVersion,
+                                                                     ULONG lineage,
+                                                                     LocationPtr creatorLocation,
+                                                                     const char *name,
+                                                                     const char *mimeType,
+                                                                     Encodings encoding,
+                                                                     const PublishToRelationshipsMap &relationships,
+                                                                     LocationPtr publishedLocation,
+                                                                     Time expires
+                                                                     )
       {
         return PublicationMetaData::create(
                                            version,
                                            baseVersion,
                                            lineage,
-                                           source,
-                                           creatorContactID,
-                                           creatorLocationID,
+                                           creatorLocation,
                                            name,
                                            mimeType,
                                            encoding,
                                            relationships,
-                                           publishedToContactID,
-                                           publishedToLocationID,
-                                           scope,
-                                           lifetime,
+                                           publishedLocation,
                                            expires
                                            );
       }
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -239,36 +195,27 @@ namespace hookflash
                                                ULONG version,
                                                ULONG baseVersion,
                                                ULONG lineage,
-                                               Sources source,
-                                               const char *creatorContactID,
-                                               const char *creatorLocationID,
+                                               LocationPtr creatorLocation,
                                                const char *name,
                                                const char *mimeType,
                                                Encodings encoding,
                                                const PublishToRelationshipsMap &relationships,
-                                               const char *publishedToContactID,
-                                               const char *publishedToLocationID,
-                                               Scopes scope,
-                                               Lifetimes lifetime,
+                                               LocationPtr publishedLocation,
                                                Time expires
                                                ) :
         mID(zsLib::createPUID()),
         mVersion(version),
         mBaseVersion(baseVersion),
         mLineage(lineage),
-        mCreatorContactID(creatorContactID ? creatorContactID : ""),
-        mCreatorLocationID(creatorLocationID ? creatorLocationID : ""),
+        mCreatorLocation(creatorLocation),
         mName(name ? name : ""),
         mMimeType(mimeType ? mimeType : ""),
         mEncoding(encoding),
-        mSource(source),
-        mScope(scope),
-        mLifetime(lifetime),
-        mExpires(expires),
-        mPublishedToContactID(publishedToContactID ? publishedToContactID : ""),
-        mPublishedToLocationID(publishedToLocationID ? publishedToLocationID : ""),
-        mPublishedRelationships(relationships)
+        mPublishedRelationships(relationships),
+        mPublishedLocation(publishedLocation),
+        mExpires(expires)
       {
+        ZS_LOG_DEBUG(log("created") + getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -284,48 +231,9 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      PublicationMetaDataPtr PublicationMetaData::create(
-                                                         ULONG version,
-                                                         ULONG baseVersion,
-                                                         ULONG lineage,
-                                                         Sources source,
-                                                         const char *creatorContactID,
-                                                         const char *creatorLocationID,
-                                                         const char *name,
-                                                         const char *mimeType,
-                                                         Encodings encoding,
-                                                         const PublishToRelationshipsMap &relationships,
-                                                         const char *publishedToContactID,
-                                                         const char *publishedToLocationID,
-                                                         Scopes scope,
-                                                         Lifetimes lifetime,
-                                                         Time expires
-                                                         )
+      PublicationMetaDataPtr PublicationMetaData::convert(IPublicationMetaDataPtr publication)
       {
-        PublicationMetaDataPtr pThis(new PublicationMetaData(
-                                                             version,
-                                                             baseVersion,
-                                                             lineage,
-                                                             source,
-                                                             creatorContactID,
-                                                             creatorLocationID,
-                                                             name,
-                                                             mimeType,
-                                                             encoding,
-                                                             relationships,
-                                                             publishedToContactID,
-                                                             publishedToLocationID,
-                                                             scope,
-                                                             lifetime,
-                                                             expires
-                                                             )
-                                     );
-        pThis->mThisWeak = pThis;
-        pThis->init();
-        return pThis;
+        return boost::dynamic_pointer_cast<PublicationMetaData>(publication);
       }
 
       //-----------------------------------------------------------------------
@@ -338,32 +246,25 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationPtr PublicationMetaData::getPublication() const
+      IPublicationPtr PublicationMetaData::toPublication() const
       {
         AutoRecursiveLock lock(mLock);
         return mPublication;
       }
 
-      String PublicationMetaData::getCreatorContactID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getCreatorContactID();
-        return mCreatorContactID;
-      }
-
       //-----------------------------------------------------------------------
-      String PublicationMetaData::getCreatorLocationID() const
+      ILocationPtr PublicationMetaData::getCreatorLocation() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getCreatorLocationID();
-        return mCreatorLocationID;
+        if (mPublication) return mPublication->forPublicationMetaData().getCreatorLocation();
+        return mCreatorLocation;
       }
 
       //-----------------------------------------------------------------------
       String PublicationMetaData::getName() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getName();
+        if (mPublication) return mPublication->forPublicationMetaData().getName();
         return mName;
       }
 
@@ -371,7 +272,7 @@ namespace hookflash
       String PublicationMetaData::getMimeType() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getMimeType();
+        if (mPublication) return mPublication->forPublicationMetaData().getMimeType();
         return mMimeType;
       }
 
@@ -379,7 +280,7 @@ namespace hookflash
       ULONG PublicationMetaData::getVersion() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getVersion();
+        if (mPublication) return mPublication->forPublicationMetaData().getVersion();
         return mVersion;
       }
 
@@ -387,7 +288,7 @@ namespace hookflash
       ULONG PublicationMetaData::getBaseVersion() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getBaseVersion();
+        if (mPublication) return mPublication->forPublicationMetaData().getBaseVersion();
         return mBaseVersion;
       }
 
@@ -395,7 +296,7 @@ namespace hookflash
       ULONG PublicationMetaData::getLineage() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getLineage();
+        if (mPublication) return mPublication->forPublicationMetaData().getLineage();
         return mLineage;
       }
 
@@ -403,74 +304,31 @@ namespace hookflash
       IPublicationMetaData::Encodings PublicationMetaData::getEncoding() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getEncoding();
+        if (mPublication) return mPublication->forPublicationMetaData().getEncoding();
         return mEncoding;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Sources PublicationMetaData::getSource() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getSource();
-        return mSource;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Scopes PublicationMetaData::getScope() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getScope();
-        return mScope;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Lifetimes PublicationMetaData::getLifetime() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getLifetime();
-        return mLifetime;
       }
 
       //-----------------------------------------------------------------------
       Time PublicationMetaData::getExpires() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getExpires();
+        if (mPublication) return mPublication->forPublicationMetaData().getExpires();
         return mExpires;
       }
 
       //-----------------------------------------------------------------------
-      String PublicationMetaData::getPublishedToContactID() const
+      ILocationPtr PublicationMetaData::getPublishedLocation() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getPublishedToContactID();
-        return mPublishedToContactID;
-      }
-
-      //-----------------------------------------------------------------------
-      String PublicationMetaData::getPublishedToLocationID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getPublishedToLocationID();
-        return mPublishedToLocationID;
-      }
-
-      //-----------------------------------------------------------------------
-      void PublicationMetaData::getRelationships(PublishToRelationshipsMap &outRelationships) const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mPublication) {
-          mPublication->getRelationships(outRelationships);
-          return;
-        }
-        outRelationships = mPublishedRelationships;
+        if (mPublication) return mPublication->forPublicationMetaData().getPublishedLocation();
+        return mPublishedLocation;
       }
 
       //-----------------------------------------------------------------------
       const IPublicationMetaData::PublishToRelationshipsMap &PublicationMetaData::getRelationships() const
       {
         AutoRecursiveLock lock(mLock);
-        if (mPublication) return mPublication->getRelationships();
+        if (mPublication) return mPublication->forPublicationMetaData().getRelationships();
         return mPublishedRelationships;
       }
 
@@ -483,29 +341,98 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationMetaData::isMatching(
-                                   const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
-                                   bool ignoreLineage
-                                   ) const
+      PublicationMetaDataPtr PublicationMetaData::create(
+                                                         ULONG version,
+                                                         ULONG baseVersion,
+                                                         ULONG lineage,
+                                                         LocationPtr creatorLocation,
+                                                         const char *name,
+                                                         const char *mimeType,
+                                                         Encodings encoding,
+                                                         const PublishToRelationshipsMap &relationships,
+                                                         LocationPtr publishedLocation,
+                                                         Time expires
+                                                         )
+      {
+        PublicationMetaDataPtr pThis(new PublicationMetaData(
+                                                             version,
+                                                             baseVersion,
+                                                             lineage,
+                                                             creatorLocation,
+                                                             name,
+                                                             mimeType,
+                                                             encoding,
+                                                             relationships,
+                                                             publishedLocation,
+                                                             expires
+                                                             )
+                                     );
+        pThis->mThisWeak = pThis;
+        pThis->init();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PublicationMetaData => IPublicationMetaDataForPublicationRepository
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PublicationMetaData::toDebugString(IPublicationMetaDataPtr metaData, bool includeCommaPrefix)
+      {
+        if (!metaData) return includeCommaPrefix ? String(", publication meta data=(null)") : String("publication meta data=(null)");
+        return PublicationMetaData::convert(metaData)->getDebugValuesString(includeCommaPrefix);
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationMetaDataPtr PublicationMetaData::toPublicationMetaData() const
+      {
+        return mThisWeak.lock();
+      }
+
+      //-----------------------------------------------------------------------
+      LocationPtr PublicationMetaData::getCreatorLocation(bool) const
       {
         AutoRecursiveLock lock(mLock);
-        if (metaData->getSource() != getSource()) return false;
+        return mCreatorLocation;
+      }
+
+      //-----------------------------------------------------------------------
+      LocationPtr PublicationMetaData::getPublishedLocation(bool) const
+      {
+        AutoRecursiveLock lock(mLock);
+        return mPublishedLocation;
+      }
+
+      //-----------------------------------------------------------------------
+      bool PublicationMetaData::isMatching(
+                                           const IPublicationMetaDataPtr &metaData,
+                                           bool ignoreLineage
+                                           ) const
+      {
+        AutoRecursiveLock lock(mLock);
+
+        const char *reason = NULL;
+        if (0 != ILocationForPublication::locationCompare(mCreatorLocation, metaData->getCreatorLocation(), reason)) {
+          return false;
+        }
+
         if (!ignoreLineage) {
           if (metaData->getLineage() != getLineage()) return false;
         }
         if (metaData->getName() != getName()) return false;
-        if (metaData->getCreatorContactID() != getCreatorContactID()) return false;
-        if (metaData->getCreatorLocationID() != getCreatorLocationID()) return false;
-        if (IPublicationMetaData::Source_Peer == getSource()) {
-          if (metaData->getPublishedToContactID() != getPublishedToContactID()) return false;
-          if (metaData->getPublishedToLocationID() != getPublishedToLocationID()) return false;
+        if (0 != ILocationForPublication::locationCompare(mPublishedLocation, metaData->getPublishedLocation(), reason)) {
+          return false;
         }
         return true;
       }
 
       //-----------------------------------------------------------------------
       bool PublicationMetaData::isLessThan(
-                                           const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                           const IPublicationMetaDataPtr &metaData,
                                            bool ignoreLineage
                                            ) const
       {
@@ -514,39 +441,38 @@ namespace hookflash
         const char *reason = "match";
 
         {
-          if (getSource() < metaData->getSource()) {reason = "source"; goto result_true;}
-          if (getSource() > metaData->getSource()) {reason = "source"; goto result_false;}
+          int compare = ILocationForPublication::locationCompare(mCreatorLocation, metaData->getCreatorLocation(), reason);
+
+          if (compare < 0) {goto result_true;}
+          if (compare > 0) {goto result_false;}
+
           if (!ignoreLineage) {
             if (getLineage() < metaData->getLineage()) {reason = "lineage"; goto result_true;}
             if (getLineage() > metaData->getLineage()) {reason = "lineage"; goto result_false;}
           }
           if (getName() < metaData->getName()) {reason = "name"; goto result_true;}
           if (getName() > metaData->getName()) {reason = "name"; goto result_false;}
-          if (getCreatorContactID() < metaData->getCreatorContactID()) {reason = "creator contact ID"; goto result_true;}
-          if (getCreatorContactID() > metaData->getCreatorContactID()) {reason = "creator contact ID"; goto result_false;}
-          if (getCreatorLocationID() < metaData->getCreatorLocationID()) {reason = "creator location ID"; goto result_true;}
-          if (getCreatorLocationID() > metaData->getCreatorLocationID()) {reason = "creator location ID"; goto result_false;}
-          if (IPublicationMetaData::Source_Peer == getSource()) {
-            if (getPublishedToContactID() < metaData->getPublishedToContactID()) {reason = "published to contact ID"; goto result_true;}
-            if (getPublishedToContactID() > metaData->getPublishedToContactID()) {reason = "published to contact ID"; goto result_false;}
-            if (getPublishedToLocationID() < metaData->getPublishedToLocationID()) {reason = "published to location ID"; goto result_true;}
-            if (getPublishedToLocationID() > metaData->getPublishedToLocationID()) {reason = "published to location ID"; goto result_false;}
-          }
+
+          compare = ILocationForPublication::locationCompare(mPublishedLocation, metaData->getPublishedLocation(), reason);
+          if (compare < 0) {goto result_true;}
+          if (compare > 0) {goto result_false;}
           goto result_false;
         }
 
       result_true:
         {
+          IPublicationPtr publication = metaData->toPublication();
           ZS_LOG_TRACE(log("less than is TRUE") + ", reason=" + reason)
           ZS_LOG_TRACE(log("less than X (TRUE):") + getDebugValuesString())
-          ZS_LOG_TRACE(log("less than Y (TRUE):") + metaData->getDebugValuesString())
+          ZS_LOG_TRACE(log("less than Y (TRUE):") + (publication ? Publication::convert(publication)->forPublicationMetaData().getDebugValuesString() : PublicationMetaData::convert(metaData)->getDebugValuesString()))
           return true;
         }
       result_false:
         {
+          IPublicationPtr publication = metaData->toPublication();
           ZS_LOG_TRACE(log("less than is FALSE") + ", reason=" + reason)
           ZS_LOG_TRACE(log("less than X (FALSE):") + getDebugValuesString())
-          ZS_LOG_TRACE(log("less than Y (FALSE):") + metaData->getDebugValuesString())
+          ZS_LOG_TRACE(log("less than Y (FALSE):") + (publication ? Publication::convert(publication)->forPublicationMetaData().getDebugValuesString() : PublicationMetaData::convert(metaData)->getDebugValuesString()))
         }
         return false;
       }
@@ -566,26 +492,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationMetaData::setSource(IPublicationMetaData::Sources source)
+      void PublicationMetaData::setCreatorLocation(LocationPtr location)
       {
         AutoRecursiveLock lock(mLock);
-        mSource = source;
+        mCreatorLocation = location;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationMetaData::setCreatorContact(const char *contactID, const char *locationID)
+      void PublicationMetaData::setPublishedLocation(LocationPtr location)
       {
         AutoRecursiveLock lock(mLock);
-        mCreatorContactID = contactID;
-        mCreatorLocationID = locationID;
-      }
-
-      //-----------------------------------------------------------------------
-      void PublicationMetaData::setPublishedToContact(const char *contactID, const char *locationID)
-      {
-        AutoRecursiveLock lock(mLock);
-        mPublishedToContactID = contactID;
-        mPublishedToLocationID = locationID;
+        mPublishedLocation = location;
       }
 
       //-----------------------------------------------------------------------
@@ -596,33 +513,27 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      static String debugNameValue(const String &name, const String &value)
-      {
-        if (value.isEmpty()) return String();
-        return String(", ") + name + "=" + value;
-      }
-
-      //-----------------------------------------------------------------------
-      String PublicationMetaData::getDebugValuesString() const
+      String PublicationMetaData::getDebugValuesString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(mLock);
+        if (mPublication) return mPublication->forPublicationMetaData().getDebugValuesString();
 
-        return debugNameValue("id", Stringize<PUID>(mID).string())
-             + debugNameValue("mapped to publication", (mPublication ? "true" : "false"))
-             + debugNameValue("source", toString(getSource()))
-             + debugNameValue("name", getName())
-             + debugNameValue("version", (0 == mVersion ? String() : Stringize<ULONG>(getVersion()).string()))
-             + debugNameValue("base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(getBaseVersion()).string()))
-             + debugNameValue("lineage", (0 == mLineage ? String() : Stringize<ULONG>(getLineage()).string()))
-             + debugNameValue("creator contact ID", getCreatorContactID())
-             + debugNameValue("creator location ID", getCreatorLocationID())
-             + debugNameValue("published to contact ID", getPublishedToContactID())
-             + debugNameValue("published to location ID", getPublishedToLocationID())
-             + debugNameValue("mime type", getMimeType())
-             + debugNameValue("lifetime", toString(getLifetime()))
-             + debugNameValue("scope", toString(getScope()))
-             + debugNameValue("expires", (Time() == mExpires ? String() : Stringize<Time>(getExpires()).string()))
-             + debugNameValue("total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
+        LocationPtr creatorLocation = Location::convert(getCreatorLocation());
+        LocationPtr publishedLocation = Location::convert(getPublishedLocation());
+
+        bool first = !includeCommaPrefix;
+
+        return debugNameValue(first, "id", Stringize<PUID>(mID).string())
+             + debugNameValue(first, "mapped to publication", (mPublication ? "true" : "false"))
+             + debugNameValue(first, "name", getName())
+             + debugNameValue(first, "version", (0 == mVersion ? String() : Stringize<ULONG>(getVersion()).string()))
+             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(getBaseVersion()).string()))
+             + debugNameValue(first, "lineage", (0 == mLineage ? String() : Stringize<ULONG>(getLineage()).string()))
+             + debugNameValue(first, "creator: ", creatorLocation ? creatorLocation->forPublication().getDebugValueString(false) : String(), false)
+             + debugNameValue(first, "published: ", publishedLocation ? publishedLocation->forPublication().getDebugValueString(false) : String(), false)
+             + debugNameValue(first, "mime type", getMimeType())
+             + debugNameValue(first, "expires", (Time() == mExpires ? String() : Stringize<Time>(getExpires()).string()))
+             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
       }
 
       //-----------------------------------------------------------------------
@@ -636,7 +547,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String PublicationMetaData::log(const char *message) const
       {
-        return String("PublicationMetaData [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PublicationMetaData [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
       }
     }
 
@@ -648,42 +559,18 @@ namespace hookflash
     #pragma mark IPublicationMetaData
     #pragma mark
 
+    //-------------------------------------------------------------------------
+    String IPublicationMetaData::toDebugString(IPublicationMetaDataPtr metaData, bool includeCommaPrefix)
+    {
+      return internal::PublicationMetaData::toDebugString(metaData, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
     const char *IPublicationMetaData::toString(Encodings encoding)
     {
       switch (encoding) {
         case Encoding_Binary: return "Binary";
-        case Encoding_XML:    return "XML";
-      }
-      return "UNDEFINED";
-    }
-
-    //-------------------------------------------------------------------------
-    const char *IPublicationMetaData::toString(Sources source)
-    {
-      switch (source) {
-        case Source_Local:    return "Local";
-        case Source_Finder:   return "Finder";
-        case Source_Peer:     return "Peer";
-      }
-      return "UNDEFINED";
-    }
-
-    //-------------------------------------------------------------------------
-    const char *IPublicationMetaData::toString(Scopes scope)
-    {
-      switch (scope) {
-        case Scope_Location:  return "Location";
-        case Scope_Contact:   return "Contact";
-      }
-      return "UNDEFINED";
-    }
-
-    //-------------------------------------------------------------------------
-    const char *IPublicationMetaData::toString(Lifetimes lifetime)
-    {
-      switch (lifetime) {
-        case Lifetime_Session:    return "Session";
-        case Lifetime_Permanent:  return "Permanent";
+        case Encoding_JSON:   return "json";
       }
       return "UNDEFINED";
     }

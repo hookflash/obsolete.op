@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,21 +22,22 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <hookflash/services/internal/hookflashTypes.h>
+#include <hookflash/services/internal/types.h>
 #include <hookflash/services/IHTTP.h>
 
+#include <zsLib/IPAddress.h>
 #include <zsLib/Socket.h>
-#include <CryptoPP/secblock.h>
-#include <CryptoPP/queue.h>
+#include <cryptopp/secblock.h>
+#include <cryptopp/queue.h>
 #include <curl/curl.h>
 
 namespace hookflash
@@ -45,7 +46,7 @@ namespace hookflash
   {
     namespace internal
     {
-      class HTTPGlobalInit;
+      class HTTPGlobalSafeReference;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -58,15 +59,7 @@ namespace hookflash
       class HTTP : public IHTTP
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::ThreadPtr ThreadPtr;
-        typedef zsLib::EventPtr EventPtr;
-        typedef zsLib::IPAddress IPAddress;
-        typedef zsLib::SocketPtr SocketPtr;
-
-        friend class HTTPGlobalInit;
+        friend class HTTPGlobalSafeReference;
 
         class HTTPQuery;
         typedef boost::shared_ptr<HTTPQuery> HTTPQueryPtr;
@@ -145,10 +138,6 @@ namespace hookflash
 
         class HTTPQuery : public IHTTPQuery
         {
-        public:
-          typedef CryptoPP::SecByteBlock SecureByteBlock;
-          typedef CryptoPP::ByteQueue ByteQueue;
-
         protected:
           HTTPQuery(
                     HTTPPtr outer,
@@ -178,6 +167,7 @@ namespace hookflash
 
           virtual bool isComplete() const;
           virtual bool wasSuccessful() const;
+          virtual HTTPStatusCodes getStatusCode() const;
           virtual long getResponseCode() const;
 
           virtual ULONG getHeaderReadSizeAvailableInBtytes() const;
@@ -284,6 +274,7 @@ namespace hookflash
         mutable RecursiveLock mLock;
         PUID mID;
         HTTPWeakPtr mThisWeak;
+        HTTPPtr mGracefulShutdownReference;
 
         ThreadPtr mThread;
         bool mShouldShutdown;

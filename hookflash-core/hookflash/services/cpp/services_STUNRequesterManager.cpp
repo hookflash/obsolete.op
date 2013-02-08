@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,29 +22,21 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_STUNRequesterManager.h>
 #include <hookflash/services/internal/services_STUNRequester.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
-
-using zsLib::AutoRecursiveLock;
-using zsLib::IPAddress;
-using zsLib::BYTE;
-using zsLib::QWORD;
-using zsLib::String;
-using zsLib::Stringize;
-using zsLib::PUID;
 
 namespace hookflash
 {
@@ -52,6 +44,9 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Stringize;
+
+      //-----------------------------------------------------------------------
       static STUNRequesterManager::QWORDPair getKey(STUNPacketPtr stun)
       {
         BYTE buffer[sizeof(QWORD)*2];
@@ -69,6 +64,10 @@ namespace hookflash
         return STUNRequesterManager::QWORDPair(q1, q2);
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       class STUNRequesterManagerGlobal
       {
       public:
@@ -85,16 +84,19 @@ namespace hookflash
       // ensure the object is constructed
       static STUNRequesterManagerGlobal gSTUNRequesterManagerGlobalInit;
 
+      //-----------------------------------------------------------------------
       static void getGlobalInit()
       {
         return gSTUNRequesterManagerGlobalInit.noop();
       }
 
+      //-----------------------------------------------------------------------
       STUNRequesterManager::STUNRequesterManager() :
         mID(zsLib::createPUID())
       {
       }
 
+      //-----------------------------------------------------------------------
       STUNRequesterManagerPtr STUNRequesterManager::create()
       {
         STUNRequesterManagerPtr pThis(new STUNRequesterManager);
@@ -102,6 +104,7 @@ namespace hookflash
         return pThis;
       }
 
+      //-----------------------------------------------------------------------
       STUNRequesterManagerPtr STUNRequesterManager::singleton()
       {
         static STUNRequesterManagerPtr pThis = create();
@@ -109,6 +112,7 @@ namespace hookflash
         return pThis;
       }
 
+      //-----------------------------------------------------------------------
       void STUNRequesterManager::monitorStart(
                                               STUNRequesterPtr requester,
                                               STUNPacketPtr request
@@ -122,6 +126,7 @@ namespace hookflash
         mRequesters[key] = STUNRequesterPair(requester, requester.get());
       }
 
+      //-----------------------------------------------------------------------
       void STUNRequesterManager::monitorStop(STUNRequester *requester)
       {
         ZS_THROW_INVALID_USAGE_IF(!requester)
@@ -137,8 +142,9 @@ namespace hookflash
         }
       }
 
+      //-----------------------------------------------------------------------
       ISTUNRequesterPtr STUNRequesterManager::handleSTUNPacket(
-                                                               zsLib::IPAddress fromIPAddress,
+                                                               IPAddress fromIPAddress,
                                                                STUNPacketPtr stun
                                                                )
       {
@@ -162,7 +168,7 @@ namespace hookflash
           STUNRequesterMap::iterator iter = mRequesters.find(key);
           if (iter == mRequesters.end()) {
             ZS_LOG_TRACE(log("did not find STUN requester for STUN packet"))
-            stun->log(zsLib::Log::Trace, "handleSTUNPacket-requester-not-found");
+            stun->log(Log::Trace, "handleSTUNPacket-requester-not-found");
             return ISTUNRequesterPtr();
           }
 
@@ -200,7 +206,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      zsLib::String STUNRequesterManager::log(const char *message) const
+      //-----------------------------------------------------------------------
+      String STUNRequesterManager::log(const char *message) const
       {
         return String("STUNRequesterManager [") + Stringize<PUID>(mID).string() + "] " + message;
       }
@@ -210,9 +217,9 @@ namespace hookflash
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     ISTUNRequesterPtr ISTUNRequesterManager::handlePacket(
-                                                          zsLib::IPAddress fromIPAddress,
-                                                          const zsLib::BYTE *packet,
-                                                          zsLib::ULONG packetLengthInBytes,
+                                                          IPAddress fromIPAddress,
+                                                          const BYTE *packet,
+                                                          ULONG packetLengthInBytes,
                                                           STUNPacket::RFCs allowedRFCs
                                                           )
     {
@@ -226,8 +233,9 @@ namespace hookflash
       return handleSTUNPacket(fromIPAddress, stun);
     }
 
+    //-------------------------------------------------------------------------
     ISTUNRequesterPtr ISTUNRequesterManager::handleSTUNPacket(
-                                                              zsLib::IPAddress fromIPAddress,
+                                                              IPAddress fromIPAddress,
                                                               STUNPacketPtr stun
                                                               )
     {

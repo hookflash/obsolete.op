@@ -1,37 +1,13 @@
 
-#include <iostream>
+#include "boost_replacement.h"
 
-#include <zsLib/zsHelpers.h>
-
-namespace BoostReplacement
-{
-  static zsLib::ULONG &getGlobalPassedVar()
-  {
-    static zsLib::ULONG value = 0;
-    return value;
-  }
-
-  static zsLib::ULONG &getGlobalFailedVar()
-  {
-    static zsLib::ULONG value = 0;
-    return value;
-  }
-
-  void passed()
-  {
-    zsLib::atomicIncrement(getGlobalPassedVar());
-  }
-  void failed()
-  {
-    zsLib::atomicIncrement(getGlobalFailedVar());
-  }
-}
+#include <zsLib/helpers.h>
 
 int main (int argc, char * const argv[]) {
   // insert code here...
-  std::cout << "PASSED:       [" << BoostReplacement::getGlobalPassedVar() << "]\n";
+  BoostReplacement::output();
+
   if (0 != BoostReplacement::getGlobalFailedVar()) {
-    std::cout << "***FAILED***: [" << BoostReplacement::getGlobalFailedVar() << "]\n";
     return -1;
   }
   return 0;

@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_TIMER_H_625827a73b7747cea09db99f967d6a64
 #define ZSLIB_TIMER_H_625827a73b7747cea09db99f967d6a64
 
-#include <zsLib/internal/Timer.h>
+#include <zsLib/internal/zsLib_Timer.h>
 
 #define ZSLIB_MAX_TIMER_FIRED_AT_ONCE   5
 

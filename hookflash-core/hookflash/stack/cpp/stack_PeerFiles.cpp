@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,24 +22,23 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_PeerFiles.h>
-#include <hookflash/stack/internal/stack_PeerContactProfile.h>
 #include <hookflash/stack/internal/stack_PeerFilePublic.h>
 #include <hookflash/stack/internal/stack_PeerFilePrivate.h>
+#include <hookflash/stack/internal/stack_Helper.h>
+
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
+#include <zsLib/Stringize.h>
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
-
-using namespace zsLib::XML;
-using zsLib::PUID;
 
 namespace hookflash
 {
@@ -47,113 +46,156 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Stringize;
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerFiles
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       PeerFiles::PeerFiles() :
         mID(zsLib::createPUID())
       {
+        ZS_LOG_DEBUG(log("created"))
       }
 
-      PeerFilesPtr PeerFiles::generatePeerFile(
-                                               const char *password,
-                                               zsLib::XML::ElementPtr signedSalt
-                                               )
+      //-----------------------------------------------------------------------
+      PeerFiles::~PeerFiles()
       {
-        return PeerFilePrivate::generate(PeerFilesPtr(new PeerFiles), password, signedSalt);
+        mThisWeak.reset();
+        ZS_LOG_DEBUG(log("destroyed"))
       }
 
-      PeerFilesPtr PeerFiles::loadPeerFilesFromXML(
-                                                   const char *password,
-                                                   zsLib::XML::ElementPtr privatePeerRootElement
-                                                   )
+      //-----------------------------------------------------------------------
+      PeerFilesPtr PeerFiles::convert(IPeerFilesPtr object)
       {
-        return PeerFilePrivate::loadFromXML(PeerFilesPtr(new PeerFiles), password, privatePeerRootElement);
+        return boost::dynamic_pointer_cast<PeerFiles>(object);
       }
 
-      bool PeerFiles::loadContactProfileFromXML(
-                                                const char *password,
-                                                zsLib::XML::ElementPtr contactProfileRootElement
-                                                )
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerFiles => IPeerFiles
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PeerFiles::toDebugString(IPeerFilesPtr peerFiles, bool includeCommaPrefix)
       {
-        IPeerFilePrivatePtr privatePeer = getPrivate();
-        if (!privatePeer) return false;
-
-        zsLib::String contactProfileSecret = privatePeer->getContactProfileSecret(password);
-        if (contactProfileSecret.isEmpty()) return false;
-
-        PeerContactProfilePtr contactProfile = PeerContactProfile::createFromXML(
-                                                                                 contactProfileRootElement,
-                                                                                 contactProfileSecret,
-                                                                                 mThisWeak.lock()
-                                                                                 );
-        if (!contactProfile) return false;
-
-        mContactProfile = contactProfile;
-        return true;
+        if (!peerFiles) return includeCommaPrefix ? String(", peer files=(null)") : String("peer files=(null)");
+        PeerFilesPtr pThis = PeerFiles::convert(peerFiles);
+        return pThis->getDebugValueString(includeCommaPrefix);
       }
 
-      bool PeerFiles::loadContactProfileFromExistingContactProfile(
-                                                                   const char *password,
-                                                                   IPeerContactProfilePtr contactProfile
-                                                                   )
+      //-----------------------------------------------------------------------
+      PeerFilesPtr PeerFiles::generate(
+                                       const char *password,
+                                       ElementPtr signedSaltBundleEl
+                                       )
       {
-        IPeerFilePrivatePtr privatePeer = getPrivate();
-        if (!privatePeer) return false;
+        PeerFilesPtr pThis(new PeerFiles);
+        pThis->mThisWeak = pThis;
 
-        zsLib::String contactProfileSecret = privatePeer->getContactProfileSecret(password);
-        if (contactProfileSecret.isEmpty()) return false;
-
-        PeerContactProfilePtr newContactProfile = PeerContactProfile::createContactProfileFromExistingContactProfile(
-                                                                                                                     contactProfile,
-                                                                                                                     contactProfileSecret,
-                                                                                                                     mThisWeak.lock()
-                                                                                                                     );
-        if (!newContactProfile) return false;
-
-        mContactProfile = newContactProfile;
-        return true;
+        if (!IPeerFilePrivateForPeerFiles::generate(pThis, pThis->mPrivate, pThis->mPublic, password, signedSaltBundleEl)) {
+          ZS_LOG_DEBUG(pThis->log("failed to generate private peer file"))
+          return PeerFilesPtr();
+        }
+        return pThis;
       }
 
-      zsLib::XML::ElementPtr PeerFiles::savePrivateAndPublicToXML() const
+      //-----------------------------------------------------------------------
+      PeerFilesPtr PeerFiles::loadFromElement(
+                                              const char *password,
+                                              ElementPtr privatePeerRootElement
+                                              )
+      {
+        PeerFilesPtr pThis(new PeerFiles);
+        pThis->mThisWeak = pThis;
+
+        if (!IPeerFilePrivateForPeerFiles::loadFromElement(pThis, pThis->mPrivate, pThis->mPublic, password, privatePeerRootElement)) {
+          ZS_LOG_DEBUG(pThis->log("failed to load private peer file"))
+          return PeerFilesPtr();
+        }
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr PeerFiles::saveToPrivatePeerElement() const
       {
         if (!mPrivate) return ElementPtr();
-        return mPrivate->saveToXML();
+        return mPrivate->forPeerFiles().saveToElement();
       }
 
-      zsLib::XML::ElementPtr PeerFiles::saveContactProfileToXML() const
+      //-----------------------------------------------------------------------
+      IPeerFilePublicPtr PeerFiles::getPeerFilePublic() const
       {
-        if (!mContactProfile) return ElementPtr();
-        return mContactProfile->saveToXML();
+        return PeerFilePublic::convert(mPublic);
       }
 
-      IPeerFilePublicPtr PeerFiles::getPublic() const
+      //-----------------------------------------------------------------------
+      IPeerFilePrivatePtr PeerFiles::getPeerFilePrivate() const
       {
-        return mPublic;
+        return PeerFilePrivate::convert(mPrivate);
       }
 
-      IPeerFilePrivatePtr PeerFiles::getPrivate() const
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerFiles => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PeerFiles::log(const char *message) const
       {
-        return mPrivate;
+        return String("PeerFiles [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
       }
 
-      IPeerContactProfilePtr PeerFiles::getContactProfile() const
+      //-----------------------------------------------------------------------
+      String PeerFiles::getDebugValueString(bool includeCommaPrefix) const
       {
-        return mContactProfile;
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer files id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPeerFilePublic::toDebugString(mPublic);
       }
     }
 
-    IPeerFilesPtr IPeerFiles::generatePeerFile(
-                                               const char *password,
-                                               zsLib::XML::ElementPtr signedSalt
-                                               )
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPeerFiles
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    String IPeerFiles::toDebugString(IPeerFilesPtr peerFiles, bool includeCommaPrefix)
     {
-      return internal::PeerFiles::generatePeerFile(password, signedSalt);
+      return internal::PeerFiles::toDebugString(peerFiles, includeCommaPrefix);
     }
 
-    IPeerFilesPtr IPeerFiles::loadPeerFilesFromXML(
-                                                   const char *password,
-                                                   zsLib::XML::ElementPtr privatePeerRootElement
-                                                   )
+    //-------------------------------------------------------------------------
+    IPeerFilesPtr IPeerFiles::generate(
+                                       const char *password,
+                                       ElementPtr signedSalt
+                                       )
     {
-      return internal::PeerFiles::loadPeerFilesFromXML(password, privatePeerRootElement);
+      return internal::PeerFiles::generate(password, signedSalt);
+    }
+
+    //-------------------------------------------------------------------------
+    IPeerFilesPtr IPeerFiles::loadFromElement(
+                                              const char *password,
+                                              ElementPtr privatePeerRootElement
+                                              )
+    {
+      return internal::PeerFiles::loadFromElement(password, privatePeerRootElement);
     }
   }
 }

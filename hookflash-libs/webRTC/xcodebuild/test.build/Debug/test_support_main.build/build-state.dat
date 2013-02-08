@@ -1,0 +1,70 @@
+Ttest_support_main
+v5
+r1
+cCheck dependencies
+cCompileC ../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support_main.a normal i386
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000503F1B7700000000000000AA
+t1346313079
+s170
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../src/system_wrappers/interface/constructor_magic.h
+c000000005109023700000000000006F7
+t1359544887
+s1783
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../test/test_suite.h
+c000000005109023A0000000000000503
+t1359544890
+s1283
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support_main.a
+t1359554948
+s3896
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o
+t1359554948
+s3692
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/test_support_main.LinkFileList
+c00000000510929840000000000000092
+t1359554948
+s146
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc
+c000000005109023A000000000000022D
+t1359544890
+s557
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies6747f20c61b9b641^99baf70c61b9b641^---0#1#0#--18"Check dependencies36"66A8C797-B038-4F16-8E76-2889BEFD9677-
+
+CCompileC ../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.615497
+e381247748.875749
+r1
+xCompileC
+x../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc
+xnormal
+xi386
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection79"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc6caf9d0461b9b641^3c30e00461b9b641^---0#0#0#-19%DVTDocumentLocation2@87"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc0000000000000000^3182"CompileC ../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o run_all_unittests.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch i386 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.6 -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/include -I../src -I.. -I. -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/run_all_unittests.cc -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/run_all_unittests.o36"4F21877F-FEC4-4C89-87C5-A822D44B905A-
+
+CLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support_main.a normal i386
+s381247748.896646
+e381247749.009840
+r1
+xLibtool
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support_main.a
+xnormal
+xi386
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection62"Libtool ../xcodebuild/Debug/libtest_support_main.a normal i386f99ee50461b9b641^fd85020561b9b641^---0#0#0#--733"Libtool ../xcodebuild/Debug/libtest_support_main.a normal i386    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only i386 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug -filelist /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support_main.build/Objects-normal/i386/test_support_main.LinkFileList -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support_main.a36"E63AEFA3-2D00-4079-AE0D-5C06F7C44AA6-
+

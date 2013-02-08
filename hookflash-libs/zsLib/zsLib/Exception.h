@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_EXCEPTION_H_128581a1508c405cbdac46b96074b91b
 #define ZSLIB_EXCEPTION_H_128581a1508c405cbdac46b96074b91b
 
-#include <zsLib/internal/Exception.h>
+#include <zsLib/internal/zsLib_Exception.h>
 
 namespace zsLib
 {

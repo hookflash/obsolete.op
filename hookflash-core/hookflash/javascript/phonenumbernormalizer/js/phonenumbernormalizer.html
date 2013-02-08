@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<!--
+@license
+Copyright (C) 2010 The Libphonenumber Authors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS-IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!--
+  Author: Nikolaos Trogkanis
+-->
+<!--
+  modified by: andrej@hookflash.com
+-->
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<script src="base.js"></script>
+<script type="text/javascript" src="deps.js"></script>
+<script>
+	goog.require('goog.dom');
+	goog.require('goog.json');
+	goog.require('goog.proto2.ObjectSerializer');
+	goog.require('goog.string.StringBuffer');
+</script>
+<script type="text/javascript" src="error.js"></script>
+<script type="text/javascript" src="string.js"></script>
+<script type="text/javascript" src="asserts.js"></script>
+<script type="text/javascript" src="array.js"></script>
+<script type="text/javascript" src="useragent.js"></script>
+<script type="text/javascript" src="browserfeature.js"></script>
+<script type="text/javascript" src="tagname.js"></script>
+<script type="text/javascript" src="classes.js"></script>
+<script type="text/javascript" src="math.js"></script>
+<script type="text/javascript" src="coordinate.js"></script>
+<script type="text/javascript" src="size.js"></script>
+<script type="text/javascript" src="object.js"></script>
+<script type="text/javascript" src="dom.js"></script>
+<script type="text/javascript" src="json.js"></script>
+<script type="text/javascript" src="util.js"></script>
+<script type="text/javascript" src="descriptor.js"></script>
+<script type="text/javascript" src="fielddescriptor.js"></script>
+<script type="text/javascript" src="message.js"></script>
+<script type="text/javascript" src="serializer.js"></script>
+<script type="text/javascript" src="objectserializer.js"></script>
+<script type="text/javascript" src="stringbuffer.js"></script>
+<script src="phonemetadata.asc"></script>
+<script src="phonenumber.asc"></script>
+<script src="metadata.asc"></script>
+<script src="phonenumberutil.asc"></script>
+<script type="text/javascript" src="lazydeserializer.js"></script>
+<script type="text/javascript" src="pbliteserializer.js"></script>
+<script src="asyoutypeformatter.asc"></script>
+</head>
+<body>
+	<script>
+		//Phone number parser.
+		//
+		//@param phoneNumber
+		//@param regionCode
+		function phoneNumberParser(phoneNumber, regionCode) {
+			try {
+				var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+				var number = phoneUtil.parseAndKeepRawInput(phoneNumber,
+						regionCode);
+
+				var isPossible = phoneUtil.isPossibleNumber(number);
+
+				if (!isPossible) {
+					return "-";
+				} else {
+					var isNumberValid = phoneUtil.isValidNumber(number);
+					var PNT = i18n.phonenumbers.PhoneNumberType;
+				}
+
+				var PNF = i18n.phonenumbers.PhoneNumberFormat;
+				isNumberValid ? phoneUtil.format(number, PNF.E164) : 'invalid';
+
+				//return number or ""
+				if (isNumberValid) {
+					return phoneUtil.format(number, PNF.E164);
+				} else {
+					return "-";
+				}
+			} catch (e) {
+				return "-";
+			}
+		}
+
+		//Normalize phone numbers.
+		//
+		//@param countryCode - 2 letter counrty code
+		//@param numbers - stringified jsson array of numbers
+		function normalizePhoneNumbers(countryCode, numbers) {
+			//var inputData = [ "+381/64 552554", "060/5555551", "021/896545 6", "+387/11558765" ];
+			var inputData = JSON.parse(numbers);
+			//result
+			var result = "";
+
+			for ( var i = 0; i < inputData.length; i++) {
+				var current = inputData[i];
+				var normalized = phoneNumberParser(current, "rs");
+				result += normalized + ",";
+			}
+			//remove last ","
+			if (result.endsWith(",")){
+			    result = result.substring(0, (result.length - 1));
+			}
+			//sendNormalizedNumbers(result);
+			return result;
+		}
+
+		//Send result back to client in same order 
+		//contains normalized numbers and empty strings (if not valid).
+		//
+		//@param result - stringified json array of normalized numbers
+		function sendNormalizedNumbers(result) {
+			//send data back to client
+			//var newConnectionsString = JSON.stringify(newConnections);
+			var iframe = document.createElement("IFRAME");
+			iframe.setAttribute("src",
+					"hookflash-js-frame:proccessNormalizedNumbers:" + result);
+			document.documentElement.appendChild(iframe);
+			iframe.parentNode.removeChild(iframe);
+			iframe = null;
+		}
+
+    String.prototype.endsWith = function(suffix) {
+      return this.indexOf(suffix, this.length - suffix.length) !== -1;
+    };
+    
+		//Test method
+		function test() {
+			//normalizePhoneNumbers('RS','["1-800-MY-APPLE", "060/5555551", "021/896545 6",	"+387/ 63 325 522" ]');
+			normalizePhoneNumbers('RS',	'["+1-800-MY-APPLE"]');
+			normalizePhoneNumbers('RS',	'"0214521544"');
+		}
+	</script>
+	<button style="display:block;" onclick="test();">normalizePhoneNumbers</button>
+</body>
+</html>

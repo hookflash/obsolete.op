@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,28 +22,27 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
+#include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/IAccount.h>
+#include <hookflash/stack/IPeer.h>
 #include <hookflash/stack/IPeerSubscription.h>
-#include <hookflash/stack/IConnectionSubscription.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_AccountFinder.h>
 #include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/IMessageRequester.h>
+#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/services/IRUDPICESocket.h>
 
 #include <zsLib/MessageQueueAssociator.h>
-#include <zsLib/String.h>
-#include <zsLib/Proxy.h>
+
 #include <zsLib/Timer.h>
 
 #include <map>
@@ -59,77 +58,26 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountForPeerSubscription
-      #pragma mark
-
-      interaction IAccountForPeerSubscription
-      {
-        typedef zsLib::String String;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef message::MessagePtr MessagePtr;
-
-        virtual void onPeerSubscriptionShutdown(IPeerSubscriptionForAccountPtr peerSubscription) = 0;
-
-        virtual IMessageQueuePtr getAssociatedMessageQueue() const = 0;
-
-        virtual RecursiveLock &getLock() const = 0;
-
-        virtual bool isFinding(const String &contactID) const = 0;
-
-        virtual void getPeerLocations(
-                                      const String &contactID,
-                                      IPeerSubscription::LocationList &outLocations,
-                                      bool includeOnlyConnectedLocation
-                                      ) const = 0;
-
-        virtual void getPeerLocations(
-                                      const String &contactID,
-                                      IPeerSubscription::PeerLocationList &outLocations,
-                                      bool includeOnlyConnectedLocation
-                                      ) const = 0;
-
-        virtual bool sendPeerMessage(
-                                     const String &contactID,
-                                     const char *locationID,
-                                     MessagePtr message
-                                     ) = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IAccountForAccountFinder
       #pragma mark
 
       interaction IAccountForAccountFinder
       {
-        typedef zsLib::Time Time;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef message::MessagePtr MessagePtr;
-        typedef services::IRUDPICESocketPtr IRUDPICESocketPtr;
-
-        static void adjustToServerTime(Time time);
+        IAccountForAccountFinder &forAccountFinder() {return *this;}
+        const IAccountForAccountFinder &forAccountFinder() const {return *this;}
 
         virtual RecursiveLock &getLock() const = 0;
+
+        virtual String getDomain() const = 0;
+
         virtual IRUDPICESocketPtr getSocket() const = 0;
-        virtual IBootstrappedNetworkForAccountFinderPtr getBootstrapper() const = 0;
+
         virtual IPeerFilesPtr getPeerFiles() const = 0;
-        virtual const String &getPassword() const = 0;
 
-        virtual const String &getLocationID() const = 0;
-        virtual const String &getDeviceID() const = 0;   // stable device ID that doesn't change between reboots, e.g. device uuid "7bff560b84328f161494eabcba5f8b47a316be8b"
-        virtual const String &getUserAgent() const = 0;  // e.g. "hookflash/1.0.1001a (iOS/iPad)"
-        virtual const String &getOS() const = 0;         // e.g. "iOS 5.0.3"
-        virtual const String &getSystem() const = 0;     // e.g. "iPad 2"
-
-        virtual void notifyAccountFinderIncomingMessage(
-                                                        IAccountFinderPtr finder,
-                                                        MessagePtr request
-                                                        ) = 0;
+        virtual bool extractNextFinder(
+                                       Finder &outFinder,
+                                       IPAddress &outFinderIP
+                                       ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -142,34 +90,129 @@ namespace hookflash
 
       interaction IAccountForAccountPeerLocation
       {
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef services::IRUDPICESocketPtr IRUDPICESocketPtr;
-        typedef message::MessagePtr MessagePtr;
-
-        virtual IMessageQueuePtr getAssociatedMessageQueue() const = 0;
+        IAccountForAccountPeerLocation &forAccountPeerLocation() {return *this;}
+        const IAccountForAccountPeerLocation &forAccountPeerLocation() const {return *this;}
 
         virtual RecursiveLock &getLock() const = 0;
+
+        virtual String getDomain() const = 0;
+
         virtual IRUDPICESocketPtr getSocket() const = 0;
 
         virtual IPeerFilesPtr getPeerFiles() const = 0;
-        virtual const String &getPassword() const = 0;
-
-        virtual const String &getDeviceID() const = 0;  // stable device ID that doesn't change between reboots, e.g. device uuid "7bff560b84328f161494eabcba5f8b47a316be8b"
-        virtual const String &getUserAgent() const = 0; // "hookflash/1.0.1001a (iOS/iPad)"
-        virtual const String &getOS() const = 0;        // "iOS 5.0.3"
-        virtual const String &getSystem() const = 0;    // "iPad 2"
 
         virtual bool isFinderReady() const = 0;
-        virtual String getFinderLocationID() const = 0;
+      };
 
-        virtual bool sendFinderMessage(MessagePtr message) = 0;
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForLocation
+      #pragma mark
 
-        virtual void onAccountPeerLocationIncomingMessage(
-                                                          IAccountPeerLocationPtr peerLocation,
-                                                          MessagePtr message
-                                                          ) = 0;
+      interaction IAccountForLocation
+      {
+        IAccountForLocation &forLocation() {return *this;}
+        const IAccountForLocation &forLocation() const {return *this;}
+
+        virtual LocationPtr findExistingOrUse(LocationPtr location) = 0;
+        virtual void notifyDestroyed(Location &location) = 0;
+
+        virtual const String &getLocationID() const = 0;
+        virtual PeerPtr getPeerForLocal() const = 0;
+
+        virtual LocationInfoPtr getLocationInfo(LocationPtr location) const = 0;
+
+        virtual ILocation::LocationConnectionStates getConnectionState(LocationPtr location) const = 0;
+
+        virtual bool send(
+                          LocationPtr location,
+                          MessagePtr message
+                          ) const = 0;
+
+        virtual void hintNowAvailable(LocationPtr location) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForMessageIncoming
+      #pragma mark
+
+      interaction IAccountForMessageIncoming
+      {
+        IAccountForMessageIncoming &forMessageIncoming() {return *this;}
+        const IAccountForMessageIncoming &forMessageIncoming() const {return *this;}
+
+        virtual bool send(
+                          LocationPtr location,
+                          MessagePtr response
+                          ) const = 0;
+        virtual void notifyMessageIncomingResponseNotSent(MessageIncoming &messageIncoming) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForMessages
+      #pragma mark
+
+      interaction IAccountForMessages
+      {
+        IAccountForMessages &forMessages() {return *this;}
+        const IAccountForMessages &forMessages() const {return *this;}
+
+        virtual IPeerFilesPtr getPeerFiles() const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForPeer
+      #pragma mark
+
+      interaction IAccountForPeer
+      {
+        IAccountForPeer &forPeer() {return *this;}
+        const IAccountForPeer &forPeer() const {return *this;}
+
+        virtual PeerPtr findExistingOrUse(PeerPtr peer) = 0;
+        virtual void notifyDestroyed(Peer &peer) = 0;
+
+        virtual RecursiveLock &getLock() const = 0;
+
+        virtual IPeer::PeerFindStates getPeerState(const String &peerURI) const = 0;
+        virtual LocationListPtr getPeerLocations(
+                                                 const String &peerURI,
+                                                 bool includeOnlyConnectedLocations
+                                                 ) const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForPeerSubscription
+      #pragma mark
+
+      interaction IAccountForPeerSubscription
+      {
+        IAccountForPeerSubscription &forPeerSubscription() {return *this;}
+        const IAccountForPeerSubscription &forPeerSubscription() const {return *this;}
+
+        virtual void subscribe(PeerSubscriptionPtr subscription) = 0;
+        virtual void notifyDestroyed(PeerSubscription &subscription) = 0;
+
+        virtual RecursiveLock &getLock() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -182,29 +225,28 @@ namespace hookflash
 
       interaction IAccountForPublicationRepository
       {
-        typedef zsLib::Duration Duration;
-        typedef zsLib::String String;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef message::MessagePtr MessagePtr;
+        IAccountForPublicationRepository &forRepo() {return *this;}
+        const IAccountForPublicationRepository &forRepo() const {return *this;}
 
-        virtual IAccountPtr convertIAccount() const = 0;
-        virtual IMessageQueuePtr getAssociatedMessageQueue() const = 0;
-        virtual String getContactID() const = 0;
-        virtual const String &getLocationID() const = 0;
+        virtual PublicationRepositoryPtr getRepository() const = 0;
 
-        virtual IMessageRequesterPtr sendFinderRequest(
-                                                       IMessageRequesterDelegatePtr delegate,
-                                                       MessagePtr requestMessage,
-                                                       Duration timeout
-                                                       ) = 0;
+        virtual String getDomain() const = 0;
+      };
 
-        virtual IMessageRequesterPtr sendPeerRequest(
-                                                     IMessageRequesterDelegatePtr delegate,
-                                                     MessagePtr requestMessage,
-                                                     const char *contactID,
-                                                     const char *locationID,
-                                                     Duration timeout
-                                                     ) = 0;
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountForServicePeerContactSession
+      #pragma mark
+
+      interaction IAccountForServicePeerContactSession
+      {
+        IAccountForServicePeerContactSession &forServicePeerContactSession() {return *this;}
+        const IAccountForServicePeerContactSession &forServicePeerContactSession() const {return *this;}
+
+        virtual void notifyServicePeerContactSessionStateChanged() = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -228,58 +270,70 @@ namespace hookflash
       #pragma mark Account
       #pragma mark
 
-      class Account : public zsLib::MessageQueueAssociator,
+      class Account : public MessageQueueAssociator,
                       public IAccount,
-                      public IAccountAsyncDelegate,
-                      public IAccountForPeerSubscription,
-                      public IAccountFinderDelegate,
                       public IAccountForAccountFinder,
                       public IAccountForAccountPeerLocation,
-                      public IAccountPeerLocationDelegate,
+                      public IAccountForLocation,
+                      public IAccountForMessageIncoming,
+                      public IAccountForMessages,
+                      public IAccountForPeer,
+                      public IAccountForPeerSubscription,
                       public IAccountForPublicationRepository,
-                      public IBootstrappedNetworkDelegate,
-                      public services::IRUDPICESocketDelegate,
-                      public IMessageRequesterDelegate,
-                      public zsLib::ITimerDelegate
+                      public IAccountForServicePeerContactSession,
+                      public IAccountAsyncDelegate,
+                      public IAccountFinderDelegate,
+                      public IAccountPeerLocationDelegate,
+                      public IDNSDelegate,
+                      public IRUDPICESocketDelegate,
+                      public IMessageMonitorDelegate,
+                      public ITimerDelegate
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::Time Time;
-        typedef zsLib::TimerPtr TimerPtr;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef services::IRUDPICESocketPtr IRUDPICESocketPtr;
-        typedef message::MessagePtr MessagePtr;
-
-        class ConnectionSubscription;
-        typedef boost::shared_ptr<ConnectionSubscription> ConnectionSubscriptionPtr;
-        typedef boost::weak_ptr<ConnectionSubscription> ConnectionSubscriptionWeakPtr;
-
-        struct Peer;
-        typedef boost::shared_ptr<Peer> PeerPtr;
-        typedef boost::weak_ptr<Peer> PeerWeakPtr;
-        friend class Peer;
-
-        class SubscriptionMessage;
-        typedef boost::shared_ptr<SubscriptionMessage> SubscriptionMessagePtr;
-        typedef boost::weak_ptr<SubscriptionMessage> SubscriptionMessageWeakPtr;
-        friend class SubscriptionMessage;
-
-        class SubscriptionNotificationHelper;
-        typedef boost::shared_ptr<SubscriptionNotificationHelper> SubscriptionNotificationHelperPtr;
-        typedef boost::weak_ptr<SubscriptionNotificationHelper> SubscriptionNotificationHelperWeakPtr;
-        friend class SubscriptionNotificationHelper;
-
         friend interaction IAccount;
+        friend interaction IAccountAsyncDelegate;
+        friend interaction IAccountForAccountFinder;
+        friend interaction IAccountForAccountPeerLocation;
+        friend interaction IAccountForLocation;
+        friend interaction IAccountForMessageIncoming;
+        friend interaction IAccountForMessages;
+        friend interaction IAccountForPeer;
+        friend interaction IAccountForPeerSubscription;
+        friend interaction IAccountForPublicationRepository;
+        friend interaction IAccountForServicePeerContactSession;
+
+        typedef IAccount::AccountStates AccountStates;
+
+        struct PeerInfo;
+        friend struct PeerInfo;
+        typedef boost::shared_ptr<PeerInfo> PeerInfoPtr;
+        typedef boost::weak_ptr<PeerInfo> PeerInfoWeakPtr;
+
+        typedef String PeerURI;
+        typedef String LocationID;
+        typedef PUID PeerSubscriptionID;
+        typedef std::pair<PeerURI, LocationID> PeerLocationIDPair;
+
+        typedef std::map<PeerURI, PeerWeakPtr> PeerMap;
+        typedef std::map<PeerURI, PeerInfoPtr> PeerInfoMap;
+
+        typedef std::map<PeerSubscriptionID, PeerSubscriptionWeakPtr> PeerSubscriptionMap;
+
+        typedef std::map<PeerLocationIDPair, LocationWeakPtr> LocationMap;
 
       protected:
-        Account(IMessageQueuePtr queue);
+        Account(
+                IMessageQueuePtr queue,
+                IAccountDelegatePtr delegate,
+                ServicePeerContactSessionPtr peerContactSession
+                );
 
         void init();
 
       public:
         ~Account();
+
+        static AccountPtr convert(IAccountPtr account);// {return AccountPtr();}
 
       protected:
         //---------------------------------------------------------------------
@@ -287,45 +341,31 @@ namespace hookflash
         #pragma mark Account => IAccount
         #pragma mark
 
-        static IAccountPtr create(
-                                  IMessageQueuePtr queue,
-                                  IBootstrappedNetworkPtr network,
-                                  IAccountDelegatePtr delegate,
-                                  IPeerFilesPtr peerFiles,
-                                  const char *password,
-                                  const char *deviceID,
-                                  const char *userAgent,
-                                  const char *os,
-                                  const char *system
-                                  );
+        static String toDebugString(IAccountPtr account, bool includeCommaPrefix = true);
 
-        virtual AccountStates getState() const;
-        virtual AccountErrors getLastError() const;
+        static AccountPtr create(
+                                 IAccountDelegatePtr delegate,
+                                 IServicePeerContactSessionPtr peerContactSession
+                                 );
 
-        virtual IPublicationRepositoryPtr getRepository() const;
+        virtual PUID getID() const {return mID;}
 
-        // (duplicate) virtual const String &getLocationID() const;
+        virtual AccountStates getState(
+                                       WORD *outLastErrorCode = NULL,
+                                       String *outLastErrorReason = NULL
+                                       ) const;
 
-        virtual bool sendFinderMessage(MessagePtr message);
+        virtual IServicePeerContactSessionPtr getPeerContactSession() const;
 
-        virtual IConnectionSubscriptionPtr subscribeToAllConnections(IConnectionSubscriptionDelegatePtr delegate);
-
-        virtual IPeerSubscriptionPtr subscribePeerLocations(
-                                                            IPeerFilePublicPtr remotePartyPublicPeerFile,
-                                                            IPeerSubscriptionDelegatePtr delegate
-                                                            );
-
-        virtual IPeerLocationPtr getPeerLocation(
-                                                 const char *contactID,
-                                                 const char *locationID
-                                                 ) const;
-
-        virtual void hintAboutNewPeerLocation(
-                                              const char *contactID,
-                                              const char *locationID
-                                              );
+        virtual void getNATServers(
+                                   String &outTURNServer,
+                                   String &outTURNUsername,
+                                   String &outTURNPassword,
+                                   String &outSTUNServer
+                                   ) const;
 
         virtual void shutdown();
+
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -333,49 +373,114 @@ namespace hookflash
         #pragma mark
 
         // (duplicate) virtual RecursiveLock &getLock() const;
-        virtual services::IRUDPICESocketPtr getSocket() const;
-        virtual IBootstrappedNetworkForAccountFinderPtr getBootstrapper() const;
-        virtual IPeerFilesPtr getPeerFiles() const;
-        virtual const String &getPassword() const;
 
-        virtual const String &getLocationID() const;
-        virtual const String &getDeviceID() const;
-        virtual const String &getUserAgent() const;
-        virtual const String &getOS() const;
-        virtual const String &getSystem() const;
+        virtual String getDomain() const;
 
-        virtual void notifyAccountFinderIncomingMessage(
-                                                        IAccountFinderPtr finder,
-                                                        MessagePtr request
-                                                        );
+        virtual IRUDPICESocketPtr getSocket() const;
+
+        // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
+
+        virtual bool extractNextFinder(
+                                       Finder &outFinder,
+                                       IPAddress &outFinderIP
+                                       );
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Account => IAccountForAccountPeerLocation
         #pragma mark
 
-        // (duplicate) virtual IMessageQueuePtr getAssociatedMessageQueue() const;
-
         // (duplicate) virtual RecursiveLock &getLock() const;
+
+        // (duplicate) virtual String getDomain() const;
+
         // (duplicate) virtual IRUDPICESocketPtr getSocket() const;
 
         // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
-        // (duplicate) virtual const String &getPassword() const;
-
-        // (duplicate) virtual const String &getDeviceID() const;
-        // (duplicate) virtual const String &getUserAgent() const;
-        // (duplicate) virtual const String &getOS() const;
-        // (duplicate) virtual const String &getSystem() const;
 
         virtual bool isFinderReady() const;
-        virtual String getFinderLocationID() const;
 
-        // (duplicate) virtual bool sendFinderMessage(MessagePtr message);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForLocation
+        #pragma mark
 
-        virtual void onAccountPeerLocationIncomingMessage(
-                                                          IAccountPeerLocationPtr peerLocation,
-                                                          MessagePtr message
-                                                          );
+        virtual LocationPtr findExistingOrUse(LocationPtr location);
+        virtual void notifyDestroyed(Location &location);
+
+        virtual const String &getLocationID() const;
+        virtual PeerPtr getPeerForLocal() const;
+
+        virtual LocationInfoPtr getLocationInfo(LocationPtr location) const;
+
+        virtual ILocation::LocationConnectionStates getConnectionState(LocationPtr location) const;
+
+        virtual bool send(
+                          LocationPtr location,
+                          MessagePtr message
+                          ) const;
+
+        virtual void hintNowAvailable(LocationPtr location);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForMessageIncoming
+        #pragma mark
+
+        // (duplicate) virtual bool send(
+        //                              LocationPtr location,
+        //                              MessagePtr response
+        //                              ) const;
+        virtual void notifyMessageIncomingResponseNotSent(MessageIncoming &messageIncoming);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForMessages
+        #pragma mark
+
+        virtual IPeerFilesPtr getPeerFiles() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForPeer
+        #pragma mark
+
+        virtual PeerPtr findExistingOrUse(PeerPtr peer);
+        virtual void notifyDestroyed(Peer &peer);
+
+        virtual RecursiveLock &getLock() const;
+
+        virtual IPeer::PeerFindStates getPeerState(const String &peerURI) const;
+        virtual LocationListPtr getPeerLocations(
+                                                 const String &peerURI,
+                                                 bool includeOnlyConnectedLocations
+                                                 ) const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForPeerSubscription
+        #pragma mark
+
+        virtual void subscribe(PeerSubscriptionPtr subscription);
+        virtual void notifyDestroyed(PeerSubscription &subscription);
+
+        // (duplicate) virtual RecursiveLock &getLock() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForPublicationRepository
+        #pragma mark
+
+        virtual PublicationRepositoryPtr getRepository() const;
+
+        // (duplicate) virtual String getDomain() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForServicePeerContactSession
+        #pragma mark
+
+        virtual void notifyServicePeerContactSessionStateChanged();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -383,9 +488,14 @@ namespace hookflash
         #pragma mark
 
         virtual void onAccountFinderStateChanged(
-                                                 IAccountFinderPtr finder,
-                                                 AccountFinderStates state
+                                                 AccountFinderPtr finder,
+                                                 AccountStates state
                                                  );
+
+        virtual void onAccountFinderMessageIncoming(
+                                                    AccountFinderPtr peerLocation,
+                                                    MessagePtr message
+                                                    );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -393,23 +503,25 @@ namespace hookflash
         #pragma mark
 
         virtual void onAccountPeerLocationStateChanged(
-                                                       IAccountPeerLocationPtr peerLocation,
-                                                       AccountPeerLocationStates state
+                                                       AccountPeerLocationPtr peerLocation,
+                                                       AccountStates state
                                                        );
+
+        virtual void onAccountPeerLocationMessageIncoming(
+                                                          AccountPeerLocationPtr peerLocation,
+                                                          MessagePtr message
+                                                          );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IBootstrappedNetworkDelegate
+        #pragma mark Account => IDNSDelegate
         #pragma mark
 
-        virtual void onBootstrappedNetworkStateChanged(
-                                                       IBootstrappedNetworkPtr bootstrapper,
-                                                       BootstrappedNetworkStates state
-                                                       );
+        virtual void onLookupCompleted(IDNSQueryPtr query);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IRUDPICESocket
+        #pragma mark Account => IRUDPICESocketDelegate
         #pragma mark
 
         virtual void onRUDPICESocketStateChanged(
@@ -419,70 +531,15 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IMessageReuqesterDelegate
+        #pragma mark Account => IMessageMonitorDelegate
         #pragma mark
 
-        virtual bool handleMessageRequesterMessageReceived(
-                                                           IMessageRequesterPtr requester,
-                                                           MessagePtr message
-                                                           );
+        virtual bool handleMessageMonitorMessageReceived(
+                                                         IMessageMonitorPtr requester,
+                                                         MessagePtr message
+                                                         );
 
-        virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account => IAccountForPeerSubscription
-        #pragma mark
-
-        virtual void onPeerSubscriptionShutdown(IPeerSubscriptionForAccountPtr peerSubscription);
-
-        // (duplicate) virtual IMessageQueuePtr getAssociatedMessageQueue() const;
-
-        virtual RecursiveLock &getLock() const {return mLock;}
-
-        virtual bool isFinding(const String &contactID) const;
-
-        virtual void getPeerLocations(
-                                      const String &contactID,
-                                      IPeerSubscription::LocationList &outLocations,
-                                      bool includeOnlyConnectedLocations
-                                      ) const;
-        virtual void getPeerLocations(
-                                      const String &contactID,
-                                      IPeerSubscription::PeerLocationList &outLocations,
-                                      bool includeOnlyConnectedLocations
-                                      ) const;
-
-        virtual bool sendPeerMessage(
-                                     const String &contactID,
-                                     const char *locationID,
-                                     MessagePtr message
-                                     );
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account => IAccountForPublicationRepository
-        #pragma mark
-
-        virtual IAccountPtr convertIAccount() const {return mThisWeak.lock();}
-        virtual IMessageQueuePtr getAssociatedMessageQueue() const {return MessageQueueAssociator::getAssociatedMessageQueue();}
-
-        virtual String getContactID() const;
-        // (duplicate) virtual const String &getLocationID() const;
-
-        virtual IMessageRequesterPtr sendFinderRequest(
-                                                       IMessageRequesterDelegatePtr delegate,
-                                                       MessagePtr requestMessage,
-                                                       Duration timeout
-                                                       );
-
-        virtual IMessageRequesterPtr sendPeerRequest(
-                                                     IMessageRequesterDelegatePtr delegate,
-                                                     MessagePtr requestMessage,
-                                                     const char *contactID,
-                                                     const char *locationID,
-                                                     Duration timeout
-                                                     );
+        virtual void onMessageMonitorTimedOut(IMessageMonitorPtr requester);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -498,18 +555,6 @@ namespace hookflash
 
         virtual void onTimer(TimerPtr timer);
 
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account => friend ConnectionSubscription
-        #pragma mark
-
-        void notifyConnectionSubscriptionShutdown(ConnectionSubscriptionPtr subscription);
-        IConnectionSubscription::ConnectionStates getFinderConnectionState() const;
-        IConnectionSubscription::ConnectionStates getPeerLocationConnectionState(
-                                                                                 const char *contactID,
-                                                                                 const char *locationID
-                                                                                 ) const;
-
       private:
         //---------------------------------------------------------------------
         #pragma mark
@@ -523,327 +568,101 @@ namespace hookflash
 
         String log(const char *message) const;
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void step();
+        bool stepTimer();
+        bool stepRepository();
+        bool stepPeerContactSession();
+        bool stepLocations();
+        bool stepSocket();
+        bool stepFinder();
+        bool stepPeers();
 
-        void setState(IAccount::AccountStates accountState);
-        void setLastError(IAccount::AccountErrors error);
+        void setState(AccountStates accountState);
+        void setError(WORD errorCode, const char *reason = NULL);
 
         void setFindState(
-                          Peer &peer,
-                          IPeerSubscription::PeerSubscriptionFindStates state
+                          PeerInfo &peerInfo,
+                          IPeer::PeerFindStates state
                           );
 
         bool shouldFind(
-                        const String &contactID,
-                        const PeerPtr &peer
+                        const String &peerURI,
+                        const PeerInfoPtr &peerInfo
                         ) const;
+
         bool shouldShutdownInactiveLocations(
                                              const String &contactID,
-                                             const PeerPtr &peer
+                                             const PeerInfoPtr &peer
                                              ) const;
 
-        void handleFindRequestComplete(IMessageRequesterPtr requester);
+        void shutdownPeerLocationsNotNeeded(
+                                            const String &peerURI,
+                                            PeerInfoPtr &peerInfo
+                                            );
 
-      public:
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account::ConnectionSubscription
-        #pragma mark
+        void sendPeerKeepAlives(
+                                const String &peerURI,
+                                PeerInfoPtr &peerInfo
+                                );
+        void performPeerFind(
+                             const String &peerURI,
+                             PeerInfoPtr &peerInfo
+                             );
 
-        class ConnectionSubscription : public IConnectionSubscription
-        {
-        public:
-          friend class Account;
+        void handleFindRequestComplete(IMessageMonitorPtr requester);
 
-        protected:
-          ConnectionSubscription(
-                                 AccountPtr outer,
-                                 IConnectionSubscriptionDelegatePtr delegate
+        void handleFinderRelatedFailure();
+
+        void notifySubscriptions(
+                                 LocationPtr location,
+                                 ILocation::LocationConnectionStates state
                                  );
 
-          void init();
+        void notifySubscriptions(
+                                 PeerPtr peer,
+                                 IPeer::PeerFindStates state
+                                 );
 
-        public:
-          ~ConnectionSubscription();
+        void notifySubscriptions(MessageIncomingPtr messageIncoming);
 
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::ConnectionSubscription => friend Account
-          #pragma mark
-
-          static ConnectionSubscriptionPtr create(
-                                                  AccountPtr outer,
-                                                  IConnectionSubscriptionDelegatePtr delegate
-                                                  );
-
-          PUID getID() const {return mID;}
-          void notifyFinderStateChanged(ConnectionStates state);
-          void notifyPeerStateChanged(
-                                      IPeerLocationPtr location,
-                                      ConnectionStates state
-                                      );
-          void notifyIncomingMessage(IConnectionSubscriptionMessagePtr message);
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::ConnectionSubscription => IConnectionSubscription
-          #pragma mark
-
-          virtual bool isShutdown() const;
-
-          virtual ConnectionStates getFinderConnectionState() const;
-
-          virtual ConnectionStates getPeerLocationConnectionState(
-                                                                  const char *contactID,
-                                                                  const char *locationID
-                                                                  ) const;
-
-          virtual void getPeerLocations(
-                                        const char *contactID,
-                                        PeerLocations &outLocations,
-                                        bool includeOnlyConnectedLocations
-                                        ) const;
-
-          virtual bool sendFinderMessage(MessagePtr message);
-
-          virtual bool sendPeerMessage(
-                                       const char *contactID,
-                                       const char *locationID,
-                                       MessagePtr message
-                                       );
-
-          virtual void cancel();
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::ConnectionSubscription => (internal)
-          #pragma mark
-
-          RecursiveLock &getLock() const;
-
-          String log(const char *message) const;
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::ConnectionSubscription => (data)
-          #pragma mark
-
-          PUID mID;
-          mutable RecursiveLock mBogusLock;
-          ConnectionSubscriptionWeakPtr mThisWeak;
-
-          AccountWeakPtr mOuter;
-
-          IConnectionSubscriptionDelegatePtr mDelegate;
-          ConnectionStates mLastFinderState;
-        };
+      public:
 
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account::SubscriptionMessage
+        #pragma mark Account::PeerInfo
         #pragma mark
 
-        class SubscriptionMessage : public IPeerSubscriptionMessage,
-                                    public IConnectionSubscriptionMessage
+        struct PeerInfo
         {
-        public:
-          friend class Account;
+          typedef std::map<LocationID, AccountPeerLocationPtr> PeerLocationMap;                          // every location needs a session
+          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMap;                                 // using this to track the reason why the find needs to be initated or reinitated
 
-        protected:
-          SubscriptionMessage(
-                              IPeerSubscriptionPtr peerSubscription,
-                              IConnectionSubscriptionPtr connectionSubscription,
-                              const char *contactID,
-                              const char *locationID,
-                              MessagePtr message,
-                              SubscriptionNotificationHelperPtr helper
-                              );
+          static String toDebugString(PeerInfoPtr peerInfo, bool includeCommaPrefix = true);
 
-        public:
-          ~SubscriptionMessage();
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionMessage => friend Account
-          #pragma mark
-
-          static SubscriptionMessagePtr create(
-                                               IPeerSubscriptionPtr outer,
-                                               const char *contactID,
-                                               const char *locationID,
-                                               MessagePtr message,
-                                               SubscriptionNotificationHelperPtr helper
-                                               );
-
-          static SubscriptionMessagePtr createForFinder(
-                                                        IConnectionSubscriptionPtr outer,
-                                                        MessagePtr message,
-                                                        SubscriptionNotificationHelperPtr helper
-                                                        );
-
-          static SubscriptionMessagePtr createForPeer(
-                                                      IConnectionSubscriptionPtr outer,
-                                                      const char *contactID,
-                                                      const char *locationID,
-                                                      MessagePtr message,
-                                                      SubscriptionNotificationHelperPtr helper
-                                                      );
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionMessage => IPeerSubscriptionMessage
-          #pragma mark
-
-          virtual IPeerSubscriptionPtr getPeerSubscription() const;
-          virtual String getContactID() const;
-          virtual String getLocationID() const;
-          virtual MessagePtr getMessage() const;
-
-          virtual bool sendResponse(MessagePtr message);
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionMessage => IConnectionSubscriptionMessage
-          #pragma mark
-
-          virtual IConnectionSubscriptionPtr getConnectionSubscription() const;
-
-          virtual Sources getSource() const;
-
-          virtual String getPeerContactID() const;
-          virtual String getPeerLocationID() const;
-          // (duplicate) virtual MessagePtr getMessage() const;
-
-          // (duplicate) virtual bool sendResponse(MessagePtr message);
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionMessage => (internal)
-          #pragma mark
-
-          String log(const char *message) const;
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionMessage => (data)
-          #pragma mark
-
-          PUID mID;
-
-          Sources mSource;
-          IConnectionSubscriptionPtr mConnectionSubscription;
-
-          IPeerSubscriptionPtr mPeerSubscription;
-          String mContactID;
-          String mLocationID;
-          MessagePtr mMessage;
-
-          SubscriptionNotificationHelperPtr mNotificationHelper;
-        };
-
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account::SubscriptionNotificationHelper
-        #pragma mark
-
-        class SubscriptionNotificationHelper
-        {
-        public:
-          typedef zsLib::ULONG ULONG;
-
-          friend class Account;
-          friend class Account::SubscriptionMessage;
-
-        protected:
-          SubscriptionNotificationHelper(ULONG totalExpectedHandlers);
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionNotificationHelper => friend Account
-          #pragma mark
-
-          static SubscriptionNotificationHelperPtr create(ULONG totalExpectedHandlers);
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionNotificationHelper => friend Account::PeerSubscriptionMessage
-          #pragma mark
-
-          void notifyHandledBySubscriber();
-          void notifyPeerSubscriptionMessageDestroyed(Account::SubscriptionMessage *peerSubscriptionMessage);
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionNotificationHelper => (internal)
-          #pragma mark
-
-          String log(const char *message) const;
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark Account::SubscriptionNotificationHelper => (data)
-          #pragma mark
-
-          PUID mID;
-          mutable RecursiveLock mLock;
-
-          bool mHandled;
-          ULONG mTotalExpectedHandlers;
-        };
-
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Account::Peer
-        #pragma mark
-
-        struct Peer
-        {
-          typedef zsLib::Time Time;
-          typedef String LocationID;
-
-          typedef std::map<LocationID, IAccountPeerLocationPtr> LocationIDToPeerLocationMap;                          // every location needs a session
-          typedef std::map<IPeerSubscriptionForAccountPtr, IPeerSubscriptionForAccountPtr> PeerSubscriptionMapList;   // using to keep track of all subscriptions for a peer
-          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMapList;                                 // using this to track the reason why the find needs to be initated or reinitated
-
-          static PeerPtr create();
+          static PeerInfoPtr create();
           void findTimeReset();
           void findTimeScheduleNext();
+          String getDebugValueString(bool includeCommaPrefix = true) const;
 
           PUID mID;
           bool mFindAtNextPossibleMoment;
 
-          IPeerFilePublicPtr mPeerFilePublic;                             // peer file to "find"
-          IMessageRequesterPtr mPeerFindRequester;                        // the request monitor when a search is being conducted
-          FindingBecauseOfLocationIDMapList mPeerFindBecauseOfLocations;  // peer find is being done because of locations that are known but not yet discovered
+          PeerPtr mPeer;
+          PeerLocationMap mLocations;                                 // list of connecting/connected peer locations
 
-          FindingBecauseOfLocationIDMapList mPeerFindNeedsRedoingBecauseOfLocations;  // peer find needs to be redone as soon as complete because of locations that are known but not yet discovered
+          IMessageMonitorPtr mPeerFindMonitor;                        // the request monitor when a search is being conducted
+          FindingBecauseOfLocationIDMap mPeerFindBecauseOfLocations;  // peer find is being done because of locations that are known but not yet discovered
 
-          LocationIDToPeerLocationMap mLocations;                         // list of connecting/connected peer locations
+          FindingBecauseOfLocationIDMap mPeerFindNeedsRedoingBecauseOfLocations;  // peer find needs to be redone as soon as complete because of locations that are known but not yet discovered
 
-          IPeerSubscription::PeerSubscriptionFindStates mCurrentFindState;
-          PeerSubscriptionMapList mPeerSubscriptions;                     // subscriptions to this peer, once peer subscriptions disappear the peer itself can be disconnected
+          IPeer::PeerFindStates mCurrentFindState;
+          ULONG mTotalSubscribers;                                    // total number of external subscribers to this peer
 
           // If a peer location was NOT found, we need to keep trying the search periodically but with exponential back off.
           // These variables keep track of that backoff. We don't need to do any finds once connecting/connected to a single location
@@ -870,41 +689,44 @@ namespace hookflash
         AccountPtr mGracefulShutdownReference;
 
         AccountStates mCurrentState;
-        AccountErrors mLastError;
+        WORD mLastError;
+        String mLastErrorReason;
 
         IAccountDelegatePtr mDelegate;
-        String mPassword;
-
-        String mDeviceID;
-        String mUserAgent;
-        String mOS;
-        String mSystem;
 
         TimerPtr mTimer;
         Time mLastTimerFired;
         Time mBlockLocationShutdownsUntil;
 
-        IBootstrappedNetworkForAccountPtr mBootstrapper;
-        IBootstrappedNetworkSubscriptionPtr mBootstrapperSubscription;
+        ServicePeerContactSessionPtr mPeerContactSession;
+        Service::MethodPtr mTURN;
+        Service::MethodPtr mSTUN;
 
         IRUDPICESocketPtr mSocket;
 
-        IPeerFilesPtr mPeerFiles;
         String mLocationID;
+        PeerPtr mSelfPeer;
+        LocationPtr mSelfLocation;
+        LocationPtr mFinderLocation;
 
-        IPublicationRepositoryForAccountPtr mRepository;
-        IAccountFinderPtr mFinder;
+        PublicationRepositoryPtr mRepository;
+
+        AccountFinderPtr mFinder;
+
         Time mFinderRetryAfter;
         Duration mLastRetryFinderAfterDuration;
 
-        // peer contact ID to peer map
-        typedef String ContactID;
-        typedef std::map<ContactID, PeerPtr> PeerMap;
-        PeerMap mPeers;
+        FinderList mAvailableFinders;
+        IDNS::SRVResultPtr mAvailableFinderSRVResult;
+        IMessageMonitorPtr mFindersGetMonitor;
+        IDNSQueryPtr mFinderDNSLookup;
 
-        typedef PUID ConnectionSubscriptionID;
-        typedef std::map<ConnectionSubscriptionID, ConnectionSubscriptionPtr> ConnectionSubscriptionMap;
-        ConnectionSubscriptionMap mConnectionSubscriptions;
+        PeerInfoMap mPeerInfos;
+
+        PeerSubscriptionMap mPeerSubscriptions;
+
+        PeerMap mPeers;
+        LocationMap mLocations;
       };
     }
   }
@@ -914,43 +736,3 @@ namespace hookflash
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountForPeerSubscription)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::IMessageQueuePtr, IMessageQueuePtr)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::RecursiveLock, RecursiveLock)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::String, String)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IPeerSubscriptionForAccountPtr, IPeerSubscriptionForAccountPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscription, IPeerSubscription)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
-ZS_DECLARE_PROXY_METHOD_1(onPeerSubscriptionShutdown, IPeerSubscriptionForAccountPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getAssociatedMessageQueue, IMessageQueuePtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_1(isFinding, bool, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_3(getPeerLocations, const String &, IPeerSubscription::LocationList &, bool)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_3(getPeerLocations, const String &, IPeerSubscription::PeerLocationList &, bool)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(sendPeerMessage, bool, const String &, const char *, MessagePtr)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountForAccountPeerLocation)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::String, String)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::RecursiveLock, RecursiveLock)
-ZS_DECLARE_PROXY_TYPEDEF(zsLib::IMessageQueuePtr, IMessageQueuePtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketPtr, IRUDPICESocketPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerFilesPtr, IPeerFilesPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IAccountPeerLocationPtr, IAccountPeerLocationPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getAssociatedMessageQueue, IMessageQueuePtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getSocket, IRUDPICESocketPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getPeerFiles, IPeerFilesPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getPassword, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getDeviceID, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getUserAgent, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getOS, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getSystem, const String &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(isFinderReady, bool)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getFinderLocationID, String)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_1(sendFinderMessage, bool, MessagePtr)
-ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationIncomingMessage, IAccountPeerLocationPtr, MessagePtr)
-ZS_DECLARE_PROXY_END()
-

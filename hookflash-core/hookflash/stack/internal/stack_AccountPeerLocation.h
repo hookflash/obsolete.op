@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,24 +22,28 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
+#include <hookflash/stack/internal/types.h>
+
 #include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/IPeerLocation.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
+#include <hookflash/stack/ILocation.h>
+
 #include <hookflash/services/IRUDPICESocket.h>
 #include <hookflash/services/IRUDPICESocketSession.h>
 #include <hookflash/services/IRUDPMessaging.h>
 
+#include <hookflash/stack/message/peer-to-peer/PeerIdentifyResult.h>
+#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveResult.h>
+
 #include <zsLib/MessageQueueAssociator.h>
-#include <zsLib/String.h>
 
 #include <map>
 #include <list>
@@ -50,78 +54,69 @@ namespace hookflash
   {
     namespace internal
     {
+      typedef services::IICESocket::CandidateList CandidateList;
+      typedef services::IICESocket::Candidate Candidate;
+      typedef services::IICESocket::ICEControls ICEControls;
+
+      typedef services::IRUDPICESocketSubscriptionPtr IRUDPICESocketSubscriptionPtr;
+      typedef services::IRUDPMessagingPtr IRUDPMessagingPtr;
+
+      using message::peer_finder::PeerLocationFindRequestPtr;
+
+      using message::peer_to_peer::PeerIdentifyResult;
+      using message::peer_to_peer::PeerIdentifyResultPtr;
+      using message::peer_to_peer::PeerKeepAliveResult;
+      using message::peer_to_peer::PeerKeepAliveResultPtr;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountPeerLocation
+      #pragma mark IAccountPeerLocationForAccount
       #pragma mark
 
-      interaction IAccountPeerLocation
+      interaction IAccountPeerLocationForAccount
       {
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::Time Time;
-        typedef zsLib::Duration Duration;
-        typedef zsLib::XML::DocumentPtr DocumentPtr;
-        typedef services::IICESocket::CandidateList CandidateList;
-        typedef services::IICESocket::Candidate Candidate;
-        typedef services::IICESocket::ICEControls ICEControls;
+        typedef IAccount::AccountStates AccountStates;
 
-        enum AccountPeerLocationStates
-        {
-          AccountPeerLocationState_Pending,
-          AccountPeerLocationState_Ready,
-          AccountPeerLocationState_ShuttingDown,
-          AccountPeerLocationState_Shutdown,
-        };
+        IAccountPeerLocationForAccount &forAccount() {return *this;}
+        const IAccountPeerLocationForAccount &forAccount() const {return *this;}
 
-        static const char *toString(AccountPeerLocationStates state);
+        static AccountPeerLocationPtr create(
+                                             IAccountPeerLocationDelegatePtr delegate,
+                                             AccountPtr outer,
+                                             const LocationInfo &locationInfo
+                                             );
 
         virtual PUID getID() const = 0;
-        virtual const String &getContactID() const = 0;
-        virtual const String &getLocationID() const = 0;
 
-        virtual const Location &getLocation() const = 0;
-
-        virtual IPeerLocationPtr convertIPeerLocation() = 0;
+        virtual LocationPtr getLocation() const = 0;
+        virtual const LocationInfo &getLocationInfo() const = 0;
 
         virtual void shutdown() = 0;
 
-        virtual AccountPeerLocationStates getState() const = 0;
+        virtual AccountStates getState() const = 0;
         virtual bool shouldRefindNow() const = 0;
 
         virtual bool isConnected() const = 0;
         virtual Time getTimeOfLastActivity() const = 0;
-
-        virtual IPeerFilePublicPtr getPeerFilePublic() const = 0;
 
         virtual void connectLocation(
                                      const CandidateList &candidates,
                                      ICEControls control
                                      ) = 0;
 
-        virtual void incomingRespondWhenCandidatesReady(message::PeerToFinderPeerLocationFindRequestPtr request) = 0;
+        virtual void incomingRespondWhenCandidatesReady(PeerLocationFindRequestPtr request) = 0;
 
         virtual bool hasReceivedCandidateInformation() const = 0;
 
-        virtual bool sendMessage(
-                                 DocumentPtr document,
-                                 bool onlySendIfReady = true
-                                 ) = 0;
-
-        virtual bool sendPeerMesage(
-                                    message::MessagePtr message,
-                                    bool onlySendIfReady = true
-                                    ) = 0;
-
-        virtual IMessageRequesterPtr sendPeerRequest(
-                                                     IMessageRequesterDelegatePtr delegate,
-                                                     message::MessagePtr requestMessage,
-                                                     Duration timeout,
-                                                     bool onlySendIfReady = true
-                                                     ) = 0;
+        virtual bool send(MessagePtr message) const = 0;
+        virtual IMessageMonitorPtr sendRequest(
+                                               IMessageMonitorDelegatePtr delegate,
+                                               MessagePtr message,
+                                               Duration duration
+                                               ) const = 0;
 
         virtual void sendKeepAlive() = 0;
       };
@@ -147,115 +142,76 @@ namespace hookflash
       #pragma mark AccountPeerLocation
       #pragma mark
 
-      class AccountPeerLocation : public zsLib::MessageQueueAssociator,
-                                  public IPeerLocation,
-                                  public IAccountPeerLocation,
+      class AccountPeerLocation : public MessageQueueAssociator,
+                                  public IAccountPeerLocationForAccount,
                                   public IAccountPeerLocationAsyncDelegate,
                                   public services::IRUDPICESocketDelegate,
                                   public services::IRUDPICESocketSessionDelegate,
                                   public services::IRUDPMessagingDelegate,
-                                  public IMessageRequesterDelegate
+                                  public IMessageMonitorResultDelegate<PeerIdentifyResult>,
+                                  public IMessageMonitorResultDelegate<PeerKeepAliveResult>
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::Time Time;
-        typedef zsLib::Duration Duration;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef services::IRUDPMessagingPtr IRUDPMessagingPtr;
-        typedef services::IRUDPICESocketSubscriptionPtr IRUDPICESocketSubscriptionPtr;
+        friend interaction IAccountPeerLocationForAccount;
+
+        typedef std::list<PeerLocationFindRequestPtr> PendingRequestList;
 
       protected:
-        AccountPeerLocation(IMessageQueuePtr queue);
+        AccountPeerLocation(
+                            IMessageQueuePtr queue,
+                            IAccountPeerLocationDelegatePtr delegate,
+                            AccountPtr outer,
+                            const LocationInfo &locationInfo
+                            );
 
         void init();
 
       public:
         ~AccountPeerLocation();
 
+        static String toDebugString(AccountPeerLocationPtr peerLocation, bool includeCommaPrefix = true);
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => IAccountPeerLocationForAccount
+        #pragma mark
+
         static AccountPeerLocationPtr create(
-                                             IMessageQueuePtr queue,
                                              IAccountPeerLocationDelegatePtr delegate,
-                                             IAccountForAccountPeerLocationPtr outer,
-                                             IPeerFilePublicPtr publicPeerFile,
-                                             const char *contactID,
-                                             const Location &location
+                                             AccountPtr outer,
+                                             const LocationInfo &locationInfo
                                              );
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark AccountPeerLocation => IPeerLocation
-        #pragma mark
-
-        // (duplicate) virtual PUID getID() const;
-
-        virtual String getContactID();
-        virtual String getLocationID();
-
-        virtual Location getLocation();
-
-        virtual IPeerFilePublicPtr getPeerFilePublic() const;
-
-        // (duplicate) virtual bool isConnected() const;
-
-        virtual bool sendPeerMesage(message::MessagePtr message);
-
-        virtual IMessageRequesterPtr sendPeerRequest(
-                                                     IMessageRequesterDelegatePtr delegate,
-                                                     message::MessagePtr requestMessage,
-                                                     Duration timeout
-                                                     );
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark AccountPeerLocation => IAccountPeerLocation
-        #pragma mark
 
         virtual PUID getID() const {return mID;}
 
-        virtual const String &getContactID() const;
-        virtual const String &getLocationID() const;
+        virtual LocationPtr getLocation() const;
+        virtual const LocationInfo &getLocationInfo() const;
 
-        virtual const Location &getLocation() const;
-
-        virtual IPeerLocationPtr convertIPeerLocation();
         virtual void shutdown();
 
-        virtual AccountPeerLocationStates getState() const;
+        virtual AccountStates getState() const;
 
         virtual bool shouldRefindNow() const;
 
         virtual bool isConnected() const;
         virtual Time getTimeOfLastActivity() const;
 
-        // (duplicate) virtual IPeerFilePublicPtr getPeerFilePublic() const;
-
         virtual void connectLocation(
                                      const CandidateList &candidates,
                                      ICEControls control
                                      );
 
-        virtual void incomingRespondWhenCandidatesReady(message::PeerToFinderPeerLocationFindRequestPtr request);
+        virtual void incomingRespondWhenCandidatesReady(PeerLocationFindRequestPtr request);
 
         virtual bool hasReceivedCandidateInformation() const;
 
-        virtual bool sendMessage(
-                                 DocumentPtr document,
-                                 bool onlySendIfReady
-                                 );
-
-        virtual bool sendPeerMesage(
-                                    message::MessagePtr message,
-                                    bool onlySendIfReady
-                                    );
-
-        virtual IMessageRequesterPtr sendPeerRequest(
-                                                     IMessageRequesterDelegatePtr delegate,
-                                                     message::MessagePtr requestMessage,
-                                                     Duration timeout,
-                                                     bool onlySendIfReady
-                                                     );
+        virtual bool send(MessagePtr message) const;
+        virtual IMessageMonitorPtr sendRequest(
+                                               IMessageMonitorDelegatePtr delegate,
+                                               MessagePtr message,
+                                               Duration duration
+                                               ) const;
 
         virtual void sendKeepAlive();
 
@@ -303,15 +259,35 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark AccountPeerLocation => IMessageReuqester
+        #pragma mark AccountPeerLocation => IMessageMonitorResultDelegate<PeerIdentifyResult>,
         #pragma mark
 
-        virtual bool handleMessageRequesterMessageReceived(
-                                                           IMessageRequesterPtr requester,
-                                                           message::MessagePtr message
-                                                           );
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        PeerIdentifyResultPtr result
+                                                        );
 
-        virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             PeerIdentifyResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => IMessageMonitorResultDelegate<PeerKeepAliveResult>,
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        PeerKeepAliveResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             PeerKeepAliveResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
 
       protected:
         //---------------------------------------------------------------------
@@ -319,20 +295,28 @@ namespace hookflash
         #pragma mark AccountPeerLocation => (internal)
         #pragma mark
 
-        bool isPending() const {return AccountPeerLocationState_Pending == mCurrentState;}
-        bool isReady() const {return AccountPeerLocationState_Ready == mCurrentState;}
-        bool isShuttingDown() const {return AccountPeerLocationState_ShuttingDown == mCurrentState;}
-        bool isShutdown() const {return AccountPeerLocationState_Shutdown == mCurrentState;}
+        bool isPending() const      {return IAccount::AccountState_Pending == mCurrentState;}
+        bool isReady() const        {return IAccount::AccountState_Ready == mCurrentState;}
+        bool isShuttingDown() const {return IAccount::AccountState_ShuttingDown == mCurrentState;}
+        bool isShutdown() const     {return IAccount::AccountState_Shutdown == mCurrentState;}
 
         RecursiveLock &getLock() const;
-        IAccountForAccountPeerLocationPtr getOuter() const;
         IRUDPICESocketPtr getSocket() const;
 
-        String log(const char *message);
+        String log(const char *message) const;
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         void cancel();
+
         void step();
-        void setState(AccountPeerLocationStates state);
+        bool stepSocketSubscription(IRUDPICESocketPtr socket);
+        bool stepPendingRequests();
+        bool stepSocketSession();
+        bool stepIncomingIdentify();
+        bool stepMessaging();
+        bool stepIdentify();
+
+        void setState(AccountStates state);
 
       protected:
         //---------------------------------------------------------------------
@@ -342,34 +326,33 @@ namespace hookflash
 
         PUID mID;
         mutable RecursiveLock mBogusLock;
-
         mutable AccountPeerLocationWeakPtr mThisWeak;
 
         IAccountPeerLocationDelegatePtr mDelegate;
-        IAccountForAccountPeerLocationWeakPtr mOuter;
+        AccountWeakPtr mOuter;
         AccountPeerLocationPtr mGracefulShutdownReference;
 
-        AccountPeerLocationStates mCurrentState;
+        AccountStates mCurrentState;
         mutable bool mShouldRefindNow;
 
-        IPeerFilePublicPtr mPeerFilePublic;           // the public peer file of the location become connected
+        mutable Time mLastActivity;
 
-        Time mLastActivity;
-
-        typedef std::list<message::PeerToFinderPeerLocationFindRequestPtr> PendingRequestList;
         PendingRequestList mPendingRequests;
 
         // information about the location found
-        String mContactID;
-        Location mLocation;
+        LocationInfo mLocationInfo;
+        LocationPtr mLocation;
+        PeerPtr mPeer;
 
         IRUDPICESocketSubscriptionPtr mSocketSubscription;
         IRUDPICESocketSessionPtr mSocketSession;   // this will only become valid when a connection is establishing
         IRUDPMessagingPtr mMessaging;
 
-        IMessageRequesterPtr mIdentityRequester;
+        bool mIncoming;
+        Time mIdentifyTime;
 
-        IMessageRequesterPtr mKeepAliveRequester;
+        IMessageMonitorPtr mIdentifyMonitor;
+        IMessageMonitorPtr mKeepAliveMonitor;
       };
 
       //-----------------------------------------------------------------------
@@ -382,12 +365,17 @@ namespace hookflash
 
       interaction IAccountPeerLocationDelegate
       {
-        typedef IAccountPeerLocation::AccountPeerLocationStates AccountPeerLocationStates;
+        typedef IAccount::AccountStates AccountStates;
 
         virtual void onAccountPeerLocationStateChanged(
-                                                       IAccountPeerLocationPtr peerLocation,
-                                                       AccountPeerLocationStates state
+                                                       AccountPeerLocationPtr peerLocation,
+                                                       AccountStates state
                                                        ) = 0;
+
+        virtual void onAccountPeerLocationMessageIncoming(
+                                                          AccountPeerLocationPtr peerLocation,
+                                                          MessagePtr message
+                                                          ) = 0;
       };
 
     }
@@ -395,9 +383,11 @@ namespace hookflash
 }
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountPeerLocationDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IAccountPeerLocationPtr, IAccountPeerLocationPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IAccountPeerLocation::AccountPeerLocationStates, AccountPeerLocationStates)
-ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationStateChanged, IAccountPeerLocationPtr, AccountPeerLocationStates)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountPeerLocationPtr, AccountPeerLocationPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountPeerLocation::AccountStates, AccountStates)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationStateChanged, AccountPeerLocationPtr, AccountStates)
+ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationMessageIncoming, AccountPeerLocationPtr, MessagePtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountPeerLocationAsyncDelegate)

@@ -7,329 +7,96 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0002654215DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654115DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp */; };
-		0002654315DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654115DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp */; };
-		0002654715DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654615DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp */; };
-		0002654815DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654615DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp */; };
-		0002654C15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654B15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp */; };
-		0002654D15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002654B15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp */; };
-		0002655115DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655015DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp */; };
-		0002655215DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655015DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp */; };
-		0002655615E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655515E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp */; };
-		0002655715E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655515E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp */; };
-		0002655B15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655A15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp */; };
-		0002655C15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655A15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp */; };
-		0002656015E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655F15E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp */; };
-		0002656115E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002655F15E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp */; };
-		0002656515E0750800E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656415E0750700E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp */; };
-		0002656615E0750800E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656415E0750700E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp */; };
-		0002656A15E076B100E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656915E076B000E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp */; };
-		0002656B15E076B100E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656915E076B000E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp */; };
-		0002656F15E0792800E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656E15E0792700E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp */; };
-		0002657015E0792800E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002656E15E0792700E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp */; };
-		0002657415E08C6400E96EE4 /* provisioning_message_CreateAccountRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657315E08C6300E96EE4 /* provisioning_message_CreateAccountRequest.cpp */; };
-		0002657515E08C6400E96EE4 /* provisioning_message_CreateAccountRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657315E08C6300E96EE4 /* provisioning_message_CreateAccountRequest.cpp */; };
-		0002657915E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657815E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp */; };
-		0002657A15E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657815E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp */; };
-		0002657E15E09B3B00E96EE4 /* provisioning_message_AccessAccountRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657D15E09B3A00E96EE4 /* provisioning_message_AccessAccountRequest.cpp */; };
-		0002657F15E09B3B00E96EE4 /* provisioning_message_AccessAccountRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002657D15E09B3A00E96EE4 /* provisioning_message_AccessAccountRequest.cpp */; };
-		0002658415E0A16E00E96EE4 /* provisioning_message_AccessAccountResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658315E0A16900E96EE4 /* provisioning_message_AccessAccountResult.cpp */; };
-		0002658515E0A16E00E96EE4 /* provisioning_message_AccessAccountResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658315E0A16900E96EE4 /* provisioning_message_AccessAccountResult.cpp */; };
-		0002658915E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658815E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp */; };
-		0002658A15E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658815E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp */; };
-		0002658E15E0A6BF00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658D15E0A6BE00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp */; };
-		0002658F15E0A6BF00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002658D15E0A6BE00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp */; };
-		0002659315E0A90600E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659215E0A90400E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp */; };
-		0002659415E0A90600E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659215E0A90400E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp */; };
-		0002659815E0A9D600E96EE4 /* provisioning_message_ValidateIDPINResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659715E0A9D500E96EE4 /* provisioning_message_ValidateIDPINResult.cpp */; };
-		0002659915E0A9D600E96EE4 /* provisioning_message_ValidateIDPINResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659715E0A9D500E96EE4 /* provisioning_message_ValidateIDPINResult.cpp */; };
-		0002659F15E11F9A00E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659E15E11F9900E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp */; };
-		000265A015E11F9A00E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0002659E15E11F9900E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp */; };
-		000265A215E11FB900E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265A115E11FB800E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp */; };
-		000265A315E11FB900E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265A115E11FB800E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp */; };
-		000265A915E1357800E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265A815E1357600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp */; };
-		000265AA15E1357800E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265A815E1357600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp */; };
-		000265AC15E1359700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265AB15E1359500E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp */; };
-		000265AD15E1359700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265AB15E1359500E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp */; };
-		000265B315E1457A00E96EE4 /* provisioning_message_LookupProfileRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B215E1457800E96EE4 /* provisioning_message_LookupProfileRequest.cpp */; };
-		000265B415E1457A00E96EE4 /* provisioning_message_LookupProfileRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B215E1457800E96EE4 /* provisioning_message_LookupProfileRequest.cpp */; };
-		000265B615E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */; };
-		000265B715E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */; };
-		001648B414137F4B00AFEDD3 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 001648B314137F4B00AFEDD3 /* hookflashTypes.h */; };
-		0032A56F1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
-		0032A5701555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */; };
-		00393E79165D374F0009527F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E76165D374F0009527F /* hookflashTypes.h */; };
-		00393E7A165D374F0009527F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E76165D374F0009527F /* hookflashTypes.h */; };
-		00393E7B165D374F0009527F /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E77165D374F0009527F /* IAccount.h */; };
-		00393E7C165D374F0009527F /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E77165D374F0009527F /* IAccount.h */; };
-		00393E7D165D374F0009527F /* provisioning.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E78165D374F0009527F /* provisioning.h */; };
-		00393E7E165D374F0009527F /* provisioning.h in Headers */ = {isa = PBXBuildFile; fileRef = 00393E78165D374F0009527F /* provisioning.h */; };
-		00403ABF15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */; };
-		00403AC015D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */; };
-		00403AC715D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403AC615D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp */; };
-		00403AC815D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00403AC615D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp */; };
-		00473327141DC038006B8B20 /* hookflash_MediaEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 00473326141DC038006B8B20 /* hookflash_MediaEngine.h */; };
-		0047332C141DC111006B8B20 /* hookflash_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00473329141DC110006B8B20 /* hookflash_MediaEngine.cpp */; };
-		004D642015D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D641F15D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp */; };
-		004D642115D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D641F15D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp */; };
-		004D649415D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D649315D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp */; };
-		004D649515D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D649315D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp */; };
-		004D649915D72E91008B92CA /* provisioning_message_ProfilePutRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D649815D72E90008B92CA /* provisioning_message_ProfilePutRequest.cpp */; };
-		004D649A15D72E91008B92CA /* provisioning_message_ProfilePutRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 004D649815D72E90008B92CA /* provisioning_message_ProfilePutRequest.cpp */; };
-		0077386615515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0077386515515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp */; };
-		0077386715515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0077386515515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp */; };
-		00964AC115E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC015E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp */; };
-		00964AC315E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC215E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp */; };
-		00964AC515E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC415E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp */; };
-		00964AC715E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC615E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp */; };
-		00964AC915E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC815E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp */; };
-		00964ACB15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964ACA15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp */; };
-		00A88A3D155F236600077D2F /* hookflash_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A88A3C155F236600077D2F /* hookflash_Call.cpp */; };
-		00A88A3E155F236600077D2F /* hookflash_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A88A3C155F236600077D2F /* hookflash_Call.cpp */; };
-		00A88A40155F237900077D2F /* hookflash_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A88A3F155F237900077D2F /* hookflash_CallTransport.cpp */; };
-		00A88A41155F237900077D2F /* hookflash_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A88A3F155F237900077D2F /* hookflash_CallTransport.cpp */; };
-		00AD958816012842002ABECE /* hookflash_XML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AD958716012842002ABECE /* hookflash_XML.cpp */; };
-		00AD958916012842002ABECE /* hookflash_XML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AD958716012842002ABECE /* hookflash_XML.cpp */; };
-		00BF518D13FCF6FE002E9EB5 /* hookflash.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DC13FCF6FE002E9EB5 /* hookflash.h */; };
-		00BF518E13FCF6FE002E9EB5 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DD13FCF6FE002E9EB5 /* hookflashTypes.h */; };
-		00BF518F13FCF6FE002E9EB5 /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DE13FCF6FE002E9EB5 /* IAccount.h */; };
-		00BF519013FCF6FE002E9EB5 /* ICall.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DF13FCF6FE002E9EB5 /* ICall.h */; };
-		00BF519213FCF6FE002E9EB5 /* IClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E113FCF6FE002E9EB5 /* IClient.h */; };
-		00BF519313FCF6FE002E9EB5 /* IContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E213FCF6FE002E9EB5 /* IContact.h */; };
-		00BF519413FCF6FE002E9EB5 /* IConversationThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E313FCF6FE002E9EB5 /* IConversationThread.h */; };
-		00BF519C13FCF6FE002E9EB5 /* hookflash_Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50EC13FCF6FE002E9EB5 /* hookflash_Client.h */; };
-		00BF519D13FCF6FE002E9EB5 /* hookflash_ConversationThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50ED13FCF6FE002E9EB5 /* hookflash_ConversationThread.h */; };
-		00BF51A013FCF6FE002E9EB5 /* hookflash.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F013FCF6FE002E9EB5 /* hookflash.h */; };
-		00BF51A113FCF6FE002E9EB5 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F113FCF6FE002E9EB5 /* hookflashTypes.h */; };
-		00BF51A713FCF6FE002E9EB5 /* hookflash_Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F813FCF6FE002E9EB5 /* hookflash_Stack.h */; };
-		00BF51AE13FCF6FE002E9EB5 /* IStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50FF13FCF6FE002E9EB5 /* IStack.h */; };
-		00BF555A13FDB585002E9EB5 /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF555413FDB585002E9EB5 /* IAccount.h */; };
-		00DA66FE15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA66FD15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp */; };
-		00DA66FF15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA66FD15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp */; };
-		00DA670215E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670115E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp */; };
-		00DA670315E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670115E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp */; };
-		00DA670515E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670415E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp */; };
-		00DA670615E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670415E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp */; };
-		00DA670815E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670715E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp */; };
-		00DA670915E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DA670715E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp */; };
-		00E1D01215501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D01115501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp */; };
-		00E1D01315501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D01115501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp */; };
-		00E1D03D155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D03C155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp */; };
-		00E1D03E155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00E1D03C155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp */; };
-		00F3CD3614BC068F00EEDCF0 /* hookflash_Account.h in Headers */ = {isa = PBXBuildFile; fileRef = 00F3CD3014BC068600EEDCF0 /* hookflash_Account.h */; };
-		00F3CD3714BC068F00EEDCF0 /* hookflash_Account.h in Headers */ = {isa = PBXBuildFile; fileRef = 00F3CD3014BC068600EEDCF0 /* hookflash_Account.h */; };
-		00F3CD3A14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */ = {isa = PBXBuildFile; fileRef = 00F3CD3214BC068800EEDCF0 /* hookflash_Contact.h */; };
-		00F3CD3B14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */ = {isa = PBXBuildFile; fileRef = 00F3CD3214BC068800EEDCF0 /* hookflash_Contact.h */; };
-		00F3CD5414BC072E00EEDCF0 /* hookflash_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CD4E14BC072D00EEDCF0 /* hookflash_Account.cpp */; };
-		00F3CD5514BC072E00EEDCF0 /* hookflash_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CD4E14BC072D00EEDCF0 /* hookflash_Account.cpp */; };
-		00F3CD5814BC072E00EEDCF0 /* hookflash_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CD5014BC072D00EEDCF0 /* hookflash_Contact.cpp */; };
-		00F3CD5914BC072E00EEDCF0 /* hookflash_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CD5014BC072D00EEDCF0 /* hookflash_Contact.cpp */; };
-		00F5AECB15B1E0A6006AB0C4 /* provisioning_provisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F5AECA15B1E0A6006AB0C4 /* provisioning_provisioning.cpp */; };
-		00F5AECC15B1E0A6006AB0C4 /* provisioning_provisioning.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F5AECA15B1E0A6006AB0C4 /* provisioning_provisioning.cpp */; };
-		2AB257BD147E375D00D7B8EC /* hookflash_Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50CF13FCF6FE002E9EB5 /* hookflash_Client.cpp */; };
-		2AB257BE147E375D00D7B8EC /* hookflash_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D013FCF6FE002E9EB5 /* hookflash_ConversationThread.cpp */; };
-		2AB257C1147E375D00D7B8EC /* hookflash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D313FCF6FE002E9EB5 /* hookflash.cpp */; };
-		2AB257C2147E375D00D7B8EC /* hookflash_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00473329141DC110006B8B20 /* hookflash_MediaEngine.cpp */; };
-		2AB257CA147E375E00D7B8EC /* hookflash_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D913FCF6FE002E9EB5 /* hookflash_Stack.cpp */; };
-		2AB257D6147E378800D7B8EC /* provisioning_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AB257CE147E378800D7B8EC /* provisioning_Account.cpp */; };
-		2AB257D9147E378800D7B8EC /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2AB257D2147E378800D7B8EC /* hookflashTypes.h */; };
-		2AB257DA147E378800D7B8EC /* provisioning_Account.h in Headers */ = {isa = PBXBuildFile; fileRef = 2AB257D3147E378800D7B8EC /* provisioning_Account.h */; };
-		2AB257DD147E379D00D7B8EC /* provisioning_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AB257CE147E378800D7B8EC /* provisioning_Account.cpp */; };
-		774A53E115E528B10098F7EE /* provisioning_message_messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADE07B1B15C9138D0003897E /* provisioning_message_messages.cpp */; };
-		774A53E215E528B10098F7EE /* provisioning_message_PasswordGetPart1Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC015E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp */; };
-		774A53E315E528B10098F7EE /* provisioning_message_PasswordGetPart1Result.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC215E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp */; };
-		774A53E415E528B10098F7EE /* provisioning_message_PasswordGetPart2Request.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC415E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp */; };
-		774A53E515E528B10098F7EE /* provisioning_message_PasswordGetPart2Result.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC615E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp */; };
-		774A53E615E528B10098F7EE /* provisioning_message_PasswordPINGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964AC815E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp */; };
-		774A53E715E528B10098F7EE /* provisioning_message_PasswordPINGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00964ACA15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp */; };
-		AD35A5C315C6B45500DD297F /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = AD35A5C215C6B45500DD297F /* hookflashTypes.h */; };
-		AD7F3C8E15C1451D001DEE46 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */; };
-		AD7F3C8F15C1451D001DEE46 /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */; };
-		ADE07B1C15C9138D0003897E /* provisioning_message_messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ADE07B1B15C9138D0003897E /* provisioning_message_messages.cpp */; };
-		E2C052641668E84C00C2F319 /* hookflash_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */; };
-		E2DD817E141A639D006D89BE /* hookflash_Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50CF13FCF6FE002E9EB5 /* hookflash_Client.cpp */; };
-		E2DD817F141A639D006D89BE /* hookflash_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D013FCF6FE002E9EB5 /* hookflash_ConversationThread.cpp */; };
-		E2DD8182141A639D006D89BE /* hookflash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D313FCF6FE002E9EB5 /* hookflash.cpp */; };
-		E2DD8188141A639D006D89BE /* hookflash_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00BF50D913FCF6FE002E9EB5 /* hookflash_Stack.cpp */; };
-		E2DD81BE141A639D006D89BE /* hookflash.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DC13FCF6FE002E9EB5 /* hookflash.h */; };
-		E2DD81BF141A639D006D89BE /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DD13FCF6FE002E9EB5 /* hookflashTypes.h */; };
-		E2DD81C0141A639D006D89BE /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DE13FCF6FE002E9EB5 /* IAccount.h */; };
-		E2DD81C1141A639D006D89BE /* ICall.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50DF13FCF6FE002E9EB5 /* ICall.h */; };
-		E2DD81C3141A639D006D89BE /* IClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E113FCF6FE002E9EB5 /* IClient.h */; };
-		E2DD81C4141A639D006D89BE /* IContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E213FCF6FE002E9EB5 /* IContact.h */; };
-		E2DD81C5141A639D006D89BE /* IConversationThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50E313FCF6FE002E9EB5 /* IConversationThread.h */; };
-		E2DD81CD141A639D006D89BE /* hookflash_Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50EC13FCF6FE002E9EB5 /* hookflash_Client.h */; };
-		E2DD81CE141A639D006D89BE /* hookflash_ConversationThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50ED13FCF6FE002E9EB5 /* hookflash_ConversationThread.h */; };
-		E2DD81D1141A639D006D89BE /* hookflash.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F013FCF6FE002E9EB5 /* hookflash.h */; };
-		E2DD81D2141A639D006D89BE /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F113FCF6FE002E9EB5 /* hookflashTypes.h */; };
-		E2DD81D8141A639D006D89BE /* hookflash_Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50F813FCF6FE002E9EB5 /* hookflash_Stack.h */; };
-		E2DD81DE141A639D006D89BE /* IStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF50FF13FCF6FE002E9EB5 /* IStack.h */; };
-		E2DD81F2141A639D006D89BE /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 00BF555413FDB585002E9EB5 /* IAccount.h */; };
-		E2DD81FF141A639D006D89BE /* hookflashTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 001648B314137F4B00AFEDD3 /* hookflashTypes.h */; };
+		000491971687BA7100517C54 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491881687BA7100517C54 /* core_Account.cpp */; };
+		000491981687BA7100517C54 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491881687BA7100517C54 /* core_Account.cpp */; };
+		000491991687BA7100517C54 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491891687BA7100517C54 /* core_Call.cpp */; };
+		0004919A1687BA7100517C54 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491891687BA7100517C54 /* core_Call.cpp */; };
+		0004919B1687BA7100517C54 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918A1687BA7100517C54 /* core_CallTransport.cpp */; };
+		0004919C1687BA7100517C54 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918A1687BA7100517C54 /* core_CallTransport.cpp */; };
+		0004919D1687BA7100517C54 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918B1687BA7100517C54 /* core_Contact.cpp */; };
+		0004919E1687BA7100517C54 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918B1687BA7100517C54 /* core_Contact.cpp */; };
+		0004919F1687BA7100517C54 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918C1687BA7100517C54 /* core_ConversationThread.cpp */; };
+		000491A01687BA7100517C54 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918C1687BA7100517C54 /* core_ConversationThread.cpp */; };
+		000491A11687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */; };
+		000491A21687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */; };
+		000491A31687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */; };
+		000491A41687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */; };
+		000491A51687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */; };
+		000491A61687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */; };
+		000491A71687BA7100517C54 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491901687BA7100517C54 /* core_Helper.cpp */; };
+		000491A81687BA7100517C54 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491901687BA7100517C54 /* core_Helper.cpp */; };
+		000491A91687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */; };
+		000491AA1687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */; };
+		000491AB1687BA7100517C54 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491921687BA7100517C54 /* core_Logger.cpp */; };
+		000491AC1687BA7100517C54 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491921687BA7100517C54 /* core_Logger.cpp */; };
+		000491AD1687BA7100517C54 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491931687BA7100517C54 /* core_MediaEngine.cpp */; };
+		000491AE1687BA7100517C54 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491931687BA7100517C54 /* core_MediaEngine.cpp */; };
+		000491AF1687BA7100517C54 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491941687BA7100517C54 /* core_Stack.cpp */; };
+		000491B01687BA7100517C54 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491941687BA7100517C54 /* core_Stack.cpp */; };
+		000491B31687BA7100517C54 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491961687BA7100517C54 /* core.cpp */; };
+		000491B41687BA7100517C54 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491961687BA7100517C54 /* core.cpp */; };
+		000E21DB16C00F5A00F288E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000E21D916C00F5900F288E0 /* core_Identity.cpp */; };
+		000E21DC16C00F5A00F288E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000E21D916C00F5900F288E0 /* core_Identity.cpp */; };
+		00DFACFA16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */; };
+		00DFACFB16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */; };
+		00DFAD0016C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */; };
+		00DFAD0116C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */; };
+		00DFAD0616C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */; };
+		00DFAD0716C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */; };
+		00DFAD0816C3D1B300D8E27C /* core_IdentityLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */; };
+		00DFAD0916C3D1B300D8E27C /* core_IdentityLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0002653E15DEAE1700E96EE4 /* ProfilePutResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProfilePutResult.h; path = ../../../hookflash/provisioning/message/ProfilePutResult.h; sourceTree = "<group>"; };
-		0002654015DEE60900E96EE4 /* provisioning_message_ProfilePutResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProfilePutResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProfilePutResult.h; sourceTree = "<group>"; };
-		0002654115DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProfilePutResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProfilePutResult.cpp; sourceTree = "<group>"; };
-		0002654415DEEEA300E96EE4 /* ProfileGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProfileGetRequest.h; path = ../../../hookflash/provisioning/message/ProfileGetRequest.h; sourceTree = "<group>"; };
-		0002654515DEFA4B00E96EE4 /* provisioning_message_ProfileGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProfileGetRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProfileGetRequest.h; sourceTree = "<group>"; };
-		0002654615DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProfileGetRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProfileGetRequest.cpp; sourceTree = "<group>"; };
-		0002654915DEFF2100E96EE4 /* ProfileGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProfileGetResult.h; path = ../../../hookflash/provisioning/message/ProfileGetResult.h; sourceTree = "<group>"; };
-		0002654A15DEFF9A00E96EE4 /* provisioning_message_ProfileGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProfileGetResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProfileGetResult.h; sourceTree = "<group>"; };
-		0002654B15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProfileGetResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProfileGetResult.cpp; sourceTree = "<group>"; };
-		0002654E15DF077E00E96EE4 /* PasswordPutRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordPutRequest.h; path = ../../../hookflash/provisioning/message/PasswordPutRequest.h; sourceTree = "<group>"; };
-		0002654F15DFFEFD00E96EE4 /* provisioning_message_PasswordPutRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordPutRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordPutRequest.h; sourceTree = "<group>"; };
-		0002655015DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordPutRequest.cpp; path = ../../../hookflash/provisioning/cpp/provisioning_message_PasswordPutRequest.cpp; sourceTree = "<group>"; };
-		0002655315E0603700E96EE4 /* PasswordPutResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordPutResult.h; path = ../../../hookflash/provisioning/message/PasswordPutResult.h; sourceTree = "<group>"; };
-		0002655415E060C900E96EE4 /* provisioning_message_PasswordPutResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordPutResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordPutResult.h; sourceTree = "<group>"; };
-		0002655515E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordPutResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordPutResult.cpp; sourceTree = "<group>"; };
-		0002655815E0647C00E96EE4 /* OAuthPasswordGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OAuthPasswordGetRequest.h; path = ../../../hookflash/provisioning/message/OAuthPasswordGetRequest.h; sourceTree = "<group>"; };
-		0002655915E0655300E96EE4 /* provisioning_message_OAuthPasswordGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_OAuthPasswordGetRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_OAuthPasswordGetRequest.h; sourceTree = "<group>"; };
-		0002655A15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_OAuthPasswordGetRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_OAuthPasswordGetRequest.cpp; sourceTree = "<group>"; };
-		0002655D15E06C3000E96EE4 /* OAuthPasswordGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OAuthPasswordGetResult.h; path = ../../../hookflash/provisioning/message/OAuthPasswordGetResult.h; sourceTree = "<group>"; };
-		0002655E15E06F5B00E96EE4 /* provisioning_message_OAuthPasswordGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_OAuthPasswordGetResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_OAuthPasswordGetResult.h; sourceTree = "<group>"; };
-		0002655F15E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_OAuthPasswordGetResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_OAuthPasswordGetResult.cpp; sourceTree = "<group>"; };
-		0002656215E0738600E96EE4 /* ProviderAssociateURLGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProviderAssociateURLGetRequest.h; path = ../../../hookflash/provisioning/message/ProviderAssociateURLGetRequest.h; sourceTree = "<group>"; };
-		0002656315E074EB00E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProviderAssociateURLGetRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProviderAssociateURLGetRequest.h; sourceTree = "<group>"; };
-		0002656415E0750700E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProviderAssociateURLGetRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProviderAssociateURLGetRequest.cpp; sourceTree = "<group>"; };
-		0002656715E075DF00E96EE4 /* ProviderAssociateURLGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProviderAssociateURLGetResult.h; path = ../../../hookflash/provisioning/message/ProviderAssociateURLGetResult.h; sourceTree = "<group>"; };
-		0002656815E0769600E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProviderAssociateURLGetResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProviderAssociateURLGetResult.h; sourceTree = "<group>"; };
-		0002656915E076B000E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProviderAssociateURLGetResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProviderAssociateURLGetResult.cpp; sourceTree = "<group>"; };
-		0002656C15E077FA00E96EE4 /* OAuthLoginWebpageForAssociationResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OAuthLoginWebpageForAssociationResult.h; path = ../../../hookflash/provisioning/message/OAuthLoginWebpageForAssociationResult.h; sourceTree = "<group>"; };
-		0002656D15E0789C00E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_OAuthLoginWebpageForAssociationResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_OAuthLoginWebpageForAssociationResult.h; sourceTree = "<group>"; };
-		0002656E15E0792700E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_OAuthLoginWebpageForAssociationResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_OAuthLoginWebpageForAssociationResult.cpp; sourceTree = "<group>"; };
-		0002657115E08B6A00E96EE4 /* CreateAccountRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CreateAccountRequest.h; path = ../../../hookflash/provisioning/message/CreateAccountRequest.h; sourceTree = "<group>"; };
-		0002657215E08C4D00E96EE4 /* provisioning_message_CreateAccountRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_CreateAccountRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_CreateAccountRequest.h; sourceTree = "<group>"; };
-		0002657315E08C6300E96EE4 /* provisioning_message_CreateAccountRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_CreateAccountRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_CreateAccountRequest.cpp; sourceTree = "<group>"; };
-		0002657615E08EE300E96EE4 /* CreateAccountResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CreateAccountResult.h; path = ../../../hookflash/provisioning/message/CreateAccountResult.h; sourceTree = "<group>"; };
-		0002657715E095FD00E96EE4 /* provisioning_message_CreateAccountResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_CreateAccountResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_CreateAccountResult.h; sourceTree = "<group>"; };
-		0002657815E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_CreateAccountResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_CreateAccountResult.cpp; sourceTree = "<group>"; };
-		0002657B15E098B300E96EE4 /* AccessAccountRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccessAccountRequest.h; path = ../../../hookflash/provisioning/message/AccessAccountRequest.h; sourceTree = "<group>"; };
-		0002657C15E09B1B00E96EE4 /* provisioning_message_AccessAccountRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_AccessAccountRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_AccessAccountRequest.h; sourceTree = "<group>"; };
-		0002657D15E09B3A00E96EE4 /* provisioning_message_AccessAccountRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_AccessAccountRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_AccessAccountRequest.cpp; sourceTree = "<group>"; };
-		0002658115E0A07B00E96EE4 /* AccessAccountResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccessAccountResult.h; path = ../../../hookflash/provisioning/message/AccessAccountResult.h; sourceTree = "<group>"; };
-		0002658215E0A14900E96EE4 /* provisioning_message_AccessAccountResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_AccessAccountResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_AccessAccountResult.h; sourceTree = "<group>"; };
-		0002658315E0A16900E96EE4 /* provisioning_message_AccessAccountResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_AccessAccountResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_AccessAccountResult.cpp; sourceTree = "<group>"; };
-		0002658615E0A36600E96EE4 /* SendIDValidationPINRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SendIDValidationPINRequest.h; path = ../../../hookflash/provisioning/message/SendIDValidationPINRequest.h; sourceTree = "<group>"; };
-		0002658715E0A4F800E96EE4 /* provisioning_message_SendIDValidationPINRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_SendIDValidationPINRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_SendIDValidationPINRequest.h; sourceTree = "<group>"; };
-		0002658815E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_SendIDValidationPINRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_SendIDValidationPINRequest.cpp; sourceTree = "<group>"; };
-		0002658B15E0A67300E96EE4 /* SendIDValidationPINResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SendIDValidationPINResult.h; path = ../../../hookflash/provisioning/message/SendIDValidationPINResult.h; sourceTree = "<group>"; };
-		0002658C15E0A6A200E96EE4 /* provisioning_message_SendIDValidationPINResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_SendIDValidationPINResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_SendIDValidationPINResult.h; sourceTree = "<group>"; };
-		0002658D15E0A6BE00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_SendIDValidationPINResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_SendIDValidationPINResult.cpp; sourceTree = "<group>"; };
-		0002659015E0A7C100E96EE4 /* ValidateIDPINRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ValidateIDPINRequest.h; path = ../../../hookflash/provisioning/message/ValidateIDPINRequest.h; sourceTree = "<group>"; };
-		0002659115E0A8EB00E96EE4 /* provisioning_message_ValidateIDPINRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ValidateIDPINRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ValidateIDPINRequest.h; sourceTree = "<group>"; };
-		0002659215E0A90400E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ValidateIDPINRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ValidateIDPINRequest.cpp; sourceTree = "<group>"; };
-		0002659515E0A99B00E96EE4 /* ValidateIDPINResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ValidateIDPINResult.h; path = ../../../hookflash/provisioning/message/ValidateIDPINResult.h; sourceTree = "<group>"; };
-		0002659615E0A9C000E96EE4 /* provisioning_message_ValidateIDPINResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ValidateIDPINResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ValidateIDPINResult.h; sourceTree = "<group>"; };
-		0002659715E0A9D500E96EE4 /* provisioning_message_ValidateIDPINResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ValidateIDPINResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ValidateIDPINResult.cpp; sourceTree = "<group>"; };
-		0002659A15E11EA500E96EE4 /* PeerProfileLookupRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PeerProfileLookupRequest.h; path = ../../../hookflash/provisioning/message/PeerProfileLookupRequest.h; sourceTree = "<group>"; };
-		0002659B15E11ED100E96EE4 /* PeerProfileLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PeerProfileLookupResult.h; path = ../../../hookflash/provisioning/message/PeerProfileLookupResult.h; sourceTree = "<group>"; };
-		0002659C15E11F5900E96EE4 /* provisioning_message_PeerProfileLookupRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PeerProfileLookupRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PeerProfileLookupRequest.h; sourceTree = "<group>"; };
-		0002659D15E11F7500E96EE4 /* provisioning_message_PeerProfileLookupResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PeerProfileLookupResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PeerProfileLookupResult.h; sourceTree = "<group>"; };
-		0002659E15E11F9900E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PeerProfileLookupRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PeerProfileLookupRequest.cpp; sourceTree = "<group>"; };
-		000265A115E11FB800E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PeerProfileLookupResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PeerProfileLookupResult.cpp; sourceTree = "<group>"; };
-		000265A415E134E100E96EE4 /* MultiPartyAPNSPushRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MultiPartyAPNSPushRequest.h; path = ../../../hookflash/provisioning/message/MultiPartyAPNSPushRequest.h; sourceTree = "<group>"; };
-		000265A515E1350D00E96EE4 /* MultiPartyAPNSPushResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MultiPartyAPNSPushResult.h; path = ../../../hookflash/provisioning/message/MultiPartyAPNSPushResult.h; sourceTree = "<group>"; };
-		000265A615E1353600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_MultiPartyAPNSPushRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_MultiPartyAPNSPushRequest.h; sourceTree = "<group>"; };
-		000265A715E1355700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_MultiPartyAPNSPushResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_MultiPartyAPNSPushResult.h; sourceTree = "<group>"; };
-		000265A815E1357600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_MultiPartyAPNSPushRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_MultiPartyAPNSPushRequest.cpp; sourceTree = "<group>"; };
-		000265AB15E1359500E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_MultiPartyAPNSPushResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_MultiPartyAPNSPushResult.cpp; sourceTree = "<group>"; };
-		000265AE15E144E100E96EE4 /* LookupProfileRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LookupProfileRequest.h; path = ../../../hookflash/provisioning/message/LookupProfileRequest.h; sourceTree = "<group>"; };
-		000265AF15E144FF00E96EE4 /* LookupProfileResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LookupProfileResult.h; path = ../../../hookflash/provisioning/message/LookupProfileResult.h; sourceTree = "<group>"; };
-		000265B015E1453C00E96EE4 /* provisioning_message_LookupProfileRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_LookupProfileRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_LookupProfileRequest.h; sourceTree = "<group>"; };
-		000265B115E1455B00E96EE4 /* provisioning_message_LookupProfileResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_LookupProfileResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_LookupProfileResult.h; sourceTree = "<group>"; };
-		000265B215E1457800E96EE4 /* provisioning_message_LookupProfileRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_LookupProfileRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_LookupProfileRequest.cpp; sourceTree = "<group>"; };
-		000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_LookupProfileResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_LookupProfileResult.cpp; sourceTree = "<group>"; };
-		000265B815E154A400E96EE4 /* PasswordGetPart1Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart1Request.h; path = ../../../hookflash/provisioning/message/PasswordGetPart1Request.h; sourceTree = "<group>"; };
-		000265B915E154CF00E96EE4 /* PasswordGetPart1Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart1Result.h; path = ../../../hookflash/provisioning/message/PasswordGetPart1Result.h; sourceTree = "<group>"; };
-		000265BA15E154EC00E96EE4 /* PasswordGetPart2Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart2Request.h; path = ../../../hookflash/provisioning/message/PasswordGetPart2Request.h; sourceTree = "<group>"; };
-		000265BB15E1550800E96EE4 /* PasswordGetPart2Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordGetPart2Result.h; path = ../../../hookflash/provisioning/message/PasswordGetPart2Result.h; sourceTree = "<group>"; };
-		001648B314137F4B00AFEDD3 /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning/hookflashTypes.h; sourceTree = "<group>"; };
-		001E52861625D122005FFD8C /* hookflash_Helper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_Helper.h; sourceTree = "<group>"; };
-		0032A5451555AEB500F89F96 /* hookflash_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
-		0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
-		00393E76165D374F0009527F /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning2/hookflashTypes.h; sourceTree = "<group>"; };
-		00393E77165D374F0009527F /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/provisioning2/IAccount.h; sourceTree = "<group>"; };
-		00393E78165D374F0009527F /* provisioning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = provisioning.h; path = ../../../hookflash/provisioning2/provisioning.h; sourceTree = "<group>"; };
-		00403AB615D5BC77007EB944 /* provisioning_provisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = provisioning_provisioning.h; sourceTree = "<group>"; };
-		00403ABC15D5C330007EB944 /* provisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning.h; path = ../../../hookflash/provisioning/provisioning.h; sourceTree = "<group>"; };
-		00403ABD15D5C415007EB944 /* MessageFactoryProvisioning.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MessageFactoryProvisioning.h; path = ../../../hookflash/provisioning/message/MessageFactoryProvisioning.h; sourceTree = "<group>"; };
-		00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_MessageFactoryProvisioning.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_MessageFactoryProvisioning.cpp; sourceTree = "<group>"; };
-		00403AC115D5D9AE007EB944 /* ProviderLoginURLGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProviderLoginURLGetRequest.h; path = ../../../hookflash/provisioning/message/ProviderLoginURLGetRequest.h; sourceTree = "<group>"; };
-		00403AC315D5DB7A007EB944 /* messages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = messages.h; path = ../../../hookflash/provisioning/message/messages.h; sourceTree = "<group>"; };
-		00403AC415D5DBFA007EB944 /* provisioning_message_messages.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_messages.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_messages.h; sourceTree = "<group>"; };
-		00403AC515D5E890007EB944 /* provisioning_message_ProviderLoginURLGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProviderLoginURLGetRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProviderLoginURLGetRequest.h; sourceTree = "<group>"; };
-		00403AC615D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProviderLoginURLGetRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProviderLoginURLGetRequest.cpp; sourceTree = "<group>"; };
-		00403AC915D69ACE007EB944 /* ProviderLoginURLGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProviderLoginURLGetResult.h; path = ../../../hookflash/provisioning/message/ProviderLoginURLGetResult.h; sourceTree = "<group>"; };
-		00473326141DC038006B8B20 /* hookflash_MediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_MediaEngine.h; sourceTree = "<group>"; };
-		00473329141DC110006B8B20 /* hookflash_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_MediaEngine.cpp; sourceTree = "<group>"; };
-		004D641F15D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProviderLoginURLGetResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProviderLoginURLGetResult.cpp; sourceTree = "<group>"; };
-		004D648F15D6F1DC008B92CA /* provisioning_message_ProviderLoginURLGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProviderLoginURLGetResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProviderLoginURLGetResult.h; sourceTree = "<group>"; };
-		004D649115D6FC4B008B92CA /* OAuthLoginWebpageResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OAuthLoginWebpageResult.h; path = ../../../hookflash/provisioning/message/OAuthLoginWebpageResult.h; sourceTree = "<group>"; };
-		004D649215D70882008B92CA /* provisioning_message_OAuthLoginWebpageResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_OAuthLoginWebpageResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_OAuthLoginWebpageResult.h; sourceTree = "<group>"; };
-		004D649315D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_OAuthLoginWebpageResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_OAuthLoginWebpageResult.cpp; sourceTree = "<group>"; };
-		004D649615D7219D008B92CA /* ProfilePutRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ProfilePutRequest.h; path = ../../../hookflash/provisioning/message/ProfilePutRequest.h; sourceTree = "<group>"; };
-		004D649815D72E90008B92CA /* provisioning_message_ProfilePutRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_ProfilePutRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_ProfilePutRequest.cpp; sourceTree = "<group>"; };
-		004D649B15D738D6008B92CA /* provisioning_message_ProfilePutRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_ProfilePutRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_ProfilePutRequest.h; sourceTree = "<group>"; };
-		0077386515515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_IConversationThreadParser.cpp; sourceTree = "<group>"; };
-		0077389015515C85002BDDEA /* hookflash_IConversationThreadParser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_IConversationThreadParser.h; sourceTree = "<group>"; };
-		00964AB815E1566D00FEE8BA /* PasswordPINGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordPINGetRequest.h; path = ../../../hookflash/provisioning/message/PasswordPINGetRequest.h; sourceTree = "<group>"; };
-		00964AB915E1568D00FEE8BA /* PasswordPINGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PasswordPINGetResult.h; path = ../../../hookflash/provisioning/message/PasswordPINGetResult.h; sourceTree = "<group>"; };
-		00964ABA15E159EA00FEE8BA /* provisioning_message_PasswordGetPart1Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordGetPart1Request.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordGetPart1Request.h; sourceTree = "<group>"; };
-		00964ABB15E15A1400FEE8BA /* provisioning_message_PasswordGetPart1Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordGetPart1Result.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordGetPart1Result.h; sourceTree = "<group>"; };
-		00964ABC15E15A3B00FEE8BA /* provisioning_message_PasswordGetPart2Request.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordGetPart2Request.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordGetPart2Request.h; sourceTree = "<group>"; };
-		00964ABD15E15A5D00FEE8BA /* provisioning_message_PasswordGetPart2Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordGetPart2Result.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordGetPart2Result.h; sourceTree = "<group>"; };
-		00964ABE15E15A9100FEE8BA /* provisioning_message_PasswordPINGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordPINGetRequest.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordPINGetRequest.h; sourceTree = "<group>"; };
-		00964ABF15E15ABC00FEE8BA /* provisioning_message_PasswordPINGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = provisioning_message_PasswordPINGetResult.h; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordPINGetResult.h; sourceTree = "<group>"; };
-		00964AC015E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordGetPart1Request.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordGetPart1Request.cpp; sourceTree = "<group>"; };
-		00964AC215E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordGetPart1Result.cpp; path = ../../../hookflash/provisioning/message/internal/provisioning_message_PasswordGetPart1Result.cpp; sourceTree = "<group>"; };
-		00964AC415E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordGetPart2Request.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordGetPart2Request.cpp; sourceTree = "<group>"; };
-		00964AC615E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordGetPart2Result.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordGetPart2Result.cpp; sourceTree = "<group>"; };
-		00964AC815E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordPINGetRequest.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordPINGetRequest.cpp; sourceTree = "<group>"; };
-		00964ACA15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_PasswordPINGetResult.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_PasswordPINGetResult.cpp; sourceTree = "<group>"; };
-		00A88A3C155F236600077D2F /* hookflash_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Call.cpp; sourceTree = "<group>"; };
-		00A88A3F155F237900077D2F /* hookflash_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_CallTransport.cpp; sourceTree = "<group>"; };
-		00A88A42155F23A000077D2F /* hookflash_Call.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_Call.h; sourceTree = "<group>"; };
-		00A88A43155F23B000077D2F /* hookflash_CallTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_CallTransport.h; sourceTree = "<group>"; };
-		00AD958516012500002ABECE /* IXML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IXML.h; path = ../../../hookflash/IXML.h; sourceTree = "<group>"; };
-		00AD958716012842002ABECE /* hookflash_XML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_XML.cpp; sourceTree = "<group>"; };
-		00AD958A16012888002ABECE /* hookflash_XML.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_XML.h; sourceTree = "<group>"; };
+		000490EB1687B98A00517C54 /* core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core.h; path = ../../../hookflash/core/core.h; sourceTree = "<group>"; };
+		000490EC1687B98A00517C54 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../hookflash/core/types.h; sourceTree = "<group>"; };
+		000490ED1687B98A00517C54 /* IAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/core/IAccount.h; sourceTree = "<group>"; };
+		000490EE1687B98A00517C54 /* ICall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ICall.h; path = ../../../hookflash/core/ICall.h; sourceTree = "<group>"; };
+		000490EF1687B98A00517C54 /* IContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IContact.h; path = ../../../hookflash/core/IContact.h; sourceTree = "<group>"; };
+		000490F01687B98A00517C54 /* IConversationThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IConversationThread.h; path = ../../../hookflash/core/IConversationThread.h; sourceTree = "<group>"; };
+		000490F11687B98A00517C54 /* IHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IHelper.h; path = ../../../hookflash/core/IHelper.h; sourceTree = "<group>"; };
+		000490F21687B98A00517C54 /* ILogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ILogger.h; path = ../../../hookflash/core/ILogger.h; sourceTree = "<group>"; };
+		000490F31687B98A00517C54 /* IMediaEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMediaEngine.h; path = ../../../hookflash/core/IMediaEngine.h; sourceTree = "<group>"; };
+		000490F41687B98A00517C54 /* IStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IStack.h; path = ../../../hookflash/core/IStack.h; sourceTree = "<group>"; };
+		000491881687BA7100517C54 /* core_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Account.cpp; path = ../../../hookflash/core/cpp/core_Account.cpp; sourceTree = "<group>"; };
+		000491891687BA7100517C54 /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Call.cpp; path = ../../../hookflash/core/cpp/core_Call.cpp; sourceTree = "<group>"; };
+		0004918A1687BA7100517C54 /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_CallTransport.cpp; path = ../../../hookflash/core/cpp/core_CallTransport.cpp; sourceTree = "<group>"; };
+		0004918B1687BA7100517C54 /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Contact.cpp; path = ../../../hookflash/core/cpp/core_Contact.cpp; sourceTree = "<group>"; };
+		0004918C1687BA7100517C54 /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThread.cpp; path = ../../../hookflash/core/cpp/core_ConversationThread.cpp; sourceTree = "<group>"; };
+		0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadDocumentFetcher.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
+		0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadHost.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
+		0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadSlave.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
+		000491901687BA7100517C54 /* core_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Helper.cpp; path = ../../../hookflash/core/cpp/core_Helper.cpp; sourceTree = "<group>"; };
+		000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_IConversationThreadParser.cpp; path = ../../../hookflash/core/cpp/core_IConversationThreadParser.cpp; sourceTree = "<group>"; };
+		000491921687BA7100517C54 /* core_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Logger.cpp; path = ../../../hookflash/core/cpp/core_Logger.cpp; sourceTree = "<group>"; };
+		000491931687BA7100517C54 /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_MediaEngine.cpp; path = ../../../hookflash/core/cpp/core_MediaEngine.cpp; sourceTree = "<group>"; };
+		000491941687BA7100517C54 /* core_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Stack.cpp; path = ../../../hookflash/core/cpp/core_Stack.cpp; sourceTree = "<group>"; };
+		000491961687BA7100517C54 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core.cpp; path = ../../../hookflash/core/cpp/core.cpp; sourceTree = "<group>"; };
+		000491C61687BAB300517C54 /* core_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Account.h; path = ../../../hookflash/core/internal/core_Account.h; sourceTree = "<group>"; };
+		000491C71687BAB300517C54 /* core_Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Call.h; path = ../../../hookflash/core/internal/core_Call.h; sourceTree = "<group>"; };
+		000491C81687BAB300517C54 /* core_CallTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_CallTransport.h; path = ../../../hookflash/core/internal/core_CallTransport.h; sourceTree = "<group>"; };
+		000491C91687BAB300517C54 /* core_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Contact.h; path = ../../../hookflash/core/internal/core_Contact.h; sourceTree = "<group>"; };
+		000491CA1687BAB300517C54 /* core_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThread.h; path = ../../../hookflash/core/internal/core_ConversationThread.h; sourceTree = "<group>"; };
+		000491CB1687BAB300517C54 /* core_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadDocumentFetcher.h; path = ../../../hookflash/core/internal/core_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
+		000491CC1687BAB300517C54 /* core_ConversationThreadHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadHost.h; path = ../../../hookflash/core/internal/core_ConversationThreadHost.h; sourceTree = "<group>"; };
+		000491CD1687BAB300517C54 /* core_ConversationThreadSlave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadSlave.h; path = ../../../hookflash/core/internal/core_ConversationThreadSlave.h; sourceTree = "<group>"; };
+		000491CE1687BAB300517C54 /* core_Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Helper.h; path = ../../../hookflash/core/internal/core_Helper.h; sourceTree = "<group>"; };
+		000491CF1687BAB300517C54 /* core_IConversationThreadParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_IConversationThreadParser.h; path = ../../../hookflash/core/internal/core_IConversationThreadParser.h; sourceTree = "<group>"; };
+		000491D01687BAB300517C54 /* core_Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Logger.h; path = ../../../hookflash/core/internal/core_Logger.h; sourceTree = "<group>"; };
+		000491D11687BAB300517C54 /* core_MediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_MediaEngine.h; path = ../../../hookflash/core/internal/core_MediaEngine.h; sourceTree = "<group>"; };
+		000491D21687BAB300517C54 /* core_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Stack.h; path = ../../../hookflash/core/internal/core_Stack.h; sourceTree = "<group>"; };
+		000491D41687BAB300517C54 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core.h; path = ../../../hookflash/core/internal/core.h; sourceTree = "<group>"; };
+		000491D51687BAB300517C54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../hookflash/core/internal/types.h; sourceTree = "<group>"; };
+		000E21D916C00F5900F288E0 /* core_Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Identity.cpp; path = ../../../hookflash/core/cpp/core_Identity.cpp; sourceTree = "<group>"; };
+		000E21E016C00F8F00F288E0 /* core_Identity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core_Identity.h; path = ../../../hookflash/core/internal/core_Identity.h; sourceTree = "<group>"; };
+		0045CEDD16BEEDD900042A91 /* IIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIdentity.h; path = ../../../hookflash/core/IIdentity.h; sourceTree = "<group>"; };
+		0045CEDE16BF0B3000042A91 /* IIdentityLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIdentityLookup.h; path = ../../../hookflash/core/IIdentityLookup.h; sourceTree = "<group>"; };
+		0045CEDF16BF0B5000042A91 /* IContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IContactPeerFilePublicLookup.h; path = ../../../hookflash/core/IContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
 		00BF50C213FCF665002E9EB5 /* libhfcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		00BF50CF13FCF6FE002E9EB5 /* hookflash_Client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Client.cpp; sourceTree = "<group>"; };
-		00BF50D013FCF6FE002E9EB5 /* hookflash_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThread.cpp; sourceTree = "<group>"; };
-		00BF50D313FCF6FE002E9EB5 /* hookflash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash.cpp; sourceTree = "<group>"; };
-		00BF50D913FCF6FE002E9EB5 /* hookflash_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Stack.cpp; sourceTree = "<group>"; };
-		00BF50DC13FCF6FE002E9EB5 /* hookflash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflash.h; path = ../../../hookflash/hookflash.h; sourceTree = "<group>"; };
-		00BF50DD13FCF6FE002E9EB5 /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/hookflashTypes.h; sourceTree = "<group>"; };
-		00BF50DE13FCF6FE002E9EB5 /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/IAccount.h; sourceTree = "<group>"; };
-		00BF50DF13FCF6FE002E9EB5 /* ICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ICall.h; path = ../../../hookflash/ICall.h; sourceTree = "<group>"; };
-		00BF50E113FCF6FE002E9EB5 /* IClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IClient.h; path = ../../../hookflash/IClient.h; sourceTree = "<group>"; };
-		00BF50E213FCF6FE002E9EB5 /* IContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IContact.h; path = ../../../hookflash/IContact.h; sourceTree = "<group>"; };
-		00BF50E313FCF6FE002E9EB5 /* IConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IConversationThread.h; path = ../../../hookflash/IConversationThread.h; sourceTree = "<group>"; };
-		00BF50EC13FCF6FE002E9EB5 /* hookflash_Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_Client.h; sourceTree = "<group>"; };
-		00BF50ED13FCF6FE002E9EB5 /* hookflash_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThread.h; sourceTree = "<group>"; };
-		00BF50F013FCF6FE002E9EB5 /* hookflash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash.h; sourceTree = "<group>"; };
-		00BF50F113FCF6FE002E9EB5 /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflashTypes.h; sourceTree = "<group>"; };
-		00BF50F813FCF6FE002E9EB5 /* hookflash_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_Stack.h; sourceTree = "<group>"; };
-		00BF50FF13FCF6FE002E9EB5 /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IStack.h; path = ../../../hookflash/IStack.h; sourceTree = "<group>"; };
-		00BF555413FDB585002E9EB5 /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/provisioning/IAccount.h; sourceTree = "<group>"; };
-		00DA66FD15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_Account_AccountPush.cpp; sourceTree = "<group>"; };
-		00DA670115E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_Account_AccountIdentityLookupQuery.cpp; sourceTree = "<group>"; };
-		00DA670415E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_Account_AccountPeerFileLookupQuery.cpp; sourceTree = "<group>"; };
-		00DA670715E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_Account_AccountOAuthIdentityAssociation.cpp; sourceTree = "<group>"; };
-		00E1D01115501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThreadHost.cpp; sourceTree = "<group>"; };
-		00E1D03C155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
-		00E1D03F1550270200D3A5AC /* hookflash_ConversationThreadSlave.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThreadSlave.h; sourceTree = "<group>"; };
-		00EC94A91548A9D400891937 /* hookflash_ConversationThreadHost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hookflash_ConversationThreadHost.h; sourceTree = "<group>"; };
-		00F3CD3014BC068600EEDCF0 /* hookflash_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_Account.h; sourceTree = "<group>"; };
-		00F3CD3214BC068800EEDCF0 /* hookflash_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflash_Contact.h; sourceTree = "<group>"; };
-		00F3CD4E14BC072D00EEDCF0 /* hookflash_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Account.cpp; sourceTree = "<group>"; };
-		00F3CD5014BC072D00EEDCF0 /* hookflash_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Contact.cpp; sourceTree = "<group>"; };
-		00F5AECA15B1E0A6006AB0C4 /* provisioning_provisioning.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_provisioning.cpp; sourceTree = "<group>"; };
-		2AB257CE147E378800D7B8EC /* provisioning_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = provisioning_Account.cpp; sourceTree = "<group>"; };
-		2AB257D2147E378800D7B8EC /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hookflashTypes.h; sourceTree = "<group>"; };
-		2AB257D3147E378800D7B8EC /* provisioning_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = provisioning_Account.h; sourceTree = "<group>"; };
+		00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_IdentityLookup.cpp; path = ../../../hookflash/core/cpp/core_IdentityLookup.cpp; sourceTree = "<group>"; };
+		00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ContactPeerFilePublicLookup.cpp; path = ../../../hookflash/core/cpp/core_ContactPeerFilePublicLookup.cpp; sourceTree = "<group>"; };
+		00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ContactPeerFilePublicLookup.h; path = ../../../hookflash/core/internal/core_ContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
+		00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_IdentityLookup.h; path = ../../../hookflash/core/internal/core_IdentityLookup.h; sourceTree = "<group>"; };
 		52897137148F7E6100AB9E8C /* libhfservices_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhfservices_ios.a; path = "../../../../services/projects/xcode/hfservices/build/Debug-iphoneos/libhfservices_ios.a"; sourceTree = "<group>"; };
 		77027DCD149CCE520077D344 /* libwebrtc_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebrtc_ios.a; path = "../../../../webRTC/projects/xcode/webrtc_ios/build/Release-iphoneos/libwebrtc_ios.a"; sourceTree = "<group>"; };
 		77027F2B149CD2380077D344 /* libcryptopp_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcryptopp_ios.a; path = "../../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/build/Release-iphoneos/libcryptopp_ios.a"; sourceTree = "<group>"; };
@@ -342,10 +109,6 @@
 		77027F32149CD2380077D344 /* libudns.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libudns.a; path = "../../../../../hookflash-libs/udns/projects/xcode/udns/build/Release/libudns.a"; sourceTree = "<group>"; };
 		77027F33149CD2380077D344 /* libzsLib_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzsLib_ios.a; path = "../../../../../hookflash-libs/zsLib/projects/xcode/zsLib/build/Release-iphoneos/libzsLib_ios.a"; sourceTree = "<group>"; };
 		77027F34149CD2380077D344 /* libzsLib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzsLib.a; path = "../../../../../hookflash-libs/zsLib/projects/xcode/zsLib/build/Release/libzsLib.a"; sourceTree = "<group>"; };
-		AD35A5C215C6B45500DD297F /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning/message/internal/hookflashTypes.h; sourceTree = "<group>"; };
-		AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hookflashTypes.h; path = ../../../hookflash/provisioning/message/hookflashTypes.h; sourceTree = "<group>"; };
-		ADE07B1B15C9138D0003897E /* provisioning_message_messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = provisioning_message_messages.cpp; path = ../../../hookflash/provisioning/message/cpp/provisioning_message_messages.cpp; sourceTree = "<group>"; };
-		E257045F161906E900F3A6F1 /* IMediaEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMediaEngine.h; path = ../../../hookflash/IMediaEngine.h; sourceTree = "<group>"; };
 		E288B1721419F49000222C2A /* libaec.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libaec.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B1731419F49000222C2A /* libaecm.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libaecm.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B1741419F49000222C2A /* libagc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libagc.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -388,8 +151,6 @@
 		E288B1991419F49000222C2A /* libwebrtc_video_coding.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_video_coding.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B19A1419F49000222C2A /* libwebrtc_vp8.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_vp8.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E288B19B1419F49000222C2A /* libwebrtc_vplib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libwebrtc_vplib.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2C052611668E83000C2F319 /* IHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IHelper.h; path = ../../../hookflash/IHelper.h; sourceTree = "<group>"; };
-		E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hookflash_Helper.cpp; sourceTree = "<group>"; };
 		E2DD8208141A639D006D89BE /* libhfcore_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -411,14 +172,75 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00393E74165D37090009527F /* provisioning2 */ = {
+		000490EA1687B96600517C54 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				00393E76165D374F0009527F /* hookflashTypes.h */,
-				00393E77165D374F0009527F /* IAccount.h */,
-				00393E78165D374F0009527F /* provisioning.h */,
+				000491871687BA5B00517C54 /* cpp */,
+				000491C51687BA9C00517C54 /* internal */,
+				000490EC1687B98A00517C54 /* types.h */,
+				000490EB1687B98A00517C54 /* core.h */,
+				000490ED1687B98A00517C54 /* IAccount.h */,
+				000490EE1687B98A00517C54 /* ICall.h */,
+				000490EF1687B98A00517C54 /* IContact.h */,
+				0045CEDF16BF0B5000042A91 /* IContactPeerFilePublicLookup.h */,
+				000490F01687B98A00517C54 /* IConversationThread.h */,
+				000490F11687B98A00517C54 /* IHelper.h */,
+				0045CEDD16BEEDD900042A91 /* IIdentity.h */,
+				0045CEDE16BF0B3000042A91 /* IIdentityLookup.h */,
+				000490F21687B98A00517C54 /* ILogger.h */,
+				000490F31687B98A00517C54 /* IMediaEngine.h */,
+				000490F41687B98A00517C54 /* IStack.h */,
 			);
-			name = provisioning2;
+			name = core;
+			sourceTree = "<group>";
+		};
+		000491871687BA5B00517C54 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				000491961687BA7100517C54 /* core.cpp */,
+				000491881687BA7100517C54 /* core_Account.cpp */,
+				000491891687BA7100517C54 /* core_Call.cpp */,
+				0004918A1687BA7100517C54 /* core_CallTransport.cpp */,
+				0004918B1687BA7100517C54 /* core_Contact.cpp */,
+				00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */,
+				0004918C1687BA7100517C54 /* core_ConversationThread.cpp */,
+				0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */,
+				0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */,
+				0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */,
+				000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */,
+				000491901687BA7100517C54 /* core_Helper.cpp */,
+				000E21D916C00F5900F288E0 /* core_Identity.cpp */,
+				00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */,
+				000491921687BA7100517C54 /* core_Logger.cpp */,
+				000491931687BA7100517C54 /* core_MediaEngine.cpp */,
+				000491941687BA7100517C54 /* core_Stack.cpp */,
+			);
+			name = cpp;
+			sourceTree = "<group>";
+		};
+		000491C51687BA9C00517C54 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				000491D51687BAB300517C54 /* types.h */,
+				000491D41687BAB300517C54 /* core.h */,
+				000491C61687BAB300517C54 /* core_Account.h */,
+				000491C71687BAB300517C54 /* core_Call.h */,
+				000491C81687BAB300517C54 /* core_CallTransport.h */,
+				000491C91687BAB300517C54 /* core_Contact.h */,
+				00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */,
+				000491CA1687BAB300517C54 /* core_ConversationThread.h */,
+				000491CB1687BAB300517C54 /* core_ConversationThreadDocumentFetcher.h */,
+				000491CC1687BAB300517C54 /* core_ConversationThreadHost.h */,
+				000491CD1687BAB300517C54 /* core_ConversationThreadSlave.h */,
+				000491CF1687BAB300517C54 /* core_IConversationThreadParser.h */,
+				000491CE1687BAB300517C54 /* core_Helper.h */,
+				000E21E016C00F8F00F288E0 /* core_Identity.h */,
+				00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */,
+				000491D01687BAB300517C54 /* core_Logger.h */,
+				000491D11687BAB300517C54 /* core_MediaEngine.h */,
+				000491D21687BAB300517C54 /* core_Stack.h */,
+			);
+			name = internal;
 			sourceTree = "<group>";
 		};
 		00BF50B713FCF664002E9EB5 = {
@@ -443,240 +265,9 @@
 		00BF50C913FCF683002E9EB5 /* hookflash */ = {
 			isa = PBXGroup;
 			children = (
-				00BF50CC13FCF6FE002E9EB5 /* cpp */,
-				00BF50E913FCF6FE002E9EB5 /* internal */,
-				00BF555213FDB4A2002E9EB5 /* provisioning */,
-				00393E74165D37090009527F /* provisioning2 */,
-				00BF50DC13FCF6FE002E9EB5 /* hookflash.h */,
-				00BF50DD13FCF6FE002E9EB5 /* hookflashTypes.h */,
-				00BF50DE13FCF6FE002E9EB5 /* IAccount.h */,
-				00BF50DF13FCF6FE002E9EB5 /* ICall.h */,
-				00BF50E113FCF6FE002E9EB5 /* IClient.h */,
-				00BF50E213FCF6FE002E9EB5 /* IContact.h */,
-				00BF50E313FCF6FE002E9EB5 /* IConversationThread.h */,
-				E2C052611668E83000C2F319 /* IHelper.h */,
-				E257045F161906E900F3A6F1 /* IMediaEngine.h */,
-				00BF50FF13FCF6FE002E9EB5 /* IStack.h */,
-				00AD958516012500002ABECE /* IXML.h */,
+				000490EA1687B96600517C54 /* core */,
 			);
 			name = hookflash;
-			sourceTree = "<group>";
-		};
-		00BF50CC13FCF6FE002E9EB5 /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				00BF50D313FCF6FE002E9EB5 /* hookflash.cpp */,
-				00F3CD4E14BC072D00EEDCF0 /* hookflash_Account.cpp */,
-				00A88A3C155F236600077D2F /* hookflash_Call.cpp */,
-				00A88A3F155F237900077D2F /* hookflash_CallTransport.cpp */,
-				00BF50CF13FCF6FE002E9EB5 /* hookflash_Client.cpp */,
-				00F3CD5014BC072D00EEDCF0 /* hookflash_Contact.cpp */,
-				00BF50D013FCF6FE002E9EB5 /* hookflash_ConversationThread.cpp */,
-				00E1D01115501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp */,
-				00E1D03C155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp */,
-				0032A56E1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp */,
-				E2C052631668E84C00C2F319 /* hookflash_Helper.cpp */,
-				0077386515515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp */,
-				00473329141DC110006B8B20 /* hookflash_MediaEngine.cpp */,
-				00BF50D913FCF6FE002E9EB5 /* hookflash_Stack.cpp */,
-				00AD958716012842002ABECE /* hookflash_XML.cpp */,
-			);
-			name = cpp;
-			path = ../../../hookflash/cpp;
-			sourceTree = "<group>";
-		};
-		00BF50E913FCF6FE002E9EB5 /* internal */ = {
-			isa = PBXGroup;
-			children = (
-				00BF50F013FCF6FE002E9EB5 /* hookflash.h */,
-				00BF50F113FCF6FE002E9EB5 /* hookflashTypes.h */,
-				00F3CD3014BC068600EEDCF0 /* hookflash_Account.h */,
-				00A88A42155F23A000077D2F /* hookflash_Call.h */,
-				00A88A43155F23B000077D2F /* hookflash_CallTransport.h */,
-				00BF50EC13FCF6FE002E9EB5 /* hookflash_Client.h */,
-				00F3CD3214BC068800EEDCF0 /* hookflash_Contact.h */,
-				00BF50ED13FCF6FE002E9EB5 /* hookflash_ConversationThread.h */,
-				00EC94A91548A9D400891937 /* hookflash_ConversationThreadHost.h */,
-				00E1D03F1550270200D3A5AC /* hookflash_ConversationThreadSlave.h */,
-				0032A5451555AEB500F89F96 /* hookflash_ConversationThreadDocumentFetcher.h */,
-				0077389015515C85002BDDEA /* hookflash_IConversationThreadParser.h */,
-				00473326141DC038006B8B20 /* hookflash_MediaEngine.h */,
-				00BF50F813FCF6FE002E9EB5 /* hookflash_Stack.h */,
-				00AD958A16012888002ABECE /* hookflash_XML.h */,
-				001E52861625D122005FFD8C /* hookflash_Helper.h */,
-			);
-			name = internal;
-			path = ../../../hookflash/internal;
-			sourceTree = "<group>";
-		};
-		00BF555213FDB4A2002E9EB5 /* provisioning */ = {
-			isa = PBXGroup;
-			children = (
-				AD7F3C7615C140FC001DEE46 /* message */,
-				2AB257CD147E378800D7B8EC /* cpp */,
-				2AB257D1147E378800D7B8EC /* internal */,
-				001648B314137F4B00AFEDD3 /* hookflashTypes.h */,
-				00403ABC15D5C330007EB944 /* provisioning.h */,
-				00BF555413FDB585002E9EB5 /* IAccount.h */,
-			);
-			name = provisioning;
-			sourceTree = "<group>";
-		};
-		2AB257CD147E378800D7B8EC /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				00F5AECA15B1E0A6006AB0C4 /* provisioning_provisioning.cpp */,
-				2AB257CE147E378800D7B8EC /* provisioning_Account.cpp */,
-				00DA670715E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp */,
-				00DA66FD15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp */,
-				00DA670115E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp */,
-				00DA670415E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp */,
-			);
-			name = cpp;
-			path = ../../../hookflash/provisioning/cpp;
-			sourceTree = "<group>";
-		};
-		2AB257D1147E378800D7B8EC /* internal */ = {
-			isa = PBXGroup;
-			children = (
-				2AB257D2147E378800D7B8EC /* hookflashTypes.h */,
-				00403AB615D5BC77007EB944 /* provisioning_provisioning.h */,
-				2AB257D3147E378800D7B8EC /* provisioning_Account.h */,
-			);
-			name = internal;
-			path = ../../../hookflash/provisioning/internal;
-			sourceTree = "<group>";
-		};
-		AD7F3C7615C140FC001DEE46 /* message */ = {
-			isa = PBXGroup;
-			children = (
-				AD7F3C7915C1415D001DEE46 /* cpp */,
-				AD7F3C7A15C14162001DEE46 /* internal */,
-				AD7F3C8D15C1451D001DEE46 /* hookflashTypes.h */,
-				00403AC315D5DB7A007EB944 /* messages.h */,
-				00403ABD15D5C415007EB944 /* MessageFactoryProvisioning.h */,
-				000265AE15E144E100E96EE4 /* LookupProfileRequest.h */,
-				000265AF15E144FF00E96EE4 /* LookupProfileResult.h */,
-				0002657115E08B6A00E96EE4 /* CreateAccountRequest.h */,
-				0002657615E08EE300E96EE4 /* CreateAccountResult.h */,
-				0002657B15E098B300E96EE4 /* AccessAccountRequest.h */,
-				0002658115E0A07B00E96EE4 /* AccessAccountResult.h */,
-				0002654415DEEEA300E96EE4 /* ProfileGetRequest.h */,
-				0002654915DEFF2100E96EE4 /* ProfileGetResult.h */,
-				004D649615D7219D008B92CA /* ProfilePutRequest.h */,
-				0002653E15DEAE1700E96EE4 /* ProfilePutResult.h */,
-				0002658615E0A36600E96EE4 /* SendIDValidationPINRequest.h */,
-				0002658B15E0A67300E96EE4 /* SendIDValidationPINResult.h */,
-				0002659015E0A7C100E96EE4 /* ValidateIDPINRequest.h */,
-				0002659515E0A99B00E96EE4 /* ValidateIDPINResult.h */,
-				00403AC115D5D9AE007EB944 /* ProviderLoginURLGetRequest.h */,
-				00403AC915D69ACE007EB944 /* ProviderLoginURLGetResult.h */,
-				004D649115D6FC4B008B92CA /* OAuthLoginWebpageResult.h */,
-				0002656215E0738600E96EE4 /* ProviderAssociateURLGetRequest.h */,
-				0002656715E075DF00E96EE4 /* ProviderAssociateURLGetResult.h */,
-				0002656C15E077FA00E96EE4 /* OAuthLoginWebpageForAssociationResult.h */,
-				0002659A15E11EA500E96EE4 /* PeerProfileLookupRequest.h */,
-				0002659B15E11ED100E96EE4 /* PeerProfileLookupResult.h */,
-				000265A415E134E100E96EE4 /* MultiPartyAPNSPushRequest.h */,
-				000265A515E1350D00E96EE4 /* MultiPartyAPNSPushResult.h */,
-				000265B815E154A400E96EE4 /* PasswordGetPart1Request.h */,
-				000265B915E154CF00E96EE4 /* PasswordGetPart1Result.h */,
-				000265BA15E154EC00E96EE4 /* PasswordGetPart2Request.h */,
-				000265BB15E1550800E96EE4 /* PasswordGetPart2Result.h */,
-				00964AB815E1566D00FEE8BA /* PasswordPINGetRequest.h */,
-				00964AB915E1568D00FEE8BA /* PasswordPINGetResult.h */,
-				0002655815E0647C00E96EE4 /* OAuthPasswordGetRequest.h */,
-				0002655D15E06C3000E96EE4 /* OAuthPasswordGetResult.h */,
-				0002654E15DF077E00E96EE4 /* PasswordPutRequest.h */,
-				0002655315E0603700E96EE4 /* PasswordPutResult.h */,
-			);
-			name = message;
-			sourceTree = "<group>";
-		};
-		AD7F3C7915C1415D001DEE46 /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				ADE07B1B15C9138D0003897E /* provisioning_message_messages.cpp */,
-				00403ABE15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp */,
-				000265B215E1457800E96EE4 /* provisioning_message_LookupProfileRequest.cpp */,
-				000265B515E1459600E96EE4 /* provisioning_message_LookupProfileResult.cpp */,
-				0002657315E08C6300E96EE4 /* provisioning_message_CreateAccountRequest.cpp */,
-				0002657815E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp */,
-				0002657D15E09B3A00E96EE4 /* provisioning_message_AccessAccountRequest.cpp */,
-				0002658315E0A16900E96EE4 /* provisioning_message_AccessAccountResult.cpp */,
-				0002654615DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp */,
-				0002654B15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp */,
-				004D649815D72E90008B92CA /* provisioning_message_ProfilePutRequest.cpp */,
-				0002654115DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp */,
-				0002658815E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp */,
-				0002658D15E0A6BE00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp */,
-				0002659215E0A90400E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp */,
-				0002659715E0A9D500E96EE4 /* provisioning_message_ValidateIDPINResult.cpp */,
-				00403AC615D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp */,
-				004D641F15D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp */,
-				004D649315D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp */,
-				0002656415E0750700E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp */,
-				0002656915E076B000E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp */,
-				0002656E15E0792700E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp */,
-				0002659E15E11F9900E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp */,
-				000265A115E11FB800E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp */,
-				000265A815E1357600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp */,
-				000265AB15E1359500E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp */,
-				00964AC015E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp */,
-				00964AC215E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp */,
-				00964AC415E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp */,
-				00964AC615E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp */,
-				00964AC815E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp */,
-				00964ACA15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp */,
-				0002655A15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp */,
-				0002655F15E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp */,
-				0002655015DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp */,
-				0002655515E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp */,
-			);
-			name = cpp;
-			sourceTree = "<group>";
-		};
-		AD7F3C7A15C14162001DEE46 /* internal */ = {
-			isa = PBXGroup;
-			children = (
-				AD35A5C215C6B45500DD297F /* hookflashTypes.h */,
-				00403AC415D5DBFA007EB944 /* provisioning_message_messages.h */,
-				000265B015E1453C00E96EE4 /* provisioning_message_LookupProfileRequest.h */,
-				000265B115E1455B00E96EE4 /* provisioning_message_LookupProfileResult.h */,
-				0002657215E08C4D00E96EE4 /* provisioning_message_CreateAccountRequest.h */,
-				0002657715E095FD00E96EE4 /* provisioning_message_CreateAccountResult.h */,
-				0002657C15E09B1B00E96EE4 /* provisioning_message_AccessAccountRequest.h */,
-				0002658215E0A14900E96EE4 /* provisioning_message_AccessAccountResult.h */,
-				0002654515DEFA4B00E96EE4 /* provisioning_message_ProfileGetRequest.h */,
-				0002654A15DEFF9A00E96EE4 /* provisioning_message_ProfileGetResult.h */,
-				004D649B15D738D6008B92CA /* provisioning_message_ProfilePutRequest.h */,
-				0002654015DEE60900E96EE4 /* provisioning_message_ProfilePutResult.h */,
-				0002658715E0A4F800E96EE4 /* provisioning_message_SendIDValidationPINRequest.h */,
-				0002658C15E0A6A200E96EE4 /* provisioning_message_SendIDValidationPINResult.h */,
-				0002659115E0A8EB00E96EE4 /* provisioning_message_ValidateIDPINRequest.h */,
-				0002659615E0A9C000E96EE4 /* provisioning_message_ValidateIDPINResult.h */,
-				00403AC515D5E890007EB944 /* provisioning_message_ProviderLoginURLGetRequest.h */,
-				004D648F15D6F1DC008B92CA /* provisioning_message_ProviderLoginURLGetResult.h */,
-				004D649215D70882008B92CA /* provisioning_message_OAuthLoginWebpageResult.h */,
-				0002656315E074EB00E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.h */,
-				0002656815E0769600E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.h */,
-				0002656D15E0789C00E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.h */,
-				0002659C15E11F5900E96EE4 /* provisioning_message_PeerProfileLookupRequest.h */,
-				0002659D15E11F7500E96EE4 /* provisioning_message_PeerProfileLookupResult.h */,
-				000265A615E1353600E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.h */,
-				000265A715E1355700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.h */,
-				00964ABA15E159EA00FEE8BA /* provisioning_message_PasswordGetPart1Request.h */,
-				00964ABB15E15A1400FEE8BA /* provisioning_message_PasswordGetPart1Result.h */,
-				00964ABC15E15A3B00FEE8BA /* provisioning_message_PasswordGetPart2Request.h */,
-				00964ABD15E15A5D00FEE8BA /* provisioning_message_PasswordGetPart2Result.h */,
-				00964ABE15E15A9100FEE8BA /* provisioning_message_PasswordPINGetRequest.h */,
-				00964ABF15E15ABC00FEE8BA /* provisioning_message_PasswordPINGetResult.h */,
-				0002655915E0655300E96EE4 /* provisioning_message_OAuthPasswordGetRequest.h */,
-				0002655E15E06F5B00E96EE4 /* provisioning_message_OAuthPasswordGetResult.h */,
-				0002654F15DFFEFD00E96EE4 /* provisioning_message_PasswordPutRequest.h */,
-				0002655415E060C900E96EE4 /* provisioning_message_PasswordPutResult.h */,
-			);
-			name = internal;
 			sourceTree = "<group>";
 		};
 		E288B1631419F21400222C2A /* Projects */ = {
@@ -754,31 +345,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00BF518D13FCF6FE002E9EB5 /* hookflash.h in Headers */,
-				00BF518E13FCF6FE002E9EB5 /* hookflashTypes.h in Headers */,
-				00BF518F13FCF6FE002E9EB5 /* IAccount.h in Headers */,
-				00BF519013FCF6FE002E9EB5 /* ICall.h in Headers */,
-				00BF519213FCF6FE002E9EB5 /* IClient.h in Headers */,
-				00BF519313FCF6FE002E9EB5 /* IContact.h in Headers */,
-				00BF519413FCF6FE002E9EB5 /* IConversationThread.h in Headers */,
-				00BF519C13FCF6FE002E9EB5 /* hookflash_Client.h in Headers */,
-				00BF519D13FCF6FE002E9EB5 /* hookflash_ConversationThread.h in Headers */,
-				00BF51A013FCF6FE002E9EB5 /* hookflash.h in Headers */,
-				00BF51A113FCF6FE002E9EB5 /* hookflashTypes.h in Headers */,
-				00BF51A713FCF6FE002E9EB5 /* hookflash_Stack.h in Headers */,
-				00BF51AE13FCF6FE002E9EB5 /* IStack.h in Headers */,
-				00BF555A13FDB585002E9EB5 /* IAccount.h in Headers */,
-				001648B414137F4B00AFEDD3 /* hookflashTypes.h in Headers */,
-				00473327141DC038006B8B20 /* hookflash_MediaEngine.h in Headers */,
-				2AB257D9147E378800D7B8EC /* hookflashTypes.h in Headers */,
-				2AB257DA147E378800D7B8EC /* provisioning_Account.h in Headers */,
-				00F3CD3614BC068F00EEDCF0 /* hookflash_Account.h in Headers */,
-				00F3CD3A14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */,
-				AD7F3C8E15C1451D001DEE46 /* hookflashTypes.h in Headers */,
-				AD35A5C315C6B45500DD297F /* hookflashTypes.h in Headers */,
-				00393E79165D374F0009527F /* hookflashTypes.h in Headers */,
-				00393E7B165D374F0009527F /* IAccount.h in Headers */,
-				00393E7D165D374F0009527F /* provisioning.h in Headers */,
+				00DFAD0616C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */,
+				00DFAD0816C3D1B300D8E27C /* core_IdentityLookup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -786,27 +354,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2DD81BE141A639D006D89BE /* hookflash.h in Headers */,
-				E2DD81BF141A639D006D89BE /* hookflashTypes.h in Headers */,
-				E2DD81C0141A639D006D89BE /* IAccount.h in Headers */,
-				E2DD81C1141A639D006D89BE /* ICall.h in Headers */,
-				E2DD81C3141A639D006D89BE /* IClient.h in Headers */,
-				E2DD81C4141A639D006D89BE /* IContact.h in Headers */,
-				E2DD81C5141A639D006D89BE /* IConversationThread.h in Headers */,
-				E2DD81CD141A639D006D89BE /* hookflash_Client.h in Headers */,
-				E2DD81CE141A639D006D89BE /* hookflash_ConversationThread.h in Headers */,
-				E2DD81D1141A639D006D89BE /* hookflash.h in Headers */,
-				E2DD81D2141A639D006D89BE /* hookflashTypes.h in Headers */,
-				E2DD81D8141A639D006D89BE /* hookflash_Stack.h in Headers */,
-				E2DD81DE141A639D006D89BE /* IStack.h in Headers */,
-				E2DD81F2141A639D006D89BE /* IAccount.h in Headers */,
-				E2DD81FF141A639D006D89BE /* hookflashTypes.h in Headers */,
-				00F3CD3714BC068F00EEDCF0 /* hookflash_Account.h in Headers */,
-				00F3CD3B14BC068F00EEDCF0 /* hookflash_Contact.h in Headers */,
-				AD7F3C8F15C1451D001DEE46 /* hookflashTypes.h in Headers */,
-				00393E7A165D374F0009527F /* hookflashTypes.h in Headers */,
-				00393E7C165D374F0009527F /* IAccount.h in Headers */,
-				00393E7E165D374F0009527F /* provisioning.h in Headers */,
+				00DFAD0716C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */,
+				00DFAD0916C3D1B300D8E27C /* core_IdentityLookup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,62 +424,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2AB257BD147E375D00D7B8EC /* hookflash_Client.cpp in Sources */,
-				2AB257BE147E375D00D7B8EC /* hookflash_ConversationThread.cpp in Sources */,
-				2AB257C1147E375D00D7B8EC /* hookflash.cpp in Sources */,
-				2AB257C2147E375D00D7B8EC /* hookflash_MediaEngine.cpp in Sources */,
-				2AB257CA147E375E00D7B8EC /* hookflash_Stack.cpp in Sources */,
-				2AB257D6147E378800D7B8EC /* provisioning_Account.cpp in Sources */,
-				00F3CD5414BC072E00EEDCF0 /* hookflash_Account.cpp in Sources */,
-				00F3CD5814BC072E00EEDCF0 /* hookflash_Contact.cpp in Sources */,
-				00E1D01215501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp in Sources */,
-				00E1D03D155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp in Sources */,
-				0077386615515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp in Sources */,
-				0032A56F1555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */,
-				00A88A3D155F236600077D2F /* hookflash_Call.cpp in Sources */,
-				00A88A40155F237900077D2F /* hookflash_CallTransport.cpp in Sources */,
-				00F5AECB15B1E0A6006AB0C4 /* provisioning_provisioning.cpp in Sources */,
-				ADE07B1C15C9138D0003897E /* provisioning_message_messages.cpp in Sources */,
-				00403ABF15D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */,
-				00403AC715D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp in Sources */,
-				004D642015D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp in Sources */,
-				004D649415D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp in Sources */,
-				004D649915D72E91008B92CA /* provisioning_message_ProfilePutRequest.cpp in Sources */,
-				0002654215DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp in Sources */,
-				0002654715DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp in Sources */,
-				0002654C15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp in Sources */,
-				0002655115DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp in Sources */,
-				0002655615E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp in Sources */,
-				0002655B15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp in Sources */,
-				0002656015E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp in Sources */,
-				0002656515E0750800E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp in Sources */,
-				0002656A15E076B100E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp in Sources */,
-				0002656F15E0792800E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp in Sources */,
-				0002657415E08C6400E96EE4 /* provisioning_message_CreateAccountRequest.cpp in Sources */,
-				0002657915E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp in Sources */,
-				0002657E15E09B3B00E96EE4 /* provisioning_message_AccessAccountRequest.cpp in Sources */,
-				0002658415E0A16E00E96EE4 /* provisioning_message_AccessAccountResult.cpp in Sources */,
-				0002658915E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp in Sources */,
-				0002658E15E0A6BF00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp in Sources */,
-				0002659315E0A90600E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp in Sources */,
-				0002659815E0A9D600E96EE4 /* provisioning_message_ValidateIDPINResult.cpp in Sources */,
-				0002659F15E11F9A00E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp in Sources */,
-				000265A215E11FB900E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp in Sources */,
-				000265A915E1357800E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp in Sources */,
-				000265AC15E1359700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp in Sources */,
-				000265B315E1457A00E96EE4 /* provisioning_message_LookupProfileRequest.cpp in Sources */,
-				000265B615E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */,
-				00964AC115E15AEE00FEE8BA /* provisioning_message_PasswordGetPart1Request.cpp in Sources */,
-				00964AC315E15B2500FEE8BA /* provisioning_message_PasswordGetPart1Result.cpp in Sources */,
-				00964AC515E15B4100FEE8BA /* provisioning_message_PasswordGetPart2Request.cpp in Sources */,
-				00964AC715E15B6500FEE8BA /* provisioning_message_PasswordGetPart2Result.cpp in Sources */,
-				00964AC915E15B8600FEE8BA /* provisioning_message_PasswordPINGetRequest.cpp in Sources */,
-				00964ACB15E15BB400FEE8BA /* provisioning_message_PasswordPINGetResult.cpp in Sources */,
-				00DA66FE15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp in Sources */,
-				00DA670215E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp in Sources */,
-				00DA670515E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */,
-				00DA670815E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */,
-				00AD958816012842002ABECE /* hookflash_XML.cpp in Sources */,
+				000491971687BA7100517C54 /* core_Account.cpp in Sources */,
+				000491991687BA7100517C54 /* core_Call.cpp in Sources */,
+				0004919B1687BA7100517C54 /* core_CallTransport.cpp in Sources */,
+				0004919D1687BA7100517C54 /* core_Contact.cpp in Sources */,
+				0004919F1687BA7100517C54 /* core_ConversationThread.cpp in Sources */,
+				000491A11687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
+				000491A31687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */,
+				000491A51687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */,
+				000491A71687BA7100517C54 /* core_Helper.cpp in Sources */,
+				000491A91687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */,
+				000491AB1687BA7100517C54 /* core_Logger.cpp in Sources */,
+				000491AD1687BA7100517C54 /* core_MediaEngine.cpp in Sources */,
+				000491AF1687BA7100517C54 /* core_Stack.cpp in Sources */,
+				000491B31687BA7100517C54 /* core.cpp in Sources */,
+				000E21DB16C00F5A00F288E0 /* core_Identity.cpp in Sources */,
+				00DFACFA16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */,
+				00DFAD0016C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -938,63 +448,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				774A53E115E528B10098F7EE /* provisioning_message_messages.cpp in Sources */,
-				774A53E215E528B10098F7EE /* provisioning_message_PasswordGetPart1Request.cpp in Sources */,
-				774A53E315E528B10098F7EE /* provisioning_message_PasswordGetPart1Result.cpp in Sources */,
-				774A53E415E528B10098F7EE /* provisioning_message_PasswordGetPart2Request.cpp in Sources */,
-				774A53E515E528B10098F7EE /* provisioning_message_PasswordGetPart2Result.cpp in Sources */,
-				774A53E615E528B10098F7EE /* provisioning_message_PasswordPINGetRequest.cpp in Sources */,
-				774A53E715E528B10098F7EE /* provisioning_message_PasswordPINGetResult.cpp in Sources */,
-				E2DD817E141A639D006D89BE /* hookflash_Client.cpp in Sources */,
-				E2DD817F141A639D006D89BE /* hookflash_ConversationThread.cpp in Sources */,
-				E2DD8182141A639D006D89BE /* hookflash.cpp in Sources */,
-				E2DD8188141A639D006D89BE /* hookflash_Stack.cpp in Sources */,
-				0047332C141DC111006B8B20 /* hookflash_MediaEngine.cpp in Sources */,
-				2AB257DD147E379D00D7B8EC /* provisioning_Account.cpp in Sources */,
-				00F3CD5514BC072E00EEDCF0 /* hookflash_Account.cpp in Sources */,
-				00F3CD5914BC072E00EEDCF0 /* hookflash_Contact.cpp in Sources */,
-				00E1D01315501C3500D3A5AC /* hookflash_ConversationThreadHost.cpp in Sources */,
-				00E1D03E155026E400D3A5AC /* hookflash_ConversationThreadSlave.cpp in Sources */,
-				0077386715515C6C002BDDEA /* hookflash_IConversationThreadParser.cpp in Sources */,
-				0032A5701555B46E00F89F96 /* hookflash_ConversationThreadDocumentFetcher.cpp in Sources */,
-				00A88A3E155F236600077D2F /* hookflash_Call.cpp in Sources */,
-				00A88A41155F237900077D2F /* hookflash_CallTransport.cpp in Sources */,
-				00F5AECC15B1E0A6006AB0C4 /* provisioning_provisioning.cpp in Sources */,
-				00403AC015D5C43C007EB944 /* provisioning_message_MessageFactoryProvisioning.cpp in Sources */,
-				00403AC815D5E8D5007EB944 /* provisioning_message_ProviderLoginURLGetRequest.cpp in Sources */,
-				004D642115D6F0ED008B92CA /* provisioning_message_ProviderLoginURLGetResult.cpp in Sources */,
-				004D649515D708A5008B92CA /* provisioning_message_OAuthLoginWebpageResult.cpp in Sources */,
-				004D649A15D72E91008B92CA /* provisioning_message_ProfilePutRequest.cpp in Sources */,
-				0002654315DEE64900E96EE4 /* provisioning_message_ProfilePutResult.cpp in Sources */,
-				0002654815DEFA8500E96EE4 /* provisioning_message_ProfileGetRequest.cpp in Sources */,
-				0002654D15DEFFF000E96EE4 /* provisioning_message_ProfileGetResult.cpp in Sources */,
-				0002655215DFFF2200E96EE4 /* provisioning_message_PasswordPutRequest.cpp in Sources */,
-				0002655715E0612000E96EE4 /* provisioning_message_PasswordPutResult.cpp in Sources */,
-				0002655C15E0656C00E96EE4 /* provisioning_message_OAuthPasswordGetRequest.cpp in Sources */,
-				0002656115E06F7900E96EE4 /* provisioning_message_OAuthPasswordGetResult.cpp in Sources */,
-				0002656615E0750800E96EE4 /* provisioning_message_ProviderAssociateURLGetRequest.cpp in Sources */,
-				0002656B15E076B100E96EE4 /* provisioning_message_ProviderAssociateURLGetResult.cpp in Sources */,
-				0002657015E0792800E96EE4 /* provisioning_message_OAuthLoginWebpageForAssociationResult.cpp in Sources */,
-				0002657515E08C6400E96EE4 /* provisioning_message_CreateAccountRequest.cpp in Sources */,
-				0002657A15E0963200E96EE4 /* provisioning_message_CreateAccountResult.cpp in Sources */,
-				0002657F15E09B3B00E96EE4 /* provisioning_message_AccessAccountRequest.cpp in Sources */,
-				0002658515E0A16E00E96EE4 /* provisioning_message_AccessAccountResult.cpp in Sources */,
-				0002658A15E0A51000E96EE4 /* provisioning_message_SendIDValidationPINRequest.cpp in Sources */,
-				0002658F15E0A6BF00E96EE4 /* provisioning_message_SendIDValidationPINResult.cpp in Sources */,
-				0002659415E0A90600E96EE4 /* provisioning_message_ValidateIDPINRequest.cpp in Sources */,
-				0002659915E0A9D600E96EE4 /* provisioning_message_ValidateIDPINResult.cpp in Sources */,
-				000265A015E11F9A00E96EE4 /* provisioning_message_PeerProfileLookupRequest.cpp in Sources */,
-				000265A315E11FB900E96EE4 /* provisioning_message_PeerProfileLookupResult.cpp in Sources */,
-				000265AA15E1357800E96EE4 /* provisioning_message_MultiPartyAPNSPushRequest.cpp in Sources */,
-				000265AD15E1359700E96EE4 /* provisioning_message_MultiPartyAPNSPushResult.cpp in Sources */,
-				000265B415E1457A00E96EE4 /* provisioning_message_LookupProfileRequest.cpp in Sources */,
-				000265B715E1459900E96EE4 /* provisioning_message_LookupProfileResult.cpp in Sources */,
-				00DA66FF15E7EC3400D80890 /* provisioning_Account_AccountPush.cpp in Sources */,
-				00DA670315E7ED7900D80890 /* provisioning_Account_AccountIdentityLookupQuery.cpp in Sources */,
-				00DA670615E7EE0E00D80890 /* provisioning_Account_AccountPeerFileLookupQuery.cpp in Sources */,
-				00DA670915E7EF6C00D80890 /* provisioning_Account_AccountOAuthIdentityAssociation.cpp in Sources */,
-				00AD958916012842002ABECE /* hookflash_XML.cpp in Sources */,
-				E2C052641668E84C00C2F319 /* hookflash_Helper.cpp in Sources */,
+				000491981687BA7100517C54 /* core_Account.cpp in Sources */,
+				0004919A1687BA7100517C54 /* core_Call.cpp in Sources */,
+				0004919C1687BA7100517C54 /* core_CallTransport.cpp in Sources */,
+				0004919E1687BA7100517C54 /* core_Contact.cpp in Sources */,
+				000491A01687BA7100517C54 /* core_ConversationThread.cpp in Sources */,
+				000491A21687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
+				000491A41687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */,
+				000491A61687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */,
+				000491A81687BA7100517C54 /* core_Helper.cpp in Sources */,
+				000491AA1687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */,
+				000491AC1687BA7100517C54 /* core_Logger.cpp in Sources */,
+				000491AE1687BA7100517C54 /* core_MediaEngine.cpp in Sources */,
+				000491B01687BA7100517C54 /* core_Stack.cpp in Sources */,
+				000491B41687BA7100517C54 /* core.cpp in Sources */,
+				000E21DC16C00F5A00F288E0 /* core_Identity.cpp in Sources */,
+				00DFACFB16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */,
+				00DFAD0116C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,24 +476,21 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					DEBUG,
 					CRYPTOPP_DISABLE_SSE2,
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/include",
-					"~/Library/Frameworks/include",
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
 					../../../../webRTC/webRTC/src,
 					../../../../webRTC/webRTC/src/modules/video_render/main/source/iPhone,
 					../../../../webRTC/webRTC/src/video_engine/main/interface,
@@ -1035,8 +502,8 @@
 					../../../../webRTC/webRTC/src/modules/video_capture/main/interface,
 					../../../../webRTC/webRTC/src/common_video/vplib/main/interface,
 					../../../../webRTC/webRTC/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
 					../../../../webRTC/webRTC/src,
+					../../../../webRTC/webRTC/src/video_engine/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -1051,23 +518,20 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					CRYPTOPP_DISABLE_SSE2,
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/include",
-					"~/Library/Frameworks/include",
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
 					../../../../webRTC/webRTC/src,
 					../../../../webRTC/webRTC/src/modules/video_render/main/source/iPhone,
 					../../../../webRTC/webRTC/src/video_engine/main/interface,
@@ -1079,8 +543,8 @@
 					../../../../webRTC/webRTC/src/modules/video_capture/main/interface,
 					../../../../webRTC/webRTC/src/common_video/vplib/main/interface,
 					../../../../webRTC/webRTC/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
 					../../../../webRTC/webRTC/src,
+					../../../../webRTC/webRTC/src/video_engine/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -1105,28 +569,24 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/include",
-					"~/Library/Frameworks/include",
-					../../../../webRTC/webRTC_ios/src,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC_ios/src/video_engine/include,
-					../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC_ios/src/common_video/interface/,
-					../../../../webRTC/webRTC_ios/src/system_wrappers/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
-					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
-					../../../../webRTC/webRTC_ios/src,
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/WebRTC/src",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
-				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../../.. ../../../../../hookflash-libs/zsLib ../../../../../hookflash-libs/udns ../../../../../hookflash-libs/cryptopp ../../../../../hookflash-staging/include ~/Library/Frameworks/include ../../../../webRTC/webRTC_ios/src ../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone ../../../../webRTC/webRTC_ios/src/video_engine/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/ ../../../../webRTC/webRTC_ios/src/common_video/interface/ ../../../../webRTC/webRTC_ios/src/system_wrappers/interface ../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface ../../../../webRTC/webRTC_ios/src/modules/interface ../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface ../../../../webRTC/webRTC_ios/src/voice_engine/main/interface ~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include ../../../../webRTC/webRTC_ios/src";
 			};
 			name = Debug;
 		};
@@ -1147,28 +607,24 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/include",
-					"~/Library/Frameworks/include",
-					../../../../webRTC/webRTC_ios/src,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC_ios/src/video_engine/include,
-					../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC_ios/src/common_video/interface/,
-					../../../../webRTC/webRTC_ios/src/system_wrappers/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
-					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
-					"~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include",
-					../../../../webRTC/webRTC_ios/src,
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/WebRTC/src",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
-				LIBRARY_SEARCH_PATHS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "../../.. ../../../../../hookflash-libs/zsLib ../../../../../hookflash-libs/udns ../../../../../hookflash-libs/cryptopp ../../../../../hookflash-staging/include ~/Library/Frameworks/include ../../../../webRTC/webRTC_ios/src ../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone ../../../../webRTC/webRTC_ios/src/video_engine/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/ ../../../../webRTC/webRTC_ios/src/common_video/interface/ ../../../../webRTC/webRTC_ios/src/system_wrappers/interface ../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface ../../../../webRTC/webRTC_ios/src/modules/interface ../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface ../../../../webRTC/webRTC_ios/src/voice_engine/main/interface ~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include ../../../../webRTC/webRTC_ios/src";
 			};
 			name = Release;
 		};
@@ -1192,24 +648,23 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/iPhoneOS/include",
-					../../../../webRTC/webRTC_ios/src,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC_ios/src/video_engine/include,
-					../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC_ios/src/common_video/interface/,
-					../../../../webRTC/webRTC_ios/src/system_wrappers/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
-					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/WebRTC/src",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-x",
@@ -1242,24 +697,23 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../../hookflash-libs/zsLib",
-					"../../../../../hookflash-libs/udns",
-					"../../../../../hookflash-libs/cryptopp",
-					"../../../../../hookflash-staging/iPhoneOS/include",
-					../../../../webRTC/webRTC_ios/src,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC_ios/src/video_engine/include,
-					../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC_ios/src/common_video/interface/,
-					../../../../webRTC/webRTC_ios/src/system_wrappers/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface,
-					../../../../webRTC/webRTC_ios/src/voice_engine/main/interface,
+					"../../../../hookflash-libs/zsLib",
+					"../../../../hookflash-libs/udns",
+					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/WebRTC/src",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/interface",
+					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-x",

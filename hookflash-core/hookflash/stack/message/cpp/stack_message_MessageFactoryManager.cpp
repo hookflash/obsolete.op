@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,22 +22,24 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/services/IHelper.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/IMessageFactory.h>
 #include <hookflash/stack/message/internal/stack_message_MessageFactoryManager.h>
+#include <hookflash/stack/message/internal/stack_message_MessageFactoryUnknown.h>
+
+#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/MessageReply.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <hookflash/stack/message/IMessageFactory.h>
 
 #include <zsLib/Log.h>
+#include <zsLib/XML.h>
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -50,11 +52,15 @@ namespace hookflash
       namespace internal
       {
         using zsLib::Stringize;
+        typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
-        typedef zsLib::WORD WORD;
-        typedef zsLib::String String;
-        typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-        typedef zsLib::XML::ElementPtr ElementPtr;
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MessageFactoryManagerGlobal
+        #pragma mark
 
         class MessageFactoryManagerGlobal
         {
@@ -81,6 +87,12 @@ namespace hookflash
         #pragma mark
         #pragma mark MessageFactoryManager
         #pragma mark
+
+        //---------------------------------------------------------------------
+        const char *MessageFactoryManager::toString(ErrorCodes error)
+        {
+          return IHTTP::toString(IHTTP::toStatusCode(error));
+        }
 
         //---------------------------------------------------------------------
         MessageFactoryManager::MessageFactoryManager()
@@ -137,10 +149,13 @@ namespace hookflash
         #pragma mark
 
         //---------------------------------------------------------------------
-        MessagePtr MessageFactoryManager::create(ElementPtr root)
+        MessagePtr MessageFactoryManager::create(
+                                                 ElementPtr root,
+                                                 IMessageSourcePtr messageSource
+                                                 )
         {
           MessageFactoryManagerPtr pThis = singleton();
-          return pThis->internalCreate(root);
+          return pThis->internalCreate(root, messageSource);
         }
 
         //---------------------------------------------------------------------
@@ -152,14 +167,14 @@ namespace hookflash
         #pragma mark
 
         //---------------------------------------------------------------------
-        void MessageFactoryManager::getMethod(
+        bool MessageFactoryManager::getMethod(
                                               ElementPtr root,
                                               Message::Methods &outMethod,
                                               IMessageFactoryPtr &outFactory
                                               )
         {
           MessageFactoryManagerPtr pThis = singleton();
-          pThis->internalGetMethod(root, outMethod, outFactory);
+          return pThis->internalGetMethod(root, outMethod, outFactory);
         }
 
         //---------------------------------------------------------------------
@@ -184,39 +199,72 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        MessagePtr MessageFactoryManager::internalCreate(ElementPtr root)
+        MessagePtr MessageFactoryManager::internalCreate(
+                                                         ElementPtr root,
+                                                         IMessageSourcePtr messageSource
+                                                         )
         {
           AutoRecursiveLock lock(mLock);
 
-          MessagePtr result;
+          if (!root) {
+            ZS_LOG_WARNING(Detail, log("cannot create message from null element"))
+            return MessagePtr();
+          }
+
+          MessagePtr message;
+          String handlerStr = IMessageHelper::getAttribute(root, "handler");
+
+          Message::MessageTypes msgType = IMessageHelper::getMessageType(root);
+          if (Message::MessageType_Invalid == msgType) return MessagePtr();
+
+          bool foundHandler = false;
 
           try {
-            Message::MessageTypes msgType = IMessageHelper::getMessageType(root);
-            if (Message::MessageType_Invalid == msgType) return MessagePtr();
 
-            result = MessageResult::createIfError(root);
-            if (result) return result;
-
-            String xmlnsStr = IMessageHelper::getAttribute(root, "xmlns");
+            message = MessageResult::createOnlyIfError(root);
+            if (message) return message;
 
             for (FactoryList::iterator iter = mFactories.begin(); iter != mFactories.end(); ++iter)
             {
               IMessageFactoryPtr &factory = (*iter);
-              const char *xmlnsFactory = factory->xmlns();
+              const char *handlerFactory = factory->getHandler();
 
-              if (xmlnsStr != xmlnsFactory) continue;
+              if (handlerStr != handlerFactory) continue;
 
-              result = factory->create(root);
-              if (result) break;
+              message = factory->create(root, messageSource);
+              if (message) break;
+
+              foundHandler = true;
             }
-
-          } catch (zsLib::XML::Exceptions::CheckFailed &) {
+          } catch (CheckFailed &) {
           }
-          return result;
+
+          if (message) return message;
+
+          switch (msgType) {
+            case Message::MessageType_Invalid:  break;
+            case Message::MessageType_Request:
+            case Message::MessageType_Notify:
+            {
+              ZS_LOG_WARNING(Detail, log("message request or notify was not understood so generating generic message"))
+              MessageFactoryUnknownPtr unknown = MessageFactoryUnknown::create(handlerStr, IMessageHelper::getAttribute(root, "method"), (foundHandler ? MessageFactoryUnknown::Method_NotParsed : MessageFactoryUnknown::Method_Unknown));
+              return unknown->create(root, messageSource);
+            }
+            case Message::MessageType_Result:
+            {
+              ZS_LOG_WARNING(Detail, log("message result received but was not understood, converting to an error message"))
+              ErrorCodes error = (foundHandler ? ErrorCode_NotParsed : ErrorCode_Unknown);
+              return MessageResult::create(root, error, toString(error));
+            }
+            case Message::MessageType_Reply:  break;
+          }
+
+          ZS_LOG_WARNING(Detail, log("cannot generate message for unknown reply"))
+          return MessagePtr();
         }
 
         //---------------------------------------------------------------------
-        void MessageFactoryManager::internalGetMethod(
+        bool MessageFactoryManager::internalGetMethod(
                                                       ElementPtr root,
                                                       Message::Methods &outMethod,
                                                       IMessageFactoryPtr &outFactory
@@ -227,23 +275,24 @@ namespace hookflash
           outMethod = Message::Method_Invalid;
           outFactory = IMessageFactoryPtr();
 
-          String xmlnsStr = IMessageHelper::getAttribute(root, "xmlns");
+          String handlerStr = IMessageHelper::getAttribute(root, "handler");
           String methodStr = IMessageHelper::getAttribute(root, "method");
 
           for (FactoryList::iterator iter = mFactories.begin(); iter != mFactories.end(); ++iter)
           {
             IMessageFactoryPtr &factory = (*iter);
-            const char *xmlnsFactory = factory->xmlns();
+            const char *handlerFactory = factory->getHandler();
 
-            if (xmlnsStr != xmlnsFactory) continue;
+            if (handlerStr != handlerFactory) continue;
 
             Message::Methods method = factory->toMethod(methodStr);
             if (Message::Method_Invalid != method) {
               outMethod = method;
               outFactory = factory;
-              return;
+              return true;
             }
           }
+          return false;
         }
       }
 

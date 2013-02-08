@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,27 +22,18 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
 #include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/IMessageRequester.h>
+#include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/IPeerSubscription.h>
-#include <hookflash/services/IRUDPICESocket.h>
-
-#include <zsLib/MessageQueueAssociator.h>
-#include <zsLib/String.h>
-#include <zsLib/Proxy.h>
-
-#include <map>
 
 namespace hookflash
 {
@@ -54,99 +45,143 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerSubscriptionForAccount
+      #pragma mark
+
       interaction IPeerSubscriptionForAccount
       {
-        typedef zsLib::PUID PUID;
+        typedef IPeer::PeerFindStates PeerFindStates;
+        typedef ILocation::LocationConnectionStates LocationConnectionStates;
+
+        IPeerSubscriptionForAccount &forAccount() {return *this;}
+        const IPeerSubscriptionForAccount &forAccount() const {return *this;}
 
         virtual PUID getID() const = 0;
-        virtual IPeerSubscriptionPtr convertIPeerSubscription() = 0;
-        virtual void notifyPeerSubscriptionLocationsChanged() = 0;
-        virtual void notifyAccountNotifyPeerSubscriptionShutdown() = 0;
-        virtual void notifyAccountPeerFindStateChanged(IPeerSubscription::PeerSubscriptionFindStates state) = 0;
-        virtual void notifyPeerSubscriptionMessage(
-                                                   const char *contactID,
-                                                   const char *locationID,
-                                                   IPeerSubscriptionMessagePtr message
-                                                   ) = 0;
+
+        virtual IPeerPtr getSubscribedToPeer() const = 0;
+
+        virtual void notifyFindStateChanged(
+                                            PeerPtr peer,
+                                            PeerFindStates state
+                                            ) = 0;
+
+        virtual void notifyLocationConnectionStateChanged(
+                                                          LocationPtr location,
+                                                          LocationConnectionStates state
+                                                          ) = 0;
+
+        virtual void notifyMessageIncoming(IMessageIncomingPtr message) = 0;
+
+        virtual void notifyShutdown() = 0;
+
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const = 0;
       };
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class PeerSubscription : public zsLib::MessageQueueAssociator,
-                               public IPeerSubscription,
+      #pragma mark
+      #pragma mark PeerSubscription
+      #pragma mark
+
+      class PeerSubscription : public IPeerSubscription,
                                public IPeerSubscriptionForAccount
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
+        friend interaction IPeerSubscription;
+        friend interaction IPeerSubscriptionForAccount;
 
       protected:
-        PeerSubscription(IAccountForPeerSubscriptionPtr account);
+        PeerSubscription(
+                         AccountPtr account,
+                         IPeerSubscriptionDelegatePtr delegate
+                         );
 
         void init();
 
       public:
         ~PeerSubscription();
 
-        static PeerSubscriptionPtr create(
-                                          IAccountForPeerSubscriptionPtr account,
-                                          const char *contactID,
-                                          IPeerSubscriptionDelegatePtr delegate
-                                          );
+        static PeerSubscriptionPtr convert(IPeerSubscriptionPtr subscription);
 
-        // IPeerSubscription
-        virtual String getContactID();
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark PeerSubscription => IPeerSubscription
+        #pragma mark
 
-        // (duplicate) virtual PUID getID() const;
+        static String toDebugString(IPeerSubscriptionPtr subscription, bool includeCommaPrefix = true);
 
-        virtual bool isShutdown();
+        static IPeerSubscriptionPtr subscribeAll(
+                                                 IAccountPtr account,
+                                                 IPeerSubscriptionDelegatePtr delegate
+                                                 );
 
-        virtual IPeerSubscription::PeerSubscriptionFindStates getFindState() const;
+        static IPeerSubscriptionPtr subscribe(
+                                              IPeerPtr peer,
+                                              IPeerSubscriptionDelegatePtr delegate
+                                              );
 
-        virtual void getPeerLocations(
-                                      LocationList &outLocations,
-                                      bool includeOnlyConnectedLocations
-                                      );
-        virtual void getPeerLocations(
-                                      PeerLocationList &outPeerLocations,
-                                      bool includeOnlyConnectedLocations
-                                      );
+        virtual PUID getID() const {return mID;}
 
-        virtual bool sendPeerMesage(
-                                    const char *locationID,
-                                    message::MessagePtr message
-                                    );
+        virtual IPeerPtr getSubscribedToPeer() const;
+
+        virtual bool isShutdown() const;
 
         virtual void cancel();
 
-      protected:
-        // IPeerSubscriptionForAccount
-        virtual PUID getID() const {return mID;}
-        virtual IPeerSubscriptionPtr convertIPeerSubscription() {return mThisWeak.lock();}
-        virtual void notifyPeerSubscriptionLocationsChanged();
-        virtual void notifyAccountNotifyPeerSubscriptionShutdown();
-        virtual void notifyAccountPeerFindStateChanged(IPeerSubscription::PeerSubscriptionFindStates state);
-        virtual void notifyPeerSubscriptionMessage(
-                                                   const char *contactID,
-                                                   const char *locationID,
-                                                   IPeerSubscriptionMessagePtr message
-                                                   );
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark PeerSubscription => IPeerSubscriptionForAccount
+        #pragma mark
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual IPeerPtr getSubscribedToPeer() const;
+
+        virtual void notifyFindStateChanged(
+                                            PeerPtr peer,
+                                            PeerFindStates state
+                                            );
+
+        virtual void notifyLocationConnectionStateChanged(
+                                                          LocationPtr location,
+                                                          LocationConnectionStates state
+                                                          );
+
+        virtual void notifyMessageIncoming(IMessageIncomingPtr message);
+
+        virtual void notifyShutdown();
+
+        // (duplicate) virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark PeerSubscription => (internal)
+        #pragma mark
+
         RecursiveLock &getLock() const;
         String log(const char *message) const;
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark PeerSubscription => (data)
+        #pragma mark
+
         PUID mID;
         mutable RecursiveLock mBogusLock;
-        IAccountForPeerSubscriptionWeakPtr mAccount;
-
         PeerSubscriptionWeakPtr mThisWeak;
 
-        String mContactID;
+        AccountWeakPtr mAccount;
+
+        PeerPtr mPeer;
+
         IPeerSubscriptionDelegatePtr mDelegate;
       };
 

@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -36,6 +36,7 @@ using zsLib::ULONG;
 
 struct XMLWarningInfo
 {
+  zsLib::UINT mWarningType;
   CSTR mSearchStr;
   ULONG mRow;
   ULONG mColumn;
@@ -44,13 +45,21 @@ struct XMLWarningInfo
 struct XMLResultInfo
 {
   CSTR mInput;
-  CSTR mOutput;
+  CSTR mOutputXML;
+  CSTR mOutputJSON;
   ULONG  mTabSize;
   CSTR *mSingleLineElements;
   bool mCaseSensativeElements;
   bool mCaseSensativeAttributes;
+  bool mReparseMayHaveWarnings;
   XMLWarningInfo **mWarnings;
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML1Input =
 "<?xml version=\"1.0\" encoding=\"ISO8859-1\" ?>\n"
@@ -66,6 +75,23 @@ static const char *gXML1Input =
 "  <cdatatest><![CDATA[your momma wears <army boots>]]></cdatatest>\n"
 "</note>\n";
 static const char *gXML1Output = gXML1Input;
+static const char *gJSON1Output =
+"{"
+"\"#text\":\"\\n\\n\","
+"\"note\":{"
+    "\"#text\":\"\\n  \\n  \\n  \\n  \\n  \\n  \\n  \\n  \\n  \\n\","
+    "\"to\":{"
+      "\"$test\":\"hello\","
+      "\"$test2\":\"goodbye\","
+      "\"#text\":\"Tove\""
+    "},"
+    "\"from\":\"Jani\","
+    "\"heading\":\"Reminder\","
+    "\"body\":\"Don't forget me this weekend!\","
+    "\"cdatatest\":\"your momma wears <army boots>\""
+  "}"
+"}"
+;
 
 static XMLWarningInfo *gXMLWarnings1Array[] = {NULL};
 
@@ -73,12 +99,20 @@ static XMLResultInfo gXMLResults1 =
 {
   gXML1Input,
   gXML1Output,
+  gJSON1Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings1Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML2Input =
 "\n"
@@ -93,12 +127,17 @@ static const char *gXML2Output =
 "<test2>contents2</test2>\n"
 "-->";
 
+static const char *gJSON2Output =
+"{\"#text\":\"\\n\\n  \\t\\t \",\"test\":\"contents\"}";
+
 static XMLWarningInfo gXMLWarnings2_1[] =
 {
-  {"<!---", 3, 18},
-  {"Comment was not closed properly\n"
+  {0,"<!---", 3, 18},
+  {
+    zsLib::XML::ParserWarningType_NoEndCommentFound,
+    "Comment was not closed properly\n"
     "@ row=3 column=18: <!--- this is a non-closed com", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings2Array[] =
@@ -111,12 +150,20 @@ static XMLResultInfo gXMLResults2 =
 {
   gXML2Input,
   gXML2Output,
+  gJSON2Output,
   8,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings2Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML3Input =
 "<?xml +bogus=\"1\" x=\"1\"?>\n"
@@ -142,50 +189,76 @@ static const char *gXML3Output =
 "<outer><inner5 /></outer>\n"
 "\n";
 
+static const char *gJSON3Output =
+"{"
+  "\"#text\":\"\\n\\n\\n\\n\\n\\n\\n\\n\\n\\n\","
+  "\"test\":\"contents\","
+  "\"outer\":"
+  "["
+            "{\"inner\":\"\"},"
+            "{\"inner1\":\"\"},"
+            "{\"inner2\":\"\"},"
+            "{\"inner3\":\"\"},"
+            "{\"inner4\":\"\"},"
+            "{\"inner5\":\"\"}"
+            "]"
+"}";
+
+
 static XMLWarningInfo gXMLWarnings3_1[] =
 {
-  {"+bogus", 1, 7},
-  {"<?xml", 1, 1},
-  {"Illegal attribute name found\n"
+  {0,"+bogus", 1, 7},
+  {0,"<?xml", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalAttributeName,
+    "Illegal attribute name found\n"
     "@ row=1 column=7: +bogus=\"1\" x=\"1\"?> </bogus> <t\n"
     "@ row=1 column=1: <?xml +bogus=\"1\" x=\"1\"?> </bog", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings3_2[] =
 {
-  {"</bogus>", 2, 1},
-  {"Element end tag mismatched\n"
+  {0,"</bogus>", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=2 column=1: </bogus> <test>contents</test>", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings3_3[] =
 {
-  {"</bogus></>", 5, 16},
-  {"<inner1>", 5, 8},
-  {"<outer><inner1>", 5, 1},
-  {"Element end tag mismatched\n"
+  {0,"</bogus></>", 5, 16},
+  {0,"<inner1>", 5, 8},
+  {0,"<outer><inner1>", 5, 1},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=5 column=16: </bogus></></outer> <outer><in\n"
     "@ row=5 column=8: <inner1></bogus></></outer> <o\n"
     "@ row=5 column=1: <outer><inner1></bogus></></ou", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings3_4[] =
 {
-  {"</>\n", 8, 22},
-  {"Element end tag mismatched\n"
+  {0,"</>\n", 8, 22},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=8 column=22: </> <outer><inner5></outer></i", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings3_5[] =
 {
-  {"</inner5>", 9, 24},
-  {"Element end tag mismatched\n"
+  {0,"</inner5>", 9, 24},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=9 column=24: </inner5>", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings3Array[] =
@@ -202,12 +275,20 @@ static XMLResultInfo gXMLResults3 =
 {
   gXML3Input,
   gXML3Output,
+  gJSON3Output,
   3,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings3Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML4Input =
 "\n"
@@ -219,34 +300,43 @@ static const char *gXML4Output =
 "<test>contents</test>\n"
 "<?xml unclosed_declaration ?>";
 
+static const char *gJSON4Output =
+"{\"#text\":\"\\n\\n\",\"test\":\"contents\"}";
+
 static XMLWarningInfo gXMLWarnings4_1[] =
 {
-  {"unclosed_declaration", 3, 7},
-  {"<?xml", 3, 1},
-  {"Attribute found that does not have a value\n"
+  {0,"unclosed_declaration", 3, 7},
+  {0,"<?xml", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_AttributeWithoutValue,
+    "Attribute found that does not have a value\n"
     "@ row=3 column=7: unclosed_declaration illegal{}\n"
     "@ row=3 column=1: <?xml unclosed_declaration ill", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings4_2[] =
 {
-  {"{}name", 3, 35},
-  {"illegal{}", 3, 28},
-  {"<?xml", 3, 1},
-  {"Illegal attribute name found\n"
+  {0,"{}name", 3, 35},
+  {0,"illegal{}", 3, 28},
+  {0,"<?xml", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalAttributeName,
+    "Illegal attribute name found\n"
     "@ row=3 column=35: {}name\n"
     "@ row=3 column=28: illegal{}name\n"
     "@ row=3 column=1: <?xml unclosed_declaration ill", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings4_3[] =
 {
-  {"<?xml", 3, 1},
-  {"Declation \"<?xml ...\" was found but closing \"?>\" was not found\n"
+  {0,"<?xml", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndDeclarationFound,
+    "Declation \"<?xml ...\" was found but closing \"?>\" was not found\n"
     "@ row=3 column=1: <?xml unclosed_declaration ill", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings4Array[] =
@@ -261,12 +351,20 @@ static XMLResultInfo gXMLResults4 =
 {
   gXML4Input,
   gXML4Output,
+  gJSON4Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings4Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML5Input =
 "<?xml no_value_found = ?>\n"
@@ -278,76 +376,96 @@ static const char *gXML5Output =
 "<test dup=\"value2\" />\n"
 "<?xml dup=\"value2\" ?>";
 
+static const char *gJSON5Output =
+"{"
+  "\"#text\":\"\\n\\n\","
+  "\"test\":{\"$dup\":\"value2\"}"
+"}";
+
 static XMLWarningInfo gXMLWarnings5_1[] =
 {
-  {"?>", 1, 24},
-  {"no_value_found", 1, 7},
-  {"<?xml", 1, 1},
-  {"Attribute is missing value\n"
+  {0,"?>", 1, 24},
+  {0,"no_value_found", 1, 7},
+  {0,"<?xml", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_AttributeValueNotFound,
+    "Attribute is missing value\n"
     "@ row=1 column=24: ?> <test illegal{}name=\"1\" dup\n"
     "@ row=1 column=7: no_value_found = ?> <test ille\n"
     "@ row=1 column=1: <?xml no_value_found = ?> <tes", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_2[] =
 {
-  {"{}name", 2, 14},
-  {"illegal{}name", 2, 7},
-  {"<test", 2, 1},
-  {"Illegal attribute name found\n"
+  {0,"{}name", 2, 14},
+  {0,"illegal{}name", 2, 7},
+  {0,"<test", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalAttributeName,
+    "Illegal attribute name found\n"
     "@ row=2 column=14: {}name=\"1\" dup=value1 dup=valu\n"
     "@ row=2 column=7: illegal{}name=\"1\" dup=value1 d\n"
     "@ row=2 column=1: <test illegal{}name=\"1\" dup=va", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_3[] =
 {
-  {"dup=value2", 2, 36},
-  {"<test", 2, 1},
-  {"An attribute on an element was duplicated\n"
+  {0,"dup=value2", 2, 36},
+  {0,"<test", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_DuplicateAttribute,
+    "An attribute on an element was duplicated\n"
     "@ row=2 column=36: dup=value2 ></test bogus> <?xm\n"
     "@ row=2 column=1: <test illegal{}name=\"1\" dup=va", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_4[] =
 {
-  {"bogus>", 2, 55},
-  {"<test", 2, 1},
-  {"Content found after \"</name \" in closing of element\n"
+  {0,"bogus>", 2, 55},
+  {0,"<test", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_ContentAfterCloseElementName,
+    "Content found after \"</name \" in closing of element\n"
     "@ row=2 column=55: bogus> <?xml dup=value1 dup=\"v\n"
     "@ row=2 column=1: <test illegal{}name=\"1\" dup=va", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_5[] =
 {
-  {"<?xml dup", 3, 1},
-  {"An attribute on an element was duplicated\n"
+  {0,"<?xml dup", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_DuplicateAttribute,
+    "An attribute on an element was duplicated\n"
     "@ row=3 column=1: <?xml dup=value1 dup=\"value2\"", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_6[] =
 {
-  {"\'", 3, 50},
-  {"no_end_quote_found", 3, 31},
-  {"<?xml dup=value1", 3, 1},
-  {"Attribute value is missing the end quote\n"
+  {0,"\'", 3, 50},
+  {0,"no_end_quote_found", 3, 31},
+  {0,"<?xml dup=value1", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_AttributeValueMissingEndQuote,
+    "Attribute value is missing the end quote\n"
     "@ row=3 column=50: \'haha\n"
     "@ row=3 column=31: no_end_quote_found=\'haha\n"
     "@ row=3 column=1: <?xml dup=value1 dup=\"value2\"", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings5_7[] =
 {
-  {"<?xml dup=value1", 3, 1},
-  {"Declation \"<?xml ...\" was found but closing \"?>\" was not found\n"
+  {0,"<?xml dup=value1", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndDeclarationFound,
+    "Declation \"<?xml ...\" was found but closing \"?>\" was not found\n"
     "@ row=3 column=1: <?xml dup=value1 dup=\"value2\"", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings5Array[] =
@@ -366,13 +484,20 @@ static XMLResultInfo gXMLResults5 =
 {
   gXML5Input,
   gXML5Output,
+  gJSON5Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings5Array
 };
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML6Input =
 "<test>contents</test>\n"
@@ -384,30 +509,44 @@ static const char *gXML6Output =
 "<whatever />\n"
 "<tag />";
 
+static const char *gJSON6Output =
+"{"
+  "\"#text\":\"\\n\\n\","
+  "\"test\":\"contents\","
+  "\"whatever\":\"\","
+  "\"tag\":\"\""
+"}";
+
 static XMLWarningInfo gXMLWarnings6_1[] =
 {
-  {"bogus>", 2, 12},
-  {"<whatever", 2, 1},
-  {"Content found after closing \'/\' in element\n"
+  {0,"bogus>", 2, 12},
+  {0,"<whatever", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_ContentAfterCloseSlashInElement,
+    "Content found after closing \'/\' in element\n"
     "@ row=2 column=12: bogus> <tag\n"
     "@ row=2 column=1: <whatever /bogus> <tag", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings6_2[] =
 {
-  {"<tag", 3, 1},
-  {"The closing \'>\' tag was not found\n"
+  {0,"<tag", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndBracketFound,
+    "The closing \'>\' tag was not found\n"
     "@ row=3 column=1: <tag", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings6_3[] =
 {
-  {"<tag", 3, 1},
-  {"Start element found but no \"</>\" end tag found\n"
+  {0,"<tag", 3, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndTagFound,
+    "Start element found but no \"</>\" end tag found\n"
     "@ row=3 column=1: <tag", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings6Array[] =
@@ -422,12 +561,20 @@ static XMLResultInfo gXMLResults6 =
 {
   gXML6Input,
   gXML6Output,
+  gJSON6Output,
   8,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings6Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML7Input =
 "<test>contents</test>\n"
@@ -437,14 +584,23 @@ static const char *gXML7Output =
 "<test>contents</test>\n"
 "<tag>whatever</tag>";
 
+static const char *gJSON7Output =
+"{"
+  "\"#text\":\"\\n\","
+  "\"test\":\"contents\","
+  "\"tag\":\"whatever\""
+"}";
+
 static XMLWarningInfo gXMLWarnings7_1[] =
 {
-  {"</tag", 2, 14},
-  {"<tag>whatever", 2, 1},
-  {"The closing \'>\' tag was not found\n"
+  {0,"</tag", 2, 14},
+  {0,"<tag>whatever", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndBracketFound,
+    "The closing \'>\' tag was not found\n"
     "@ row=2 column=14: </tag\n"
     "@ row=2 column=1: <tag>whatever</tag", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings7Array[] =
@@ -457,12 +613,20 @@ static XMLResultInfo gXMLResults7 =
 {
   gXML7Input,
   gXML7Output,
+  gJSON7Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings7Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML8Input =
 "<test>contents</test>\n"
@@ -472,14 +636,23 @@ static const char *gXML8Output =
 "<test>contents</test>\n"
 "<tag>whatever</tag>";
 
+static const char *gJSON8Output =
+"{"
+  "\"#text\":\"\\n\","
+  "\"test\":\"contents\","
+  "\"tag\":\"whatever\""
+"}";
+
 static XMLWarningInfo gXMLWarnings8_1[] =
 {
-  {"</ ", 2, 14},
-  {"<tag>whatever", 2, 1},
-  {"The closing \'>\' tag was not found\n"
+  {0,"</ ", 2, 14},
+  {0,"<tag>whatever", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndBracketFound,
+    "The closing \'>\' tag was not found\n"
     "@ row=2 column=14: </\n"
     "@ row=2 column=1: <tag>whatever</", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings8Array[] =
@@ -492,12 +665,20 @@ static XMLResultInfo gXMLResults8 =
 {
   gXML8Input,
   gXML8Output,
+  gJSON8Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings8Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML9Input =
 "<test>contents</test>\n"
@@ -507,22 +688,33 @@ static const char *gXML9Output =
 "<test>contents</test>\n"
 "<tag>whatever</tag>";
 
+static const char *gJSON9Output =
+"{"
+  "\"#text\":\"\\n\","
+  "\"test\":\"contents\","
+  "\"tag\":\"whatever\""
+"}";
+
 static XMLWarningInfo gXMLWarnings9_1[] =
 {
-  {"</ {", 2, 14},
-  {"<tag>whatever", 2, 1},
-  {"Element end tag mismatched\n"
+  {0,"</ {", 2, 14},
+  {0,"<tag>whatever", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=2 column=14: </ {\n"
     "@ row=2 column=1: <tag>whatever</ {", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings9_2[] =
 {
-  {"<tag>whatever", 2, 1},
-  {"Start element found but no \"</>\" end tag found\n"
+  {0,"<tag>whatever", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndTagFound,
+    "Start element found but no \"</>\" end tag found\n"
     "@ row=2 column=1: <tag>whatever</ {", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings9Array[] =
@@ -536,12 +728,20 @@ static XMLResultInfo gXMLResults9 =
 {
   gXML9Input,
   gXML9Output,
+  gJSON9Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings9Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML10Input =
 "<test>contents</test>\n"
@@ -551,12 +751,18 @@ static const char *gXML10Output =
 "<test>contents</test>\n"
 "<!bogus>";
 
+static const char *gJSON10Output =
+"{\"#text\":\"\\n\",\"test\":\"contents\"}";
+
+
 static XMLWarningInfo gXMLWarnings10_1[] =
 {
-  {"<!bogus", 2, 1},
-  {"Open \'<\' was found but no closing \'>\' was found\n"
+  {0,"<!bogus", 2, 1},
+  {
+    zsLib::XML::ParserWarningType_NoEndUnknownTagFound,
+    "Open \'<\' was found but no closing \'>\' was found\n"
     "@ row=2 column=1: <!bogus", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings10Array[] =
@@ -569,12 +775,20 @@ static XMLResultInfo gXMLResults10 =
 {
   gXML10Input,
   gXML10Output,
+  gJSON10Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings10Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML11Input =
 "<test>contents</test>\n"
@@ -590,32 +804,58 @@ static const char *gXML11Output =
 "<input dup=\"/hello.php\" />\n"
 "<input hi=\"/hello.php\" />";
 
+static const char *gJSON11Output =
+"{"
+  "\"#text\":\"\\n\\n\\n\\n\","
+  "\"test\":\"contents\","
+  "\"BR\":["
+         "\"\","
+         "\"\","
+         "\"\""
+         "],"
+  "\"HR\":["
+         "\"\","
+         "\"\""
+         "],"
+  "\"input\":["
+            "{\"$dup\":\"/hello.php\"},"
+            "{\"$hi\":\"/hello.php\"}"
+            "]"
+"}";
+
+
 static XMLWarningInfo gXMLWarnings11_1[] =
 {
-  {"</br>", 2, 13},
-  {"Element end tag mismatched\n"
+  {0,"</br>", 2, 13},
+  {
+    zsLib::XML::ParserWarningType_MismatchedEndTag,
+    "Element end tag mismatched\n"
     "@ row=2 column=13: </br> <HR /><hr> <input Dup=al", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings11_2[] =
 {
-  {"DUP=beta", 4, 18},
-  {"<input Dup=alpha", 4, 1},
-  {"An attribute on an element was duplicated\n"
+  {0,"DUP=beta", 4, 18},
+  {0,"<input Dup=alpha", 4, 1},
+  {
+    zsLib::XML::ParserWarningType_DuplicateAttribute,
+    "An attribute on an element was duplicated\n"
     "@ row=4 column=18: DUP=beta dup=/hello.php> <inpu\n"
     "@ row=4 column=1: <input Dup=alpha DUP=beta dup=", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo gXMLWarnings11_3[] =
 {
-  {"dup=/hello.php", 4, 27},
-  {"<input Dup=alpha", 4, 1},
-  {"An attribute on an element was duplicated\n"
+  {0,"dup=/hello.php", 4, 27},
+  {0,"<input Dup=alpha", 4, 1},
+  {
+    zsLib::XML::ParserWarningType_DuplicateAttribute,
+    "An attribute on an element was duplicated\n"
     "@ row=4 column=27: dup=/hello.php> <input hi=/hel\n"
     "@ row=4 column=1: <input Dup=alpha DUP=beta dup=", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings11Array[] =
@@ -638,13 +878,20 @@ static XMLResultInfo gXMLResults11 =
 {
   gXML11Input,
   gXML11Output,
+  gJSON11Output,
   0,
   gSingleLineElements11,
+  false,
   false,
   false,
   gXMLWarnings11Array
 };
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML12Input =
 "<img>test\n"
@@ -656,14 +903,24 @@ static const char *gXML12Output =
 "<Img>test</Img>"
 "<IMG value1=\"1\" />";
 
+static const char *gJSON12Output =
+"{"
+  "\"#text\":\"test\\n\","
+  "\"img\":\"\","
+  "\"Img\":\"test\","
+  "\"IMG\":{\"$value1\":\"1\"}"
+"}";
+
 static XMLWarningInfo gXMLWarnings12_1[] =
 {
-  {"+bogus", 2, 21},
-  {"<IMG", 2, 16},
-  {"Illegal attribute name found\n"
+  {0,"+bogus", 2, 21},
+  {0,"<IMG", 2, 16},
+  {
+    zsLib::XML::ParserWarningType_IllegalAttributeName,
+    "Illegal attribute name found\n"
     "@ row=2 column=21: +bogus value1=1 />\n"
     "@ row=2 column=16: <IMG +bogus value1=1 />", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings12Array[] =
@@ -682,12 +939,20 @@ static XMLResultInfo gXMLResults12 =
 {
   gXML12Input,
   gXML12Output,
+  gJSON12Output,
   0,
   gSingleLineElements12,
   true,
   true,
+  false,
   gXMLWarnings12Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 
 static const char *gXML13Input =
 "<?xml test1=\"test\" />\n"
@@ -697,14 +962,19 @@ static const char *gXML13Output =
 "<?xml test1=\"test\" ?>\n"
 "<?xml text2=\"test\" ?>\n";
 
+static const char *gJSON13Output =
+"{\"#text\":\"\\n\\n\"}";
+
 static XMLWarningInfo gXMLWarnings13_1[] =
 {
-  {"/>", 1, 20},
-  {"<?", 1, 1},
-  {"Declation \"<?xml ...\" was found but found \">\" instead of closing \"?>\"\n"
+  {0,"/>", 1, 20},
+  {0,"<?", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_NotProperEndDeclaration,
+    "Declation \"<?xml ...\" was found but found \">\" instead of closing \"?>\"\n"
     "@ row=1 column=20: /> <?xml text2=\"test\" ?>\n"
     "@ row=1 column=1: <?xml test1=\"test\" /> <?xml te", 0, 0},
-  {NULL, 0, 0}
+  {0,NULL, 0, 0}
 };
 
 static XMLWarningInfo *gXMLWarnings13Array[] =
@@ -717,12 +987,649 @@ static XMLResultInfo gXMLResults13 =
 {
   gXML13Input,
   gXML13Output,
+  gJSON13Output,
   0,
   NULL,
   true,
   true,
+  false,
   gXMLWarnings13Array
 };
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON14Input =
+"   { \n"
+  "\t\"outer\" : {\n"
+    "\t\t\"test\" \t:\t \"hello\\n\\tand\\ngoodbye\"\f\r\n"
+  " }\n"
+"} \n";
+
+static const char *gXML14Output =
+"<outer>"
+"<test>hello\n\tand\ngoodbye</test>"
+"</outer>"
+;
+
+static const char *gJSON14Output =
+"{"
+  "\"outer\":"
+    "{"
+      "\"test\":\"hello\\n\\tand\\ngoodbye\""
+    "}"
+"}";
+
+static XMLWarningInfo *gXMLWarnings14Array[] = {NULL};
+
+static XMLResultInfo gXMLResults14 =
+{
+  gJSON14Input,
+  gXML14Output,
+  gJSON14Output,
+  0,
+  NULL,
+  true,
+  true,
+  false,
+  gXMLWarnings14Array
+};
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON15Input =
+"   { \n"
+"\t\"outer\" : {\n"
+"\t\t\"test\" \t:\t \"hello\\n\\tand\\ngoodbye\"\f\r\n,\n"
+"\t\t\"foos\":{\n"
+    "  \"foo\" : [ \"far\\u000afig\\u000Anewton\" , \n"
+                  "\"mars \\u00E4 attacks\"\n"
+                " ] "
+      " } \n"
+" }\n"
+"}\n.\n";
+
+static const char *gXML15Output =
+"<outer>"
+  "<test>hello\n\tand\ngoodbye</test>"
+  "<foos>"
+    "<foo>far\nfig\nnewton</foo>"
+    "<foo>mars \xc3\xa4 attacks</foo>"
+  "</foos>"
+"</outer>"
+;
+
+static const char *gJSON15Output =
+"{"
+  "\"outer\":"
+    "{"
+      "\"test\":\"hello\\n\\tand\\ngoodbye\","
+      "\"foos\":"
+        "{"
+          "\"foo\":["
+            "\"far\\u000afig\\u000Anewton\","
+            "\"mars \\u00E4 attacks\""
+          "]"
+        "}"
+    "}"
+"}";
+
+static XMLWarningInfo gXMLWarnings15_1[] =
+{
+  {0,".", 11, 1},
+  {0,"{", 1, 4},
+  {
+    zsLib::XML::ParserWarningType_DataFoundAfterFinalObjectClose,
+    "Found data after final object close\n"
+    "@ row=11 column=1: .\n"
+    "@ row=1 column=4: {   \"outer\" : {   \"test\"  :  \""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo *gXMLWarnings15Array[] =
+{
+  gXMLWarnings15_1,
+  NULL
+};
+
+
+static XMLResultInfo gXMLResults15 =
+{
+  gJSON15Input,
+  gXML15Output,
+  gJSON15Output,
+  0,
+  NULL,
+  true,
+  true,
+  false,
+  gXMLWarnings15Array
+};
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON16Input =
+"{"
+  "\"outer\":{"
+    "\"inner\":{\"foo\":\"bar\",do\"\"too\\z\"}"
+  ""
+"";
+
+static const char *gXML16Output =
+"<outer>"
+  "<inner>"
+    "<foo>bar</foo>"
+    "<do>too\\z</do>"
+  "</inner>"
+"</outer>"
+;
+
+static const char *gJSON16Output =
+"{\"outer\":{\"inner\":{\"foo\":\"bar\",\"do\":\"too\\z\"}}}"
+;
+
+
+
+static XMLWarningInfo gXMLWarnings16_1[] =
+{
+  {0,"do", 1, 32},
+  {0,"\"inner", 1, 11},
+  {0,"\"outer", 1, 2},
+  {0,"{\"outer", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingStringQuotes,
+    "String quotes (\") were expected but not found\n"
+    "@ row=1 column=32: do\"\"too\\z\"}\n"
+    "@ row=1 column=11: \"inner\":{\"foo\":\"bar\",do\"\"too\\z\n"
+    "@ row=1 column=2: \"outer\":{\"inner\":{\"foo\":\"bar\",\n"
+    "@ row=1 column=1: {\"outer\":{\"inner\":{\"foo\":\"bar\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings16_2[] =
+{
+  {0,"\"too", 1, 35},
+  {0,"do", 1, 32},
+  {0,"\"inner", 1, 11},
+  {0,"\"outer", 1, 2},
+  {0,"{\"outer", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingColonBetweenStringAndValue,
+    "Missing \":\" between string : value\n"
+    "@ row=1 column=35: \"too\\z\"}\n"
+    "@ row=1 column=32: do\"\"too\\z\"}\n"
+    "@ row=1 column=11: \"inner\":{\"foo\":\"bar\",do\"\"too\\z\n"
+    "@ row=1 column=2: \"outer\":{\"inner\":{\"foo\":\"bar\",\n"
+    "@ row=1 column=1: {\"outer\":{\"inner\":{\"foo\":\"bar\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings16_3[] =
+{
+  {0,"\\z", 1, 39},
+  {0,"\"too", 1, 35},
+  {0,"do", 1, 32},
+  {0,"\"inner", 1, 11},
+  {0,"\"outer", 1, 2},
+  {0,"{\"outer", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_InvalidEscapeSequence,
+    "Invalid escape sequence\n"
+    "@ row=1 column=39: \\z\"}\n"
+    "@ row=1 column=35: \"too\\z\"}\n"
+    "@ row=1 column=32: do\"\"too\\z\"}\n"
+    "@ row=1 column=11: \"inner\":{\"foo\":\"bar\",do\"\"too\\z\n"
+    "@ row=1 column=2: \"outer\":{\"inner\":{\"foo\":\"bar\",\n"
+    "@ row=1 column=1: {\"outer\":{\"inner\":{\"foo\":\"bar\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings16_4[] =
+{
+  {0,"{\"inner", 1, 10},
+  {0,"\"outer", 1, 2},
+  {0,"{\"outer", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingObjectClose,
+    "Missing object \"}\" close\n"
+    "@ row=1 column=10: {\"inner\":{\"foo\":\"bar\",do\"\"too\\\n"
+    "@ row=1 column=2: \"outer\":{\"inner\":{\"foo\":\"bar\",\n"
+    "@ row=1 column=1: {\"outer\":{\"inner\":{\"foo\":\"bar\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings16_5[] =
+{
+  {0,"", 1, 43},
+  {0,"\"outer", 1, 2},
+  {0,"{\"outer", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MustCloseRootObject,
+    "Expected to close root object with \"}\"\n"
+    "@ row=1 column=43: \n"
+    "@ row=1 column=2: \"outer\":{\"inner\":{\"foo\":\"bar\",\n"
+    "@ row=1 column=1: {\"outer\":{\"inner\":{\"foo\":\"bar\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo *gXMLWarnings16Array[] =
+{
+  gXMLWarnings16_1,
+  gXMLWarnings16_2,
+  gXMLWarnings16_3,
+  gXMLWarnings16_4,
+  gXMLWarnings16_5,
+  NULL
+};
+
+
+static XMLResultInfo gXMLResults16 =
+{
+  gJSON16Input,
+  gXML16Output,
+  gJSON16Output,
+  0,
+  NULL,
+  true,
+  true,
+  true,
+  gXMLWarnings16Array
+};
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON17Input =
+"{\n"
+  "\"foo\":\"test \\uc00p done\",\n"
+  "\"a\":-1.0e+5,\n"
+  "\"b\":-0.0e-5,\n"
+  "\"c\":0.1e+5,\n"
+  "\"d\":9998337000.1e+549329432,\n"
+  "\"e\":-9998337000.1,\n"
+  "\"f\":-9998337000,\n"
+  "\"g\":9998337000,\n"
+  "\"h\":9998337000.,\n"
+  "\"i\":9998337000.0e+,\n"
+  "\"j\":00.11,\n"
+  "\"k\":9998337000.0e4,\n"
+  "\"l\":-9.0e.0\n"
+"}";
+
+static const char *gXML17Output =
+"<foo>test \\uc00p done</foo>"
+"<a>-1.0e+5</a>"
+"<b>-0.0e-5</b>"
+"<c>0.1e+5</c>"
+"<d>9998337000.1e+549329432</d>"
+"<e>-9998337000.1</e>"
+"<f>-9998337000</f>"
+"<g>9998337000</g>"
+"<h>9998337000.</h>"
+"<i>9998337000.0e+</i>"
+"<j>00.11</j>"
+"<k>9998337000.0e4</k>"
+"<l>-9.0e</l>"
+;
+
+static const char *gJSON17Output =
+"{"
+"\"foo\":\"test \\uc00p done\","
+"\"a\":-1.0e+5,"
+"\"b\":-0.0e-5,"
+"\"c\":0.1e+5,"
+"\"d\":9998337000.1e+549329432,"
+"\"e\":-9998337000.1,"
+"\"f\":-9998337000,"
+"\"g\":9998337000,"
+"\"h\":9998337000.,"
+"\"i\":9998337000.0e+,"
+"\"j\":00.11,"
+"\"k\":9998337000.0e4,"
+"\"l\":-9.0e"
+"}"
+;
+
+
+
+static XMLWarningInfo gXMLWarnings17_1[] =
+{
+  {0,"\\uc00p", 2, 13},
+  {0,"\"test", 2, 7},
+  {0,"\"foo", 2, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_InvalidUnicodeEscapeSequence,
+    "Invalid unicode escape sequence\n"
+    "@ row=2 column=13: \\uc00p done\", \"a\":-1.0e+5, \"b\"\n"
+    "@ row=2 column=7: \"test \\uc00p done\", \"a\":-1.0e+\n"
+    "@ row=2 column=1: \"foo\":\"test \\uc00p done\", \"a\":\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_2[] =
+{
+  {0,",\n\"i\"", 10, 16},
+  {0,"9998337000.,\n\"i\"", 10, 5},
+  {0,"\"h\"", 10, 1},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalNumberSequence,
+    "Illegal number sequence\n"
+    "@ row=10 column=16: , \"i\":9998337000.0e+, \"j\":00.1\n"
+    "@ row=10 column=5: 9998337000., \"i\":9998337000.0e\n"
+    "@ row=10 column=1: \"h\":9998337000., \"i\":999833700\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_3[] =
+{
+  {0,",\n\"j\"", 11, 19},
+  {0,"9998337000.0e+,\n\"j\"", 11, 5},
+  {0,"\"i\":9998337000.0e+", 11, 1},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalNumberSequence,
+    "Illegal number sequence\n"
+    "@ row=11 column=19: , \"j\":00.11, \"k\":9998337000.0e\n"
+    "@ row=11 column=5: 9998337000.0e+, \"j\":00.11, \"k\"\n"
+    "@ row=11 column=1: \"i\":9998337000.0e+, \"j\":00.11,\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_4[] =
+{
+  {0,"0.11,\n\"k\"", 12, 6},
+  {0,"00.11,\n\"k\"", 12, 5},
+  {0,"\"j\":00.11", 12, 1},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalNumberSequence,
+    "Illegal number sequence\n"
+    "@ row=12 column=6: 0.11, \"k\":9998337000.0e4, \"l\":\n"
+    "@ row=12 column=5: 00.11, \"k\":9998337000.0e4, \"l\"\n"
+    "@ row=12 column=1: \"j\":00.11, \"k\":9998337000.0e4,\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_5[] =
+{
+  {0,".0\n}", 14, 10},
+  {0,"-9.0e.0", 14, 5},
+  {0,"\"l\"", 14, 1},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalNumberSequence,
+    "Illegal number sequence\n"
+    "@ row=14 column=10: .0 }\n"
+    "@ row=14 column=5: -9.0e.0 }\n"
+    "@ row=14 column=1: \"l\":-9.0e.0 }\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_6[] =
+{
+  {0,".0\n}", 14, 10},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingStringQuotes,
+    "String quotes (\") were expected but not found\n"
+    "@ row=14 column=10: .0 }\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_7[] =
+{
+  {0,"", 15, 2},
+  {0,".0\n}", 14, 10},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingStringQuotes,
+    "String quotes (\") were expected but not found\n"
+    "@ row=15 column=2: \n"
+    "@ row=14 column=10: .0 }\n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings17_8[] =
+{
+  {0,"", 15, 2},
+  {0,"{\n\"foo", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MustCloseRootObject,
+    "Expected to close root object with \"}\"\n"
+    "@ row=15 column=2: \n"
+    "@ row=1 column=1: { \"foo\":\"test \\uc00p done\", \"a"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+
+static XMLWarningInfo *gXMLWarnings17Array[] =
+{
+  gXMLWarnings17_1,
+  gXMLWarnings17_2,
+  gXMLWarnings17_3,
+  gXMLWarnings17_4,
+  gXMLWarnings17_5,
+  gXMLWarnings17_6,
+  gXMLWarnings17_7,
+  gXMLWarnings17_8,
+  NULL
+};
+
+
+static XMLResultInfo gXMLResults17 =
+{
+  gJSON17Input,
+  gXML17Output,
+  gJSON17Output,
+  0,
+  NULL,
+  true,
+  true,
+  true,
+  gXMLWarnings17Array
+};
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON18Input =
+"{\n"
+  "\"foo\":\"bar\",\n"
+  "\"#text\":\"hello\",\n"
+  "\"inner\":{\"$\":\"attribute_no_name\"},\n"
+  "\"$root\":\"attribute_root\",\n"
+  "\"\":\"missing\",\n"
+  "\"illegal\":.\n"
+"}";
+
+static const char *gXML18Output =
+"<foo>bar</foo>hello<inner />"
+;
+
+static const char *gJSON18Output =
+"{"
+  "\"#text\":\"hello\","
+  "\"foo\":\"bar\","
+  "\"inner\":\"\""
+"}"
+;
+
+static XMLWarningInfo gXMLWarnings18_1[] =
+{
+  {0,"\"$\"", 4, 10},
+  {0,"\"inner\"", 4, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_AttributePrefixWithoutName,
+    "Attribute prefix found but no name for attribute found\n"
+    "@ row=4 column=10: \"$\":\"attribute_no_name\"}, \"$ro\n"
+    "@ row=4 column=1: \"inner\":{\"$\":\"attribute_no_nam\n"
+    "@ row=1 column=1: { \"foo\":\"bar\", \"#text\":\"hello\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings18_2[] =
+{
+  {0,"\"$root\"", 5, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_AttributePrefixAtRoot,
+    "Attribute prefix found at document root\n"
+    "@ row=5 column=1: \"$root\":\"attribute_root\", \"\":\"\n"
+    "@ row=1 column=1: { \"foo\":\"bar\", \"#text\":\"hello\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings18_3[] =
+{
+  {0,"\"\":\"missing\"", 6, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_MissingPairString,
+    "Empty \"string\" found in pair string : value\n"
+    "@ row=6 column=1: \"\":\"missing\", \"illegal\":. }\n"
+    "@ row=1 column=1: { \"foo\":\"bar\", \"#text\":\"hello\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+static XMLWarningInfo gXMLWarnings18_4[] =
+{
+  {0,".\n}", 7, 11},
+  {0,"\"illegal\"", 7, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_IllegalValue,
+    "Illegal value found in pair string : value\n"
+    "@ row=7 column=11: . }\n"
+    "@ row=7 column=1: \"illegal\":. }\n"
+    "@ row=1 column=1: { \"foo\":\"bar\", \"#text\":\"hello\""
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+
+
+static XMLWarningInfo *gXMLWarnings18Array[] =
+{
+  gXMLWarnings18_1,
+  gXMLWarnings18_2,
+  gXMLWarnings18_3,
+  gXMLWarnings18_4,
+  NULL
+};
+
+
+static XMLResultInfo gXMLResults18 =
+{
+  gJSON18Input,
+  gXML18Output,
+  gJSON18Output,
+  0,
+  NULL,
+  true,
+  true,
+  false,
+  gXMLWarnings18Array
+};
+
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON19Input =
+"{\n"
+  "\"foo\":[1,2,,3]\n"
+"}";
+
+static const char *gXML19Output =
+"<foo>1</foo><foo>2</foo><foo /><foo>3</foo>"
+;
+
+static const char *gJSON19Output =
+"{\"foo\":[1,2,\"\",3]}"
+;
+
+static XMLWarningInfo gXMLWarnings19_1[] =
+{
+  {0,",3", 2, 12},
+  {0,"\"foo\"", 2, 1},
+  {0,"{", 1, 1},
+  {
+    zsLib::XML::ParserWarningType_UnexpectedComma,
+    "Parser did not expect a \",\" comma\n"
+    "@ row=2 column=12: ,3] }\n"
+    "@ row=2 column=1: \"foo\":[1,2,,3] }\n"
+    "@ row=1 column=1: { \"foo\":[1,2,,3] }"
+    ,0,0},
+  {0,NULL, 0, 0}
+};
+
+
+static XMLWarningInfo *gXMLWarnings19Array[] =
+{
+  gXMLWarnings19_1,
+  NULL
+};
+
+
+static XMLResultInfo gXMLResults19 =
+{
+  gJSON19Input,
+  gXML19Output,
+  gJSON19Output,
+  0,
+  NULL,
+  true,
+  true,
+  false,
+  gXMLWarnings19Array
+};
+
 
 
 class TestXML
@@ -745,6 +1652,12 @@ public:
     parse(gXMLResults11);
     parse(gXMLResults12);
     parse(gXMLResults13);
+    parse(gXMLResults14);
+    parse(gXMLResults15);
+    parse(gXMLResults16);
+    parse(gXMLResults17);
+    parse(gXMLResults18);
+    parse(gXMLResults19);
     generate();
     parserPosTest();
     {int i = 0; ++i;}
@@ -752,78 +1665,153 @@ public:
 
   void parse(XMLResultInfo &results)
   {
-    zsLib::XML::DocumentPtr document(::zsLib::XML::Document::create());
+    zsLib::XML::ParserPtr parser = ::zsLib::XML::Parser::createAutoDetectParser("#text",'$');
 
     ULONG tabSize = results.mTabSize;
     if (0 != tabSize)
-      document->setTabSize(results.mTabSize);
+      parser->setTabSize(results.mTabSize);
 
-    document->setElementNameIsCaseSensative(results.mCaseSensativeElements);
-    document->setAttributeNameIsCaseSensative(results.mCaseSensativeAttributes);
+    zsLib::XML::Parser::NoChildrenElementList list;
 
     if (NULL != results.mSingleLineElements)
     {
       for (ULONG loop = 0; NULL != results.mSingleLineElements[loop]; ++loop)
       {
-        document->addContainsNoChildrenElement(zsLib::String(results.mSingleLineElements[loop]));
+        list.push_back(results.mSingleLineElements[loop]);
       }
     }
 
-    document->parse(results.mInput);
+    parser->setNoChildrenElements(list);
+
+    zsLib::XML::DocumentPtr document = parser->parse(
+                                                     results.mInput,
+                                                     results.mCaseSensativeElements,
+                                                     results.mCaseSensativeAttributes
+                                                     );
 
     zsLib::XML::DocumentPtr cloneDocument = (document->clone())->toDocument();
 
-    ULONG length = 0;
-    boost::shared_array<char> output = cloneDocument->write(&length);
+    zsLib::XML::GeneratorPtr generatorXML = zsLib::XML::Generator::createXMLGenerator();
+    zsLib::XML::GeneratorPtr generatorJSON = zsLib::XML::Generator::createJSONGenerator("#text",'$');
+    zsLib::XML::GeneratorPtr reGeneratorJSON = zsLib::XML::Generator::createJSONGenerator("#text",'$');
 
-    BOOST_CHECK(length == strlen(output.get()))
+    ULONG lengthXML = 0;
+    boost::shared_array<char> outputXML = generatorXML->write(cloneDocument, &lengthXML);
 
-    //std::cout << "--- SOR ---\n" << output << "--- EOR ---\n";
+    ULONG lengthJSON = 0;
+    boost::shared_array<char> outputJSON = generatorJSON->write(cloneDocument, &lengthJSON);
 
-    BOOST_CHECK(0 == strcmp(results.mOutput, output.get()))
+    BOOST_CHECK(lengthXML == strlen(outputXML.get()))
+    BOOST_CHECK(lengthJSON == strlen(outputJSON.get()))
 
-    // original document and cloned must both validate
+    BOOST_CHECK(0 == strcmp(results.mOutputXML, outputXML.get()))
+    BOOST_CHECK(0 == strcmp(results.mOutputJSON, outputJSON.get()))
+
+    std::cout << "--- SOR:(input) ---\n" << results.mInput << "\n--- EOR ---\n";
+    std::cout << "--- SOR:XML(final) ---\n" << outputXML.get() << "\n" << lengthXML << " (calculated) -vs- " << strlen(outputXML.get()) << " (actual)\n--- EOR:XML ---\n";
+    if (results.mOutputJSON) {
+      std::cout << "--- SOR:JSON(compare) ---\n" << results.mOutputJSON << "\n--- EOR:JSON(compare) ---\n";
+    }
+    std::cout << "--- SOR:JSON(result) ---\n" << outputJSON.get() << "\n" << lengthJSON << " (calculated) -vs- " << strlen(outputJSON.get()) << " (actual)\n--- EOR:JSON(result) ---\n";
+
+    // parse document from the JSON and then regenerate output again - results must match
+    zsLib::XML::ParserPtr reParser = ::zsLib::XML::Parser::createAutoDetectParser("#text",'$');
+    reParser->setNoChildrenElements(list);
+    zsLib::XML::DocumentPtr reDocument = reParser->parse(
+                                                         outputJSON.get(),
+                                                         results.mCaseSensativeElements,
+                                                         results.mCaseSensativeAttributes
+                                                         );
+
+    ULONG reLengthJSON = 0;
+    boost::shared_array<char> reOutputJSON = reGeneratorJSON->write(reDocument, &reLengthJSON);
+    BOOST_CHECK(lengthJSON == reLengthJSON)
+    BOOST_CHECK(reLengthJSON == strlen(reOutputJSON.get()))
+    BOOST_CHECK(0 == strcmp(results.mOutputJSON, reOutputJSON.get()))
+
+    if (!results.mReparseMayHaveWarnings) {
+      const zsLib::XML::Parser::Warnings &shouldBeEmptyWarnings = reParser->getWarnings();
+      BOOST_CHECK(0 == shouldBeEmptyWarnings.size())
+      if (0 != shouldBeEmptyWarnings.size()) {
+        for (zsLib::XML::Parser::Warnings::const_iterator iter = shouldBeEmptyWarnings.begin(); iter != shouldBeEmptyWarnings.end(); ++iter)
+        {
+          const zsLib::XML::ParserWarning &actualWarning = (*iter);
+          zsLib::String warningText = actualWarning.getAsString();
+          std::cout << "--- SOR:WARNING(unexpected) -- \n" << warningText << "\n--- EOR:WARNING(unexpected) ---\n";
+        }
+      }
+    }
+
+    std::cout << "--- SOR:re-JSON(result) ---\n" << reOutputJSON.get() << "\n" << reLengthJSON << " (calculated) -vs- " << strlen(reOutputJSON.get()) << " (actual)\n--- EOR:re-JSON(result) ---\n";
+
+
+    // original document, cloned and re-document must both validate
     treeWalkChecker(document);
     treeWalkChecker(cloneDocument);
+    treeWalkChecker(reDocument);
 
     ULONG loop = 0;
-    const zsLib::XML::Document::Warnings &warnings = document->getWarnings();
-    for (zsLib::XML::Document::Warnings::const_iterator iter = warnings.begin(); iter != warnings.end(); ++iter, ++loop)
+    const zsLib::XML::Parser::Warnings &actualWarnings = parser->getWarnings();
+
+    if (NULL == results.mWarnings) {
+      BOOST_CHECK(actualWarnings.size() < 1)
+    }
+
+    for (zsLib::XML::Parser::Warnings::const_iterator iter = actualWarnings.begin(); iter != actualWarnings.end(); ++iter, ++loop)
     {
-      const zsLib::XML::ParserWarning &warning = (*iter);
-
-      zsLib::String warningText = warning.getAsString();
-
-      XMLWarningInfo *resultWarning = (results.mWarnings[loop]);
+      XMLWarningInfo *resultWarning = (results.mWarnings ? (results.mWarnings[loop]) : NULL);
       if (NULL == resultWarning)
       {
         // found more warnings than results
-        BOOST_CHECK(NULL != resultWarning)
+        BOOST_CHECK(NULL == "more actual warnings than expected")
+
+        for (; iter != actualWarnings.end(); ++iter)
+        {
+          const zsLib::XML::ParserWarning &actualWarning = (*iter);
+          zsLib::String warningText = actualWarning.getAsString();
+          std::cout << "--- SOR:WARNING(found but not expected) -- \n" << warningText << "\n--- EOR:WARNING(found but not expected) ---\n";
+        }
         break;
       }
 
+      const zsLib::XML::ParserWarning &actualWarning = (*iter);
+      zsLib::String warningText = actualWarning.getAsString();
+
+      std::cout << "--- SOR:WARNING(actual) -- \n" << warningText << "\n--- EOR:WARNING(actual) ---\n";
+
       ULONG loop2 = 0;
-      for (zsLib::XML::ParserWarning::ParserStack::const_reverse_iterator iter2 = warning.mStack.rbegin(); iter2 != warning.mStack.rend(); ++iter2, ++loop2)
+      for (zsLib::XML::ParserWarning::ParserStack::const_reverse_iterator iter2 = actualWarning.mStack.rbegin(); iter2 != actualWarning.mStack.rend(); ++iter2, ++loop2)
       {
         const zsLib::XML::ParserPos &pos = (*iter2).mPos;
         if (NULL == resultWarning[loop2+1].mSearchStr)
         {
-          BOOST_CHECK(NULL != resultWarning[loop2+1].mSearchStr)
-
-          // found too many warning positions
+          BOOST_CHECK(NULL == "found too many warning positions")
           break;
         }
+
         XMLWarningInfo &resultWarningDetail = resultWarning[loop2];
 
-        BOOST_CHECK(pos.mPos == strstr(results.mInput, resultWarningDetail.mSearchStr))
+        const char *found = NULL;
+
+        if (*resultWarningDetail.mSearchStr) {
+          found = strstr(results.mInput, resultWarningDetail.mSearchStr);
+        } else {
+          found = results.mInput + strlen(results.mInput);
+        }
+
+        BOOST_CHECK(pos.mPos == found)
         BOOST_CHECK(pos.mRow == resultWarningDetail.mRow)
         BOOST_CHECK(pos.mColumn == resultWarningDetail.mColumn)
       }
 
+      BOOST_CHECK(actualWarning.mWarningType == resultWarning[loop2].mWarningType)
+
       BOOST_CHECK(0 == strcmp(warningText, resultWarning[loop2].mSearchStr))
+      std::cout << "--- SOR:WARNING(compare) -- \n" << resultWarning[loop2].mSearchStr << "\n--- EOR:WARNING(compare) ---\n";
     }
+
     // make sure there aren't more warnings expected than found
-    BOOST_CHECK(NULL == results.mWarnings[loop])
+    BOOST_CHECK(NULL == (results.mWarnings ? results.mWarnings[loop] : NULL))
   }
 
   void treeWalkChecker(zsLib::XML::NodePtr inNode)
@@ -880,23 +1868,24 @@ public:
         BOOST_CHECK(!(inNode->getLastChild()))
 
         // check if previous or next are also attributes - they must be
-        if (inNode->getPreviousSibling())
+        if (inNode->getPreviousSibling()) {
           BOOST_CHECK(inNode->getPreviousSibling()->isAttribute())
-          if (inNode->getNextSibling())
-            BOOST_CHECK(inNode->getNextSibling()->isAttribute())
+        }
+        if (inNode->getNextSibling()) {
+          BOOST_CHECK(inNode->getNextSibling()->isAttribute())
+        }
 
-            if (inNode->getParent()->isElement())
-            {
-              BOOST_CHECK(inNode->getFirstSibling() == inNode->getParent()->toElement()->getFirstAttribute())
-              BOOST_CHECK(inNode->getLastSibling() == inNode->getParent()->toElement()->getLastAttribute())
-            }
-            else
-            {
-              BOOST_CHECK(inNode->getParent()->isDeclaration())
-              BOOST_CHECK(inNode->getFirstSibling() == inNode->getParent()->toDeclaration()->getFirstAttribute())
-              BOOST_CHECK(inNode->getLastSibling() == inNode->getParent()->toDeclaration()->getLastAttribute())
-            }
-
+        if (inNode->getParent()->isElement())
+        {
+          BOOST_CHECK(inNode->getFirstSibling() == inNode->getParent()->toElement()->getFirstAttribute())
+          BOOST_CHECK(inNode->getLastSibling() == inNode->getParent()->toElement()->getLastAttribute())
+        }
+        else
+        {
+          BOOST_CHECK(inNode->getParent()->isDeclaration())
+          BOOST_CHECK(inNode->getFirstSibling() == inNode->getParent()->toDeclaration()->getFirstAttribute())
+          BOOST_CHECK(inNode->getLastSibling() == inNode->getParent()->toDeclaration()->getLastAttribute())
+        }
         break;
       }
       case zsLib::XML::Node::NodeType::Text:
@@ -992,14 +1981,16 @@ public:
   void checkChildren(zsLib::XML::NodePtr inNode, zsLib::XML::NodePtr inFirstChild, zsLib::XML::NodePtr inLastChild, FoundNodesSet &foundNodes)
   {
     // if this does not have a first child then it cannot have a last child
-    if (!inFirstChild)
+    if (!inFirstChild) {
       BOOST_CHECK(!inLastChild)
+    }
 
       // if this does not have a last child then it cannot have a first child
-      if (!inLastChild)
-        BOOST_CHECK(!inFirstChild)
+    if (!inLastChild) {
+      BOOST_CHECK(!inFirstChild)
+    }
 
-        bool foundFirstChild = false;
+    bool foundFirstChild = false;
     bool foundLastChild = false;
     zsLib::XML::NodePtr child = inFirstChild;
     while (child)
@@ -1023,43 +2014,50 @@ public:
       }
 
       // if this child doesn't have a previous or next then must point to the first or last child respectively
-      if (!(child->getPreviousSibling()))
+      if (!(child->getPreviousSibling())) {
         BOOST_CHECK(inFirstChild.get() == child.get())
+      }
 
-        if (!(child->getNextSibling()))
-          BOOST_CHECK(inLastChild.get() == child.get())
+      if (!(child->getNextSibling())) {
+        BOOST_CHECK(inLastChild.get() == child.get())
+      }
 
-          // if the first node equals last node then the child node must not have a previous or next
-          if (inFirstChild.get() == inLastChild.get())
-          {
-            // cannot have a previous or next sibling
-            BOOST_CHECK(!(child->getPreviousSibling()))
-            BOOST_CHECK(!(child->getNextSibling()))
-          }
-          else
-          {
-            // first child must have a next and last child must have a previous
-            BOOST_CHECK(inFirstChild->getNextSibling())
-            BOOST_CHECK(inLastChild->getPreviousSibling())
-          }
+        // if the first node equals last node then the child node must not have a previous or next
+        if (inFirstChild.get() == inLastChild.get())
+        {
+          // cannot have a previous or next sibling
+          BOOST_CHECK(!(child->getPreviousSibling()))
+          BOOST_CHECK(!(child->getNextSibling()))
+        }
+        else
+        {
+          // first child must have a next and last child must have a previous
+          BOOST_CHECK(inFirstChild->getNextSibling())
+          BOOST_CHECK(inLastChild->getPreviousSibling())
+        }
 
       // if its not the first child, must have a previous sibling
-      if (!isFirstChild)
+      if (!isFirstChild) {
         BOOST_CHECK(child->getPreviousSibling())
-        // if its not the last child, must have a next sibling
-        if (!isLastChild)
-          BOOST_CHECK(child->getNextSibling())
+      }
+      // if its not the last child, must have a next sibling
+      if (!isLastChild) {
+        BOOST_CHECK(child->getNextSibling())
+      }
 
-          // parent must be this node
-          BOOST_CHECK(child->getParent().get() == inNode.get())
-          treeWalkChecker(child, foundNodes);
+      // parent must be this node
+      BOOST_CHECK(child->getParent().get() == inNode.get())
+      treeWalkChecker(child, foundNodes);
+
       child = child->getNextSibling();
     }
-    if (foundFirstChild)
+    if (foundFirstChild) {
       BOOST_CHECK(foundLastChild)
-      if (foundLastChild)
-        BOOST_CHECK(foundFirstChild)
-        }
+    }
+    if (foundLastChild) {
+      BOOST_CHECK(foundFirstChild)
+    }
+  }
 
   void generate()
   {
@@ -1314,10 +2312,10 @@ public:
 
     treeWalkChecker(document);
 
-    "<text> this  &lt;is&gt; \n"
-    "a &#96;test&#96; of &nbsp;the <wild> text </wild>\telement\n"
-    "\n"
-    "</text>";
+    //"<text> this  &lt;is&gt; \n"
+    //"a &#96;test&#96; of &nbsp;the <wild> text </wild>\telement\n"
+    //"\n"
+    //"</text>";
 
     zsLib::String result1 = element2->getText(false, true);
     BOOST_CHECK(0 == strcmp(result1, " this  &lt;is&gt; \n" "a &#96;test&#96; of &nbsp;the " " text " "\telement\n" "\n"))
@@ -1370,11 +2368,11 @@ public:
     treeWalkChecker(document);
 
     zsLib::XML::TextPtr text12(::zsLib::XML::Text::create());
-    text12->setValue(zsLib::String("<cdata test & result>"), true);
-    text12->setOutputCDATA(true);
-    BOOST_CHECK(text12->getOutputCDATA())
+    text12->setValue(zsLib::String("<cdata test & result>"), zsLib::XML::Text::Format_CDATA);
+    text12->setOutputFormat(zsLib::XML::Text::Format_CDATA);
+    BOOST_CHECK(zsLib::XML::Text::Format_CDATA == text12->getOutputFormat())
 
-    zsLib::String cdataResult = text12->getValue();
+    zsLib::String cdataResult = text12->getValueInFormat(zsLib::XML::Text::Format_EntityEncoded);
     BOOST_CHECK(0 == strcmp(cdataResult, "&lt;cdata test &amp; result&gt;"))
 
     element4->adoptAsFirstChild(text12);
@@ -1443,9 +2441,10 @@ public:
     BOOST_CHECK(document->findFirstChildElement(zsLib::String("TEST")) == element1)
     document->setElementNameIsCaseSensative(true);
 
+    zsLib::XML::GeneratorPtr generator = zsLib::XML::Generator::createXMLGenerator();
 
     ULONG length = 0;
-    boost::shared_array<char> output = document->write(&length);
+    boost::shared_array<char> output = generator->write(document, &length);
 
     BOOST_CHECK(length == strlen(output.get()))
 
@@ -1504,9 +2503,11 @@ public:
     "<test>this</test> DOS EOL\r\n"
     "whatever dude!\r"
     "WAS MAC EOL";
-    zsLib::XML::DocumentPtr document = zsLib::XML::Document::create();
-    document->parse(gParse);
-    zsLib::XML::ParserPos pos(document);
+
+    zsLib::XML::ParserPtr parser = zsLib::XML::Parser::createXMLParser();
+
+    zsLib::XML::DocumentPtr document = parser->parse(gParse);
+    zsLib::XML::ParserPos pos(parser, document);
     BOOST_CHECK(pos.isSOF())
     BOOST_CHECK(pos.isString("<test>"))
 

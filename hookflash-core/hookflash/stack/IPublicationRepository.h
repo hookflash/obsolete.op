@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,27 +22,38 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <hookflash/stack/hookflashTypes.h>
+#include <hookflash/stack/types.h>
 #include <hookflash/stack/IPublicationMetaData.h>
-#include <zsLib/Proxy.h>
 
 
 namespace hookflash
 {
   namespace stack
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationRepository
+    #pragma mark
+
     interaction IPublicationRepository
     {
       typedef IPublicationMetaData::SubscribeToRelationshipsMap SubscribeToRelationshipsMap;
+
+      static String toDebugString(IPublicationRepositoryPtr repository, bool includeCommaPrefix = true);
+
+      static IPublicationRepositoryPtr getFromAccount(IAccountPtr account);
 
       virtual IPublicationPublisherPtr publish(
                                                IPublicationPublisherDelegatePtr delegate,
@@ -60,91 +71,131 @@ namespace hookflash
                                             IPublicationPtr publication
                                             ) = 0;
 
-      virtual IPublicationSubscriptionPtr subscribeLocal(
-                                                         IPublicationSubscriptionDelegatePtr delegate,
-                                                         const char *publicationPath,
-                                                         const SubscribeToRelationshipsMap &relationships
-                                                         ) = 0;
-
-      virtual IPublicationSubscriptionPtr subscribeFinder(
-                                                          IPublicationSubscriptionDelegatePtr delegate,
-                                                          const char *publicationPath,
-                                                          const SubscribeToRelationshipsMap &relationships
-                                                          ) = 0;
-
-      virtual IPublicationSubscriptionPtr subscribePeer(
-                                                        IPublicationSubscriptionDelegatePtr delegate,
-                                                        const char *publicationPath,
-                                                        const SubscribeToRelationshipsMap &relationships,
-                                                        const char *peerSourceContactID,
-                                                        const char *peerSourceLocationID
-                                                        ) = 0;
+      virtual IPublicationSubscriptionPtr subscribe(
+                                                    IPublicationSubscriptionDelegatePtr delegate,
+                                                    ILocationPtr subscribeToLocation,
+                                                    const char *publicationPath,
+                                                    const SubscribeToRelationshipsMap &relationships
+                                                    ) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationPublisher
+    #pragma mark
 
     interaction IPublicationPublisher
     {
-      typedef zsLib::WORD WORD;
-      typedef zsLib::String String;
+      static String toDebugString(IPublicationPublisherPtr publisher, bool includeCommaPrefix = true);
 
       virtual void cancel() = 0;
       virtual bool isComplete() const = 0;
 
-      virtual bool wasSuccessful() const = 0;
-
-      virtual WORD getErrorResult() const = 0;
-      virtual String getErrorReason() const = 0;
+      virtual bool wasSuccessful(
+                                 WORD *outErrorResult = NULL,
+                                 String *outReason = NULL
+                                 ) const = 0;
 
       virtual IPublicationPtr getPublication() const = 0;
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationPublisherDelegate
+    #pragma mark
+
     interaction IPublicationPublisherDelegate
     {
-      virtual void onPublicationPublisherComplete(IPublicationPublisherPtr fetcher) = 0;
+      virtual void onPublicationPublisherCompleted(IPublicationPublisherPtr fetcher) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationFetcher
+    #pragma mark
 
     interaction IPublicationFetcher
     {
-      typedef zsLib::WORD WORD;
-      typedef zsLib::String String;
+      static String toDebugString(IPublicationFetcherPtr fetcher, bool includeCommaPrefix = true);
 
       virtual void cancel() = 0;
       virtual bool isComplete() const = 0;
 
-      virtual bool wasSuccessful() const = 0;
-
-      virtual WORD getErrorResult() const = 0;
-      virtual String getErrorReason() const = 0;
+      virtual bool wasSuccessful(
+                                 WORD *outErrorResult = NULL,
+                                 String *outReason = NULL
+                                 ) const = 0;
 
       virtual IPublicationPtr getFetchedPublication() const = 0;
 
       virtual IPublicationMetaDataPtr getPublicationMetaData() const = 0;
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationFetcherDelegate
+    #pragma mark
+
     interaction IPublicationFetcherDelegate
     {
-      virtual void onPublicationFetcherComplete(IPublicationFetcherPtr fetcher) = 0;
+      virtual void onPublicationFetcherCompleted(IPublicationFetcherPtr fetcher) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationRemover
+    #pragma mark
 
     interaction IPublicationRemover
     {
-      typedef zsLib::WORD WORD;
-      typedef zsLib::String String;
+      static String toDebugString(IPublicationRemoverPtr remover, bool includeCommaPrefix = true);
 
       virtual void cancel() = 0;
       virtual bool isComplete() const = 0;
 
-      virtual bool wasSuccessful() const = 0;
-
-      virtual WORD getErrorResult() const = 0;
-      virtual String getErrorReason() const = 0;
+      virtual bool wasSuccessful(
+                                 WORD *outErrorResult = NULL,
+                                 String *outReason = NULL
+                                 ) const = 0;
 
       virtual IPublicationPtr getPublication() const = 0;
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationRemoverDelegate
+    #pragma mark
+
     interaction IPublicationRemoverDelegate
     {
-      virtual void onPublicationRemoverComplete(IPublicationRemoverPtr fetcher) = 0;
+      virtual void onPublicationRemoverCompleted(IPublicationRemoverPtr fetcher) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationSubscription
+    #pragma mark
 
     interaction IPublicationSubscription
     {
@@ -158,11 +209,21 @@ namespace hookflash
 
       static const char *toString(PublicationSubscriptionStates state);
 
+      static String toDebugString(IPublicationSubscriptionPtr subscription, bool includeCommaPrefix = true);
+
       virtual void cancel() = 0;
 
       virtual PublicationSubscriptionStates getState() const = 0;
       virtual IPublicationMetaDataPtr getSource() const = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationSubscriptionDelegate
+    #pragma mark
 
     interaction IPublicationSubscriptionDelegate
     {
@@ -184,9 +245,17 @@ namespace hookflash
                                                             ) = 0;
     };
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPublicationRepositoryPeerCache
+    #pragma mark
+
     interaction IPublicationRepositoryPeerCache
     {
-      typedef zsLib::ULONG ULONG;
+      static String toDebugString(IPublicationRepositoryPeerCachePtr cache, bool includeCommaPrefix = true);
 
       virtual bool getNextVersionToNotifyAboutAndMarkNotified(
                                                               IPublicationPtr publication,
@@ -200,17 +269,17 @@ namespace hookflash
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationPublisherDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationPublisherPtr, IPublicationPublisherPtr)
-ZS_DECLARE_PROXY_METHOD_1(onPublicationPublisherComplete, IPublicationPublisherPtr)
+ZS_DECLARE_PROXY_METHOD_1(onPublicationPublisherCompleted, IPublicationPublisherPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationFetcherDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationFetcherPtr, IPublicationFetcherPtr)
-ZS_DECLARE_PROXY_METHOD_1(onPublicationFetcherComplete, IPublicationFetcherPtr)
+ZS_DECLARE_PROXY_METHOD_1(onPublicationFetcherCompleted, IPublicationFetcherPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationRemoverDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationRemoverPtr, IPublicationRemoverPtr)
-ZS_DECLARE_PROXY_METHOD_1(onPublicationRemoverComplete, IPublicationRemoverPtr)
+ZS_DECLARE_PROXY_METHOD_1(onPublicationRemoverCompleted, IPublicationRemoverPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationSubscriptionDelegate)

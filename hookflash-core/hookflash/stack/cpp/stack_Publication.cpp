@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,19 +22,24 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_Publication.h>
+#include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <hookflash/stack/message/IMessageHelper.h>
 #include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IXMLDiff.h>
+#include <hookflash/stack/IPeer.h>
+#include <hookflash/stack/internal/stack_Diff.h>
+#include <hookflash/stack/internal/stack_Location.h>
 
+#include <zsLib/XML.h>
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
@@ -44,19 +49,9 @@ namespace hookflash
   namespace stack
   {
     using zsLib::Stringize;
+    using message::IMessageHelper;
 
-    typedef zsLib::BYTE BYTE;
-    typedef zsLib::ULONG ULONG;
-    typedef zsLib::CSTR CSTR;
-    typedef zsLib::String String;
-    typedef zsLib::Time Time;
-    typedef zsLib::XML::NodePtr NodePtr;
-    typedef zsLib::XML::Document Document;
-    typedef zsLib::XML::DocumentPtr DocumentPtr;
-    typedef zsLib::XML::Element Element;
-    typedef zsLib::XML::ElementPtr ElementPtr;
-    typedef zsLib::XML::Text Text;
-    typedef zsLib::XML::TextPtr TextPtr;
+    typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
     namespace internal
     {
@@ -68,6 +63,7 @@ namespace hookflash
       #pragma mark (helpers)
       #pragma mark
 
+      //-----------------------------------------------------------------------
       static DocumentPtr createDocumentFromRelationships(const IPublication::RelationshipList &relationships)
       {
         typedef IPublication::RelationshipList RelationshipList;
@@ -78,12 +74,9 @@ namespace hookflash
 
         for (RelationshipList::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
         {
-          const String &id = (*iter);
+          const String contact = (*iter);
 
-          ElementPtr contactEl = Element::create();
-          contactEl->setValue("contact");
-          contactEl->setAttribute("id", id);
-
+          ElementPtr contactEl = IMessageHelper::createElementWithTextAndJSONEncode("contact", contact);
           contactsEl->adoptAsLastChild(contactEl);
         }
 
@@ -95,50 +88,31 @@ namespace hookflash
       //-----------------------------------------------------------------------
       static String toString(NodePtr node)
       {
-        NodePtr previousParent;
-        NodePtr previousSibling;
-        ElementPtr element;
+        if (!node) return "(null)";
 
-        DocumentPtr doc;
-
-        if (!node) {
-          return "<!-- NULL -->";
-        }
-
-        if (node->isElement()) {
-          previousSibling = node->getPreviousSibling();
-          previousParent = node->getParent();
-
-          element = node->clone()->toElement();
-          ZS_THROW_BAD_STATE_IF(!element)
-
-          doc = Document::create();
-          doc->adoptAsLastChild(element);
-        } else if (node->isDocument()) {
-          doc = node->toDocument();
-        } else {
-          return "<!-- UNSUPPORTED -->";
-        }
-        if (!doc) {
-          return "<!-- UNSUPPORTED -->";
-        }
+        GeneratorPtr generator = Generator::createJSONGenerator();
 
         boost::shared_array<char> output;
         ULONG length = 0;
-        output = doc->write(&length);
-
-        // to avoid cloning but the element back into it's original place
-        if (element) {
-          if (previousSibling) {
-            previousSibling->adoptAsNextSibling(element);
-          } else if (previousParent) {
-            previousParent->adoptAsFirstChild(element);
-          } else {
-            element->orphan();
-          }
-        }
+        output = generator->write(node, &length);
 
         return (CSTR)output.get();
+      }
+
+      //-----------------------------------------------------------------------
+      static String debugNameValue(
+                                   bool &ioFirst,
+                                   const String &name,
+                                   const String &value,
+                                   bool addEquals = true
+                                   )
+      {
+        if (value.isEmpty()) return String();
+        if (ioFirst) {
+          ioFirst = false;
+          return name + "=" + value;
+        }
+        return String(", ") + name + (addEquals ? "=" : "") + value;
       }
 
       //-----------------------------------------------------------------------
@@ -148,10 +122,6 @@ namespace hookflash
 
       class Publication_UniqueLineage
       {
-      public:
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-
       protected:
         Publication_UniqueLineage() :
           mUnique(0)
@@ -198,12 +168,6 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationForPublicationRepositoryPtr IPublicationForPublicationRepository::convert(IPublicationPtr publication)
-      {
-        return boost::dynamic_pointer_cast<IPublicationForPublicationRepository>(publication);
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -211,47 +175,32 @@ namespace hookflash
       #pragma mark IPublicationForMessages
       #pragma mark
 
-      IPublicationForMessagesPtr IPublicationForMessages::convert(IPublicationPtr publication)
-      {
-        return boost::dynamic_pointer_cast<Publication>(publication);
-      }
-
       //-----------------------------------------------------------------------
-      IPublicationForMessagesPtr IPublicationForMessages::create(
-                                                                       ULONG version,
-                                                                       ULONG baseVersion,
-                                                                       ULONG lineage,
-                                                                       Sources source,
-                                                                       const char *creatorContactID,
-                                                                       const char *creatorLocationID,
-                                                                       const char *name,
-                                                                       const char *mimeType,
-                                                                       ElementPtr dataEl,
-                                                                       Encodings encoding,
-                                                                       const PublishToRelationshipsMap &publishToRelationships,
-                                                                       const char *peerContactID,
-                                                                       const char *peerLocationID,
-                                                                       Scopes scope,
-                                                                       Lifetimes lifetime,
-                                                                       Time expires
-                                                                       )
+      PublicationPtr IPublicationForMessages::create(
+                                                     ULONG version,
+                                                     ULONG baseVersion,
+                                                     ULONG lineage,
+                                                     LocationPtr creatorLocation,
+                                                     const char *name,
+                                                     const char *mimeType,
+                                                     ElementPtr dataEl,
+                                                     Encodings encoding,
+                                                     const PublishToRelationshipsMap &publishToRelationships,
+                                                     LocationPtr publishedLocation,
+                                                     Time expires
+                                                     )
       {
         return Publication::create(
                                    version,
                                    baseVersion,
                                    lineage,
-                                   source,
-                                   creatorContactID,
-                                   creatorLocationID,
+                                   creatorLocation,
                                    name,
                                    mimeType,
                                    dataEl,
                                    encoding,
                                    publishToRelationships,
-                                   peerContactID,
-                                   peerLocationID,
-                                   scope,
-                                   lifetime,
+                                   publishedLocation,
                                    expires
                                    );
       }
@@ -266,34 +215,25 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       Publication::Publication(
-                               Sources source,
-                               const char *creatorContactID,
-                               const char *creatorLocationID,
+                               LocationPtr creatorLocation,
                                const char *name,
                                const char *mimeType,
                                const PublishToRelationshipsMap &publishToRelationships,
-                               const char *peerContactID,
-                               const char *peerLocationID,
-                               Scopes scope,
-                               Lifetimes lifetime,
+                               LocationPtr publishedLocation,
                                Time expires
                                ) :
-        mID(zsLib::createPUID()),
-        mSource(source),
-        mContactID(creatorContactID ? creatorContactID : ""),
-        mLocationID(creatorLocationID ? creatorLocationID : ""),
-        mName(name ? name : ""),
-        mMimeType(mimeType ? mimeType : ""),
-        mPublishedRelationships(publishToRelationships),
-        mPublishedToContactID(peerContactID ? peerContactID : ""),
-        mPublishedToLocationID(peerLocationID ? peerLocationID : ""),
-        mScope(scope),
-        mLifetime(lifetime),
-        mExpires(expires),
-        mDataLengthInBytes(0),
-        mVersion(1),
-        mBaseVersion(0),
-        mLineage(Publication_UniqueLineage::singleton()->getUniqueLineage())
+        PublicationMetaData(
+                            1,
+                            0,
+                            Publication_UniqueLineage::singleton()->getUniqueLineage(),
+                            creatorLocation,
+                            name,
+                            mimeType,
+                            Encoding_JSON,  // this will have to be ignored
+                            publishToRelationships,
+                            publishedLocation,
+                            expires
+                            )
       {
       }
 
@@ -311,15 +251,9 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      PublicationPtr Publication::convert(IPublicationForPublicationRepositoryPtr publication)
-      {
-        return boost::dynamic_pointer_cast<Publication>(publication);
-      }
-
-      //-----------------------------------------------------------------------
       Publication::~Publication()
       {
-        mThisWeak.reset();
+        mThisWeakPublication.reset();
         ZS_LOG_DEBUG(log("destroyed") + getDebugValuesString())
       }
 
@@ -333,22 +267,16 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationPtr Publication::getPublication() const
+      IPublicationPtr Publication::toPublication() const
       {
-        return mThisWeak.lock();
-      }
-
-      String Publication::getCreatorContactID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        return mContactID;
+        return mThisWeakPublication.lock();
       }
 
       //-----------------------------------------------------------------------
-      String Publication::getCreatorLocationID() const
+      ILocationPtr Publication::getCreatorLocation() const
       {
         AutoRecursiveLock lock(mLock);
-        return mLocationID;
+        return mCreatorLocation;
       }
 
       //-----------------------------------------------------------------------
@@ -391,30 +319,9 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
         if (mDocument) {
-          return Encoding_XML;
+          return Encoding_JSON;
         }
         return Encoding_Binary;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Sources Publication::getSource() const
-      {
-        AutoRecursiveLock lock(mLock);
-        return mSource;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Scopes Publication::getScope() const
-      {
-        AutoRecursiveLock lock(mLock);
-        return mScope;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationMetaData::Lifetimes Publication::getLifetime() const
-      {
-        AutoRecursiveLock lock(mLock);
-        return mLifetime;
       }
 
       //-----------------------------------------------------------------------
@@ -425,24 +332,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String Publication::getPublishedToContactID() const
+      ILocationPtr Publication::getPublishedLocation() const
       {
         AutoRecursiveLock lock(mLock);
-        return mPublishedToContactID;
-      }
-
-      //-----------------------------------------------------------------------
-      String Publication::getPublishedToLocationID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        return mPublishedToLocationID;
-      }
-
-      //-----------------------------------------------------------------------
-      void Publication::getRelationships(PublishToRelationshipsMap &outRelationships) const
-      {
-        AutoRecursiveLock lock(mLock);
-        outRelationships = mPublishedRelationships;
+        return mPublishedLocation;
       }
 
       //-----------------------------------------------------------------------
@@ -461,53 +354,50 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String Publication::toDebugString(IPublicationPtr publication, bool includeCommaPrefix)
+      {
+        if (!publication) return includeCommaPrefix ? String(", publication=(null)") : String("publication=(null)");
+        return Publication::convert(publication)->getDebugValuesString(includeCommaPrefix);
+      }
+
+      //-----------------------------------------------------------------------
       PublicationPtr Publication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         LocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
-                                         const BYTE *data,
-                                         size_t sizeInBytes,
+                                         const SecureByteBlock &data,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         LocationPtr publishedLocation,
                                          Time expires
                                          )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!data)
-
-        PublicationPtr pThis(new Publication(source, creatorContactID, creatorLocationID, name, mimeType, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires));
+        PublicationPtr pThis(new Publication(creatorLocation, name, mimeType, publishToRelationships, publishedLocation, expires));
         pThis->mThisWeak = pThis;
-        pThis->mData = boost::shared_array<BYTE>(new BYTE[sizeInBytes ? sizeInBytes : 1]);
-        memcpy(pThis->mData.get(), data, sizeInBytes);
-        pThis->mDataLengthInBytes = sizeInBytes;
+        pThis->mThisWeakPublication = pThis;
+        pThis->mPublication = pThis;
+        pThis->mData = SecureByteBlockPtr(new SecureByteBlock(data.SizeInBytes()));
+        memcpy(*(pThis->mData), data, data.SizeInBytes());
         pThis->init();
         return pThis;
       }
 
       //-----------------------------------------------------------------------
       PublicationPtr Publication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         LocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
                                          DocumentPtr documentToBeAdopted,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         LocationPtr publishedLocation,
                                          Time expires
                                          )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!documentToBeAdopted)
 
-        PublicationPtr pThis(new Publication(source, creatorContactID, creatorLocationID, name, mimeType, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires));
+        PublicationPtr pThis(new Publication(creatorLocation, name, mimeType, publishToRelationships, publishedLocation, expires));
         pThis->mThisWeak = pThis;
+        pThis->mThisWeakPublication = pThis;
+        pThis->mPublication = pThis;
         pThis->mDocument = documentToBeAdopted;
         pThis->init();
         return pThis;
@@ -515,22 +405,17 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       PublicationPtr Publication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         LocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
                                          const RelationshipList &relationshipsDocument,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         LocationPtr publishedLocation,
                                          Time expires
                                          )
       {
         DocumentPtr doc = createDocumentFromRelationships(relationshipsDocument);
-        return Publication::create(source, creatorContactID, creatorLocationID, name, mimeType, doc, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires);
+        return Publication::create(creatorLocation, name, mimeType, doc, publishToRelationships, publishedLocation, expires);
       }
 
       //-----------------------------------------------------------------------
@@ -538,43 +423,32 @@ namespace hookflash
                                          ULONG version,
                                          ULONG baseVersion,
                                          ULONG lineage,
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         LocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
                                          ElementPtr dataEl,
                                          IPublicationMetaData::Encodings encoding,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         LocationPtr publishedLocation,
                                          Time expires
                                          )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!dataEl)
 
-        PublicationPtr pThis(new Publication(source, creatorContactID, creatorLocationID, name, mimeType, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires));
+        PublicationPtr pThis(new Publication(creatorLocation, name, mimeType, publishToRelationships, publishedLocation, expires));
         pThis->mThisWeak = pThis;
+        pThis->mThisWeakPublication = pThis;
+        pThis->mPublication = pThis;
         pThis->mVersion = version;
         pThis->mBaseVersion = baseVersion;
         pThis->mLineage = lineage;
         switch (encoding) {
           case IPublicationMetaData::Encoding_Binary: {
-            String base64 = dataEl->getValue();
-            SecureByteBlock output;
-            IHelper::convertFromBase64(base64, output);
-            size_t size = output.size();
-            BYTE *buffer = output.data();
-            boost::shared_array<BYTE> temp(new BYTE[size+1]);
-            memset(temp.get(), 0, sizeof(BYTE)*(size+1));
-            memcpy(temp.get(), buffer, size);
-            pThis->mData = temp;
-            pThis->mDataLengthInBytes = size;
+            String base64String = dataEl->getTextDecoded();
+            pThis->mData = IHelper::convertFromBase64(base64String);
             break;
           }
-          case IPublicationMetaData::Encoding_XML: {
+          case IPublicationMetaData::Encoding_JSON: {
             DocumentPtr doc = Document::create();
             NodePtr node = dataEl->getFirstChild();
             while (node) {
@@ -592,18 +466,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Publication::update(
-                               const BYTE *data,
-                               size_t sizeInBytes
-                               )
+      void Publication::update(const SecureByteBlock &data)
       {
         AutoRecursiveLock lock(mLock);
 
-        mData = boost::shared_array<BYTE>(new BYTE[sizeInBytes ? sizeInBytes : 1]);
-        memcpy(mData.get(), data, sizeInBytes);
-        mDataLengthInBytes = sizeInBytes;
+        mData = SecureByteBlockPtr(new SecureByteBlock(data.SizeInBytes()));
+        memcpy(*mData, data, data.SizeInBytes());
 
-        mXMLDiffDocuments.clear();
+        mDiffDocuments.clear();
         mDocument.reset();
 
         ++mVersion;
@@ -620,7 +490,7 @@ namespace hookflash
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
-          ZS_LOG_BASIC(log("Updating from XML:") + "\n" + internal::toString(updatedDocumentToBeAdopted) + "\n")
+          ZS_LOG_BASIC(log("Updating from JSON:") + "\n" + internal::toString(updatedDocumentToBeAdopted) + "\n")
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
@@ -629,28 +499,27 @@ namespace hookflash
         ++mVersion;
 
         mData.reset();
-        mDataLengthInBytes = 0;
 
-        ElementPtr xdsElem = updatedDocumentToBeAdopted->findFirstChildElement("xds"); // root for XML diffs elements
-        if (!xdsElem) {
-          mXMLDiffDocuments.clear();
+        ElementPtr diffElem = updatedDocumentToBeAdopted->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME); // root for diffs elements
+        if (!diffElem) {
+          mDiffDocuments.clear();
 
           mDocument = updatedDocumentToBeAdopted;
           return;
         }
 
-        if (mXMLDiffDocuments.end() == mXMLDiffDocuments.find(mVersion-1)) {
+        if (mDiffDocuments.end() == mDiffDocuments.find(mVersion-1)) {
           if (mVersion > 2) {
             ZS_LOG_WARNING(Detail, log("diff document does not contain version in a row"))
           }
           // if diffs are not in a row then erase the diffs...
-          mXMLDiffDocuments.clear();
+          mDiffDocuments.clear();
         }
 
         // this is a difference document
-        IXMLDiff::process(mDocument, updatedDocumentToBeAdopted);
+        IDiff::process(mDocument, updatedDocumentToBeAdopted);
 
-        mXMLDiffDocuments[mVersion] = updatedDocumentToBeAdopted;
+        mDiffDocuments[mVersion] = updatedDocumentToBeAdopted;
 
         ZS_LOG_DEBUG(log("updating document complete") + getDebugValuesString())
 
@@ -658,7 +527,7 @@ namespace hookflash
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"))
-          ZS_LOG_BASIC(log("FINAL XML:") + "\n" + internal::toString(mDocument) + "\n")
+          ZS_LOG_BASIC(log("FINAL JSON:") + "\n" + internal::toString(mDocument) + "\n")
           ZS_LOG_DEBUG(log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"))
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
@@ -673,54 +542,53 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Publication::getRawData(
-                                   AutoRecursiveLockPtr &outDocumentLock,
-                                   boost::shared_array<BYTE> &outputBuffer,
-                                   size_t &outputBufferSizeInBytes
-                                   ) const
+      SecureByteBlockPtr Publication::getRawData(AutoRecursiveLockPtr &outDocumentLock) const
       {
         outDocumentLock = AutoRecursiveLockPtr(new AutoRecursiveLock(mLock));
-        outputBuffer = mData;
-        outputBufferSizeInBytes = mDataLengthInBytes;
+        return mData;
       }
 
       //-----------------------------------------------------------------------
-      DocumentPtr Publication::getXML(AutoRecursiveLockPtr &outDocumentLock) const
+      DocumentPtr Publication::getJSON(AutoRecursiveLockPtr &outDocumentLock) const
       {
         outDocumentLock = AutoRecursiveLockPtr(new AutoRecursiveLock(mLock));
         return mDocument;
       }
 
       //-----------------------------------------------------------------------
-      void Publication::getAsContactList(RelationshipList &outList) const
+      IPublication::RelationshipListPtr Publication::getAsContactList() const
       {
         AutoRecursiveLock lock(mLock);
 
         ZS_LOG_TRACE(log("getting publication as contact list") + getDebugValuesString())
 
-        outList.clear();
+        RelationshipListPtr result = RelationshipListPtr(new RelationshipList);
+
+        RelationshipList &outList = (*result);
+
         if (!mDocument) {
           ZS_LOG_WARNING(Detail, log("publication document is empty") + getDebugValuesString())
-          return;
+          return result;
         }
 
-        ElementPtr contactsElem = mDocument->findFirstChildElement("contacts");
-        if (!contactsElem) {
+        ElementPtr contactsEl = mDocument->findFirstChildElement("contacts");
+        if (!contactsEl) {
           ZS_LOG_WARNING(Debug, log("unable to find contact root element") + getDebugValuesString())
-          return;
+          return result;
         }
 
-        ElementPtr contactElem = contactsElem->findFirstChildElement("contact");
-        while (contactElem) {
-          String id = contactElem->getAttributeValue("id");
-          if (!id.isEmpty()) {
-            ZS_LOG_TRACE(log("found contact") + ", contact ID=" + id)
-            outList.push_back(id);
+        ElementPtr contactEl = contactsEl->findFirstChildElement("contact");
+        while (contactEl) {
+          String contact = contactEl->getTextDecoded();
+          if (!contact.isEmpty()) {
+            ZS_LOG_TRACE(log("found contact") + ", contact URI=" + contact)
+            outList.push_back(contact);
           }
-          contactElem = contactElem->findNextSiblingElement("contact");
+          contactEl = contactEl->findNextSiblingElement("contact");
         }
 
         ZS_LOG_TRACE(log("end of getting as contact list") + ", total=" + Stringize<size_t>(outList.size()).string())
+        return result;
       }
 
       //-----------------------------------------------------------------------
@@ -732,84 +600,43 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationMetaDataPtr Publication::convertIPublicationMetaData() const
+      PublicationMetaDataPtr Publication::toPublicationMetaData() const
       {
         return mThisWeak.lock();
       }
 
       //-----------------------------------------------------------------------
-      IPublicationPtr Publication::convertIPublication() const
+      LocationPtr Publication::getCreatorLocation(bool) const
       {
-        return mThisWeak.lock();
+        AutoRecursiveLock lock(mLock);
+        return mCreatorLocation;
+      }
+
+      //-----------------------------------------------------------------------
+      LocationPtr Publication::getPublishedLocation(bool) const
+      {
+        AutoRecursiveLock lock(mLock);
+        return mPublishedLocation;
       }
 
       //-----------------------------------------------------------------------
       bool Publication::isMatching(
-                                   const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                   const IPublicationMetaDataPtr &metaData,
                                    bool ignoreLineage
                                    ) const
       {
         AutoRecursiveLock lock(mLock);
-        if (metaData->getSource() != mSource) return false;
-        if (!ignoreLineage) {
-          if (metaData->getLineage() != mLineage) return false;
-        }
-        if (metaData->getName() != mName) return false;
-        if (metaData->getCreatorContactID() != mContactID) return false;
-        if (metaData->getCreatorLocationID() != mLocationID) return false;
-        if (IPublicationMetaData::Source_Peer == mSource) {
-          if (metaData->getPublishedToContactID() != mPublishedToContactID) return false;
-          if (metaData->getPublishedToLocationID() != mPublishedToLocationID) return false;
-        }
-        return true;
+        return PublicationMetaData::isMatching(metaData, ignoreLineage);
       }
 
       //-----------------------------------------------------------------------
       bool Publication::isLessThan(
-                                   const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                   const IPublicationMetaDataPtr &metaData,
                                    bool ignoreLineage
                                    ) const
       {
         AutoRecursiveLock lock(mLock);
-
-        const char *reason = "match";
-
-        {
-          if (getSource() < metaData->getSource()) {reason = "source"; goto result_true;}
-          if (getSource() > metaData->getSource()) {reason = "source"; goto result_false;}
-          if (!ignoreLineage) {
-            if (getLineage() < metaData->getLineage()) {reason = "lineage"; goto result_true;}
-            if (getLineage() > metaData->getLineage()) {reason = "lineage"; goto result_false;}
-          }
-          if (getName() < metaData->getName()) {reason = "name"; goto result_true;}
-          if (getName() > metaData->getName()) {reason = "name"; goto result_false;}
-          if (getCreatorContactID() < metaData->getCreatorContactID()) {reason = "creator contact ID"; goto result_true;}
-          if (getCreatorContactID() > metaData->getCreatorContactID()) {reason = "creator contact ID"; goto result_false;}
-          if (getCreatorLocationID() < metaData->getCreatorLocationID()) {reason = "creator location ID"; goto result_true;}
-          if (getCreatorLocationID() > metaData->getCreatorLocationID()) {reason = "creator location ID"; goto result_false;}
-          if (IPublicationMetaData::Source_Peer == getSource()) {
-            if (getPublishedToContactID() < metaData->getPublishedToContactID()) {reason = "published to contact ID"; goto result_true;}
-            if (getPublishedToContactID() > metaData->getPublishedToContactID()) {reason = "published to contact ID"; goto result_false;}
-            if (getPublishedToLocationID() < metaData->getPublishedToLocationID()) {reason = "published to location ID"; goto result_true;}
-            if (getPublishedToLocationID() > metaData->getPublishedToLocationID()) {reason = "published to location ID"; goto result_false;}
-          }
-          goto result_false;
-        }
-
-      result_true:
-        {
-          ZS_LOG_TRACE(log("less than is TRUE") + ", reason=" + reason)
-          ZS_LOG_TRACE(log("less than X (TRUE):") + getDebugValuesString())
-          ZS_LOG_TRACE(log("less than Y (TRUE):") + metaData->getDebugValuesString())
-          return true;
-        }
-      result_false:
-        {
-          ZS_LOG_TRACE(log("less than is FALSE") + ", reason=" + reason)
-          ZS_LOG_TRACE(log("less than X (FALSE):") + getDebugValuesString())
-          ZS_LOG_TRACE(log("less than Y (FALSE):") + metaData->getDebugValuesString())
-        }
-        return false;
+        return PublicationMetaData::isLessThan(metaData, ignoreLineage);
       }
 
       //-----------------------------------------------------------------------
@@ -827,28 +654,19 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Publication::setSource(IPublicationMetaData::Sources source)
+      void Publication::setCreatorLocation(LocationPtr location)
       {
         AutoRecursiveLock lock(mLock);
-        mSource = source;
+        mCreatorLocation = location;
+
+        ZS_LOG_TRACE(log("updated internal publication creator information") + getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
-      void Publication::setCreatorContact(const char *contactID, const char *locationID)
+      void Publication::setPublishedLocation(LocationPtr location)
       {
         AutoRecursiveLock lock(mLock);
-        mContactID = contactID;
-        mLocationID = locationID;
-
-        ZS_LOG_TRACE(log("updated internal publication creator contact information") + getDebugValuesString())
-      }
-
-      //-----------------------------------------------------------------------
-      void Publication::setPublishedToContact(const char *contactID, const char *locationID)
-      {
-        AutoRecursiveLock lock(mLock);
-        mPublishedToContactID = contactID;
-        mPublishedToLocationID = locationID;
+        mPublishedLocation = location;
 
         ZS_LOG_TRACE(log("updated internal publication published to contact information") + getDebugValuesString())
       }
@@ -878,7 +696,7 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       void Publication::updateFromFetchedPublication(
-                                                     IPublicationForPublicationRepositoryPtr fetchedPublication,
+                                                     PublicationPtr fetchedPublication,
                                                      bool *noThrowVersionMismatched
                                                      ) throw (Exceptions::VersionMismatch)
       {
@@ -893,11 +711,10 @@ namespace hookflash
 
         if (publication->mData) {
           mData = publication->mData;
-          mDataLengthInBytes = publication->mDataLengthInBytes;
           mDocument.reset();
         } else {
-          ElementPtr xdsEl = publication->mDocument->findFirstChildElement("xds");
-          if (xdsEl) {
+          ElementPtr diffEl = publication->mDocument->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+          if (diffEl) {
             if (publication->mBaseVersion != mVersion + 1) {
               if (NULL != noThrowVersionMismatched) {
                 *noThrowVersionMismatched = true;
@@ -906,41 +723,30 @@ namespace hookflash
               ZS_THROW_CUSTOM(Exceptions::VersionMismatch, "remote party sent diff based on wrong document" + getDebugValuesString())
               return;
             }
-            IXMLDiff::process(mDocument, publication->mDocument);
+            IDiff::process(mDocument, publication->mDocument);
           } else {
             mDocument = publication->mDocument;
           }
         }
 
-        mContactID = publication->mContactID;
-        mLocationID = publication->mLocationID;
+        mCreatorLocation = publication->mCreatorLocation;
 
         mMimeType = publication->mMimeType;
         mVersion = publication->mVersion;
         mBaseVersion = 0;
         mLineage = publication->mLineage;
 
-        mScope = publication->mScope;
-        mSource = publication->mSource;
-        mLifetime = publication->mLifetime;
         mExpires = publication->mExpires;
 
-        mPublishedToContactID = publication->mPublishedToContactID;
-        mPublishedToLocationID = publication->mPublishedToLocationID;
+        mPublishedLocation = publication->mPublishedLocation;
 
         mPublishedRelationships = publication->mPublishedRelationships;
 
-        mXMLDiffDocuments.clear();
+        mDiffDocuments.clear();
 
         logDocument();
-        ZS_LOG_DEBUG(log("updating from fetched publication complete") + getDebugValuesString())
-      }
 
-      //-----------------------------------------------------------------------
-      static String debugNameValue(const String &name, const String &value)
-      {
-        if (value.isEmpty()) return String();
-        return String(", ") + name + "=" + value;
+        ZS_LOG_DEBUG(log("updating from fetched publication complete") + getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -964,22 +770,23 @@ namespace hookflash
 
           if (rawSizeOkay) {
             ZS_LOG_TRACE(log("document is binary data thus returning non-encoded raw size (no base64 calculating required)") +  + getDebugValuesString())
-            outOutputSizeInBytes = mDataLengthInBytes;
+            outOutputSizeInBytes = mData->SizeInBytes();
             return;
           }
 
           ZS_LOG_TRACE(log("document is binary data thus returning base64 bit encoded size (which required calculating)") +  + getDebugValuesString())
+
           ULONG fromVersion = 0;
-          NodePtr node = getXMLDiffs(fromVersion, mVersion);
-          DocumentPtr doc = Document::create();
-          doc->adoptAsFirstChild(node);
-          outOutputSizeInBytes = doc->getOutputSize();
+          NodePtr node = getDiffs(fromVersion, mVersion);
+
+          GeneratorPtr generator =  Generator::createJSONGenerator();
+          outOutputSizeInBytes = generator->getOutputSize(node);
           return;
         }
 
         for (ULONG from = fromVersionNumber; from <= toVersionNumber; ++from) {
-          XMLDiffDocumentMap::const_iterator found = mXMLDiffDocuments.find(from);
-          if (found == mXMLDiffDocuments.end()) {
+          DiffDocumentMap::const_iterator found = mDiffDocuments.find(from);
+          if (found == mDiffDocuments.end()) {
             ZS_LOG_TRACE(log("diff is not available (thus returning entire document size)") + ", from=" + Stringize<ULONG>(fromVersionNumber).string() + ", current=" + Stringize<ULONG>(from).string() + getDebugValuesString())
             getEntirePublicationOutputSize(outOutputSizeInBytes);
             return;
@@ -987,7 +794,8 @@ namespace hookflash
 
           ZS_LOG_TRACE(log("returning size of latest version diff's document") + ", from=" + Stringize<ULONG>(fromVersionNumber).string() + ", current=" + Stringize<ULONG>(from).string() +  + getDebugValuesString())
           const DocumentPtr &doc = (*found).second;
-          outOutputSizeInBytes += doc->getOutputSize();
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          outOutputSizeInBytes += generator->getOutputSize(doc);
         }
       }
 
@@ -1005,31 +813,32 @@ namespace hookflash
           getDiffVersionsOutputSize(0, 0, outOutputSizeInBytes);
           return;
         }
-        outOutputSizeInBytes = mDocument->getOutputSize();
+        GeneratorPtr generator = Generator::createJSONGenerator();
+        outOutputSizeInBytes = generator->getOutputSize(mDocument);
       }
 
       //-----------------------------------------------------------------------
-      String Publication::getDebugValuesString() const
+      String Publication::getDebugValuesString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(mLock);
 
-        return debugNameValue("id", Stringize<PUID>(mID).string())
-        + debugNameValue("source", toString(mSource))
-        + debugNameValue("name", mName)
-        + debugNameValue("version", (0 == mVersion ? String() : Stringize<ULONG>(mVersion).string()))
-        + debugNameValue("base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(mBaseVersion).string()))
-        + debugNameValue("lineage", (0 == mLineage ? String() : Stringize<ULONG>(mLineage).string()))
-        + debugNameValue("creator contact ID", getCreatorContactID())
-        + debugNameValue("creator location ID", getCreatorLocationID())
-        + debugNameValue("published to contact ID", getPublishedToContactID())
-        + debugNameValue("published to location ID", getPublishedToLocationID())
-        + debugNameValue("mime type", mMimeType)
-        + debugNameValue("lifetime", toString(mLifetime))
-        + debugNameValue("scope", toString(mScope))
-        + debugNameValue("expires", (Time() == mExpires ? String() : Stringize<Time>(mExpires).string()))
-        + debugNameValue("data length", (0 == mDataLengthInBytes ? String() : Stringize<size_t>(mDataLengthInBytes).string()))
-        + debugNameValue("diffs total", (mXMLDiffDocuments.size() < 1 ? String() : Stringize<size_t>(mXMLDiffDocuments.size())))
-        + debugNameValue("total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
+        LocationPtr creatorLocation = Location::convert(getCreatorLocation());
+        LocationPtr publishedLocation = Location::convert(getPublishedLocation());
+
+        bool first = !includeCommaPrefix;
+
+        return debugNameValue(first, "id", Stringize<PUID>(mID).string())
+             + debugNameValue(first, "name", mName)
+             + debugNameValue(first, "version", (0 == mVersion ? String() : Stringize<ULONG>(mVersion).string()))
+             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(mBaseVersion).string()))
+             + debugNameValue(first, "lineage", (0 == mLineage ? String() : Stringize<ULONG>(mLineage).string()))
+             + debugNameValue(first, "creator: ", creatorLocation ? creatorLocation->forPublication().getDebugValueString() : String(), false)
+             + debugNameValue(first, "published: ", publishedLocation ? publishedLocation->forPublication().getDebugValueString() : String(), false)
+             + debugNameValue(first, "mime type", mMimeType)
+             + debugNameValue(first, "expires", (Time() == mExpires ? String() : Stringize<Time>(mExpires).string()))
+             + debugNameValue(first, "data length", mData ? (0 == mData->SizeInBytes() ? String() : Stringize<size_t>(mData->SizeInBytes()).string()) : String())
+             + debugNameValue(first, "diffs total", (mDiffDocuments.size() < 1 ? String() : Stringize<size_t>(mDiffDocuments.size())))
+             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
       }
 
       //-----------------------------------------------------------------------
@@ -1041,14 +850,14 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      NodePtr Publication::getXMLDiffs(
-                                       ULONG &ioFromVersion,
-                                       ULONG toVersion
-                                       ) const
+      NodePtr Publication::getDiffs(
+                                    ULONG &ioFromVersion,
+                                    ULONG toVersion
+                                    ) const
       {
         AutoRecursiveLock lock(mLock);
 
-        ZS_LOG_DEBUG(log("requested XML diffs") + ", from version=" +Stringize<ULONG>(ioFromVersion).string() + ", to version=" + Stringize<ULONG>(toVersion).string())
+        ZS_LOG_DEBUG(log("requested JSON diffs") + ", from version=" +Stringize<ULONG>(ioFromVersion).string() + ", to version=" + Stringize<ULONG>(toVersion).string())
 
         if ((0 == toVersion) ||
             (toVersion >= mVersion)) {
@@ -1057,13 +866,13 @@ namespace hookflash
 
         if (!mDocument) {
           if (!mData) {
-            ZS_LOG_WARNING(Detail, log("XML for publishing has no data available to return") + getDebugValuesString())
+            ZS_LOG_WARNING(Detail, log("JSON for publishing has no data available to return") + getDebugValuesString())
             return NodePtr();
           }
 
           ZS_LOG_WARNING(Detail, log("returning data as base 64 encoded") + getDebugValuesString())
 
-          String data = IHelper::convertToBase64(mData.get(), mDataLengthInBytes);
+          String data = IHelper::convertToBase64(*mData);
           TextPtr text = Text::create();
           text->setValue(data);
           return text;
@@ -1080,15 +889,15 @@ namespace hookflash
         ZS_LOG_DEBUG(log("publishing or fetching differences from last version published") + ", from base version=" + Stringize<ULONG>(toVersion).string() + getDebugValuesString() + ", to version=" + Stringize<ULONG>(toVersion).string())
 
         // see if we have diffs from the last published point
-        XMLDiffDocumentMap::const_iterator foundFrom = mXMLDiffDocuments.find(ioFromVersion);
-        XMLDiffDocumentMap::const_iterator foundTo = mXMLDiffDocuments.find(toVersion);
+        DiffDocumentMap::const_iterator foundFrom = mDiffDocuments.find(ioFromVersion);
+        DiffDocumentMap::const_iterator foundTo = mDiffDocuments.find(toVersion);
 
-        if ((foundFrom == mXMLDiffDocuments.end()) ||
-            (foundTo == mXMLDiffDocuments.end())) {
+        if ((foundFrom == mDiffDocuments.end()) ||
+            (foundTo == mDiffDocuments.end())) {
 
-          ZS_LOG_WARNING(Detail, log("unable to find XML differences for requested publication (thus returning whole document)"))
+          ZS_LOG_WARNING(Detail, log("unable to find JSON differences for requested publication (thus returning whole document)"))
           ioFromVersion = 0;
-          return getXMLDiffs(ioFromVersion, toVersion);
+          return getDiffs(ioFromVersion, toVersion);
         }
 
         DocumentPtr cloned;
@@ -1097,18 +906,18 @@ namespace hookflash
 
         VersionNumber currentVersion = ioFromVersion;
 
-        ElementPtr xdsOutputEl;
+        ElementPtr diffOutputEl;
 
         // we have the diffs, process them into one document
-        for (XMLDiffDocumentMap::const_iterator iter = foundFrom; iter != foundTo; ++iter, ++currentVersion) {
+        for (DiffDocumentMap::const_iterator iter = foundFrom; iter != foundTo; ++iter, ++currentVersion) {
           const VersionNumber &versionNumber = (*iter).first;
 
           ZS_LOG_TRACE(log("processing diff") + ", version=" + Stringize<VersionNumber>(versionNumber).string())
 
           if (currentVersion != versionNumber) {
-            ZS_LOG_ERROR(Detail, log("XML differences has a version number hole") + ", expecting=" + Stringize<VersionNumber>(currentVersion).string() + ", found=" + Stringize<VersionNumber>(versionNumber).string())
+            ZS_LOG_ERROR(Detail, log("JSON differences has a version number hole") + ", expecting=" + Stringize<VersionNumber>(currentVersion).string() + ", found=" + Stringize<VersionNumber>(versionNumber).string())
             ioFromVersion = 0;
-            return getXMLDiffs(ioFromVersion, toVersion);
+            return getDiffs(ioFromVersion, toVersion);
           }
 
           DocumentPtr doc = (*iter).second;
@@ -1116,32 +925,32 @@ namespace hookflash
           try {
             if (!cloned) {
               cloned = doc->clone()->toDocument();
-              xdsOutputEl = cloned->findFirstChildElementChecked("xds");
+              diffOutputEl = cloned->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
             } else {
-              xdsOutputEl = cloned->findFirstChildElementChecked("xds");
+              diffOutputEl = cloned->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
 
               // we need to process all elements and insert them into the other...
-              ElementPtr xdsEl = doc->findFirstChildElementChecked("xds");
+              ElementPtr diffEl = doc->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
 
-              ElementPtr xdEl = xdsEl->findFirstChildElement("xd");
-              while (xdEl) {
-                xdsOutputEl->adoptAsLastChild(xdEl->clone());
-                xdEl = xdEl->findNextSiblingElement("xd");
+              ElementPtr itemEl = diffEl->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
+              while (itemEl) {
+                diffOutputEl->adoptAsLastChild(itemEl->clone());
+                itemEl = itemEl->findNextSiblingElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
               }
             }
-          } catch (zsLib::XML::Exceptions::CheckFailed &) {
-            ZS_LOG_ERROR(Detail, log("XML diff document is corrupted (recovering by returning entire document)") + ", version=" + Stringize<VersionNumber>(versionNumber).string())
+          } catch (CheckFailed &) {
+            ZS_LOG_ERROR(Detail, log("JSON diff document is corrupted (recovering by returning entire document)") + ", version=" + Stringize<VersionNumber>(versionNumber).string())
             ioFromVersion = 0;
-            return getXMLDiffs(ioFromVersion, toVersion);
+            return getDiffs(ioFromVersion, toVersion);
           }
         }
 
         ZS_THROW_INVALID_ASSUMPTION_IF(!cloned)
-        ZS_THROW_INVALID_ASSUMPTION_IF(!xdsOutputEl)
+        ZS_THROW_INVALID_ASSUMPTION_IF(!diffOutputEl)
 
-        ZS_LOG_DEBUG(log("returning orphaned clone of XML differences document"))
-        xdsOutputEl->orphan();
-        return xdsOutputEl;
+        ZS_LOG_DEBUG(log("returning orphaned clone of differences document"))
+        diffOutputEl->orphan();
+        return diffOutputEl;
       }
 
       //-----------------------------------------------------------------------
@@ -1166,9 +975,9 @@ namespace hookflash
           ZS_LOG_DEBUG(log("..............................................................................."))
           ZS_LOG_DEBUG(log("..............................................................................."))
           if (mDocument) {
-            ZS_LOG_BASIC(log("publication contains XML:") + "\n" + internal::toString(mDocument) + "\n")
+            ZS_LOG_BASIC(log("publication contains JSON:") + "\n" + internal::toString(mDocument) + "\n")
           } else if (mData) {
-            ZS_LOG_BASIC(log("publication contains binary data") + ", length=" + Stringize<size_t>(mDataLengthInBytes).string())
+            ZS_LOG_BASIC(log("publication contains binary data") + ", length=" + Stringize<size_t>(mData ? mData->SizeInBytes() : 0).string())
           } else {
             ZS_LOG_BASIC(log("publication is NULL"))
           }
@@ -1187,191 +996,52 @@ namespace hookflash
     #pragma mark IPublication
     #pragma mark
 
+    //-------------------------------------------------------------------------
+    String IPublication::toDebugString(IPublicationPtr publication, bool includeCommaPrefix)
+    {
+      return internal::Publication::toDebugString(publication, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
     IPublicationPtr IPublication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         ILocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
-                                         const BYTE *data,
-                                         size_t sizeInBytes,
+                                         const SecureByteBlock &data,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         ILocationPtr publishedLocation,
                                          Time expires
                                          )
     {
-      return internal::Publication::create(source, creatorContactID, creatorLocationID, name, mimeType, data, sizeInBytes, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires);
+      return internal::Publication::create(internal::Location::convert(creatorLocation), name, mimeType, data, publishToRelationships, internal::Location::convert(publishedLocation), expires);
     }
 
+    //-------------------------------------------------------------------------
     IPublicationPtr IPublication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         ILocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
                                          DocumentPtr documentToBeAdopted,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         ILocationPtr publishedLocation,
                                          Time expires
                                          )
     {
-      return internal::Publication::create(source, creatorContactID, creatorLocationID, name, mimeType, documentToBeAdopted, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires);
+      return internal::Publication::create(internal::Location::convert(creatorLocation), name, mimeType, documentToBeAdopted, publishToRelationships, internal::Location::convert(publishedLocation), expires);
     }
 
+    //-------------------------------------------------------------------------
     IPublicationPtr IPublication::create(
-                                         Sources source,
-                                         const char *creatorContactID,
-                                         const char *creatorLocationID,
+                                         ILocationPtr creatorLocation,
                                          const char *name,
                                          const char *mimeType,
                                          const RelationshipList &relationshipsDocument,
                                          const PublishToRelationshipsMap &publishToRelationships,
-                                         const char *peerContactID,
-                                         const char *peerLocationID,
-                                         Scopes scope,
-                                         Lifetimes lifetime,
+                                         ILocationPtr publishedLocation,
                                          Time expires
                                          )
     {
-      return internal::Publication::create(source, creatorContactID, creatorLocationID, name, mimeType, relationshipsDocument, publishToRelationships, peerContactID, peerLocationID, scope, lifetime, expires);
-    }
-
-    IPublicationPtr IPublication::createForLocal(
-                                                 const char *creatorContactID,
-                                                 const char *creatorLocationID,
-                                                 const char *name,
-                                                 const char *mimeType,
-                                                 const BYTE *data,
-                                                 size_t sizeInBytes,
-                                                 const PublishToRelationshipsMap &publishToRelationships,
-                                                 Time expires
-                                                 )
-    {
-      return IPublication::create(Source_Local, creatorContactID, creatorLocationID, name, mimeType, data, sizeInBytes, publishToRelationships, NULL, NULL, Scope_Location, Lifetime_Session, expires);
-    }
-
-    IPublicationPtr IPublication::createForFinder(
-                                                  const char *creatorContactID,
-                                                  const char *creatorLocationID,
-                                                  const char *name,
-                                                  const char *mimeType,
-                                                  const BYTE *data,
-                                                  size_t sizeInBytes,
-                                                  const PublishToRelationshipsMap &publishToRelationships,
-                                                  Scopes scope,
-                                                  Lifetimes lifetime,
-                                                  Time expires
-                                                  )
-    {
-      return IPublication::create(Source_Finder, creatorContactID, creatorLocationID, name, mimeType, data, sizeInBytes, publishToRelationships, NULL, NULL, scope, lifetime, expires);
-    }
-
-    IPublicationPtr IPublication::createForPeer(
-                                                const char *creatorContactID,
-                                                const char *creatorLocationID,
-                                                const char *name,
-                                                const char *mimeType,
-                                                const BYTE *data,
-                                                size_t sizeInBytes,
-                                                const char *peerContactID,
-                                                const char *peerLocationID,
-                                                const PublishToRelationshipsMap &publishToRelationships,
-                                                Time expires
-                                                )
-    {
-      return IPublication::create(Source_Peer, creatorContactID, creatorLocationID, name, mimeType, data, sizeInBytes, publishToRelationships, peerContactID, peerLocationID, Scope_Location, Lifetime_Session, expires);
-    }
-
-    IPublicationPtr IPublication::createForLocal(
-                                                 const char *creatorContactID,
-                                                 const char *creatorLocationID,
-                                                 const char *name,
-                                                 const char *mimeType,
-                                                 DocumentPtr documentToBeAdopted,
-                                                 const PublishToRelationshipsMap &publishToRelationships,
-                                                 Time expires
-                                                 )
-    {
-      return IPublication::create(Source_Local, creatorContactID, creatorLocationID, name, mimeType, documentToBeAdopted, publishToRelationships, NULL, NULL, Scope_Location, Lifetime_Session, expires);
-    }
-
-    IPublicationPtr IPublication::createForFinder(
-                                                  const char *creatorContactID,
-                                                  const char *creatorLocationID,
-                                                  const char *name,
-                                                  const char *mimeType,
-                                                  DocumentPtr documentToBeAdopted,
-                                                  const PublishToRelationshipsMap &publishToRelationships,
-                                                  Scopes scope,
-                                                  Lifetimes lifetime,
-                                                  Time expires
-                                                  )
-    {
-      return IPublication::create(Source_Finder, creatorContactID, creatorLocationID, name, mimeType, documentToBeAdopted, publishToRelationships, NULL, NULL, scope, lifetime, expires);
-    }
-
-    IPublicationPtr IPublication::createForPeer(
-                                                const char *creatorContactID,
-                                                const char *creatorLocationID,
-                                                const char *name,
-                                                const char *mimeType,
-                                                DocumentPtr documentToBeAdopted,
-                                                const PublishToRelationshipsMap &publishToRelationships,
-                                                const char *peerContactID,
-                                                const char *peerLocationID,
-                                                Time expires
-                                                )
-    {
-      return IPublication::create(Source_Peer, creatorContactID, creatorLocationID, name, mimeType, documentToBeAdopted, publishToRelationships, peerContactID, peerLocationID, Scope_Location, Lifetime_Session, expires);
-    }
-
-    IPublicationPtr IPublication::createForLocal(
-                                                 const char *creatorContactID,
-                                                 const char *creatorLocationID,
-                                                 const char *name,
-                                                 const char *mimeType,
-                                                 const RelationshipList &relationshipsDocument,
-                                                 const PublishToRelationshipsMap &publishToRelationships,
-                                                 Time expires
-                                                 )
-    {
-      return IPublication::create(Source_Local, creatorContactID, creatorLocationID, name, mimeType, relationshipsDocument, publishToRelationships, NULL, NULL, Scope_Location, Lifetime_Session, expires);
-    }
-
-    IPublicationPtr IPublication::createForFinder(
-                                                  const char *creatorContactID,
-                                                  const char *creatorLocationID,
-                                                  const char *name,
-                                                  const char *mimeType,
-                                                  const RelationshipList &relationshipsDocument,
-                                                  const PublishToRelationshipsMap &publishToRelationships,
-                                                  Scopes scope,
-                                                  Lifetimes lifetime,
-                                                  Time expires
-                                                  )
-    {
-      return IPublication::create(Source_Finder, creatorContactID, creatorLocationID, name, mimeType, relationshipsDocument, publishToRelationships, NULL, NULL, scope, lifetime, expires);
-    }
-
-    IPublicationPtr IPublication::createForPeer(
-                                                const char *creatorContactID,
-                                                const char *creatorLocationID,
-                                                const char *name,
-                                                const char *mimeType,
-                                                const RelationshipList &relationshipsDocument,
-                                                const PublishToRelationshipsMap &publishToRelationships,
-                                                const char *peerContactID,
-                                                const char *peerLocationID,
-                                                Time expires
-                                                )
-    {
-      return IPublication::create(Source_Peer, creatorContactID, creatorLocationID, name, mimeType, relationshipsDocument, publishToRelationships, peerContactID, peerLocationID, Scope_Location, Lifetime_Session, expires);
+      return internal::Publication::create(internal::Location::convert(creatorLocation), name, mimeType, relationshipsDocument, publishToRelationships, internal::Location::convert(publishedLocation), expires);
     }
   }
 }

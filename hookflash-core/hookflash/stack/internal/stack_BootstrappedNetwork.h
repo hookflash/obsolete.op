@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,24 +22,33 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
-#include <hookflash/stack/IMessageRequester.h>
-#include <hookflash/stack/message/hookflashTypes.h>
+#include <hookflash/stack/IServiceCertificates.h>
+#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceIdentity.h>
+#include <hookflash/stack/IServiceSalt.h>
+#include <hookflash/stack/internal/types.h>
+#include <hookflash/stack/IMessageSource.h>
+#include <hookflash/stack/message/types.h>
 
 #include <hookflash/services/IDNS.h>
 #include <hookflash/services/IHTTP.h>
 
 #include <zsLib/MessageQueueAssociator.h>
+
+// set to 1 to force over HTTP instead of HTTPS
+#define HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP 1
+
+#define HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME "services-get"
 
 namespace hookflash
 {
@@ -57,22 +66,10 @@ namespace hookflash
 
       interaction IBootstrappedNetworkForAccount
       {
-        typedef zsLib::String String;
+        IBootstrappedNetworkForAccount &forAccount() {return *this;}
+        const IBootstrappedNetworkForAccount &forAccount() const {return *this;}
 
-        static IBootstrappedNetworkForAccountPtr convert(IBootstrappedNetworkPtr network);
-
-        virtual IBootstrappedNetwork::BootstrappedNetworkStates getState() const = 0;
-
-        virtual IBootstrappedNetworkSubscriptionPtr subscribe(IBootstrappedNetworkDelegatePtr delegate) = 0;
-
-        virtual void close() = 0;
-
-        virtual void getTURNAndSTUNServers(
-                                           String &outTURNServer,
-                                           String &outTURNServerUsername,
-                                           String &outTURNServerPassword,
-                                           String &outSTUNServer
-                                           ) = 0;
+        virtual String getDomain() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -85,15 +82,72 @@ namespace hookflash
 
       interaction IBootstrappedNetworkForAccountFinder
       {
-        typedef zsLib::IPAddress IPAddress;
+        IBootstrappedNetworkForAccountFinder &forAccountFinder() {return *this;}
+        const IBootstrappedNetworkForAccountFinder &forAccountFinder() const {return *this;}
+      };
 
-        static IBootstrappedNetworkForAccountFinderPtr convert(IBootstrappedNetworkPtr network);
-        static IBootstrappedNetworkForAccountFinderPtr convert(IBootstrappedNetworkForAccountPtr network);
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IBootstrappedNetworkForServices
+      #pragma mark
 
-        virtual IBootstrappedNetwork::BootstrappedNetworkStates getState() const = 0;
+      interaction IBootstrappedNetworkForServices
+      {
+        IBootstrappedNetworkForServices &forServices() {return *this;}
+        const IBootstrappedNetworkForServices &forServices() const {return *this;}
 
-        virtual IBootstrappedNetworkSubscriptionPtr subscribe(IBootstrappedNetworkDelegatePtr delegate) = 0;
-        virtual IPAddress getNextPeerFinder() = 0;
+        static BootstrappedNetworkPtr prepare(
+                                              const char *domain,
+                                              IBootstrappedNetworkDelegatePtr delegate = IBootstrappedNetworkDelegatePtr()
+                                              );
+
+        virtual String getDomain() const = 0;
+
+        virtual bool isPreparationComplete() const = 0;
+
+        virtual bool wasSuccessful(
+                                   WORD *outErrorCode = NULL,
+                                   String *outErrorReason = NULL
+                                   ) const = 0;
+
+        virtual bool sendServiceMessage(
+                                        const char *serviceType,
+                                        const char *serviceMethodName,
+                                        message::MessagePtr message
+                                        ) = 0;
+
+        virtual bool isValidSignature(ElementPtr signedElement) const = 0;
+
+        virtual bool isValidSignature(
+                                      const String &id,
+                                      const String &domain,
+                                      const String &service,
+                                      SecureByteBlockPtr buffer,
+                                      SecureByteBlockPtr bufferSigned
+                                      ) const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IBootstrappedNetworkForBootstrappedNetworkManager
+      #pragma mark
+
+      interaction IBootstrappedNetworkForBootstrappedNetworkManager
+      {
+        IBootstrappedNetworkForBootstrappedNetworkManager &forBootstrappedNetworkManager() {return *this;}
+        const IBootstrappedNetworkForBootstrappedNetworkManager &forBootstrappedNetworkManager() const {return *this;}
+
+        virtual PUID getID() const = 0;
+
+        virtual String getDomain() const = 0;
+
+        virtual bool isPreparationComplete() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -103,11 +157,6 @@ namespace hookflash
       #pragma mark
       #pragma mark IBootstrappedNetworkAsyncDelegate
       #pragma mark
-
-      interaction IBootstrappedNetworkAsyncDelegate;
-      typedef boost::shared_ptr<IBootstrappedNetworkAsyncDelegate> IBootstrappedNetworkAsyncDelegatePtr;
-      typedef boost::weak_ptr<IBootstrappedNetworkAsyncDelegate> IBootstrappedNetworkAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IBootstrappedNetworkAsyncDelegate> IBootstrappedNetworkAsyncDelegateProxy;
 
       interaction IBootstrappedNetworkAsyncDelegate
       {
@@ -124,96 +173,206 @@ namespace hookflash
 
       class BootstrappedNetwork : public zsLib::MessageQueueAssociator,
                                   public IBootstrappedNetwork,
+                                  public IServiceCertificates,
+                                  public IServiceIdentity,
+                                  public IServicePeerContact,
+                                  public IServiceSalt,
                                   public IBootstrappedNetworkForAccount,
                                   public IBootstrappedNetworkForAccountFinder,
-                                  public services::IDNSDelegate,
-                                  public services::IHTTPQueryDelegate,
-                                  public IMessageRequesterDelegate,
-                                  public IBootstrappedNetworkAsyncDelegate
+                                  public IBootstrappedNetworkForServices,
+                                  public IBootstrappedNetworkForBootstrappedNetworkManager,
+                                  public IBootstrappedNetworkAsyncDelegate,
+                                  public IDNSDelegate,
+                                  public IHTTPQueryDelegate,
+                                  public IMessageSource
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::UINT UINT;
-        typedef zsLib::RecursiveLock RecursiveLock;
+        friend interaction IBootstrappedNetwork;
+        friend interaction IServiceCertificates;
+        friend interaction IServiceIdentity;
+        friend interaction IServicePeerContact;
+        friend interaction IServiceSalt;
+        friend interaction IBootstrappedNetworkForServices;
+
         typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef zsLib::XML::ElementPtr ElementPtr;
-        typedef services::IDNSQueryPtr IDNSQueryPtr;
-        typedef services::IDNS::SRVResultPtr SRVResultPtr;
-        typedef services::IHTTPQueryPtr IHTTPQueryPtr;
-        typedef services::IDNS IDNS;
-        typedef services::IDNSQuery IDNSQuery;
+        typedef message::ServiceMap ServiceMap;
+        typedef message::Service Service;
+        typedef message::MessagePtr MessagePtr;
+        typedef message::CertificateMap CertificateMap;
+        typedef message::ServiceTypeMap ServiceTypeMap;
 
-        class Subscription;
-        typedef boost::shared_ptr<Subscription> SubscriptionPtr;
-        typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
-        friend class Subscription;
+        enum ErrorCodes
+        {
+          ErrorCode_BadRequest =          IHTTP::HTTPStatusCode_BadRequest,
+          ErrorCode_NotFound =            IHTTP::HTTPStatusCode_NotFound,
+          ErrorCode_InternalServerError = IHTTP::HTTPStatusCode_InternalServerError,
+          ErrorCode_ServiceUnavailable =  IHTTP::HTTPStatusCode_ServiceUnavailable,
+          ErrorCode_UserCancelled =       IHTTP::HTTPStatusCode_ClientClosedRequest,
+        };
 
-        class Query;
-        typedef boost::shared_ptr<Query> QueryPtr;
-        typedef boost::weak_ptr<Query> QueryWeakPtr;
-        friend class Query;
+        const char *toString(ErrorCodes errorCode);
 
       protected:
-        BootstrappedNetwork(IMessageQueuePtr queue);
+        BootstrappedNetwork(
+                            IMessageQueuePtr queue,
+                            const char *domain
+                            );
         void init();
 
       public:
         ~BootstrappedNetwork();
 
+        static BootstrappedNetworkPtr convert(IBootstrappedNetworkPtr network);
+        static BootstrappedNetworkPtr convert(IServiceCertificatesPtr network);
+        static BootstrappedNetworkPtr convert(IServiceIdentityPtr network);
+        static BootstrappedNetworkPtr convert(IServicePeerContactPtr network);
+        static BootstrappedNetworkPtr convert(IServiceSaltPtr network);
+
+        typedef std::map<IHTTPQueryPtr, message::MessagePtr> PendingRequestMap;
+
+      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark BootstrappedNetwork => IBootstrappedNetwork
         #pragma mark
 
-        static BootstrappedNetworkPtr create(
-                                             IMessageQueuePtr queue,
-                                             stack::IBootstrappedNetworkDelegatePtr delegate,
-                                             const char *userAgent,
-                                             const char *networkURI,
-                                             const char *turnServer,
-                                             const char *turnServerUsername,
-                                             const char *turnServerPassword,
-                                             const char *stunServer
-                                             );
+        static String toDebugString(IBootstrappedNetworkPtr network, bool includeCommaPrefix = true);
 
-        virtual BootstrappedNetworkStates getState() const;
-        virtual BootstrappedNetworkErrors getLastError() const {return BootstrappedNetworkError_None;}
+        static BootstrappedNetworkPtr prepare(
+                                              const char *domain,
+                                              IBootstrappedNetworkDelegatePtr delegate
+                                              );
 
-        virtual IBootstrappedNetworkSubscriptionPtr subscribe(IBootstrappedNetworkDelegatePtr delegate);
+        virtual PUID getID() const {return mID;}
 
-        // NOTE:  Caller does not have to wait until the class is "ready"
-        //        before calling this method.
-        virtual IBootstrappedNetworkFetchSignedSaltQueryPtr fetchSignedSalt(
-                                                                            IBootstrappedNetworkFetchSignedSaltQueryDelegatePtr delegate,
-                                                                            UINT totalToFetch = 1
-                                                                            );
+        virtual String getDomain() const;
 
-        virtual void close();
+        virtual bool isPreparationComplete() const;
+        virtual bool wasSuccessful(
+                                   WORD *outErrorCode = NULL,
+                                   String *outErrorReason = NULL
+                                   ) const;
 
+        // (duplicate) virtual void cancel();
+
+        // use IMessageMonitor to monitor the result (if result is important)
+        virtual bool sendServiceMessage(
+                                        const char *serviceType,
+                                        const char *serviceMethodName,
+                                        message::MessagePtr message
+                                        );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IServiceCertificates
+        #pragma mark
+
+        static IServiceCertificatesPtr createServiceCertificatesFrom(IBootstrappedNetworkPtr preparedBootstrappedNetwork);
+
+        // (duplicate) virtual PUID getID() const;
+
+        virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const;
+
+        virtual bool isValidSignature(ElementPtr signedElement) const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IServiceIdentity
+        #pragma mark
+
+        static IServiceIdentityPtr createServiceIdentityFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const;
+
+        // (duplicate) virtual String getDomain() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IServicePeerContact
+        #pragma mark
+
+        static IServicePeerContactPtr createServicePeerContactFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IServiceSalt
+        #pragma mark
+
+        static IServiceSaltPtr createServiceSaltFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const;
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark BootstrappedNetwork => IBootstrappedNetworkForAccount
         #pragma mark
 
-        // (duplicate) virtual BootstrappedNetworkStates getState() const;
-        // (duplicate) virtual IBootstrappedNetworkSubscriptionPtr subscribe(IBootstrappedNetworkDelegatePtr delegate);
-        // (duplicate) virtual void close();
-        virtual void getTURNAndSTUNServers(
-                                           String &outTURNServer,
-                                           String &outTURNServerUsername,
-                                           String &outTURNServerPassword,
-                                           String &outSTUNServer
-                                           );
+        // (duplicate) virtual String getDomain() const;
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark BootstrappedNetwork => IBootstrappedNetworkForAccountFinder
+        #pragma mark BootstrappedNetwork => IBootstrappedNetworkForServices
         #pragma mark
 
-        // (duplicate) virtual BootstrappedNetworkStates getState() const;
-        // (duplicate) virtual IBootstrappedNetworkSubscriptionPtr subscribe(IBootstrappedNetworkDelegatePtr delegate);
-        virtual IPAddress getNextPeerFinder();
+        // (duplicate) virtual String getDomain() const;
+
+        // (duplicate) static BootstrappedNetworkPtr prepare(
+        //                                                   const char *domain,
+        //                                                   IBootstrappedNetworkDelegatePtr delegate
+        //                                                   );
+
+        // (duplicate) virtual bool isPreparationComplete() const;
+
+        // (duplicate) virtual bool wasSuccessful(
+        //                                        WORD *outErrorCode = NULL,
+        //                                        String *outErrorReason = NULL
+        //                                        ) const;
+
+        // (duplicate) virtual bool sendServiceMessage(
+        //                                             const char *serviceType,
+        //                                             const char *serviceMethodName,
+        //                                             message::MessagePtr message
+        //                                             );
+
+        // (duplicate) virtual bool isValidSignature(ElementPtr signedElement) const;
+
+        virtual bool isValidSignature(
+                                      const String &id,
+                                      const String &domain,
+                                      const String &service,
+                                      SecureByteBlockPtr buffer,
+                                      SecureByteBlockPtr bufferSigned
+                                      ) const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IBootstrappedNetworkForBootstrappedNetworkManager
+        #pragma mark
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual String getDomain() const;
+
+        // (duplicate) virtual bool isPreparationComplete() const;
+        // (duplicate) virtual bool wasSuccessful(
+        //                                        WORD *outErrorCode = NULL,
+        //                                        String *outErrorReason = NULL
+        //                                        ) const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IBootstrappedNetworkAsyncDelegate
+        #pragma mark
+
+        virtual void onStep();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -228,42 +387,7 @@ namespace hookflash
         #pragma mark
 
         virtual void onHTTPReadDataAvailable(IHTTPQueryPtr query);
-        virtual void onHTTPComplete(IHTTPQueryPtr query);
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork => IMessageRequesterDelegate
-        #pragma mark
-
-        virtual bool handleMessageRequesterMessageReceived(
-                                                           IMessageRequesterPtr requester,
-                                                           message::MessagePtr message
-                                                           );
-
-        virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork => IBootstrappedNetworkAsyncDelegate
-        #pragma mark
-
-        virtual void onStep();
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork => friend class Subscription
-        #pragma mark
-
-        void removeSubscription(SubscriptionPtr subscription);
-        // (duplicate) RecursiveLock &getLock() const;
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork => friend class Query
-        #pragma mark
-
-        void removeQuery(QueryPtr query);
-        // (duplicate) RecursiveLock &getLock() const;
+        virtual void onHTTPCompleted(IHTTPQueryPtr query);
 
       protected:
         //---------------------------------------------------------------------
@@ -271,173 +395,39 @@ namespace hookflash
         #pragma mark BootstrappedNetwork => (internal)
         #pragma mark
 
-        bool isPending() const {return BootstrappedNetworkState_Pending == mCurrentState;}
-        bool isReady() const {return BootstrappedNetworkState_Ready == mCurrentState;}
-        bool isShuttingDown() const {return BootstrappedNetworkState_ShuttingDown == mCurrentState;}
-        bool isShutdown() const {return BootstrappedNetworkState_Shutdown == mCurrentState;}
-
-        RecursiveLock &getLock() const {return mLock;}
+        RecursiveLock &getLock() const;
 
         String log(const char *message) const;
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
-        void cancel();
+        void go();
+        void reuse();
+
         void step();
+        void cancel();
+        void setFailure(
+                        WORD errorCode,
+                        const char *reason = NULL
+                        );
 
-        void setCurrentState(BootstrappedNetworkStates state);
-        void setLastError(BootstrappedNetworkErrors error);
+        const Service::Method *findServiceMethod(
+                                                 const char *serviceType,
+                                                 const char *method
+                                                 ) const;
 
-      public:
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork::Subscription
-        #pragma mark
+        MessagePtr getMessageFromQuery(
+                                       IHTTPQueryPtr query,
+                                       DocumentPtr *outDocument = NULL
+                                       );
 
-        class Subscription : public IBootstrappedNetworkSubscription
-        {
-        public:
-          friend class BootstrappedNetwork;
-
-        protected:
-          Subscription();
-
-        public:
-          ~Subscription();
-
-          static SubscriptionPtr create(BootstrappedNetworkPtr network);
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Subscription => IBootstrappedNetworkSubscription
-          #pragma mark
-
-          virtual void cancel();
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => friend BootstrappedNetwork
-          #pragma mark
-
-          PUID getID() const {return mID;}
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Subscription => (internal)
-          #pragma mark
-
-          RecursiveLock &getLock() const;
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Subscription => (data)
-          #pragma mark
-
-          mutable RecursiveLock mBogusLock;
-          PUID mID;
-          SubscriptionWeakPtr mThisWeak;
-
-          BootstrappedNetworkWeakPtr mOuter;
-        };
-
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark BootstrappedNetwork::Query
-        #pragma mark
-
-        class Query : public zsLib::MessageQueueAssociator,
-                      public IBootstrappedNetworkFetchSignedSaltQuery,
-                      public IHTTPQueryDelegate
-        {
-        public:
-          typedef message::SaltBundleList SaltBundleList;
-
-          friend class BootstrappedNetwork;
-
-        protected:
-          Query(
-                IMessageQueuePtr queue,
-                BootstrappedNetworkPtr outer,
-                IBootstrappedNetworkFetchSignedSaltQueryDelegatePtr delegate,
-                UINT totalToFetch
-                );
-
-        public:
-          ~Query();
-
-          static QueryPtr create(
-                                 IMessageQueuePtr queue,
-                                 BootstrappedNetworkPtr network,
-                                 IBootstrappedNetworkFetchSignedSaltQueryDelegatePtr delegate,
-                                 UINT totalToFetch
-                                 );
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => IBootstrappedNetworkFetchSignedSaltQueryDelegate
-          #pragma mark
-
-          virtual bool isComplete() const;
-          virtual UINT getTotalSignedSaltsAvailable() const;
-          virtual ElementPtr getNextSignedSalt();
-
-          virtual void cancel();
-
-          //---------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => IHTTPQueryDelegate
-          #pragma mark
-
-          virtual void onHTTPReadDataAvailable(IHTTPQueryPtr query);
-          virtual void onHTTPComplete(IHTTPQueryPtr query);
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => friend BootstrappedNetwork
-          #pragma mark
-
-          PUID getID() const {return mID;}
-          void notify(
-                      const String &userAgent,
-                      const String &saltURL
-                      );
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => (internal)
-          #pragma mark
-
-          RecursiveLock &getLock() const;
-          String log(const char *message) const;
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark BootstrappedNetwork::Query => (data)
-          #pragma mark
-
-          mutable RecursiveLock mBogusLock;
-          PUID mID;
-          QueryWeakPtr mThisWeak;
-
-          BootstrappedNetworkWeakPtr mOuter;
-
-          IHTTPQueryPtr mSaltQuery;
-
-          UINT mRequestingSalts;
-          IBootstrappedNetworkFetchSignedSaltQueryDelegatePtr mDelegate;
-
-          SaltBundleList mSaltBundles;
-        };
+        IHTTPQueryPtr post(
+                           const char *url,
+                           MessagePtr message
+                           );
+        bool handledError(
+                          const char *requestType,
+                          MessagePtr message
+                          );
 
       protected:
         //---------------------------------------------------------------------
@@ -446,42 +436,30 @@ namespace hookflash
         #pragma mark
 
         PUID mID;
-        mutable RecursiveLock mLock;
+        mutable RecursiveLock mBogusLock;
         BootstrappedNetworkWeakPtr mThisWeak;
+        String mDomain;
 
-        BootstrappedNetworkStates mCurrentState;
-        BootstrappedNetworkErrors mLastError;
+        BootstrappedNetworkManagerWeakPtr mManager;
 
-        typedef PUID SubscriptionID;
-        typedef std::map<SubscriptionID, IBootstrappedNetworkDelegatePtr> DelegateMap;
-        DelegateMap mDelegates;
+        bool mCompleted;
 
-        typedef PUID QueryID;
-        typedef std::map<QueryID, QueryPtr> PendingQueriesMap;
-        PendingQueriesMap mPendingQueries;
+        WORD mErrorCode;
+        String mErrorReason;
 
-        String mUserAgent;
-        String mURI;
-        String mTURNServer;
-        String mTURNServerUsername;
-        String mTURNServerPassword;
-        String mSTUNServer;
+        IDNSQueryPtr mSRVLookup;
+        IDNS::SRVResultPtr mSRVResult;
+        String mServicesGetDNSName;
 
-        String mBootstrapperURI;
-        String mSaltURI;
+        IHTTPQueryPtr mServicesGetQuery;
+        IHTTPQueryPtr mCertificatesGetQuery;
 
-        IHTTPQueryPtr mServiceQuery;
-        IMessageRequesterPtr mServiceRequester;
+        ULONG mRedirectionAttempts;
 
-        IHTTPQueryPtr mFindersQuery;
-        IMessageRequesterPtr mFindersRequester;
+        ServiceTypeMap mServiceTypeMap;
+        CertificateMap mCertificates;
 
-        SRVResultPtr mSRVPeerFinderFinal;
-        SRVResultPtr mSRVClonedPeerFinders;
-
-        typedef IDNSQuery::PUID DNSQueryID;
-        typedef std::map<DNSQueryID, IDNSQueryPtr> FinderLookupMap;
-        FinderLookupMap mFinderLookups;
+        PendingRequestMap mPendingRequests;
       };
     }
   }

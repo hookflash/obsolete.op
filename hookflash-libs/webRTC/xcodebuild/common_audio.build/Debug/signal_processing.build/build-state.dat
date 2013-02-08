@@ -1,0 +1,719 @@
+Tsignal_processing
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000503F1B7700000000000000AA
+t1346313079
+s170
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libsignal_processing.a
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o
+t1359554766
+s5972
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o
+t1359554766
+s5392
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o
+t1359554766
+s4804
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o
+t1359554766
+s8764
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o
+t1359554948
+s7464
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o
+t1359554948
+s3484
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o
+t1359554948
+s5816
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o
+t1359554948
+s3184
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o
+t1359554948
+s4116
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/min_max_operations.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/randomization_functions.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/refl_coef_to_lpc.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_48khz.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_by_2.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_by_2_internal.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_fractional.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/signal_processing.LinkFileList
+c00000000510928CD0000000000001517
+t1359554765
+s5399
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_sqrt.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_sqrt_floor.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_version.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/splitting_filter.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/sqrt_of_one_minus_x_squared.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/vector_scaling_operations.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../typedefs.h
+c00000000510902370000000000000B7E
+t1359544887
+s2942
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c
+c00000000510902350000000000000B7B
+t1359544885
+s2939
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c
+c00000000510902350000000000000F4F
+t1359544885
+s3919
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c
+c000000005109023500000000000010F8
+t1359544885
+s4344
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c
+c00000000510902350000000000004A3E
+t1359544885
+s19006
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c
+c00000000510902350000000000000A9B
+t1359544885
+s2715
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c
+c00000000510902350000000000002158
+t1359544885
+s8536
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c
+c00000000510902350000000000000F76
+t1359544885
+s3958
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c
+c000000005109023500000000000009F8
+t1359544885
+s2552
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c
+c00000000510902350000000000000633
+t1359544885
+s1587
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c
+c0000000051090235000000000000042F
+t1359544885
+s1071
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c
+c00000000510902350000000000000C07
+t1359544885
+s3079
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c
+c00000000510902350000000000000524
+t1359544885
+s1316
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c
+c00000000510902350000000000000605
+t1359544885
+s1541
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c
+c00000000510902350000000000000C7A
+t1359544885
+s3194
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c
+c000000005109023500000000000004CC
+t1359544885
+s1228
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c
+c00000000510902350000000000000DEC
+t1359544885
+s3564
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/include/signal_processing_library.h
+c0000000051090235000000000000EE3B
+t1359544885
+s60987
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/include/spl_inl.h
+c00000000510902350000000000000FE8
+t1359544885
+s4072
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c
+c00000000510902350000000000002543
+t1359544885
+s9539
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c
+c000000005109023500000000000007CD
+t1359544885
+s1997
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/min_max_operations.c
+c0000000051090235000000000000156E
+t1359544885
+s5486
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/randomization_functions.c
+c000000005109023500000000000019FC
+t1359544885
+s6652
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/refl_coef_to_lpc.c
+c00000000510902350000000000000623
+t1359544885
+s1571
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample.c
+c00000000510902350000000000004346
+t1359544885
+s17222
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_48khz.c
+c000000005109023500000000000017F1
+t1359544885
+s6129
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2.c
+c00000000510902350000000000001808
+t1359544885
+s6152
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2_internal.c
+c00000000510902350000000000005073
+t1359544885
+s20595
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_fractional.c
+c00000000510902350000000000001FAD
+t1359544885
+s8109
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt.c
+c00000000510902350000000000001491
+t1359544885
+s5265
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt_floor.c
+c0000000051090235000000000000062D
+t1359544885
+s1581
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_version.c
+c000000005109023500000000000002FC
+t1359544885
+s764
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/splitting_filter.c
+c0000000051090235000000000000215D
+t1359544885
+s8541
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/sqrt_of_one_minus_x_squared.c
+c0000000051090235000000000000045D
+t1359544885
+s1117
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/vector_scaling_operations.c
+c0000000051090235000000000000151B
+t1359544885
+s5403
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/min_max_operations.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/randomization_functions.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/refl_coef_to_lpc.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_48khz.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2_internal.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_fractional.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt_floor.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_version.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/splitting_filter.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/sqrt_of_one_minus_x_squared.c
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/vector_scaling_operations.c
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies8a3bf20c61b9b641^2db4f70c61b9b641^---0#1#0#--18"Check dependencies36"95991AB0-2F5C-42EC-BEB4-486D98D42DBC-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247565.120319
+e381247566.998606
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.cff781f4d60b9b641^a664014f60b9b641^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c0000000000000000^3292"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o signal_processing/auto_corr_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_corr_to_refl_coef.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_corr_to_refl_coef.o36"98530DC5-47EA-4D3A-B5F7-D8B949A92790-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247565.124613
+e381247566.920461
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection107"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.cce54204d60b9b641^8253ef4e60b9b641^---0#0#0#-19%DVTDocumentLocation2@115"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c0000000000000000^3256"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o signal_processing/auto_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/auto_correlation.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/auto_correlation.o36"88B6082F-06EA-47D4-A435-85802C169304-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247565.126070
+e381247566.959040
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.cae0d214d60b9b641^a9f5f64e60b9b641^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c0000000000000000^3274"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o signal_processing/complex_bit_reverse.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_bit_reverse.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_bit_reverse.o36"FBE77D82-7E2C-4CB5-AF1F-5F69FD1E85BC-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247565.125137
+e381247567.005294
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c67b5204d60b9b641^9d66014f60b9b641^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c0000000000000000^3226"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o signal_processing/complex_fft.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/complex_fft.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/complex_fft.o36"71B4F8AB-D740-4776-A649-0920DB009160-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.773398
+e381247748.876014
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c971dc60461b9b641^d942e00461b9b641^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c0000000000000000^3274"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o signal_processing/copy_set_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/copy_set_operations.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/copy_set_operations.o36"809EED1C-BC2C-41FD-891F-A4D4F03F0F85-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.774610
+e381247748.894059
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c0e67c60461b9b641^98e0e40461b9b641^---0#0#0#-19%DVTDocumentLocation2@116"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c0000000000000000^3262"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o signal_processing/cross_correlation.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/cross_correlation.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/cross_correlation.o36"01AC5647-7BA1-4D21-9BC5-047B9FB2AA9B-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.876976
+e381247749.009855
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.ce0a1e00461b9b641^7689020561b9b641^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c0000000000000000^3274"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o signal_processing/division_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/division_operations.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/division_operations.o36"10A61377-8AF3-4DAF-83A8-8B5BB75732B6-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.878059
+e381247749.010164
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c5beae00461b9b641^709a020561b9b641^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c0000000000000000^3292"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o signal_processing/dot_product_with_scale.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/dot_product_with_scale.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/dot_product_with_scale.o36"0EE5C9E6-823A-4D9C-A24F-56949514D28E-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247748.878062
+e381247749.010174
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection106"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c0bede00461b9b641^8c9f020561b9b641^---0#0#0#-19%DVTDocumentLocation2@114"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c0000000000000000^3250"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o signal_processing/downsample_fast.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/downsample_fast.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/downsample_fast.o36"F124A6F4-25BD-499D-807B-AACC80F29086-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247756.956511
+e381247757.026713
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c7efdf40c61b9b641^88d6060d61b9b641^---0#0#0#-19%DVTDocumentLocation2@105"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c0000000000000000^3196"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o signal_processing/energy.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/energy.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/energy.o36"90DACF0B-1CAD-43E7-A3F4-DB9E912CE807-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247756.956515
+e381247757.030591
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c6dfdf40c61b9b641^52d6070d61b9b641^---0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c0000000000000000^3214"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o signal_processing/filter_ar.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar.o36"B4DDF666-F511-4D4A-B256-7CD6282B2B25-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247756.956648
+e381247757.030089
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c5f0cf50c61b9b641^74b7070d61b9b641^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c0000000000000000^3268"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o signal_processing/filter_ar_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ar_fast_q12.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ar_fast_q12.o36"C1561114-7A0B-4FDA-8644-684F677DDBEE-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247756.957754
+e381247757.030097
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c7f4ef50c61b9b641^2cbc070d61b9b641^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c0000000000000000^3268"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o signal_processing/filter_ma_fast_q12.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/filter_ma_fast_q12.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/filter_ma_fast_q12.o36"0EA8BD97-15A7-4832-8460-FE7AB945B997-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247757.030871
+e381247757.090638
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.ccc07080d61b9b641^0f0a1a0d61b9b641^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c0000000000000000^3268"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o signal_processing/get_hanning_window.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_hanning_window.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_hanning_window.o36"9C87EFE3-5A56-4FF4-BDDD-DCBD156B65A5-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247757.030864
+e381247757.076069
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c6807080d61b9b641^6e86130d61b9b641^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c0000000000000000^3268"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o signal_processing/get_scaling_square.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/get_scaling_square.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/get_scaling_square.o36"6793F9DD-5FCD-449D-92AA-D2EEE7DEA146-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247757.030976
+e381247757.197487
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c520c080d61b9b641^83a1320d61b9b641^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c0000000000000000^3298"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o signal_processing/ilbc_specific_functions.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/ilbc_specific_functions.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/ilbc_specific_functions.o36"7D684490-925F-43C2-8ED7-4F1E0499624E-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247757.032077
+e381247757.197608
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection106"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c9d48080d61b9b641^d7a5320d61b9b641^---0#0#0#-19%DVTDocumentLocation2@114"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c0000000000000000^3250"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o signal_processing/levinson_durbin.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/levinson_durbin.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/levinson_durbin.o36"6C4A8881-D146-461D-ABD0-A6D606FE8BE0-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+s381247757.081485
+e381247757.197844
+r1
+xCompileC
+x../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o
+x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c
+xnormal
+xi386
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection107"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.cf301150d61b9b641^6daa320d61b9b641^---0#0#0#-19%DVTDocumentLocation2@115"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c0000000000000000^3256"CompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o signal_processing/lpc_to_refl_coef.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/lpc_to_refl_coef.c -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/lpc_to_refl_coef.o36"812563E5-2C86-4EAF-9295-CC96AB8516DA-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/min_max_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/min_max_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/randomization_functions.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/randomization_functions.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/refl_coef_to_lpc.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/refl_coef_to_lpc.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_48khz.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_48khz.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_by_2.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_by_2_internal.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_by_2_internal.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/resample_fractional.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/resample_fractional.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_sqrt.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_sqrt_floor.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_sqrt_floor.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/spl_version.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/spl_version.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/splitting_filter.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/splitting_filter.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/sqrt_of_one_minus_x_squared.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/sqrt_of_one_minus_x_squared.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/signal_processing.build/Objects-normal/i386/vector_scaling_operations.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/vector_scaling_operations.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libsignal_processing.a normal i386
+r0
+

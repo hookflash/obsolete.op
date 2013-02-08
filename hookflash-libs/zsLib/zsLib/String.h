@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -27,7 +27,7 @@
 
 #include <string>
 
-#include <zsLib/zsTypes.h>
+#include <zsLib/types.h>
 
 namespace zsLib
 {
@@ -48,6 +48,7 @@ namespace zsLib
     std::wstring wstring() const;
 
     bool isEmpty() const;
+    bool hasData() const;
     size_t getLength() const;
 
     operator CSTR() const;

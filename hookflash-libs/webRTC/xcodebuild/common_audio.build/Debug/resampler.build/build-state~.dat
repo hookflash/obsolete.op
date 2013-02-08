@@ -1,0 +1,41 @@
+Tresampler
+v5
+r1
+cCheck dependencies
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000503F1B7700000000000000AA
+t1346313079
+s170
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.LinkFileList
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc
+c00000000510902350000000000008E5A
+t1359544885
+s36442
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies3f8d1f4d60b9b641^5c39674d60b9b641^---0#1#0#--18"Check dependencies36"F2C758C0-83DD-4B9B-B4D5-67005BFF4451-
+
+CCompileC ../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a normal i386
+r0
+

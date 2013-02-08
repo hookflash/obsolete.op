@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_ISOCKET_H_77b428faae5ff4a4827517546a6a6104
 #define ZSLIB_ISOCKET_H_77b428faae5ff4a4827517546a6a6104
 
-#include <zsLib/internal/ISocket.h>
+#include <zsLib/internal/zsLib_ISocket.h>
 
 #pragma warning(push)
 #pragma warning(disable: 4290)
@@ -105,7 +105,11 @@ namespace zsLib
     struct SetOptionFlag {
       enum Options {
         NonBlocking          = FIONBIO,
-        IgnoreSigPipe        = SO_NOSIGPIPE,
+#ifdef _ANDROID
+        IgnoreSigPipe        = MSG_NOSIGNAL,
+#else
+	IgnoreSigPipe        = SO_NOSIGPIPE,
+#endif // _ANDROID
         Broadcast            = SO_BROADCAST,
         Debug                = SO_DEBUG,
         DontRoute            = SO_DONTROUTE,
@@ -153,7 +157,7 @@ namespace zsLib
         MaxMessageSizeInBytes      = SO_WINDOWS_MAX_MSG_SIZE
       };
     };
-    
+
     struct Monitor {
       enum Options {
         Read      = 0x01,

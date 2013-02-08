@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,35 +22,28 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_PeerFiles.h>
 #include <hookflash/stack/internal/stack_PeerFilePublic.h>
 #include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/services/ICanonicalXML.h>
+#include <hookflash/stack/internal/stack_Helper.h>
+#include <hookflash/stack/message/IMessageHelper.h>
+#include <hookflash/stack/IPeer.h>
+#include <hookflash/stack/IRSAPublicKey.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
-#include <zsLib/Numeric.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
 
-#include <cryptopp/osrng.h>
-#include <cryptopp/rsa.h>
-#include <cryptopp/queue.h>
-#include <cryptopp/base64.h>
-#include <cryptopp/filters.h>
 #include <cryptopp/sha.h>
-#include <cryptopp/aes.h>
-#include <cryptopp/modes.h>
-#include <cryptopp/secblock.h>
-#include <cryptopp/hex.h>
-#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-#include <cryptopp/md5.h>
+
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -61,37 +54,48 @@ namespace hookflash
   {
     namespace internal
     {
-      using zsLib::Numeric;
       using zsLib::Stringize;
 
-      typedef zsLib::BYTE BYTE;
-      typedef zsLib::UINT UINT;
-      typedef zsLib::String String;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-      typedef zsLib::XML::ElementPtr ElementPtr;
-      typedef zsLib::XML::Document Document;
-      typedef CryptoPP::AutoSeededRandomPool AutoSeededRandomPool;
-      typedef CryptoPP::ByteQueue ByteQueue;
-      typedef CryptoPP::SecByteBlock SecureByteBlock;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
+
       typedef CryptoPP::SHA256 SHA256;
-      typedef CryptoPP::StringSink StringSink;
-      typedef CryptoPP::RSASSA_PKCS1v15_SHA_Verifier CryptoPP_Verifier;
-      typedef CryptoPP::HexEncoder HexEncoder;
-      typedef PeerFilePublic::RSAPublicKeyPtr RSAPublicKeyPtr;
+
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark (helpers)
+      #pragma mark IPeerFilePublicForPeerFiles
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void convertFromBase64(
-                             const String &input,
-                             SecureByteBlock &output
-                             );
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilePublicForPeerFilePrivate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr IPeerFilePublicForPeerFilePrivate::createFromPublicKey(
+                                                                               PeerFilesPtr peerFiles,
+                                                                               DocumentPtr publicDoc,
+                                                                               IRSAPublicKeyPtr publicKey,
+                                                                               const String &peerURI
+                                                                               )
+      {
+        return PeerFilePublic::createFromPublicKey(peerFiles, publicDoc, publicKey, peerURI);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr IPeerFilePublicForPeerFilePrivate::loadFromElement(
+                                                                           PeerFilesPtr peerFiles,
+                                                                           DocumentPtr publicDoc
+                                                                           )
+      {
+        return PeerFilePublic::loadFromElement(peerFiles, publicDoc);
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -105,28 +109,25 @@ namespace hookflash
       PeerFilePublic::PeerFilePublic() :
         mID(zsLib::createPUID())
       {
+        ZS_LOG_DEBUG(log("created"))
       }
 
       //-----------------------------------------------------------------------
       void PeerFilePublic::init()
       {
-        if (!mPublicKey) {
-          ZS_LOG_DEBUG(log("attempting to load public key from public peer file") + ", contact ID=" + getContactID())
-          SecureByteBlock publicKeyBuffer;
-          getX509Certificate(publicKeyBuffer);
-          if (publicKeyBuffer.SizeInBytes() > 0) {
-            // attempt to load this key
-            ZS_LOG_DEBUG(log("found public key and attempting to validate..."))
-            mPublicKey = RSAPublicKey::load(publicKeyBuffer);
-            if (mPublicKey) {
-              ZS_LOG_DETAIL(log("validation passed") + ": contact ID=" + getContactID())
-            } else {
-              ZS_LOG_WARNING(Detail, log("validation **FAILED**") + ": contact ID=" + getContactID())
-            }
-          }
-        } else {
-          ZS_LOG_DEBUG(log("validation passed"))
-        }
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublic::~PeerFilePublic()
+      {
+        mThisWeak.reset();
+        ZS_LOG_DEBUG(log("destroyed"))
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr PeerFilePublic::convert(IPeerFilePublicPtr peerFilePublic)
+      {
+        return boost::dynamic_pointer_cast<PeerFilePublic>(peerFilePublic);
       }
 
       //-----------------------------------------------------------------------
@@ -138,228 +139,216 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      PeerFilePublicPtr PeerFilePublic::loadFromXML(ElementPtr publicPeerRootElement)
+      String PeerFilePublic::toDebugString(IPeerFilePublicPtr peerFilePublic, bool includePrefixComma)
       {
-        if (!publicPeerRootElement)
-          return PeerFilePublicPtr();
+        if (!peerFilePublic) return includePrefixComma ? String(", peer file public=(null)") : String("peer file public=(null)");
+        return PeerFilePublic::convert(peerFilePublic)->getDebugValueString(includePrefixComma);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr PeerFilePublic::loadFromElement(ElementPtr publicPeerRootElement)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!publicPeerRootElement)
 
         PeerFilePublicPtr pThis(new PeerFilePublic);
         pThis->mThisWeak = pThis;
         pThis->mDocument = Document::create();
-        pThis->mDocument->adoptAsLastChild(publicPeerRootElement->clone());
+        pThis->mDocument->adoptAsFirstChild(publicPeerRootElement->clone());
         pThis->init();
-        if (!pThis->mPublicKey) {
-          ZS_LOG_WARNING(Basic, pThis->log("failed to load public key from public peer file"))
+
+        if (!pThis->load()) {
+          ZS_LOG_WARNING(Detail, pThis->log("failed to load public peer file"))
+          return PeerFilePublicPtr();
         }
+
         return pThis;
       }
 
       //-----------------------------------------------------------------------
-      void PeerFilePublic::updateFrom(IPeerFilePublicPtr inAnotherVersion)
+      ElementPtr PeerFilePublic::saveToElement() const
       {
-        AutoRecursiveLock lock(mLock);
-
-        PeerFilePublicPtr anotherVersion = PeerFilePublic::convert(inAnotherVersion);
-        if (!anotherVersion) return;
-
-        AutoRecursiveLock lock2(anotherVersion->mLock);
-        if (getPeerFiles()) return;
-
-        String contactIDThis = getContactID();
-        String contactIDOther = anotherVersion->getContactID();
-        if (contactIDThis != contactIDOther) return;
-
-        if (!anotherVersion->mDocument) return;
-
-        UINT versionThis = getVersionNumber();
-        UINT versionOther = anotherVersion->getVersionNumber();
-
-        if (versionThis > versionOther) return;
-        if (versionOther > versionThis) {
-          mDocument = (anotherVersion->mDocument->clone())->toDocumentChecked();
-          return;
-        }
-
-        // if this version has more information, do not update
-        if (containsSection("A") && (!anotherVersion->containsSection("A"))) return;
-        if (containsSection("B") && (!anotherVersion->containsSection("B"))) return;
-        if (containsSection("C") && (!anotherVersion->containsSection("C"))) return;
-
-        bool identical = true;
-        if (containsSection("A") != anotherVersion->containsSection("A")) identical = false;
-        if (containsSection("B") != anotherVersion->containsSection("B")) identical = false;
-        if (containsSection("C") != anotherVersion->containsSection("C")) identical = false;
-
-        if (identical) return;
-        mDocument = (anotherVersion->mDocument->clone())->toDocumentChecked();
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr PeerFilePublic::saveToXML() const
-      {
-        AutoRecursiveLock lock(mLock);
-
         if (!mDocument) return ElementPtr();
-        ElementPtr peerRoot = mDocument->getFirstChildElement();
-        if (!peerRoot) return ElementPtr();
-
-        return (peerRoot->clone())->toElementChecked();
+        ElementPtr rootEl = mDocument->getFirstChildElement();
+        if (!rootEl) return ElementPtr();
+        return rootEl->clone()->toElement();
       }
 
       //-----------------------------------------------------------------------
-      IPeerFilesPtr PeerFilePublic::getPeerFiles() const
+      String PeerFilePublic::getPeerURI() const
       {
-        AutoRecursiveLock lock(mLock);
-        return mOuter.lock();
+        return mPeerURI;
       }
 
       //-----------------------------------------------------------------------
-      bool PeerFilePublic::isReadOnly() const
+      Time PeerFilePublic::getCreated() const
       {
-        AutoRecursiveLock lock(mLock);
-        return !(mOuter.lock());  // if there is no outer then it must be read only
-      }
-
-      //-----------------------------------------------------------------------
-      UINT PeerFilePublic::getVersionNumber() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (!mDocument) return 0;
-
-        ElementPtr peerRoot = mDocument->getFirstChildElement();
-        if (!peerRoot) return 0;
-        String version = peerRoot->getAttributeValue("version");
-
+        ElementPtr sectionAEl = findSection("A");
+        if (!sectionAEl) {
+          ZS_LOG_WARNING(Detail, log("failed to find section A in public peer file, peer URI=") + mPeerURI)
+          return Time();
+        }
         try {
-          return (Numeric<UINT>(version));
-        } catch(Numeric<UINT>::ValueOutOfRange &) {
+          return message::IMessageHelper::stringToTime(sectionAEl->findFirstChildElementChecked("created")->getTextDecoded());
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("failed to find created, peer URI=") + mPeerURI)
         }
-        return 0;
+        return Time();
       }
 
       //-----------------------------------------------------------------------
-      bool PeerFilePublic::containsSection(const char *sectionID) const
+      Time PeerFilePublic::getExpires() const
       {
-        AutoRecursiveLock lock(mLock);
-        return findSection(sectionID);
-      }
-
-      //-----------------------------------------------------------------------
-      String PeerFilePublic::getContactID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        ElementPtr sectionElement = findSection("B");
-        if (!sectionElement)
-          sectionElement = findSection("C");
-        if (!sectionElement)
-          return calculateContactID();
-        ElementPtr contactElement = sectionElement->findFirstChildElement("contact");
-        if (!contactElement)
-          return calculateContactID();
-        String id = contactElement->getAttributeValue("id");
-        if (id.isEmpty())
-          return calculateContactID();
-        return id;
-      }
-
-      //-----------------------------------------------------------------------
-      String PeerFilePublic::calculateContactID() const
-      {
-        AutoRecursiveLock lock(mLock);
-        ElementPtr sectionAElement = findSection("A");
-        if (!sectionAElement) return String();
-
-        String canonicalSectionA = hookflash::services::ICanonicalXML::convert(sectionAElement->getParentElementChecked());
-        String contactID;
-
-        // calculate the hash of section A - which is the contact ID
-        {
-          SecureByteBlock contactIDRaw(32);
-
-          SHA256 contactIDSHA256;
-          contactIDSHA256.Update((const BYTE *)canonicalSectionA.c_str(), canonicalSectionA.size());
-          contactIDSHA256.Final(contactIDRaw);
-
-          HexEncoder encoder(new StringSink(contactID));
-          encoder.Put(contactIDRaw, contactIDRaw.size());
-          encoder.MessageEnd();
+        ElementPtr sectionAEl = findSection("A");
+        if (!sectionAEl) {
+          ZS_LOG_WARNING(Detail, log("failed to find section A in public peer file, peer URI=") + mPeerURI)
+          return Time();
         }
-        return contactID;
+        try {
+          return message::IMessageHelper::stringToTime(sectionAEl->findFirstChildElementChecked("expires")->getTextDecoded());
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("failed to find expires, peer URI=") + mPeerURI)
+        }
+        return Time();
       }
 
       //-----------------------------------------------------------------------
       String PeerFilePublic::getFindSecret() const
       {
-        AutoRecursiveLock lock(mLock);
-        ElementPtr sectionAElement = findSection("B");
-        if (!sectionAElement) return String();
-
-        ElementPtr findSecretElement = sectionAElement->findFirstChildElement("findSecret");
-        String findSecret = findSecretElement->getText(true);
-
-        return findSecret;
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePublic::getURIs(
-                                   const char *sectionID,
-                                   URIList &outURIs
-                                   ) const
-      {
-        outURIs.clear();
-
-        AutoRecursiveLock lock(mLock);
-        ElementPtr sectionElement = findSection(sectionID);
-        if (!sectionElement) return;
-
-        ElementPtr urisElement = sectionElement->findFirstChildElement("uris");
-        if (!urisElement) return;
-
-        ElementPtr uriElement = urisElement->getFirstChildElement();
-        while (uriElement) {
-          String name = uriElement->getValue();
-          if (name == "uri") {
-            String result = uriElement->getText(true);
-            if (!result.isEmpty()) {
-              outURIs.push_back(result);
-            }
-          }
-          uriElement = uriElement->getNextSiblingElement();
+        ElementPtr sectionBEl = findSection("B");
+        if (!sectionBEl) {
+          ZS_LOG_WARNING(Detail, log("failed to find section B in public peer file, peer URI=") + mPeerURI)
+          return String();
         }
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePublic::getX509Certificate(SecureByteBlock &outRaw) const
-      {
-        outRaw.New(0);
-
-        AutoRecursiveLock lock(mLock);
-        ElementPtr sectionElement = findSection("A");
-        if (!sectionElement) return;
 
         try {
-          ElementPtr signatureElement = sectionElement->getNextSiblingElementChecked();
-          ElementPtr nextElement;
-          for (; signatureElement; signatureElement = nextElement) {
-            nextElement = signatureElement->getNextSiblingElement();
-            try {
-              if ("Signature" != signatureElement->getValue()) continue;
-
-              String uri = signatureElement->findFirstChildElementChecked("SignedInfo")->findFirstChildElementChecked("Reference")->getAttributeValue("URI");
-              uri.trim(" #\t\n\r\v");
-              if ("A" != uri) continue;
-
-              // found a match
-              ElementPtr x509CertificateElement = signatureElement->findFirstChildElementChecked("KeyInfo")->findFirstChildElementChecked("X509Data")->findFirstChildElementChecked("X509Certificate");
-
-              String x509Certificate = x509CertificateElement->getText();
-              convertFromBase64(x509Certificate, outRaw);
-              return;
-            } catch(zsLib::XML::Exceptions::CheckFailed &) {
-            }
-          }
-        } catch(zsLib::XML::Exceptions::CheckFailed &) {
+          return sectionBEl->findFirstChildElementChecked("findSecret")->getTextDecoded();
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("failed to obtain find secret, peer URI=") + mPeerURI)
         }
+        return String();
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr PeerFilePublic::getSignedSaltBundle() const
+      {
+        ElementPtr sectionAEl = findSection("A");
+        if (!sectionAEl) {
+          ZS_LOG_WARNING(Detail, log("failed to find section A in public peer file, peer URI=") + mPeerURI)
+          return ElementPtr();
+        }
+
+        try {
+          return sectionAEl->findFirstChildElementChecked("saltBundle")->clone()->toElement();
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("failed to obtain salt bundle, peer URI=") + mPeerURI)
+        }
+        return ElementPtr();
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityBundleElementListPtr PeerFilePublic::getIdentityBundles() const
+      {
+        IdentityBundleElementListPtr result(new IdentityBundleElementList);
+
+        ElementPtr sectionCEl = findSection("C");
+        if (!sectionCEl) {
+          ZS_LOG_WARNING(Detail, log("failed to find section C in public peer file, peer URI=") + mPeerURI)
+          return result;
+        }
+
+        try {
+          ElementPtr identitiesEl = sectionCEl->findFirstChildElement("identities");
+          if (!identitiesEl) return result;
+
+          ElementPtr identityBundleEl = identitiesEl->findFirstChildElement("identityBundle");
+          while (identityBundleEl) {
+            result->push_back(identityBundleEl->clone()->toElement());
+            identityBundleEl = identityBundleEl->findNextSiblingElement("identityBundle");
+          }
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("failed to obtain salt bundle, peer URI=") + mPeerURI)
+        }
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      IPeerFilesPtr PeerFilePublic::getAssociatedPeerFiles() const
+      {
+        return mOuter.lock();
+      }
+
+      //-----------------------------------------------------------------------
+      IPeerFilePrivatePtr PeerFilePublic::getAssociatedPeerFilePrivate() const
+      {
+        IPeerFilesPtr peerFiles = mOuter.lock();
+        if (!peerFiles) return IPeerFilePrivatePtr();
+        return peerFiles->getPeerFilePrivate();
+      }
+
+      //-----------------------------------------------------------------------
+      IRSAPublicKeyPtr PeerFilePublic::getPublicKey() const
+      {
+        return mPublicKey;
+      }
+
+      //-----------------------------------------------------------------------
+      bool PeerFilePublic::verifySignature(ElementPtr signedEl) const
+      {
+        ZS_THROW_BAD_STATE_IF(!mPublicKey)
+        ZS_THROW_INVALID_ARGUMENT_IF(!signedEl)
+
+        ElementPtr signatureEl;
+        signedEl = IHelper::getSignatureInfo(signedEl, &signatureEl);
+
+        if (!signedEl) {
+          ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))
+          return false;
+        }
+
+        // found the signature reference, now check if the peer URIs match - they must...
+        try {
+          String foundURI = signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("uri")->getTextDecoded();
+          if (foundURI != mPeerURI) {
+            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file, signature's URI=") + foundURI + ", peer file URI=" + mPeerURI)
+            return false;
+          }
+
+          String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
+          if (algorithm != HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
+            ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
+            return false;
+          }
+
+          String signatureDigestAsString = signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded();
+
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> signedElAsJSON = generator->write(signedEl);
+
+          SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
+
+          if (0 == IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
+            ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
+            return false;
+          }
+
+          SecureByteBlockPtr signatureDigestSigned = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
+
+          if (!mPublicKey->verify(*actualDigest, *signatureDigestSigned)) {
+            ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", peer URI=" + mPeerURI)
+            return false;
+          }
+
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("signature missing element"))
+          return false;
+        }
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr PeerFilePublic::encrypt(const SecureByteBlock &buffer) const
+      {
+        return mPublicKey->encrypt(buffer);
       }
 
       //-----------------------------------------------------------------------
@@ -367,26 +356,63 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PeerFilePublic => friend PeerFilePrivate
+      #pragma mark PeerFilePublic => IPeerFiles
       #pragma mark
 
       //-----------------------------------------------------------------------
-      PeerFilePublicPtr PeerFilePublic::createFromPreGenerated(
-                                                               PeerFilesPtr peerFiles,
-                                                               DocumentPtr document,
-                                                               RSAPublicKeyPtr publicKey
-                                                               )
+      String PeerFilePublic::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer file public id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("peer uri", mPeerURI, firstTime) +
+               Helper::getDebugValue("created", IMessageHelper::timeToString(getCreated()), firstTime) +
+               Helper::getDebugValue("expires", IMessageHelper::timeToString(getExpires()), firstTime) +
+               Helper::getDebugValue("find secret", getFindSecret(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerFilePublic => IPeerFilePublicForPeerFilePrivate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr PeerFilePublic::createFromPublicKey(
+                                                            PeerFilesPtr peerFiles,
+                                                            DocumentPtr publicDoc,
+                                                            IRSAPublicKeyPtr publicKey,
+                                                            const String &peerURI
+                                                            )
       {
         PeerFilePublicPtr pThis(new PeerFilePublic);
         pThis->mThisWeak = pThis;
         pThis->mOuter = peerFiles;
-        pThis->mDocument = document;
+        pThis->mDocument = publicDoc;
         pThis->mPublicKey = publicKey;
+        pThis->mPeerURI = peerURI;
         pThis->init();
-        if (!pThis->mPublicKey) {
-          ZS_LOG_ERROR(Basic, pThis->log("failed to load public key from XML"))
+
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr PeerFilePublic::loadFromElement(
+                                                        PeerFilesPtr peerFiles,
+                                                        DocumentPtr publicDoc
+                                                        )
+      {
+        PeerFilePublicPtr pThis(new PeerFilePublic);
+        pThis->mThisWeak = pThis;
+        pThis->mOuter = peerFiles;
+        pThis->mDocument = publicDoc;
+        pThis->init();
+        if (!pThis->load()) {
+          ZS_LOG_ERROR(Detail, pThis->log("public peer file failed to parse"))
           return PeerFilePublicPtr();
         }
+
         return pThis;
       }
 
@@ -399,15 +425,110 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      PeerFilePublicPtr PeerFilePublic::convert(IPeerFilePublicPtr peerFile)
-      {
-        return boost::dynamic_pointer_cast<PeerFilePublic>(peerFile);
-      }
-
-      //-----------------------------------------------------------------------
       String PeerFilePublic::log(const char *message) const
       {
         return String("PeerFilePublic [") + Stringize<PUID>(mID).string() + "] " + message;
+      }
+
+      //-----------------------------------------------------------------------
+      bool PeerFilePublic::load()
+      {
+        ElementPtr sectionAEl = findSection("A");
+        if (!sectionAEl) {
+          ZS_LOG_ERROR(Detail, log("unable to find section A in the public peer file"))
+          return false;
+        }
+
+        try {
+          String cipher = sectionAEl->findFirstChildElementChecked("cipher")->getTextDecoded();
+          if (HOOKFLASH_STACK_PEER_FILE_CIPHER != cipher) {
+            ZS_LOG_WARNING(Detail, log("cipher suite is not understood, cipher suite=") + cipher + ", expecting=" + HOOKFLASH_STACK_PEER_FILE_CIPHER)
+            return false;
+          }
+
+          GeneratorPtr generator = Generator::createJSONGenerator();
+
+          String contactID;
+          {
+            ULONG length = 0;
+            boost::shared_array<char> sectionABundleAsString = generator->write(sectionAEl->getParentChecked(), &length);
+
+            SHA256 sha256;
+            SecureByteBlock bundleHash(sha256.DigestSize());
+
+            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
+            sha256.Update((const BYTE *)(sectionABundleAsString.get()), length);
+            sha256.Final(bundleHash);
+
+            contactID = IHelper::convertToHex(bundleHash);
+          }
+
+          ElementPtr domainEl;
+          try {
+            ElementPtr saltSignatureEl;
+            if (!IHelper::getSignatureInfo(sectionAEl->findFirstChildElementChecked("saltBundle")->findFirstChildElementChecked("salt"), &saltSignatureEl)) {
+              ZS_LOG_ERROR(Basic, log("failed to find salt signature"))
+            }
+            domainEl = saltSignatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("domain");
+          } catch (CheckFailed &) {
+            ZS_LOG_ERROR(Basic, log("failed to obtain signature domain from signed salt"))
+            return false;
+          }
+          String domain = domainEl->getTextDecoded();
+          if (domain.length() < 1) {
+            ZS_LOG_ERROR(Basic, log("domain from signed salt was empty"))
+            return false;
+          }
+
+          mPeerURI = IPeer::joinURI(domain, contactID);
+          if (!mPeerURI) {
+            ZS_LOG_ERROR(Basic, log("failed to generate a proper peer URI"))
+            return false;
+          }
+
+          ElementPtr signatureEl;
+          if (!IHelper::getSignatureInfo(sectionAEl, &signatureEl)) {
+            ZS_LOG_ERROR(Basic, log("failed to obtain signature domain from signed salt"))
+            return false;
+          }
+
+          SecureByteBlockPtr x509Certificate = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("x509Data")->getTextDecoded());
+
+          mPublicKey = IRSAPublicKey::load(*x509Certificate);
+          if (!mPublicKey) {
+            ZS_LOG_ERROR(Detail, log("failed to load public key, peer URI=") + mPeerURI)
+            return false;
+          }
+
+          {
+            ULONG length = 0;
+            boost::shared_array<char> sectionAAsString = generator->write(sectionAEl, &length);
+
+            SecureByteBlockPtr sectionHash = IHelper::hash(sectionAAsString.get(), IHelper::HashAlgorthm_SHA1);
+            String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
+            if (HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM != algorithm) {
+              ZS_LOG_WARNING(Detail, log("signature algorithm was not understood, peer URI=") + mPeerURI + ", algorithm=" + algorithm + ", expecting=" + HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM)
+              return false;
+            }
+
+            SecureByteBlockPtr digestValue = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded());
+
+            if (0 == IHelper::compare(*sectionHash, *digestValue)) {
+              ZS_LOG_ERROR(Detail, log("digest value does not match on section A signature on public peer file, peer URI=") + mPeerURI +  ", calculated digest=" + IHelper::convertToBase64(*sectionHash) + ", signature digest=" + IHelper::convertToBase64(*digestValue))
+              return false;
+            }
+
+            SecureByteBlockPtr digestSigned =  IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
+            if (mPublicKey->verify(*sectionHash, *digestSigned)) {
+              ZS_LOG_ERROR(Detail, log("signature on section A of public peer file failed to validate, peer URI=") + mPeerURI)
+              return false;
+            }
+          }
+        } catch(CheckFailed &) {
+          ZS_LOG_ERROR(Detail, log("unable to parse the public peer file"))
+          return false;
+        }
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -415,100 +536,19 @@ namespace hookflash
       {
         if (!mDocument) return ElementPtr();
 
-        ElementPtr peerRoot = mDocument->getFirstChildElement();
-        if (!peerRoot) return ElementPtr();
+        ElementPtr peerRootEl = mDocument->getFirstChildElement();
+        if (!peerRootEl) return ElementPtr();
 
-        ElementPtr sectionBundleElement = peerRoot->getFirstChildElement();
-        while (sectionBundleElement) {
-          ElementPtr sectionElement = sectionBundleElement->getFirstChildElement();
-          if (sectionElement) {
-            String id = sectionElement->getAttributeValue("id");
-            if (id == sectionID) return sectionElement;
+        ElementPtr sectionBundleEl = peerRootEl->getFirstChildElement();
+        while (sectionBundleEl) {
+          ElementPtr sectionEl = sectionBundleEl->getFirstChildElement();
+          if (sectionEl) {
+            String id = sectionEl->getAttributeValue("id");
+            if (id == sectionID) return sectionEl;
           }
-          sectionBundleElement = sectionBundleElement->getNextSiblingElement();
+          sectionBundleEl = sectionBundleEl->getNextSiblingElement();
         }
         return ElementPtr();
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark PeerFilePublic::RSAPublicKey
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      PeerFilePublic::RSAPublicKey::RSAPublicKey()
-      {
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark PeerFilePrivate::PeerFilePublic => friend PeerFilePublic
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      RSAPublicKeyPtr PeerFilePublic::RSAPublicKey::load(const SecureByteBlock &buffer)
-      {
-        AutoSeededRandomPool rng;
-
-        ByteQueue byteQueue;
-        byteQueue.LazyPut(buffer.BytePtr(), buffer.SizeInBytes());
-        byteQueue.FinalizeLazyPut();
-
-        RSAPublicKeyPtr pThis(new RSAPublicKey());
-
-        try
-        {
-          pThis->mPublicKey.Load(byteQueue);
-          if (!pThis->mPublicKey.Validate(rng, 3)) {
-            ZS_LOG_ERROR(Basic, "Failed to load an existing public key")
-            return RSAPublicKeyPtr();
-          }
-        } catch (CryptoPP::Exception &e) {
-          ZS_LOG_WARNING(Detail, String("Cryptography library threw an exception, reason=") + e.what())
-          return RSAPublicKeyPtr();
-        }
-
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePublic::RSAPublicKey::save(SecureByteBlock &outBuffer) const
-      {
-        ByteQueue byteQueue;
-        mPublicKey.Save(byteQueue);
-
-        size_t outputLengthInBytes = (size_t)byteQueue.CurrentSize();
-        outBuffer.CleanNew(outputLengthInBytes);
-
-        byteQueue.Get(outBuffer, outputLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      bool PeerFilePublic::RSAPublicKey::verify(
-                                                const String &inOriginalStrDataSigned,
-                                                SecureByteBlock &inSignature
-                                                ) const
-      {
-        CryptoPP_Verifier verifier(mPublicKey);
-
-        try
-        {
-          bool result = verifier.VerifyMessage((const BYTE *)inOriginalStrDataSigned.c_str(), inOriginalStrDataSigned.length(), inSignature, inSignature.size());
-          if (!result) {
-            ZS_LOG_WARNING(Detail, "Signature value did not pass")
-            return false;
-          }
-        } catch (CryptoPP::Exception &e) {
-          ZS_LOG_WARNING(Detail, String("Cryptography library threw an exception, reason=") + e.what())
-          return false;
-        }
-        return true;
       }
     }
 
@@ -521,10 +561,15 @@ namespace hookflash
     #pragma mark
 
     //-------------------------------------------------------------------------
-    IPeerFilePublicPtr IPeerFilePublic::loadFromXML(ElementPtr publicPeerRootElement)
+    String IPeerFilePublic::toDebugString(IPeerFilePublicPtr peerFilePublic, bool includeCommaPrefix)
     {
-      return internal::PeerFilePublic::loadFromXML(publicPeerRootElement);
+      return internal::PeerFilePublic::toDebugString(peerFilePublic, includeCommaPrefix);
     }
 
+    //-------------------------------------------------------------------------
+    IPeerFilePublicPtr IPeerFilePublic::loadFromElement(ElementPtr publicPeerRootElement)
+    {
+      return internal::PeerFilePublic::loadFromElement(publicPeerRootElement);
+    }
   }
 }

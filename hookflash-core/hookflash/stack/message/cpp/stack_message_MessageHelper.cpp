@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,30 +22,34 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/PeerPublishRequest.h>
-#include <hookflash/stack/message/PeerGetResult.h>
-#include <hookflash/stack/message/MessageFactoryStack.h>
+#include <hookflash/stack/message/IMessageHelper.h>
+#include <hookflash/stack/message/IMessageFactory.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/MessageReply.h>
 
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IPublication.h>
+#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
+#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
+#include <hookflash/stack/message/peer-common/PeerGetResult.h>
+
 #include <hookflash/stack/IPublicationRepository.h>
+#include <hookflash/stack/internal/stack_Location.h>
+#include <hookflash/stack/internal/stack_Peer.h>
+#include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <hookflash/stack/IRSAPublicKey.h>
 
-#include <hookflash/services/IICESocket.h>
-
-#include <zsLib/Stringize.h>
 #include <zsLib/Numeric.h>
-#include <zsLib/zsHelpers.h>
-
+#include <zsLib/XML.h>
+#include <zsLib/helpers.h>
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -55,24 +59,19 @@ namespace hookflash
   {
     namespace message
     {
+      using zsLib::DWORD;
       using zsLib::Stringize;
       using zsLib::Numeric;
 
-      typedef zsLib::WORD WORD;
-      typedef zsLib::UINT UINT;
-      typedef zsLib::String String;
-      typedef zsLib::Time Time;
-      typedef zsLib::XML::Exceptions Exceptions;
-      typedef zsLib::XML::Document Document;
-      typedef zsLib::XML::DocumentPtr DocumentPtr;
-      typedef zsLib::XML::Attribute Attribute;
-      typedef zsLib::XML::AttributePtr AttributePtr;
-      typedef zsLib::XML::Element Element;
-      typedef zsLib::XML::ElementPtr ElementPtr;
-      typedef zsLib::XML::Text Text;
-      typedef zsLib::XML::TextPtr TextPtr;
+      using namespace stack::internal;
+
+      using peer_common::MessageFactoryPeerCommon;
+      using peer_common::PeerPublishRequest;
+      using peer_common::PeerGetResult;
+
+      typedef stack::IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
+
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
-      typedef services::IICESocket::CandidateList CandidateList;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -95,18 +94,28 @@ namespace hookflash
         ret->setElementNameIsCaseSensative(true);
         ret->setAttributeNameIsCaseSensative(true);
 
-        ElementPtr root = Element::create();
-        root->setValue(tagName);
+        ElementPtr root = Element::create(tagName);
         ret->adoptAsFirstChild(root);
 
-        IMessageHelper::setAttribute(root, "xmlns", factory->xmlns());
+        String domain = message.domain();
+
+        if (!domain.isEmpty()) {
+          IMessageHelper::setAttribute(root, "domain", domain);
+        }
+        IMessageHelper::setAttribute(root, "handler", factory->getHandler());
         IMessageHelper::setAttributeID(root, message.messageID());
         IMessageHelper::setAttribute(root, "method", factory->toString(message.method()));
 
-        if (Message::MessageType_Result == message.messageType()) {
+        if (message.isResult()) {
           const message::MessageResult *msgResult = (dynamic_cast<const message::MessageResult *>(&message));
           if (msgResult->hasAttribute(MessageResult::AttributeType_Time)) {
             IMessageHelper::setAttributeEpoch(root, msgResult->time());
+          }
+        }
+        if (message.isReply()) {
+          const message::MessageReply *msgReply = (dynamic_cast<const message::MessageReply *>(&message));
+          if (msgReply->hasAttribute(MessageReply::AttributeType_Time)) {
+            IMessageHelper::setAttributeEpoch(root, msgReply->time());
           }
         }
 
@@ -166,7 +175,7 @@ namespace hookflash
       void IMessageHelper::setAttributeEpoch(ElementPtr elem, const Time &value)
       {
         if (Time() == value) return;
-        setAttribute(elem, "epoch", timeToString(value));
+        elem->setAttribute("epoch", timeToString(value), false);
       }
 
       //-----------------------------------------------------------------------
@@ -213,27 +222,56 @@ namespace hookflash
                                                        const String &textVal
                                                        )
       {
-        TextPtr tmpTxt = Text::create();
-        tmpTxt->setValue(textVal);
-
         ElementPtr tmp = Element::create(elName);
+
+        if (textVal.isEmpty()) return tmp;
+
+        TextPtr tmpTxt = Text::create();
+        tmpTxt->setValue(textVal, Text::Format_JSONStringEncoded);
+
         tmp->adoptAsFirstChild(tmpTxt);
 
         return tmp;
       }
 
       //-----------------------------------------------------------------------
-      ElementPtr IMessageHelper::createElementWithTextAndEntityEncode(
+      ElementPtr IMessageHelper::createElementWithNumber(
+                                                         const String &elName,
+                                                         const String &numberAsStringValue
+                                                         )
+      {
+        ElementPtr tmp = Element::create(elName);
+
+        if (numberAsStringValue.isEmpty()) return tmp;
+
+        TextPtr tmpTxt = Text::create();
+        tmpTxt->setValue(numberAsStringValue, Text::Format_JSONNumberEncoded);
+        tmp->adoptAsFirstChild(tmpTxt);
+
+        return tmp;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr IMessageHelper::createElementWithTime(
+                                                       const String &elName,
+                                                       Time time
+                                                       )
+      {
+        return createElementWithNumber(elName, timeToString(time));
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr IMessageHelper::createElementWithTextAndJSONEncode(
                                                                       const String &elName,
                                                                       const String &textVal
                                                                       )
       {
-        TextPtr tmpTxt = Text::create();
-        tmpTxt->setValueAndEntityEncode(textVal);
-
         ElementPtr tmp = Element::create(elName);
-        tmp->adoptAsFirstChild(tmpTxt);
+        if (textVal.isEmpty()) return tmp;
 
+        TextPtr tmpTxt = Text::create();
+        tmpTxt->setValueAndJSONEncode(textVal);
+        tmp->adoptAsFirstChild(tmpTxt);
         return tmp;
       }
 
@@ -244,65 +282,10 @@ namespace hookflash
                                                      )
       {
         ElementPtr tmp = createElement(elName);
+
+        if (idValue.isEmpty()) return tmp;
+
         setAttributeID(tmp, idValue);
-        return tmp;
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr IMessageHelper::createElementWithAttribute(
-                                                            const String &elName,
-                                                            const String &attrName,
-                                                            const String &attrValue
-                                                            )
-      {
-        ElementPtr tmp = createElement(elName);
-        setAttribute(tmp, attrName, attrValue);
-        return tmp;
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr IMessageHelper::createElementWithIDAndAttribute(
-                                                                 const String &elName,
-                                                                 const String &idValue,
-                                                                 const String &attrName,
-                                                                 const String &attrValue
-                                                                 )
-      {
-        ElementPtr tmp = createElementWithID(elName, idValue);
-        setAttribute(tmp, attrName, attrValue);
-        return tmp;
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr IMessageHelper::createElementWithIDAndText(
-                                                            const String &elName,
-                                                            const String &idValue,
-                                                            const String &txtValue
-                                                            )
-      {
-        TextPtr tmpTxt = Text::create();
-        tmpTxt->setValue(txtValue);
-
-        ElementPtr tmp = createElementWithID(elName, idValue);
-        tmp->adoptAsLastChild(tmpTxt);
-
-        return tmp;
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr IMessageHelper::createElementWithAttributeAndText(
-                                                                   const String &elName,
-                                                                   const String &attrName,
-                                                                   const String &attrValue,
-                                                                   const String &txtValue
-                                                                   )
-      {
-        TextPtr tmpTxt = Text::create();
-        tmpTxt->setValue(txtValue);
-
-        ElementPtr tmp = createElementWithAttribute(elName, attrName, attrValue);
-        tmp->adoptAsLastChild(tmpTxt);
-
         return tmp;
       }
 
@@ -323,29 +306,38 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String IMessageHelper::getElementTextAndEntityDecode(ElementPtr node)
+      String IMessageHelper::getElementTextAndDecode(ElementPtr node)
       {
         if (!node) return String();
-        return node->getTextAndEntityDecode();
+        return node->getTextDecoded();
       }
 
       //-----------------------------------------------------------------------
-      String IMessageHelper::getChildElementText(
-                                                 ElementPtr node,
-                                                 const String &childElementName
-                                                 )
+      void IMessageHelper::fill(
+                                Message &message,
+                                ElementPtr root,
+                                IMessageSourcePtr source
+                                )
       {
-        if (!node) return String();
-        ElementPtr childEl = node->findFirstChildElement(childElementName);
-        return getElementText(childEl);
-      }
+        String id = IMessageHelper::getAttribute(root, "id");
+        String domain = IMessageHelper::getAttribute(root, "domain");
 
-      //-----------------------------------------------------------------------
-      void IMessageHelper::setElementText(ElementPtr node, const String &textVal)
-      {
-        TextPtr tmpTxt = Text::create();
-        tmpTxt->setValue(textVal);
-        node->adoptAsFirstChild(tmpTxt);
+        if (!id.isEmpty()) {
+          message.messageID(id);
+        }
+        if (!domain.isEmpty()) {
+          message.domain(domain);
+        }
+        if (message.isResult()) {
+          Time time = IMessageHelper::getAttributeEpoch(root);
+          message::MessageResult *result = (dynamic_cast<message::MessageResult *>(&message));
+          result->time(time);
+        }
+        if (message.isReply()) {
+          Time time = IMessageHelper::getAttributeEpoch(root);
+          message::MessageReply *reply = (dynamic_cast<message::MessageReply *>(&message));
+          reply->time(time);
+        }
       }
 
       namespace internal
@@ -359,16 +351,16 @@ namespace hookflash
         #pragma mark
 
         //---------------------------------------------------------------------
-        ElementPtr MessageHelper::createElement(const Candidate &candidate)
+        ElementPtr MessageHelper::createElement(
+                                                const Candidate &candidate,
+                                                const SecureByteBlock *encryptionKey
+                                                )
         {
-          typedef zsLib::DWORD DWORD;
-
           ElementPtr candidateEl = IMessageHelper::createElement("candidate");
 
           candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("transport", "rudp/udp"));
 
           ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
-          IMessageHelper::setAttribute(ipEl, "format", "ipv4");
           candidateEl->adoptAsLastChild(ipEl);
           candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
 
@@ -379,12 +371,17 @@ namespace hookflash
 
           if (!candidate.mPassword.isEmpty())
           {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("password", candidate.mPassword));
+            if (encryptionKey) {
+              String encryptedPassword = IHelper::convertToBase64(*IHelper::encrypt(*encryptionKey, *IHelper::hash(candidate.mUsernameFrag, IHelper::HashAlgorthm_MD5), candidate.mPassword));
+              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("passwordEncrypted", encryptedPassword));
+            } else {
+              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("password", candidate.mPassword));
+            }
           }
 
           if (candidate.mPriority > 0)
           {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("priority", Stringize<DWORD>(candidate.mPriority)));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<DWORD>(candidate.mPriority)));
           }
 
           if (!candidate.mProtocol.isEmpty())
@@ -396,71 +393,209 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        ElementPtr MessageHelper::createElement(const Location &location)
+        ElementPtr MessageHelper::createElement(
+                                                const LocationInfo &locationInfo,
+                                                const SecureByteBlock *encryptionKey
+                                                )
         {
-          ElementPtr locationEl = IMessageHelper::createElementWithID("location", location.mID);
+          if (!locationInfo.mLocation) {
+            ZS_LOG_WARNING(Detail, "MessageHelper [] missing location object in location info")
+            return ElementPtr();
+          }
+
+          LocationPtr location = Location::convert(locationInfo.mLocation);
+
+          ElementPtr locationEl = IMessageHelper::createElementWithID("location", location->forMessages().getLocationID());
           ElementPtr detailEl = IMessageHelper::createElement("details");
-          ElementPtr challengeEl = IMessageHelper::createElement("challenge");
 
-          if (!location.mLocationSalt.isEmpty())
-            challengeEl->adoptAsLastChild(IMessageHelper::createElementWithText("locationSalt", location.mLocationSalt));
-
-          if (!location.mLocationFindSecretProof.isEmpty())
-            challengeEl->adoptAsLastChild(IMessageHelper::createElementWithAttributeAndText("locationFindSecretProof", "cipher", "sha256/aes256", location.mLocationFindSecretProof));
-
-          if (location.mIPAddress.string(false) != "0.0.0.0")
+          if (!locationInfo.mIPAddress.isAddressEmpty())
           {
-            ElementPtr ipEl = IMessageHelper::createElementWithText("ip", location.mIPAddress.string(false));
-            IMessageHelper::setAttribute(ipEl, "format", "ipv4");
+            ElementPtr ipEl = IMessageHelper::createElementWithText("ip", locationInfo.mIPAddress.string(false));
             detailEl->adoptAsLastChild(ipEl);
           }
 
-          if (!location.mDeviceID.isEmpty()) {
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", location.mDeviceID));
+          if (!locationInfo.mDeviceID.isEmpty()) {
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", locationInfo.mDeviceID));
           }
 
-          if (!location.mUserAgent.isEmpty())
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndEntityEncode("userAgent", location.mUserAgent));
+          if (!locationInfo.mUserAgent.isEmpty())
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("userAgent", locationInfo.mUserAgent));
 
-          if (!location.mOS.isEmpty())
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndEntityEncode("os", location.mOS));
+          if (!locationInfo.mOS.isEmpty())
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("os", locationInfo.mOS));
 
-          if (!location.mSystem.isEmpty())
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndEntityEncode("system", location.mSystem));
+          if (!locationInfo.mSystem.isEmpty())
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("system", locationInfo.mSystem));
 
-          if (!location.mHost.isEmpty())
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndEntityEncode("host", location.mHost));
+          if (!locationInfo.mHost.isEmpty())
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("host", locationInfo.mHost));
 
-          if (challengeEl->hasChildren())
-            locationEl->adoptAsLastChild(challengeEl);
+          PeerPtr peer = location->forMessages().getPeer();
+          if (peer) {
+            locationEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("contact", peer->forMessages().getPeerURI()));
+          }
 
-          if (detailEl->hasChildren())
+          if (detailEl->hasChildren()) {
             locationEl->adoptAsLastChild(detailEl);
+          }
 
-          if (!location.mContactID.isEmpty())
-            locationEl->adoptAsLastChild(IMessageHelper::createElementWithID("contact", location.mContactID));
-
-          if (location.mCandidates.size() > 0)
+          if (locationInfo.mCandidates.size() > 0)
           {
             ElementPtr candidates = IMessageHelper::createElement("candidates");
             locationEl->adoptAsLastChild(candidates);
 
             CandidateList::const_iterator it;
-            for(it=location.mCandidates.begin(); it!=location.mCandidates.end(); ++it)
+            for(it=locationInfo.mCandidates.begin(); it!=locationInfo.mCandidates.end(); ++it)
             {
               Candidate candidate(*it);
-              candidates->adoptAsLastChild(MessageHelper::createElement(candidate));
+              candidates->adoptAsLastChild(MessageHelper::createElement(candidate, encryptionKey));
             }
 
             locationEl->adoptAsLastChild(candidates);
           }
 
-          if (location.mReasonID > 0 || !location.mReason.isEmpty())
-          {
-            locationEl->adoptAsLastChild(IMessageHelper::createElementWithIDAndText("reason", Stringize<WORD>(location.mReasonID), location.mReason));
+          return locationEl;
+        }
+
+        //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(
+                                                const IdentityInfo &identity,
+                                                bool forcePriorityWeightOutput
+                                                )
+        {
+          ElementPtr identityEl = Element::create("identity");
+          if (IdentityInfo::Disposition_NA != identity.mDisposition) {
+            identityEl->setAttribute("disposition", IdentityInfo::toString(identity.mDisposition));
           }
 
-          return locationEl;
+          if (!identity.mAccessToken.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessToken", identity.mAccessToken));
+          }
+          if (!identity.mAccessSecret.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", identity.mAccessSecret));
+          }
+          if (Time() != identity.mAccessSecretExpires) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(identity.mAccessSecretExpires)));
+          }
+          if (!identity.mAccessSecretProof.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", identity.mAccessSecretProof));
+          }
+          if (Time() != identity.mAccessSecretExpires) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(identity.mAccessSecretProofExpires)));
+          }
+
+          if (!identity.mBase.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("base", identity.mBase));
+          }
+          if (!identity.mURI.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("uri", identity.mURI));
+          }
+          if (!identity.mURIEncrypted.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("uriEncrypted", identity.mURIEncrypted));
+          }
+          if (!identity.mHash.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("hash", identity.mHash));
+          }
+          if (!identity.mProvider.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("provider", identity.mProvider));
+          }
+
+          if (!identity.mContactUserID.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("contactUserID", identity.mContactUserID));
+          }
+          if (!identity.mContact.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("contact", identity.mContact));
+          }
+          if (!identity.mContactFindSecret.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("contactFindSecret", identity.mContactFindSecret));
+          }
+          if (!identity.mPrivatePeerFileSalt.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("privatePeerFileSalt", identity.mPrivatePeerFileSalt));
+          }
+          if (!identity.mPrivatePeerFileSecretEncrypted.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("privatePeerFileSecretEncrypted", identity.mPrivatePeerFileSecretEncrypted));
+          }
+
+          if (Time() != identity.mLastReset) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("lastRest", IMessageHelper::timeToString(identity.mLastReset)));
+          }
+          if (!identity.mReloginAccessKey.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("reloginAccessKey", identity.mReloginAccessKey));
+          }
+          if (!identity.mReloginAccessKeyEncrypted.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("reloginAccessKeyEncrypted", identity.mReloginAccessKeyEncrypted));
+          }
+
+          if (!identity.mSecretSalt.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretSalt", identity.mSecretSalt));
+          }
+          if (!identity.mSecretEncrypted.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretEncrypted", identity.mSecretEncrypted));
+          }
+          if (!identity.mSecretDecryptionKeyEncrypted.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretDecryptionKeyEncrypted", identity.mSecretDecryptionKeyEncrypted));
+          }
+
+          if ((0 != identity.mPriority) ||
+              (forcePriorityWeightOutput)) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<WORD>(identity.mPriority).string()));
+          }
+          if ((0 != identity.mWeight) ||
+              (forcePriorityWeightOutput)) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", Stringize<WORD>(identity.mWeight).string()));
+          }
+
+          if (Time() != identity.mUpdated) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updated", IMessageHelper::timeToString(identity.mUpdated)));
+          }
+          if (Time() != identity.mExpires) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(identity.mExpires)));
+          }
+
+          if (!identity.mName.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("name", identity.mName));
+          }
+          if (!identity.mProfile.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("profile", identity.mProfile));
+          }
+          if (!identity.mVProfile.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("vprofile", identity.mVProfile));
+          }
+
+          if (!identity.mProfile.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("profile", identity.mProfile));
+          }
+
+          if (identity.mAvatars.size() > 0) {
+            ElementPtr avatarsEl = Element::create("avatars");
+            for (IdentityInfo::AvatarList::const_iterator iter = identity.mAvatars.begin(); iter != identity.mAvatars.end(); ++iter)
+            {
+              const IdentityInfo::Avatar &avatar = (*iter);
+              ElementPtr avatarEl = Element::create("avatar");
+
+              if (!avatar.mName.isEmpty()) {
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("name", avatar.mName));
+              }
+              if (!avatar.mURL.isEmpty()) {
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("name", avatar.mURL));
+              }
+              if (0 != avatar.mWidth) {
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("width", Stringize<int>(avatar.mWidth).string()));
+              }
+              if (0 != avatar.mHeight) {
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("height", Stringize<int>(avatar.mHeight).string()));
+              }
+
+              if (avatarEl->hasChildren()) {
+                avatarsEl->adoptAsLastChild(avatarEl);
+              }
+            }
+            if (avatarsEl->hasChildren()) {
+              identityEl->adoptAsLastChild(avatarsEl);
+            }
+          }
+
+          return identityEl;
         }
 
         //---------------------------------------------------------------------
@@ -471,10 +606,10 @@ namespace hookflash
         {
           ElementPtr rootEl = IMessageHelper::createElement(elementName);
 
-          for (stack::IPublicationMetaData::PublishToRelationshipsMap::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
+          for (PublishToRelationshipsMap::const_iterator iter = relationships.begin(); iter != relationships.end(); ++iter)
           {
             String name = (*iter).first;
-            const stack::IPublicationMetaData::PermissionAndContactIDListPair &permission = (*iter).second;
+            const stack::IPublicationMetaData::PermissionAndPeerURIListPair &permission = (*iter).second;
 
             const char *permissionStr = "all";
             switch (permission.first) {
@@ -489,9 +624,9 @@ namespace hookflash
             relationshipsEl->setAttribute("name", name);
             relationshipsEl->setAttribute("allow", permissionStr);
 
-            for (stack::IPublicationMetaData::ContactIDList::const_iterator contactIter = permission.second.begin(); contactIter != permission.second.end(); ++contactIter)
+            for (stack::IPublicationMetaData::PeerURIList::const_iterator contactIter = permission.second.begin(); contactIter != permission.second.end(); ++contactIter)
             {
-              ElementPtr contactEl = IMessageHelper::createElementWithID("contact", (*contactIter));
+              ElementPtr contactEl = IMessageHelper::createElementWithTextAndJSONEncode("contact", (*contactIter));
               relationshipsEl->adoptAsLastChild(contactEl);
             }
 
@@ -509,32 +644,28 @@ namespace hookflash
                                                   IPublicationRepositoryPeerCachePtr peerCache
                                                   )
         {
-          typedef zsLib::ULONG ULONG;
-          typedef stack::internal::IPublicationForMessages IPublicationForMessages;
-          typedef stack::internal::IPublicationForMessagesPtr IPublicationForMessagesPtr;
-
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(msg);
           ElementPtr root = ret->getFirstChildElement();
 
-          IPublicationForMessagesPtr publication(IPublicationForMessages::convert(publicationMetaData->getPublication()));
+          PublicationPtr publication = Publication::convert(publicationMetaData->toPublication());
 
           ULONG fromVersion = 0;
           ULONG toVersion = 0;
 
           if (publication) {
-            fromVersion = publication->getBaseVersion();
-            toVersion = publication->getVersion();
+            fromVersion = publication->forMessages().getBaseVersion();
+            toVersion = publication->forMessages().getVersion();
           } else {
             fromVersion = publicationMetaData->getBaseVersion();
             toVersion = publicationMetaData->getVersion();
           }
 
           // do not use the publication for these message types...
-          switch (msg.method()) {
-            case MessageFactoryStack::Method_PeerPublish:
+          switch ((MessageFactoryPeerCommon::Methods)msg.method()) {
+            case MessageFactoryPeerCommon::Method_PeerPublish:
             {
               if (Message::MessageType_Request == msg.messageType()) {
-                message::PeerPublishRequest &request = *(dynamic_cast<message::PeerPublishRequest *>(&msg));
+                PeerPublishRequest &request = *(dynamic_cast<PeerPublishRequest *>(&msg));
                 fromVersion = request.publishedFromVersion();
                 toVersion = request.publishedToVersion();
               }
@@ -544,7 +675,7 @@ namespace hookflash
               }
               break;
             }
-            case MessageFactoryStack::Method_PeerGet:
+            case MessageFactoryPeerCommon::Method_PeerGet:
             {
               if (Message::MessageType_Result == msg.messageType()) {
                 message::PeerGetResult &result = *(dynamic_cast<message::PeerGetResult *>(&msg));
@@ -563,20 +694,20 @@ namespace hookflash
               }
               break;
             }
-            case MessageFactoryStack::Method_PeerDelete:
-            case MessageFactoryStack::Method_PeerSubscribe:
+            case MessageFactoryPeerCommon::Method_PeerDelete:
+            case MessageFactoryPeerCommon::Method_PeerSubscribe:
             {
               // these messages requests/results will never include a publication (at least at this time)
               publication.reset();
               break;
             }
-            case MessageFactoryStack::Method_PeerPublishNotify:
+            case MessageFactoryPeerCommon::Method_PeerPublishNotify:
             {
               if (publication) {
                 if (peerCache) {
                   ULONG bogusFillSize = 0;
                   ULONG &maxFillSize = (notifyPeerPublishMaxDocumentSizeInBytes ? *notifyPeerPublishMaxDocumentSizeInBytes : bogusFillSize);
-                  if (peerCache->getNextVersionToNotifyAboutAndMarkNotified(publication->convertIPublication(), maxFillSize, fromVersion, toVersion)) {
+                  if (peerCache->getNextVersionToNotifyAboutAndMarkNotified(publication, maxFillSize, fromVersion, toVersion)) {
                     break;
                   }
                 }
@@ -588,29 +719,32 @@ namespace hookflash
             default:                                  break;
           }
 
-          stack::IPublicationMetaData::PublishToRelationshipsMap relationships;
-          publicationMetaData->getRelationships(relationships);
+          // make a copy of the relationships
+          PublishToRelationshipsMap relationships = publicationMetaData->getRelationships();
 
           ElementPtr docEl = IMessageHelper::createElement("document");
           ElementPtr detailsEl = IMessageHelper::createElement("details");
-          ElementPtr publishToRelationshipsEl = MessageHelper::createElement(relationships, MessageFactoryStack::Method_PeerSubscribe == (MessageFactoryStack::Methods)msg.method() ? "subscribeToRelationships" : "publishToRelationships");
+          ElementPtr publishToRelationshipsEl = MessageHelper::createElement(relationships, MessageFactoryPeerCommon::Method_PeerSubscribe == (MessageFactoryPeerCommon::Methods)msg.method() ? "subscribeToRelationships" : "publishToRelationships");
           ElementPtr dataEl = IMessageHelper::createElement("data");
 
-          ElementPtr contactEl = IMessageHelper::createElement("contact");
-          ElementPtr locationEl = IMessageHelper::createElement("location");
+          String creatorPeerURI;
+          String creatorLocationID;
 
-          String creatorContactID = publicationMetaData->getCreatorContactID();
-          String creatorLocationIDID = publicationMetaData->getCreatorLocationID();
+          LocationPtr creatorLocation = Location::convert(publicationMetaData->getCreatorLocation());
+          if (creatorLocation ) {
+            creatorLocationID = creatorLocation->forMessages().getLocationID();
+            creatorPeerURI = creatorLocation->forMessages().getPeerURI();
+          }
 
-          IMessageHelper::setAttributeID(contactEl, creatorContactID);
-          IMessageHelper::setAttributeID(locationEl, creatorLocationIDID);
+          ElementPtr contactEl = IMessageHelper::createElementWithTextAndJSONEncode("contact", creatorPeerURI);
+          ElementPtr locationEl = IMessageHelper::createElementWithTextAndJSONEncode("location", creatorLocationID);
 
           NodePtr publishedDocEl;
           if (publication) {
-            publishedDocEl = publication->getXMLDiffs(
-                                                      fromVersion,
-                                                      toVersion
-                                                      );
+            publishedDocEl = publication->forMessages().getDiffs(
+                                                                 fromVersion,
+                                                                 toVersion
+                                                                 );
 
             if (0 == toVersion) {
               // put the version back to something more sensible
@@ -619,34 +753,14 @@ namespace hookflash
           }
 
           ElementPtr nameEl = IMessageHelper::createElementWithText("name", publicationMetaData->getName());
-          ElementPtr versionEl = IMessageHelper::createElementWithText("version", Stringize<ULONG>(toVersion));
-          ElementPtr baseVersionEl = IMessageHelper::createElementWithText("baseVersion", Stringize<ULONG>(fromVersion));
-          ElementPtr lineageEl = IMessageHelper::createElementWithText("lineage", Stringize<ULONG>(publicationMetaData->getLineage()));
+          ElementPtr versionEl = IMessageHelper::createElementWithNumber("version", Stringize<ULONG>(toVersion));
+          ElementPtr baseVersionEl = IMessageHelper::createElementWithNumber("baseVersion", Stringize<ULONG>(fromVersion));
+          ElementPtr lineageEl = IMessageHelper::createElementWithNumber("lineage", Stringize<ULONG>(publicationMetaData->getLineage()));
           ElementPtr chunkEl = IMessageHelper::createElementWithText("chunk", "1/1");
-
-          const char *scopeStr = "location";
-          switch (publicationMetaData->getScope())
-          {
-            case stack::IPublicationMetaData::Scope_Location: scopeStr = "location"; break;
-            case stack::IPublicationMetaData::Scope_Contact:  scopeStr = "contact"; break;
-          }
-
-          ElementPtr scopeEl = IMessageHelper::createElementWithText("scope", scopeStr);
-
-          const char *lifetimeStr = "session";
-          switch (publicationMetaData->getLifetime())
-          {
-            case stack::IPublicationMetaData::Lifetime_Session:   lifetimeStr = "session"; break;
-            case stack::IPublicationMetaData::Lifetime_Permanent: lifetimeStr = "permanent"; break;
-          }
-
-          ElementPtr lifetimeEl = IMessageHelper::createElementWithText("lifetime", lifetimeStr);
 
           ElementPtr expiresEl;
           if (publicationMetaData->getExpires() != Time()) {
-
-            String expires = boost::posix_time::to_simple_string(publicationMetaData->getExpires());
-            expiresEl = IMessageHelper::createElementWithText("expires", expires);
+            expiresEl = IMessageHelper::createElementWithNumber("expires", timeToString(publicationMetaData->getExpires()));
           }
 
           ElementPtr mimeTypeEl = IMessageHelper::createElementWithText("mime", publicationMetaData->getMimeType());
@@ -655,7 +769,7 @@ namespace hookflash
           const char *encodingStr = "binary";
           switch (encoding) {
             case stack::IPublication::Encoding_Binary:  encodingStr = "binary"; break;
-            case stack::IPublication::Encoding_XML:     encodingStr = "xml"; break;
+            case stack::IPublication::Encoding_JSON:    encodingStr = "json"; break;
           }
 
           ElementPtr encodingEl = IMessageHelper::createElementWithText("encoding", encodingStr);
@@ -670,10 +784,8 @@ namespace hookflash
             detailsEl->adoptAsLastChild(baseVersionEl);
           detailsEl->adoptAsLastChild(lineageEl);
           detailsEl->adoptAsLastChild(chunkEl);
-          detailsEl->adoptAsLastChild(scopeEl);
           detailsEl->adoptAsLastChild(contactEl);
           detailsEl->adoptAsLastChild(locationEl);
-          detailsEl->adoptAsLastChild(lifetimeEl);
           if (expiresEl)
             detailsEl->adoptAsLastChild(expiresEl);
           detailsEl->adoptAsLastChild(mimeTypeEl);
@@ -687,14 +799,13 @@ namespace hookflash
           switch (msg.messageType()) {
             case Message::MessageType_Request:
             case Message::MessageType_Notify:   {
-              switch (msg.method()) {
+              switch ((MessageFactoryPeerCommon::Methods)msg.method()) {
 
-                case MessageFactoryStack::Method_PeerPublish:         break;
+                case MessageFactoryPeerCommon::Method_PeerPublish:         break;
 
-                case MessageFactoryStack::Method_PeerGet:             {
+                case MessageFactoryPeerCommon::Method_PeerGet:             {
                   if (baseVersionEl)
                     baseVersionEl->orphan();
-                  lifetimeEl->orphan();
                   if (expiresEl)
                     expiresEl->orphan();
                   mimeTypeEl->orphan();
@@ -703,13 +814,12 @@ namespace hookflash
                   publishToRelationshipsEl->orphan();
                   break;
                 }
-                case MessageFactoryStack::Method_PeerDelete:          {
+                case MessageFactoryPeerCommon::Method_PeerDelete:          {
                   if (baseVersionEl)
                     baseVersionEl->orphan();
                   chunkEl->orphan();
                   contactEl->orphan();
                   locationEl->orphan();
-                  lifetimeEl->orphan();
                   if (expiresEl)
                     expiresEl->orphan();
                   mimeTypeEl->orphan();
@@ -717,16 +827,14 @@ namespace hookflash
                   dataEl->orphan();
                   publishToRelationshipsEl->orphan();
                 }
-                case MessageFactoryStack::Method_PeerSubscribe:       {
+                case MessageFactoryPeerCommon::Method_PeerSubscribe:       {
                   versionEl->orphan();
                   if (baseVersionEl)
                     baseVersionEl->orphan();
                   lineageEl->orphan();
                   chunkEl->orphan();
-                  scopeEl->orphan();
                   contactEl->orphan();
                   locationEl->orphan();
-                  lifetimeEl->orphan();
                   if (expiresEl)
                     expiresEl->orphan();
                   mimeTypeEl->orphan();
@@ -734,7 +842,7 @@ namespace hookflash
                   dataEl->orphan();
                   break;
                 }
-                case MessageFactoryStack::Method_PeerPublishNotify:
+                case MessageFactoryPeerCommon::Method_PeerPublishNotify:
                 {
                   if (!publication) {
                     if (baseVersionEl)
@@ -750,8 +858,8 @@ namespace hookflash
             }
             case Message::MessageType_Result:
             case Message::MessageType_Reply:    {
-              switch (msg.method()) {
-                case MessageFactoryStack::Method_PeerPublish:       {
+              switch ((MessageFactoryPeerCommon::Methods)msg.method()) {
+                case MessageFactoryPeerCommon::Method_PeerPublish:       {
                   if (baseVersionEl)
                     baseVersionEl->orphan();
                   locationEl->orphan();
@@ -759,23 +867,21 @@ namespace hookflash
                   dataEl->orphan();
                   break;
                 }
-                case MessageFactoryStack::Method_PeerGet:           {
+                case MessageFactoryPeerCommon::Method_PeerGet:           {
                   break;
                 }
-                case MessageFactoryStack::Method_PeerDelete:        {
+                case MessageFactoryPeerCommon::Method_PeerDelete:        {
                   ZS_THROW_INVALID_USAGE("this method should not be used for delete result")
                   break;
                 }
-                case MessageFactoryStack::Method_PeerSubscribe:     {
+                case MessageFactoryPeerCommon::Method_PeerSubscribe:     {
                   versionEl->orphan();
                   if (baseVersionEl)
                     baseVersionEl->orphan();
                   lineageEl->orphan();
                   chunkEl->orphan();
-                  scopeEl->orphan();
                   contactEl->orphan();
                   locationEl->orphan();
-                  lifetimeEl->orphan();
                   if (expiresEl)
                     expiresEl->orphan();
                   mimeTypeEl->orphan();
@@ -783,7 +889,7 @@ namespace hookflash
                   dataEl->orphan();
                   break;
                 }
-                case MessageFactoryStack::Method_PeerPublishNotify: {
+                case MessageFactoryPeerCommon::Method_PeerPublishNotify: {
                   ZS_THROW_INVALID_USAGE("this method should not be used for publication notify result")
                   break;
                 }
@@ -861,7 +967,7 @@ namespace hookflash
    <version>12</version>
    <lineage>39239392</lineage>
    <scope>location</scope>
-   <contact id=”ea00ede4405c99be9ae45739ebfe57d5” />
+   <contact>peer://domain.com/ea00ede4405c99be9ae45739ebfe57d5<contact/>
    <location id=”524e609f337663bdbf54f7ef47d23ca9” />
    <chunk>1/1</chunk>
   </details>
@@ -881,7 +987,7 @@ namespace hookflash
    <lineage>39239392</lineage>
    <chunk>1/10</chunk>
    <scope>location</scope>
-   <contact id=”ea00ede4405c99be9ae45739ebfe57d5” />
+   <contact>peer://domain.com/ea00ede4405c99be9ae45739ebfe57d5<contact/>
    <location id=”524e609f337663bdbf54f7ef47d23ca9” />
    <lifetime>session</lifetime>
    <expires>2002-01-20 23:59:59.000</expires>
@@ -924,7 +1030,7 @@ namespace hookflash
   <subscribeToRelationships>
    <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” subscribe=”all” />
    <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” subscribe =”add”>
-    <contact id=”bd520f1dbaa13c0cc9b7ff528e83470e” />
+    <contact>peer://domain.com/bd520f1dbaa13c0cc9b7ff528e83470e</contact>
    </relationships>
    <relationships name=”/hookflash.com/shared-groups/1.0/foobar” subscribe =”all” />
   </subscribeToRelationships>
@@ -941,8 +1047,8 @@ namespace hookflash
    <subscribeToRelationships>
     <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” subscribe =”all” />
     <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” subscribe =”some”>
-     <contact id=”bd520f1dbaa13c0cc9b7ff528e83470e” />
-     <contact id=”8d17a88e8d42ffbd138f3895ec45375c” />
+     <contact>peer://domain.com/bd520f1dbaa13c0cc9b7ff528e83470e</contact>
+     <contact>peer://domain.com/8d17a88e8d42ffbd138f3895ec45375c</contact>
     </relationships>
     <relationships name=”/hookflash.com/shared-groups/1.0/foobar” subscribe =”all” />
    </subscribeToRelationships>
@@ -960,7 +1066,7 @@ namespace hookflash
     <version>12</version>
     <lineage>43493943</lineage>
     <scope>location</scope>
-    <contact id=”ea00ede4405c99be9ae45739ebfe57d5” />
+    <contact>peer://domain.com/ea00ede4405c99be9ae45739ebfe57d5</contact>
     <location id=”524e609f337663bdbf54f7ef47d23ca9” />
     <lifetime>session</lifetime>
     <expires>49494393</expires>
@@ -976,18 +1082,13 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         void MessageHelper::fillFrom(
+                                     IMessageSourcePtr messageSource,
                                      MessagePtr msg,
                                      ElementPtr rootEl,
                                      IPublicationPtr &outPublication,
                                      IPublicationMetaDataPtr &outPublicationMetaData
                                      )
         {
-          typedef zsLib::ULONG ULONG;
-          typedef stack::internal::IPublicationForMessages IPublicationForMessages;
-          typedef stack::internal::IPublicationForMessagesPtr IPublicationForMessagesPtr;
-          typedef stack::internal::IPublicationMetaDataForMessages IPublicationMetaDataForMessages;
-          typedef stack::internal::IPublicationMetaDataForMessagesPtr IPublicationMetaDataForMessagesPtr;
-
           try {
             ElementPtr docEl = rootEl->findFirstChildElementChecked("document");
             ElementPtr detailsEl = docEl->findFirstChildElementChecked("details");
@@ -1001,16 +1102,20 @@ namespace hookflash
             ElementPtr expiresEl = detailsEl->findFirstChildElement("expires");
             ElementPtr mimeTypeEl = detailsEl->findFirstChildElement("mime");
             ElementPtr encodingEl = detailsEl->findFirstChildElement("encoding");
-            String creatorContactID;
-            ElementPtr creatorContactEl = detailsEl->findFirstChildElement("contact");
-            if (creatorContactEl) {
-              creatorContactID = creatorContactEl->getAttributeValue("id");
+
+            String contact;
+            ElementPtr contactEl = detailsEl->findFirstChildElement("contact");
+            if (contactEl) {
+              contact = contactEl->getTextDecoded();
             }
-            String creatorLocationID;
-            ElementPtr creatorLocationEl = detailsEl->findFirstChildElement("location");
-            if (creatorLocationEl) {
-              creatorLocationID = creatorLocationEl->getAttributeValue("id");
+
+            String locationID;
+            ElementPtr locationEl = detailsEl->findFirstChildElement("location");
+            if (locationEl) {
+              locationID = locationEl->getTextDecoded();
             }
+
+            LocationPtr location = ILocationForMessages::create(messageSource, contact, locationID);
 
             ElementPtr dataEl = docEl->findFirstChildElement("data");
 
@@ -1041,25 +1146,11 @@ namespace hookflash
               }
             }
 
-            IPublicationMetaData::Scopes scope = IPublicationMetaData::Scope_Location;
-            if (scopeEl) {
-              if (scopeEl->getText() == "contact") {
-                scope = IPublicationMetaData::Scope_Contact;
-              }
-            }
-
             IPublicationMetaData::Encodings encoding = IPublicationMetaData::Encoding_Binary;
             if (encodingEl) {
               String encodingStr = encodingEl->getText();
-              if (encodingStr == "xml") encoding = IPublicationMetaData::Encoding_XML;
+              if (encodingStr == "json") encoding = IPublicationMetaData::Encoding_JSON;
               else if (encodingStr == "binary") encoding = IPublicationMetaData::Encoding_Binary;
-            }
-
-            IPublicationMetaData::Lifetimes lifetime = IPublicationMetaData::Lifetime_Session;
-            if (lifetimeEl) {
-              String lifetimeStr = lifetimeEl->getText();
-              if (lifetimeStr == "session") lifetime = IPublicationMetaData::Lifetime_Session;
-              else if (lifetimeStr == "permanent") lifetime = IPublicationMetaData::Lifetime_Permanent;
             }
 
             Time expires;
@@ -1075,7 +1166,7 @@ namespace hookflash
 
             IPublicationMetaData::PublishToRelationshipsMap relationships;
 
-            ElementPtr publishToRelationshipsEl = docEl->findFirstChildElement(MessageFactoryStack::Method_PeerSubscribe == (MessageFactoryStack::Methods)msg->method() ? "subscribeToRelationships" : "publishToRelationships");
+            ElementPtr publishToRelationshipsEl = docEl->findFirstChildElement(MessageFactoryPeerCommon::Method_PeerSubscribe == (MessageFactoryPeerCommon::Methods)msg->method() ? "subscribeToRelationships" : "publishToRelationships");
             if (publishToRelationshipsEl) {
               ElementPtr relationshipsEl = publishToRelationshipsEl->findFirstChildElement("relationships");
               while (relationshipsEl)
@@ -1083,13 +1174,13 @@ namespace hookflash
                 String name = relationshipsEl->getAttributeValue("name");
                 String allowStr = relationshipsEl->getAttributeValue("allow");
 
-                IPublicationMetaData::ContactIDList contacts;
+                IPublicationMetaData::PeerURIList contacts;
                 ElementPtr contactEl = relationshipsEl->findFirstChildElement("contact");
                 while (contactEl)
                 {
-                  String contactID = contactEl->getAttributeValue("id");
-                  if (contactID.size() > 0) {
-                    contacts.push_back(contactID);
+                  String contact = contactEl->getTextDecoded();
+                  if (contact.size() > 0) {
+                    contacts.push_back(contact);
                   }
                   contactEl = contactEl->findNextSiblingElement("contact");
                 }
@@ -1102,7 +1193,7 @@ namespace hookflash
                 else if (allowStr == "remove") permission = IPublicationMetaData::Permission_Remove;
 
                 if (name.size() > 0) {
-                  relationships[name] = IPublicationMetaData::PermissionAndContactIDListPair(permission, contacts);
+                  relationships[name] = IPublicationMetaData::PermissionAndPeerURIListPair(permission, contacts);
                 }
 
                 relationshipsEl = relationshipsEl->findNextSiblingElement("relationships");
@@ -1114,15 +1205,15 @@ namespace hookflash
             switch (msg->messageType()) {
               case Message::MessageType_Request:
               case Message::MessageType_Notify:   {
-                switch (msg->method()) {
-                  case MessageFactoryStack::Method_PeerPublish:
-                  case MessageFactoryStack::Method_PeerPublishNotify: {
+                switch ((MessageFactoryPeerCommon::Methods)msg->method()) {
+                  case MessageFactoryPeerCommon::Method_PeerPublish:
+                  case MessageFactoryPeerCommon::Method_PeerPublishNotify: {
                     hasPublication = true;
                     break;
                   }
-                  case MessageFactoryStack::Method_PeerGet:
-                  case MessageFactoryStack::Method_PeerDelete:
-                  case MessageFactoryStack::Method_PeerSubscribe: {
+                  case MessageFactoryPeerCommon::Method_PeerGet:
+                  case MessageFactoryPeerCommon::Method_PeerDelete:
+                  case MessageFactoryPeerCommon::Method_PeerSubscribe: {
                     hasPublication = false;
                   }
                   default: break;
@@ -1131,12 +1222,12 @@ namespace hookflash
               }
               case Message::MessageType_Result:
               case Message::MessageType_Reply:    {
-                switch (msg->method()) {
-                  case MessageFactoryStack::Method_PeerPublish:
-                  case MessageFactoryStack::Method_PeerSubscribe: {
+                switch ((MessageFactoryPeerCommon::Methods)msg->method()) {
+                  case MessageFactoryPeerCommon::Method_PeerPublish:
+                  case MessageFactoryPeerCommon::Method_PeerSubscribe: {
                     hasPublication = false;
                   }
-                  case MessageFactoryStack::Method_PeerGet:
+                  case MessageFactoryPeerCommon::Method_PeerGet:
                   {
                     hasPublication = true;
                     break;
@@ -1153,45 +1244,35 @@ namespace hookflash
             }
 
             if (hasPublication) {
-              IPublicationForMessagesPtr publication = IPublicationForMessages::create(
-                                                                                       version,
-                                                                                       baseVersion,
-                                                                                       lineage,
-                                                                                       IPublicationMetaData::Source_Finder,
-                                                                                       creatorContactID,
-                                                                                       creatorLocationID,
-                                                                                       nameEl->getText(),
-                                                                                       mimeType,
-                                                                                       dataEl,
-                                                                                       encoding,
-                                                                                       relationships,
-                                                                                       "",
-                                                                                       "",
-                                                                                       scope,
-                                                                                       lifetime,
-                                                                                       expires
-                                                                                       );
-              outPublicationMetaData = publication->convertIPublication();
-              outPublication = publication->convertIPublication();
+              PublicationPtr publication = IPublicationForMessages::create(
+                                                                           version,
+                                                                           baseVersion,
+                                                                           lineage,
+                                                                           location,
+                                                                           nameEl->getText(),
+                                                                           mimeType,
+                                                                           dataEl,
+                                                                           encoding,
+                                                                           relationships,
+                                                                           location,
+                                                                           expires
+                                                                           );
+              outPublicationMetaData = publication->forMessages().toPublicationMetaData();
+              outPublication = publication;
             } else {
-              IPublicationMetaDataForMessagesPtr metaData = IPublicationMetaDataForMessages::create(
-                                                                                                    version,
-                                                                                                    baseVersion,
-                                                                                                    lineage,
-                                                                                                    IPublicationMetaData::Source_Finder,
-                                                                                                    creatorContactID,
-                                                                                                    creatorLocationID,
-                                                                                                    nameEl->getText(),
-                                                                                                    mimeType,
-                                                                                                    encoding,
-                                                                                                    relationships,
-                                                                                                    "",
-                                                                                                    "",
-                                                                                                    scope,
-                                                                                                    lifetime,
-                                                                                                    expires
-                                                                                                    );
-              outPublicationMetaData = metaData->convertIPublicationMetaData();
+              PublicationMetaDataPtr metaData = IPublicationMetaDataForMessages::create(
+                                                                                        version,
+                                                                                        baseVersion,
+                                                                                        lineage,
+                                                                                        location,
+                                                                                        nameEl->getText(),
+                                                                                        mimeType,
+                                                                                        encoding,
+                                                                                        relationships,
+                                                                                        location,
+                                                                                        expires
+                                                                                        );
+              outPublicationMetaData = metaData;
             }
           } catch (Numeric<Time>::ValueOutOfRange &) {
           } catch (CheckFailed &) {
@@ -1262,144 +1343,116 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        Location MessageHelper::createLocation(ElementPtr elem)
+        LocationInfo MessageHelper::createLocation(
+                                                   ElementPtr elem,
+                                                   IMessageSourcePtr messageSource,
+                                                   const SecureByteBlock *encryptionKey
+                                                   )
         {
-          typedef zsLib::IPAddress IPAddress;
-
-          Location ret;
-          if (elem)
-          {
-            ret.mID = IMessageHelper::getAttributeID(elem);
-
-            ElementPtr challenge = elem->findFirstChildElement("challenge");
-            if (challenge)
-            {
-              ret.mLocationSalt = IMessageHelper::getElementText(challenge->findFirstChildElement("locationSalt"));
-              ret.mLocationFindSecretProof = IMessageHelper::getElementText(challenge->findFirstChildElement("locationFindSecretProof"));
-            }
-
-            ElementPtr contact = elem->findFirstChildElement("contact");
-            if (contact)
-            {
-              ret.mContactID = IMessageHelper::getAttributeID(contact);
-            }
-
-            ElementPtr candidates = elem->findFirstChildElement("candidates");
-            if (candidates)
-            {
-              CandidateList candidateLst;
-              ElementPtr candidate = candidates->findFirstChildElement("candidate");
-              while (candidate)
-              {
-                Candidate c = MessageHelper::createCandidate(candidate);
-                candidateLst.push_back(c);
-
-                candidate = candidate->getNextSiblingElement();
-              }
-
-              if (candidateLst.size() > 0)
-                ret.mCandidates = candidateLst;
-            }
-
-            ElementPtr reason = elem->findFirstChildElement("reason");
-            if (reason)
-            {
-              try {
-                ret.mReasonID = Numeric<WORD>(IMessageHelper::getAttributeID(reason));
-              } catch(Numeric<WORD>::ValueOutOfRange &) {
-              }
-              ret.mReason = IMessageHelper::getElementText(reason);
-            }
-
-            if (elem->getValue() == "location")
-              elem = elem->findFirstChildElement("details");
-
-            if (elem)
-            {
-              ElementPtr device = elem->findFirstChildElement("device");
-              ElementPtr ip = elem->findFirstChildElement("ip");
-              ElementPtr ua = elem->findFirstChildElement("userAgent");
-              ElementPtr os = elem->findFirstChildElement("os");
-              ElementPtr system = elem->findFirstChildElement("system");
-              ElementPtr host = elem->findFirstChildElement("host");
-              if (device) {
-                ret.mDeviceID = IMessageHelper::getAttribute(device, "id");
-              }
-              if (ip) {
-                IPAddress ipOriginal(IMessageHelper::getElementText(ip), 0);
-
-                ret.mIPAddress.mIPAddress = ipOriginal.mIPAddress;
-              }
-              if (ua) ret.mUserAgent = IMessageHelper::getElementTextAndEntityDecode(ua);
-              if (os) ret.mOS = IMessageHelper::getElementTextAndEntityDecode(os);
-              if (system) ret.mSystem = IMessageHelper::getElementTextAndEntityDecode(system);
-              if (host) ret.mHost = IMessageHelper::getElementTextAndEntityDecode(host);
-            }
-
-          }
-          return ret;
-        }
-
-        //---------------------------------------------------------------------
-        Candidate MessageHelper::createCandidate(ElementPtr elem)
-        {
-          typedef zsLib::DWORD DWORD;
-          typedef zsLib::IPAddress IPAddress;
-
-          Candidate ret;
-          if (elem)
-          {
-            //ElementPtr transport = elem->findFirstChildElement("transport"); hardcoded for now
-            ElementPtr ip = elem->findFirstChildElement("ip");
-            ElementPtr port = elem->findFirstChildElement("port");
-            ElementPtr un = elem->findFirstChildElement("usernameFrag");
-            ElementPtr pwd = elem->findFirstChildElement("password");
-            ElementPtr priority = elem->findFirstChildElement("priority");
-            ElementPtr protocol = elem->findFirstChildElement("protocol");
-
-            if (ip)
-            {
-              WORD portNo = 0;
-              if(port) {
-                try {
-                  portNo = Numeric<WORD>(IMessageHelper::getElementText(port));
-                } catch(Numeric<WORD>::ValueOutOfRange &) {
-                }
-              }
-
-              IPAddress ipOriginal(IMessageHelper::getElementText(ip), portNo);
-              ret.mIPAddress.mIPAddress = ipOriginal.mIPAddress;
-              ret.mIPAddress.setPort(portNo);
-            }
-            if (un) ret.mUsernameFrag = IMessageHelper::getElementText(un);
-            if (pwd) ret.mPassword = IMessageHelper::getElementText(pwd);
-            if (priority) {
-              try {
-                ret.mPriority = (DWORD)Numeric<DWORD>(IMessageHelper::getElementText(priority));
-              } catch(Numeric<DWORD>::ValueOutOfRange &) {
-              }
-            }
-            else ret.mPriority = 0;
-            if (protocol) ret.mProtocol = IMessageHelper::getElementText(protocol);
-          }
-          return ret;
-        }
-
-        //---------------------------------------------------------------------
-        Service MessageHelper::createService(ElementPtr elem)
-        {
-          Service ret;
+          LocationInfo ret;
           if (!elem) return ret;
 
-          ret.mID = IMessageHelper::getAttributeID(elem);
-          ret.mType = IMessageHelper::getElementText(elem->findFirstChildElement("type"));
-          ret.mURL = IMessageHelper::getElementText(elem->findFirstChildElement("url"));
-          ret.mVersion = IMessageHelper::getElementText(elem->findFirstChildElement("version"));
-          try {
-            ret.mX509Certificate = IMessageHelper::getElementText(elem->findFirstChildElementChecked("KeyInfo")->findFirstChildElementChecked("X509Data")->findFirstChildElementChecked("X509Certificate"));
-          } catch(CheckFailed &) {
-            ZS_LOG_BASIC("createService XML check failure")
+          String id = IMessageHelper::getAttributeID(elem);
+
+          ElementPtr contact = elem->findFirstChildElement("contact");
+          if (contact)
+          {
+            String peerURI = IMessageHelper::getElementTextAndDecode(contact);
+            ret.mLocation = ILocationForMessages::create(messageSource, peerURI, id);
           }
+
+          ElementPtr candidates = elem->findFirstChildElement("candidates");
+          if (candidates)
+          {
+            CandidateList candidateLst;
+            ElementPtr candidate = candidates->findFirstChildElement("candidate");
+            while (candidate)
+            {
+              Candidate c = MessageHelper::createCandidate(candidate, encryptionKey);
+              candidateLst.push_back(c);
+
+              candidate = candidate->getNextSiblingElement();
+            }
+
+            if (candidateLst.size() > 0)
+              ret.mCandidates = candidateLst;
+          }
+
+          if (elem->getValue() == "location")
+            elem = elem->findFirstChildElement("details");
+
+          if (elem)
+          {
+            ElementPtr device = elem->findFirstChildElement("device");
+            ElementPtr ip = elem->findFirstChildElement("ip");
+            ElementPtr ua = elem->findFirstChildElement("userAgent");
+            ElementPtr os = elem->findFirstChildElement("os");
+            ElementPtr system = elem->findFirstChildElement("system");
+            ElementPtr host = elem->findFirstChildElement("host");
+            if (device) {
+              ret.mDeviceID = IMessageHelper::getAttribute(device, "id");
+            }
+            if (ip) {
+              IPAddress ipOriginal(IMessageHelper::getElementText(ip), 0);
+
+              ret.mIPAddress.mIPAddress = ipOriginal.mIPAddress;
+            }
+            if (ua) ret.mUserAgent = IMessageHelper::getElementTextAndDecode(ua);
+            if (os) ret.mOS = IMessageHelper::getElementTextAndDecode(os);
+            if (system) ret.mSystem = IMessageHelper::getElementTextAndDecode(system);
+            if (host) ret.mHost = IMessageHelper::getElementTextAndDecode(host);
+          }
+          return ret;
+        }
+
+        //---------------------------------------------------------------------
+        Candidate MessageHelper::createCandidate(
+                                                 ElementPtr elem,
+                                                 const SecureByteBlock *encryptionKey
+                                                 )
+        {
+          Candidate ret;
+          if (!elem) return ret;
+
+          ElementPtr ip = elem->findFirstChildElement("ip");
+          ElementPtr port = elem->findFirstChildElement("port");
+          ElementPtr un = elem->findFirstChildElement("usernameFrag");
+          ElementPtr pwd = elem->findFirstChildElement("password");
+          ElementPtr epwd = elem->findFirstChildElement("passwordEncrypted");
+          ElementPtr priority = elem->findFirstChildElement("priority");
+          ElementPtr protocol = elem->findFirstChildElement("protocol");
+
+          if (ip)
+          {
+            WORD portNo = 0;
+            if(port) {
+              try {
+                portNo = Numeric<WORD>(IMessageHelper::getElementText(port));
+              } catch(Numeric<WORD>::ValueOutOfRange &) {
+              }
+            }
+
+            IPAddress ipOriginal(IMessageHelper::getElementText(ip), portNo);
+            ret.mIPAddress.mIPAddress = ipOriginal.mIPAddress;
+            ret.mIPAddress.setPort(portNo);
+          }
+          if (un) ret.mUsernameFrag = IMessageHelper::getElementText(un);
+          if (pwd) ret.mPassword = IMessageHelper::getElementText(pwd);
+          if (epwd) {
+            if (encryptionKey) {
+              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(pwd))));
+            } else {
+              ret.mPassword = IMessageHelper::getElementText(epwd);
+            }
+          }
+          if (priority) {
+            try {
+              ret.mPriority = (DWORD)Numeric<DWORD>(IMessageHelper::getElementText(priority));
+            } catch(Numeric<DWORD>::ValueOutOfRange &) {
+            }
+          }
+          else ret.mPriority = 0;
+          if (protocol) ret.mProtocol = IMessageHelper::getElementText(protocol);
 
           return ret;
         }
@@ -1407,18 +1460,19 @@ namespace hookflash
         //---------------------------------------------------------------------
         Finder MessageHelper::createFinder(ElementPtr elem)
         {
-          typedef zsLib::FLOAT FLOAT;
-
           Finder ret;
           if (!elem) return ret;
 
           ret.mID = IMessageHelper::getAttributeID(elem);
           ret.mTransport = IMessageHelper::getElementText(elem->findFirstChildElement("transport"));
           ret.mSRV = IMessageHelper::getElementText(elem->findFirstChildElement("srv"));
+          ret.mRegion = IMessageHelper::getElementText(elem->findFirstChildElement("region"));
+          ret.mCreated = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("created")));
+          ret.mExpires = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("expires")));
 
           try
           {
-            ret.mX509Certificate = IMessageHelper::getElementText(elem->findFirstChildElementChecked("KeyInfo")->findFirstChildElementChecked("X509Data")->findFirstChildElementChecked("X509Certificate"));
+            ret.mPublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(IMessageHelper::getElementText(elem->findFirstChildElementChecked("key")->findFirstChildElementChecked("X509Data"))));
             try {
               ret.mPriority = Numeric<WORD>(IMessageHelper::getElementText(elem->findFirstChildElementChecked("priority")));
             } catch(Numeric<WORD>::ValueOutOfRange &) {
@@ -1434,7 +1488,114 @@ namespace hookflash
 
           return ret;
         }
+
+        //---------------------------------------------------------------------
+        Service MessageHelper::createService(ElementPtr serviceEl)
+        {
+          Service service;
+
+          if (!serviceEl) return service;
+
+          service.mID = IMessageHelper::getAttributeID(serviceEl);
+          service.mType = IMessageHelper::getElementText(serviceEl->findFirstChildElement("type"));
+          service.mVersion = IMessageHelper::getElementText(serviceEl->findFirstChildElement("version"));
+
+          ElementPtr methodsEl = serviceEl->findFirstChildElement("methods");
+          if (methodsEl) {
+            ElementPtr methodEl = methodsEl->findFirstChildElement("method");
+            while (methodEl) {
+              Service::Method method;
+              method.mName = IMessageHelper::getElementText(methodEl->findFirstChildElement("name"));
+              method.mURI = IMessageHelper::getElementText(methodEl->findFirstChildElement("uri"));
+              method.mUsername = IMessageHelper::getElementText(methodEl->findFirstChildElement("username"));
+              method.mPassword = IMessageHelper::getElementText(methodEl->findFirstChildElement("password"));
+
+              if (method.hasData()) {
+                service.mMethods[method.mName] = method;
+              }
+
+              methodEl = methodEl->findNextSiblingElement("method");
+            }
+          }
+          return service;
+        }
+
+        //---------------------------------------------------------------------
+        IdentityInfo MessageHelper::createIdentity(ElementPtr elem)
+        {
+          IdentityInfo info;
+
+          if (elem) return info;
+
+          info.mDisposition = IdentityInfo::toDisposition(elem->getAttributeValue("disposition"));
+
+          info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
+          info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
+          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+
+          info.mBase = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("base"));
+          info.mURI = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("uri"));
+          info.mURIEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("uriEncrypted"));
+          info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
+          info.mProvider = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("provider"));
+
+          info.mContact = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contact"));
+          info.mContactFindSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactFindSecret"));
+          info.mPrivatePeerFileSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSalt"));
+          info.mPrivatePeerFileSecretEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSecretEncrypted"));
+
+          info.mLastReset = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("lastReset")));
+          info.mReloginAccessKeyEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("reloginAccessKeyEncrypted"));
+
+          info.mSecretSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretSalt"));
+          info.mSecretEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretEncrypted"));
+          info.mSecretDecryptionKeyEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretDecryptionKeyEncrypted"));
+
+          try {
+            info.mPriority = Numeric<WORD>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("priority")));
+          } catch(Numeric<WORD>::ValueOutOfRange &) {
+          }
+          try {
+            info.mWeight = Numeric<WORD>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("weight")));
+          } catch(Numeric<WORD>::ValueOutOfRange &) {
+          }
+
+          info.mUpdated = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updated")));
+          info.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
+
+          info.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
+          info.mProfile = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("profile"));
+          info.mVProfile = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("vprofile"));
+
+          ElementPtr avatarsEl = elem->findFirstChildElement("avatars");
+          if (avatarsEl) {
+            ElementPtr avatarEl = elem->findFirstChildElement("avatar");
+            while (avatarEl) {
+              IdentityInfo::Avatar avatar;
+              avatar.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
+              avatar.mURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("url"));
+              try {
+                avatar.mWidth = Numeric<int>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("width")));
+              } catch(Numeric<int>::ValueOutOfRange &) {
+              }
+              try {
+                avatar.mHeight = Numeric<int>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("height")));
+              } catch(Numeric<int>::ValueOutOfRange &) {
+              }
+
+              if (avatar.hasData()) {
+                info.mAvatars.push_back(avatar);
+              }
+              avatarEl = elem->findNextSiblingElement("avatar");
+            }
+          }
+
+          return info;
+        }
       }
     }
   }
 }
+

@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,18 +22,18 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/IHTTP.h>
 #include <hookflash/services/internal/services_HTTP.h>
 #include <hookflash/services/internal/services_Helper.h>
 
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/Log.h>
 #include <zsLib/Event.h>
@@ -54,31 +54,30 @@ namespace hookflash
 
       using zsLib::Stringize;
 
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::DWORD DWORD;
-      typedef zsLib::String String;
-      typedef zsLib::RecursiveLock RecursiveLock;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-      typedef zsLib::Event Event;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark HTTPGlobalInit
+      #pragma mark HTTPGlobalSafeReference
       #pragma mark
 
-      class HTTPGlobalInit
+      class HTTPGlobalSafeReference
       {
       public:
-        HTTPGlobalInit()
+        HTTPGlobalSafeReference(HTTPPtr reference) :
+          mSafeReference(reference)
         {
-          HTTP::singleton();
         }
-      };
 
-      static HTTPGlobalInit gHTTPGlobalInit;
+        ~HTTPGlobalSafeReference()
+        {
+          mSafeReference->cancel();
+          mSafeReference.reset();
+        }
+
+        HTTPPtr mSafeReference;
+      };
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -174,10 +173,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       HTTPPtr HTTP::singleton()
       {
-        static HTTPPtr pThis = HTTP::create();
-        static HTTPGlobalInit *pBogus = &gHTTPGlobalInit; // create a circular reference to global object
-        (void)pBogus; // reference the temporary object (noop)
-        return pThis;
+        static HTTPPtr singleton = HTTP::create();
+        static HTTPGlobalSafeReference safe(singleton); // hold safe reference in global object
+        return singleton;
       }
 
       //-----------------------------------------------------------------------
@@ -198,11 +196,25 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void HTTP::cancel()
       {
-        AutoRecursiveLock lock();
+        ThreadPtr thread;
+        {
+          AutoRecursiveLock lock(mLock);
+          mGracefulShutdownReference = mThisWeak.lock();
+          thread = mThread;
 
-        mShouldShutdown = true;
+          mShouldShutdown = true;
+          wakeUp();
+        }
 
-        wakeUp();
+        if (!thread)
+          return;
+
+        thread->join();
+
+        {
+          AutoRecursiveLock lock(mLock);
+          mThread.reset();
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -249,12 +261,12 @@ namespace hookflash
             if (useIPv6)
             {
               mWakeUpAddress = IPAddress::loopbackV6();
-              mWakeUpSocket = zsLib::Socket::createUDP(zsLib::Socket::Create::IPv6);
+              mWakeUpSocket = Socket::createUDP(Socket::Create::IPv6);
             }
             else
             {
               mWakeUpAddress = IPAddress::loopbackV4();
-              mWakeUpSocket = zsLib::Socket::createUDP(zsLib::Socket::Create::IPv4);
+              mWakeUpSocket = Socket::createUDP(Socket::Create::IPv4);
             }
 
             if (((tries > 5) && (tries < 10)) ||
@@ -264,11 +276,11 @@ namespace hookflash
               mWakeUpAddress.setPort(0);
             }
 
-            mWakeUpSocket->setOptionFlag(zsLib::Socket::SetOptionFlag::NonBlocking, true);
+            mWakeUpSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
             mWakeUpSocket->bind(mWakeUpAddress);
             mWakeUpAddress = mWakeUpSocket->getLocalAddress();
             mWakeUpSocket->connect(mWakeUpAddress);
-          } catch (zsLib::Socket::Exceptions::Unspecified &) {
+          } catch (Socket::Exceptions::Unspecified &) {
             error = true;
           }
           if (!error)
@@ -375,7 +387,7 @@ namespace hookflash
         EventPtr event;
 
         {
-          AutoRecursiveLock lock();
+          AutoRecursiveLock lock(mLock);
 
           if (mShouldShutdown) {
             query->cancel();
@@ -402,7 +414,7 @@ namespace hookflash
       {
         EventPtr event;
         {
-          AutoRecursiveLock lock();
+          AutoRecursiveLock lock(mLock);
 
           mPendingRemoveQueries[query->getID()] = query;
 
@@ -419,8 +431,10 @@ namespace hookflash
       void HTTP::operator()()
       {
 #ifndef _LINUX
+#ifndef _ANDROID
         pthread_setname_np("com.hookflash.services.http");
-#endif
+#endif //_ANDROID
+#endif //_LINUX
         ZS_LOG_BASIC(log("http thread started"))
 
         mMultiCurl = curl_multi_init();
@@ -498,7 +512,7 @@ namespace hookflash
             curl_multi_perform(mMultiCurl, &handleCount);
 
             switch (result) {
-              
+
               case zsLib::INVALID_SOCKET:  break;
               case 0:
               default: {
@@ -555,11 +569,17 @@ namespace hookflash
           }
         } while (!shouldShutdown);
 
+        HTTPPtr gracefulReference;
+
         {
           AutoRecursiveLock lock(mLock);
           processWaiting();
           mWaitingForRebuildList.clear();
           mWakeUpSocket.reset();
+
+          // transfer the graceful shutdown reference to the outer thread
+          gracefulReference = mGracefulShutdownReference;
+          mGracefulShutdownReference.reset();
 
           if (mMultiCurl) {
             curl_multi_cleanup(mMultiCurl);
@@ -647,7 +667,7 @@ namespace hookflash
         if ((pThis) &&
             (mDelegate)) {
           try {
-            mDelegate->onHTTPComplete(pThis);
+            mDelegate->onHTTPCompleted(pThis);
           } catch (IHTTPQueryDelegateProxy::Exceptions::DelegateGone &) {
             ZS_LOG_WARNING(Detail, log("delegate gone"))
           }
@@ -677,6 +697,13 @@ namespace hookflash
 
         return ((CURLE_OK == mResultCode) &&
                 ((mResponseCode >= 200) && (mResponseCode < 400)));
+      }
+
+      //-----------------------------------------------------------------------
+      IHTTP::HTTPStatusCodes HTTP::HTTPQuery::getStatusCode() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return IHTTP::toStatusCode((WORD)mResponseCode);
       }
 
       //-----------------------------------------------------------------------
@@ -808,14 +835,14 @@ namespace hookflash
            header.  You can disable this header with CURLOPT_HTTPHEADER as usual.
            NOTE: if you want chunked transfer too, you need to combine these two
            since you can only set one list of headers with CURLOPT_HTTPHEADER. */
-          
+
            //please see http://curl.haxx.se/libcurl/c/post-callback.html for example usage
-          
-          struct curl_slist *slist = NULL;          
+
+          struct curl_slist *slist = NULL;
           slist = curl_slist_append(slist, "Expect:");
           curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, slist);
         }
-        
+
         curl_easy_setopt(mCurl, CURLOPT_HEADER, 0);
         if (mIsPost) {
           curl_easy_setopt(mCurl, CURLOPT_POST, 1L);
@@ -882,10 +909,17 @@ namespace hookflash
 
         if ((mCurl) &&
             (0 == mResponseCode)) {
-          curl_easy_getinfo(mCurl, CURLINFO_RESPONSE_CODE, &mResponseCode);
+          long responseCode = 0;
+          curl_easy_getinfo(mCurl, CURLINFO_RESPONSE_CODE, &responseCode);
+          mResponseCode = (WORD)responseCode;
         }
 
         mResultCode = result;
+        if (0 == mResponseCode) {
+          if (CURLE_OK != result) {
+            mResponseCode = HTTPStatusCode_ClientClosedRequest;
+          }
+        }
 
         if (ZS_IS_LOGGING(Debug)) {
           ZS_LOG_BASIC(log("----------------------------------HTTP COMPLETE--------------------------------"))
@@ -952,7 +986,9 @@ namespace hookflash
 
         if ((pThis->mCurl) &&
             (0 == pThis->mResponseCode)) {
-          curl_easy_getinfo(pThis->mCurl, CURLINFO_RESPONSE_CODE, &(pThis->mResponseCode));
+          long responseCode = 0;
+          curl_easy_getinfo(pThis->mCurl, CURLINFO_RESPONSE_CODE, &responseCode);
+          pThis->mResponseCode = (WORD)responseCode;
         }
 
         try {
@@ -996,7 +1032,9 @@ namespace hookflash
 
         if ((pThis->mCurl) &&
             (0 == pThis->mResponseCode)) {
-          curl_easy_getinfo(pThis->mCurl, CURLINFO_RESPONSE_CODE, &(pThis->mResponseCode));
+          long responseCode = 0;
+          curl_easy_getinfo(pThis->mCurl, CURLINFO_RESPONSE_CODE, &responseCode);
+          pThis->mResponseCode = (WORD)responseCode;
         }
 
         try {
@@ -1016,6 +1054,150 @@ namespace hookflash
     #pragma mark
     #pragma mark IHTTP
     #pragma mark
+
+    //-------------------------------------------------------------------------
+    IHTTP::HTTPStatusCodes IHTTP::toStatusCode(WORD statusCode)
+    {
+      return (HTTPStatusCodes)statusCode;
+    }
+
+    //-------------------------------------------------------------------------
+    const char *IHTTP::toString(HTTPStatusCodes httpStatusCode)
+    {
+      switch (httpStatusCode)
+      {
+        case HTTPStatusCode_Continue:                         return "Continue";
+        case HTTPStatusCode_SwitchingProtocols:               return "Switching Protocols";
+        case HTTPStatusCode_Processing:                       return "Processing";
+
+        case HTTPStatusCode_OK:                               return "OK";
+        case HTTPStatusCode_Created:                          return "Created";
+        case HTTPStatusCode_Accepted:                         return "Accepted";
+        case HTTPStatusCode_NonAuthoritativeInformation:      return "Non-Authoritative Information";
+        case HTTPStatusCode_NoContent:                        return "No Content";
+        case HTTPStatusCode_ResetContent:                     return "Reset Content";
+        case HTTPStatusCode_PartialContent:                   return "Partial Content";
+        case HTTPStatusCode_MultiStatus:                      return "Multi-Status";
+        case HTTPStatusCode_AlreadyReported:                  return "Already Reported";
+        case HTTPStatusCode_IMUsed:                           return "IM Used";
+        case HTTPStatusCode_AuthenticationSuccessful:         return "Authentication Successful";
+
+        case HTTPStatusCode_MultipleChoices:                  return "Multiple Choices";
+        case HTTPStatusCode_MovedPermanently:                 return "Moved Permanently";
+        case HTTPStatusCode_Found:                            return "Found";
+        case HTTPStatusCode_SeeOther:                         return "See Other";
+        case HTTPStatusCode_NotModified:                      return "Not Modified";
+        case HTTPStatusCode_UseProxy:                         return "Use Proxy";
+        case HTTPStatusCode_SwitchProxy:                      return "Switch Proxy";
+        case HTTPStatusCode_TemporaryRedirect:                return "Temporary Redirect";
+        case HTTPStatusCode_PermanentRedirect:                return "Permanent Redirect";
+
+        case HTTPStatusCode_BadRequest:                       return "Bad Request";
+        case HTTPStatusCode_Unauthorized:                     return "Unauthorized";
+        case HTTPStatusCode_PaymentRequired:                  return "Payment Required";
+        case HTTPStatusCode_Forbidden:                        return "Forbidden";
+        case HTTPStatusCode_NotFound:                         return "Not Found";
+        case HTTPStatusCode_MethodNotAllowed:                 return "Method Not Allowed";
+        case HTTPStatusCode_NotAcceptable:                    return "Not Acceptable";
+        case HTTPStatusCode_ProxyAuthenticationRequired:      return "Proxy Authentication Required";
+        case HTTPStatusCode_RequestTimeout:                   return "Request Timeout";
+        case HTTPStatusCode_Conflict:                         return "Conflict";
+        case HTTPStatusCode_Gone:                             return "Gone";
+        case HTTPStatusCode_LengthRequired:                   return "Length Required";
+        case HTTPStatusCode_PreconditionFailed:               return "Precondition Failed";
+        case HTTPStatusCode_RequestEntityTooLarge:            return "Request Entity Too Large";
+        case HTTPStatusCode_RequestURITooLong:                return "Request-URI Too Long";
+        case HTTPStatusCode_UnsupportedMediaType:             return "Unsupported Media Type";
+        case HTTPStatusCode_RequestedRangeNotSatisfiable:     return "Requested Range Not Satisfiable";
+        case HTTPStatusCode_ExpectationFailed:                return "Expectation Failed";
+        case HTTPStatusCode_Imateapot:                        return "I'm a teapot";
+        case HTTPStatusCode_EnhanceYourCalm:                  return "Enhance Your Calm";
+        case HTTPStatusCode_UnprocessableEntity:              return "Unprocessable Entity";
+        case HTTPStatusCode_Locked:                           return "Locked";
+//        case HTTPStatusCode_FailedDependency:                 return "Failed Dependency";
+        case HTTPStatusCode_MethodFailure:                    return "Method Failure";
+        case HTTPStatusCode_UnorderedCollection:              return "Unordered Collection";
+        case HTTPStatusCode_UpgradeRequired:                  return "Upgrade Required";
+        case HTTPStatusCode_PreconditionRequired:             return "Precondition Required";
+        case HTTPStatusCode_TooManyRequests:                  return "Too Many Requests";
+        case HTTPStatusCode_RequestHeaderFieldsTooLarge:      return "Request Header Fields Too Large";
+        case HTTPStatusCode_NoResponse:                       return "No Response";
+        case HTTPStatusCode_RetryWith:                        return "Retry With";
+        case HTTPStatusCode_BlockedbyWindowsParentalControls: return "Blocked by Windows Parental Controls";
+        case HTTPStatusCode_UnavailableForLegalReasons:       return "Unavailable For Legal Reasons";
+//        case HTTPStatusCode_Redirect:                         return "Redirect";
+        case HTTPStatusCode_RequestHeaderTooLarge:            return "Request Header Too Large";
+        case HTTPStatusCode_CertError:                        return "Cert Error";
+        case HTTPStatusCode_NoCert:                           return "No Cert";
+        case HTTPStatusCode_HTTPtoHTTPS:                      return "HTTP to HTTPS";
+        case HTTPStatusCode_ClientClosedRequest:              return "Client Closed Request";
+
+        case HTTPStatusCode_InternalServerError:              return "Internal Server Error";
+        case HTTPStatusCode_NotImplemented:                   return "Not Implemented";
+        case HTTPStatusCode_BadGateway:                       return "Bad Gateway";
+        case HTTPStatusCode_ServiceUnavailable:               return "Service Unavailable";
+        case HTTPStatusCode_GatewayTimeout:                   return "Gateway Timeout";
+        case HTTPStatusCode_HTTPVersionNotSupported:          return "HTTP Version Not Supported";
+        case HTTPStatusCode_VariantAlsoNegotiates:            return "Variant Also Negotiates";
+        case HTTPStatusCode_InsufficientStorage:              return "Insufficient Storage";
+        case HTTPStatusCode_LoopDetected:                     return "Loop Detected";
+        case HTTPStatusCode_BandwidthLimitExceeded:           return "Bandwidth Limit Exceeded";
+        case HTTPStatusCode_NotExtended:                      return "Not Extended";
+        case HTTPStatusCode_NetworkAuthenticationRequired:    return "Network Authentication Required";
+        case HTTPStatusCode_Networkreadtimeouterror:          return "Network read timeout error";
+        case HTTPStatusCode_Networkconnecttimeouterror:       return "Network connect timeout error";
+        default:                                              break;
+      }
+      return "";
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHTTP::isPending(HTTPStatusCodes httpStatusCode, bool noneIsPending)
+    {
+      if (noneIsPending) {
+        if (HTTPStatusCode_None == httpStatusCode) {
+          return true;
+        }
+      }
+      return isInformational(httpStatusCode);
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHTTP::isInformational(HTTPStatusCodes httpStatusCode)
+    {
+      return ((httpStatusCode >= HTTPStatusCode_InformationalStart) &&
+              (httpStatusCode >= HTTPStatusCode_InformationalEnd));
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHTTP::isSuccess(HTTPStatusCodes httpStatusCode, bool noneIsSuccess)
+    {
+      if (noneIsSuccess) {
+        if (HTTPStatusCode_None == httpStatusCode) {
+          return true;
+        }
+      }
+      return ((httpStatusCode >= HTTPStatusCode_SuccessfulStart) &&
+              (httpStatusCode >= HTTPStatusCode_SuccessfulEnd));
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHTTP::isRedirection(HTTPStatusCodes httpStatusCode)
+    {
+      return ((httpStatusCode >= HTTPStatusCode_RedirectionStart) &&
+              (httpStatusCode >= HTTPStatusCode_RedirectionEnd));
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHTTP::isError(HTTPStatusCodes httpStatusCode, bool noneIsError)
+    {
+      if (noneIsError) {
+        if (HTTPStatusCode_None == httpStatusCode) {
+          return true;
+        }
+      }
+      return (httpStatusCode >= HTTPStatusCode_ClientErrorStart);
+    }
 
     //-------------------------------------------------------------------------
     IHTTPQueryPtr IHTTP::get(

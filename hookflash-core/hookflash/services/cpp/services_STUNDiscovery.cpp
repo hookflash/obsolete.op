@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,32 +22,23 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_STUNDiscovery.h>
 #include <hookflash/services/ISTUNRequesterManager.h>
 #include <zsLib/Exception.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
 #include <algorithm>
 
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 
-using zsLib::BYTE;
-using zsLib::WORD;
-using zsLib::DWORD;
-using zsLib::ULONG;
-using zsLib::AutoRecursiveLock;
-using zsLib::IPAddress;
-using zsLib::PUID;
-using zsLib::String;
-using zsLib::Stringize;
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
 
@@ -57,8 +48,11 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Stringize;
+
+      //-----------------------------------------------------------------------
       STUNDiscovery::STUNDiscovery(
-                                   zsLib::IMessageQueuePtr queue,
+                                   IMessageQueuePtr queue,
                                    ISTUNDiscoveryDelegatePtr delegate
                                    ) :
         MessageQueueAssociator(queue),
@@ -67,6 +61,7 @@ namespace hookflash
       {
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::init(
                                IDNS::SRVResultPtr service,
                                const char *srvName
@@ -84,8 +79,9 @@ namespace hookflash
         step();
       }
 
+      //-----------------------------------------------------------------------
       STUNDiscoveryPtr STUNDiscovery::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              ISTUNDiscoveryDelegatePtr delegate,
                                              IDNS::SRVResultPtr service
                                              )
@@ -100,8 +96,9 @@ namespace hookflash
         return pThis;
       }
 
+      //-----------------------------------------------------------------------
       STUNDiscoveryPtr STUNDiscovery::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              ISTUNDiscoveryDelegatePtr delegate,
                                              const char *srvName
                                              )
@@ -116,6 +113,7 @@ namespace hookflash
         return pThis;
       }
 
+      //-----------------------------------------------------------------------
       bool STUNDiscovery::isComplete() const
       {
         AutoRecursiveLock lock(mLock);
@@ -123,6 +121,7 @@ namespace hookflash
         return false;
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::cancel()
       {
         AutoRecursiveLock lock(mLock);
@@ -139,12 +138,14 @@ namespace hookflash
         mPreviouslyContactedServers.clear();
       }
 
-      zsLib::IPAddress STUNDiscovery::getMappedAddress() const
+      //-----------------------------------------------------------------------
+      IPAddress STUNDiscovery::getMappedAddress() const
       {
         AutoRecursiveLock lock(mLock);
         return mMapppedAddress;
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::onLookupCompleted(IDNSQueryPtr query)
       {
         AutoRecursiveLock lock(mLock);
@@ -155,11 +156,12 @@ namespace hookflash
         step();
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::onSTUNRequesterSendPacket(
                                                     ISTUNRequesterPtr requester,
-                                                    zsLib::IPAddress destination,
-                                                    boost::shared_array<zsLib::BYTE> packet,
-                                                    zsLib::ULONG packetLengthInBytes
+                                                    IPAddress destination,
+                                                    boost::shared_array<BYTE> packet,
+                                                    ULONG packetLengthInBytes
                                                     )
       {
         AutoRecursiveLock lock(mLock);
@@ -172,9 +174,10 @@ namespace hookflash
         }
       }
 
+      //-----------------------------------------------------------------------
       bool STUNDiscovery::handleSTUNRequesterResponse(
                                                       ISTUNRequesterPtr requester,
-                                                      zsLib::IPAddress fromIPAddress,
+                                                      IPAddress fromIPAddress,
                                                       STUNPacketPtr response
                                                       )
       {
@@ -230,7 +233,7 @@ namespace hookflash
 
         // we now have a reply, inform the delegate
         try {
-          mDelegate->onSTUNDiscoveryComplete(mThisWeak.lock());  // this is a success! yay! inform the delegate
+          mDelegate->onSTUNDiscoveryCompleted(mThisWeak.lock());  // this is a success! yay! inform the delegate
         } catch(ISTUNDiscoveryDelegateProxy::Exceptions::DelegateGone &) {
         }
 
@@ -240,6 +243,7 @@ namespace hookflash
         return true;
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::onSTUNRequesterTimedOut(ISTUNRequesterPtr requester)
       {
         AutoRecursiveLock lock(mLock);
@@ -253,11 +257,13 @@ namespace hookflash
         step();
       }
 
-      zsLib::String STUNDiscovery::log(const char *message) const
+      //-----------------------------------------------------------------------
+      String STUNDiscovery::log(const char *message) const
       {
         return String("STUNDiscovery [") + Stringize<PUID>(mID).string() + "] " + message;
       }
 
+      //-----------------------------------------------------------------------
       void STUNDiscovery::step()
       {
         if (!mDelegate) return;                                                 // if there is no delegate then the request has completed or is cancelled
@@ -272,7 +278,7 @@ namespace hookflash
               ZS_LOG_BASIC(log("failed to contact any STUN server"))
               mMapppedAddress.clear();
 
-              mDelegate->onSTUNDiscoveryComplete(mThisWeak.lock());   // sorry, nothing to report as this was a failure condition
+              mDelegate->onSTUNDiscoveryCompleted(mThisWeak.lock());   // sorry, nothing to report as this was a failure condition
             } catch(ISTUNDiscoveryDelegateProxy::Exceptions::DelegateGone &) {
             }
             cancel();
@@ -313,15 +319,17 @@ namespace hookflash
         // nothing more to do... sit back, relax and enjoy the ride!
       }
 
-      bool STUNDiscovery::hasContactedServerBefore(const zsLib::IPAddress &server)
+      //-----------------------------------------------------------------------
+      bool STUNDiscovery::hasContactedServerBefore(const IPAddress &server)
       {
         return mPreviouslyContactedServers.end() != find(mPreviouslyContactedServers.begin(), mPreviouslyContactedServers.end(), server);
       }
 
     }
 
+    //-------------------------------------------------------------------------
     ISTUNDiscoveryPtr ISTUNDiscovery::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              ISTUNDiscoveryDelegatePtr delegate,
                                              IDNS::SRVResultPtr service
                                              )
@@ -329,8 +337,9 @@ namespace hookflash
       return internal::STUNDiscovery::create(queue, delegate, service);
     }
 
+    //-------------------------------------------------------------------------
     ISTUNDiscoveryPtr ISTUNDiscovery::create(
-                                             zsLib::IMessageQueuePtr queue,     // which message queue to use for this service (should be on the same queue as the requesting object)
+                                             IMessageQueuePtr queue,     // which message queue to use for this service (should be on the same queue as the requesting object)
                                              ISTUNDiscoveryDelegatePtr delegate,
                                              const char *srvName                // will automatically perform a stun/udp lookup on the name passed in
                                              )
@@ -338,13 +347,15 @@ namespace hookflash
       return internal::STUNDiscovery::create(queue, delegate, srvName);
     }
 
+    //-------------------------------------------------------------------------
     STUNPacket::RFCs ISTUNDiscovery::usingRFC()
     {
       return STUNPacket::RFC_5389_STUN;
     }
 
+    //-------------------------------------------------------------------------
     bool ISTUNDiscovery::handleSTUNPacket(
-                                          zsLib::IPAddress fromIPAddress,
+                                          IPAddress fromIPAddress,
                                           STUNPacketPtr stun
                                           )
     {
@@ -352,10 +363,11 @@ namespace hookflash
       return requester;
     }
 
+    //-------------------------------------------------------------------------
     bool ISTUNDiscovery::handlePacket(
-                                      zsLib::IPAddress fromIPAddress,
-                                      zsLib::BYTE *packet,
-                                      zsLib::ULONG packetLengthInBytes
+                                      IPAddress fromIPAddress,
+                                      BYTE *packet,
+                                      ULONG packetLengthInBytes
                                       )
     {
       ISTUNRequesterPtr requester = ISTUNRequesterManager::handlePacket(fromIPAddress, packet, packetLengthInBytes, ISTUNDiscovery::usingRFC());

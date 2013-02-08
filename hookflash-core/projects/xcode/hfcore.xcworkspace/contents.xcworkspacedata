@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../../webRTC/webRTC_ios/webrtc.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../../webRTC/webRTC_ios/webrtc_ios.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:hfcoretest/hfcoretest.xcodeproj">
    </FileRef>
    <FileRef
@@ -20,27 +14,21 @@
       location = "group:hfstack/hfstack.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:hfwrapper/hfwrapper.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:hfservicestest/hfservicestest.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:hfservices/hfservices.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj">
+      location = "group:../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj">
+      location = "group:../../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../hookflash-libs/zsLib/projects/xcode/zsLibTest/zsLibTest.xcodeproj">
+      location = "group:../../../hookflash-libs/zsLib/projects/xcode/zsLibTest/zsLibTest.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../../../hookflash-libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:../../../../hookflash-libs/libphonenumber/projects/xcode/libphonenumber_ios.xcodeproj">
+      location = "group:../../../hookflash-libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj">
    </FileRef>
 </Workspace>

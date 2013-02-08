@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_IPADDRESS_H_084245516d22e267a3ef86fb4ff67430
 #define ZSLIB_IPADDRESS_H_084245516d22e267a3ef86fb4ff67430
 
-#include <zsLib/internal/IPAddress.h>
+#include <zsLib/internal/zsLib_IPAddress.h>
 
 #pragma warning(push)
 #pragma warning(disable: 4290)

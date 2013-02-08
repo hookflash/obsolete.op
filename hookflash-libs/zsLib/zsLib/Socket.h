@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_SOCKET_H_e70b2dd35334d2e569aea2d714e24c6a
 #define ZSLIB_SOCKET_H_e70b2dd35334d2e569aea2d714e24c6a
 
-#include <zsLib/internal/Socket.h>
+#include <zsLib/internal/zsLib_Socket.h>
 
 #pragma warning(push)
 #pragma warning(disable: 4290)

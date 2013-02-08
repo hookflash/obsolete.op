@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,16 +22,16 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <zsLib/zsTypes.h>
+#include <zsLib/types.h>
 #include <zsLib/Proxy.h>
 #include <hookflash/services/IDNS.h>
 #include <hookflash/services/STUNPacket.h>
@@ -46,12 +46,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     interaction ISTUNDiscovery
     {
-      typedef zsLib::PUID PUID;
-      typedef zsLib::BYTE BYTE;
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::IPAddress IPAddress;
-      typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-
       // NOTE: IDNS::setup must have been called before calling this method
       static ISTUNDiscoveryPtr create(
                                       IMessageQueuePtr queue,                   // which message queue to use for this service (should be on the same queue as the requesting object)
@@ -109,9 +103,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     interaction ISTUNDiscoveryDelegate
     {
-      typedef zsLib::BYTE BYTE;
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::IPAddress IPAddress;
       typedef services::ISTUNDiscoveryPtr ISTUNDiscoveryPtr;
 
       //-----------------------------------------------------------------------
@@ -125,12 +116,12 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       // PURPOSE: Notifies that a STUN discovery is now complete.
-      virtual void onSTUNDiscoveryComplete(ISTUNDiscoveryPtr discovery) = 0;
+      virtual void onSTUNDiscoveryCompleted(ISTUNDiscoveryPtr discovery) = 0;
     };
   }
 }
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::services::ISTUNDiscoveryDelegate)
 ZS_DECLARE_PROXY_METHOD_4(onSTUNDiscoverySendPacket, hookflash::services::ISTUNDiscoveryPtr, IPAddress, boost::shared_array<BYTE>, ULONG)
-ZS_DECLARE_PROXY_METHOD_1(onSTUNDiscoveryComplete, hookflash::services::ISTUNDiscoveryPtr)
+ZS_DECLARE_PROXY_METHOD_1(onSTUNDiscoveryCompleted, hookflash::services::ISTUNDiscoveryPtr)
 ZS_DECLARE_PROXY_END()

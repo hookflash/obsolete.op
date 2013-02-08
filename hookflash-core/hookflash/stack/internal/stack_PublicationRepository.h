@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,20 +22,20 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <hookflash/stack/internal/hookflashTypes.h>
+#include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/IPublicationRepository.h>
 #include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/IMessageRequester.h>
-#include <hookflash/stack/IConnectionSubscription.h>
+#include <hookflash/stack/IMessageMonitor.h>
+#include <hookflash/stack/IPeerSubscription.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
@@ -56,10 +56,10 @@ namespace hookflash
 
       interaction IPublicationRepositoryForAccount
       {
-        static IPublicationRepositoryForAccountPtr create(IAccountForPublicationRepositoryPtr outer);
+        IPublicationRepositoryForAccount &forAccount() {return *this;}
+        const IPublicationRepositoryForAccount &forAccount() const {return *this;}
 
-        static IPublicationRepositoryForAccountPtr convert(IPublicationRepositoryPtr repository);
-        virtual IPublicationRepositoryPtr convertIPublicationRepository() const = 0;
+        static PublicationRepositoryPtr create(AccountPtr account);
 
         virtual void cancel() = 0;
       };
@@ -72,34 +72,51 @@ namespace hookflash
       #pragma mark PublicationRepository
       #pragma mark
 
-      class PublicationRepository : public zsLib::MessageQueueAssociator,
+      class PublicationRepository : public MessageQueueAssociator,
                                     public IPublicationRepository,
                                     public IPublicationRepositoryForAccount,
-                                    public IConnectionSubscriptionDelegate,
-                                    public zsLib::ITimerDelegate
+                                    public IPeerSubscriptionDelegate,
+                                    public ITimerDelegate
       {
       public:
+        friend interaction IPublicationRepository;
+        friend interaction IPublicationRepositoryForAccount;
+
         struct CacheCompare
         {
-          bool operator()(const IPublicationMetaDataForPublicationRepositoryPtr &x, const IPublicationMetaDataForPublicationRepositoryPtr &y) const;
+          bool operator()(const PublicationMetaDataPtr &x, const PublicationMetaDataPtr &y) const;
         };
 
       public:
-        typedef zsLib::WORD WORD;
-        typedef zsLib::ULONG ULONG;
-        typedef zsLib::String String;
-        typedef zsLib::PUID PUID;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef zsLib::TimerPtr TimerPtr;
-        typedef IPublicationMetaData::Sources Sources;
         typedef IPublication::RelationshipList RelationshipList;
+        typedef IPublication::RelationshipListPtr RelationshipListPtr;
         typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
-        typedef std::map<IPublicationMetaDataForPublicationRepositoryPtr, IPublicationForPublicationRepositoryPtr, CacheCompare> CachedPublicationMap;
+        typedef std::map<PublicationMetaDataPtr, PublicationPtr, CacheCompare> CachedPublicationMap;
         typedef String PublicationName;
-        typedef std::map<PublicationName, IPublicationForPublicationRepositoryPtr> CachedPublicationPermissionMap;
-        typedef IPublicationMetaDataForPublicationRepositoryPtr PeerSourcePtr;
-        typedef std::map<IPublicationMetaDataForPublicationRepositoryPtr, IPublicationMetaDataForPublicationRepositoryPtr, CacheCompare> CachedPeerPublicationMap;
+        typedef std::map<PublicationName, PublicationPtr> CachedPublicationPermissionMap;
+        typedef PublicationMetaDataPtr PeerSourcePtr;
+        typedef std::map<PublicationMetaDataPtr, PublicationMetaDataPtr, CacheCompare> CachedPeerPublicationMap;
+        typedef message::peer_common::MessageFactoryPeerCommon MessageFactoryPeerCommon;
+        typedef message::peer_common::PeerPublishRequest PeerPublishRequest;
+        typedef message::peer_common::PeerPublishRequestPtr PeerPublishRequestPtr;
+        typedef message::peer_common::PeerPublishResult PeerPublishResult;
+        typedef message::peer_common::PeerPublishResultPtr PeerPublishResultPtr;
+        typedef message::peer_common::PeerGetRequest PeerGetRequest;
+        typedef message::peer_common::PeerGetRequestPtr PeerGetRequestPtr;
+        typedef message::peer_common::PeerGetResult PeerGetResult;
+        typedef message::peer_common::PeerGetResultPtr PeerGetResultPtr;
+        typedef message::peer_common::PeerDeleteRequest PeerDeleteRequest;
+        typedef message::peer_common::PeerDeleteRequestPtr PeerDeleteRequestPtr;
+        typedef message::peer_common::PeerDeleteResult PeerDeleteResult;
+        typedef message::peer_common::PeerDeleteResultPtr PeerDeleteResultPtr;
+        typedef message::peer_common::PeerSubscribeRequest PeerSubscribeRequest;
+        typedef message::peer_common::PeerSubscribeRequestPtr PeerSubscribeRequestPtr;
+        typedef message::peer_common::PeerSubscribeResult PeerSubscribeResult;
+        typedef message::peer_common::PeerSubscribeResultPtr PeerSubscribeResultPtr;
+        typedef message::peer_common::PeerPublishNotifyRequest PeerPublishNotifyRequest;
+        typedef message::peer_common::PeerPublishNotifyRequestPtr PeerPublishNotifyRequestPtr;
+        typedef message::peer_common::PeerPublishNotifyResult PeerPublishNotifyResult;
+        typedef message::peer_common::PeerPublishNotifyResultPtr PeerPublishNotifyResultPtr;
 
         class PeerCache;
         typedef boost::shared_ptr<PeerCache> PeerCachePtr;
@@ -138,10 +155,22 @@ namespace hookflash
         typedef boost::weak_ptr<PeerSubscriptionOutgoing> PeerSubscriptionOutgoingWeakPtr;
         friend class PeerSubscriptionOutgoing;
 
+        typedef PUID SubscriptionLocationID;
+        typedef std::map<SubscriptionLocationID, SubscriptionLocalPtr> SubscriptionLocalMap;
+
+        typedef PUID PeerSubscriptionIncomingID;
+        typedef std::map<PeerSubscriptionIncomingID, PeerSubscriptionIncomingPtr> PeerSubscriptionIncomingMap;
+
+        typedef PUID PeerSubscriptionOutgoingID;
+        typedef std::map<PeerSubscriptionOutgoingID, PeerSubscriptionOutgoingPtr> PeerSubscriptionOutgoingMap;
+
+        typedef std::list<FetcherPtr> PendingFetcherList;
+        typedef std::list<PublisherPtr> PendingPublisherList;
+
       protected:
         PublicationRepository(
                               IMessageQueuePtr queue,
-                              IAccountForPublicationRepositoryPtr outer
+                              AccountPtr account
                               );
 
         void init();
@@ -149,19 +178,26 @@ namespace hookflash
       public:
         ~PublicationRepository();
 
+        static PublicationRepositoryPtr convert(IPublicationRepositoryPtr repository);
+
+      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark PublicationRepository => IPublicationRepositoryForAccount
         #pragma mark
 
-        static PublicationRepositoryPtr create(IAccountForPublicationRepositoryPtr outer);
-        virtual IPublicationRepositoryPtr convertIPublicationRepository() const {return mThisWeak.lock();}
+        static PublicationRepositoryPtr create(AccountPtr account);
+
         // (duplicate) virtual void cancel();
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark PublicationRepository => IPublicationRepository
         #pragma mark
+
+        static String toDebugString(IPublicationRepositoryPtr repository, bool includeCommaPrefix = true);
+
+        static PublicationRepositoryPtr getFromAccount(IAccountPtr account);
 
         virtual IPublicationPublisherPtr publish(
                                                  IPublicationPublisherDelegatePtr delegate,
@@ -178,48 +214,36 @@ namespace hookflash
                                               IPublicationPtr publication
                                               );
 
-        virtual IPublicationSubscriptionPtr subscribeLocal(
-                                                           IPublicationSubscriptionDelegatePtr delegate,
-                                                           const char *publicationPath,
-                                                           const SubscribeToRelationshipsMap &relationships
-                                                           );
-
-        virtual IPublicationSubscriptionPtr subscribeFinder(
-                                                            IPublicationSubscriptionDelegatePtr delegate,
-                                                            const char *publicationPath,
-                                                            const SubscribeToRelationshipsMap &relationships
-                                                            );
-
-        virtual IPublicationSubscriptionPtr subscribePeer(
-                                                          IPublicationSubscriptionDelegatePtr delegate,
-                                                          const char *publicationPath,
-                                                          const SubscribeToRelationshipsMap &relationships,
-                                                          const char *peerSourceContactID,
-                                                          const char *peerSourceLocationID
-                                                          );
+        virtual IPublicationSubscriptionPtr subscribe(
+                                                      IPublicationSubscriptionDelegatePtr delegate,
+                                                      ILocationPtr subscribeToLocation,
+                                                      const char *publicationPath,
+                                                      const SubscribeToRelationshipsMap &relationships
+                                                      );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark PublicationRepository => IConnectionSubscriptionDelegate
+        #pragma mark PublicationRepository => IPeerSubscriptionDelegate
         #pragma mark
 
-        virtual void onConnectionSubscriptionShutdown(IConnectionSubscriptionPtr subscription);
+        virtual void onPeerSubscriptionShutdown(IPeerSubscriptionPtr subscription);
 
-        virtual void onConnectionSubscriptionFinderConnectionStateChanged(
-                                                                          IConnectionSubscriptionPtr subscription,
-                                                                          ConnectionStates state
-                                                                          );
+        virtual void onPeerSubscriptionFindStateChanged(
+                                                        IPeerSubscriptionPtr subscription,
+                                                        IPeerPtr peer,
+                                                        PeerFindStates state
+                                                        );
 
-        virtual void onConnectionSubscriptionPeerLocationConnectionStateChanged(
-                                                                                IConnectionSubscriptionPtr subscription,
-                                                                                IPeerLocationPtr location,
-                                                                                ConnectionStates state
-                                                                                );
+        virtual void onPeerSubscriptionLocationConnectionStateChanged(
+                                                                      IPeerSubscriptionPtr subscription,
+                                                                      ILocationPtr location,
+                                                                      LocationConnectionStates state
+                                                                      );
 
-        virtual void onConnectionSubscriptionIncomingMessage(
-                                                             IConnectionSubscriptionPtr subscription,
-                                                             IConnectionSubscriptionMessagePtr message
-                                                             );
+        virtual void onPeerSubscriptionMessageIncoming(
+                                                       IPeerSubscriptionPtr subscription,
+                                                       IMessageIncomingPtr message
+                                                       );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -228,7 +252,6 @@ namespace hookflash
 
         virtual void onTimer(TimerPtr timer);
 
-      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark PublicationRepository => friend PeerCache
@@ -295,13 +318,13 @@ namespace hookflash
 
         bool canFetchPublication(
                                  const PublishToRelationshipsMap &publishToRelationships,
-                                 const String &fetcherContactID
+                                 LocationPtr location
                                  ) const;
 
         bool canSubscribeToPublisher(
-                                     const String &publicationCreatorContactID,
+                                     LocationPtr publicationCreatorLocation,
                                      const PublishToRelationshipsMap &publishToRelationships,
-                                     const String &subscriberContactID,
+                                     LocationPtr subscriberLocation,
                                      const SubscribeToRelationshipsMap &subscribeToRelationships
                                      ) const;
 
@@ -313,10 +336,10 @@ namespace hookflash
         // (duplicate) RecursiveLock &getLock() const;
         // (duplicate) IAccountForPublicationRepositoryPtr getOuter() const;
 
-        // void resolveRelationships(
-        //                           const PublishToRelationshipsMap &publishToRelationships,
-        //                           RelationshipList &outContacts
-        //                           ) const;
+        // (duplicate) void resolveRelationships(
+        //                                       const PublishToRelationshipsMap &publishToRelationships,
+        //                                       RelationshipList &outContacts
+        //                                       ) const;
 
       private:
         //---------------------------------------------------------------------
@@ -328,74 +351,41 @@ namespace hookflash
         #pragma mark
 
         RecursiveLock &getLock() const {return mLock;}
-        IAccountForPublicationRepositoryPtr getOuter() const {return mOuter.lock();}
+        AccountPtr getAccount() const {return mAccount.lock();}
 
         String log(const char *message) const;
 
-        void activateFetcher(IPublicationMetaDataForPublicationRepositoryPtr metaData);
-        void activatePublisher(IPublicationForPublicationRepositoryPtr publication);
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
-//        IPublicationForPublicationRepositoryPtr findPermissionDocument(const char *publicationName) const;
+        void activateFetcher(PublicationMetaDataPtr metaData);
+        void activatePublisher(PublicationPtr publication);
 
-        /*
-        IPublicationForPublicationRepositoryPtr findDocument(
-                                                             const CachedPublicationMap &cache,
-                                                             IPublicationMetaDataForPublicationRepositoryPtr metaData,
-                                                             bool ignoreLineage = false
-                                                             ) const;
 
-        IPublicationForPublicationRepositoryPtr findDocumentFromLocalCache(
-                                                                           IPublicationMetaDataPtr metaData,
-                                                                           bool ignoreLineage
-                                                                           ) const;
-        IPublicationForPublicationRepositoryPtr findDocumentFromRemoteCache(
-                                                                            IPublicationMetaDataPtr metaData,
-                                                                            bool ignoreLineage
-                                                                            ) const;
+        PeerSubscriptionIncomingPtr findIncomingSubscription(PublicationMetaDataPtr metaData) const;
 
-        IPublicationForPublicationRepositoryPtr findDocumentFromLocalCache(
-                                                                           IPublicationMetaDataForPublicationRepositoryPtr metaData,
-                                                                           bool ignoreLineage
-                                                                           ) const;
-        IPublicationForPublicationRepositoryPtr findDocumentFromRemoteCache(
-                                                                            IPublicationMetaDataForPublicationRepositoryPtr metaData,
-                                                                            bool ignoreLineage
-                                                                            ) const;
-         */
-
-        PeerSubscriptionIncomingPtr findFinderIncomingSubscription(const char *publicationName) const;
-
-        PeerSubscriptionIncomingPtr findPeerIncomingSubscription(
-                                                                 const char *publicationName,
-                                                                 const char *creatorContactID,
-                                                                 const char *creatorLocationID
-                                                                 ) const;
-
-        PeerSubscriptionIncomingPtr findIncomingSubscription(IPublicationMetaDataForPublicationRepositoryPtr metaData) const;
-
-        void onIncomingMessage(
-                               IConnectionSubscriptionMessagePtr incomingMessage,
-                               message::PeerPublishRequestPtr request
+        void onMessageIncoming(
+                               IMessageIncomingPtr messageIncoming,
+                               PeerPublishRequestPtr request
                                );
 
-        void onIncomingMessage(
-                               IConnectionSubscriptionMessagePtr incomingMessage,
-                               message::PeerGetRequestPtr request
+        void onMessageIncoming(
+                               IMessageIncomingPtr messageIncoming,
+                               PeerGetRequestPtr request
                                );
 
-        void onIncomingMessage(
-                               IConnectionSubscriptionMessagePtr incomingMessage,
-                               message::PeerDeleteRequestPtr request
+        void onMessageIncoming(
+                               IMessageIncomingPtr messageIncoming,
+                               PeerDeleteRequestPtr request
                                );
 
-        void onIncomingMessage(
-                               IConnectionSubscriptionMessagePtr incomingMessage,
-                               message::PeerSubscribeRequestPtr request
+        void onMessageIncoming(
+                               IMessageIncomingPtr messageIncoming,
+                               PeerSubscribeRequestPtr request
                                );
 
-        void onIncomingMessage(
-                               IConnectionSubscriptionMessagePtr incomingMessage,
-                               message::PeerPublishNotifyRequestPtr request
+        void onMessageIncoming(
+                               IMessageIncomingPtr messageIncoming,
+                               PeerPublishNotifyRequestPtr request
                                );
 
         void cancel();
@@ -412,8 +402,6 @@ namespace hookflash
         class PeerCache : public IPublicationRepositoryPeerCache
         {
         public:
-          typedef zsLib::Time Time;
-
           friend class PublicationRepository;
 
         protected:
@@ -432,10 +420,14 @@ namespace hookflash
         public:
           ~PeerCache();
 
+          static PeerCachePtr convert(IPublicationRepositoryPeerCachePtr cache);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::PeerCache => IPublicationRepositoryPeerCache
           #pragma mark
+
+          static String toDebugString(IPublicationRepositoryPeerCachePtr cache, bool includeCommaPrefix = true);
 
           virtual bool getNextVersionToNotifyAboutAndMarkNotified(
                                                                   IPublicationPtr publication,
@@ -455,7 +447,7 @@ namespace hookflash
                                    PublicationRepositoryPtr repository
                                    );
 
-          void notifyFetched(IPublicationForPublicationRepositoryPtr publication);
+          void notifyFetched(PublicationPtr publication);
 
           Time getExpires() const       {return mExpires;}
           void setExpires(Time expires) {mExpires = expires;}
@@ -467,6 +459,8 @@ namespace hookflash
           #pragma mark
 
           String log(const char *message) const;
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
           RecursiveLock &getLock() const;
 
         private:
@@ -495,13 +489,11 @@ namespace hookflash
         #pragma mark PublicationRepository::Publisher
         #pragma mark
 
-        class Publisher : public zsLib::MessageQueueAssociator,
+        class Publisher : public MessageQueueAssociator,
                           public IPublicationPublisher,
-                          public IMessageRequesterDelegate
+                          public IMessageMonitorDelegate
         {
         public:
-          typedef String String;
-
           friend class PublicationRepository;
 
         protected:
@@ -509,7 +501,7 @@ namespace hookflash
                     IMessageQueuePtr queue,
                     PublicationRepositoryPtr outer,
                     IPublicationPublisherDelegatePtr delegate,
-                    IPublicationForPublicationRepositoryPtr publication
+                    PublicationPtr publication
                     );
 
           void init();
@@ -517,21 +509,25 @@ namespace hookflash
         public:
           ~Publisher();
 
+          static PublisherPtr convert(IPublicationPublisherPtr);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::Publisher => friend PublicationRepository
           #pragma mark
 
+          static String toDebugString(IPublicationPublisherPtr publisher, bool includeCommaPrefix = true);
+
           static PublisherPtr create(
                                      IMessageQueuePtr queue,
                                      PublicationRepositoryPtr outer,
                                      IPublicationPublisherDelegatePtr delegate,
-                                     IPublicationForPublicationRepositoryPtr publication
+                                     PublicationPtr publication
                                      );
 
           // PUID getID() const;
 
-          void setRequester(IMessageRequesterPtr requester);
+          void setMonitor(IMessageMonitorPtr monitor);
           void notifyCompleted();
 
           // (duplicate) virtual IPublicationPtr getPublication() const;
@@ -546,24 +542,24 @@ namespace hookflash
           virtual void cancel();
           virtual bool isComplete() const;
 
-          virtual bool wasSuccessful() const;
-
-          virtual WORD getErrorResult() const;
-          virtual String getErrorReason() const;
+          virtual bool wasSuccessful(
+                                     WORD *outErrorResult = NULL,
+                                     String *outReason = NULL
+                                     ) const;
 
           virtual IPublicationPtr getPublication() const;
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark PublicationRepository::Publisher => IMessageRequesterDelegate
+          #pragma mark PublicationRepository::Publisher => IMessageMonitorDelegate
           #pragma mark
 
-          virtual bool handleMessageRequesterMessageReceived(
-                                                             IMessageRequesterPtr requester,
-                                                             message::MessagePtr message
-                                                             );
+          virtual bool handleMessageMonitorMessageReceived(
+                                                           IMessageMonitorPtr monitor,
+                                                           message::MessagePtr message
+                                                           );
 
-          virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+          virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor);
 
         private:
           //-------------------------------------------------------------------
@@ -574,7 +570,9 @@ namespace hookflash
           PUID getID() const {return mID;}
           String log(const char *message) const;
 
-          IMessageRequesterPtr getRequester() const;
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
+          IMessageMonitorPtr getMonitor() const;
 
           RecursiveLock &getLock() const;
 
@@ -592,9 +590,9 @@ namespace hookflash
 
           IPublicationPublisherDelegatePtr mDelegate;
 
-          IPublicationForPublicationRepositoryPtr mPublication;
+          PublicationPtr mPublication;
 
-          IMessageRequesterPtr mRequester;
+          IMessageMonitorPtr mMonitor;
 
           bool mSucceeded;
           WORD mErrorCode;
@@ -609,13 +607,11 @@ namespace hookflash
         #pragma mark PublicationRepository::Fetcher
         #pragma mark
 
-        class Fetcher : public zsLib::MessageQueueAssociator,
+        class Fetcher : public MessageQueueAssociator,
                         public IPublicationFetcher,
-                        public IMessageRequesterDelegate
+                        public IMessageMonitorDelegate
         {
         public:
-          typedef zsLib::String String;
-
           friend class PublicationRepository;
 
         protected:
@@ -623,7 +619,7 @@ namespace hookflash
                   IMessageQueuePtr queue,
                   PublicationRepositoryPtr outer,
                   IPublicationFetcherDelegatePtr delegate,
-                  IPublicationMetaDataForPublicationRepositoryPtr metaData
+                  PublicationMetaDataPtr metaData
                   );
 
           void init();
@@ -631,20 +627,24 @@ namespace hookflash
         public:
           ~Fetcher();
 
+          static FetcherPtr convert(IPublicationFetcherPtr fetcher);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::Fetcher => friend PublicationRepository
           #pragma mark
 
+          static String toDebugString(IPublicationFetcherPtr fetcher, bool includeCommaPrefix = true);
+
           static FetcherPtr create(
                                    IMessageQueuePtr queue,
                                    PublicationRepositoryPtr outer,
                                    IPublicationFetcherDelegatePtr delegate,
-                                   IPublicationMetaDataForPublicationRepositoryPtr metaData
+                                   PublicationMetaDataPtr metaData
                                    );
 
-          void setPublication(IPublicationForPublicationRepositoryPtr publication);
-          void setRequester(IMessageRequesterPtr requester);
+          void setPublication(PublicationPtr publication);
+          void setMonitor(IMessageMonitorPtr monitor);
           void notifyCompleted();
 
           // (duplicate) virtual void cancel();
@@ -659,10 +659,10 @@ namespace hookflash
           virtual void cancel();
           virtual bool isComplete() const;
 
-          virtual bool wasSuccessful() const;
-
-          virtual WORD getErrorResult() const;
-          virtual String getErrorReason() const;
+          virtual bool wasSuccessful(
+                                     WORD *outErrorResult = NULL,
+                                     String *outReason = NULL
+                                     ) const;
 
           virtual IPublicationPtr getFetchedPublication() const;
 
@@ -670,15 +670,15 @@ namespace hookflash
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark PublicationRepository::Fetcher => IMessageRequesterDelegate
+          #pragma mark PublicationRepository::Fetcher => IMessageMonitorDelegate
           #pragma mark
 
-          virtual bool handleMessageRequesterMessageReceived(
-                                                             IMessageRequesterPtr requester,
-                                                             message::MessagePtr message
-                                                             );
+          virtual bool handleMessageMonitorMessageReceived(
+                                                           IMessageMonitorPtr monitor,
+                                                           message::MessagePtr message
+                                                           );
 
-          virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+          virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor);
 
         private:
           //-------------------------------------------------------------------
@@ -689,7 +689,9 @@ namespace hookflash
           PUID getID() const {return mID;}
           String log(const char *message) const;
 
-          IMessageRequesterPtr getRequester() const;
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
+          IMessageMonitorPtr getMonitor() const;
 
           RecursiveLock &getLock() const;
 
@@ -707,15 +709,15 @@ namespace hookflash
 
           IPublicationFetcherDelegatePtr mDelegate;
 
-          IPublicationMetaDataForPublicationRepositoryPtr mPublicationMetaData;
+          PublicationMetaDataPtr mPublicationMetaData;
 
-          IMessageRequesterPtr mRequester;
+          IMessageMonitorPtr mMonitor;
 
           bool mSucceeded;
           WORD mErrorCode;
           String mErrorReason;
 
-          IPublicationForPublicationRepositoryPtr mFetchedPublication;
+          PublicationPtr mFetchedPublication;
         };
 
         //---------------------------------------------------------------------
@@ -726,13 +728,11 @@ namespace hookflash
         #pragma mark PublicationRepository::Remover
         #pragma mark
 
-        class Remover : public zsLib::MessageQueueAssociator,
+        class Remover : public MessageQueueAssociator,
                         public IPublicationRemover,
-                        public IMessageRequesterDelegate
+                        public IMessageMonitorDelegate
         {
         public:
-          typedef zsLib::String String;
-
           friend class PublicationRepository;
 
         protected:
@@ -740,7 +740,7 @@ namespace hookflash
                   IMessageQueuePtr queue,
                   PublicationRepositoryPtr outer,
                   IPublicationRemoverDelegatePtr delegate,
-                  IPublicationForPublicationRepositoryPtr publication
+                  PublicationPtr publication
                   );
 
           void init();
@@ -748,19 +748,23 @@ namespace hookflash
         public:
           ~Remover();
 
+          static RemoverPtr convert(IPublicationRemoverPtr remover);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::Remover => friend PublicationRepository
           #pragma mark
 
+          static String toDebugString(IPublicationRemoverPtr remover, bool includeCommaPrefix = true);
+
           static RemoverPtr create(
                                    IMessageQueuePtr queue,
                                    PublicationRepositoryPtr outer,
                                    IPublicationRemoverDelegatePtr delegate,
-                                   IPublicationForPublicationRepositoryPtr publication
+                                   PublicationPtr publication
                                    );
 
-          void setRequester(IMessageRequesterPtr requester);
+          void setMonitor(IMessageMonitorPtr monitor);
 
           void notifyCompleted();
 
@@ -775,24 +779,24 @@ namespace hookflash
           virtual void cancel();
           virtual bool isComplete() const;
 
-          virtual bool wasSuccessful() const;
-
-          virtual WORD getErrorResult() const;
-          virtual String getErrorReason() const;
+          virtual bool wasSuccessful(
+                                     WORD *outErrorResult = NULL,
+                                     String *outReason = NULL
+                                     ) const;
 
           virtual IPublicationPtr getPublication() const;
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark PublicationRepository::Remover => IMessageRequesterDelegate
+          #pragma mark PublicationRepository::Remover => IMessageMonitorDelegate
           #pragma mark
 
-          virtual bool handleMessageRequesterMessageReceived(
-                                                             IMessageRequesterPtr requester,
-                                                             message::MessagePtr message
-                                                             );
+          virtual bool handleMessageMonitorMessageReceived(
+                                                           IMessageMonitorPtr monitor,
+                                                           message::MessagePtr message
+                                                           );
 
-          virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+          virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor);
 
         private:
           //-------------------------------------------------------------------
@@ -802,6 +806,8 @@ namespace hookflash
 
           RecursiveLock &getLock() const;
           String log(const char *message) const;
+
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         private:
           //-------------------------------------------------------------------
@@ -816,9 +822,9 @@ namespace hookflash
           RemoverWeakPtr mThisWeak;
           IPublicationRemoverDelegatePtr mDelegate;
 
-          IPublicationForPublicationRepositoryPtr mPublication;
+          PublicationPtr mPublication;
 
-          IMessageRequesterPtr mRequester;
+          IMessageMonitorPtr mMonitor;
 
           bool mSucceeded;
           WORD mErrorCode;
@@ -833,11 +839,10 @@ namespace hookflash
         #pragma mark PublicationRepository::SubscriptionLocal
         #pragma mark
 
-        class SubscriptionLocal : public zsLib::MessageQueueAssociator,
+        class SubscriptionLocal : public MessageQueueAssociator,
                                   public IPublicationSubscription
         {
         public:
-          typedef zsLib::String String;
           typedef IPublicationMetaData::SubscribeToRelationshipsMap SubscribeToRelationshipsMap;
 
           friend class PublicationRepository;
@@ -856,10 +861,14 @@ namespace hookflash
         public:
           ~SubscriptionLocal();
 
+          static SubscriptionLocalPtr convert(IPublicationSubscriptionPtr subscription);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::SubscriptionLocal => friend SubscriptionLocal
           #pragma mark
+
+          static String toDebugString(SubscriptionLocalPtr subscription, bool includeCommaPrefix = true);
 
           static SubscriptionLocalPtr create(
                                              IMessageQueuePtr queue,
@@ -869,8 +878,8 @@ namespace hookflash
                                              const SubscribeToRelationshipsMap &relationships
                                              );
 
-          void notifyUpdated(IPublicationForPublicationRepositoryPtr publication);
-          void notifyGone(IPublicationForPublicationRepositoryPtr publication);
+          void notifyUpdated(PublicationPtr publication);
+          void notifyGone(PublicationPtr publication);
 
           // (duplicate) virtual void cancel();
 
@@ -895,6 +904,8 @@ namespace hookflash
           RecursiveLock &getLock() const;
           String log(const char *message) const;
 
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
           void setState(PublicationSubscriptionStates state);
 
         private:
@@ -911,7 +922,7 @@ namespace hookflash
 
           IPublicationSubscriptionDelegatePtr mDelegate;
 
-          IPublicationMetaDataForPublicationRepositoryPtr mSubscriptionInfo;
+          PublicationMetaDataPtr mSubscriptionInfo;
           PublicationSubscriptionStates mCurrentState;
         };
 
@@ -923,11 +934,10 @@ namespace hookflash
         #pragma mark PublicationRepository::PeerSubscriptionIncoming
         #pragma mark
 
-        class PeerSubscriptionIncoming : public zsLib::MessageQueueAssociator,
-                                         public IMessageRequesterDelegate
+        class PeerSubscriptionIncoming : public MessageQueueAssociator,
+                                         public IMessageMonitorDelegate
         {
         public:
-          typedef zsLib::String String;
           typedef IPublicationMetaData::SubscribeToRelationshipsMap SubscribeToRelationshipsMap;
 
           friend class PublicationRepository;
@@ -937,13 +947,15 @@ namespace hookflash
                                    IMessageQueuePtr queue,
                                    PublicationRepositoryPtr outer,
                                    PeerSourcePtr peerSource,
-                                   IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                   PublicationMetaDataPtr subscriptionInfo
                                    );
 
           void init();
 
         public:
           ~PeerSubscriptionIncoming();
+
+          static String toDebugString(PeerSubscriptionIncomingPtr subscription, bool includeCommaPrefix = true);
 
           //-------------------------------------------------------------------
           #pragma mark
@@ -954,13 +966,13 @@ namespace hookflash
                                                     IMessageQueuePtr queue,
                                                     PublicationRepositoryPtr outer,
                                                     PeerSourcePtr peerSource,
-                                                    IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                    PublicationMetaDataPtr subscriptionInfo
                                                     );
 
           // (duplicate) PUID getID() const;
 
-          void notifyUpdated(IPublicationForPublicationRepositoryPtr publication);
-          void notifyGone(IPublicationForPublicationRepositoryPtr publication);
+          void notifyUpdated(PublicationPtr publication);
+          void notifyGone(PublicationPtr publication);
 
           void notifyUpdated(const CachedPublicationMap &cachedPublications);
           void notifyGone(const CachedPublicationMap &publication);
@@ -972,15 +984,15 @@ namespace hookflash
         protected:
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark PublicationRepository::PeerSubscriptionIncoming => IMessageRequesterDelegate
+          #pragma mark PublicationRepository::PeerSubscriptionIncoming => IMessageMonitorDelegate
           #pragma mark
 
-          virtual bool handleMessageRequesterMessageReceived(
-                                                             IMessageRequesterPtr requester,
-                                                             message::MessagePtr message
-                                                             );
+          virtual bool handleMessageMonitorMessageReceived(
+                                                           IMessageMonitorPtr monitor,
+                                                           message::MessagePtr message
+                                                           );
 
-          virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+          virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor);
 
         private:
           //-------------------------------------------------------------------
@@ -991,6 +1003,8 @@ namespace hookflash
           PUID getID() const {return mID;}
           RecursiveLock &getLock() const;
           String log(const char *message) const;
+
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         private:
           //-------------------------------------------------------------------
@@ -1005,10 +1019,10 @@ namespace hookflash
           PeerSubscriptionIncomingWeakPtr mThisWeak;
 
           PeerSourcePtr mPeerSource;
-          IPublicationMetaDataForPublicationRepositoryPtr mSubscriptionInfo;
+          PublicationMetaDataPtr mSubscriptionInfo;
 
-          typedef std::list<IMessageRequesterPtr> NotificationRequesterList;
-          NotificationRequesterList mNotificationRequesters;
+          typedef std::list<IMessageMonitorPtr> NotificationMonitorList;
+          NotificationMonitorList mNotificationMonitors;
         };
 
         //---------------------------------------------------------------------
@@ -1019,12 +1033,11 @@ namespace hookflash
         #pragma mark PublicationRepository::PeerSubscriptionOutgoing
         #pragma mark
 
-        class PeerSubscriptionOutgoing : public zsLib::MessageQueueAssociator,
+        class PeerSubscriptionOutgoing : public MessageQueueAssociator,
                                          public IPublicationSubscription,
-                                         public IMessageRequesterDelegate
+                                         public IMessageMonitorDelegate
         {
         public:
-          typedef zsLib::String String;
           typedef IPublicationMetaData::SubscribeToRelationshipsMap SubscribeToRelationshipsMap;
 
           friend class PublicationRepository;
@@ -1034,7 +1047,7 @@ namespace hookflash
                                    IMessageQueuePtr queue,
                                    PublicationRepositoryPtr outer,
                                    IPublicationSubscriptionDelegatePtr delegate,
-                                   IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                   PublicationMetaDataPtr subscriptionInfo
                                    );
 
           void init();
@@ -1042,16 +1055,20 @@ namespace hookflash
         public:
           ~PeerSubscriptionOutgoing();
 
+          static PeerSubscriptionOutgoingPtr convert(IPublicationSubscriptionPtr subscription);
+
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark PublicationRepository::PeerSubscriptionOutgoing => friend PublicationRepository
           #pragma mark
 
+          static String toDebugString(PeerSubscriptionOutgoingPtr subscription, bool includeCommaPrefix = true);
+
           static PeerSubscriptionOutgoingPtr create(
                                                     IMessageQueuePtr queue,
                                                     PublicationRepositoryPtr outer,
                                                     IPublicationSubscriptionDelegatePtr delegate,
-                                                    IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                    PublicationMetaDataPtr subscriptionInfo
                                                     );
 
           // (duplicate) PUID getID() const;
@@ -1059,8 +1076,8 @@ namespace hookflash
 
           // (duplicate) virtual IPublicationMetaDataPtr getSource() const;
 
-          void setRequester(IMessageRequesterPtr requester);
-          void notifyUpdated(IPublicationMetaDataForPublicationRepositoryPtr metaData);
+          void setMonitor(IMessageMonitorPtr monitor);
+          void notifyUpdated(PublicationMetaDataPtr metaData);
 
         protected:
           //-------------------------------------------------------------------
@@ -1075,15 +1092,15 @@ namespace hookflash
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark PublicationRepository::PeerSubscriptionOutgoing => IMessageRequesterDelegate
+          #pragma mark PublicationRepository::PeerSubscriptionOutgoing => IMessageMonitorDelegate
           #pragma mark
 
-          virtual bool handleMessageRequesterMessageReceived(
-                                                             IMessageRequesterPtr requester,
-                                                             message::MessagePtr message
-                                                             );
+          virtual bool handleMessageMonitorMessageReceived(
+                                                           IMessageMonitorPtr monitor,
+                                                           message::MessagePtr message
+                                                           );
 
-          virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+          virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor);
 
         private:
           //-------------------------------------------------------------------
@@ -1094,6 +1111,8 @@ namespace hookflash
           PUID getID() const {return mID;}
           RecursiveLock &getLock() const;
           String log(const char *message) const;
+
+          virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
           bool isPending() const {return PublicationSubscriptionState_Pending == mCurrentState;}
           bool isEstablished() const {return PublicationSubscriptionState_Established == mCurrentState;}
@@ -1119,10 +1138,10 @@ namespace hookflash
 
           IPublicationSubscriptionDelegatePtr mDelegate;
 
-          IPublicationMetaDataForPublicationRepositoryPtr mSubscriptionInfo;
+          PublicationMetaDataPtr mSubscriptionInfo;
 
-          IMessageRequesterPtr mRequester;
-          IMessageRequesterPtr mCancelRequester;
+          IMessageMonitorPtr mMonitor;
+          IMessageMonitorPtr mCancelMonitor;
 
           bool mSucceeded;
           WORD mErrorCode;
@@ -1144,36 +1163,28 @@ namespace hookflash
         mutable RecursiveLock mLock;
         PublicationRepositoryWeakPtr mThisWeak;
 
-        IAccountForPublicationRepositoryWeakPtr mOuter;
+        AccountWeakPtr mAccount;
 
         TimerPtr mExpiresTimer;
 
-        IConnectionSubscriptionPtr mConnectionSubscription;
+        IPeerSubscriptionPtr mPeerSubscription;
 
-        CachedPublicationMap mCachedLocalPublications;        // documents that have been published from a source tot he local repository
+        CachedPublicationMap mCachedLocalPublications;        // documents that have been published from a source to the local repository
         CachedPublicationMap mCachedRemotePublications;       // documents that have been fetched from a remote repository
 
         CachedPublicationPermissionMap mCachedPermissionDocuments;
 
-        typedef PUID SubscriptionLocationID;
-        typedef std::map<SubscriptionLocationID, SubscriptionLocalPtr> SubscriptionLocalMap;
         SubscriptionLocalMap mSubscriptionsLocal;
 
-        typedef PUID PeerSubscriptionIncomingID;
-        typedef std::map<PeerSubscriptionIncomingID, PeerSubscriptionIncomingPtr> PeerSubscriptionIncomingMap;
         PeerSubscriptionIncomingMap mPeerSubscriptionsIncoming;
 
-        typedef PUID PeerSubscriptionOutgoingID;
-        typedef std::map<PeerSubscriptionOutgoingID, PeerSubscriptionOutgoingPtr> PeerSubscriptionOutgoingMap;
         PeerSubscriptionOutgoingMap mPeerSubscriptionsOutgoing;
 
-        typedef std::list<FetcherPtr> PendingFetcherList;
         PendingFetcherList mPendingFetchers;
 
-        typedef std::list<PublisherPtr> PendingPublisherList;
         PendingPublisherList mPendingPublishers;
 
-        CachedPeerSourceMap mCachedPeerSources;
+        CachedPeerSourceMap mCachedPeerSources;               // represents the document notification state of each peer subscribing to this location
       };
     }
   }

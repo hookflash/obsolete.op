@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,32 +22,24 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_RUDPICESocket.h>
 #include <hookflash/services/internal/services_RUDPICESocketSession.h>
 
 #include <zsLib/Exception.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
 
 #include <algorithm>
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
 
-using zsLib::BYTE;
-using zsLib::ULONG;
-using zsLib::DWORD;
-using zsLib::QWORD;
-using zsLib::AutoRecursiveLock;
-using zsLib::IPAddress;
-using zsLib::Proxy;
-using zsLib::Stringize;
 
 namespace hookflash
 {
@@ -55,18 +47,17 @@ namespace hookflash
   {
     namespace internal
     {
-      typedef zsLib::String String;
-      typedef zsLib::PUID PUID;
+      using zsLib::Stringize;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       RUDPICESocket::RUDPICESocket(
-                                   zsLib::IMessageQueuePtr queue,
+                                   IMessageQueuePtr queue,
                                    IRUDPICESocketDelegatePtr delegate
                                    ) :
-        zsLib::MessageQueueAssociator(queue),
+        MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mCurrentState(RUDPICESocketState_Pending)
       {
@@ -80,7 +71,7 @@ namespace hookflash
                                const char *turnServerUsername,
                                const char *turnServerPassword,
                                const char *stunServer,
-                               zsLib::WORD port
+                               WORD port
                                )
       {
         AutoRecursiveLock lock(mLock);    // just in case
@@ -103,7 +94,7 @@ namespace hookflash
                                const char *turnServerUsername,
                                const char *turnServerPassword,
                                IDNS::SRVResultPtr srvSTUN,
-                               zsLib::WORD port
+                               WORD port
                                )
       {
         AutoRecursiveLock lock(mLock);    // just in case
@@ -130,13 +121,13 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       RUDPICESocketPtr RUDPICESocket::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              IRUDPICESocketDelegatePtr delegate,
                                              const char *turnServer,
                                              const char *turnServerUsername,
                                              const char *turnServerPassword,
                                              const char *stunServer,
-                                             zsLib::WORD port
+                                             WORD port
                                              )
       {
         RUDPICESocketPtr pThis(new RUDPICESocket(queue, delegate));
@@ -147,14 +138,14 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       RUDPICESocketPtr RUDPICESocket::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              IRUDPICESocketDelegatePtr delegate,
                                              IDNS::SRVResultPtr srvTURNUDP,
                                              IDNS::SRVResultPtr srvTURNTCP,
                                              const char *turnServerUsername,
                                              const char *turnServerPassword,
                                              IDNS::SRVResultPtr srvSTUN,
-                                             zsLib::WORD port
+                                             WORD port
                                              )
       {
         RUDPICESocketPtr pThis(new RUDPICESocket(queue, delegate));
@@ -198,7 +189,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void RUDPICESocket::wakeup(zsLib::Duration minimumTimeCandidatesMustRemainValidWhileNotUsed)
+      void RUDPICESocket::wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed)
       {
         IICESocketPtr socket = getICESocket();
         if (!socket) return;
@@ -270,7 +261,7 @@ namespace hookflash
         return mThisWeak.lock();
       }
 
-      void RUDPICESocket::onRUDPICESessionClosed(zsLib::PUID sessionID)
+      void RUDPICESocket::onRUDPICESessionClosed(PUID sessionID)
       {
         AutoRecursiveLock lock(mLock);
         do {
@@ -291,7 +282,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void RUDPICESocket::cancelSubscription(zsLib::PUID subscriptionID)
+      void RUDPICESocket::cancelSubscription(PUID subscriptionID)
       {
         AutoRecursiveLock lock(mLock);
         DelegateMap::iterator found = mDelegates.find(subscriptionID);
@@ -445,13 +436,13 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IRUDPICESocketPtr IRUDPICESocket::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              IRUDPICESocketDelegatePtr delegate,
                                              const char *turnServer,
                                              const char *turnServerUsername,
                                              const char *turnServerPassword,
                                              const char *stunServer,
-                                             zsLib::WORD port
+                                             WORD port
                                              )
     {
       return internal::RUDPICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port);
@@ -459,14 +450,14 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IRUDPICESocketPtr IRUDPICESocket::create(
-                                             zsLib::IMessageQueuePtr queue,
+                                             IMessageQueuePtr queue,
                                              IRUDPICESocketDelegatePtr delegate,
                                              IDNS::SRVResultPtr srvTURNUDP,
                                              IDNS::SRVResultPtr srvTURNTCP,
                                              const char *turnServerUsername,
                                              const char *turnServerPassword,
                                              IDNS::SRVResultPtr srvSTUN,
-                                             zsLib::WORD port
+                                             WORD port
                                              )
     {
       return internal::RUDPICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port);

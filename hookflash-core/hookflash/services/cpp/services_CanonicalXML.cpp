@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,11 +22,11 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_CanonicalXML.h>
@@ -36,9 +36,6 @@
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
 
-using zsLib::String;
-using zsLib::CSTR;
-using namespace zsLib::XML;
 
 namespace hookflash
 {
@@ -48,6 +45,15 @@ namespace hookflash
     {
       typedef std::map<String, String> XMLNamespaceMap;
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       static void calculateNamespaceTo(
                                        ElementPtr element,
                                        XMLNamespaceMap &outNamespaces
@@ -107,6 +113,7 @@ namespace hookflash
         }
       }
 
+      //-----------------------------------------------------------------------
       static void calculateOverrides(
                                      ElementPtr element,
                                      XMLNamespaceMap &namespaces,
@@ -157,6 +164,7 @@ namespace hookflash
         }
       }
 
+      //-----------------------------------------------------------------------
       static void changeAttribtues(
                                    ElementPtr element,
                                    XMLNamespaceMap &overrides
@@ -190,9 +198,19 @@ namespace hookflash
         }
       }
 
-      class MyXMLNSWalkSink : public zsLib::XML::WalkSink
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MyXMLNSWalkSink
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      class MyXMLNSWalkSink : public WalkSink
       {
       public:
+        //---------------------------------------------------------------------
         MyXMLNSWalkSink(
                         XMLNamespaceMap &xmlns,
                         ElementPtr &root
@@ -207,10 +225,16 @@ namespace hookflash
           return false;
         }
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MyXMLNSWalkSink => (data)
+        #pragma mark
+
         XMLNamespaceMap mRootXMLNS;
         ElementPtr mRoot;
       };
 
+      //---------------------------------------------------------------------
       static bool normizeCompare(AttributePtr v1, AttributePtr v2)
       {
         if (v1->getName().substr(0, 5) == "xmlns") {
@@ -224,7 +248,16 @@ namespace hookflash
         return v1->getName() < v2->getName();
       }
 
-      class MyOrphanerWalkSink : public zsLib::XML::WalkSink
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MyOrphanerWalkSink
+      #pragma mark
+
+      //---------------------------------------------------------------------
+      class MyOrphanerWalkSink : public WalkSink
       {
         typedef std::list<AttributePtr> AttributeValueList;
 
@@ -266,16 +299,21 @@ namespace hookflash
           return false;
         }
 
+        //---------------------------------------------------------------------
         virtual bool onComment(CommentPtr inNode)
         {
           inNode->orphan();
           return false;
         }
+
+        //---------------------------------------------------------------------
         virtual bool onDeclarationEnter(DeclarationPtr inNode)
         {
           inNode->orphan();
           return false;
         }
+
+        //---------------------------------------------------------------------
         virtual bool onUnknown(UnknownPtr inNode)
         {
           String value = inNode->getValue();
@@ -287,7 +325,16 @@ namespace hookflash
         }
       };
 
-      zsLib::String CanonicalXML::convert(zsLib::XML::ElementPtr element)
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark CanonicalXML
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String CanonicalXML::convert(ElementPtr element)
       {
         if (!element)
           return String();
@@ -314,13 +361,24 @@ namespace hookflash
 
         DocumentPtr doc = Document::create();
         doc->adoptAsFirstChild(newRoot);
-        doc->setWriteFlags(static_cast<Document::WriteFlags>(Document::WriteFlag_ForceElementEndTag | Document::WriteFlag_NormalizeCDATA | Document::WriteFlag_EntityEncodeWindowsCarriageReturnInText | Document::WriteFlag_NormizeAttributeValue));
-        boost::shared_array<char> output = doc->write();
+
+        GeneratorPtr generator = Generator::createXMLGenerator(static_cast<Generator::XMLWriteFlags>(Generator::XMLWriteFlag_ForceElementEndTag | Generator::XMLWriteFlag_NormalizeCDATA | Generator::XMLWriteFlag_EntityEncode0xDInText | Generator::XMLWriteFlag_NormizeAttributeValue));
+
+        boost::shared_array<char> output = generator->write(doc);
         return (CSTR)output.get();
       }
     }
 
-    zsLib::String ICanonicalXML::convert(zsLib::XML::ElementPtr element)
+    //---------------------------------------------------------------------
+    //---------------------------------------------------------------------
+    //---------------------------------------------------------------------
+    //---------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ICanonicalXML
+    #pragma mark
+
+    //---------------------------------------------------------------------
+    String ICanonicalXML::convert(ElementPtr element)
     {
       return internal::CanonicalXML::convert(element);
     }

@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,11 +22,11 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_ICESocket.h>
@@ -35,24 +35,28 @@
 #include <hookflash/services/ISTUNRequesterManager.h>
 #include <hookflash/services/IHelper.h>
 #include <zsLib/Exception.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Numeric.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>
-#include <zsLib/zsTypes.h>
+#include <zsLib/types.h>
 
 #include <cryptopp/osrng.h>
 
-#ifdef _WIN32
-#include <Iphlpapi.h>
-#endif //_WIN32
+#ifdef _ANDROID
+#include <sys/types.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#endif // _ANDROID
 
 #ifndef _WIN32
+#ifndef _ANDROID
 #include <sys/types.h>
 #include <ifaddrs.h>
 #endif //_WIN32
+#endif //_ANDROID
 
-#define HOOKFLASH_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE  (1 << (sizeof(zsLib::WORD)*8))
+#define HOOKFLASH_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE  (1 << (sizeof(WORD)*8))
 #define HOOKFLASH_SERVICES_ICESOCKET_MAX_RECYLCE_BUFFERS  4
 
 #define HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS  HOOKFLASH_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS
@@ -68,12 +72,6 @@ namespace hookflash
   namespace services
   {
     using zsLib::Stringize;
-
-    typedef zsLib::String String;
-    typedef zsLib::IPAddress IPAddress;
-    typedef zsLib::ISocket ISocket;
-    typedef zsLib::Socket Socket;
-    typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
 
     namespace internal
     {
@@ -122,7 +120,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       ICESocket::ICESocket(
-                           zsLib::IMessageQueuePtr queue,
+                           IMessageQueuePtr queue,
                            IICESocketDelegatePtr delegate,
                            IDNS::SRVResultPtr srvTURNUDP,
                            IDNS::SRVResultPtr srvTURNTCP,
@@ -132,7 +130,7 @@ namespace hookflash
                            bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
                            IDNS::SRVResultPtr srvSTUN,
                            const char *stunServer,
-                           zsLib::WORD port
+                           WORD port
                            ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
@@ -147,7 +145,7 @@ namespace hookflash
         mTURNPassword(turnPassword ? turnPassword : ""),
         mFirstWORDInAnyPacketWillNotConflictWithTURNChannels(firstWORDInAnyPacketWillNotConflictWithTURNChannels),
         mTURNLastUsed(zsLib::now()),
-        mTURNShutdownIfNotUsedBy(zsLib::Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
+        mTURNShutdownIfNotUsedBy(Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
         mSTUNSRVResult(srvSTUN),
         mSTUNServer(stunServer ? stunServer : ""),
         mUsernameFrag(IHelper::randomString(20)),
@@ -167,13 +165,13 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ICESocketPtr ICESocket::create(
-                                     zsLib::IMessageQueuePtr queue,
+                                     IMessageQueuePtr queue,
                                      IICESocketDelegatePtr delegate,
                                      const char *turnServer,
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      const char *stunServer,
-                                     zsLib::WORD port,
+                                     WORD port,
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
       {
@@ -196,14 +194,14 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ICESocketPtr ICESocket::create(
-                                     zsLib::IMessageQueuePtr queue,
+                                     IMessageQueuePtr queue,
                                      IICESocketDelegatePtr delegate,
                                      IDNS::SRVResultPtr srvTURNUDP,
                                      IDNS::SRVResultPtr srvTURNTCP,
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      IDNS::SRVResultPtr srvSTUN,
-                                     zsLib::WORD port,
+                                     WORD port,
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
       {
@@ -259,7 +257,7 @@ namespace hookflash
         }
 
         SubscriptionPtr subscription = Subscription::create(mThisWeak.lock());
-        ZS_LOG_DETAIL(log("subscription created") + ", subscription ID=" + zsLib::Stringize<PUID>(subscription->mID).string())
+        ZS_LOG_DETAIL(log("subscription created") + ", subscription ID=" + Stringize<PUID>(subscription->mID).string())
 
         if (isShutdown()) return subscription;
 
@@ -284,7 +282,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::wakeup(zsLib::Duration minimumTimeCandidatesMustRemainValidWhileNotUsed)
+      void ICESocket::wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed)
       {
         AutoRecursiveLock lock(mLock);
 
@@ -385,7 +383,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::onReadReady(zsLib::ISocketPtr socket)
+      void ICESocket::onReadReady(ISocketPtr socket)
       {
         boost::shared_array<BYTE> buffer;
         IPAddress source;
@@ -423,7 +421,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::onWriteReady(zsLib::ISocketPtr socket)
+      void ICESocket::onWriteReady(ISocketPtr socket)
       {
         ZS_LOG_TRACE(log("write ready"))
         AutoRecursiveLock lock(mLock);
@@ -438,7 +436,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::onException(zsLib::ISocketPtr socket)
+      void ICESocket::onException(ISocketPtr socket)
       {
         ZS_LOG_DETAIL(log("exception"))
         AutoRecursiveLock lock(mLock);
@@ -505,9 +503,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ICESocket::handleTURNSocketReceivedPacket(
                                                      ITURNSocketPtr socket,
-                                                     zsLib::IPAddress source,
-                                                     const zsLib::BYTE *packet,
-                                                     zsLib::ULONG packetLengthInBytes
+                                                     IPAddress source,
+                                                     const BYTE *packet,
+                                                     ULONG packetLengthInBytes
                                                      )
       {
         // WARNING: This method cannot be called within a lock as it calls delegates synchronously.
@@ -517,9 +515,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ICESocket::notifyTURNSocketSendPacket(
                                                  ITURNSocketPtr socket,
-                                                 zsLib::IPAddress destination,
-                                                 const zsLib::BYTE *packet,
-                                                 zsLib::ULONG packetLengthInBytes
+                                                 IPAddress destination,
+                                                 const BYTE *packet,
+                                                 ULONG packetLengthInBytes
                                                  )
       {
         AutoRecursiveLock lock(mLock);
@@ -574,9 +572,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ICESocket::onSTUNDiscoverySendPacket(
                                                 ISTUNDiscoveryPtr discovery,
-                                                zsLib::IPAddress destination,
-                                                boost::shared_array<zsLib::BYTE> packet,
-                                                zsLib::ULONG packetLengthInBytes
+                                                IPAddress destination,
+                                                boost::shared_array<BYTE> packet,
+                                                ULONG packetLengthInBytes
                                                 )
       {
         ZS_LOG_TRACE(log("sending packet for STUN discovery") + ", destination=" + destination.string() + ", length=" + Stringize<ULONG>(packetLengthInBytes).string())
@@ -613,7 +611,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::onSTUNDiscoveryComplete(ISTUNDiscoveryPtr discovery)
+      void ICESocket::onSTUNDiscoveryCompleted(ISTUNDiscoveryPtr discovery)
       {
         AutoRecursiveLock lock(mLock);
         if (isShutdown()) return;
@@ -629,9 +627,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ICESocket::sendTo(
                              IICESocket::Types viaTransport,
-                             const zsLib::IPAddress &destination,
-                             const zsLib::BYTE *buffer,
-                             zsLib::ULONG bufferLengthInBytes,
+                             const IPAddress &destination,
+                             const BYTE *buffer,
+                             ULONG bufferLengthInBytes,
                              bool isUserData
                              )
       {
@@ -676,7 +674,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::addRoute(IICESocketSessionForICESocketPtr session, const zsLib::IPAddress &source)
+      void ICESocket::addRoute(IICESocketSessionForICESocketPtr session, const IPAddress &source)
       {
         removeRoute(session);
         mRoutes[source] = session;
@@ -695,7 +693,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::onICESocketSessionClosed(zsLib::PUID sessionID)
+      void ICESocket::onICESocketSessionClosed(PUID sessionID)
       {
         ZS_LOG_DETAIL(log("notified ICE session closed") + ", session id=" + Stringize<PUID>(sessionID).string())
 
@@ -778,9 +776,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ICESocket::internalReceivedData(
                                            IICESocket::Types viaTransport,
-                                           const zsLib::IPAddress &source,
-                                           const zsLib::BYTE *buffer,
-                                           zsLib::ULONG bufferLengthInBytes
+                                           const IPAddress &source,
+                                           const BYTE *buffer,
+                                           ULONG bufferLengthInBytes
                                            )
       {
         // WARNING: DO NOT CALL THIS METHOD WHILE INSIDE A LOCK AS IT COULD
@@ -947,16 +945,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void ICESocket::cancelSubscription(zsLib::PUID subscriptionID)
+      void ICESocket::cancelSubscription(PUID subscriptionID)
       {
         AutoRecursiveLock lock(getLock());
         DelegateMap::iterator found = mDelegates.find(subscriptionID);
         if (found == mDelegates.end()) {
-          ZS_LOG_DETAIL(log("subscription not found (already cancelled?)") + ", subscription ID=" + zsLib::Stringize<PUID>(subscriptionID).string())
+          ZS_LOG_DETAIL(log("subscription not found (already cancelled?)") + ", subscription ID=" + Stringize<PUID>(subscriptionID).string())
           return;
         }
 
-        ZS_LOG_DETAIL(log("subscription cancelled") + ", subscription ID=" + zsLib::Stringize<PUID>(subscriptionID).string())
+        ZS_LOG_DETAIL(log("subscription cancelled") + ", subscription ID=" + Stringize<PUID>(subscriptionID).string())
         mDelegates.erase(found);
       }
 
@@ -966,7 +964,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
 
       //-----------------------------------------------------------------------
-      zsLib::String ICESocket::log(const char *message) const
+      String ICESocket::log(const char *message) const
       {
         return String("ICESocket [") + Stringize<PUID>(mID).string() + "] " + message;
       }
@@ -1049,12 +1047,12 @@ namespace hookflash
         if (!gatherLocalIPs())
           return;
 
-        zsLib::Time current = zsLib::now();
+        Time current = zsLib::now();
 
         if (mTURNLastUsed + mTURNShutdownIfNotUsedBy < current)
         {
           // the socket can be put to sleep...
-          mTURNShutdownIfNotUsedBy = zsLib::Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS);  // reset to minimum again...
+          mTURNShutdownIfNotUsedBy = Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS);  // reset to minimum again...
 
           if (mTURNSocket) {
             ZS_LOG_DEBUG(log("TURN server can go to sleep") + ", TURN socket ID=" + Stringize<PUID>(mTURNSocket->getID()).string())
@@ -1229,7 +1227,21 @@ namespace hookflash
           }
         }
         ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: END ---"))
+#elif _ANDROID
+	int fd;
+ 	struct ifreq ifr;
 
+ 	fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+ 	/* I want to get an IPv4 IP address */
+ 	ifr.ifr_addr.sa_family = AF_INET;
+
+ 	/* I want IP address attached to "eth0" */
+ 	strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+
+ 	ioctl(fd, SIOCGIFADDR, &ifr);
+
+ 	close(fd);
 #else
         ifaddrs *ifAddrStruct = NULL;
         ifaddrs *ifa = NULL;
@@ -1567,13 +1579,13 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IICESocketPtr IICESocket::create(
-                                     zsLib::IMessageQueuePtr queue,
+                                     IMessageQueuePtr queue,
                                      IICESocketDelegatePtr delegate,
                                      const char *turnServer,
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      const char *stunServer,
-                                     zsLib::WORD port,
+                                     WORD port,
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
     {
@@ -1590,14 +1602,14 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IICESocketPtr IICESocket::create(
-                                     zsLib::IMessageQueuePtr queue,
+                                     IMessageQueuePtr queue,
                                      IICESocketDelegatePtr delegate,
                                      IDNS::SRVResultPtr srvTURNUDP,
                                      IDNS::SRVResultPtr srvTURNTCP,
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      IDNS::SRVResultPtr srvSTUN,
-                                     zsLib::WORD port,
+                                     WORD port,
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
     {

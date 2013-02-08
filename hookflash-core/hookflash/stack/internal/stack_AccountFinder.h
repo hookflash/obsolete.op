@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,24 +22,27 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
 #include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
-#include <hookflash/stack/IMessageRequester.h>
+#include <hookflash/stack/internal/types.h>
+#include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/services/IRUDPICESocket.h>
 #include <hookflash/services/IRUDPICESocketSession.h>
 #include <hookflash/services/IRUDPMessaging.h>
 
+#include <hookflash/stack/message/peer-finder/SessionCreateResult.h>
+#include <hookflash/stack/message/peer-finder/SessionKeepAliveResult.h>
+#include <hookflash/stack/message/peer-finder/SessionDeleteResult.h>
+
 #include <zsLib/MessageQueueAssociator.h>
-#include <zsLib/String.h>
 #include <zsLib/Timer.h>
 
 #include <map>
@@ -50,49 +53,50 @@ namespace hookflash
   {
     namespace internal
     {
+      using message::peer_finder::SessionCreateResult;
+      using message::peer_finder::SessionCreateResultPtr;
+      using message::peer_finder::SessionKeepAliveResult;
+      using message::peer_finder::SessionKeepAliveResultPtr;
+      using message::peer_finder::SessionDeleteResult;
+      using message::peer_finder::SessionDeleteResultPtr;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountFinder
+      #pragma mark IAccountFinderForAccount
       #pragma mark
 
-      interaction IAccountFinder
+      interaction IAccountFinderForAccount
       {
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::Duration Duration;
-        typedef zsLib::XML::DocumentPtr DocumentPtr;
+        typedef IAccount::AccountStates AccountStates;
 
-        enum AccountFinderStates
-        {
-          AccountFinderState_Pending,
-          AccountFinderState_Ready,
-          AccountFinderState_ShuttingDown,
-          AccountFinderState_Shutdown,
-        };
+        IAccountFinderForAccount &forAccount() {return *this;}
+        const IAccountFinderForAccount &forAccount() const {return *this;}
 
-        static const char *toString(AccountFinderStates state);
-
+        static AccountFinderPtr create(
+                                       IAccountFinderDelegatePtr delegate,
+                                       AccountPtr outer
+                                       );
         virtual PUID getID() const = 0;
-        virtual AccountFinderStates getState() const = 0;
+        virtual AccountStates getState() const = 0;
 
         virtual void shutdown() = 0;
 
-        virtual String getLocationID() const = 0;
+        virtual bool send(MessagePtr message) const = 0;
+        virtual IMessageMonitorPtr sendRequest(
+                                               IMessageMonitorDelegatePtr delegate,
+                                               MessagePtr message,
+                                               Duration duration
+                                               ) const = 0;
 
-        virtual bool requestSendMessage(
-                                        DocumentPtr message,
-                                        bool sendOnlyIfReady = true
-                                        ) = 0;
+        virtual Finder getCurrentFinder(
+                                        String *outServerAgent = NULL,
+                                        IPAddress *outIPAddress = NULL
+                                        ) const = 0;
 
-        virtual IMessageRequesterPtr sendRequest(
-                                                 IMessageRequesterDelegatePtr delegate,
-                                                 message::MessagePtr requestMessage,
-                                                 Duration timeout,
-                                                 bool onlyIfReady = true
-                                                 ) = 0;
+        virtual void notifyFinderDNSComplete() = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -116,31 +120,25 @@ namespace hookflash
       #pragma mark AccountFinder
       #pragma mark
 
-      class AccountFinder : public zsLib::MessageQueueAssociator,
-                            public IAccountFinder,
+      class AccountFinder : public MessageQueueAssociator,
+                            public IAccountFinderForAccount,
                             public IAccountFinderAsyncDelegate,
-                            public IBootstrappedNetworkDelegate,
-                            public services::IRUDPICESocketDelegate,
-                            public services::IRUDPICESocketSessionDelegate,
-                            public services::IRUDPMessagingDelegate,
-                            public IMessageRequesterDelegate,
-                            public zsLib::ITimerDelegate
+                            public IRUDPICESocketDelegate,
+                            public IRUDPICESocketSessionDelegate,
+                            public IRUDPMessagingDelegate,
+                            public IMessageMonitorResultDelegate<SessionCreateResult>,
+                            public IMessageMonitorResultDelegate<SessionKeepAliveResult>,
+                            public IMessageMonitorResultDelegate<SessionDeleteResult>,
+                            public ITimerDelegate
       {
-      protected:
-        typedef zsLib::Duration Duration;
-        typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-        typedef zsLib::TimerPtr TimerPtr;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef services::IDNS IDNS;
-        typedef services::IICESocket::CandidateList CandidateList;
-        typedef services::IICESocket::Candidate Candidate;
-        typedef services::IRUDPICESocketSubscriptionPtr IRUDPICESocketSubscriptionPtr;
+      public:
+        friend interaction IAccountFinderForAccount;
 
       protected:
         AccountFinder(
                       IMessageQueuePtr queue,
                       IAccountFinderDelegatePtr delegate,
-                      IAccountForAccountFinderPtr outer
+                      AccountPtr outer
                       );
 
         void init();
@@ -148,32 +146,39 @@ namespace hookflash
       public:
         ~AccountFinder();
 
-        static AccountFinderPtr create(
-                                       IMessageQueuePtr queue,
-                                       IAccountFinderDelegatePtr delegate,
-                                       IAccountForAccountFinderPtr outer
-                                       );
+        static String toDebugString(AccountFinderPtr finder, bool includeCommaPrefix = true);
+
+      protected:
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark AccountFinder => IAccountFinder
+        #pragma mark AccountFinder => IAccountFinderForAccount
         #pragma mark
 
-        virtual PUID getID() const {return mID;}
-        virtual AccountFinderStates getState() const;
-        virtual void shutdown();
-        virtual String getLocationID() const;
-        virtual bool requestSendMessage(
-                                        DocumentPtr message,
-                                        bool sendOnlyIfReady = true
-                                        );
+        static AccountFinderPtr create(
+                                       IAccountFinderDelegatePtr delegate,
+                                       AccountPtr outer
+                                       );
 
-        // (duplicate) virtual IMessageRequesterPtr sendRequest(
-        //                                                      IMessageRequesterDelegatePtr delegate,
-        //                                                      message::MessagePtr requestMessage,
-        //                                                      Duration timeout,
-        //                                                      bool onlyIfReady = true
-        //                                                      );
+        virtual PUID getID() const {return mID;}
+
+        virtual AccountStates getState() const;
+
+        virtual void shutdown();
+
+        virtual bool send(MessagePtr message) const;
+        virtual IMessageMonitorPtr sendRequest(
+                                               IMessageMonitorDelegatePtr delegate,
+                                               MessagePtr message,
+                                               Duration timeout
+                                               ) const;
+
+        virtual Finder getCurrentFinder(
+                                        String *outServerAgent = NULL,
+                                        IPAddress *outIPAddress = NULL
+                                        ) const;
+
+        virtual void notifyFinderDNSComplete();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -181,16 +186,6 @@ namespace hookflash
         #pragma mark
 
         virtual void onStep();
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark AccountFinder => IBootstrappedNetworkDelegate
-        #pragma mark
-
-        virtual void onBootstrappedNetworkStateChanged(
-                                                       IBootstrappedNetworkPtr bootstrapper,
-                                                       BootstrappedNetworkStates state
-                                                       );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -229,15 +224,51 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark AccountFinder => IMessageRequesterDelegate
+        #pragma mark AccountFinder => IMessageMonitorResultDelegate<SessionCreateResult>
         #pragma mark
 
-        virtual bool handleMessageRequesterMessageReceived(
-                                                           IMessageRequesterPtr requester,
-                                                           message::MessagePtr message
-                                                           );
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        SessionCreateResultPtr result
+                                                        );
 
-        virtual void onMessageRequesterTimedOut(IMessageRequesterPtr requester);
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             SessionCreateResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountFinder => IMessageMonitorResultDelegate<SessionKeepAliveResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        SessionKeepAliveResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             SessionKeepAliveResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountFinder => IMessageMonitorResultDelegate<SessionDeleteResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        SessionDeleteResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             SessionDeleteResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -252,30 +283,29 @@ namespace hookflash
         #pragma mark AccountFinder => (internal)
         #pragma mark
 
-        bool isPending() const {return AccountFinderState_Pending == mCurrentState;}
-        bool isReady() const {return AccountFinderState_Ready == mCurrentState;}
-        bool isShuttingDown() const {return AccountFinderState_ShuttingDown == mCurrentState;}
-        bool isShutdown() const {return AccountFinderState_Shutdown == mCurrentState;}
+        bool isPending() const      {return IAccount::AccountState_Pending == mCurrentState;}
+        bool isReady() const        {return IAccount::AccountState_Ready == mCurrentState;}
+        bool isShuttingDown() const {return IAccount::AccountState_ShuttingDown == mCurrentState;}
+        bool isShutdown() const     {return IAccount::AccountState_Shutdown == mCurrentState;}
 
         RecursiveLock &getLock() const;
-        IAccountForAccountFinderPtr getOuter() const;
 
         IRUDPICESocketPtr getSocket() const;
-        IBootstrappedNetworkForAccountFinderPtr getBootstrapper() const;
-        IPeerFilesPtr getPeerFiles() const;
+
+        void setTimeout(Time expires);
 
         String log(const char *message) const;
-
-        IMessageRequesterPtr sendRequest(
-                                         IMessageRequesterDelegatePtr delegate,
-                                         message::MessagePtr requestMessage,
-                                         Duration timeout,
-                                         bool onlyIfReady = true
-                                         );
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         void cancel();
+
         void step();
-        void setState(AccountFinderStates state);
+        bool stepSocketSubscription(IRUDPICESocketPtr socket);
+        bool stepSocketSession(IRUDPICESocketPtr socket);
+        bool stepMessaging();
+        bool stepCreateSession();
+
+        void setState(AccountStates state);
 
       protected:
         //---------------------------------------------------------------------
@@ -286,37 +316,50 @@ namespace hookflash
         PUID mID;
         mutable RecursiveLock mBogusLock;
 
-        AccountFinderStates mCurrentState;
+        AccountStates mCurrentState;
 
         AccountFinderWeakPtr mThisWeak;
         IAccountFinderDelegatePtr mDelegate;
-        IAccountForAccountFinderWeakPtr mOuter;
+        AccountWeakPtr mOuter;
 
         AccountFinderPtr mGracefulShutdownReference;
-
-        IBootstrappedNetworkSubscriptionPtr mBootstrapperSubscription;
 
         IRUDPICESocketSubscriptionPtr mSocketSubscription;
         IRUDPICESocketSessionPtr mSocketSession;
         IRUDPMessagingPtr mMessaging;
 
-        String mLocationID;
-        SecureByteBlock mLocationSalt;
-        IMessageRequesterPtr mSessionCreateRequester;
-        IMessageRequesterPtr mSessionKeepAliveRequester;
-        IMessageRequesterPtr mSessionDeleteRequester;
+        IMessageMonitorPtr mSessionCreateMonitor;
+        IMessageMonitorPtr mSessionKeepAliveMonitor;
+        IMessageMonitorPtr mSessionDeleteMonitor;
+
+        Finder mFinder;
+        IPAddress mFinderIP;
+        String mServerAgent;
+        Time mSessionCreatedTime;
 
         TimerPtr mKeepAliveTimer;
       };
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountFinderDelegate
+      #pragma mark
+
       interaction IAccountFinderDelegate
       {
-        typedef IAccountFinder::AccountFinderStates AccountFinderStates;
+        typedef IAccount::AccountStates AccountStates;
 
         virtual void onAccountFinderStateChanged(
-                                                 IAccountFinderPtr finder,
-                                                 AccountFinderStates state
+                                                 AccountFinderPtr finder,
+                                                 AccountStates state
                                                  ) = 0;
+        virtual void onAccountFinderMessageIncoming(
+                                                    AccountFinderPtr finder,
+                                                    MessagePtr message
+                                                    ) = 0;
       };
 
     }
@@ -328,5 +371,9 @@ ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountFinderDelegate)
-ZS_DECLARE_PROXY_METHOD_2(onAccountFinderStateChanged, hookflash::stack::internal::IAccountFinderPtr, hookflash::stack::internal::IAccountFinder::AccountFinderStates)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountFinderPtr, AccountFinderPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IAccountFinderDelegate::AccountStates, AccountStates)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_METHOD_2(onAccountFinderStateChanged, AccountFinderPtr, AccountStates)
+ZS_DECLARE_PROXY_METHOD_2(onAccountFinderMessageIncoming, AccountFinderPtr, MessagePtr)
 ZS_DECLARE_PROXY_END()

@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_STRINGIZE_H_aa15b3dce8688ace2fc3f0d12deaefb8
 #define ZSLIB_STRINGIZE_H_aa15b3dce8688ace2fc3f0d12deaefb8
 
-#include <zsLib/internal/Stringize.h>
+#include <zsLib/internal/zsLib_Stringize.h>
 
 namespace zsLib
 {
@@ -46,6 +46,6 @@ namespace zsLib
 
 } // namespace zsLib
 
-#include <zsLib/internal/Stringize.h>
+#include <zsLib/internal/zsLib_Stringize.h>
 
 #endif //ZSLIB_STRINGIZE_H_aa15b3dce8688ace2fc3f0d12deaefb8

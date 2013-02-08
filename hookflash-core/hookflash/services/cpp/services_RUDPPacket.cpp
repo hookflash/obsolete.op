@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,11 +22,11 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/RUDPPacket.h>
@@ -43,25 +43,20 @@
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
 
-using zsLib::BYTE;
-using zsLib::WORD;
-using zsLib::DWORD;
-using zsLib::QWORD;
-using zsLib::ULONG;
-using zsLib::UINT;
-using zsLib::Stringize;
-using zsLib::String;
-
 #define HOOKFLASH_SERVICES_MINIMUM_PACKET_LENGTH_IN_BYTES (12)
 
 namespace hookflash
 {
   namespace services
   {
+    using zsLib::Stringize;
+
     namespace internal
     {
+      //-----------------------------------------------------------------------
       String convertToHex(const BYTE *buffer, ULONG bufferLengthInBytes);
 
+      //-----------------------------------------------------------------------
       static ULONG dwordBoundary(ULONG length) {
         if (0 == (length % sizeof(DWORD)))
           return length;
@@ -71,7 +66,7 @@ namespace hookflash
       static QWORD getNumberWithHint(DWORD number, QWORD hint) {
         number &= 0xFFFFFF; // only 24 bits are valid
 #if UINT_MAX <= 0xFFFFFFFF
-        zsLib::QWORD temp = 1;
+        QWORD temp = 1;
         temp = (temp << 48)-1;
         temp = (temp << 24);
         QWORD upper = (hint & temp);
@@ -102,6 +97,7 @@ namespace hookflash
         return (diff1 < diff2 ? lower : merged);
       }
 
+      //-----------------------------------------------------------------------
       static bool logicalXOR(bool value1, bool value2) {
         return (0 != ((value1 ? 1 : 0) ^ (value2 ? 1 : 0)));
       }
@@ -110,6 +106,8 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+
     //-------------------------------------------------------------------------
     RUDPPacketPtr RUDPPacket::create()
     {
@@ -127,6 +125,7 @@ namespace hookflash
       return pThis;
     }
 
+    //-------------------------------------------------------------------------
     RUDPPacketPtr RUDPPacket::clone()
     {
       RUDPPacketPtr pThis(new RUDPPacket);
@@ -143,9 +142,10 @@ namespace hookflash
       return pThis;
     }
 
+    //-------------------------------------------------------------------------
     RUDPPacketPtr RUDPPacket::parseIfRUDP(
-                                          const zsLib::BYTE *packet,
-                                          zsLib::ULONG packetLengthInBytes
+                                          const BYTE *packet,
+                                          ULONG packetLengthInBytes
                                           )
     {
       ZS_THROW_INVALID_USAGE_IF(!packet)
@@ -189,16 +189,17 @@ namespace hookflash
         pThis->mData = &(packet[HOOKFLASH_SERVICES_MINIMUM_PACKET_LENGTH_IN_BYTES + ((!eqFlag) ? sizeof(DWORD) : 0) + internal::dwordBoundary(vectorSize)]);
         pThis->mDataLengthInBytes = dataLength;
       }
-      pThis->log(zsLib::Log::Trace, "parse");
+      pThis->log(Log::Trace, "parse");
       return pThis;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::packetize(
-                               boost::shared_array<zsLib::BYTE> &outBuffer,
-                               zsLib::ULONG &outBufferLengthInBytes
+                               boost::shared_array<BYTE> &outBuffer,
+                               ULONG &outBufferLengthInBytes
                                ) const
     {
-      log(zsLib::Log::Trace, "packetize");
+      log(Log::Trace, "packetize");
       ZS_THROW_BAD_STATE_IF(mDataLengthInBytes > 0xFFFF)
 
       bool eqFlag = (0 != (mFlags & Flag_EQ_GSNREqualsGSNFR));
@@ -239,26 +240,31 @@ namespace hookflash
       }
     }
 
+    //-------------------------------------------------------------------------
     bool RUDPPacket::isFlagSet(Flags flag) const
     {
       return (flag == (mFlags & flag));
     }
 
+    //-------------------------------------------------------------------------
     bool RUDPPacket::isFlagSet(VectorFlags flag) const
     {
       return (flag == (mVectorFlags & flag));
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::setFlag(Flags flag)
     {
       mFlags |= flag;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::setFlag(VectorFlags flag)
     {
       mVectorFlags |= flag;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::setFlag(Flags flag, bool on)
     {
       if (on)
@@ -267,6 +273,7 @@ namespace hookflash
         clearFlag(flag);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::setFlag(VectorFlags flag, bool on)
     {
       if (on)
@@ -275,39 +282,46 @@ namespace hookflash
         clearFlag(flag);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::clearFlag(Flags flag)
     {
       mFlags = (mFlags & (0xFF ^ flag));
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::clearFlag(VectorFlags flag)
     {
       mVectorFlags = (mVectorFlags & (0xFF ^ flag));
     }
 
-    zsLib::QWORD RUDPPacket::getSequenceNumber(zsLib::QWORD hintLastSequenceNumber) const
+    //-------------------------------------------------------------------------
+    QWORD RUDPPacket::getSequenceNumber(QWORD hintLastSequenceNumber) const
     {
       return internal::getNumberWithHint(mSequenceNumber, hintLastSequenceNumber);
     }
 
-    zsLib::QWORD RUDPPacket::getGSNR(zsLib::QWORD hintLastGSNR) const
+    //-------------------------------------------------------------------------
+    QWORD RUDPPacket::getGSNR(QWORD hintLastGSNR) const
     {
       return internal::getNumberWithHint(mGSNR, hintLastGSNR);
     }
 
-    zsLib::QWORD RUDPPacket::getGSNFR(zsLib::QWORD hintLastGSNFR) const
+    //-------------------------------------------------------------------------
+    QWORD RUDPPacket::getGSNFR(QWORD hintLastGSNFR) const
     {
       return internal::getNumberWithHint(mGSNFR, hintLastGSNFR);
     }
 
-    void RUDPPacket::setSequenceNumber(zsLib::QWORD sequenceNumber)
+    //-------------------------------------------------------------------------
+    void RUDPPacket::setSequenceNumber(QWORD sequenceNumber)
     {
       mSequenceNumber = ((DWORD)(sequenceNumber & 0xFFFFFF));
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::setGSN(
-                            zsLib::QWORD gsnr,
-                            zsLib::QWORD gsnfr
+                            QWORD gsnr,
+                            QWORD gsnfr
                             )
     {
       // if they are equal then we need to set the EQ flag
@@ -320,7 +334,7 @@ namespace hookflash
       mGSNFR = ((DWORD)(gsnfr & 0xFFFFFF));
     }
 
-    zsLib::ULONG RUDPPacket::getRoomAvailableForData(zsLib::ULONG maxPacketLengthInBytes) const
+    ULONG RUDPPacket::getRoomAvailableForData(ULONG maxPacketLengthInBytes) const
     {
       bool eqFlag = (0 != (mFlags & Flag_EQ_GSNREqualsGSNFR));
       ZS_THROW_BAD_STATE_IF(eqFlag & ((mGSNR & 0xFFFFFF) != (mGSNFR & 0xFFFFFF))) // they must match if the EQ flag is set to true or this is illegal
@@ -331,10 +345,11 @@ namespace hookflash
       return maxPacketLengthInBytes - length;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorEncoderStart(
                                         VectorEncoderState &outVectorState,
-                                        zsLib::QWORD gsnr,
-                                        zsLib::QWORD gsnfr,
+                                        QWORD gsnr,
+                                        QWORD gsnfr,
                                         bool xoredParityToGSNFR
                                         )
     {
@@ -342,13 +357,14 @@ namespace hookflash
       vectorEncoderStart(outVectorState, gsnr, gsnfr, xoredParityToGSNFR, &(mVector[0]), 0x7F);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorEncoderStart(
                                         VectorEncoderState &outVectorState,
-                                        zsLib::QWORD gsnr,
-                                        zsLib::QWORD gsnfr,
+                                        QWORD gsnr,
+                                        QWORD gsnfr,
                                         bool xoredParityToGSNFR,
-                                        zsLib::BYTE *vector,
-                                        zsLib::ULONG vectorLengthInBytes
+                                        BYTE *vector,
+                                        ULONG vectorLengthInBytes
                                         )
     {
       ZS_THROW_INVALID_USAGE_IF(NULL == vector)
@@ -362,6 +378,7 @@ namespace hookflash
       outVectorState.mCurrentSequenceNumber = gsnfr;
     }
 
+    //-------------------------------------------------------------------------
     bool RUDPPacket::vectorEncoderAdd(
                                       VectorEncoderState &ioVectorState,
                                       VectorStates vectorState,
@@ -415,6 +432,7 @@ namespace hookflash
       return true;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorEncoderFinalize(VectorEncoderState &ioVectorState)
     {
       ZS_THROW_INVALID_ASSUMPTION_IF(NULL == ioVectorState.mVector)
@@ -427,10 +445,11 @@ namespace hookflash
       mVectorLengthInBytes = static_cast<BYTE>(vectorLengthInBytes);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorEncoderFinalize(
                                            VectorEncoderState &ioVectorState,
                                            bool &outXORVectorParityFlag,
-                                           zsLib::ULONG &outVectorLengthInBytes
+                                           ULONG &outVectorLengthInBytes
                                            )
     {
       ZS_THROW_INVALID_ASSUMPTION_IF(NULL == ioVectorState.mVector)
@@ -462,18 +481,20 @@ namespace hookflash
       } while (false);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorDecoderStart(VectorDecoderState &ioVectorState) const
     {
       ZS_THROW_INVALID_ASSUMPTION_IF(mVectorLengthInBytes > sizeof(mVector))
       vectorDecoderStart(ioVectorState, &(mVector[0]), mVectorLengthInBytes, mGSNR, mGSNFR);
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::vectorDecoderStart(
                                         VectorDecoderState &outVectorState,
-                                        const zsLib::BYTE *vector,
-                                        zsLib::ULONG vectorLengthInBytes,
-                                        zsLib::QWORD gsnr,
-                                        zsLib::QWORD gsnfr
+                                        const BYTE *vector,
+                                        ULONG vectorLengthInBytes,
+                                        QWORD gsnr,
+                                        QWORD gsnfr
                                         )
     {
       outVectorState.mVector = vector;
@@ -492,6 +513,7 @@ namespace hookflash
       }
     }
 
+    //-------------------------------------------------------------------------
     RUDPPacket::VectorStates RUDPPacket::vectorDecoderGetNextPacketState(VectorDecoderState &ioVectorState)
     {
       if (NULL == ioVectorState.mVector) return VectorState_NoMoreData;
@@ -511,8 +533,9 @@ namespace hookflash
       return state;
     }
 
+    //-------------------------------------------------------------------------
     void RUDPPacket::log(
-                         zsLib::Log::Level level,
+                         Log::Level level,
                          const char *inputMessage
                          ) const
     {

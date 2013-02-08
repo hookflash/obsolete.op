@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,104 +22,99 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <hookflash/stack/hookflashTypes.h>
-#include <hookflash/stack/message/hookflashTypes.h>
-
-#include <zsLib/Proxy.h>
-#include <zsLib/String.h>
+#include <hookflash/stack/types.h>
+#include <hookflash/stack/message/types.h>
+#include <hookflash/stack/IPeer.h>
+#include <hookflash/stack/ILocation.h>
 
 namespace hookflash
 {
   namespace stack
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPeerSubscription
+    #pragma mark
+
     interaction IPeerSubscription
     {
-      typedef zsLib::PUID PUID;
-      typedef zsLib::String String;
+      static String toDebugString(IPeerSubscriptionPtr subscription, bool includeCommaPrefix = true);
 
-      enum PeerSubscriptionFindStates
-      {
-        PeerSubscriptionFindState_Idle,
-        PeerSubscriptionFindState_Finding,
-        PeerSubscriptionFindState_Completed,
-      };
+      static IPeerSubscriptionPtr subscribeAll(
+                                               IAccountPtr account,
+                                               IPeerSubscriptionDelegatePtr delegate
+                                               );
 
-      typedef stack::LocationList LocationList;
-      typedef std::list<IPeerLocationPtr> PeerLocationList;
-
-      static const char *toString(PeerSubscriptionFindStates state);
+      static IPeerSubscriptionPtr subscribe(
+                                            IPeerPtr peer,
+                                            IPeerSubscriptionDelegatePtr delegate
+                                            );
 
       virtual PUID getID() const = 0;
 
-      virtual bool isShutdown() = 0;
+      virtual IPeerPtr getSubscribedToPeer() const = 0;   // return IPeerPtr() if the subscription is for all peers, not a single peer
 
-      virtual String getContactID() = 0;
-
-      virtual PeerSubscriptionFindStates getFindState() const = 0;
-
-      virtual void getPeerLocations(
-                                    LocationList &outLocations,
-                                    bool includeOnlyConnectedLocations
-                                    ) = 0;
-      virtual void getPeerLocations(
-                                    PeerLocationList &outPeerLocations,
-                                    bool includeOnlyConnectedLocations
-                                    ) = 0;
-
-      virtual bool sendPeerMesage(
-                                  const char *locationID,
-                                  message::MessagePtr message
-                                  ) = 0;
+      virtual bool isShutdown() const = 0;
 
       virtual void cancel() = 0;
     };
 
-    interaction IPeerSubscriptionMessage
-    {
-      typedef zsLib::String String;
-
-      virtual IPeerSubscriptionPtr getPeerSubscription() const = 0;
-
-      virtual String getContactID() const = 0;
-      virtual String getLocationID() const = 0;
-      virtual message::MessagePtr getMessage() const = 0;
-
-      virtual bool sendResponse(message::MessagePtr message) = 0;
-    };
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IPeerSubscriptionDelegate
+    #pragma mark
 
     interaction IPeerSubscriptionDelegate
     {
-      typedef IPeerSubscription::PeerSubscriptionFindStates PeerSubscriptionFindStates;
+      typedef ILocation::LocationConnectionStates LocationConnectionStates;
+      typedef IPeer::PeerFindStates PeerFindStates;
 
       virtual void onPeerSubscriptionShutdown(IPeerSubscriptionPtr subscription) = 0;
 
       virtual void onPeerSubscriptionFindStateChanged(
                                                       IPeerSubscriptionPtr subscription,
-                                                      PeerSubscriptionFindStates state
+                                                      IPeerPtr peer,
+                                                      PeerFindStates state
                                                       ) = 0;
 
-      virtual void onPeerSubscriptionLocationsChanged(IPeerSubscriptionPtr subscription) = 0;
+      virtual void onPeerSubscriptionLocationConnectionStateChanged(
+                                                                    IPeerSubscriptionPtr subscription,
+                                                                    ILocationPtr location,
+                                                                    LocationConnectionStates state
+                                                                    ) = 0;
 
-      virtual void onPeerSubscriptionMessage(
-                                             IPeerSubscriptionPtr subscription,
-                                             IPeerSubscriptionMessagePtr incomingMessage
-                                             ) = 0;
+      virtual void onPeerSubscriptionMessageIncoming(
+                                                     IPeerSubscriptionPtr subscription,
+                                                     IMessageIncomingPtr message
+                                                     ) = 0;
     };
   }
 }
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPeerSubscriptionDelegate)
-ZS_DECLARE_PROXY_METHOD_1(onPeerSubscriptionShutdown, hookflash::stack::IPeerSubscriptionPtr)
-ZS_DECLARE_PROXY_METHOD_2(onPeerSubscriptionFindStateChanged, hookflash::stack::IPeerSubscriptionPtr, hookflash::stack::IPeerSubscriptionDelegate::PeerSubscriptionFindStates)
-ZS_DECLARE_PROXY_METHOD_1(onPeerSubscriptionLocationsChanged, hookflash::stack::IPeerSubscriptionPtr)
-ZS_DECLARE_PROXY_METHOD_2(onPeerSubscriptionMessage, hookflash::stack::IPeerSubscriptionPtr, hookflash::stack::IPeerSubscriptionMessagePtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionPtr, IPeerSubscriptionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerPtr, IPeerPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::ILocationPtr, ILocationPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IMessageIncomingPtr, IMessageIncomingPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionDelegate::LocationConnectionStates, LocationConnectionStates)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionDelegate::PeerFindStates, PeerFindStates)
+ZS_DECLARE_PROXY_METHOD_1(onPeerSubscriptionShutdown, IPeerSubscriptionPtr)
+ZS_DECLARE_PROXY_METHOD_3(onPeerSubscriptionFindStateChanged, IPeerSubscriptionPtr, IPeerPtr, PeerFindStates)
+ZS_DECLARE_PROXY_METHOD_3(onPeerSubscriptionLocationConnectionStateChanged, IPeerSubscriptionPtr, ILocationPtr, LocationConnectionStates)
+ZS_DECLARE_PROXY_METHOD_2(onPeerSubscriptionMessageIncoming, IPeerSubscriptionPtr, IMessageIncomingPtr)
 ZS_DECLARE_PROXY_END()

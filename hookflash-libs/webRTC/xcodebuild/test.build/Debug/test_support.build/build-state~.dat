@@ -1,0 +1,101 @@
+Ttest_support
+v5
+r1
+cCheck dependencies
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+c00000000503F1B7700000000000000AA
+t1346313079
+s170
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support.a
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/fileutils.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/frame_reader.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/frame_writer.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/packet_reader.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/test_suite.o
+t2
+s0
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/test_support.LinkFileList
+c000000005109298400000000000002A4
+t1359554948
+s676
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/test_suite.cc
+c000000005109023A00000000000003C1
+t1359544890
+s961
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/fileutils.cc
+c000000005109023A00000000000013CD
+t1359544890
+s5069
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_reader.cc
+c000000005109023A000000000000092C
+t1359544890
+s2348
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_writer.cc
+c000000005109023A000000000000078E
+t1359544890
+s1934
+
+N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/packet_reader.cc
+c000000005109023A0000000000000652
+t1359544890
+s1618
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/test_suite.cc
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/fileutils.cc
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_reader.cc
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_writer.cc
+r0
+
+CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/packet_reader.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies5c1ee30461b9b641^c18ee30461b9b641^---0#1#0#--18"Check dependencies36"2B0065AF-3030-4FBA-A247-BF2FFCA9AEC9-
+
+CCompileC ../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/fileutils.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/fileutils.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/frame_reader.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_reader.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/frame_writer.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/frame_writer.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/packet_reader.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/testsupport/packet_reader.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../xcodebuild/test.build/Debug/test_support.build/Objects-normal/i386/test_suite.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/test_suite.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/test/../xcodebuild/Debug/libtest_support.a normal i386
+r0
+

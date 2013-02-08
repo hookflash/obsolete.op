@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,20 +22,21 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
 #include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/internal/hookflashTypes.h>
+#include <hookflash/stack/internal/types.h>
 
-#include <cryptopp/rsa.h>
-#include <cryptopp/secblock.h>
+#define HOOKFLASH_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS (24*365*2)
+#define HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM "http://openpeer.org/2012/12/14/jsonsig#rsa-sha1"
+#define HOOKFLASH_STACK_PEER_FILE_CIPHER "sha256/aes256"
 
 namespace hookflash
 {
@@ -48,73 +49,110 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPeerFilePrivateForPeerFiles
+      #pragma mark
+
+      interaction IPeerFilePrivateForPeerFiles
+      {
+        IPeerFilePrivateForPeerFiles &forPeerFiles() {return *this;}
+        const IPeerFilePrivateForPeerFiles &forPeerFiles() const {return *this;}
+
+        static bool generate(
+                             PeerFilesPtr peerFiles,
+                             PeerFilePrivatePtr &outPeerFilePrivate,
+                             PeerFilePublicPtr &outPeerFilePublic,
+                             const char *password,
+                             ElementPtr signedSalt
+                             );
+
+        static bool loadFromElement(
+                                    PeerFilesPtr peerFiles,
+                                    PeerFilePrivatePtr &outPeerFilePrivate,
+                                    PeerFilePublicPtr &outPeerFilePublic,
+                                    const char *password,
+                                    ElementPtr peerFileRootElement
+                                    );
+
+        virtual ElementPtr saveToElement() const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark PeerFilePrivate
       #pragma mark
 
-      class PeerFilePrivate : public IPeerFilePrivate
+      class PeerFilePrivate : public IPeerFilePrivate,
+                              public IPeerFilePrivateForPeerFiles
       {
       public:
-        typedef zsLib::PUID PUID;
-        typedef zsLib::BYTE BYTE;
-        typedef zsLib::UINT UINT;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::XML::DocumentPtr DocumentPtr;
-        typedef CryptoPP::RSA::PrivateKey CryptoPP_PrivateKey;
-        typedef CryptoPP::SecByteBlock SecureByteBlock;
-
-        class RSAPrivateKey;
-        typedef boost::shared_ptr<RSAPrivateKey> RSAPrivateKeyPtr;
-        typedef boost::weak_ptr<RSAPrivateKey> RSAPrivateKeyWeakPtr;
-
-        friend class PeerFiles;
+        friend interaction IPeerFilePrivateForPeerFiles;
 
       protected:
         PeerFilePrivate(PeerFilesPtr peerFiles);
 
-      public:
-        typedef IPeerFilePrivate::URIList URIList;
+        void init();
 
+      public:
+        ~PeerFilePrivate();
+
+        static PeerFilePrivatePtr convert(IPeerFilePrivatePtr peerFilePrivate);
+
+      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark PeerFilePrivate => IPeerFilePrivate
         #pragma mark
 
-        virtual ElementPtr saveToXML() const;
+        static String toDebugString(IPeerFilePrivatePtr peerFilePrivate, bool includeCommaPrefix = true);
 
-        virtual IPeerFilesPtr getPeerFiles() const;
+        virtual PUID getID() const {return mID;}
 
-        virtual UINT getVersionNumber() const;
-        virtual bool containsSection(const char *sectionID) const;
+        virtual IPeerFilesPtr getAssociatedPeerFiles() const;
+        virtual IPeerFilePublicPtr getAssociatedPeerFilePublic() const;
 
-        virtual bool verifyPassword(const char *password) const;
+        virtual ElementPtr saveToElement() const;
 
-        virtual void getPrivateKeyInPCKS8(
-                                          const char *password,
-                                          SecureByteBlock &outRaw
-                                          ) const;
+        virtual SecureByteBlockPtr getPassword(bool appendNUL = true) const;
 
-        virtual String getContactProfileSecret(const char *password) const;
-        virtual ElementPtr getCaptcha(const char *password) const;
+        virtual IRSAPrivateKeyPtr getPrivateKey() const;
 
-        virtual void signElement(ElementPtr elementToSign);
+        virtual ElementPtr getPrivateData() const;
 
-      protected:
+        virtual String getSecretProof() const;
+        virtual SecureByteBlockPtr getSalt() const;
+
+        virtual void signElement(
+                                 ElementPtr elementToSign,
+                                 bool referenceKeyOnlyInSignature = true
+                                 ) const;
+
+        virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const;
+
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark PeerFilePrivate => friend PeerFiles
+        #pragma mark PeerFilePrivate => IPeerFilePrivateForPeerFiles
         #pragma mark
 
-        static PeerFilesPtr generate(
-                                     PeerFilesPtr peerFiles,
-                                     const char *password,
-                                     ElementPtr signedSalt
-                                     );
+        static bool generate(
+                             PeerFilesPtr peerFiles,
+                             PeerFilePrivatePtr &outPeerFilePrivate,
+                             PeerFilePublicPtr &outPeerFilePublic,
+                             const char *password,
+                             ElementPtr signedSaltBundleEl
+                             );
 
-        static PeerFilesPtr loadFromXML(
-                                        PeerFilesPtr peerFiles,
-                                        const char *password,
-                                        ElementPtr peerFileRootElement
-                                        );
+        static bool loadFromElement(
+                                    PeerFilesPtr peerFiles,
+                                    PeerFilePrivatePtr &outPeerFilePrivate,
+                                    PeerFilePublicPtr &outPeerFilePublic,
+                                    const char *password,
+                                    ElementPtr peerFileRootElement
+                                    );
+
+        // (duplicate) virtual ElementPtr saveToElement() const;
 
       private:
         //---------------------------------------------------------------------
@@ -124,61 +162,51 @@ namespace hookflash
 
         String log(const char *message) const;
 
-        void generate(
-                      const char *password,
-                      ElementPtr signedSalt
-                      );
+        SecureByteBlockPtr getKey(
+                                  const char *phrase,
+                                  const char *saltInBase64
+                                  );
+        SecureByteBlockPtr getIV(
+                                 const char *phrase,
+                                 const char *saltInBase64
+                                 );
 
-        bool loadFromXML(
-                         const char *password,
-                         ElementPtr peerFileRootElement
-                         );
+        String encrypt(
+                       const char *phrase,
+                       const char *saltAsBase64,
+                       SecureByteBlock &buffer
+                       );
+        String encrypt(
+                       const char *phrase,
+                       const char *saltAsBase64,
+                       const char *value
+                       );
 
-        String getSaltAsBase64() const;
+        String decryptString(
+                             const char *phrase,
+                             const String &saltAsBase64,
+                             const String &encryptedStringInBase64
+                             );
+        SecureByteBlockPtr decryptBuffer(
+                                         const char *phrase,
+                                         const String &saltAsBase64,
+                                         const String &encryptedStringInBase64
+                                         );
+
+        bool generateDocuments(
+                               IRSAPublicKeyPtr publicKey,
+                               ElementPtr signedSaltBundleEl,
+                               DocumentPtr &outPublicPeerDocument
+                               );
+
+        bool loadFromElement(
+                             ElementPtr peerFileRootElement,
+                             DocumentPtr &outPublicPeerDocument
+                             );
+
+        bool verifySignatures(PeerFilePublicPtr peerFilePublic);
+
         ElementPtr findSection(const char *sectionID) const;
-
-      public:
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark PeerFilePrivate::RSAPrivateKey
-        #pragma mark
-
-        class RSAPrivateKey
-        {
-        public:
-          friend class PeerFilePrivate;
-
-        protected:
-          RSAPrivateKey();
-
-        public:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark PeerFilePrivate::RSAPrivateKey => friend PeerFilePrivate
-          #pragma mark
-
-          static RSAPrivateKeyPtr generate(SecureByteBlock &outPublicKeyBuffer);
-
-          static RSAPrivateKeyPtr load(const SecureByteBlock &buffer);
-
-          void save(SecureByteBlock &outBuffer) const;
-
-          void sign(
-                    const String &inStrDataToSign,
-                    SecureByteBlock &outSignatureResult
-                    ) const;
-
-        private:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark PeerFilePrivate::RSAPrivateKey => (data)
-          #pragma mark
-
-          CryptoPP_PrivateKey mPrivateKey;
-        };
 
       protected:
         //---------------------------------------------------------------------
@@ -190,14 +218,17 @@ namespace hookflash
         #pragma mark
 
         PUID mID;
-        mutable RecursiveLock mLock;
 
         PeerFilePrivateWeakPtr mThisWeak;
         PeerFilesWeakPtr mOuter;
 
         DocumentPtr mDocument;
+        DocumentPtr mPrivateDataDoc;
+        SecureByteBlockPtr mPassword;
 
-        RSAPrivateKeyPtr mPrivateKey;
+        String mPeerURI;
+
+        IRSAPrivateKeyPtr mPrivateKey;
       };
     }
   }

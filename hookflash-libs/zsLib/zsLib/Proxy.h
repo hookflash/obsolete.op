@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -38,7 +38,7 @@ namespace zsLib
       ZS_DECLARE_CUSTOM_EXCEPTION(DelegateGone)
     };
   };
-  
+
   template <typename XINTERFACE>
   class Proxy : public ProxyBase
   {
@@ -174,7 +174,7 @@ namespace zsLib
   };
 }
 
-#include <zsLib/internal/Proxy.h>
+#include <zsLib/internal/zsLib_Proxy.h>
 
 namespace zsLib
 {

@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,16 +22,16 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
 
-#include <hookflash/stack/internal/hookflashTypes.h>
+#include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
 #include <hookflash/stack/IPublication.h>
 
@@ -50,6 +50,42 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPublicationForPublicationMetaData
+      #pragma mark
+
+      interaction IPublicationForPublicationMetaData
+      {
+        typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
+        typedef IPublicationMetaData::Encodings Encodings;
+
+        IPublicationForPublicationMetaData &forPublicationMetaData() {return *this;}
+        const IPublicationForPublicationMetaData &forPublicationMetaData() const {return *this;}
+
+        virtual LocationPtr getCreatorLocation(bool internal = true) const = 0;
+
+        virtual String getName() const = 0;
+        virtual String getMimeType() const = 0;
+
+        virtual ULONG getVersion() const = 0;
+        virtual ULONG getBaseVersion() const = 0;
+        virtual ULONG getLineage() const = 0;
+
+        virtual Encodings getEncoding() const = 0;
+
+        virtual Time getExpires() const = 0;
+
+        virtual LocationPtr getPublishedLocation(bool internal = true) const = 0;
+
+        virtual const PublishToRelationshipsMap &getRelationships() const = 0;
+
+        virtual String getDebugValuesString(bool includeCommaPrefix = true) const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IPublicationForPublicationRepository
       #pragma mark
 
@@ -60,61 +96,49 @@ namespace hookflash
           ZS_DECLARE_CUSTOM_EXCEPTION(VersionMismatch)
         };
 
-        typedef zsLib::PUID PUID;
-        typedef zsLib::ULONG ULONG;
-        typedef zsLib::String String;
-        typedef zsLib::Time Time;
-        typedef zsLib::XML::DocumentPtr DocumentPtr;
-        typedef IPublication::Sources Sources;
-        typedef IPublication::RelationshipList RelationshipList;
-        typedef IPublication::PublishToRelationshipsMap PublishToRelationshipsMap;
-        typedef IPublication::AutoRecursiveLockPtr AutoRecursiveLockPtr;
+        typedef IPublication::RelationshipListPtr RelationshipListPtr;
 
-        static IPublicationForPublicationRepositoryPtr convert(IPublicationPtr publication);
+        IPublicationForPublicationRepository &forRepo() {return *this;}
+        const IPublicationForPublicationRepository &forRepo() const {return *this;}
 
         virtual PUID getID() const = 0;
-        virtual IPublicationMetaDataPtr convertIPublicationMetaData() const = 0;
-        virtual IPublicationPtr convertIPublication() const = 0;
 
-        virtual String getCreatorContactID() const = 0;
-        virtual String getCreatorLocationID() const = 0;
+        virtual PublicationMetaDataPtr toPublicationMetaData() const = 0;
+        virtual IPublicationPtr toPublication() const = 0;
+
+        virtual LocationPtr getCreatorLocation(bool internal = true) const = 0;
 
         virtual String getName() const = 0;
 
         virtual ULONG getVersion() const = 0;
-        virtual ULONG getLineage() const = 0;
         virtual ULONG getBaseVersion() const = 0;
-
-        virtual Sources getSource() const = 0;
+        virtual ULONG getLineage() const = 0;
 
         virtual Time getExpires() const = 0;
 
-        virtual String getPublishedToContactID() const = 0;
-        virtual String getPublishedToLocationID() const = 0;
+        virtual LocationPtr getPublishedLocation(bool internal = true) const = 0;
 
-        virtual void getRelationships(PublishToRelationshipsMap &outRelationships) const = 0;
         virtual const PublishToRelationshipsMap &getRelationships() const = 0;
 
-        virtual DocumentPtr getXML(AutoRecursiveLockPtr &outDocumentLock) const = 0;
+        virtual DocumentPtr getJSON(AutoRecursiveLockPtr &outDocumentLock) const = 0;
 
-        virtual void getAsContactList(RelationshipList &outList) const = 0;
+        virtual RelationshipListPtr getAsContactList() const = 0;
 
         virtual bool isMatching(
-                                const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                const IPublicationMetaDataPtr &metaData,
                                 bool ignoreLineage = false
                                 ) const = 0;
 
         virtual bool isLessThan(
-                                const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                const IPublicationMetaDataPtr &metaData,
                                 bool ignoreLineage = false
                                 ) const = 0;
 
         virtual void setVersion(ULONG version) = 0;
         virtual void setBaseVersion(ULONG version) = 0;
 
-        virtual void setSource(IPublicationMetaData::Sources source) = 0;
-        virtual void setCreatorContact(const char *contactID, const char *locationID) = 0;
-        virtual void setPublishedToContact(const char *contactID, const char *locationID) = 0;
+        virtual void setCreatorLocation(LocationPtr location) = 0;
+        virtual void setPublishedLocation(LocationPtr location) = 0;
 
         virtual void setExpires(Time expires) = 0;
 
@@ -122,7 +146,7 @@ namespace hookflash
         virtual void setCacheExpires(Time expires) = 0;
 
         virtual void updateFromFetchedPublication(
-                                                  IPublicationForPublicationRepositoryPtr fetchedPublication,
+                                                  PublicationPtr fetchedPublication,
                                                   bool *noThrowVersionMismatched = NULL
                                                   ) throw (Exceptions::VersionMismatch) = 0;
 
@@ -138,7 +162,7 @@ namespace hookflash
                                                     bool rawSizeOkay = true
                                                     ) const = 0;
 
-        virtual String getDebugValuesString() const = 0;
+        virtual String getDebugValuesString(bool includeCommaPrefix = true) const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -151,47 +175,36 @@ namespace hookflash
 
       interaction IPublicationForMessages : public IPublicationMetaDataForMessages
       {
-        typedef zsLib::ULONG ULONG;
-        typedef zsLib::Time Time;
-        typedef zsLib::XML::NodePtr NodePtr;
-        typedef zsLib::XML::ElementPtr ElementPtr;
-        typedef IPublicationMetaData::Sources Sources;
         typedef IPublicationMetaData::Encodings Encodings;
-        typedef IPublicationMetaData::Scopes Scopes;
-        typedef IPublicationMetaData::Lifetimes Lifetimes;
         typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
 
-        static IPublicationForMessagesPtr convert(IPublicationPtr publication);
+        IPublicationForMessages &forMessages() {return *this;}
+        const IPublicationForMessages &forMessages() const {return *this;}
 
-        static IPublicationForMessagesPtr create(
-                                                    ULONG version,
-                                                    ULONG baseVersion,
-                                                    ULONG lineage,
-                                                    Sources source,
-                                                    const char *creatorContactID,
-                                                    const char *creatorLocationID,
-                                                    const char *name,
-                                                    const char *mimeType,
-                                                    ElementPtr dataEl,
-                                                    Encodings encoding,
-                                                    const PublishToRelationshipsMap &publishToRelationships,
-                                                    const char *peerContactID = NULL,
-                                                    const char *peerLocationID = NULL,
-                                                    Scopes scope = IPublicationMetaData::Scope_Location,
-                                                    Lifetimes lifetime = IPublicationMetaData::Lifetime_Session,
-                                                    Time expires = Time()
-                                                    );
-
-        virtual IPublicationMetaDataPtr convertIPublicationMetaData() const = 0;
-        virtual IPublicationPtr convertIPublication() const = 0;
-
-        virtual NodePtr getXMLDiffs(
-                                    ULONG &ioFromVersion,
-                                    ULONG toVersion
-                                    ) const = 0;
+        static PublicationPtr create(
+                                     ULONG version,
+                                     ULONG baseVersion,
+                                     ULONG lineage,
+                                     LocationPtr creatorLocation,
+                                     const char *name,
+                                     const char *mimeType,
+                                     ElementPtr dataEl,
+                                     Encodings encoding,
+                                     const PublishToRelationshipsMap &publishToRelationships,
+                                     LocationPtr publishedLocation,
+                                     Time expires = Time()
+                                     );
 
         virtual ULONG getVersion() const = 0;
         virtual ULONG getBaseVersion() const = 0;
+
+        virtual PublicationMetaDataPtr toPublicationMetaData() const = 0;
+
+        virtual NodePtr getDiffs(
+                                 ULONG &ioFromVersion,
+                                 ULONG toVersion
+                                 ) const = 0;
+
       };
 
       //-----------------------------------------------------------------------
@@ -202,27 +215,20 @@ namespace hookflash
       #pragma mark Publication
       #pragma mark
 
-      class Publication : public IPublication,
+      class Publication : public PublicationMetaData,
+                          public IPublication,
+                          public IPublicationForPublicationMetaData,
                           public IPublicationForPublicationRepository,
                           public IPublicationForMessages
       {
       public:
-        typedef zsLib::BYTE BYTE;
-        typedef zsLib::ULONG ULONG;
-        typedef zsLib::Time Time;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
-        typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-        typedef zsLib::XML::NodePtr NodePtr;
-        typedef zsLib::XML::ElementPtr ElementPtr;
-        typedef zsLib::XML::DocumentPtr DocumentPtr;
-        typedef IPublication::AutoRecursiveLockPtr AutoRecursiveLockPtr;
-        typedef IPublication::Sources Sources;
         typedef IPublication::Encodings Encodings;
-        typedef IPublication::Scopes Scopes;
-        typedef IPublication::Lifetimes Lifetimes;
-        typedef IPublication::RelationshipList RelationshipList;
+        typedef IPublication::RelationshipListPtr RelationshipListPtr;
         typedef IPublication::PublishToRelationshipsMap PublishToRelationshipsMap;
+
+        typedef ULONG VersionNumber;
+        typedef DocumentPtr DiffDocument;
+        typedef std::map<VersionNumber, DiffDocument> DiffDocumentMap;
 
         friend interaction IPublication;
         friend interaction IPublicationForPublicationRepository;
@@ -230,16 +236,11 @@ namespace hookflash
 
       protected:
         Publication(
-                    Sources source,
-                    const char *creatorContactID,
-                    const char *creatorLocationID,
+                    LocationPtr creatorLocation,
                     const char *name,
                     const char *mimeType,
                     const PublishToRelationshipsMap &publishToRelationships,
-                    const char *peerContactID,
-                    const char *peerLocationID,
-                    Scopes scope,
-                    Lifetimes lifetime,
+                    LocationPtr publishedLocation,
                     Time expires
                     );
 
@@ -249,7 +250,6 @@ namespace hookflash
         ~Publication();
 
         static PublicationPtr convert(IPublicationPtr publication);
-        static PublicationPtr convert(IPublicationForPublicationRepositoryPtr publication);
 
       protected:
         //---------------------------------------------------------------------
@@ -257,10 +257,13 @@ namespace hookflash
         #pragma mark Publication => IPublicationMetaData
         #pragma mark
 
-        virtual IPublicationPtr getPublication() const;
+        static String toDebugString(IPublicationPtr publication, bool includeCommaPrefix = true);
 
-        virtual String getCreatorContactID() const;
-        virtual String getCreatorLocationID() const;
+        virtual PUID getID() const {return mID;}
+
+        virtual IPublicationPtr toPublication() const;
+
+        virtual ILocationPtr getCreatorLocation() const;
 
         virtual String getName() const;
         virtual String getMimeType() const;
@@ -271,16 +274,10 @@ namespace hookflash
 
         virtual Encodings getEncoding() const;
 
-        virtual Sources getSource() const;
-        virtual Scopes getScope() const;
-        virtual Lifetimes getLifetime() const;
-
         virtual Time getExpires() const;
 
-        virtual String getPublishedToContactID() const;
-        virtual String getPublishedToLocationID() const;
+        virtual ILocationPtr getPublishedLocation() const;
 
-        virtual void getRelationships(PublishToRelationshipsMap &outRelationships) const;
         virtual const PublishToRelationshipsMap &getRelationships() const;
 
         //---------------------------------------------------------------------
@@ -289,118 +286,118 @@ namespace hookflash
         #pragma mark
 
         static PublicationPtr create(
-                                      Sources source,
-                                      const char *creatorContactID,
-                                      const char *creatorLocationID,
-                                      const char *name,
-                                      const char *mimeType,
-                                      const BYTE *data,
-                                      size_t sizeInBytes,
-                                      const PublishToRelationshipsMap &publishToRelationships,
-                                      const char *peerContactID = NULL,
-                                      const char *peerLocationID = NULL,
-                                      Scopes scope = Scope_Location,
-                                      Lifetimes lifetime = Lifetime_Session,
-                                      Time expires = Time()
-                                      );
+                                     LocationPtr creatorLocation,
+                                     const char *name,
+                                     const char *mimeType,
+                                     const SecureByteBlock &data,
+                                     const PublishToRelationshipsMap &publishToRelationships,
+                                     LocationPtr publishedLocation,
+                                     Time expires = Time()
+                                     );
 
         static PublicationPtr create(
-                                      Sources source,
-                                      const char *creatorContactID,
-                                      const char *creatorLocationID,
-                                      const char *name,
-                                      const char *mimeType,
-                                      DocumentPtr documentToBeAdopted,
-                                      const PublishToRelationshipsMap &publishToRelationships,
-                                      const char *peerContactID = NULL,
-                                      const char *peerLocationID = NULL,
-                                      Scopes scope = Scope_Location,
-                                      Lifetimes lifetime = Lifetime_Session,
-                                      Time expires = Time()
-                                      );
+                                     LocationPtr creatorLocation,
+                                     const char *name,
+                                     const char *mimeType,
+                                     DocumentPtr documentToBeAdopted,
+                                     const PublishToRelationshipsMap &publishToRelationships,
+                                     LocationPtr publishedLocation,
+                                     Time expires = Time()
+                                     );
 
         static PublicationPtr create(
-                                     Sources source,
-                                     const char *creatorContactID,
-                                     const char *creatorLocationID,
+                                     LocationPtr creatorLocation,
                                      const char *name,
                                      const char *mimeType,
                                      const RelationshipList &relationshipsDocument,
                                      const PublishToRelationshipsMap &publishToRelationships,
-                                     const char *peerContactID = NULL,
-                                     const char *peerLocationID = NULL,
-                                     Scopes scope = Scope_Location,
-                                     Lifetimes lifetime = Lifetime_Session,
+                                     LocationPtr publishedLocation,
                                      Time expires = Time()
                                      );
 
-        virtual void update(
-                            const BYTE *data,
-                            size_t sizeInBytes
-                            );
+        virtual void update(const SecureByteBlock &data);
 
         virtual void update(DocumentPtr updatedDocumentToBeAdopted);
 
         virtual void update(const RelationshipList &relationships);
 
-        virtual void getRawData(
-                                AutoRecursiveLockPtr &outDocumentLock,
-                                boost::shared_array<BYTE> &outputBuffer,
-                                size_t &outputBufferSizeInBytes
-                                ) const;
+        virtual SecureByteBlockPtr getRawData(AutoRecursiveLockPtr &outDocumentLock) const;
 
-        virtual DocumentPtr getXML(AutoRecursiveLockPtr &outDocumentLock) const;
+        virtual DocumentPtr getJSON(AutoRecursiveLockPtr &outDocumentLock) const;
 
-        virtual void getAsContactList(RelationshipList &outList) const;
+        virtual RelationshipListPtr getAsContactList() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Publication => IPublicationForPublicationMetaData
+        #pragma mark
+
+        // (duplicate) virtual LocationPtr getCreatorLocation(bool internal = true) const;
+
+        // (duplicate) virtual String getName() const;
+        // (duplicate) virtual String getMimeType() const;
+
+        // (duplicate) virtual ULONG getVersion() const;
+        // (duplicate) virtual ULONG getBaseVersion() const;
+        // (duplicate) virtual ULONG getLineage() const;
+
+        // (duplicate) virtual Encodings getEncoding() const;
+        // (duplicate) virtual Time getExpires() const;
+
+        // (duplicate) virtual LocationPtr getPublishedLocation(bool internal = true) const;
+
+        // (duplicate) virtual const PublishToRelationshipsMap &getRelationships() const;
+
+        // (duplicate) virtual RelationshipListPtr getAsContactList() const;
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Publication => IPublicationForPublicationRepository
         #pragma mark
 
-        virtual PUID getID() const {return mID;}
-        virtual IPublicationMetaDataPtr convertIPublicationMetaData() const;
-        virtual IPublicationPtr convertIPublication() const;
+      public:
+        IPublicationForPublicationRepository &forRepo() {return *this;}
+        const IPublicationForPublicationRepository &forRepo() const {return *this;}
 
-        // (duplicate) virtual String getCreatorContactID() const;
-        // (duplciate) virtual String getCreatorLocationID() const;
+      protected:
+        // (duplicate) virtual PUID getID() const {return mID;}
+
+        virtual PublicationMetaDataPtr toPublicationMetaData() const;
+        // (duplicate) virtual IPublicationPtr toPublication() const;
+
+        virtual LocationPtr getCreatorLocation(bool) const;
 
         // (duplicate) virtual String getName() const;
 
         // (duplicate) virtual ULONG getVersion() const;
-
-        // (duplicate) virtual Sources getSource() const;
-        // (duplicate) virtual ULONG getLineage() const;
         // (duplicate) virtual ULONG getBaseVersion() const;
+        // (duplicate) virtual ULONG getLineage() const;
 
         // (duplicate) virtual Time getExpires() const;
 
-        // (duplicate) virtual String getPublishedToContactID() const;
-        // (duplicate) virtual String getPublishedToLocationID() const;
+        virtual LocationPtr getPublishedLocation(bool) const;
 
-        // (duplicate) virtual DocumentPtr getXML(AutoRecursiveLockPtr &outDocumentLock) const;
+        // (duplicate) virtual DocumentPtr getJSON(AutoRecursiveLockPtr &outDocumentLock) const;
 
-        // (duplicate) virtual void getAsContactList(RelationshipList &outList) const;
+        // (duplicate) virtual RelationshipListPtr getAsContactList() const;
 
-        // (duplicate) virtual void getRelationships(PublishToRelationshipsMap &outRelationships) const;
         // (duplicate) virtual const PublishToRelationshipsMap &getRelationships() const;
 
         virtual bool isMatching(
-                                const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                const IPublicationMetaDataPtr &metaData,
                                 bool ignoreLineage = false
                                 ) const;
 
         virtual bool isLessThan(
-                                const IPublicationMetaDataForPublicationRepositoryPtr &metaData,
+                                const IPublicationMetaDataPtr &metaData,
                                 bool ignoreLineage = false
                                 ) const;
 
         virtual void setVersion(ULONG version);
         virtual void setBaseVersion(ULONG version);
 
-        virtual void setSource(IPublicationMetaData::Sources source);
-        virtual void setCreatorContact(const char *contactID, const char *locationID);
-        virtual void setPublishedToContact(const char *contactID, const char *locationID);
+        virtual void setCreatorLocation(LocationPtr location);
+        virtual void setPublishedLocation(LocationPtr location);
 
         virtual void setExpires(Time expires);
 
@@ -408,7 +405,7 @@ namespace hookflash
         virtual void setCacheExpires(Time expires);
 
         virtual void updateFromFetchedPublication(
-                                                  IPublicationForPublicationRepositoryPtr fetchedPublication,
+                                                  PublicationPtr fetchedPublication,
                                                   bool *noThrowVersionMismatched = NULL
                                                   ) throw (Exceptions::VersionMismatch);
 
@@ -424,43 +421,42 @@ namespace hookflash
                                                     bool rawSizeOkay = true
                                                     ) const;
 
-        virtual String getDebugValuesString() const;
+        virtual String getDebugValuesString(bool includeCommaPrefix = true) const;
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Publication => IPublicationForMessages
         #pragma mark
 
+      public:
+        IPublicationForMessages &forMessages() {return *this;}
+        const IPublicationForMessages &forMessages() const {return *this;}
+
+      protected:
         static PublicationPtr create(
                                      ULONG version,
                                      ULONG baseVersion,
                                      ULONG lineage,
-                                     Sources source,
-                                     const char *creatorContactID,
-                                     const char *creatorLocationID,
+                                     LocationPtr creatorLocation,
                                      const char *name,
                                      const char *mimeType,
                                      ElementPtr dataEl,
                                      Encodings encoding,
                                      const PublishToRelationshipsMap &publishToRelationships,
-                                     const char *peerContactID,
-                                     const char *peerLocationID,
-                                     Scopes scope,
-                                     Lifetimes lifetime,
+                                     LocationPtr publishedLocation,
                                      Time expires
                                      );
 
-        // (duplicate) virtual IPublicationMetaDataPtr convertIPublicationMetaData() const;
-        // (duplicate) virtual IPublicationPtr convertIPublication() const;
-
-        virtual NodePtr getXMLDiffs(
-                                    ULONG &ioFromVersion,
-                                    ULONG toVersion
-                                    ) const;
 
         // (duplicate) virtual ULONG getVersion() const;
         // (duplicate) virtual ULONG getBaseVersion() const;
 
+        // (duplicate) virtual PublicationMetaDataPtr toPublicationMetaData() const;
+
+        virtual NodePtr getDiffs(
+                                 ULONG &ioFromVersion,
+                                 ULONG toVersion
+                                 ) const;
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -476,42 +472,15 @@ namespace hookflash
         #pragma mark Publication => (data)
         #pragma mark
 
-        PUID mID;
-        mutable RecursiveLock mLock;
-        PublicationWeakPtr mThisWeak;
+        PublicationWeakPtr mThisWeakPublication;
 
-        String mContactID;
-        String mLocationID;
-
-        String mName;
-        String mMimeType;
-
-        boost::shared_array<BYTE> mData;
-        size_t mDataLengthInBytes;
+        SecureByteBlockPtr mData;
 
         DocumentPtr mDocument;
 
-        ULONG mVersion;
-        ULONG mBaseVersion;
-        ULONG mLineage;
-
-        Scopes mScope;
-        Sources mSource;
-        Lifetimes mLifetime;
-
-        Time mExpires;
         Time mCacheExpires;
 
-        String mPublishedToContactID;
-        String mPublishedToLocationID;
-
-        PublishToRelationshipsMap mPublishedRelationships;
-
-        typedef ULONG VersionNumber;
-        typedef DocumentPtr XMLDiffDocument;
-        typedef std::map<VersionNumber, XMLDiffDocument> XMLDiffDocumentMap;
-
-        XMLDiffDocumentMap mXMLDiffDocuments;
+        DiffDocumentMap mDiffDocuments;
       };
     }
   }

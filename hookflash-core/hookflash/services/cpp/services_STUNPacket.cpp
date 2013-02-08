@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,18 +22,18 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/STUNPacket.h>
 #include <hookflash/services/RUDPPacket.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Stringize.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <cryptopp/cryptlib.h>
 #include <cryptopp/osrng.h>
 #include <cryptopp/crc.h>
@@ -59,17 +59,6 @@
 #define HOOKFLASH_STUN_MAX_STRING                   (513)
 #define HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR (6)
 
-using zsLib::BYTE;
-using zsLib::WORD;
-using zsLib::DWORD;
-using zsLib::ULONG;
-using zsLib::PTRNUMBER;
-using zsLib::QWORD;
-using zsLib::UINT;
-using zsLib::CSTR;
-using zsLib::PUID;
-using zsLib::String;
-using zsLib::Stringize;
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
 
@@ -77,6 +66,11 @@ namespace hookflash
 {
   namespace services
   {
+    using zsLib::PTRNUMBER;
+    using zsLib::CSTR;
+    using zsLib::Stringize;
+    using zsLib::IPv6Address;
+
     namespace internal
     {
       String convertToHex(const BYTE *buffer, ULONG bufferLengthInBytes);
@@ -139,7 +133,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      static bool parseSTUNString(const BYTE *data, ULONG length, ULONG maxLength, zsLib::String &outValue) {
+      static bool parseSTUNString(const BYTE *data, ULONG length, ULONG maxLength, String &outValue) {
         char buffer[(HOOKFLASH_STUN_MAX_STRING*HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)+1];
 
         if (length > (maxLength*HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)) return false;
@@ -153,7 +147,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      static bool parseMappedAddress(const BYTE *dataPos, ULONG attributeLength, DWORD magicCookie, const BYTE *magicCookiePos, zsLib::IPAddress &outIPAddress, bool &outHandleAsUnknownAttribute) {
+      static bool parseMappedAddress(const BYTE *dataPos, ULONG attributeLength, DWORD magicCookie, const BYTE *magicCookiePos, IPAddress &outIPAddress, bool &outHandleAsUnknownAttribute) {
         outHandleAsUnknownAttribute = false;
         outIPAddress.clear();
 
@@ -178,12 +172,12 @@ namespace hookflash
 
             DWORD ipAddress = ntohl(((DWORD *)dataPos)[1]);
             ipAddress ^= magicCookie;
-            outIPAddress = zsLib::IPAddress(ipAddress, port);
+            outIPAddress = IPAddress(ipAddress, port);
             break;
           }
           case 0x02: {
             if (attributeLength < sizeof(DWORD) + (128/8)) return false;  // IPv6 has a 64 bit address
-            zsLib::IPv6Address rawIP;
+            IPv6Address rawIP;
             ZS_THROW_INVALID_ASSUMPTION_IF(attributeLength < sizeof(rawIP))  // this should be impossible!!
 
             memset(&rawIP, 0, sizeof(rawIP));
@@ -202,7 +196,7 @@ namespace hookflash
               }
             }
 
-            outIPAddress = zsLib::IPAddress(rawIP, port);
+            outIPAddress = IPAddress(rawIP, port);
             break;
           }
           default: {
@@ -1068,11 +1062,11 @@ namespace hookflash
         pos += sizeof(DWORD);
       }
 
-      static void packetizeAttributeString(BYTE *pos, const zsLib::String &str) {
+      static void packetizeAttributeString(BYTE *pos, const String &str) {
         memcpy(pos, (const BYTE *)((CSTR)str), str.length());
       }
 
-      static void packetizeIPAddress(BYTE *pos, const zsLib::IPAddress &ipAddress, DWORD xorMagicCookie = 0, const BYTE *magicCookiePos = NULL)
+      static void packetizeIPAddress(BYTE *pos, const IPAddress &ipAddress, DWORD xorMagicCookie = 0, const BYTE *magicCookiePos = NULL)
       {
         pos[1] = (BYTE)(ipAddress.isIPv4() ? 0x01 : 0x02);
         ((WORD *)pos)[1] = htons(ipAddress.getPort() ^ ((xorMagicCookie & 0xFFFF0000) >> (sizeof(WORD)*8)));
@@ -1198,13 +1192,13 @@ namespace hookflash
             BYTE key[16];
             memset(&(key[0]), 0, sizeof(key));
 
-//            zsLib::String user = "bogus";
-//            zsLib::String pass = "bogus";
-//            zsLib::String realm = "yakolako.com";
+//            String user = "bogus";
+//            String pass = "bogus";
+//            String realm = "yakolako.com";
 
-            const zsLib::String &user = stun.mUsername;
-            const zsLib::String &pass = stun.mPassword;
-            const zsLib::String &realm = stun.mRealm;
+            const String &user = stun.mUsername;
+            const String &pass = stun.mPassword;
+            const String &realm = stun.mRealm;
 
             if (STUNPacket::CredentialMechanisms_LongTerm == stun.mCredentialMechanism) {
               md5.Update((const BYTE *)((CSTR)user), user.length());
@@ -1760,12 +1754,12 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     STUNPacketPtr STUNPacket::parseIfSTUN(
-                                          const zsLib::BYTE *packet,
-                                          zsLib::ULONG packetLengthInBytes,
+                                          const BYTE *packet,
+                                          ULONG packetLengthInBytes,
                                           RFCs allowedRFCs,
                                           bool allowRFC3489,
                                           const char *logObject,
-                                          zsLib::PUID logObjectID
+                                          PUID logObjectID
                                           )
     {
       // 0                   1                   2                   3
@@ -1883,7 +1877,7 @@ namespace hookflash
 
             case Attribute_AlternateServer:
             case Attribute_MappedAddress:   {
-              zsLib::IPAddress &useAddress = (Attribute_MappedAddress == attributeType ? stun->mMappedAddress : stun->mAlternateServer);
+              IPAddress &useAddress = (Attribute_MappedAddress == attributeType ? stun->mMappedAddress : stun->mAlternateServer);
               if (!internal::parseMappedAddress(dataPos, attributeLength, 0, NULL, useAddress, handleAsUnknownAttribute)) return STUNPacketPtr();
               break;
             }
@@ -1964,7 +1958,7 @@ namespace hookflash
               break;
             }
             case Attribute_XORPeerAddress:        {
-              zsLib::IPAddress temp;
+              IPAddress temp;
               if (!internal::parseMappedAddress(dataPos, attributeLength, magicCookie, (const BYTE *)(&(((DWORD *)packet)[1])), temp, handleAsUnknownAttribute)) return STUNPacketPtr();
 
               if (!handleAsUnknownAttribute) {
@@ -2138,7 +2132,7 @@ namespace hookflash
         stun->mLogObject = logObject;
       if (0 != logObjectID)
         stun->mLogObjectID = logObjectID;
-      stun->log(zsLib::Log::Trace, "parse");
+      stun->log(Log::Trace, "parse");
       return stun;
     }
 
@@ -2146,12 +2140,12 @@ namespace hookflash
     STUNPacket::ParseLookAheadStates STUNPacket::parseStreamIfSTUN(
                                                                    STUNPacketPtr &outSTUN,
                                                                    ULONG &outActualSizeInBytes,
-                                                                   const zsLib::BYTE *packet,
-                                                                   zsLib::ULONG streamDataAvailableInBytes,
+                                                                   const BYTE *packet,
+                                                                   ULONG streamDataAvailableInBytes,
                                                                    RFCs allowedRFC,
                                                                    bool allowRFC3489,
                                                                    const char *logObject,
-                                                                   zsLib::PUID logObjectID
+                                                                   PUID logObjectID
                                                                    )
     {
       //0                   1                   2                   3
@@ -2250,7 +2244,7 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     void STUNPacket::log(
-                         zsLib::Log::Level level,
+                         Log::Level level,
                          const char *logMessage
                          ) const
     {
@@ -2463,12 +2457,12 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     void STUNPacket::packetize(
-                               boost::shared_array<zsLib::BYTE> &outPacket,
-                               zsLib::ULONG &outPacketLengthInBytes,
+                               boost::shared_array<BYTE> &outPacket,
+                               ULONG &outPacketLengthInBytes,
                                RFCs rfc
                                )
     {
-      log(zsLib::Log::Trace, "packetize");
+      log(Log::Trace, "packetize");
 
       outPacketLengthInBytes = HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES;
 
@@ -2688,8 +2682,8 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
-    zsLib::ULONG STUNPacket::getTotalRoomAvailableForData(
-                                                          zsLib::ULONG maxPacketSizeInBytes,
+    ULONG STUNPacket::getTotalRoomAvailableForData(
+                                                          ULONG maxPacketSizeInBytes,
                                                           RFCs rfc
                                                           ) const
     {

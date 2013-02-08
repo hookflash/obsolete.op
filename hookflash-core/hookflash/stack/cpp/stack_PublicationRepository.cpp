@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,33 +22,41 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_PublicationRepository.h>
 #include <hookflash/stack/internal/stack_Account.h>
 #include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <hookflash/stack/internal/stack_Helper.h>
+#include <hookflash/stack/internal/stack_Location.h>
+#include <hookflash/stack/internal/stack_Peer.h>
+#include <hookflash/stack/internal/stack_Stack.h>
+#include <hookflash/stack/internal/stack_Diff.h>
+#include <hookflash/stack/IMessageIncoming.h>
 
-#include <hookflash/stack/message/PeerPublishRequest.h>
-#include <hookflash/stack/message/PeerPublishResult.h>
-#include <hookflash/stack/message/PeerGetRequest.h>
-#include <hookflash/stack/message/PeerGetResult.h>
-#include <hookflash/stack/message/PeerDeleteRequest.h>
-#include <hookflash/stack/message/PeerDeleteResult.h>
-#include <hookflash/stack/message/PeerSubscribeRequest.h>
-#include <hookflash/stack/message/PeerSubscribeResult.h>
-#include <hookflash/stack/message/PeerPublishNotifyRequest.h>
-#include <hookflash/stack/message/PeerPublishNotifyResult.h>
+#include <hookflash/stack/message/IMessageHelper.h>
+#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
+#include <hookflash/stack/message/peer-common/PeerPublishResult.h>
+#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
+#include <hookflash/stack/message/peer-common/PeerGetResult.h>
+#include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>
+#include <hookflash/stack/message/peer-common/PeerDeleteResult.h>
+#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
+#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
+#include <hookflash/stack/message/peer-common/PeerPublishNotifyRequest.h>
+#include <hookflash/stack/message/peer-common/PeerPublishNotifyResult.h>
 
 #include <hookflash/stack/message/MessageResult.h>
 
+#include <zsLib/XML.h>
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
 #include <algorithm>
 
@@ -74,18 +82,8 @@ namespace hookflash
     {
       using zsLib::Stringize;
 
-      typedef zsLib::WORD WORD;
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::String String;
-      typedef zsLib::Seconds Seconds;
-      typedef zsLib::CSTR CSTR;
-      typedef zsLib::Time Time;
-      typedef zsLib::Timer Timer;
-      typedef zsLib::RecursiveLock RecursiveLock;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-      typedef zsLib::XML::DocumentPtr DocumentPtr;
-      typedef zsLib::XML::ElementPtr ElementPtr;
-      typedef IPublication::AutoRecursiveLockPtr AutoRecursiveLockPtr;
+      using message::IMessageHelper;
+
       typedef PublicationRepository::PublisherPtr PublisherPtr;
       typedef PublicationRepository::FetcherPtr FetcherPtr;
       typedef PublicationRepository::RemoverPtr RemoverPtr;
@@ -98,15 +96,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      static IPublicationMetaData::Sources toSource(IConnectionSubscriptionMessage::Sources source)
-      {
-        switch (source)
-        {
-          case IConnectionSubscriptionMessage::Source_Finder: return IPublicationMetaData::Source_Finder;
-          case IConnectionSubscriptionMessage::Source_Peer:   return IPublicationMetaData::Source_Peer;
-        }
-        return IPublicationMetaData::Source_Local;
-      }
+      #pragma mark
+      #pragma mark (heleprs)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -117,14 +109,9 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IPublicationRepositoryForAccountPtr IPublicationRepositoryForAccount::create(IAccountForPublicationRepositoryPtr outer)
+      PublicationRepositoryPtr IPublicationRepositoryForAccount::create(AccountPtr account)
       {
-        return PublicationRepository::create(outer);
-      }
-
-      IPublicationRepositoryForAccountPtr IPublicationRepositoryForAccount::convert(IPublicationRepositoryPtr repository)
-      {
-        return boost::dynamic_pointer_cast<IPublicationRepositoryForAccount>(repository);
+        return PublicationRepository::create(account);
       }
 
       //-----------------------------------------------------------------------
@@ -136,11 +123,11 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::CacheCompare::operator()(const IPublicationMetaDataForPublicationRepositoryPtr &x, const IPublicationMetaDataForPublicationRepositoryPtr &y) const
+      bool PublicationRepository::CacheCompare::operator()(const PublicationMetaDataPtr &x, const PublicationMetaDataPtr &y) const
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!x)
         ZS_THROW_INVALID_ARGUMENT_IF(!y)
-        return x->isLessThan(y);
+        return x->forRepo().isLessThan(y->forRepo().toPublicationMetaData());
       }
 
       //-----------------------------------------------------------------------
@@ -154,29 +141,25 @@ namespace hookflash
       //-----------------------------------------------------------------------
       PublicationRepository::PublicationRepository(
                                                    IMessageQueuePtr queue,
-                                                   IAccountForPublicationRepositoryPtr outer
+                                                   AccountPtr account
                                                    ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mOuter(outer)
+        mAccount(account)
       {
-        ZS_LOG_DEBUG(log("constructor"))
+        ZS_LOG_DEBUG(log("created"))
       }
 
       //-----------------------------------------------------------------------
       void PublicationRepository::init()
       {
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        ZS_THROW_BAD_STATE_IF(!outer)
-
-        IAccountPtr account = outer->convertIAccount();
+        AccountPtr account = mAccount.lock();
         ZS_THROW_BAD_STATE_IF(!account)
 
-        mConnectionSubscription = account->subscribeToAllConnections(mThisWeak.lock());
-
+        mPeerSubscription = IPeerSubscription::subscribeAll(account, mThisWeak.lock());
         mExpiresTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRES_TIMER_IN_SECONDS));
 
-        ZS_LOG_BASIC(log("created"))
+        ZS_LOG_BASIC(log("init"))
       }
 
       //-----------------------------------------------------------------------
@@ -188,6 +171,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      PublicationRepositoryPtr PublicationRepository::convert(IPublicationRepositoryPtr repository)
+      {
+        return boost::dynamic_pointer_cast<PublicationRepository>(repository);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -196,9 +185,9 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      PublicationRepositoryPtr PublicationRepository::create(IAccountForPublicationRepositoryPtr outer)
+      PublicationRepositoryPtr PublicationRepository::create(AccountPtr account)
       {
-        PublicationRepositoryPtr pThis(new PublicationRepository(outer->getAssociatedMessageQueue(), outer));
+        PublicationRepositoryPtr pThis(new PublicationRepository(IStackForInternal::queueStack(), account));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -213,6 +202,22 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::toDebugString(IPublicationRepositoryPtr repository, bool includeCommaPrefix)
+      {
+        if (!repository) return includeCommaPrefix ? String(", repository=(null)") : String("repository=(null)");
+        return PublicationRepository::convert(repository)->getDebugValueString(includeCommaPrefix);
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationRepositoryPtr PublicationRepository::getFromAccount(IAccountPtr inAccount)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
+        AccountPtr account = Account::convert(inAccount);
+
+        return account->forRepo().getRepository();
+      }
+
+      //-----------------------------------------------------------------------
       IPublicationPublisherPtr PublicationRepository::publish(
                                                               IPublicationPublisherDelegatePtr delegate,
                                                               IPublicationPtr inPublication
@@ -223,21 +228,22 @@ namespace hookflash
 
         AutoRecursiveLock lock(getLock());
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_WARNING(Detail, log("cannot publish document as account object is gone"))
           return IPublicationPublisherPtr();
         }
 
-        IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(inPublication);
+        PublicationPtr publication = Publication::convert(inPublication);
 
         PublisherPtr publisher = Publisher::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, publication);
 
-        if (IPublicationMetaData::Source_Local == publication->getSource()) {
-          ZS_LOG_DEBUG(log("publicaton is local thus can publish immediately") + publication->getDebugValuesString())
+        LocationPtr publishedLocation = publication->forRepo().getPublishedLocation();
 
-          publication->setPublishedToContact(outer->getContactID(), outer->getLocationID());
-          publication->setBaseVersion(inPublication->getVersion());
+        if (ILocation::LocationType_Local == publishedLocation->forRepo().getLocationType()) {
+          ZS_LOG_DEBUG(log("publicaton is local thus can publish immediately") + publication->forRepo().getDebugValuesString())
+
+          publication->forRepo().setBaseVersion(inPublication->getVersion());
 
           // scope: remove old cached publication
           {
@@ -249,7 +255,7 @@ namespace hookflash
           }
           // scope: remove old permission publication
           {
-            CachedPublicationPermissionMap::iterator found = mCachedPermissionDocuments.find(publication->getName());
+            CachedPublicationPermissionMap::iterator found = mCachedPermissionDocuments.find(publication->forRepo().getName());
             if (found != mCachedPermissionDocuments.end()) {
               ZS_LOG_DEBUG(log("previous permission publication found thus removing old map entry"))
               mCachedPermissionDocuments.erase(found);
@@ -257,7 +263,7 @@ namespace hookflash
           }
 
           mCachedLocalPublications[publication] = publication;
-          mCachedPermissionDocuments[publication->getName()] = publication;
+          mCachedPermissionDocuments[publication->forRepo().getName()] = publication;
 
           ZS_LOG_DEBUG(log("publication inserted into local cache") + ", local cache total=" + Stringize<size_t>(mCachedLocalPublications.size()).string() + ", local permissions total=" + Stringize<size_t>(mCachedPermissionDocuments.size()).string())
 
@@ -281,7 +287,7 @@ namespace hookflash
           return publisher;
         }
 
-        ZS_LOG_DEBUG(log("publication requires publishing to an external source") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("publication requires publishing to an external source") + publication->forRepo().getDebugValuesString())
 
         mPendingPublishers.push_back(publisher);
         activatePublisher(publication);
@@ -302,16 +308,18 @@ namespace hookflash
 
         AutoRecursiveLock lock(getLock());
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(inMetaData);
+        PublicationMetaDataPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(inMetaData);
 
-        ZS_LOG_DEBUG(log("requesting to fetch publication") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("requesting to fetch publication") + metaData->forRepo().getDebugValuesString())
 
         FetcherPtr fetcher = Fetcher::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, metaData);
 
-        if (IPublicationMetaData::Source_Local == metaData->getSource()) {
+        LocationPtr publishedLocation = metaData->forRepo().getPublishedLocation();
+
+        if (ILocation::LocationType_Local == publishedLocation->forRepo().getLocationType()) {
           CachedPublicationMap::iterator found = mCachedLocalPublications.find(metaData);
           if (found != mCachedLocalPublications.end()) {
-            IPublicationForPublicationRepositoryPtr existingPublication = (*found).second;
+            PublicationPtr existingPublication = (*found).second;
             ZS_LOG_WARNING(Detail, log("local publication was found"))
 
             fetcher->setPublication(existingPublication);
@@ -343,20 +351,22 @@ namespace hookflash
 
         AutoRecursiveLock lock(getLock());
 
-        IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(inPublication);
+        PublicationPtr publication = Publication::convert(inPublication);
 
-        ZS_LOG_DEBUG(log("requesting to remove publication") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("requesting to remove publication") + publication->forRepo().getDebugValuesString())
 
         RemoverPtr remover = Remover::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, publication);
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           remover->cancel();  // sorry, this could not be completed...
           return remover;
         }
 
-        switch (publication->getSource()) {
-          case IPublicationMetaData::Source_Local: {
+        LocationPtr publishedLocation = publication->forRepo().getPublishedLocation();
+
+        switch (publishedLocation->forRepo().getLocationType()) {
+          case ILocation::LocationType_Local: {
 
             bool wasErased = false;
 
@@ -377,16 +387,16 @@ namespace hookflash
 
             // find in permission cache
             {
-              CachedPublicationPermissionMap::iterator found = mCachedPermissionDocuments.find(publication->getName());
+              CachedPublicationPermissionMap::iterator found = mCachedPermissionDocuments.find(publication->forRepo().getName());
               if (found != mCachedPermissionDocuments.end()) {
-                IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+                PublicationPtr &existingPublication = (*found).second;
 
-                if (existingPublication->getLineage() == publication->getLineage()) {
+                if (existingPublication->forRepo().getLineage() == publication->forRepo().getLineage()) {
                   ZS_LOG_DEBUG(log("found permission publication to erase and removing now"))
                   mCachedPermissionDocuments.erase(found);
                   wasErased = true;
                 } else {
-                  ZS_LOG_DEBUG(log("found permission publication but it doesn't have the same lineage thus will not erase") + existingPublication->getDebugValuesString())
+                  ZS_LOG_DEBUG(log("found permission publication but it doesn't have the same lineage thus will not erase") + existingPublication->forRepo().getDebugValuesString())
                 }
               } else {
                 ZS_LOG_DEBUG(log("did not find permisison document to remove"))
@@ -404,22 +414,16 @@ namespace hookflash
             }
             remover->cancel();
           }
-          case IPublicationMetaData::Source_Finder: {
-            message::PeerDeleteRequestPtr message = message::PeerDeleteRequest::create();
-            message->publicationMetaData(publication->convertIPublication());
+          case ILocation::LocationType_Finder:
+          case ILocation::LocationType_Peer:
+          {
+            PeerDeleteRequestPtr request = PeerDeleteRequest::create();
+            request->publicationMetaData(publication->forRepo().toPublicationMetaData());
+            request->domain(account->forRepo().getDomain());
 
             ZS_LOG_DEBUG(log("requesting to remove remote finder publication"))
 
-            remover->setRequester(outer->sendFinderRequest(remover, message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-            break;
-          }
-          case IPublicationMetaData::Source_Peer: {
-            message::PeerPublishRequestPtr message = message::PeerPublishRequest::create();
-            message->publication(publication->convertIPublication());
-
-            ZS_LOG_DEBUG(log("requesting to remove remote peer publication"))
-
-            remover->setRequester(outer->sendPeerRequest(remover, message, publication->getPublishedToContactID(), publication->getPublishedToLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+            remover->setMonitor(IMessageMonitor::monitorAndSendToLocation(remover, publishedLocation, request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
             break;
           }
         }
@@ -428,107 +432,70 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IPublicationSubscriptionPtr PublicationRepository::subscribeLocal(
-                                                                        IPublicationSubscriptionDelegatePtr delegate,
-                                                                        const char *publicationPath,
-                                                                        const SubscribeToRelationshipsMap &relationships
-                                                                        )
+      IPublicationSubscriptionPtr PublicationRepository::subscribe(
+                                                                   IPublicationSubscriptionDelegatePtr delegate,
+                                                                   ILocationPtr inSubscribeToLocation,
+                                                                   const char *publicationPath,
+                                                                   const SubscribeToRelationshipsMap &relationships
+                                                                   )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!inSubscribeToLocation)
         ZS_THROW_INVALID_ARGUMENT_IF(!publicationPath)
 
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("creating location subcription") + ", publication path=" + Stringize<CSTR>(publicationPath).string())
+        LocationPtr subscribeToLocation = Location::convert(inSubscribeToLocation);
 
-        SubscriptionLocalPtr subscriber = SubscriptionLocal::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, publicationPath, relationships);
+        ZS_LOG_DEBUG(log("creating subcription") + ", publication path=" + Stringize<CSTR>(publicationPath).string() + subscribeToLocation->forRepo().getDebugValueString())
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
-          subscriber->cancel();  // sorry, this could not be completed...
-          return subscriber;
+        AccountPtr account = mAccount.lock();
+
+        switch (subscribeToLocation->forRepo().getLocationType()) {
+          case ILocation::LocationType_Local: {
+            SubscriptionLocalPtr subscriber = SubscriptionLocal::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, publicationPath, relationships);
+            if (!account) {
+              ZS_LOG_WARNING(Detail, log("subscription must be cancelled as account is gone"))
+              subscriber->cancel();  // sorry, this could not be completed...
+              return subscriber;
+            }
+            for (CachedPublicationMap::iterator iter = mCachedLocalPublications.begin(); iter != mCachedLocalPublications.end(); ++iter)
+            {
+              PublicationPtr publication = (*iter).second;
+              ZS_LOG_TRACE(log("notifying location subcription about document") + publication->forRepo().getDebugValuesString())
+              subscriber->notifyUpdated(publication);
+            }
+            return subscriber;
+          }
+          case ILocation::LocationType_Finder:
+          case ILocation::LocationType_Peer:  {
+            if (!account) {
+              SubscriptionLocalPtr subscriber = SubscriptionLocal::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, publicationPath, relationships);
+              ZS_LOG_WARNING(Detail, log("subscription must be cancelled as account is gone"))
+              return subscriber;
+            }
+
+            LocationPtr localLocation = ILocationForPublicationRepository::getForLocal(account);
+
+            PublicationMetaDataPtr metaData = IPublicationMetaDataForPublicationRepository::create(0, 0, 0, localLocation, publicationPath, "", IPublicationMetaData::Encoding_JSON, relationships, subscribeToLocation);
+
+            PeerSubscriptionOutgoingPtr subscriber = PeerSubscriptionOutgoing::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, metaData);
+
+            PeerSubscribeRequestPtr request = PeerSubscribeRequest::create();
+            request->domain(account->forRepo().getDomain());
+
+            request->publicationMetaData(metaData->forRepo().toPublicationMetaData());
+
+            subscriber->setMonitor(IMessageMonitor::monitorAndSendToLocation(subscriber, subscribeToLocation, request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+
+            mPeerSubscriptionsOutgoing[subscriber->getID()] = subscriber;
+            ZS_LOG_TRACE(log("outgoing subscription is created"))
+            return subscriber;
+          }
         }
 
-        for (CachedPublicationMap::iterator iter = mCachedLocalPublications.begin(); iter != mCachedLocalPublications.end(); ++iter)
-        {
-          IPublicationForPublicationRepositoryPtr publication = (*iter).second;
-          ZS_LOG_TRACE(log("notifying location subcription about document") + publication->getDebugValuesString())
-          subscriber->notifyUpdated(publication);
-        }
-
-        return subscriber;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationSubscriptionPtr PublicationRepository::subscribeFinder(
-                                                                         IPublicationSubscriptionDelegatePtr delegate,
-                                                                         const char *publicationPath,
-                                                                         const SubscribeToRelationshipsMap &relationships
-                                                                         )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!publicationPath)
-
-        AutoRecursiveLock lock(getLock());
-
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
-          ZS_LOG_WARNING(Detail, log("cannot subscribe finder as account object is gone"))
-          return IPublicationSubscriptionPtr();
-        }
-
-        ZS_LOG_DEBUG(log("creating finder subcription") + ", publication path=" + Stringize<CSTR>(publicationPath).string())
-
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::create(0, 0, 0, IPublicationMetaData::Source_Finder, outer->getContactID(), outer->getLocationID(), publicationPath, "", IPublicationMetaData::Encoding_XML, relationships);
-        PeerSubscriptionOutgoingPtr subscriber = PeerSubscriptionOutgoing::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, metaData);
-
-        message::PeerSubscribeRequestPtr message = message::PeerSubscribeRequest::create();
-
-        message->publicationMetaData(metaData->convertIPublicationMetaData());
-
-        subscriber->setRequester(outer->sendFinderRequest(subscriber, message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-
-        mPeerSubscriptionsOutgoing[subscriber->getID()] = subscriber;
-        return subscriber;
-      }
-
-      //-----------------------------------------------------------------------
-      IPublicationSubscriptionPtr PublicationRepository::subscribePeer(
-                                                                       IPublicationSubscriptionDelegatePtr delegate,
-                                                                       const char *publicationPath,
-                                                                       const SubscribeToRelationshipsMap &relationships,
-                                                                       const char *peerSourceContactID,
-                                                                       const char *peerSourceLocationID
-                                                                       )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!publicationPath)
-        ZS_THROW_INVALID_ARGUMENT_IF(!peerSourceContactID)
-        ZS_THROW_INVALID_ARGUMENT_IF(!peerSourceLocationID)
-
-        AutoRecursiveLock lock(getLock());
-
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
-          ZS_LOG_WARNING(Detail, log("cannot subscribe peer as account object is gone"))
-          return IPublicationSubscriptionPtr();
-        }
-
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::create(0, 0, 0, IPublicationMetaData::Source_Peer, outer->getContactID(), outer->getLocationID(), publicationPath, "", IPublicationMetaData::Encoding_XML, relationships, peerSourceContactID, peerSourceLocationID);
-
-        ZS_LOG_DEBUG(log("creating peer subcription") + ", publication path=" + Stringize<CSTR>(publicationPath).string() + ", peer contact ID=" + Stringize<CSTR>(peerSourceContactID).string() + ", peer location ID=" + Stringize<CSTR>(peerSourceLocationID).string())
-
-        PeerSubscriptionOutgoingPtr subscriber = PeerSubscriptionOutgoing::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, metaData);
-
-        message::PeerSubscribeRequestPtr message = message::PeerSubscribeRequest::create();
-
-        message->publicationMetaData(metaData->convertIPublicationMetaData());
-
-        subscriber->setRequester(outer->sendPeerRequest(subscriber, message, peerSourceContactID, peerSourceLocationID, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-
-        mPeerSubscriptionsOutgoing[subscriber->getID()] = subscriber;
-        ZS_LOG_TRACE(log("outgoing subscription is created"))
-        return subscriber;
+        ZS_LOG_WARNING(Detail, log("subscribing to unknown location type") + subscribeToLocation->forRepo().getDebugValueString())
+        return IPublicationSubscriptionPtr();
       }
 
       //-----------------------------------------------------------------------
@@ -536,223 +503,128 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository => IConnectionSubscriptionDelegate
+      #pragma mark PublicationRepository => IPeerSubscriptionDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onConnectionSubscriptionShutdown(IConnectionSubscriptionPtr subscription)
+      void PublicationRepository::onPeerSubscriptionShutdown(IPeerSubscriptionPtr subscription)
       {
         AutoRecursiveLock lock(getLock());
 
-        if (subscription != mConnectionSubscription) {
+        if (subscription != mPeerSubscription) {
           ZS_LOG_WARNING(Detail, log("ignoring connection subscription shutdown on obsolete subscription"))
           return;
         }
 
         ZS_LOG_DEBUG(log("connection subscription shutdown"))
-        mConnectionSubscription.reset();
+        mPeerSubscription.reset();
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onConnectionSubscriptionFinderConnectionStateChanged(
-                                                                                       IConnectionSubscriptionPtr subscription,
-                                                                                       ConnectionStates state
-                                                                                       )
+      void PublicationRepository::onPeerSubscriptionFindStateChanged(
+                                                                     IPeerSubscriptionPtr subscription,
+                                                                     IPeerPtr peer,
+                                                                     PeerFindStates state
+                                                                     )
       {
-        AutoRecursiveLock lock(getLock());
-        if (subscription != mConnectionSubscription) {
-          ZS_LOG_WARNING(Detail, log("ignoring connection subscription finder state change on obsolete subscription"))
-          return;
-        }
-
-        ZS_LOG_DEBUG(log("finder connection state changed") + ", state=" + IConnectionSubscription::toString(state))
-
-        Time recommendedExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS);
-
-        switch (state) {
-          case IConnectionSubscription::ConnectionState_Pending:        break;
-          case IConnectionSubscription::ConnectionState_Connected:      {
-
-            // removing remote publications expiry since the finder has reconnected
-            for (CachedPublicationMap::iterator iter = mCachedRemotePublications.begin(); iter != mCachedRemotePublications.end(); ++iter)
-            {
-              IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
-
-              if (IPublicationMetaData::Source_Finder == publication->getSource()) {
-                ZS_LOG_TRACE(log("removing expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->getDebugValuesString())
-                publication->setCacheExpires(Time());
-              }
-            }
-
-            // remove the finder source expiry
-            {
-              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createFinderSource();
-              CachedPeerSourceMap::iterator found = mCachedPeerSources.find(peerSource);
-              if (found != mCachedPeerSources.end()) {
-                PeerCachePtr &peerCache = (*found).second;
-
-                ZS_LOG_DEBUG(log("removing the finder source expiry"))
-                peerCache->setExpires(Time());
-              }
-            }
-            break;
-          }
-          case IConnectionSubscription::ConnectionState_Disconnecting:
-          case IConnectionSubscription::ConnectionState_Disconnected:   {
-
-            // set remote publications to expire since this peer has disconnected
-            for (CachedPublicationMap::iterator iter = mCachedRemotePublications.begin(); iter != mCachedRemotePublications.end(); ++iter)
-            {
-              IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
-
-              if (IPublicationMetaData::Source_Finder == publication->getSource()) {
-                ZS_LOG_TRACE(log("setting expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->getDebugValuesString())
-                publication->setCacheExpires(recommendedExpires);
-              }
-            }
-
-            // set the finder source expiry
-            {
-              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createFinderSource();
-              CachedPeerSourceMap::iterator found = mCachedPeerSources.find(peerSource);
-              if (found != mCachedPeerSources.end()) {
-                PeerCachePtr &peerCache = (*found).second;
-
-                ZS_LOG_DEBUG(log("setting the finder source to expire at the recommended time") + ", recommended=" + Stringize<Time>(recommendedExpires).string())
-                peerCache->setExpires(recommendedExpires);
-              }
-            }
-
-            // clean all outgoing subscriptions going to the finder...
-            for (PeerSubscriptionOutgoingMap::iterator subIter = mPeerSubscriptionsOutgoing.begin(); subIter != mPeerSubscriptionsOutgoing.end(); )
-            {
-              PeerSubscriptionOutgoingMap::iterator current = subIter;
-              ++subIter;
-
-              PeerSubscriptionOutgoingPtr &outgoing = (*current).second;
-              IPublicationMetaDataPtr source = outgoing->getSource();
-              if (IPublicationMetaData::Source_Finder == source->getSource()) {
-                ZS_LOG_DEBUG(log("shutting down outgoing finder subscription") + ", id=" + Stringize<PUID>(outgoing->getID()).string())
-                // cancel this subscription since its no longer valid
-                outgoing->cancel();
-                mPeerSubscriptionsOutgoing.erase(current);
-              }
-            }
-
-            // clean all incoming subscriptions coming from the finder...
-            for (PeerSubscriptionIncomingMap::iterator subIter = mPeerSubscriptionsIncoming.begin(); subIter != mPeerSubscriptionsIncoming.end(); )
-            {
-              PeerSubscriptionIncomingMap::iterator current = subIter;
-              ++subIter;
-
-              PeerSubscriptionIncomingPtr &incoming = (*current).second;
-              IPublicationMetaDataPtr source = incoming->getSource();
-              if (IPublicationMetaData::Source_Finder == source->getSource()) {
-                ZS_LOG_DEBUG(log("shutting down incoming subscriptions coming from the finder") + ", id=" + Stringize<PUID>(incoming->getID()).string())
-
-                // cancel this subscription since its no longer valid
-                incoming->cancel();
-                mPeerSubscriptionsIncoming.erase(current);
-              }
-            }
-            break;
-          }
-        }
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onConnectionSubscriptionPeerLocationConnectionStateChanged(
-                                                                                             IConnectionSubscriptionPtr subscription,
-                                                                                             IPeerLocationPtr location,
-                                                                                             ConnectionStates state
-                                                                                             )
+      void PublicationRepository::onPeerSubscriptionLocationConnectionStateChanged(
+                                                                                   IPeerSubscriptionPtr subscription,
+                                                                                   ILocationPtr inLocation,
+                                                                                   LocationConnectionStates state
+                                                                                   )
       {
         AutoRecursiveLock lock(getLock());
-        if (subscription != mConnectionSubscription) {
-          ZS_LOG_WARNING(Detail, log("ignoring connection subscription peer location state change on obsolete subscription"))
+        if (subscription != mPeerSubscription) {
+          ZS_LOG_WARNING(Detail, log("ignoring peer subscription location connection state change on obsolete subscription"))
           return;
         }
 
-        ZS_LOG_DEBUG(log("peer connection state changed") + ", state=" + IConnectionSubscription::toString(state) + ", peer contact ID=" + location->getContactID() + ", peer location ID=" + location->getLocationID())
-
         Time recommendedExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS);
 
-        switch (state) {
-          case IConnectionSubscription::ConnectionState_Pending:        break;
-          case IConnectionSubscription::ConnectionState_Connected:      {
+        LocationPtr location = Location::convert(inLocation);
+
+        ZS_LOG_DEBUG(log("peer location state changed") + ", state=" + ILocation::toString(state) + location->forRepo().getDebugValueString())
+        switch (state)
+        {
+          case ILocation::LocationConnectionState_Pending:        break;
+          case ILocation::LocationConnectionState_Connected:      {
+
             // remove every remote document expiry for the peer...
             for (CachedPublicationMap::iterator iter = mCachedRemotePublications.begin(); iter != mCachedRemotePublications.end(); ++iter)
             {
-              IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
+              PublicationPtr &publication = (*iter).second;
 
-              if (IPublicationMetaData::Source_Peer == publication->getSource()) {
-                if ((publication->getPublishedToContactID() == location->getContactID()) &&
-                    (publication->getPublishedToLocationID() == location->getLocationID())) {
-                  ZS_LOG_TRACE(log("removing expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->getDebugValuesString())
-                  publication->setExpires(Time());
-                }
+              const char *ignoredReaon = NULL;
+              if (0 == ILocationForPublicationRepository::locationCompare(location, publication->forRepo().getPublishedLocation(), ignoredReaon)) {
+                ZS_LOG_TRACE(log("removing expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->forRepo().getDebugValuesString())
+                publication->forRepo().setExpires(Time());
               }
             }
 
             // remove the peer source expiry
             {
-              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createPeerSource(location->getContactID(), location->getLocationID());
+              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createForSource(location);
               CachedPeerSourceMap::iterator found = mCachedPeerSources.find(peerSource);
               if (found != mCachedPeerSources.end()) {
                 PeerCachePtr &peerCache = (*found).second;
 
-                ZS_LOG_DEBUG(log("setting the peer source to expire at the recommended time") + ", recommended=" + Stringize<Time>(recommendedExpires).string())
-                peerCache->setExpires(recommendedExpires);
+                ZS_LOG_DEBUG(log("removing the peer source cache expiry") + ", recommended=" + Stringize<Time>(recommendedExpires).string())
+                peerCache->setExpires(Time());
               }
             }
-
             break;
           }
-          case IConnectionSubscription::ConnectionState_Disconnecting:
-          case IConnectionSubscription::ConnectionState_Disconnected:   {
+          case ILocation::LocationConnectionState_Disconnecting:
+          case ILocation::LocationConnectionState_Disconnected:   {
 
-            // clean the cache of everything having to do with the peer...
+            // everything published from a remote peer into the local cache must be removed
             for (CachedPublicationMap::iterator pubIter = mCachedLocalPublications.begin(); pubIter != mCachedLocalPublications.end(); )
             {
               CachedPublicationMap::iterator current = pubIter;
               ++pubIter;
 
-              IPublicationForPublicationRepositoryPtr &publication = (*current).second;
+              PublicationPtr &publication = (*current).second;
 
-              if (IPublicationMetaData::Source_Peer == publication->getSource()) {
-                if ((publication->getPublishedToContactID() == location->getContactID()) &&
-                    (publication->getPublishedToLocationID() == location->getLocationID())) {
-                  ZS_LOG_DEBUG(log("removing publication published to peer") + publication->getDebugValuesString())
+              const char *ignoredReaon = NULL;
 
-                  // remove this document from the cache
-                  mCachedLocalPublications.erase(current);
-                }
+              if (0 == ILocationForPublicationRepository::locationCompare(publication->forRepo().getCreatorLocation(), location, ignoredReaon)) {
+                ZS_LOG_DEBUG(log("removing publication published by peer") + publication->forRepo().getDebugValuesString())
+
+                // remove this document from the cache
+                mCachedLocalPublications.erase(current);
               }
             }
 
-            // set every remote document to expire after a period of time for the peer...
+            // set every remote document downloaded from peer to expire after a period of time for the peer...
             for (CachedPublicationMap::iterator iter = mCachedRemotePublications.begin(); iter != mCachedRemotePublications.end(); ++iter)
             {
-              IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
+              PublicationPtr &publication = (*iter).second;
 
-              if (IPublicationMetaData::Source_Peer == publication->getSource()) {
-                if ((publication->getPublishedToContactID() == location->getContactID()) &&
-                    (publication->getPublishedToLocationID() == location->getLocationID())) {
-                  ZS_LOG_TRACE(log("setting expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->getDebugValuesString())
-                  publication->setExpires(recommendedExpires);
-                }
+              const char *ignoredReaon = NULL;
+              if (0 == ILocationForPublicationRepository::locationCompare(publication->forRepo().getPublishedLocation(), location, ignoredReaon)) {
+                ZS_LOG_TRACE(log("setting expiry time on document") + ", recommend=" + Stringize<Time>(recommendedExpires).string() + publication->forRepo().getDebugValuesString())
+                publication->forRepo().setExpires(recommendedExpires);
               }
             }
 
-            // set the peer source expiry
+            // set the peer source expiry (peer source represents what this side believes the remote side has downloaded from this peer and cached already)
             {
-              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createPeerSource(location->getContactID(), location->getLocationID());
+              PeerSourcePtr peerSource = IPublicationMetaDataForPublicationRepository::createForSource(location);
               CachedPeerSourceMap::iterator found = mCachedPeerSources.find(peerSource);
               if (found != mCachedPeerSources.end()) {
-                PeerCachePtr &peerCache = (*found).second;
 
-                ZS_LOG_DEBUG(log("setting the peer source to expire at the recommended time") + ", recommended=" + Stringize<Time>(recommendedExpires).string())
-                peerCache->setExpires(recommendedExpires);
+                if (ILocation::LocationType_Finder == location->forRepo().getLocationType()) {
+                  // the finder would immediately forget all downloaded publications from this local location upon disconnect so remove the entire cache representation...
+                  mCachedPeerSources.erase(found);
+                } else {
+                  PeerCachePtr &peerCache = (*found).second;
+
+                  ZS_LOG_DEBUG(log("setting the peer source cache to expire at the recommended time") + ", recommended=" + Stringize<Time>(recommendedExpires).string())
+                  peerCache->setExpires(recommendedExpires);
+                }
               }
             }
 
@@ -764,19 +636,18 @@ namespace hookflash
 
               PeerSubscriptionOutgoingPtr &outgoing = (*current).second;
               IPublicationMetaDataPtr source = outgoing->getSource();
-              if (IPublicationMetaData::Source_Peer == source->getSource()) {
-                if ((source->getPublishedToContactID() == location->getContactID()) &&
-                    (source->getPublishedToLocationID() == location->getLocationID())) {
-                  // cancel this subscription since its no longer valid
-                  ZS_LOG_DEBUG(log("shutting down outgoing peer subscription") + ", id=" + Stringize<PUID>(outgoing->getID()).string())
 
-                  outgoing->cancel();
-                  mPeerSubscriptionsOutgoing.erase(current);
-                }
+              const char *ignoredReaon = NULL;
+              if (0 == ILocationForPublicationRepository::locationCompare(source->getPublishedLocation(), location, ignoredReaon)) {
+                // cancel this subscription since its no longer valid
+                ZS_LOG_DEBUG(log("shutting down outgoing peer subscription") + ", id=" + Stringize<PUID>(outgoing->getID()).string())
+
+                outgoing->cancel();
+                mPeerSubscriptionsOutgoing.erase(current);
               }
             }
 
-            // clean all incoming subscriptions coming from the finder...
+            // clean all incoming subscriptions coming from the peer...
             for (PeerSubscriptionIncomingMap::iterator subIter = mPeerSubscriptionsIncoming.begin(); subIter != mPeerSubscriptionsIncoming.end(); )
             {
               PeerSubscriptionIncomingMap::iterator current = subIter;
@@ -784,14 +655,12 @@ namespace hookflash
 
               PeerSubscriptionIncomingPtr &incoming = (*current).second;
               IPublicationMetaDataPtr source = incoming->getSource();
-              if (IPublicationMetaData::Source_Peer == source->getSource()) {
-                if ((source->getCreatorContactID() == location->getContactID()) &&
-                    (source->getCreatorLocationID() == location->getLocationID())) {
-                  // cancel this subscription since its no longer valid
-                  ZS_LOG_DEBUG(log("shutting down incoming subscriptions coming from the peer") + ", id=" + Stringize<PUID>(incoming->getID()).string())
-                  incoming->cancel();
-                  mPeerSubscriptionsIncoming.erase(current);
-                }
+              const char *ignoredReaon = NULL;
+              if (0 == ILocationForPublicationRepository::locationCompare(source->getCreatorLocation(), location, ignoredReaon)) {
+                // cancel this subscription since its no longer valid
+                ZS_LOG_DEBUG(log("shutting down incoming subscriptions coming from the peer") + ", id=" + Stringize<PUID>(incoming->getID()).string())
+                incoming->cancel();
+                mPeerSubscriptionsIncoming.erase(current);
               }
             }
             break;
@@ -800,22 +669,20 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onConnectionSubscriptionIncomingMessage(
-                                                                          IConnectionSubscriptionPtr subscription,
-                                                                          IConnectionSubscriptionMessagePtr incomingMessage
-                                                                          )
+      void PublicationRepository::onPeerSubscriptionMessageIncoming(
+                                                                    IPeerSubscriptionPtr subscription,
+                                                                    IMessageIncomingPtr messageIncoming
+                                                                    )
       {
-        ZS_LOG_TRACE(log("received notification of incoming message") + ", source=" + IConnectionSubscriptionMessage::toString(incomingMessage->getSource()) + ", contact ID=" + incomingMessage->getPeerContactID() + ", location ID=" + incomingMessage->getPeerLocationID())
+        LocationPtr location = Location::convert(messageIncoming->getLocation());
+        message::MessagePtr message = messageIncoming->getMessage();
+        ZS_LOG_TRACE(log("received notification of incoming message") + ", message ID=" + message->messageID() +  + ", type=" + message::Message::toString(message->messageType()) + ", method=" + message->methodAsString() + location->forRepo().getDebugValueString())
 
         AutoRecursiveLock lock(getLock());
-        if (subscription != mConnectionSubscription) {
-          ZS_LOG_WARNING(Detail, log("ignoring connection subscription message on obsolete subscription"))
+        if (subscription != mPeerSubscription) {
+          ZS_LOG_WARNING(Detail, log("ignoring peer subscription incoming message on obsolete subscription"))
           return;
         }
-
-        message::MessagePtr message = incomingMessage->getMessage();
-
-        ZS_LOG_TRACE(log("incoming message received") + ", type=" + message::Message::toString(message->messageType()) + ", method=" + message->methodAsString())
 
         switch (message->messageType()) {
           case message::Message::MessageType_Request:
@@ -826,12 +693,12 @@ namespace hookflash
           }
         }
 
-        switch ((message::MessageFactoryStack::Methods)message->method()) {
-          case message::MessageFactoryStack::Method_PeerPublish:        onIncomingMessage(incomingMessage, message::PeerPublishRequest::convert(message)); break;
-          case message::MessageFactoryStack::Method_PeerGet:            onIncomingMessage(incomingMessage, message::PeerGetRequest::convert(message)); break;
-          case message::MessageFactoryStack::Method_PeerDelete:         onIncomingMessage(incomingMessage, message::PeerDeleteRequest::convert(message)); break;
-          case message::MessageFactoryStack::Method_PeerSubscribe:      onIncomingMessage(incomingMessage, message::PeerSubscribeRequest::convert(message)); break;
-          case message::MessageFactoryStack::Method_PeerPublishNotify:  onIncomingMessage(incomingMessage, message::PeerPublishNotifyRequest::convert(message)); break;
+        switch ((MessageFactoryPeerCommon::Methods)message->method()) {
+          case MessageFactoryPeerCommon::Method_PeerPublish:        onMessageIncoming(messageIncoming, PeerPublishRequest::convert(message)); break;
+          case MessageFactoryPeerCommon::Method_PeerGet:            onMessageIncoming(messageIncoming, PeerGetRequest::convert(message)); break;
+          case MessageFactoryPeerCommon::Method_PeerDelete:         onMessageIncoming(messageIncoming, PeerDeleteRequest::convert(message)); break;
+          case MessageFactoryPeerCommon::Method_PeerSubscribe:      onMessageIncoming(messageIncoming, PeerSubscribeRequest::convert(message)); break;
+          case MessageFactoryPeerCommon::Method_PeerPublishNotify:  onMessageIncoming(messageIncoming, PeerPublishNotifyRequest::convert(message)); break;
           default:                                          {
             ZS_LOG_TRACE(log("method was not understood (thus ignoring)"))
             break;
@@ -866,10 +733,10 @@ namespace hookflash
           CachedPublicationMap::iterator current = cacheIter;
           ++cacheIter;
 
-          IPublicationForPublicationRepositoryPtr &publication = (*current).second;
+          PublicationPtr &publication = (*current).second;
 
-          Time expires = publication->getExpires();
-          Time cacheExpires = publication->getCacheExpires();
+          Time expires = publication->forRepo().getExpires();
+          Time cacheExpires = publication->forRepo().getCacheExpires();
 
           if (Time() == expires) {
             expires = cacheExpires;
@@ -879,7 +746,7 @@ namespace hookflash
           }
 
           if (Time() == expires) {
-            ZS_LOG_TRACE(log("publication does not have an expiry") + publication->getDebugValuesString())
+            ZS_LOG_TRACE(log("publication does not have an expiry") + publication->forRepo().getDebugValuesString())
             continue;
           }
 
@@ -887,12 +754,12 @@ namespace hookflash
             expires = cacheExpires;
 
           if (expires < tick) {
-            ZS_LOG_DEBUG(log("document is now expiring") + publication->getDebugValuesString())
+            ZS_LOG_DEBUG(log("document is now expiring") + publication->forRepo().getDebugValuesString())
             mCachedRemotePublications.erase(current);
             continue;
           }
 
-          ZS_LOG_TRACE(log("publication is not expirying yet") + publication->getDebugValuesString())
+          ZS_LOG_TRACE(log("publication is not expirying yet") + publication->forRepo().getDebugValuesString())
         }
 
         // go through the peer sources and see if any should expire...
@@ -906,17 +773,17 @@ namespace hookflash
 
           Time expires = peerCache->getExpires();
           if (Time() == expires) {
-            ZS_LOG_TRACE(log("peer source does not have an expiry") + peerSource->getDebugValuesString())
+            ZS_LOG_TRACE(log("peer source does not have an expiry") + peerSource->forRepo().getDebugValuesString())
             continue;
           }
 
           if (expires < tick) {
-            ZS_LOG_DEBUG(log("peer source is now expiring") + peerSource->getDebugValuesString())
+            ZS_LOG_DEBUG(log("peer source is now expiring") + peerSource->forRepo().getDebugValuesString())
             mCachedPeerSources.erase(current);
             continue;
           }
 
-          ZS_LOG_TRACE(log("peer source is not expirying yet") + peerSource->getDebugValuesString())
+          ZS_LOG_TRACE(log("peer source is not expirying yet") + peerSource->forRepo().getDebugValuesString())
         }
       }
 
@@ -940,15 +807,15 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        IPublicationForPublicationRepositoryPtr publication;
+        PublicationPtr publication;
 
         // find and remove the fetcher from the pending list...
         for (PendingPublisherList::iterator iter = mPendingPublishers.begin(); iter != mPendingPublishers.end(); ++iter)
         {
           PublisherPtr &foundPublisher = (*iter);
           if (foundPublisher->getID() == publisher->getID()) {
-            publication = IPublicationForPublicationRepository::convert(foundPublisher->getPublication());
-            ZS_LOG_DEBUG(log("removing remote publisher") + ", publisher ID=" + Stringize<PUID>(publisher->getID()).string() + publication->getDebugValuesString())
+            publication = Publication::convert(foundPublisher->getPublication());
+            ZS_LOG_DEBUG(log("removing remote publisher") + ", publisher ID=" + Stringize<PUID>(publisher->getID()).string() + publication->forRepo().getDebugValuesString())
             mPendingPublishers.erase(iter);
             break;
           }
@@ -973,25 +840,23 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(fetcher->getPublicationMetaData());
+        PublicationMetaDataPtr metaData = PublicationMetaData::convert(fetcher->getPublicationMetaData());
 
-        ZS_LOG_DEBUG(log("publication was fetched") + ", fetcher ID=" + Stringize<PUID>(fetcher->getID()).string() + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("publication was fetched") + ", fetcher ID=" + Stringize<PUID>(fetcher->getID()).string() + metaData->forRepo().getDebugValuesString())
 
-        IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(fetcher->getFetchedPublication());
+        PublicationPtr publication = Publication::convert(fetcher->getFetchedPublication());
 
-        publication->setCreatorContact(metaData->getCreatorContactID(), metaData->getCreatorLocationID());
-        publication->setSource(metaData->getSource());
-        if (IPublicationMetaData::Source_Peer == publication->getSource()) {
-          publication->setPublishedToContact(metaData->getPublishedToContactID(), metaData->getPublishedToLocationID());
-        }
+        // force the creator/published to to be the correct locations
+        publication->forRepo().setCreatorLocation(metaData->forRepo().getCreatorLocation());
+        publication->forRepo().setPublishedLocation(metaData->forRepo().getPublishedLocation());
 
         CachedPublicationMap::iterator found = mCachedRemotePublications.find(metaData);
         if (found != mCachedRemotePublications.end()) {
-          IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+          PublicationPtr &existingPublication = (*found).second;
 
-          ZS_LOG_DEBUG(log("existing internal publication found thus updating") + existingPublication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("existing internal publication found thus updating") + existingPublication->forRepo().getDebugValuesString())
           try {
-            existingPublication->updateFromFetchedPublication(publication);
+            existingPublication->forRepo().updateFromFetchedPublication(publication);
 
             // override what the fetcher thinks is returned and replace with the existing document
             fetcher->setPublication(existingPublication);
@@ -999,7 +864,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("version fetched is not compatible with the version already known"))
           }
         } else {
-          ZS_LOG_DEBUG(log("new entry for cache will be created since existing publication in cache was not found") + publication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("new entry for cache will be created since existing publication in cache was not found") + publication->forRepo().getDebugValuesString())
           mCachedRemotePublications[publication] = publication;
 
           ZS_LOG_DEBUG(log("publication inserted into remote cache") + ", remote cache total=" + Stringize<size_t>(mCachedRemotePublications.size()).string())
@@ -1011,7 +876,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData;
+        PublicationMetaDataPtr metaData;
 
         // find and remove the fetcher from the pending list...
         for (PendingFetcherList::iterator iter = mPendingFetchers.begin(); iter != mPendingFetchers.end(); ++iter)
@@ -1019,14 +884,14 @@ namespace hookflash
           FetcherPtr &foundFetcher = (*iter);
           if (foundFetcher->getID() == fetcher->getID()) {
             ZS_LOG_DEBUG(log("fetcher is being removed from pending fetchers list") + ", fetcher ID=" + Stringize<PUID>(fetcher->getID()).string())
-            metaData = IPublicationMetaDataForPublicationRepository::convert(fetcher->getPublicationMetaData());
+            metaData = PublicationMetaData::convert(fetcher->getPublicationMetaData());
             mPendingFetchers.erase(iter);
             break;
           }
         }
 
         if (metaData) {
-          ZS_LOG_DEBUG(log("will attempt to activate next fetcher based on previous fetch's publication meta data") + metaData->getDebugValuesString())
+          ZS_LOG_DEBUG(log("will attempt to activate next fetcher based on previous fetch's publication meta data") + metaData->forRepo().getDebugValuesString())
           // ensure that only one fectcher for the same publication is activated at a time...
           activateFetcher(metaData);
         }
@@ -1043,16 +908,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void PublicationRepository::notifyRemoved(RemoverPtr remover)
       {
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(remover->getPublication());
+        PublicationMetaDataPtr metaData = PublicationMetaData::convert(remover->getPublication());
         CachedPublicationMap::iterator found = mCachedRemotePublications.find(metaData);
         if (found == mCachedRemotePublications.end()) {
-          ZS_LOG_DEBUG(log("unable to locate publication in 'remote' cache") + metaData->getDebugValuesString())
+          ZS_LOG_DEBUG(log("unable to locate publication in 'remote' cache") + metaData->forRepo().getDebugValuesString())
           return;
         }
 
-        IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+        PublicationPtr &existingPublication = (*found).second;
 
-        ZS_LOG_DEBUG(log("removing remotely cached publication") + existingPublication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("removing remotely cached publication") + existingPublication->forRepo().getDebugValuesString())
         mCachedRemotePublications.erase(found);
       }
 
@@ -1110,20 +975,14 @@ namespace hookflash
                                                        RelationshipList &outContacts
                                                        ) const
       {
-        typedef String ContactID;
-        typedef std::map<ContactID, ContactID> ContactMap;
+        typedef String PeerURI;
+        typedef std::map<PeerURI, PeerURI> PeerURIMap;
 
         typedef IPublicationMetaData::DocumentName DocumentName;
-        typedef IPublicationMetaData::PermissionAndContactIDListPair PermissionAndContactIDListPair;
-        typedef IPublicationMetaData::ContactIDList ContactIDList;
+        typedef IPublicationMetaData::PermissionAndPeerURIListPair PermissionAndPeerURIListPair;
+        typedef IPublicationMetaData::PeerURIList PeerURIList;
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
-          ZS_LOG_WARNING(Detail, log("cannot resolve relationships as account object is gone"))
-          return;
-        }
-
-        ContactMap contacts;
+        PeerURIMap contacts;
 
         for (PublishToRelationshipsMap::const_iterator iter = publishToRelationships.begin(); iter != publishToRelationships.end(); ++iter)
         {
@@ -1131,10 +990,10 @@ namespace hookflash
 
           ZS_LOG_TRACE(log("resolving relationships for document") + ", name=" + name)
 
-          const PermissionAndContactIDListPair &permissionPair = (*iter).second;
-          const ContactIDList &diffContacts = permissionPair.second;
+          const PermissionAndPeerURIListPair &permissionPair = (*iter).second;
+          const PeerURIList &diffContacts = permissionPair.second;
 
-          IPublicationForPublicationRepositoryPtr relationshipsPublication;
+          PublicationPtr relationshipsPublication;
 
           // scope: find the permission document
           {
@@ -1149,25 +1008,24 @@ namespace hookflash
             continue;
           }
 
-          RelationshipList docContacts;
-          relationshipsPublication->getAsContactList(docContacts);
+          RelationshipListPtr docContacts = relationshipsPublication->forRepo().getAsContactList();
 
           switch (permissionPair.first) {
             case IPublicationMetaData::Permission_All:    {
-              for (RelationshipList::iterator relIter = docContacts.begin(); relIter != docContacts.end(); ++relIter) {
-                ZS_LOG_TRACE(log("adding all contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*relIter))
+              for (RelationshipList::iterator relIter = (*docContacts).begin(); relIter != (*docContacts).end(); ++relIter) {
+                ZS_LOG_TRACE(log("adding all contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*relIter))
                 contacts[(*relIter)] = (*relIter);
               }
               break;
             }
             case IPublicationMetaData::Permission_None:   {
-              for (RelationshipList::iterator relIter = docContacts.begin(); relIter != docContacts.end(); ++relIter) {
-                ContactMap::iterator found = contacts.find(*relIter);
+              for (RelationshipList::iterator relIter = (*docContacts).begin(); relIter != (*docContacts).end(); ++relIter) {
+                PeerURIMap::iterator found = contacts.find(*relIter);
                 if (found == contacts.end()) {
-                  ZS_LOG_TRACE(log("failed to remove all contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*relIter))
+                  ZS_LOG_TRACE(log("failed to remove all contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*relIter))
                   continue;
                 }
-                ZS_LOG_TRACE(log("removing all contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*relIter))
+                ZS_LOG_TRACE(log("removing all contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*relIter))
                 contacts.erase(found);
               }
               break;
@@ -1175,30 +1033,30 @@ namespace hookflash
             case IPublicationMetaData::Permission_Add:
             case IPublicationMetaData::Permission_Some:   {
               for (RelationshipList::const_iterator diffIter = diffContacts.begin(); diffIter != diffContacts.end(); ++diffIter) {
-                ContactIDList::const_iterator found = find(docContacts.begin(), docContacts.end(), (*diffIter));
-                if (found == docContacts.end()) {
-                  ZS_LOG_TRACE(log("cannot add some of the contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*diffIter))
+                PeerURIList::const_iterator found = find((*docContacts).begin(), (*docContacts).end(), (*diffIter));
+                if (found == (*docContacts).end()) {
+                  ZS_LOG_TRACE(log("cannot add some of the contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*diffIter))
                   continue; // cannot add anyone that isn't part of the relationship list
                 }
-                ZS_LOG_TRACE(log("adding some of the contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*diffIter))
+                ZS_LOG_TRACE(log("adding some of the contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*diffIter))
                 contacts[(*diffIter)] = (*diffIter);
               }
               break;
             }
             case IPublicationMetaData::Permission_Remove: {
               for (RelationshipList::const_iterator diffIter = diffContacts.begin(); diffIter != diffContacts.end(); ++diffIter) {
-                ContactIDList::const_iterator found = find(docContacts.begin(), docContacts.end(), (*diffIter));
-                if (found == docContacts.end()) {
-                  ZS_LOG_TRACE(log("cannot remove some of the contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*diffIter))
+                PeerURIList::const_iterator found = find((*docContacts).begin(), (*docContacts).end(), (*diffIter));
+                if (found == (*docContacts).end()) {
+                  ZS_LOG_TRACE(log("cannot remove some of the contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*diffIter))
                   continue; // cannot remove anyone that isn't part of the relationship list
                 }
 
-                ContactMap::iterator foundExisting = contacts.find(*diffIter);
+                PeerURIMap::iterator foundExisting = contacts.find(*diffIter);
                 if (foundExisting == contacts.end()) {
-                  ZS_LOG_TRACE(log("cannot removing some of the contacts found as the contact was never added to relationships document") + ", name=" + name + ", contact ID=" + (*diffIter))
+                  ZS_LOG_TRACE(log("cannot removing some of the contacts found as the contact was never added to relationships document") + ", name=" + name + ", peer URI=" + (*diffIter))
                   continue;
                 }
-                ZS_LOG_TRACE(log("removing some of the contacts found in relationships document") + ", name=" + name + ", contact ID=" + (*diffIter))
+                ZS_LOG_TRACE(log("removing some of the contacts found in relationships document") + ", name=" + name + ", peer URI=" + (*diffIter))
                 contacts.erase(foundExisting);
               }
               break;
@@ -1206,8 +1064,8 @@ namespace hookflash
           }
         }
 
-        for (ContactMap::const_iterator iter = contacts.begin(); iter != contacts.end(); ++iter) {
-          ZS_LOG_TRACE(log("final list of the resolved relationships contains this contact") + ", contact ID=" + (*iter).first)
+        for (PeerURIMap::const_iterator iter = contacts.begin(); iter != contacts.end(); ++iter) {
+          ZS_LOG_TRACE(log("final list of the resolved relationships contains this contact") + ", peer URI=" + (*iter).first)
           outContacts.push_back((*iter).first);
         }
       }
@@ -1215,9 +1073,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool PublicationRepository::canFetchPublication(
                                                       const PublishToRelationshipsMap &publishToRelationships,
-                                                      const String &fetcherContactID
+                                                      LocationPtr location
                                                       ) const
       {
+        switch (location->forRepo().getLocationType()) {
+          case ILocation::LocationType_Local:   return true;    // local is always allowed to fetch the publication
+          case ILocation::LocationType_Finder:  return false;   // finder cannot fetch publications
+          case ILocation::LocationType_Peer:    break;
+        }
+
+        PeerPtr peer = location->forRepo().getPeer();
+        if (!peer) {
+          ZS_LOG_ERROR(Detail, log("peer contact on incoming message was empty") + location->forRepo().getDebugValueString())
+          return false;
+        }
+
+        String peerURI = peer->forRepo().getPeerURI();
+
         RelationshipList publishToContacts;  // all these contacts are being published to
         resolveRelationships(publishToRelationships, publishToContacts);
 
@@ -1225,44 +1097,53 @@ namespace hookflash
         // the document must publish to this contact or its ignored...
         for (RelationshipList::iterator iter = publishToContacts.begin(); iter != publishToContacts.end(); ++iter)
         {
-          if ((*iter) == fetcherContactID) {
+          if ((*iter) == peerURI) {
             found = true;
             break;
           }
         }
 
         if (!found) {
-          ZS_LOG_WARNING(Detail, log("publication is not published to this fetcher contact") + ", fetcher contact ID=" + fetcherContactID)
+          ZS_LOG_WARNING(Detail, log("publication is not published to this fetcher contact") + ", fetcher peer URI=" + peerURI)
           return false; // does not publish to this contact...
         }
 
-        ZS_LOG_TRACE(log("publication is publishing to this fetcher contact (thus safe to fetch)") + ", fetcher contact ID=" + fetcherContactID)
+        ZS_LOG_TRACE(log("publication is publishing to this fetcher contact (thus safe to fetch)") + ", fetcher peer URI=" + peerURI)
         return true;
       }
 
       //-----------------------------------------------------------------------
       bool PublicationRepository::canSubscribeToPublisher(
-                                                           const String &publicationCreatorContactID,
-                                                           const PublishToRelationshipsMap &publishToRelationships,
-                                                           const String &subscriberContactID,
-                                                           const SubscribeToRelationshipsMap &subscribeToRelationships
-                                                           ) const
+                                                          LocationPtr publicationCreatorLocation,
+                                                          const PublishToRelationshipsMap &publishToRelationships,
+                                                          LocationPtr subscriberLocation,
+                                                          const SubscribeToRelationshipsMap &subscribeToRelationships
+                                                          ) const
       {
         RelationshipList publishToContacts;  // all these contacts are being published to
         resolveRelationships(publishToRelationships, publishToContacts);
+
+        PeerPtr publicationPeer = publicationCreatorLocation->forRepo().getPeer();
+        PeerPtr subscriberPeer = subscriberLocation->forRepo().getPeer();
+
+        if ((!publicationPeer) ||
+            (!subscriberPeer)) {
+          ZS_LOG_TRACE(log("publisher is not publishing to this subscriber contact") + ", publication: " + publicationCreatorLocation->forRepo().getDebugValueString(false) + ", subscriber: " + subscriberLocation->forRepo().getDebugValueString(false))
+          return false;
+        }
 
         bool found = false;
         // the document must publish to this contact or its ignored...
         for (RelationshipList::iterator iter = publishToContacts.begin(); iter != publishToContacts.end(); ++iter)
         {
-          if ((*iter) == subscriberContactID) {
+          if ((*iter) == subscriberPeer->forRepo().getPeerURI()) {
             found = true;
             break;
           }
         }
 
         if (!found) {
-          ZS_LOG_TRACE(log("publisher is not publishing to this subscriber contact") + ", publisher contact ID=" + publicationCreatorContactID + ", subscriber contact ID=" + subscriberContactID)
+          ZS_LOG_TRACE(log("publisher is not publishing to this subscriber contact") + ", publication: " + publicationCreatorLocation->forRepo().getDebugValueString(false) + ", subscriber: " + subscriberLocation->forRepo().getDebugValueString(false))
           return false; // does not publish to this contact...
         }
 
@@ -1273,18 +1154,18 @@ namespace hookflash
         // the document must publish to this contact or its ignored...
         for (RelationshipList::iterator iter = subscribeToContacts.begin(); iter != subscribeToContacts.end(); ++iter)
         {
-          if ((*iter) == publicationCreatorContactID) {
+          if ((*iter) == publicationPeer->forRepo().getPeerURI()) {
             found = true;
             break;
           }
         }
 
         if (!found) {
-          ZS_LOG_TRACE(log("subscriber is not subscribing to this publisher") + ", publisher contact ID=" + publicationCreatorContactID + ", subscriber contact ID=" + subscriberContactID)
+          ZS_LOG_TRACE(log("subscriber is not subscribing to this publisher") + ", publication: " + publicationCreatorLocation->forRepo().getDebugValueString(false) + ", subscriber: " + subscriberLocation->forRepo().getDebugValueString(false))
           return false; // does not publish to this contact...
         }
 
-        ZS_LOG_TRACE(log("subscriber is subscribing to this creator and creator is publishing to the subscriber") + ", publisher contact ID=" + publicationCreatorContactID + ", subscriber contact ID=" + subscriberContactID)
+        ZS_LOG_TRACE(log("subscriber is subscribing to this publication's creator and creator is publishing this publication to the subscriber") + ", publication: " + publicationCreatorLocation->forRepo().getDebugValueString(false) + ", subscriber: " + subscriberLocation->forRepo().getDebugValueString(false))
         return true;
       }
 
@@ -1299,11 +1180,29 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String PublicationRepository::log(const char *message) const
       {
-        return String("PublicationRepository [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PublicationRepository [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::activateFetcher(IPublicationMetaDataForPublicationRepositoryPtr metaData)
+      String PublicationRepository::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("repository id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("cached local", mCachedLocalPublications.size() > 0 ? Stringize<size_t>(mCachedLocalPublications.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("cached remote", mCachedRemotePublications.size() > 0 ? Stringize<size_t>(mCachedRemotePublications.size()).string() : String(), firstTime) +
+               IPeerSubscription::toDebugString(mPeerSubscription) +
+               Helper::getDebugValue("cached permissions", mCachedPermissionDocuments.size() > 0 ? Stringize<size_t>(mCachedPermissionDocuments.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("subscriptions local", mSubscriptionsLocal.size() > 0 ? Stringize<size_t>(mSubscriptionsLocal.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("subscriptions incoming", mPeerSubscriptionsIncoming.size() > 0 ? Stringize<size_t>(mPeerSubscriptionsIncoming.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("subscriptions outgoing", mPeerSubscriptionsOutgoing.size() > 0 ? Stringize<size_t>(mPeerSubscriptionsOutgoing.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("pending fetchers", mPendingFetchers.size() > 0 ? Stringize<size_t>(mPendingFetchers.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("pending publishers", mPendingPublishers.size() > 0 ? Stringize<size_t>(mPendingPublishers.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("cached peer sources", mCachedPeerSources.size() > 0 ? Stringize<size_t>(mCachedPeerSources.size()).string() : String(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void PublicationRepository::activateFetcher(PublicationMetaDataPtr metaData)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -1312,17 +1211,17 @@ namespace hookflash
           return;
         }
 
-        ZS_LOG_DEBUG(log("activating next fetcher found with this meta data") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("activating next fetcher found with this meta data") + metaData->forRepo().getDebugValuesString())
 
         for (PendingFetcherList::iterator iter = mPendingFetchers.begin(); iter != mPendingFetchers.end(); ++iter)
         {
           FetcherPtr &fetcher = (*iter);
 
-          IPublicationMetaDataForPublicationRepositoryPtr fetcherMetaData = IPublicationMetaDataForPublicationRepository::convert(fetcher->getPublicationMetaData());
+          PublicationMetaDataPtr fetcherMetaData = PublicationMetaData::convert(fetcher->getPublicationMetaData());
 
-          ZS_LOG_TRACE(log("comparing against fetcher's meta data") + fetcherMetaData->getDebugValuesString())
+          ZS_LOG_TRACE(log("comparing against fetcher's meta data") + fetcherMetaData->forRepo().getDebugValuesString())
 
-          if (!metaData->isMatching(fetcherMetaData)) {
+          if (!metaData->forRepo().isMatching(fetcherMetaData->forRepo().toPublicationMetaData())) {
             ZS_LOG_TRACE(log("activation meta data does not match fetcher"))
             continue;
           }
@@ -1330,8 +1229,8 @@ namespace hookflash
           // this is an exact match...
           ZS_LOG_DEBUG(log("an exact match of the fetcher's meta data was found thus will attempt a fetch now"))
 
-          // if already has a requester then already activated
-          if (fetcher->getRequester()) {
+          // if already has a monitor then already activated
+          if (fetcher->getMonitor()) {
             ZS_LOG_DEBUG(log("cannot activate next fetcher as fetcher is already activated"))
             return;
           }
@@ -1339,221 +1238,160 @@ namespace hookflash
           CachedPublicationMap::iterator found = mCachedRemotePublications.find(metaData);
 
           if (found != mCachedRemotePublications.end()) {
-            IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+            PublicationPtr &existingPublication = (*found).second;
 
-            ZS_LOG_TRACE(log("existing publication found in 'remote' cache for meta data") + existingPublication->getDebugValuesString())
-            ULONG fetchingVersion = metaData->getVersion();
-            if (existingPublication->getVersion() >= fetchingVersion) {
-              ZS_LOG_DETAIL(log("short circuit the fetch since the document is already in our cache") + existingPublication->getDebugValuesString())
+            ZS_LOG_TRACE(log("existing publication found in 'remote' cache for meta data") + existingPublication->forRepo().getDebugValuesString())
+            ULONG fetchingVersion = metaData->forRepo().getVersion();
+            if (existingPublication->forRepo().getVersion() >= fetchingVersion) {
+              ZS_LOG_DETAIL(log("short circuit the fetch since the document is already in our cache") + existingPublication->forRepo().getDebugValuesString())
 
               fetcher->setPublication(existingPublication);
               fetcher->notifyCompleted();
               return;
             }
 
-            metaData->setVersion(existingPublication->getVersion());
+            metaData->forRepo().setVersion(existingPublication->forRepo().getVersion());
           } else {
             ZS_LOG_TRACE(log("existing publication was not found in 'remote' cache"))
-            metaData->setVersion(0);
+            metaData->forRepo().setVersion(0);
           }
 
-          message::PeerGetRequestPtr message = message::PeerGetRequest::create();
-          message->publicationMetaData(metaData->convertIPublicationMetaData());
-
           // find the contacts to publish to...
-          IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-          if (!outer) {
+          AccountPtr account = mAccount.lock();
+          if (!account) {
             ZS_LOG_WARNING(Detail, log("cannot fetch publication as account object is gone"))
             fetcher->cancel();  // sorry, this could not be completed...
             mPendingFetchers.erase(iter);
             return;
           }
+          PeerGetRequestPtr request = PeerGetRequest::create();
+          request->domain(account->forRepo().getDomain());
+          request->publicationMetaData(metaData->forRepo().toPublicationMetaData());
 
-          // activate the fetcher...
-          switch (metaData->getSource()) {
-            case IPublicationMetaData::Source_Local:  ZS_THROW_BAD_STATE("local fetchers should never be pending") break;
-            case IPublicationMetaData::Source_Finder: {
-              fetcher->setRequester(outer->sendFinderRequest(fetcher, message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-              break;
-            }
-            case IPublicationMetaData::Source_Peer:   {
-              fetcher->setRequester(outer->sendPeerRequest(fetcher, message, metaData->getPublishedToContactID(), metaData->getPublishedToLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-              break;
-            }
-          }
-
+          fetcher->setMonitor(IMessageMonitor::monitorAndSendToLocation(fetcher, metaData->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
           return;
         }
+
         ZS_LOG_DEBUG(log("no pending fetchers of this type were found"))
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::activatePublisher(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::activatePublisher(PublicationPtr publication)
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("attempting to activate next publisher for publication") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("attempting to activate next publisher for publication") + publication->forRepo().getDebugValuesString())
 
         for (PendingPublisherList::iterator iter = mPendingPublishers.begin(); iter != mPendingPublishers.end(); ++iter)
         {
           PublisherPtr &publisher = (*iter);
-          IPublicationForPublicationRepositoryPtr publisherPublication = IPublicationForPublicationRepository::convert(publisher->getPublication());
+          PublicationPtr publisherPublication = Publication::convert(publisher->getPublication());
 
-          if (publication->getID() != publisherPublication->getID()) {
-            ZS_LOG_TRACE(log("pending publication is not the correct one to activate") + Stringize<PUID>(publisherPublication->getID()).string())
+          if (publication->forRepo().getID() != publisherPublication->forRepo().getID()) {
+            ZS_LOG_TRACE(log("pending publication is not the correct one to activate") + Stringize<PUID>(publisherPublication->forRepo().getID()).string())
             continue;
           }
 
           ZS_LOG_DEBUG(log("found the correct publisher to activate and will attempt to activate it now"))
 
-          IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-          if (!outer) {
+          AccountPtr account = mAccount.lock();
+          if (!account) {
             ZS_LOG_WARNING(Detail, log("cannot activate next publisher as account object is gone"))
             mPendingPublishers.erase(iter);
             publisher->cancel();  // sorry, this could not be completed...
             return;
           }
 
-          if (publisher->getRequester()) {
+          if (publisher->getMonitor()) {
             ZS_LOG_DEBUG(log("cannot active the next publisher as it is already activated"))
             return;
           }
 
-          switch (publication->getSource()) {
-            case IPublicationMetaData::Source_Local:  ZS_THROW_BAD_STATE("not possible the publication is local") break;
-            case IPublicationMetaData::Source_Finder: {
-              message::PeerPublishRequestPtr message = message::PeerPublishRequest::create();
-              message->publication(publication->convertIPublication());
-              message->publishedFromVersion(publication->getBaseVersion());
-              message->publishedToVersion(publication->getVersion());
+          PeerPublishRequestPtr request = PeerPublishRequest::create();
+          request->domain(account->forRepo().getDomain());
+          request->publication(publication);
+          request->publishedFromVersion(publication->forRepo().getBaseVersion());
+          request->publishedToVersion(publication->forRepo().getVersion());
 
-              publisher->setRequester(outer->sendFinderRequest(publisher, message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-              break;
-            }
-            case IPublicationMetaData::Source_Peer:   {
-              message::PeerPublishRequestPtr message = message::PeerPublishRequest::create();
-              message->publication(publication->convertIPublication());
-              message->publishedFromVersion(publication->getBaseVersion());
-              message->publishedToVersion(publication->getVersion());
-
-              publisher->setRequester(outer->sendPeerRequest(publisher, message, publication->getPublishedToContactID(), publication->getPublishedToLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
-              break;
-            }
-          }
-
+          publisher->setMonitor(IMessageMonitor::monitorAndSendToLocation(publisher, publication->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
           return;
         }
+
+        ZS_LOG_DEBUG(log("no pending publishers of this type were found"))
       }
 
       //-----------------------------------------------------------------------
-      PeerSubscriptionIncomingPtr PublicationRepository::findFinderIncomingSubscription(const char *publicationName) const
+      PublicationRepository::PeerSubscriptionIncomingPtr PublicationRepository::findIncomingSubscription(PublicationMetaDataPtr inMetaData) const
       {
-        ZS_LOG_TRACE(log("finding incoming finder subscription with publication path") + Stringize<CSTR>(publicationName).string())
+        LocationPtr location = inMetaData->forRepo().getCreatorLocation();
+        ZS_LOG_TRACE(log("finding incoming peer subscription with publication path, publication name=") + inMetaData->forRepo().getName() + location->forRepo().getDebugValueString())
 
         for (PeerSubscriptionIncomingMap::const_iterator iter = mPeerSubscriptionsIncoming.begin(); iter != mPeerSubscriptionsIncoming.end(); ++iter)
         {
           const PeerSubscriptionIncomingPtr &subscription = (*iter).second;
           IPublicationMetaDataPtr metaData = subscription->getSource();
-          if (metaData->getSource() != IPublicationMetaData::Source_Finder) continue;
-          if (metaData->getName() != publicationName) continue;
 
-          ZS_LOG_TRACE(log("incoming finder subscription was found"))
-          return subscription;
-        }
+          if (inMetaData->forRepo().getName() != metaData->getName()) continue;
 
-        ZS_LOG_TRACE(log("failed to find finder subscription"))
-        return PeerSubscriptionIncomingPtr();
-      }
-
-      //-----------------------------------------------------------------------
-      PublicationRepository::PeerSubscriptionIncomingPtr PublicationRepository::findPeerIncomingSubscription(
-                                                                                                             const char *publicationName,
-                                                                                                             const char *creatorContactID,
-                                                                                                             const char *creatorLocationID
-                                                                                                             ) const
-      {
-        ZS_LOG_TRACE(log("finding incoming peer subscription with publication path") + Stringize<CSTR>(publicationName).string() + " peer contact ID=" + Stringize<CSTR>(creatorContactID).string() + ", peer location ID=" + Stringize<CSTR>(creatorLocationID).string())
-
-        for (PeerSubscriptionIncomingMap::const_iterator iter = mPeerSubscriptionsIncoming.begin(); iter != mPeerSubscriptionsIncoming.end(); ++iter)
-        {
-          const PeerSubscriptionIncomingPtr &subscription = (*iter).second;
-          IPublicationMetaDataPtr metaData = subscription->getSource();
-          if (metaData->getSource() != IPublicationMetaData::Source_Peer) continue;
-          if (metaData->getName() != publicationName) continue;
-          if (metaData->getCreatorContactID() != creatorContactID) continue;
-          if (metaData->getCreatorLocationID() != creatorLocationID) continue;
+          const char *ignoreReason = NULL;
+          if (0 != ILocationForPublicationRepository::locationCompare(inMetaData->forRepo().getCreatorLocation(), metaData->getCreatorLocation(), ignoreReason)) continue;
 
           ZS_LOG_TRACE(log("incoming peer subscription was found"))
           return subscription;
         }
-        ZS_LOG_TRACE(log("could not to find peer subscription (probably okay)"))
         return PeerSubscriptionIncomingPtr();
       }
 
       //-----------------------------------------------------------------------
-      PublicationRepository::PeerSubscriptionIncomingPtr PublicationRepository::findIncomingSubscription(IPublicationMetaDataForPublicationRepositoryPtr metaData) const
-      {
-        switch (metaData->getSource()) {
-          case IPublicationMetaData::Source_Local:  ZS_THROW_BAD_STATE(log("why is an incoming local subscription attempting to be found?"))
-          case IPublicationMetaData::Source_Finder: return findFinderIncomingSubscription(metaData->getName());
-          case IPublicationMetaData::Source_Peer:   return findPeerIncomingSubscription(metaData->getName(), metaData->getCreatorContactID(), metaData->getCreatorLocationID());
-        }
-        return PeerSubscriptionIncomingPtr();
-      }
-
-      //-----------------------------------------------------------------------
-      void PublicationRepository::onIncomingMessage(
-                                                    IConnectionSubscriptionMessagePtr incomingMessage,
-                                                    message::PeerPublishRequestPtr request
+      void PublicationRepository::onMessageIncoming(
+                                                    IMessageIncomingPtr messageIncoming,
+                                                    PeerPublishRequestPtr request
                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!request)
 
         ZS_LOG_DEBUG(log("incoming peer publish request"))
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_TRACE(log("cannot respond to incoming peer publish request as account object is gone"))
           return;
         }
 
-        IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(request->publication());
-        publication->setSource(toSource(incomingMessage->getSource()));
-        if (IConnectionSubscriptionMessage::Source_Peer == incomingMessage->getSource()) {
-          publication->setCreatorContact(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
-        }
-        publication->setPublishedToContact(outer->getContactID(), outer->getLocationID());
+        PublicationPtr publication = Publication::convert(request->publication());
+        publication->forRepo().setCreatorLocation(Location::convert(messageIncoming->getLocation()));
+        publication->forRepo().setPublishedLocation(ILocationForPublicationRepository::getForLocal(account));
 
-        ZS_LOG_TRACE(log("incoming request to publish document") + publication->getDebugValuesString())
+        ZS_LOG_TRACE(log("incoming request to publish document") + publication->forRepo().getDebugValuesString())
 
         CachedPublicationMap::iterator found = mCachedLocalPublications.find(publication);
 
-        IPublicationMetaDataForPublicationRepositoryPtr responceMetaData;
+        PublicationMetaDataPtr responceMetaData;
         if (found != mCachedLocalPublications.end()) {
-          IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+          PublicationPtr &existingPublication = (*found).second;
 
-          ZS_LOG_DEBUG(log("updating existing publication in 'local' cache with remote publication") + existingPublication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("updating existing publication in 'local' cache with remote publication") + existingPublication->forRepo().getDebugValuesString())
           try {
-            existingPublication->updateFromFetchedPublication(publication);
+            existingPublication->forRepo().updateFromFetchedPublication(publication);
           } catch(IPublicationForPublicationRepository::Exceptions::VersionMismatch &) {
             ZS_LOG_WARNING(Detail, log("cannot update with the publication published since the versions are incompatible"))
             message::MessageResultPtr errorResult = message::MessageResult::create(request, 409, "Conflict");
-            incomingMessage->sendResponse(errorResult);
+            messageIncoming->sendResponse(errorResult);
             return;
           }
 
           responceMetaData = existingPublication;
         } else {
-          ZS_LOG_DEBUG(log("creating new entry in 'local' cache for remote publication") + publication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("creating new entry in 'local' cache for remote publication") + publication->forRepo().getDebugValuesString())
           mCachedLocalPublications[publication] = publication;
           responceMetaData = publication;
 
           ZS_LOG_DEBUG(log("publication inserted into local cache") + ", local cache total=" + Stringize<size_t>(mCachedLocalPublications.size()).string())
         }
 
-        message::PeerPublishResultPtr reply = message::PeerPublishResult::create(request);
-        reply->publicationMetaData(responceMetaData->convertIPublicationMetaData());
-        incomingMessage->sendResponse(reply);
+        PeerPublishResultPtr reply = PeerPublishResult::create(request);
+        reply->publicationMetaData(responceMetaData->forRepo().toPublicationMetaData());
+        messageIncoming->sendResponse(reply);
 
         //*********************************************************************
         //*********************************************************************
@@ -1563,42 +1401,29 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onIncomingMessage(
-                                                    IConnectionSubscriptionMessagePtr incomingMessage,
-                                                    message::PeerGetRequestPtr request
+      void PublicationRepository::onMessageIncoming(
+                                                    IMessageIncomingPtr messageIncoming,
+                                                    PeerGetRequestPtr request
                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!request)
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_TRACE(log("cannot respond to incoming peer get request as account object is gone"))
           return;
         }
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(request->publicationMetaData());
+        LocationPtr location = Location::convert(messageIncoming->getLocation());
 
-        PeerSourcePtr sourceMetaData;
-        if (IConnectionSubscriptionMessage::Source_Finder == incomingMessage->getSource()) {
-          sourceMetaData = IPublicationMetaDataForPublicationRepository::createFinderSource();
-        } else {
-          sourceMetaData = IPublicationMetaDataForPublicationRepository::createPeerSource(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
-        }
+        PublicationMetaDataPtr metaData = PublicationMetaData::convert(request->publicationMetaData());
 
-        if (metaData->getCreatorContactID() == outer->getContactID()) {
-          ZS_LOG_TRACE(log("fetching a publication published created by 'this' user (thus setting source to local)"))
-          // requesting a publication published by "ourself"
-          metaData->setSource(IPublicationMetaData::Source_Local);
-        } else {
-          ZS_LOG_TRACE(log("fetching a publication created by another peer but published to the local document cache"))
-          // fetching a document created by a another peer but published to "this" repository...
-          metaData->setSource(toSource(incomingMessage->getSource()));
-        }
+        PeerSourcePtr sourceMetaData = IPublicationMetaDataForPublicationRepository::createForSource(location);
 
         // the publication must have be published to "this" repository...
-        metaData->setPublishedToContact(outer->getContactID(), outer->getLocationID());
+        metaData->forRepo().setPublishedLocation(ILocationForPublicationRepository::getForLocal(account));
 
-        ZS_LOG_DEBUG(log("incoming request to get a document published to the local cache") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("incoming request to get a document published to the local cache") + metaData->forRepo().getDebugValuesString())
 
         CachedPublicationMap::iterator found = mCachedLocalPublications.find(metaData);
         if (found == mCachedLocalPublications.end()) {
@@ -1606,54 +1431,48 @@ namespace hookflash
           return;
         }
 
-        IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+        PublicationPtr &existingPublication = (*found).second;
 
-        if (IConnectionSubscriptionMessage::Source_Peer == incomingMessage->getSource()) {
-          String currentContactID = incomingMessage->getPeerContactID();
-
-          if (!canFetchPublication(
-                                   existingPublication->getRelationships(),
-                                   currentContactID)) {
-            ZS_LOG_WARNING(Detail, log("publication is not published to the peer requesting the document (thus unable to reply to fetch request)"))
-            return;
-          }
-          ZS_LOG_TRACE(log("requesting peer has authorization to get the requested document"))
+        if (!canFetchPublication(
+                                 existingPublication->forRepo().getRelationships(),
+                                 location)) {
+          ZS_LOG_WARNING(Detail, log("publication is not published to the peer requesting the document (thus unable to reply to fetch request)"))
+          return;
         }
 
-        ZS_LOG_TRACE(log("incoming get request to will return this document") + existingPublication->getDebugValuesString())
+        ZS_LOG_TRACE(log("requesting peer has authorization to get the requested document"))
+
+        ZS_LOG_TRACE(log("incoming get request to will return this document") + existingPublication->forRepo().getDebugValuesString())
 
         PeerCachePtr peerCache = PeerCache::find(sourceMetaData, mThisWeak.lock());
         peerCache->notifyFetched(existingPublication);
 
-        message::PeerGetResultPtr reply = message::PeerGetResult::create(request);
-        reply->publication(existingPublication->convertIPublication());
-        incomingMessage->sendResponse(reply);
+        PeerGetResultPtr reply = PeerGetResult::create(request);
+        reply->publication(existingPublication);
+        messageIncoming->sendResponse(reply);
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onIncomingMessage(
-                                                    IConnectionSubscriptionMessagePtr incomingMessage,
-                                                    message::PeerDeleteRequestPtr request
+      void PublicationRepository::onMessageIncoming(
+                                                    IMessageIncomingPtr messageIncoming,
+                                                    PeerDeleteRequestPtr request
                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!request)
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_TRACE(log("cannot respond to incoming peer delete request as account object is gone"))
           return;
         }
 
         IPublicationMetaDataPtr requestMetaData = request->publicationMetaData();
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(requestMetaData);
+        PublicationMetaDataPtr metaData = PublicationMetaData::convert(requestMetaData);
 
-        metaData->setSource(toSource(incomingMessage->getSource()));
-        if (IConnectionSubscriptionMessage::Source_Peer == incomingMessage->getSource()) {
-          metaData->setCreatorContact(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
-        }
-        metaData->setPublishedToContact(outer->getContactID(), outer->getLocationID());
+        metaData->forRepo().setCreatorLocation(Location::convert(messageIncoming->getLocation()));
+        metaData->forRepo().setPublishedLocation(ILocationForPublicationRepository::getForLocal(account));
 
-        ZS_LOG_DEBUG(log("incoming request to delete document") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("incoming request to delete document") + metaData->forRepo().getDebugValuesString())
 
         CachedPublicationMap::iterator found = mCachedLocalPublications.find(metaData);
         if (found == mCachedLocalPublications.end()) {
@@ -1661,14 +1480,14 @@ namespace hookflash
           return;
         }
 
-        IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
+        PublicationPtr &existingPublication = (*found).second;
 
-        ZS_LOG_DEBUG(log("delete request will delete this publication") + existingPublication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("delete request will delete this publication") + existingPublication->forRepo().getDebugValuesString())
 
         mCachedLocalPublications.erase(found);
 
-        message::PeerDeleteResultPtr reply = message::PeerDeleteResult::create(request);
-        incomingMessage->sendResponse(reply);
+        PeerDeleteResultPtr reply = PeerDeleteResult::create(request);
+        messageIncoming->sendResponse(reply);
 
         // notify all the subscribers that the document is gone
         for (SubscriptionLocalMap::iterator iter = mSubscriptionsLocal.begin(); iter != mSubscriptionsLocal.end(); ++iter)
@@ -1685,28 +1504,32 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onIncomingMessage(
-                                                    IConnectionSubscriptionMessagePtr incomingMessage,
-                                                    message::PeerSubscribeRequestPtr request
+      void PublicationRepository::onMessageIncoming(
+                                                    IMessageIncomingPtr messageIncoming,
+                                                    PeerSubscribeRequestPtr request
                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!request)
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_TRACE(log("cannot respond to incoming peer subscribe request as account object is gone"))
           return;
         }
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(request->publicationMetaData());
+        LocationPtr location = Location::convert(messageIncoming->getLocation());
 
-        metaData->setSource(toSource(incomingMessage->getSource()));
-        if (IConnectionSubscriptionMessage::Source_Peer == incomingMessage->getSource()) {
-          metaData->setCreatorContact(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
+        PublicationMetaDataPtr metaData = PublicationMetaData::convert(request->publicationMetaData());
+
+        if (!location->forRepo().getPeer()) {
+          ZS_LOG_WARNING(Detail, log("incoming request from a location that does not have a peer (thus ignoring)") + ", location: " + location->forRepo().getDebugValueString() + ", publication: " + metaData->forRepo().getDebugValuesString(false))
+          return;
         }
-        metaData->setPublishedToContact(outer->getContactID(), outer->getLocationID());
 
-        ZS_LOG_DEBUG(log("incoming request to subscribe to document path") + metaData->getDebugValuesString())
+        metaData->forRepo().setCreatorLocation(location);
+        metaData->forRepo().setPublishedLocation(ILocationForPublicationRepository::getForLocal(account));
+
+        ZS_LOG_DEBUG(log("incoming request to subscribe to document path") + metaData->forRepo().getDebugValuesString())
 
         PeerSubscriptionIncomingPtr existingSubscription = findIncomingSubscription(metaData);
         if (existingSubscription) {
@@ -1719,20 +1542,15 @@ namespace hookflash
         }
 
         // send the reply now...
-        message::PeerSubscribeResultPtr reply = message::PeerSubscribeResult::create(request);
-        reply->publicationMetaData(metaData->convertIPublicationMetaData());
-        incomingMessage->sendResponse(reply);
+        PeerSubscribeResultPtr reply = PeerSubscribeResult::create(request);
+        reply->publicationMetaData(metaData->forRepo().toPublicationMetaData());
+        messageIncoming->sendResponse(reply);
 
-        const IPublicationMetaData::PublishToRelationshipsMap &relationships = metaData->getRelationships();
+        const IPublicationMetaData::PublishToRelationshipsMap &relationships = metaData->forRepo().getRelationships();
         if (relationships.size() > 0) {
           ZS_LOG_TRACE(log("incoming subscription is being created"))
 
-          PeerSourcePtr sourceMetaData;
-          if (IConnectionSubscriptionMessage::Source_Finder == incomingMessage->getSource()) {
-            sourceMetaData = IPublicationMetaDataForPublicationRepository::createFinderSource();
-          } else {
-            sourceMetaData = IPublicationMetaDataForPublicationRepository::createPeerSource(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
-          }
+          PeerSourcePtr sourceMetaData = IPublicationMetaDataForPublicationRepository::createForSource(location);
 
           // if there are relationships then this is an addition not a removal
           PeerSubscriptionIncomingPtr incoming = PeerSubscriptionIncoming::create(getAssociatedMessageQueue(), mThisWeak.lock(), sourceMetaData, metaData);
@@ -1745,67 +1563,66 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::onIncomingMessage(
-                                                    IConnectionSubscriptionMessagePtr incomingMessage,
-                                                    message::PeerPublishNotifyRequestPtr request
+      void PublicationRepository::onMessageIncoming(
+                                                    IMessageIncomingPtr messageIncoming,
+                                                    PeerPublishNotifyRequestPtr request
                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!request)
 
-        IAccountForPublicationRepositoryPtr outer = mOuter.lock();
-        if (!outer) {
+        AccountPtr account = mAccount.lock();
+        if (!account) {
           ZS_LOG_TRACE(log("cannot respond to incoming peer notify request as account object is gone"))
           return;
         }
 
         // send the reply now...
-        message::PeerPublishNotifyResultPtr reply = message::PeerPublishNotifyResult::create(request);
-        incomingMessage->sendResponse(reply);
+        PeerPublishNotifyResultPtr reply = PeerPublishNotifyResult::create(request);
+        messageIncoming->sendResponse(reply);
 
-        typedef message::PeerPublishNotifyRequest::PublicationList PublicationList;
+        typedef PeerPublishNotifyRequest::PublicationList PublicationList;
 
         const PublicationList &publicationList = request->publicationList();
 
-        ZS_LOG_DEBUG(log("received publish notification") + ", total publications=" + Stringize<size_t>(publicationList.size()).string())
+        LocationPtr location = Location::convert(messageIncoming->getLocation());
+
+        ZS_LOG_DEBUG(log("received publish notification") + ", total publications=" + Stringize<size_t>(publicationList.size()).string() + location->forRepo().getDebugValueString())
 
         for (PublicationList::const_iterator iter = publicationList.begin(); iter != publicationList.end(); ++iter) {
           const IPublicationMetaDataPtr &requestMetaData = (*iter);
-          IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::convert(requestMetaData);
+          PublicationMetaDataPtr metaData = PublicationMetaData::convert(requestMetaData);
 
-          ZS_LOG_DEBUG(log("received notification of document change") + metaData->getDebugValuesString())
+          ZS_LOG_DEBUG(log("received notification of document change") + metaData->forRepo().getDebugValuesString())
 
-          metaData->setSource(toSource(incomingMessage->getSource()));
-          if (IConnectionSubscriptionMessage::Source_Peer == incomingMessage->getSource()) {
-            metaData->setPublishedToContact(incomingMessage->getPeerContactID(), incomingMessage->getPeerLocationID());
-          }
+          metaData->forRepo().setPublishedLocation(location);
 
-          IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(metaData->convertIPublicationMetaData()->getPublication());
+          PublicationPtr publication = Publication::convert(metaData->forRepo().toPublication());
           if (publication) {
-            ZS_LOG_DEBUG(log("publication was included with notification") + publication->getDebugValuesString())
+            ZS_LOG_DEBUG(log("publication was included with notification") + publication->forRepo().getDebugValuesString())
 
             // not only is meta data available an update to the publication is available, search the cache for the document
             CachedPublicationMap::iterator found = mCachedRemotePublications.find(metaData);;
             if (found != mCachedRemotePublications.end()) {
-              IPublicationForPublicationRepositoryPtr &existingPublication = (*found).second;
-              ZS_LOG_DEBUG(log("existing internal publication found thus updating (if possible)") + existingPublication->getDebugValuesString())
+              PublicationPtr &existingPublication = (*found).second;
+              ZS_LOG_DEBUG(log("existing internal publication found thus updating (if possible)") + existingPublication->forRepo().getDebugValuesString())
               try {
-                existingPublication->updateFromFetchedPublication(publication);
+                existingPublication->forRepo().updateFromFetchedPublication(publication);
               } catch(IPublicationForPublicationRepository::Exceptions::VersionMismatch &) {
                 ZS_LOG_WARNING(Detail, log("version from the notify does not match our last version (thus ignoring change)"))
               }
             } else {
               bool okayToCreate = true;
               AutoRecursiveLockPtr docLock;
-              DocumentPtr doc = publication->getXML(docLock);
+              DocumentPtr doc = publication->forRepo().getJSON(docLock);
               if (doc) {
-                ElementPtr xdsEl = doc->findFirstChildElement("xds");
-                okayToCreate = !xdsEl;
+                ElementPtr diffEl = doc->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+                okayToCreate = !diffEl;
                 if (!okayToCreate) {
-                  ZS_LOG_WARNING(Detail, log("new entry for remote cache cannot be created for publication which only contains diff updates") + publication->getDebugValuesString())
+                  ZS_LOG_WARNING(Detail, log("new entry for remote cache cannot be created for publication which only contains diff updates") + publication->forRepo().getDebugValuesString())
                 }
               }
               if (okayToCreate) {
-                ZS_LOG_DEBUG(log("new entry for remote cache will be created since existing publication in cache was not found") + publication->getDebugValuesString())
+                ZS_LOG_DEBUG(log("new entry for remote cache will be created since existing publication in cache was not found") + publication->forRepo().getDebugValuesString())
                 mCachedRemotePublications[publication] = publication;
 
                 ZS_LOG_DEBUG(log("publication inserted into remote cache") + ", remote cache total=" + Stringize<size_t>(mCachedRemotePublications.size()).string())
@@ -1827,9 +1644,9 @@ namespace hookflash
       {
         ZS_LOG_DETAIL(log("publication repository cancel is called"))
 
-        if (mConnectionSubscription) {
-          mConnectionSubscription->cancel();
-          mConnectionSubscription.reset();
+        if (mPeerSubscription) {
+          mPeerSubscription->cancel();
+          mPeerSubscription.reset();
         }
 
         if (mExpiresTimer) {
@@ -1869,7 +1686,7 @@ namespace hookflash
         {
           for (CachedPublicationMap::iterator iter = mCachedLocalPublications.begin(); iter != mCachedLocalPublications.end(); ++iter)
           {
-            IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
+            PublicationPtr &publication = (*iter).second;
 
             // notify all the local subscribers that the documents are now gone...
             for (SubscriptionLocalMap::iterator subscriberIter = mSubscriptionsLocal.begin(); subscriberIter != mSubscriptionsLocal.end(); ++subscriberIter)
@@ -1971,12 +1788,25 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      PeerCachePtr PublicationRepository::PeerCache::convert(IPublicationRepositoryPeerCachePtr cache)
+      {
+        return boost::dynamic_pointer_cast<PeerCache>(cache);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark PublicationRepository::PeerCache => IPublicationRepositoryPeerCache
       #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::PeerCache::toDebugString(IPublicationRepositoryPeerCachePtr cache, bool includeCommaPrefix)
+      {
+        if (!cache) return includeCommaPrefix ? ", peer cache=(null" : "peer cache=(null)";
+        return PeerCache::convert(cache)->getDebugValueString();
+      }
 
       //-----------------------------------------------------------------------
       bool PublicationRepository::PeerCache::getNextVersionToNotifyAboutAndMarkNotified(
@@ -1990,23 +1820,23 @@ namespace hookflash
 
         AutoRecursiveLock lock(getLock());
 
-        IPublicationForPublicationRepositoryPtr publication = IPublicationForPublicationRepository::convert(inPublication);
+        PublicationPtr publication = Publication::convert(inPublication);
 
         CachedPeerPublicationMap::iterator found = mCachedPublications.find(publication);
         if (found != mCachedPublications.end()) {
 
           // this document was fetched before...
-          IPublicationMetaDataForPublicationRepositoryPtr &metaData = (*found).second;
-          metaData->setExpires(publication->getExpires());  // not used yet but could be used to remember when this document will expire
+          PublicationMetaDataPtr &metaData = (*found).second;
+          metaData->forRepo().setExpires(publication->forRepo().getExpires());  // not used yet but could be used to remember when this document will expire
 
-          ULONG nextVersionToNotify = metaData->getVersion() + 1;
-          if (nextVersionToNotify > publication->getVersion()) {
-            ZS_LOG_WARNING(Detail, log("already fetched/notified of this version so why is it being notified? (probably okay and likely because of peer disconnection)") + publication->getDebugValuesString())
+          ULONG nextVersionToNotify = metaData->forRepo().getVersion() + 1;
+          if (nextVersionToNotify > publication->forRepo().getVersion()) {
+            ZS_LOG_WARNING(Detail, log("already fetched/notified of this version so why is it being notified? (probably okay and likely because of peer disconnection)") + publication->forRepo().getDebugValuesString())
             return false;
           }
 
           ULONG outputSize = 0;
-          publication->getDiffVersionsOutputSize(nextVersionToNotify, publication->getVersion(), outputSize);
+          publication->forRepo().getDiffVersionsOutputSize(nextVersionToNotify, publication->forRepo().getVersion(), outputSize);
 
           if (outputSize > ioMaxSizeAvailableInBytes) {
             ZS_LOG_WARNING(Detail, log("diff document is too large for notify") + ", output size=" + Stringize<ULONG>(outputSize).string() + ", max size=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
@@ -2014,44 +1844,44 @@ namespace hookflash
           }
 
           outNotifyFromVersion = nextVersionToNotify;
-          outNotifyToVersion = publication->getVersion();
+          outNotifyToVersion = publication->forRepo().getVersion();
 
           ioMaxSizeAvailableInBytes -= outputSize;
 
-          metaData->setVersion(outNotifyToVersion);
+          metaData->forRepo().setVersion(outNotifyToVersion);
 
           ZS_LOG_DETAIL(log("recommend notify about diff version") +
-                            ", from=" + Stringize<ULONG>(outNotifyFromVersion).string() +
-                            ", to=" + Stringize<ULONG>(outNotifyToVersion).string()  +
-                            ", size=" + Stringize<ULONG>(outputSize).string() +
-                            ", remaining=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
+                        ", from=" + Stringize<ULONG>(outNotifyFromVersion).string() +
+                        ", to=" + Stringize<ULONG>(outNotifyToVersion).string()  +
+                        ", size=" + Stringize<ULONG>(outputSize).string() +
+                        ", remaining=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
           return true;
         }
 
         ULONG outputSize = 0;
-        publication->getEntirePublicationOutputSize(outputSize);
+        publication->forRepo().getEntirePublicationOutputSize(outputSize);
 
         if (outputSize > ioMaxSizeAvailableInBytes) {
           ZS_LOG_WARNING(Detail, log("diff document is too large for notify") + ", output size=" + Stringize<ULONG>(outputSize).string() + ", max size=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
           return false;
         }
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->convertIPublicationMetaData());
-        metaData->setExpires(publication->getExpires());  // not used yet but could be used to remember when this document will expire
-        metaData->setBaseVersion(0);
-        metaData->setVersion(publication->getVersion());
+        PublicationMetaDataPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->forRepo().toPublicationMetaData());
+        metaData->forRepo().setExpires(publication->forRepo().getExpires());  // not used yet but could be used to remember when this document will expire
+        metaData->forRepo().setBaseVersion(0);
+        metaData->forRepo().setVersion(publication->forRepo().getVersion());
 
         mCachedPublications[metaData] = metaData;
 
         outNotifyFromVersion = 0;
-        outNotifyToVersion = publication->getVersion();
+        outNotifyToVersion = publication->forRepo().getVersion();
         ioMaxSizeAvailableInBytes -= outputSize;
 
         ZS_LOG_DETAIL(log("recommend notify about entire document") +
-                     ", from=" + Stringize<ULONG>(outNotifyFromVersion).string() +
-                     ", to=" + Stringize<ULONG>(outNotifyToVersion).string()  +
-                     ", size=" + Stringize<ULONG>(outputSize).string() +
-                     ", remaining=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
+                      ", from=" + Stringize<ULONG>(outNotifyFromVersion).string() +
+                      ", to=" + Stringize<ULONG>(outNotifyToVersion).string()  +
+                      ", size=" + Stringize<ULONG>(outputSize).string() +
+                      ", remaining=" + Stringize<ULONG>(ioMaxSizeAvailableInBytes).string())
         return true;
       }
 
@@ -2083,22 +1913,22 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerCache::notifyFetched(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::PeerCache::notifyFetched(PublicationPtr publication)
       {
         AutoRecursiveLock lock(getLock());
 
         CachedPeerPublicationMap::iterator found = mCachedPublications.find(publication);
         if (found != mCachedPublications.end()) {
-          IPublicationMetaDataForPublicationRepositoryPtr &metaData = (*found).second;
+          PublicationMetaDataPtr &metaData = (*found).second;
 
           // remember up to which version was last fetched
-          metaData->setVersion(publication->getVersion());
+          metaData->forRepo().setVersion(publication->forRepo().getVersion());
           return;
         }
 
-        IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->convertIPublicationMetaData());
-        metaData->setBaseVersion(0);
-        metaData->setVersion(publication->getVersion());
+        PublicationMetaDataPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->forRepo().toPublicationMetaData());
+        metaData->forRepo().setBaseVersion(0);
+        metaData->forRepo().setVersion(publication->forRepo().getVersion());
 
         mCachedPublications[metaData] = metaData;
       }
@@ -2115,6 +1945,17 @@ namespace hookflash
       String PublicationRepository::PeerCache::log(const char *message) const
       {
         return String("PublicationRepository::PeerCache [") + Stringize<PUID>(mID).string() + "] " + message;
+      }
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::PeerCache::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer cache id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPublicationMetaData::toDebugString(mPeerSource) +
+               Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
+               Helper::getDebugValue("cached remote", mCachedPublications.size() > 0 ? Stringize<size_t>(mCachedPublications.size()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2138,17 +1979,17 @@ namespace hookflash
                                                   IMessageQueuePtr queue,
                                                   PublicationRepositoryPtr outer,
                                                   IPublicationPublisherDelegatePtr delegate,
-                                                  IPublicationForPublicationRepositoryPtr publication
+                                                  PublicationPtr publication
                                                   ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mOuter(outer),
-        mDelegate(IPublicationPublisherDelegateProxy::createWeak(delegate)),
+        mDelegate(IPublicationPublisherDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mPublication(publication),
         mSucceeded(false),
         mErrorCode(0)
       {
-        ZS_LOG_DEBUG(log("created new publisher") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("created new publisher") + publication->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -2177,7 +2018,7 @@ namespace hookflash
                                                                                    IMessageQueuePtr queue,
                                                                                    PublicationRepositoryPtr outer,
                                                                                    IPublicationPublisherDelegatePtr delegate,
-                                                                                   IPublicationForPublicationRepositoryPtr publication
+                                                                                   PublicationPtr publication
                                                                                    )
       {
         PublisherPtr pThis(new Publisher(queue, outer, delegate, publication));
@@ -2187,10 +2028,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Publisher::setRequester(IMessageRequesterPtr requester)
+      void PublicationRepository::Publisher::setMonitor(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        mRequester = requester;
+        mMonitor = monitor;
       }
 
       //-----------------------------------------------------------------------
@@ -2203,6 +2044,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      PublisherPtr PublicationRepository::Publisher::convert(IPublicationPublisherPtr publisher)
+      {
+        return boost::dynamic_pointer_cast<Publisher>(publisher);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -2211,15 +2058,22 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::Publisher::toDebugString(IPublicationPublisherPtr publisher, bool includeCommaPrefix)
+      {
+        if (!publisher) return includeCommaPrefix ? ", publisher=(null" : "publisher=(null)";
+        return Publisher::convert(publisher)->getDebugValueString();
+      }
+
+      //-----------------------------------------------------------------------
       void PublicationRepository::Publisher::cancel()
       {
         AutoRecursiveLock lock(getLock());
 
         ZS_LOG_DEBUG(log("cancel called"))
 
-        if (mRequester) {
-          mRequester->cancel();
-          mRequester.reset();
+        if (mMonitor) {
+          mMonitor->cancel();
+          mMonitor.reset();
         }
 
         PublisherPtr pThis = mThisWeak.lock();
@@ -2227,7 +2081,7 @@ namespace hookflash
         if (pThis) {
           if (mDelegate) {
             try {
-              mDelegate->onPublicationPublisherComplete(mThisWeak.lock());
+              mDelegate->onPublicationPublisherCompleted(mThisWeak.lock());
             } catch(IPublicationPublisherDelegateProxy::Exceptions::DelegateGone &) {
             }
           }
@@ -2249,31 +2103,22 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Publisher::wasSuccessful() const
+      bool PublicationRepository::Publisher::wasSuccessful(
+                                                           WORD *outErrorResult,
+                                                           String *outReason
+                                                           ) const
       {
         AutoRecursiveLock lock(getLock());
+        if (outErrorResult) *outErrorResult = mErrorCode;
+        if (outReason) *outReason = mErrorReason;
         return mSucceeded;
-      }
-
-      //-----------------------------------------------------------------------
-      WORD PublicationRepository::Publisher::getErrorResult() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorCode;
-      }
-
-      //-----------------------------------------------------------------------
-      String PublicationRepository::Publisher::getErrorReason() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorReason;
       }
 
       //-----------------------------------------------------------------------
       IPublicationPtr PublicationRepository::Publisher::getPublication() const
       {
         AutoRecursiveLock lock(getLock());
-        return mPublication->convertIPublication();
+        return mPublication;
       }
 
       //-----------------------------------------------------------------------
@@ -2281,22 +2126,22 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository::Publisher => IMessageRequesterDelegate
+      #pragma mark PublicationRepository::Publisher => IMessageMonitorDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Publisher::handleMessageRequesterMessageReceived(
-                                                                                   IMessageRequesterPtr requester,
-                                                                                   message::MessagePtr message
-                                                                                   )
+      bool PublicationRepository::Publisher::handleMessageMonitorMessageReceived(
+                                                                                 IMessageMonitorPtr monitor,
+                                                                                 message::MessagePtr message
+                                                                                 )
       {
         AutoRecursiveLock lock(getLock());
         if (!mDelegate) {
           ZS_LOG_WARNING(Detail, log("received result but publisher is already cancelled"))
           return false;
         }
-        if (mRequester != requester) {
-          ZS_LOG_WARNING(Detail, log("received result but not for the correct requester"))
+        if (mMonitor != monitor) {
+          ZS_LOG_WARNING(Detail, log("received result but not for the correct monitor"))
           return false;
         }
 
@@ -2305,7 +2150,7 @@ namespace hookflash
           return false;
         }
 
-        if ((message::MessageFactoryStack::Methods)message->method() != message::MessageFactoryStack::Method_PeerPublish) {
+        if ((MessageFactoryPeerCommon::Methods)message->method() != MessageFactoryPeerCommon::Method_PeerPublish) {
           ZS_LOG_WARNING(Detail, log("expecting peer publish method but received something else"))
           return false;
         }
@@ -2322,13 +2167,13 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("received publish result"))
 
-        message::PeerPublishResultPtr publishResult = message::PeerPublishResult::convert(result);
+        PeerPublishResultPtr publishResult = PeerPublishResult::convert(result);
 
-        message::PeerPublishRequestPtr originalRequest = message::PeerPublishRequest::convert(requester->getMonitoredMessage());
+        PeerPublishRequestPtr originalRequest = PeerPublishRequest::convert(monitor->getMonitoredMessage());
 
         // now published from the original base version to the current version
         // so the base is now the published version plus one...
-        mPublication->setBaseVersion(originalRequest->publishedToVersion()+1);
+        mPublication->forRepo().setBaseVersion(originalRequest->publishedToVersion()+1);
 
         notifyCompleted();
 
@@ -2340,11 +2185,11 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Publisher::onMessageRequesterTimedOut(IMessageRequesterPtr requester)
+      void PublicationRepository::Publisher::onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        if (requester != mRequester) {
-          ZS_LOG_DEBUG(log("ignoring publish request time out since it doesn't match requester"))
+        if (monitor != mMonitor) {
+          ZS_LOG_DEBUG(log("ignoring publish request time out since it doesn't match monitor"))
           return;
         }
         ZS_LOG_DEBUG(log("publish request timed out"))
@@ -2366,10 +2211,23 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IMessageRequesterPtr PublicationRepository::Publisher::getRequester() const
+      String PublicationRepository::Publisher::getDebugValueString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(getLock());
-        return mRequester;
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("publisher id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPublication::toDebugString(mPublication) +
+               IMessageMonitor::toDebugString(mMonitor) +
+               Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error reason", mErrorReason, firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      IMessageMonitorPtr PublicationRepository::Publisher::getMonitor() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mMonitor;
       }
 
       //-----------------------------------------------------------------------
@@ -2393,17 +2251,17 @@ namespace hookflash
                                               IMessageQueuePtr queue,
                                               PublicationRepositoryPtr outer,
                                               IPublicationFetcherDelegatePtr delegate,
-                                              IPublicationMetaDataForPublicationRepositoryPtr metaData
+                                              PublicationMetaDataPtr metaData
                                               ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mOuter(outer),
-        mDelegate(IPublicationFetcherDelegateProxy::createWeak(delegate)),
+        mDelegate(IPublicationFetcherDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mPublicationMetaData(metaData),
         mSucceeded(false),
         mErrorCode(0)
       {
-        ZS_LOG_DEBUG(log("created") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("created") + metaData->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -2432,7 +2290,7 @@ namespace hookflash
                                                                                IMessageQueuePtr queue,
                                                                                PublicationRepositoryPtr outer,
                                                                                IPublicationFetcherDelegatePtr delegate,
-                                                                               IPublicationMetaDataForPublicationRepositoryPtr metaData
+                                                                               PublicationMetaDataPtr metaData
                                                                                )
       {
         FetcherPtr pThis(new Fetcher(queue, outer, delegate, metaData));
@@ -2442,17 +2300,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Fetcher::setPublication(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::Fetcher::setPublication(PublicationPtr publication)
       {
         AutoRecursiveLock lock(getLock());
         mFetchedPublication = publication;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Fetcher::setRequester(IMessageRequesterPtr requester)
+      void PublicationRepository::Fetcher::setMonitor(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        mRequester = requester;
+        mMonitor = monitor;
       }
 
       //-----------------------------------------------------------------------
@@ -2461,6 +2319,11 @@ namespace hookflash
         AutoRecursiveLock lock(getLock());
         mSucceeded = true;
         cancel();
+      }
+
+      FetcherPtr PublicationRepository::Fetcher::convert(IPublicationFetcherPtr fetcher)
+      {
+        return boost::dynamic_pointer_cast<Fetcher>(fetcher);
       }
 
       //-----------------------------------------------------------------------
@@ -2472,15 +2335,22 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::Fetcher::toDebugString(IPublicationFetcherPtr fetcher, bool includeCommaPrefix)
+      {
+        if (!fetcher) return includeCommaPrefix ? ", publisher=(null" : "publisher=(null)";
+        return Fetcher::convert(fetcher)->getDebugValueString();
+      }
+
+      //-----------------------------------------------------------------------
       void PublicationRepository::Fetcher::cancel()
       {
         AutoRecursiveLock lock(getLock());
 
         ZS_LOG_DEBUG(log("cancel called"))
 
-        if (mRequester) {
-          mRequester->cancel();
-          mRequester.reset();
+        if (mMonitor) {
+          mMonitor->cancel();
+          mMonitor.reset();
         }
 
         FetcherPtr pThis = mThisWeak.lock();
@@ -2488,7 +2358,7 @@ namespace hookflash
         if (pThis) {
           if (mDelegate) {
             try {
-              mDelegate->onPublicationFetcherComplete(mThisWeak.lock());
+              mDelegate->onPublicationFetcherCompleted(mThisWeak.lock());
             } catch(IPublicationFetcherDelegateProxy::Exceptions::DelegateGone &) {
             }
           }
@@ -2510,38 +2380,29 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Fetcher::wasSuccessful() const
+      bool PublicationRepository::Fetcher::wasSuccessful(
+                                                         WORD *outErrorResult,
+                                                         String *outReason
+                                                         ) const
       {
         AutoRecursiveLock lock(getLock());
+        if (outErrorResult) *outErrorResult = mErrorCode;
+        if (outReason) *outReason = mErrorReason;
         return mSucceeded;
-      }
-
-      //-----------------------------------------------------------------------
-      WORD PublicationRepository::Fetcher::getErrorResult() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorCode;
-      }
-
-      //-----------------------------------------------------------------------
-      String PublicationRepository::Fetcher::getErrorReason() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorReason;
       }
 
       //-----------------------------------------------------------------------
       IPublicationPtr PublicationRepository::Fetcher::getFetchedPublication() const
       {
         AutoRecursiveLock lock(getLock());
-        return mFetchedPublication->convertIPublication();
+        return mFetchedPublication;
       }
 
       //-----------------------------------------------------------------------
       IPublicationMetaDataPtr PublicationRepository::Fetcher::getPublicationMetaData() const
       {
         AutoRecursiveLock lock(getLock());
-        return mPublicationMetaData->convertIPublicationMetaData();
+        return mPublicationMetaData->forRepo().toPublicationMetaData();
       }
 
       //-----------------------------------------------------------------------
@@ -2549,22 +2410,22 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository::Fetcher => IMessageRequesterDelegate
+      #pragma mark PublicationRepository::Fetcher => IMessageMonitorDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Fetcher::handleMessageRequesterMessageReceived(
-                                                                                 IMessageRequesterPtr requester,
-                                                                                 message::MessagePtr message
-                                                                                 )
+      bool PublicationRepository::Fetcher::handleMessageMonitorMessageReceived(
+                                                                               IMessageMonitorPtr monitor,
+                                                                               message::MessagePtr message
+                                                                               )
       {
         AutoRecursiveLock lock(getLock());
         if (!mDelegate) {
           ZS_LOG_WARNING(Detail, log("received result but fetcher is shutdown"))
           return false;
         }
-        if (mRequester != requester) {
-          ZS_LOG_WARNING(Detail, log("received result but requester does not match"))
+        if (mMonitor != monitor) {
+          ZS_LOG_WARNING(Detail, log("received result but monitor does not match"))
           return false;
         }
 
@@ -2573,7 +2434,7 @@ namespace hookflash
           return false;
         }
 
-        if ((message::MessageFactoryStack::Methods)message->method() != message::MessageFactoryStack::Method_PeerGet) {
+        if ((MessageFactoryPeerCommon::Methods)message->method() != MessageFactoryPeerCommon::Method_PeerGet) {
           ZS_LOG_WARNING(Detail, log("expecting peer get result but received some other method"))
           return false;
         }
@@ -2588,8 +2449,8 @@ namespace hookflash
           return true;
         }
 
-        message::PeerGetResultPtr getResult = message::PeerGetResult::convert(result);
-        mFetchedPublication = IPublicationForPublicationRepository::convert(getResult->publication());
+        PeerGetResultPtr getResult = PeerGetResult::convert(result);
+        mFetchedPublication = Publication::convert(getResult->publication());
 
         mSucceeded = (bool)(mFetchedPublication);
         if (!mSucceeded) {
@@ -2610,10 +2471,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Fetcher::onMessageRequesterTimedOut(IMessageRequesterPtr requester)
+      void PublicationRepository::Fetcher::onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        if (requester != mRequester) return;
+        if (monitor != mMonitor) return;
         cancel();
       }
 
@@ -2632,10 +2493,24 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IMessageRequesterPtr PublicationRepository::Fetcher::getRequester() const
+      String PublicationRepository::Fetcher::getDebugValueString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(getLock());
-        return mRequester;
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("fetcher id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPublicationMetaData::toDebugString(mPublicationMetaData) +
+               IMessageMonitor::toDebugString(mMonitor) +
+               Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error reason", mErrorReason, firstTime) +
+               IPublication::toDebugString(mFetchedPublication);
+      }
+
+      //-----------------------------------------------------------------------
+      IMessageMonitorPtr PublicationRepository::Fetcher::getMonitor() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mMonitor;
       }
 
       //-----------------------------------------------------------------------
@@ -2659,16 +2534,16 @@ namespace hookflash
                                               IMessageQueuePtr queue,
                                               PublicationRepositoryPtr outer,
                                               IPublicationRemoverDelegatePtr delegate,
-                                              IPublicationForPublicationRepositoryPtr publication
+                                              PublicationPtr publication
                                               ) :
         MessageQueueAssociator(queue),
         mOuter(outer),
-        mDelegate(IPublicationRemoverDelegateProxy::createWeak(delegate)),
+        mDelegate(IPublicationRemoverDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mPublication(publication),
         mSucceeded(false),
         mErrorCode(0)
       {
-        ZS_LOG_DEBUG(log("created") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("created") + publication->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -2697,7 +2572,7 @@ namespace hookflash
                                                                                IMessageQueuePtr queue,
                                                                                PublicationRepositoryPtr outer,
                                                                                IPublicationRemoverDelegatePtr delegate,
-                                                                               IPublicationForPublicationRepositoryPtr publication
+                                                                               PublicationPtr publication
                                                                                )
       {
         RemoverPtr pThis(new Remover(queue, outer, delegate, publication));
@@ -2707,10 +2582,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Remover::setRequester(IMessageRequesterPtr requester)
+      void PublicationRepository::Remover::setMonitor(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        mRequester = requester;
+        mMonitor = monitor;
       }
 
       //-----------------------------------------------------------------------
@@ -2723,6 +2598,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      RemoverPtr PublicationRepository::Remover::convert(IPublicationRemoverPtr remover)
+      {
+        return boost::dynamic_pointer_cast<Remover>(remover);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -2731,15 +2612,22 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::Remover::toDebugString(IPublicationRemoverPtr remover, bool includeCommaPrefix)
+      {
+        if (!remover) return includeCommaPrefix ? ", remover=(null" : "remover=(null)";
+        return Remover::convert(remover)->getDebugValueString();
+      }
+
+      //-----------------------------------------------------------------------
       void PublicationRepository::Remover::cancel()
       {
         ZS_LOG_DEBUG(log("cancel called"))
 
         AutoRecursiveLock lock(getLock());
 
-        if (mRequester) {
-          mRequester->cancel();
-          mRequester.reset();
+        if (mMonitor) {
+          mMonitor->cancel();
+          mMonitor.reset();
         }
 
         RemoverPtr pThis = mThisWeak.lock();
@@ -2747,7 +2635,7 @@ namespace hookflash
         if (pThis) {
           if (mDelegate) {
             try {
-              mDelegate->onPublicationRemoverComplete(pThis);
+              mDelegate->onPublicationRemoverCompleted(pThis);
             } catch(IPublicationRemoverDelegateProxy::Exceptions::DelegateGone &) {
             }
           }
@@ -2764,31 +2652,22 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Remover::wasSuccessful() const
+      bool PublicationRepository::Remover::wasSuccessful(
+                                                         WORD *outErrorResult,
+                                                         String *outReason
+                                                         ) const
       {
         AutoRecursiveLock lock(getLock());
+        if (outErrorResult) *outErrorResult = mErrorCode;
+        if (outReason) *outReason = mErrorReason;
         return mSucceeded;
-      }
-
-      //-----------------------------------------------------------------------
-      WORD PublicationRepository::Remover::getErrorResult() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorCode;
-      }
-
-      //-----------------------------------------------------------------------
-      String PublicationRepository::Remover::getErrorReason() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mErrorReason;
       }
 
       //-----------------------------------------------------------------------
       IPublicationPtr PublicationRepository::Remover::getPublication() const
       {
         AutoRecursiveLock lock(getLock());
-        return mPublication->convertIPublication();
+        return mPublication;
       }
 
       //-----------------------------------------------------------------------
@@ -2796,22 +2675,22 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository::Remover => IMessageRequesterDelegate
+      #pragma mark PublicationRepository::Remover => IMessageMonitorDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::Remover::handleMessageRequesterMessageReceived(
-                                                                                 IMessageRequesterPtr requester,
-                                                                                 message::MessagePtr message
-                                                                                 )
+      bool PublicationRepository::Remover::handleMessageMonitorMessageReceived(
+                                                                               IMessageMonitorPtr monitor,
+                                                                               message::MessagePtr message
+                                                                               )
       {
         AutoRecursiveLock lock(getLock());
         if (!mDelegate) {
           ZS_LOG_WARNING(Detail, log("received result but already cancelled"))
           return false;
         }
-        if (mRequester != requester) {
-          ZS_LOG_WARNING(Detail, log("received result but requester does not match"))
+        if (mMonitor != monitor) {
+          ZS_LOG_WARNING(Detail, log("received result but monitor does not match"))
           return false;
         }
 
@@ -2820,7 +2699,7 @@ namespace hookflash
           return false;
         }
 
-        if ((message::MessageFactoryStack::Methods)message->method() != message::MessageFactoryStack::Method_PeerDelete) {
+        if ((MessageFactoryPeerCommon::Methods)message->method() != MessageFactoryPeerCommon::Method_PeerDelete) {
           ZS_LOG_WARNING(Detail, log("expected peer delete result but received something else"))
           return false;
         }
@@ -2834,7 +2713,7 @@ namespace hookflash
           return true;
         }
 
-        message::PeerDeleteResultPtr deleteResult = message::PeerDeleteResult::convert(result);
+        PeerDeleteResultPtr deleteResult = PeerDeleteResult::convert(result);
         mSucceeded = true;
 
         PublicationRepositoryPtr outer = mOuter.lock();
@@ -2847,10 +2726,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::Remover::onMessageRequesterTimedOut(IMessageRequesterPtr requester)
+      void PublicationRepository::Remover::onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        if (requester != mRequester) return;
+        if (monitor != mMonitor) return;
         cancel();
       }
 
@@ -2877,6 +2756,19 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::Remover::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("remove id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPublication::toDebugString(mPublication) +
+               IMessageMonitor::toDebugString(mMonitor) +
+               Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error reason", mErrorReason, firstTime);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -2895,11 +2787,17 @@ namespace hookflash
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mOuter(outer),
-        mDelegate(IPublicationSubscriptionDelegateProxy::createWeak(delegate)),
-        mSubscriptionInfo(IPublicationMetaDataForPublicationRepository::create(0, 0, 0, IPublicationMetaData::Source_Local, "", "", publicationPath, "", IPublicationMetaData::Encoding_XML, relationships)),
+        mDelegate(IPublicationSubscriptionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mCurrentState(IPublicationSubscription::PublicationSubscriptionState_Pending)
       {
-        ZS_LOG_DEBUG(log("created") + mSubscriptionInfo->getDebugValuesString())
+        AccountPtr account = outer->getAccount();
+        LocationPtr localLocation;
+        if (account) {
+          localLocation = Location::convert(ILocation::getForLocal(account));
+        }
+
+        mSubscriptionInfo = IPublicationMetaDataForPublicationRepository::create(0, 0, 0, localLocation, publicationPath, "", IPublicationMetaData::Encoding_JSON, relationships, localLocation);
+        ZS_LOG_DEBUG(log("created") + mSubscriptionInfo->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -2940,17 +2838,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::SubscriptionLocal::notifyUpdated(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::SubscriptionLocal::notifyUpdated(PublicationPtr publication)
       {
         if (!mDelegate) {
           ZS_LOG_WARNING(Detail, log("receive notification of updated document but location subscription is cancelled"))
           return;
         }
 
-        ZS_LOG_TRACE(log("publication is updated") + publication->getDebugValuesString())
+        ZS_LOG_TRACE(log("publication is updated") + publication->forRepo().getDebugValuesString())
 
-        String name = publication->convertIPublication()->getName();
-        String path = mSubscriptionInfo->getName();
+        String name = publication->forRepo().getName();
+        String path = mSubscriptionInfo->forRepo().getName();
 
         if (name.length() < path.length()) {
           ZS_LOG_TRACE(log("name is too short for subscription path") + ", name=" + name + ", path=" + path)
@@ -2968,44 +2866,44 @@ namespace hookflash
           return;
         }
 
-        IAccountForPublicationRepositoryPtr account = outer->getOuter();
+        AccountPtr account = outer->getAccount();
         if (!account) {
           ZS_LOG_WARNING(Detail, log("cannot hanlde publication update notification as account is gone"))
           return;
         }
 
-        String subscriberContactID = account->getContactID(); // the subscriber is "ourself"
+        LocationPtr localLocation = ILocationForPublicationRepository::getForLocal(account);
 
         if (!outer->canSubscribeToPublisher(
-                                            publication->getCreatorContactID(),
-                                            publication->getRelationships(),
-                                            subscriberContactID,
-                                            mSubscriptionInfo->getRelationships())) {
+                                            publication->forRepo().getCreatorLocation(),
+                                            publication->forRepo().getRelationships(),
+                                            localLocation,
+                                            mSubscriptionInfo->forRepo().getRelationships())) {
           ZS_LOG_TRACE(log("publication/subscriber do not publish/subscribe to each other (thus ignoring notification)"))
           return;
         }
 
-        ZS_LOG_DEBUG(log("notifying about publication update to local subscriber") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("notifying about publication update to local subscriber") + publication->forRepo().getDebugValuesString())
 
         // valid to notify about this document...
         try {
-          mDelegate->onPublicationSubscriptionPublicationUpdated(mThisWeak.lock(), publication->convertIPublication());
+          mDelegate->onPublicationSubscriptionPublicationUpdated(mThisWeak.lock(), publication->forRepo().toPublicationMetaData());
         } catch(IPublicationSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
         }
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::SubscriptionLocal::notifyGone(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::SubscriptionLocal::notifyGone(PublicationPtr publication)
       {
         if (!mDelegate) {
           ZS_LOG_WARNING(Detail, log("received notification that publication is gone but local subscription is already cancelled"))
           return;
         }
 
-        ZS_LOG_TRACE(log("notified publication is gone") + publication->getDebugValuesString())
+        ZS_LOG_TRACE(log("notified publication is gone") + publication->forRepo().getDebugValuesString())
 
-        String name = publication->getName();
-        String path = mSubscriptionInfo->getName();
+        String name = publication->forRepo().getName();
+        String path = mSubscriptionInfo->forRepo().getName();
 
         if (name.length() < path.length()) {
           ZS_LOG_TRACE(log("name is too short for subscription path") + ", name=" + name + ", path=" + path)
@@ -3023,30 +2921,36 @@ namespace hookflash
           return;
         }
 
-        IAccountForPublicationRepositoryPtr account = outer->getOuter();
+        AccountPtr account = outer->getAccount();
         if (!account) {
           ZS_LOG_WARNING(Detail, log("cannot hanlde publication gone notification as account is gone"))
           return;
         }
 
-        String currentContactID = account->getContactID();
+        LocationPtr localLocation = ILocationForPublicationRepository::getForLocal(account);
 
         if (!outer->canSubscribeToPublisher(
-                                            publication->getCreatorContactID(),
-                                            publication->getRelationships(),
-                                            currentContactID,
-                                            mSubscriptionInfo->getRelationships())) {
+                                            publication->forRepo().getCreatorLocation(),
+                                            publication->forRepo().getRelationships(),
+                                            localLocation,
+                                            mSubscriptionInfo->forRepo().getRelationships())) {
           ZS_LOG_TRACE(log("publication/subscriber do not publish/subscribe to each other (thus ignoring notification)"))
           return;
         }
 
-        ZS_LOG_DEBUG(log("notifying about publication gone to local subscriber") + publication->getDebugValuesString())
+        ZS_LOG_DEBUG(log("notifying about publication gone to local subscriber") + publication->forRepo().getDebugValuesString())
 
         // valid to notify about this document...
         try {
-          mDelegate->onPublicationSubscriptionPublicationGone(mThisWeak.lock(), publication->convertIPublication());
+          mDelegate->onPublicationSubscriptionPublicationGone(mThisWeak.lock(), publication->forRepo().toPublicationMetaData());
         } catch(IPublicationSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
         }
+      }
+
+      //-----------------------------------------------------------------------
+      SubscriptionLocalPtr PublicationRepository::SubscriptionLocal::convert(IPublicationSubscriptionPtr subscription)
+      {
+        return boost::dynamic_pointer_cast<SubscriptionLocal>(subscription);
       }
 
       //-----------------------------------------------------------------------
@@ -3056,6 +2960,13 @@ namespace hookflash
       #pragma mark
       #pragma mark PublicationRepository::SubscriptionLocal => IPublicationSubscription
       #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::SubscriptionLocal::toDebugString(SubscriptionLocalPtr subscription, bool includeCommaPrefix)
+      {
+        if (!subscription) return includeCommaPrefix ? ", subscription local=(null" : "subscription local=(null)";
+        return subscription->getDebugValueString();
+      }
 
       //-----------------------------------------------------------------------
       void PublicationRepository::SubscriptionLocal::cancel()
@@ -3077,7 +2988,7 @@ namespace hookflash
       IPublicationMetaDataPtr PublicationRepository::SubscriptionLocal::getSource() const
       {
         AutoRecursiveLock lock(getLock());
-        return mSubscriptionInfo->convertIPublicationMetaData();
+        return mSubscriptionInfo->forRepo().toPublicationMetaData();
       }
 
       //-----------------------------------------------------------------------
@@ -3100,6 +3011,16 @@ namespace hookflash
       String PublicationRepository::SubscriptionLocal::log(const char *message) const
       {
         return String("PublicationRepository::SubscriptionLocal [") + Stringize<PUID>(mID).string() + "] " + message;
+      }
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::SubscriptionLocal::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("subscription local id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               IPublicationMetaData::toDebugString(mSubscriptionInfo) +
+               Helper::getDebugValue("state", toString(mCurrentState), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -3148,15 +3069,15 @@ namespace hookflash
                                                                                 IMessageQueuePtr queue,
                                                                                 PublicationRepositoryPtr outer,
                                                                                 PeerSourcePtr peerSource,
-                                                                                IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                                                PublicationMetaDataPtr subscriptionInfo
                                                                                 ) :
-        MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
-        mOuter(outer),
-        mPeerSource(peerSource),
-        mSubscriptionInfo(subscriptionInfo)
+      MessageQueueAssociator(queue),
+      mID(zsLib::createPUID()),
+      mOuter(outer),
+      mPeerSource(peerSource),
+      mSubscriptionInfo(subscriptionInfo)
       {
-        ZS_LOG_DEBUG(log("created") + subscriptionInfo->getDebugValuesString())
+        ZS_LOG_DEBUG(log("created") + subscriptionInfo->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -3181,11 +3102,18 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::PeerSubscriptionIncoming::toDebugString(PeerSubscriptionIncomingPtr subscription, bool includeCommaPrefix)
+      {
+        if (!subscription) return includeCommaPrefix ? ", subscription incoming=(null" : "subscription incoming=(null)";
+        return subscription->getDebugValueString();
+      }
+
+      //-----------------------------------------------------------------------
       PublicationRepository::PeerSubscriptionIncomingPtr PublicationRepository::PeerSubscriptionIncoming::create(
                                                                                                                  IMessageQueuePtr queue,
                                                                                                                  PublicationRepositoryPtr outer,
                                                                                                                  PeerSourcePtr peerSource,
-                                                                                                                 IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                                                                                 PublicationMetaDataPtr subscriptionInfo
                                                                                                                  )
       {
         PeerSubscriptionIncomingPtr pThis(new PeerSubscriptionIncoming(queue, outer, peerSource, subscriptionInfo));
@@ -3195,7 +3123,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionIncoming::notifyUpdated(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::PeerSubscriptionIncoming::notifyUpdated(PublicationPtr publication)
       {
         CachedPublicationMap tempCache;
         tempCache[publication] = publication;
@@ -3204,7 +3132,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionIncoming::notifyGone(IPublicationForPublicationRepositoryPtr publication)
+      void PublicationRepository::PeerSubscriptionIncoming::notifyGone(PublicationPtr publication)
       {
         CachedPublicationMap tempCache;
         tempCache[publication] = publication;
@@ -3215,7 +3143,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void PublicationRepository::PeerSubscriptionIncoming::notifyUpdated(const CachedPublicationMap &cachedPublications)
       {
-        typedef message::PeerPublishNotifyRequest::PublicationList PublicationList;
+        typedef PeerPublishNotifyRequest::PublicationList PublicationList;
 
         AutoRecursiveLock lock(getLock());
 
@@ -3227,7 +3155,7 @@ namespace hookflash
           return;
         }
 
-        IAccountForPublicationRepositoryPtr account = outer->getOuter();
+        AccountPtr account = outer->getAccount();
         if (!account) {
           ZS_LOG_WARNING(Detail, log("cannot hanlde publication update notification as account is gone"))
           return;
@@ -3235,11 +3163,11 @@ namespace hookflash
 
         for (CachedPublicationMap::const_iterator iter = cachedPublications.begin(); iter != cachedPublications.end(); ++iter)
         {
-          const IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
-          ZS_LOG_TRACE(log("notified of updated publication") + publication->getDebugValuesString())
+          const PublicationPtr &publication = (*iter).second;
+          ZS_LOG_TRACE(log("notified of updated publication") + publication->forRepo().getDebugValuesString())
 
-          String name = publication->getName();
-          String path = mSubscriptionInfo->getName();
+          String name = publication->forRepo().getName();
+          String path = mSubscriptionInfo->forRepo().getName();
 
           if (name.length() < path.length()) {
             ZS_LOG_TRACE(log("name is too short for subscription path") + ", name=" + name + ", path=" + path)
@@ -3251,46 +3179,43 @@ namespace hookflash
             continue;
           }
 
-          String subscriberContactID = mSubscriptionInfo->getCreatorContactID(); // the subscriber is the person who created this subscription
+          LocationPtr subscriberLocation = mSubscriptionInfo->forRepo().getCreatorLocation(); // the subscriber is the person who created this subscription
 
           if (!outer->canSubscribeToPublisher(
-                                              publication->getCreatorContactID(),
-                                              publication->getRelationships(),
-                                              subscriberContactID,
-                                              mSubscriptionInfo->getRelationships())) {
+                                              publication->forRepo().getCreatorLocation(),
+                                              publication->forRepo().getRelationships(),
+                                              subscriberLocation,
+                                              mSubscriptionInfo->forRepo().getRelationships())) {
             ZS_LOG_TRACE(log("publication/subscriber do not publish/subscribe to each other (thus ignoring notification)"))
             continue;
           }
 
-          ZS_LOG_DEBUG(log("notifying about publication updated to subscriber") + publication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("notifying about publication updated to subscriber") + publication->forRepo().getDebugValuesString())
 
-          list.push_back(publication->convertIPublication());
+          list.push_back(publication->forRepo().toPublicationMetaData());
         }
 
         if (list.size() < 1) {
-          ZS_LOG_TRACE(log("no publications updates are needed to be sent to this subscriber") + mSubscriptionInfo->getDebugValuesString())
+          ZS_LOG_TRACE(log("no publications updates are needed to be sent to this subscriber") + mSubscriptionInfo->forRepo().getDebugValuesString())
           return;
         }
 
-        ZS_LOG_TRACE(log("publications will be notified to this subscriber") + ", total  publications=" + Stringize<size_t>(list.size()).string() + mSubscriptionInfo->getDebugValuesString())
+        ZS_LOG_TRACE(log("publications will be notified to this subscriber") + ", total  publications=" + Stringize<size_t>(list.size()).string() + mSubscriptionInfo->forRepo().getDebugValuesString())
 
-        message::PeerPublishNotifyRequestPtr request = message::PeerPublishNotifyRequest::create();
+        PeerPublishNotifyRequestPtr request = PeerPublishNotifyRequest::create();
+        request->domain(account->forRepo().getDomain());
         request->publicationList(list);
         request->peerCache(PeerCache::find(mPeerSource, outer));
 
-        IMessageRequesterPtr requester;
-        if (mSubscriptionInfo->getSource() == IPublicationMetaData::Source_Finder) {
-          requester = account->sendFinderRequest(mThisWeak.lock(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-        } else {
-          requester = account->sendPeerRequest(mThisWeak.lock(), request, mSubscriptionInfo->getCreatorContactID(), mSubscriptionInfo->getCreatorLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-        }
-        mNotificationRequesters.push_back(requester);
+        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
+
+        mNotificationMonitors.push_back(monitor);
       }
 
       //-----------------------------------------------------------------------
       void PublicationRepository::PeerSubscriptionIncoming::notifyGone(const CachedPublicationMap &cachedPublications)
       {
-        typedef message::PeerPublishNotifyRequest::PublicationList PublicationList;
+        typedef PeerPublishNotifyRequest::PublicationList PublicationList;
 
         AutoRecursiveLock lock(getLock());
 
@@ -3302,7 +3227,7 @@ namespace hookflash
           return;
         }
 
-        IAccountForPublicationRepositoryPtr account = outer->getOuter();
+        AccountPtr account = outer->getAccount();
         if (!account) {
           ZS_LOG_WARNING(Detail, log("cannot hanlde publication gone notification as account is gone"))
           return;
@@ -3310,10 +3235,10 @@ namespace hookflash
 
         for (CachedPublicationMap::const_iterator iter = cachedPublications.begin(); iter != cachedPublications.end(); ++iter)
         {
-          const IPublicationForPublicationRepositoryPtr &publication = (*iter).second;
+          const PublicationPtr &publication = (*iter).second;
 
-          String name = publication->getName();
-          String path = mSubscriptionInfo->getName();
+          String name = publication->forRepo().getName();
+          String path = mSubscriptionInfo->forRepo().getName();
 
           if (name.length() < path.length()) {
             ZS_LOG_TRACE(log("name is too short for subscription path") + ", name=" + name + ", path=" + path)
@@ -3324,51 +3249,46 @@ namespace hookflash
             continue;
           }
 
-          String currentContactID = mSubscriptionInfo->getPublishedToContactID();
+          LocationPtr subscriptionPublishedLocation = mSubscriptionInfo->forRepo().getPublishedLocation();
 
           if (!outer->canSubscribeToPublisher(
-                                              publication->getCreatorContactID(),
-                                              publication->getRelationships(),
-                                              currentContactID,
-                                              mSubscriptionInfo->getRelationships())) {
+                                              publication->forRepo().getCreatorLocation(),
+                                              publication->forRepo().getRelationships(),
+                                              subscriptionPublishedLocation,
+                                              mSubscriptionInfo->forRepo().getRelationships())) {
             ZS_LOG_TRACE(log("publication/subscriber do not publish/subscribe to each other (thus ignoring notification)"))
             continue;
           }
 
-          ZS_LOG_DEBUG(log("notifying about publication gone to subscriber") + publication->getDebugValuesString())
+          ZS_LOG_DEBUG(log("notifying about publication gone to subscriber") + publication->forRepo().getDebugValuesString())
 
-          IPublicationMetaDataForPublicationRepositoryPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->convertIPublicationMetaData());
-          metaData->setVersion(0);
-          metaData->setBaseVersion(0);
+          PublicationMetaDataPtr metaData = IPublicationMetaDataForPublicationRepository::createFrom(publication->forRepo().toPublicationMetaData());
+          metaData->forRepo().setVersion(0);
+          metaData->forRepo().setBaseVersion(0);
 
-          list.push_back(metaData->convertIPublicationMetaData());
+          list.push_back(metaData->forRepo().toPublicationMetaData());
         }
 
         if (list.size() < 1) {
-          ZS_LOG_TRACE(log("no 'publications are gone' notification will be send to this subscriber") + mSubscriptionInfo->getDebugValuesString())
+          ZS_LOG_TRACE(log("no 'publications are gone' notification will be send to this subscriber") + mSubscriptionInfo->forRepo().getDebugValuesString())
           return;
         }
 
-        ZS_LOG_TRACE(log("'publications are gone' notification will be notified to this subscriber") + ", total  publications=" + Stringize<size_t>(list.size()).string() + mSubscriptionInfo->getDebugValuesString())
+        ZS_LOG_TRACE(log("'publications are gone' notification will be notified to this subscriber") + ", total  publications=" + Stringize<size_t>(list.size()).string() + mSubscriptionInfo->forRepo().getDebugValuesString())
 
-        message::PeerPublishNotifyRequestPtr request = message::PeerPublishNotifyRequest::create();
+        PeerPublishNotifyRequestPtr request = PeerPublishNotifyRequest::create();
+        request->domain(account->forRepo().getDomain());
         request->publicationList(list);
 
-        message::PeerPublishNotifyRequestPtr message = message::PeerPublishNotifyRequest::create();
+        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
 
-        IMessageRequesterPtr requester;
-        if (mSubscriptionInfo->getSource() == IPublicationMetaData::Source_Finder) {
-          requester = account->sendFinderRequest(mThisWeak.lock(), message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-        } else {
-          requester = account->sendPeerRequest(mThisWeak.lock(), request, mSubscriptionInfo->getCreatorContactID(), mSubscriptionInfo->getCreatorLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-        }
-        mNotificationRequesters.push_back(requester);
+        mNotificationMonitors.push_back(monitor);
       }
 
       //-----------------------------------------------------------------------
       IPublicationMetaDataPtr PublicationRepository::PeerSubscriptionIncoming::getSource() const
       {
-        return mSubscriptionInfo->convertIPublicationMetaData();
+        return mSubscriptionInfo->forRepo().toPublicationMetaData();
       }
 
       //-----------------------------------------------------------------------
@@ -3376,12 +3296,12 @@ namespace hookflash
       {
         ZS_LOG_DEBUG(log("cancel called"))
 
-        for (NotificationRequesterList::iterator iter = mNotificationRequesters.begin(); iter != mNotificationRequesters.end(); ++iter)
+        for (NotificationMonitorList::iterator iter = mNotificationMonitors.begin(); iter != mNotificationMonitors.end(); ++iter)
         {
-          IMessageRequesterPtr &notifyRequester = (*iter);
-          notifyRequester->cancel();
+          IMessageMonitorPtr &notifyMonitor = (*iter);
+          notifyMonitor->cancel();
         }
-        mNotificationRequesters.clear();
+        mNotificationMonitors.clear();
       }
 
       //-----------------------------------------------------------------------
@@ -3389,47 +3309,47 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository::PeerSubscriptionIncoming => IMessageRequesterDelegate
+      #pragma mark PublicationRepository::PeerSubscriptionIncoming => IMessageMonitorDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::PeerSubscriptionIncoming::handleMessageRequesterMessageReceived(
-                                                                                                  IMessageRequesterPtr requester,
-                                                                                                  message::MessagePtr message
-                                                                                                  )
+      bool PublicationRepository::PeerSubscriptionIncoming::handleMessageMonitorMessageReceived(
+                                                                                                IMessageMonitorPtr monitor,
+                                                                                                message::MessagePtr message
+                                                                                                )
       {
         ZS_LOG_DEBUG(log("received notification that notification was sent"))
 
-        for (NotificationRequesterList::iterator iter = mNotificationRequesters.begin(); iter != mNotificationRequesters.end(); ++iter)
+        for (NotificationMonitorList::iterator iter = mNotificationMonitors.begin(); iter != mNotificationMonitors.end(); ++iter)
         {
-          IMessageRequesterPtr &notifyRequester = (*iter);
-          if (notifyRequester == requester) {
-            ZS_LOG_TRACE(log("found requester for subscription notification request"))
+          IMessageMonitorPtr &notifyMonitor = (*iter);
+          if (notifyMonitor == monitor) {
+            ZS_LOG_TRACE(log("found monitor for subscription notification request"))
             // doesn't matter if it was successful or not because there is nothing we can do either way...
-            mNotificationRequesters.erase(iter);
+            mNotificationMonitors.erase(iter);
             return true;
           }
         }
-        ZS_LOG_WARNING(Detail, log("unable to find requester for subscription notification request"))
+        ZS_LOG_WARNING(Detail, log("unable to find monitor for subscription notification request"))
         return false;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionIncoming::onMessageRequesterTimedOut(IMessageRequesterPtr requester)
+      void PublicationRepository::PeerSubscriptionIncoming::onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
         ZS_LOG_DEBUG(log("subscription notification time out"))
-        for (NotificationRequesterList::iterator iter = mNotificationRequesters.begin(); iter != mNotificationRequesters.end(); ++iter)
+        for (NotificationMonitorList::iterator iter = mNotificationMonitors.begin(); iter != mNotificationMonitors.end(); ++iter)
         {
-          IMessageRequesterPtr &notifyRequester = (*iter);
-          if (notifyRequester == requester) {
+          IMessageMonitorPtr &notifyMonitor = (*iter);
+          if (notifyMonitor == monitor) {
             ZS_LOG_DEBUG(log("subscription notification found thus removing"))
 
             // doesn't matter if it was successful or not because there is nothing we can do either way...
-            mNotificationRequesters.erase(iter);
+            mNotificationMonitors.erase(iter);
             return;
           }
         }
-        ZS_LOG_DEBUG(log("unable to find requester matching subscription notification request after time out"))
+        ZS_LOG_DEBUG(log("unable to find monitor matching subscription notification request after time out"))
       }
 
       //-----------------------------------------------------------------------
@@ -3455,6 +3375,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      String PublicationRepository::PeerSubscriptionIncoming::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer subscription incoming id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               ", source: " + IPublicationMetaData::toDebugString(mPeerSource, false) +
+               ", subscription info: " + IPublicationMetaData::toDebugString(mSubscriptionInfo, false) +
+               Helper::getDebugValue("notification monitors", mNotificationMonitors.size() > 0 ? Stringize<typeof(mID)>(mNotificationMonitors.size()).string() : String(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -3467,16 +3398,16 @@ namespace hookflash
                                                                                 IMessageQueuePtr queue,
                                                                                 PublicationRepositoryPtr outer,
                                                                                 IPublicationSubscriptionDelegatePtr delegate,
-                                                                                IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                                                PublicationMetaDataPtr subscriptionInfo
                                                                                 ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mOuter(outer),
-        mDelegate(IPublicationSubscriptionDelegateProxy::createWeak(delegate)),
+        mDelegate(IPublicationSubscriptionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mCurrentState(PublicationSubscriptionState_Pending),
         mSubscriptionInfo(subscriptionInfo)
       {
-        ZS_LOG_DEBUG(log("created") + mSubscriptionInfo->getDebugValuesString())
+        ZS_LOG_DEBUG(log("created") + mSubscriptionInfo->forRepo().getDebugValuesString())
       }
 
       //-----------------------------------------------------------------------
@@ -3505,7 +3436,7 @@ namespace hookflash
                                                                                                                  IMessageQueuePtr queue,
                                                                                                                  PublicationRepositoryPtr outer,
                                                                                                                  IPublicationSubscriptionDelegatePtr delegate,
-                                                                                                                 IPublicationMetaDataForPublicationRepositoryPtr subscriptionInfo
+                                                                                                                 PublicationMetaDataPtr subscriptionInfo
                                                                                                                  )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!subscriptionInfo)
@@ -3517,24 +3448,24 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionOutgoing::setRequester(IMessageRequesterPtr requester)
+      void PublicationRepository::PeerSubscriptionOutgoing::setMonitor(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        mRequester = requester;
+        mMonitor = monitor;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionOutgoing::notifyUpdated(IPublicationMetaDataForPublicationRepositoryPtr metaData)
+      void PublicationRepository::PeerSubscriptionOutgoing::notifyUpdated(PublicationMetaDataPtr metaData)
       {
         AutoRecursiveLock lock(getLock());
 
         if (!mDelegate) {
-          ZS_LOG_WARNING(Detail, log("notification up an updated document after cancel called") + metaData->getDebugValuesString())
+          ZS_LOG_WARNING(Detail, log("notification up an updated document after cancel called") + metaData->forRepo().getDebugValuesString())
           return;
         }
 
-        String name = metaData->getName();
-        String path = mSubscriptionInfo->getName();
+        String name = metaData->forRepo().getName();
+        String path = mSubscriptionInfo->forRepo().getName();
 
         if (name.length() < path.length()) {
           ZS_LOG_TRACE(log("name is too short for subscription path") + ", name=" + name + ", path=" + path)
@@ -3546,32 +3477,29 @@ namespace hookflash
           return;
         }
 
-        if (mSubscriptionInfo->getSource() != metaData->getSource()) {
-          ZS_LOG_TRACE(log("publication update/gone notification for a source other than where subscription was placed (thus ignoring)") + metaData->getDebugValuesString())
+        const char *ignoreReason = NULL;
+        if (0 != ILocationForPublicationRepository::locationCompare(mSubscriptionInfo->forRepo().getPublishedLocation(), metaData->forRepo().getPublishedLocation(), ignoreReason)) {
+          ZS_LOG_TRACE(log("publication update/gone notification for a source other than where subscription was placed (thus ignoring)") + metaData->forRepo().getDebugValuesString())
           return;
         }
 
-        if (IPublicationMetaData::Source_Peer == mSubscriptionInfo->getSource())
-        {
-          if ((mSubscriptionInfo->getPublishedToContactID() != metaData->getPublishedToContactID()) ||
-              (mSubscriptionInfo->getPublishedToLocationID() != metaData->getPublishedToLocationID()))
-          {
-            ZS_LOG_TRACE(log("publication update/gone notification arrived for a peer subscription other than where subscription was placed (thus ignoring)") + metaData->getDebugValuesString())
-            return;
-          }
-        }
-
-        ZS_LOG_DEBUG(log("publication update/gone notification is being notified to outgoing subscription delegate") + metaData->getDebugValuesString())
+        ZS_LOG_DEBUG(log("publication update/gone notification is being notified to outgoing subscription delegate") + metaData->forRepo().getDebugValuesString())
 
         // this appears to be a match thus notify the subscriber...
         try {
-          if (0 == metaData->getVersion()) {
-            mDelegate->onPublicationSubscriptionPublicationGone(mThisWeak.lock(), metaData->convertIPublicationMetaData());
+          if (0 == metaData->forRepo().getVersion()) {
+            mDelegate->onPublicationSubscriptionPublicationGone(mThisWeak.lock(), metaData->forRepo().toPublicationMetaData());
           } else {
-            mDelegate->onPublicationSubscriptionPublicationUpdated(mThisWeak.lock(), metaData->convertIPublicationMetaData());
+            mDelegate->onPublicationSubscriptionPublicationUpdated(mThisWeak.lock(), metaData->forRepo().toPublicationMetaData());
           }
         } catch(IPublicationSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
         }
+      }
+
+      //-----------------------------------------------------------------------
+      PeerSubscriptionOutgoingPtr PublicationRepository::PeerSubscriptionOutgoing::convert(IPublicationSubscriptionPtr subscription)
+      {
+        return boost::dynamic_pointer_cast<PeerSubscriptionOutgoing>(subscription);
       }
 
       //-----------------------------------------------------------------------
@@ -3581,6 +3509,13 @@ namespace hookflash
       #pragma mark
       #pragma mark PublicationRepository::PeerSubscriptionOutgoing => IPublicationSubscription
       #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::PeerSubscriptionOutgoing::toDebugString(PeerSubscriptionOutgoingPtr subscription, bool includeCommaPrefix)
+      {
+        if (!subscription) return includeCommaPrefix ? ", subscription outgoing=(null" : "subscription outgoing=(null)";
+        return subscription->getDebugValueString();
+      }
 
       //-----------------------------------------------------------------------
       IPublicationSubscription::PublicationSubscriptionStates PublicationRepository::PeerSubscriptionOutgoing::getState() const
@@ -3593,7 +3528,7 @@ namespace hookflash
       IPublicationMetaDataPtr PublicationRepository::PeerSubscriptionOutgoing::getSource() const
       {
         AutoRecursiveLock lock(getLock());
-        return mSubscriptionInfo->convertIPublicationMetaData();
+        return mSubscriptionInfo->forRepo().toPublicationMetaData();
       }
 
       //-----------------------------------------------------------------------
@@ -3601,20 +3536,20 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PublicationRepository::PeerSubscriptionOutgoing => IMessageRequesterDelegate
+      #pragma mark PublicationRepository::PeerSubscriptionOutgoing => IMessageMonitorDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool PublicationRepository::PeerSubscriptionOutgoing::handleMessageRequesterMessageReceived(
-                                                                                                  IMessageRequesterPtr requester,
-                                                                                                  message::MessagePtr message
-                                                                                                  )
+      bool PublicationRepository::PeerSubscriptionOutgoing::handleMessageMonitorMessageReceived(
+                                                                                                IMessageMonitorPtr monitor,
+                                                                                                message::MessagePtr message
+                                                                                                )
       {
         AutoRecursiveLock lock(getLock());
 
-        if (requester == mCancelRequester) {
-          ZS_LOG_DEBUG(log("cancel requester completed"))
-          mCancelRequester->cancel();
+        if (monitor == mCancelMonitor) {
+          ZS_LOG_DEBUG(log("cancel monitor completed"))
+          mCancelMonitor->cancel();
           cancel();
           return true;
         }
@@ -3623,8 +3558,8 @@ namespace hookflash
           ZS_LOG_WARNING(Detail, log("received subscription notification reply but cancel already called"))
           return false;
         }
-        if (mRequester != requester) {
-          ZS_LOG_WARNING(Detail, log("received subscription notification reply but requester does not match reply"))
+        if (mMonitor != monitor) {
+          ZS_LOG_WARNING(Detail, log("received subscription notification reply but monitor does not match reply"))
           return false;
         }
 
@@ -3633,7 +3568,7 @@ namespace hookflash
           return false;
         }
 
-        if ((message::MessageFactoryStack::Methods)message->method() != message::MessageFactoryStack::Method_PeerSubscribe) {
+        if ((MessageFactoryPeerCommon::Methods)message->method() != MessageFactoryPeerCommon::Method_PeerSubscribe) {
           ZS_LOG_WARNING(Detail, log("expecting to receive peer subscribe result but received something else"))
           return false;
         }
@@ -3650,7 +3585,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("outgoing subscription succeeded"))
 
-        message::PeerSubscribeResultPtr subscribeResult = message::PeerSubscribeResult::convert(result);
+        PeerSubscribeResultPtr subscribeResult = PeerSubscribeResult::convert(result);
         mSucceeded = true;
 
         PublicationRepositoryPtr outer = mOuter.lock();
@@ -3659,24 +3594,24 @@ namespace hookflash
         }
 
         setState(IPublicationSubscription::PublicationSubscriptionState_Established);
-        if (mRequester) {
-          mRequester->cancel();
-          mRequester.reset();
+        if (mMonitor) {
+          mMonitor->cancel();
+          mMonitor.reset();
         }
         return true;
       }
 
       //-----------------------------------------------------------------------
-      void PublicationRepository::PeerSubscriptionOutgoing::onMessageRequesterTimedOut(IMessageRequesterPtr requester)
+      void PublicationRepository::PeerSubscriptionOutgoing::onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
         AutoRecursiveLock lock(getLock());
-        if (requester == mCancelRequester)
+        if (monitor == mCancelMonitor)
         {
-          ZS_LOG_DEBUG(log("cancel requester timeout received"))
+          ZS_LOG_DEBUG(log("cancel monitor timeout received"))
           cancel();
           return;
         }
-        if (requester != mRequester) {
+        if (monitor != mMonitor) {
           ZS_LOG_WARNING(Detail, log("received timeout on subscription request but it wasn't for the subscription request sent"))
           return;
         }
@@ -3703,6 +3638,21 @@ namespace hookflash
       String PublicationRepository::PeerSubscriptionOutgoing::log(const char *message) const
       {
         return String("PublicationRepository::PeerSubscriptionOutgoing [") + Stringize<PUID>(mID).string() + "] " + message;
+      }
+
+      //-----------------------------------------------------------------------
+      String PublicationRepository::PeerSubscriptionOutgoing::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer subscription outgoing id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
+               IPublicationMetaData::toDebugString(mSubscriptionInfo) +
+               IMessageMonitor::toDebugString(mMonitor) +
+               IMessageMonitor::toDebugString(mCancelMonitor) +
+               Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -3752,36 +3702,33 @@ namespace hookflash
 
         if (!mGracefulShutdownReference) mGracefulShutdownReference = pThis;
 
-        if ((!mCancelRequester) &&
+        if ((!mCancelMonitor) &&
             (pThis)) {
 
-          PublicationRepositoryPtr outerRepo = mOuter.lock();
+          PublicationRepositoryPtr outer = mOuter.lock();
 
-          if (outerRepo) {
-            IAccountForPublicationRepositoryPtr outer = outerRepo->getOuter();
+          if (outer) {
+            AccountPtr account = outer->getAccount();
 
-            if (outer) {
+            if (account) {
               ZS_LOG_DEBUG(log("sending request to cancel outgoing subscription"))
 
-              message::PeerSubscribeRequestPtr message = message::PeerSubscribeRequest::create();
+              PeerSubscribeRequestPtr request = PeerSubscribeRequest::create();
+              request->domain(account->forRepo().getDomain());
 
               IPublicationMetaData::SubscribeToRelationshipsMap empty;
-              message->publicationMetaData(mSubscriptionInfo->convertIPublicationMetaData());
+              request->publicationMetaData(mSubscriptionInfo->forRepo().toPublicationMetaData());
 
-              if (IPublicationMetaData::Source_Finder == mSubscriptionInfo->getSource()) {
-                mCancelRequester = outer->sendFinderRequest(pThis, message, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-              } else {
-                mCancelRequester = outer->sendPeerRequest(pThis, message, mSubscriptionInfo->getPublishedToContactID(), mSubscriptionInfo->getPublishedToLocationID(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
-              }
+              mCancelMonitor = IMessageMonitor::monitorAndSendToLocation(pThis, mSubscriptionInfo->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
               return;
             }
           }
         }
 
         if (pThis) {
-          if (mCancelRequester)  {
-            if (!mCancelRequester->isComplete()) {
-              ZS_LOG_DEBUG(log("waiting for cancel requester to complete"))
+          if (mCancelMonitor)  {
+            if (!mCancelMonitor->isComplete()) {
+              ZS_LOG_DEBUG(log("waiting for cancel monitor to complete"))
               return;
             }
           }
@@ -3802,6 +3749,7 @@ namespace hookflash
     #pragma mark IPublicationSubscription
     #pragma mark
 
+    //-------------------------------------------------------------------------
     const char *IPublicationSubscription::toString(PublicationSubscriptionStates state)
     {
       switch (state) {
@@ -3811,6 +3759,52 @@ namespace hookflash
         case PublicationSubscriptionState_Shutdown:       return "Shutdown";
       }
       return "UNDEFINED";
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationRepository::toDebugString(IPublicationRepositoryPtr repository, bool includeCommaPrefix)
+    {
+      return internal::PublicationRepository::toDebugString(repository, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
+    IPublicationRepositoryPtr IPublicationRepository::getFromAccount(IAccountPtr account)
+    {
+      return internal::PublicationRepository::getFromAccount(account);
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationPublisher::toDebugString(IPublicationPublisherPtr publisher, bool includeCommaPrefix)
+    {
+      return internal::PublicationRepository::Publisher::toDebugString(publisher, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationFetcher::toDebugString(IPublicationFetcherPtr fetcher, bool includeCommaPrefix)
+    {
+      return internal::PublicationRepository::Fetcher::toDebugString(fetcher, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationRemover::toDebugString(IPublicationRemoverPtr remover, bool includeCommaPrefix)
+    {
+      return internal::PublicationRepository::Remover::toDebugString(remover, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationSubscription::toDebugString(IPublicationSubscriptionPtr subscription, bool includeCommaPrefix)
+    {
+      internal::PublicationRepository::SubscriptionLocalPtr localSubscription = internal::PublicationRepository::SubscriptionLocal::convert(subscription);
+      if (localSubscription) {
+        return internal::PublicationRepository::SubscriptionLocal::toDebugString(localSubscription);
+      }
+      return internal::PublicationRepository::PeerSubscriptionOutgoing::toDebugString(internal::PublicationRepository::PeerSubscriptionOutgoing::convert(subscription));
+    }
+
+    //-------------------------------------------------------------------------
+    String IPublicationRepositoryPeerCache::toDebugString(IPublicationRepositoryPeerCachePtr cache, bool includeCommaPrefix)
+    {
+      return internal::PublicationRepository::PeerCache::toDebugString(cache, includeCommaPrefix);
     }
   }
 }

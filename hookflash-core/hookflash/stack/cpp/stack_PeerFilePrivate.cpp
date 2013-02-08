@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,43 +22,28 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
-#include <hookflash/stack/internal/stack_PeerContactProfile.h>
 #include <hookflash/stack/internal/stack_PeerFiles.h>
 #include <hookflash/stack/internal/stack_PeerFilePublic.h>
 #include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/services/ICanonicalXML.h>
-#include <hookflash/services/IHelper.h>
+#include <hookflash/stack/IPeer.h>
+#include <hookflash/stack/IHelper.h>
+#include <hookflash/stack/IRSAPrivateKey.h>
+#include <hookflash/stack/message/IMessageHelper.h>
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
-#include <zsLib/Numeric.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
-#include <cryptopp/osrng.h>
-#include <cryptopp/rsa.h>
-#include <cryptopp/queue.h>
-#include <cryptopp/base64.h>
-#include <cryptopp/filters.h>
 #include <cryptopp/sha.h>
-#include <cryptopp/aes.h>
-#include <cryptopp/modes.h>
-#include <cryptopp/secblock.h>
-#include <cryptopp/hex.h>
-#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
-#include <cryptopp/md5.h>
-
-
-#define HOOKFLASH_GENERATE_REAL_RSA_KEYS
 
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
-
 
 namespace hookflash
 {
@@ -66,304 +51,43 @@ namespace hookflash
   {
     namespace internal
     {
-      using zsLib::Numeric;
       using zsLib::Stringize;
-      using CryptoPP::CFB_Mode;
 
-      typedef zsLib::BYTE BYTE;
-      typedef zsLib::UINT UINT;
-      typedef zsLib::ULONG ULONG;
-      typedef zsLib::CSTR CSTR;
-      typedef zsLib::String String;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-      typedef zsLib::XML::Text Text;
-      typedef zsLib::XML::TextPtr TextPtr;
-      typedef zsLib::XML::ElementPtr ElementPtr;
-      typedef zsLib::XML::Document Document;
-      typedef zsLib::XML::DocumentPtr DocumentPtr;
-      typedef CryptoPP::ByteQueue ByteQueue;
-      typedef CryptoPP::Base64Encoder Base64Encoder;
-      typedef CryptoPP::Base64Decoder Base64Decoder;
-      typedef CryptoPP::StringSink StringSink;
-      typedef CryptoPP::Weak::MD5 MD5;
-      typedef CryptoPP::SecByteBlock SecureByteBlock;
-      typedef CryptoPP::AES AES;
-      typedef CryptoPP::SHA256 SHA256;
-      typedef CryptoPP::SHA1 SHA1;
-      typedef CryptoPP::AutoSeededRandomPool AutoSeededRandomPool;
-      typedef CryptoPP::HexEncoder HexEncoder;
-      typedef CryptoPP::RSA::PrivateKey CryptoPP_PrivateKey;
-      typedef CryptoPP::RSA::PublicKey CryptoPP_PublicKey;
-      typedef CryptoPP::RSASSA_PKCS1v15_SHA_Signer CryptoPP_Signer;
-      typedef PeerFilePrivate::RSAPrivateKeyPtr RSAPrivateKeyPtr;
-      typedef PeerFilePublic::RSAPublicKey RSAPublicKey;
-      typedef PeerFilePublic::RSAPublicKeyPtr RSAPublicKeyPtr;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
+
+      using CryptoPP::SHA256;
+
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark (helpers)
+      #pragma mark IPeerFilePrivateForPeerFiles
       #pragma mark
 
       //-----------------------------------------------------------------------
-      String convertToBase64(
-                             const BYTE *buffer,
-                             ULONG bufferLengthInBytes
-                             )
+      bool IPeerFilePrivateForPeerFiles::generate(
+                                                  PeerFilesPtr peerFiles,
+                                                  PeerFilePrivatePtr &outPeerFilePrivate,
+                                                  PeerFilePublicPtr &outPeerFilePublic,
+                                                  const char *password,
+                                                  ElementPtr signedSalt
+                                                  )
       {
-        String result;
-        Base64Encoder encoder(new StringSink(result), false);
-        encoder.Put(buffer, bufferLengthInBytes);
-        encoder.MessageEnd();
-        return result;
+        return PeerFilePrivate::generate(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, signedSalt);
       }
 
       //-----------------------------------------------------------------------
-      void convertFromBase64(
-                             const String &input,
-                             SecureByteBlock &output
-                             )
+      bool IPeerFilePrivateForPeerFiles::loadFromElement(
+                                                         PeerFilesPtr peerFiles,
+                                                         PeerFilePrivatePtr &outPeerFilePrivate,
+                                                         PeerFilePublicPtr &outPeerFilePublic,
+                                                         const char *password,
+                                                         ElementPtr peerFileRootElement
+                                                         )
       {
-        ByteQueue queue;
-        queue.Put((BYTE *)input.c_str(), input.size());
-
-        ByteQueue *outputQueue = new ByteQueue;
-        Base64Decoder decoder(outputQueue);
-        queue.CopyTo(decoder);
-        decoder.MessageEnd();
-
-        size_t outputLengthInBytes = (size_t)outputQueue->CurrentSize();
-        output.CleanNew(outputLengthInBytes);
-
-        outputQueue->Get(output, outputLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      static void getKeyInformation(
-                                    const char *prefix,
-                                    const char *password,
-                                    const String &saltAsBase64,
-                                    BYTE *aesIV,
-                                    BYTE *aesKey
-                                    )
-      {
-        if (!password) password = "";
-
-        SecureByteBlock saltBinary;
-        convertFromBase64(saltAsBase64, saltBinary);
-
-        // need the salt as a hash (for use as the IV in the AES ecoder)
-        MD5 saltMD5;
-        saltMD5.Update(saltBinary, saltBinary.size());
-        saltMD5.Final(aesIV);
-
-        SecureByteBlock key(32);
-
-        SHA256 keySHA256;
-
-        keySHA256.Update((const BYTE *)prefix, strlen( prefix));
-        keySHA256.Update((const BYTE *)":", strlen(":"));
-        keySHA256.Update(saltBinary, saltBinary.size());
-        keySHA256.Update((const BYTE *)":", strlen(":"));
-        keySHA256.Update((const BYTE *)password, strlen(password));
-        keySHA256.Final(key);
-
-        memcpy(aesKey, key, 32);
-      }
-
-      //-----------------------------------------------------------------------
-      String encryptToBase64(
-                             const char *prefix,
-                             const char *password,
-                             const String &saltAsBase64,
-                             const BYTE *buffer,
-                             ULONG length
-                             )
-      {
-        SecureByteBlock output(length);
-
-        BYTE iv[AES::BLOCKSIZE];
-        SecureByteBlock key(32);
-        getKeyInformation(prefix, password, saltAsBase64, &(iv[0]), key);
-
-        CFB_Mode<AES>::Encryption cfbEncryption(key, key.size(), iv);
-        cfbEncryption.ProcessData(output, buffer, length);
-
-        String result = convertToBase64(output, output.size());
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      static void decryptFromBase64(
-                                    const char *prefix,
-                                    const char *password,
-                                    const String &saltAsBase64,
-                                    const String &input,
-                                    SecureByteBlock &output
-                                    )
-      {
-        output.New(0);
-        if (input.isEmpty()) return;
-
-        ByteQueue *outputQueue = new ByteQueue;
-        Base64Decoder decoder(outputQueue);
-
-        decoder.Put((const BYTE *)(input.c_str()), input.size());
-        decoder.MessageEnd();
-        size_t outputLengthInBytes = (size_t)outputQueue->CurrentSize();
-
-        if (0 == outputLengthInBytes) return;
-
-        SecureByteBlock inputRaw(outputLengthInBytes);
-        output.CleanNew(outputLengthInBytes);
-
-        outputQueue->Get(inputRaw, outputLengthInBytes);
-
-        BYTE iv[AES::BLOCKSIZE];
-        SecureByteBlock key(32);
-        getKeyInformation(prefix, password, saltAsBase64, &(iv[0]), key);
-
-        CFB_Mode<AES>::Decryption cfbDecryption(key, key.size(), iv);
-        cfbDecryption.ProcessData(output, inputRaw, outputLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      void decryptAndNulTerminateFromBase64(
-                                            const char *prefix,
-                                            const char *password,
-                                            const String &saltAsBase64,
-                                            const String &input,
-                                            SecureByteBlock &output
-                                            )
-      {
-        output.CleanNew(1);
-        if (input.isEmpty()) return;
-
-        ByteQueue *outputQueue = new ByteQueue;
-        Base64Decoder decoder(outputQueue);
-
-        decoder.Put((const BYTE *)(input.c_str()), input.size());
-        decoder.MessageEnd();
-        size_t outputLengthInBytes = (size_t)outputQueue->CurrentSize();
-
-        if (0 == outputLengthInBytes) return;
-
-        SecureByteBlock inputRaw(outputLengthInBytes);
-        output.CleanNew(outputLengthInBytes+1);
-
-        outputQueue->Get(inputRaw, outputLengthInBytes);
-
-        BYTE iv[AES::BLOCKSIZE];
-        SecureByteBlock key(32);
-        getKeyInformation(prefix, password, saltAsBase64, &(iv[0]), key);
-
-        CFB_Mode<AES>::Decryption cfbDecryption(key, key.size(), iv);
-        cfbDecryption.ProcessData(output, inputRaw, outputLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      static void actualSignElement(
-                                    ElementPtr element,
-                                    RSAPrivateKeyPtr privateKey
-                                    )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!privateKey)
-
-        ElementPtr parent = element->getParentElement();
-        ZS_THROW_INVALID_USAGE_IF(!parent)      // can only sign an element that is within an existing "bundle" element...
-
-        String id = element->getAttributeValue("id");
-        if (!id.isEmpty()) {
-          // strip off any old signatures
-          try {
-            ElementPtr oldSignature = parent->findFirstChildElement("Signature");
-
-            ElementPtr nextSignature;
-            for (; oldSignature; oldSignature = nextSignature) {
-              nextSignature = oldSignature->getNextSiblingElement();
-
-              try {
-                if ("Signature" != oldSignature->getValue()) continue;
-
-                ElementPtr referenceElement = oldSignature->findFirstChildElementChecked("SignedInfo")->findFirstChildElementChecked("Reference");
-
-                String existingID = referenceElement->getAttributeValue("id");
-                if (id != existingID) {
-                  ZS_LOG_WARNING(Debug, "Found signature but reference ids do not match, searching=" + id + ", found=" + existingID)
-                  continue;
-                }
-
-                ZS_LOG_TRACE("Found existing signature object and stripping it, reference=" + existingID)
-
-                // found it... strip it
-                oldSignature->orphan();
-                break;
-              } catch(zsLib::XML::Exceptions::CheckFailed &) {
-              }
-            }
-          } catch (zsLib::XML::Exceptions::CheckFailed &) {
-          }
-        } else {
-          id = services::IHelper::randomString(20);
-          element->setAttribute("id", id);
-        }
-
-        static const char *skeletonSignature =
-        "<Signature xmlns=\"http://www.w3.org/2000/09/xmldsig#\">\n"
-        " <SignedInfo>\n"
-        "  <SignatureMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#rsa-sha1\" />\n"
-        "  <Reference>\n"
-        "   <DigestMethod Algorithm=\"http://www.w3.org/2000/09/xmldsig#sha1\" />\n"
-        "   <DigestValue></DigestValue>\n"
-        "  </Reference>\n"
-        " </SignedInfo>\n"
-        " <SignatureValue></SignatureValue>\n"
-        "</Signature>";
-
-        DocumentPtr signDoc = Document::create();
-        signDoc->parse(skeletonSignature);
-        ElementPtr signatureEl = signDoc->getFirstChildElementChecked();
-
-        signatureEl->orphan();
-
-        ElementPtr signedInfoEl = signatureEl->getFirstChildElementChecked();
-
-        ElementPtr reference = signedInfoEl->findFirstChildElementChecked("Reference");
-        reference->setAttribute("URI", String("#") + id);
-
-        String canonicalXML = hookflash::services::ICanonicalXML::convert(element);
-        SecureByteBlock hashRaw(20);
-        SHA1 sha1;
-        sha1.Update((const BYTE *)(canonicalXML.c_str()), canonicalXML.size());
-        sha1.Final(hashRaw);
-
-        String hash = convertToBase64(hashRaw, hashRaw.size());
-
-        ElementPtr digestValue = reference->findFirstChildElementChecked("DigestValue");
-        TextPtr digestText = Text::create();
-        digestText->setValue(hash);
-        digestValue->adoptAsFirstChild(digestText);
-
-
-        //.....................................................................
-        // compute the signature on the canonical XML of the SignedInfo
-
-        String canonicalSignedInfo = hookflash::services::ICanonicalXML::convert(signedInfoEl);
-
-        SecureByteBlock signature(20);
-        privateKey->sign(canonicalSignedInfo, signature);
-
-        // singed hash value
-        String signatureAsBase64 = convertToBase64(signature, signature.size());
-
-        ElementPtr signatureValue = signatureEl->findFirstChildElementChecked("SignatureValue");
-        TextPtr signatureText = Text::create();
-        signatureText->setValue(signatureAsBase64);
-        signatureValue->adoptAsFirstChild(signatureText);
-
-        element->adoptAsNextSibling(signatureEl);
+        return PeerFilePrivate::loadFromElement(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, peerFileRootElement);
       }
 
       //-----------------------------------------------------------------------
@@ -379,6 +103,25 @@ namespace hookflash
         mID(zsLib::createPUID()),
         mOuter(peerFiles)
       {
+        ZS_LOG_DEBUG(log("created"))
+      }
+
+      //-----------------------------------------------------------------------
+      void PeerFilePrivate::init()
+      {
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePrivate::~PeerFilePrivate()
+      {
+        mThisWeak.reset();
+        ZS_LOG_DEBUG(log("destroyed"))
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePrivatePtr PeerFilePrivate::convert(IPeerFilePrivatePtr peerFilePrivate)
+      {
+        return boost::dynamic_pointer_cast<PeerFilePrivate>(peerFilePrivate);
       }
 
       //-----------------------------------------------------------------------
@@ -390,9 +133,22 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ElementPtr PeerFilePrivate::saveToXML() const
+      IPeerFilesPtr PeerFilePrivate::getAssociatedPeerFiles() const
       {
-        AutoRecursiveLock lock(mLock);
+        return mOuter.lock();
+      }
+
+      //-----------------------------------------------------------------------
+      IPeerFilePublicPtr PeerFilePrivate::getAssociatedPeerFilePublic() const
+      {
+        IPeerFilesPtr outer = getAssociatedPeerFiles();
+        if (!outer) return IPeerFilePublicPtr();
+        return outer->getPeerFilePublic();
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr PeerFilePrivate::saveToElement() const
+      {
         if (!mDocument) return ElementPtr();
 
         ElementPtr peerRoot = mDocument->getFirstChildElement();
@@ -402,129 +158,138 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IPeerFilesPtr PeerFilePrivate::getPeerFiles() const
+      IRSAPrivateKeyPtr PeerFilePrivate::getPrivateKey() const
       {
-        AutoRecursiveLock lock(mLock);
-        return mOuter.lock();
+        return mPrivateKey;
       }
 
       //-----------------------------------------------------------------------
-      UINT PeerFilePrivate::getVersionNumber() const
+      ElementPtr PeerFilePrivate::getPrivateData() const
       {
-        AutoRecursiveLock lock(mLock);
-        if (!mDocument) return 0;
+        if (!mPrivateDataDoc) return ElementPtr();
+        ElementPtr childEl = mPrivateDataDoc->getFirstChildElement();
+        if (!childEl) return ElementPtr();
+        return childEl->clone()->toElement();
+      }
 
-        ElementPtr peerRoot = mDocument->getFirstChildElement();
-        if (!peerRoot) return 0;
-        String version = peerRoot->getAttributeValue("version");
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr PeerFilePrivate::getPassword(bool appendNUL) const
+      {
+        return IHelper::convertToBuffer((const char *) ((const BYTE *)*mPassword), appendNUL);
+      }
+
+      //-----------------------------------------------------------------------
+      String PeerFilePrivate::getSecretProof() const
+      {
+        ElementPtr sectionEl = findSection("A");
+        if (sectionEl) return String();
+
+        ElementPtr proofEl = sectionEl->findFirstChildElement("secretProof");
+        if (!proofEl) return String();
+
+        return proofEl->getTextDecoded();
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr PeerFilePrivate::getSalt() const
+      {
+        ElementPtr sectionAEl = findSection("A");
+
+        if (!sectionAEl) {
+          ZS_LOG_ERROR(Detail, log("could not find section 'A'") + IPeerFilePrivate::toDebugString(mThisWeak.lock()))
+          return SecureByteBlockPtr();
+        }
 
         try {
-          return (Numeric<UINT>(version));
-        } catch(Numeric<UINT>::ValueOutOfRange &) {
+          return IHelper::convertFromBase64(sectionAEl->findFirstChildElementChecked("salt")->getTextDecoded());
+        } catch(CheckFailed &) {
         }
-        return 0;
+        ZS_LOG_ERROR(Detail, log("could not find salt in private peer file") + IPeerFilePrivate::toDebugString(mThisWeak.lock()))
+        return SecureByteBlockPtr();
       }
 
       //-----------------------------------------------------------------------
-      bool PeerFilePrivate::containsSection(const char *sectionID) const
+      void PeerFilePrivate::signElement(
+                                        ElementPtr elementToSign,
+                                        bool referenceKeyOnlyInSignature
+                                        ) const
       {
-        AutoRecursiveLock lock(mLock);
-        return findSection(sectionID);
-      }
+        ZS_THROW_BAD_STATE_IF(!mPrivateKey)
+        ZS_THROW_INVALID_ARGUMENT_IF(!elementToSign)
 
-      //-----------------------------------------------------------------------
-      bool PeerFilePrivate::verifyPassword(const char *password) const
-      {
-        if (!password) password = "";
-
-        String salt = getSaltAsBase64();
-        if (salt.isEmpty()) return false;
-
-        ElementPtr sectionBElement = findSection("A");
-        ElementPtr secretProofElement = sectionBElement->findFirstChildElement("secretProof");
-        String secretProofInBase64 = secretProofElement->getText();
-
-        SecureByteBlock calculatedHashSecret(32);  // the caculated hash secret
-
-        SecureByteBlock secretProofRaw;
-        convertFromBase64(secretProofInBase64, secretProofRaw);
-        if (calculatedHashSecret.size() != secretProofRaw.size()) return false;
-
-        {
-          SecureByteBlock rawSalt;
-
-          convertFromBase64(salt, rawSalt);
-
-          SecureByteBlock hashProof(32);
-          SHA256 shaProof;
-          shaProof.Update((const BYTE *)"proof:", strlen("proof:"));
-          shaProof.Update((const BYTE *)password, strlen(password));
-          shaProof.Final(hashProof);
-
-          SHA256 shaSecret;
-          shaSecret.Update((const BYTE *)"secret:", strlen("secret:"));
-          shaSecret.Update(rawSalt, rawSalt.size());
-          shaSecret.Update((const BYTE *)":", strlen(":"));
-          shaSecret.Update(hashProof, hashProof.size());
-          shaSecret.Final(calculatedHashSecret);
+        if (mPeerURI.length() < 1) {
+          // cannot sign with reference when peer URI is not set
+          referenceKeyOnlyInSignature = false;
         }
 
-        return (0 == memcmp(secretProofRaw, calculatedHashSecret, calculatedHashSecret.size()));
-      }
+        ElementPtr signatureEl;
 
-      //-----------------------------------------------------------------------
-      void PeerFilePrivate::getPrivateKeyInPCKS8(
-                                                 const char *password,
-                                                 SecureByteBlock &outRaw
-                                                 ) const
-      {
-        outRaw.New(0);
-
-        if (!verifyPassword(password)) return;
-
-        ElementPtr sectionBElement = findSection("B");
-        if (!sectionBElement) return;
-
-        ElementPtr encryptedPrivateKeyElement = sectionBElement->findFirstChildElement("encryptedPrivateKey");
-        if (!encryptedPrivateKeyElement) return;
-
-        String encryptedPrivateKeyElementAsBase64 = encryptedPrivateKeyElement->getText();
-        decryptFromBase64("privatekey", password, getSaltAsBase64(), encryptedPrivateKeyElementAsBase64, outRaw);
-      }
-
-      //-----------------------------------------------------------------------
-      String PeerFilePrivate::getContactProfileSecret(const char *password) const
-      {
-        if (!verifyPassword(password)) return String();
-
-        ElementPtr sectionBElement = findSection("B");
-        if (!sectionBElement) return String();
-
-        ElementPtr encryptedContactProfileSecretElement = sectionBElement->findFirstChildElement("encryptedContactProfileSecret");
-        if (!encryptedContactProfileSecretElement) return String();
-
-        SecureByteBlock outRaw;
-
-        String encryptedContactProfileSecretElementAsBase64 = encryptedContactProfileSecretElement->getText();
-        decryptAndNulTerminateFromBase64("profile", password, getSaltAsBase64(), encryptedContactProfileSecretElementAsBase64, outRaw);
-
-        return (CSTR)((const BYTE *)outRaw);
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr PeerFilePrivate::getCaptcha(const char *password) const
-      {
-        return ElementPtr();
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePrivate::signElement(ElementPtr elementToSign)
-      {
-        if (!mPrivateKey) {
-          ZS_LOG_ERROR(Basic, log("unable to sign element as private key is missing"))
+        bool randomized = false;
+        String id = elementToSign->getAttributeValue("id");
+        if (id.length() < 1) {
+          id = IHelper::convertToHex(*IHelper::random(16));
+          elementToSign->setAttribute("id", id);
+          randomized = true;
         }
 
-        actualSignElement(elementToSign, mPrivateKey);
+        String referenceID = "#" + id;
+
+        if (!randomized) {
+          ElementPtr altSignatureEl = elementToSign->findNextSiblingElement("signature");
+          while (altSignatureEl) {
+            ElementPtr referenceEl = altSignatureEl->findFirstChildElement("reference");
+            if (referenceEl) {
+              String value = referenceEl->getTextDecoded();
+              if (value == referenceID) {
+                signatureEl = altSignatureEl;
+              }
+            }
+          }
+
+          if (signatureEl) {
+            // clean out the current signature entirely since it will be replaced
+            NodePtr child = signatureEl->getFirstChild();
+            while (child) {
+              child->orphan();
+              child = signatureEl->getFirstChild();
+            }
+          }
+        }
+
+        GeneratorPtr generator = Generator::createJSONGenerator();
+        boost::shared_array<char> elementAsJSON = generator->write(elementToSign);
+
+        SecureByteBlockPtr elementHash = IHelper::hash(elementAsJSON.get(), IHelper::HashAlgorthm_SHA1);
+
+        if (!signatureEl)
+          signatureEl = Element::create("signature");
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("reference", referenceID));
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM));
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestValue", IHelper::convertToHex(*elementHash)));
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestSigned", IHelper::convertToBase64(*mPrivateKey->sign(*elementHash))));
+
+        ElementPtr keyEl = Element::create("key");
+
+        if (referenceKeyOnlyInSignature) {
+          ElementPtr uriEl = message::IMessageHelper::createElementWithText("uri", mPeerURI);
+          keyEl->adoptAsLastChild(uriEl);
+        } else {
+          ElementPtr x509DataEl = message::IMessageHelper::createElementWithText("x509Data", IHelper::convertToBase64(*mPrivateKey->save()));
+          keyEl->adoptAsLastChild(x509DataEl);
+        }
+
+        signatureEl->adoptAsLastChild(keyEl);
+
+        if (!signatureEl->getParent()) {
+          // this signature is not part of the tree structure right now, add it...
+          elementToSign->adoptAsNextSibling(signatureEl);
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr PeerFilePrivate::decrypt(const SecureByteBlock &buffer) const
+      {
+        return mPrivateKey->decrypt(buffer);
       }
 
       //-----------------------------------------------------------------------
@@ -532,38 +297,88 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark PeerFilePrivate => friend PeerFiles
+      #pragma mark PeerFilePrivate => IPeerFilePrivateForPeerFiles
       #pragma mark
 
       //-----------------------------------------------------------------------
-      PeerFilesPtr PeerFilePrivate::generate(
-                                             PeerFilesPtr peerFiles,
-                                             const char *password,
-                                             ElementPtr signedSalt
-                                             )
+      bool PeerFilePrivate::generate(
+                                     PeerFilesPtr peerFiles,
+                                     PeerFilePrivatePtr &outPeerFilePrivate,
+                                     PeerFilePublicPtr &outPeerFilePublic,
+                                     const char *password,
+                                     ElementPtr signedSaltBundleEl
+                                     )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFiles)
+        ZS_THROW_INVALID_ARGUMENT_IF(!password)
+        ZS_THROW_INVALID_ARGUMENT_IF(!signedSaltBundleEl)
+
         PeerFilePrivatePtr pThis(new PeerFilePrivate(peerFiles));
         pThis->mThisWeak = pThis;
-        pThis->mOuter = peerFiles;
-        pThis->generate(password, signedSalt);
-        peerFiles->mThisWeak = peerFiles;
+        pThis->init();
+
+        IRSAPublicKeyPtr publicKey;
+        pThis->mPrivateKey = IRSAPrivateKey::generate(publicKey);
+
+        if ((!pThis->mPrivateKey) ||
+            (!publicKey)) {
+          ZS_LOG_ERROR(Basic, pThis->log("failed to generate public/privat key pair"))
+          return false;
+        }
+
+        pThis->mPassword = IHelper::convertToBuffer(password);
+        DocumentPtr publicDoc;
+
+        if (!pThis->generateDocuments(publicKey, signedSaltBundleEl, publicDoc)) {
+          ZS_LOG_ERROR(Basic, pThis->log("failed to generate public/private key document"))
+        }
+
+        outPeerFilePublic = IPeerFilePublicForPeerFilePrivate::createFromPublicKey(peerFiles, publicDoc, publicKey, pThis->mPeerURI);
+        outPeerFilePrivate = pThis;
+
         return peerFiles;
       }
 
       //-----------------------------------------------------------------------
-      PeerFilesPtr PeerFilePrivate::loadFromXML(
-                                                PeerFilesPtr peerFiles,
-                                                const char *password,
-                                                ElementPtr peerFileRootElement
-                                                )
+      bool PeerFilePrivate::loadFromElement(
+                                            PeerFilesPtr peerFiles,
+                                            PeerFilePrivatePtr &outPeerFilePrivate,
+                                            PeerFilePublicPtr &outPeerFilePublic,
+                                            const char *password,
+                                            ElementPtr peerFileRootElement
+                                            )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFiles)
+        ZS_THROW_INVALID_ARGUMENT_IF(!password)
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFileRootElement)
+
         PeerFilePrivatePtr pThis(new PeerFilePrivate(peerFiles));
         pThis->mThisWeak = pThis;
-        pThis->mOuter = peerFiles;
-        bool loaded = pThis->loadFromXML(password, peerFileRootElement);
-        if (!loaded)
+        pThis->init();
+
+        pThis->mPassword = IHelper::convertToBuffer(password);
+        DocumentPtr publicDoc;
+
+        bool loaded = pThis->loadFromElement(peerFileRootElement, publicDoc);
+        if (!loaded) {
+          ZS_LOG_ERROR(Basic, pThis->log("failed to load private peer file"))
           return PeerFilesPtr();
-        peerFiles->mThisWeak = peerFiles;
+        }
+
+        PeerFilePublicPtr peerFilePublic = IPeerFilePublicForPeerFilePrivate::loadFromElement(peerFiles, publicDoc);
+        if (!peerFilePublic) {
+          ZS_LOG_ERROR(Basic, pThis->log("failed to load public peer file"))
+          return false;
+        }
+
+        if (!pThis->verifySignatures(peerFilePublic)) {
+          ZS_LOG_ERROR(Basic, pThis->log("signatures did not validate in private peer file")  + IPeerFilePublic::toDebugString(peerFilePublic))
+          return false;
+        }
+
+        outPeerFilePublic = peerFilePublic;
+        outPeerFilePrivate = pThis;
+
         return peerFiles;
       }
 
@@ -582,427 +397,369 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void PeerFilePrivate::generate(
-                                     const char *password,
-                                     ElementPtr signedSalt
-                                     )
+      SecureByteBlockPtr PeerFilePrivate::getKey(
+                                                 const char *phrase,
+                                                 const char *saltInBase64
+                                                 )
       {
-        if (!password) password = "";
-
-        AutoSeededRandomPool rng;
-
-        String salt;
-        String privateString;
-        String publicString;
-        String contactID;
-        String contactProfileSecret = services::IHelper::randomString(32);
-
-        std::string contactSalt;
-
-        // generate salt
-        {
-          SecureByteBlock saltRaw(32);
-          rng.GenerateBlock(saltRaw, saltRaw.size());
-          salt = convertToBase64(saltRaw, saltRaw.size());
-
-          SecureByteBlock contactSaltRaw(32);
-          rng.GenerateBlock(contactSaltRaw, contactSaltRaw.size());
-          contactSalt = convertToBase64(contactSaltRaw, contactSaltRaw.size());
-        }
-
-#ifdef HOOKFLASH_GENERATE_REAL_RSA_KEYS
-        RSAPublicKeyPtr publicKey;
-        SecureByteBlock publicKeyBuffer;
-#endif //HOOKFLASH_GENERATE_REAL_RSA_KEYS
-
-        {
-#ifdef HOOKFLASH_GENERATE_REAL_RSA_KEYS
-          SecureByteBlock byteBlock;
-
-          mPrivateKey = RSAPrivateKey::generate(publicKeyBuffer);
-          if (!mPrivateKey) {
-            ZS_THROW_BAD_STATE(log("failed to generate a private/public key pair"))
-          }
-
-          mPrivateKey->save(byteBlock);
-          publicKey = RSAPublicKey::load(publicKeyBuffer);
-          if (!publicKey) {
-            ZS_THROW_BAD_STATE(log("failed to load a public key from previously generated private key"))
-          }
-#else
-          // generate fake private key and encrypt it immediately
-          SecureByteBlock byteBlock(100);
-          rng.GenerateBlock(byteBlock, byteBlock.size());
-#endif //HOOKFLASH_GENERATE_REAL_RSA_KEYS
-
-          privateString = encryptToBase64("privatekey", password, salt, byteBlock, byteBlock.size());
-        }
-
-        {
-#ifdef HOOKFLASH_GENERATE_REAL_RSA_KEYS
-          SecureByteBlock &byteBlock = publicKeyBuffer;
-#else
-          // generate fake public key
-          SecureByteBlock byteBlock(100);
-          rng.GenerateBlock(byteBlock, byteBlock.size());
-#endif //HOOKFLASH_GENERATE_REAL_RSA_KEYS
-
-          publicString = convertToBase64(byteBlock, byteBlock.size());
-        }
-
-        static const char *skeletonPublicPeer =
-        "<peer version=\"1\">\n\n"
-
-        "<sectionBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <section id=\"A\">\n"
-        "  <cipher>sha1/aes256</cipher>\n"
-        "  <data></data>\n"
-        " </section>\n"
-        "</sectionBundle>\n\n"
-
-        "<sectionBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <section id=\"B\">\n"
-        "  <contact />\n"
-        "  <findSecret />\n"
-        "  <uris>\n"
-        "   <uri>peer://hookflash.com/contact:</uri>\n"
-        "  </uris>\n"
-        " </section>\n"
-        "</sectionBundle>\n\n"
-
-        "<sectionBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <section id=\"C\">\n"
-        "  <contact />\n"
-        "  <uris>\n"
-        "  </uris>\n"
-        "  <identities>\n"
-        "  </identities>\n"
-        " </section>\n"
-        "</sectionBundle>\n\n"
-
-        "</peer>\n";
-
-        static const char *skeletonKeyInfo =
-        "<KeyInfo>\n"
-        " <X509Data>\n"
-        "  <X509Certificate></X509Certificate>\n"
-        " </X509Data>\n"
-        "</KeyInfo>\n";
-
-        static const char *skeletonPrivatePeer =
-        "<privatePeer version=\"1\">\n\n"
-        "<sectionBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <section id=\"A\">\n"
-        "  <cipher>sha1/aes256</cipher>\n"
-        "  <contact />\n"
-        "  <salt />\n"
-        "  <secretProof />\n"
-        " </section>\n"
-        "</sectionBundle>\n\n"
-
-        "<sectionBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <section id=\"B\">\n"
-        "  <encryptedPrivateKey />\n"
-        "  <encryptedPeer cipher=\"sha256/aes256\" />\n"
-        "  <encryptedContactProfileSecret />\n"
-        "  <encryptedPrivateData />\n"
-        " </section>\n"
-        "</sectionBundle>\n\n"
-
-        "</privatePeer>";
-
-        static const char *contactProfileSkeleton =
-        "<contactProfileBundle xmlns=\"http://www.hookflash.com/openpeer/1.0/message\">\n"
-        " <contactProfile version=\"1\">\n"
-        "  <public>\n"
-        "   <profile />\n"
-        "  </public>\n"
-        "  <private>\n"
-        "   <salt />\n"
-        "   <proof cipher=\"sha256/aes256\" />\n"
-        "   <encryptedPeer cipher=\"sha256/aes256\" />\n"
-        "   <encryptedProfile cipher=\"sha256/aes256\" />\n"
-        "   <contactProfileSecret cipher=\"sha256/aes256\" />\n"
-        "  </private>\n"
-        " </contactProfile>\n"
-        "</contactProfileBundle>\n";
-
-        mDocument = Document::create();
-        mDocument->parse(skeletonPrivatePeer);
-
-        DocumentPtr publicDoc = Document::create();
-        publicDoc->parse(skeletonPublicPeer);
-
-        DocumentPtr contactProfileDoc = Document::create();
-        contactProfileDoc->parse(contactProfileSkeleton);
-
-        // build public section A
-        {
-          // doc->peer->sectionBundle->section A
-          ElementPtr sectionABundle = publicDoc->getFirstChildElementChecked()->getFirstChildElementChecked();
-
-          // sectionBundle->section A
-          ElementPtr sectionA = sectionABundle->getFirstChildElementChecked();
-          // sectionA->cipher
-          ElementPtr cipher = sectionA->getFirstChildElementChecked();
-          //            cipher->adoptAsNextSibling(signedSalt->clone());
-
-          actualSignElement(sectionA, mPrivateKey);
-
-          // going to put key info inside the signature
-          ElementPtr signature = sectionA->getNextSiblingElementChecked();
-          signature->getFirstChildElementChecked();
-
-          DocumentPtr keyInfoDoc = Document::create();
-          keyInfoDoc->parse(skeletonKeyInfo);
-          ElementPtr keyInfo = keyInfoDoc->getFirstChildElementChecked();
-          // KeyInfo->X509Data->X509Certificate
-          ElementPtr x509Certificate = keyInfo->getFirstChildElementChecked()->getFirstChildElementChecked();
-          TextPtr x509Text = Text::create();
-          x509Text->setValue(publicString);
-          x509Certificate->adoptAsLastChild(x509Text);
-
-          keyInfo->orphan();
-          signature->adoptAsLastChild(keyInfo);
-
-          String canonicalSectionA = hookflash::services::ICanonicalXML::convert(sectionABundle);
-
-          // calculate the hash of section A - which is the contact ID
-          {
-            SecureByteBlock contactIDRaw(32);
-
-            SHA256 contactIDSHA256;
-            contactIDSHA256.Update((const BYTE *)canonicalSectionA.c_str(), canonicalSectionA.size());
-            contactIDSHA256.Final(contactIDRaw);
-
-            HexEncoder encoder(new StringSink(contactID));
-            encoder.Put(contactIDRaw, contactIDRaw.size());
-            encoder.MessageEnd();
-          }
-        }
-
-        //std::cout << (publicDoc->write()).get() << "\n";
-
-        // build public section B
-        {
-          ElementPtr sectionBBundleElement = publicDoc->getFirstChildElementChecked()->getFirstChildElementChecked()->getNextSiblingElementChecked();
-          ElementPtr contactElement = sectionBBundleElement->getFirstChildElementChecked()->getFirstChildElementChecked();
-          contactElement->setAttribute("id", contactID);
-
-          String findSecret = services::IHelper::randomString(32);
-
-          ElementPtr findSecretElement = contactElement->getNextSiblingElementChecked();
-          TextPtr findSecretText = Text::create();
-          findSecretText->setValue(findSecret);
-          findSecretElement->adoptAsLastChild(findSecretText);
-
-          TextPtr uriText = findSecretElement->getNextSiblingElementChecked()->getFirstChildElementChecked()->getFirstChildChecked()->toTextChecked();
-          uriText->setValue(uriText->getValue() + contactID);
-
-          actualSignElement(sectionBBundleElement->getFirstChildElementChecked(), mPrivateKey);
-        }
-
-        //std::cout << (publicDoc->write()).get() << "\n";
-
-        // build public section C
-        {
-          ElementPtr sectionBBundleElement = publicDoc->getFirstChildElementChecked()->getFirstChildElementChecked()->getNextSiblingElementChecked()->getNextSiblingElementChecked();
-          ElementPtr contactElement = sectionBBundleElement->getFirstChildElementChecked()->getFirstChildElementChecked();
-          contactElement->setAttribute("id", contactID);
-
-          actualSignElement(sectionBBundleElement->getFirstChildElementChecked(), mPrivateKey);
-        }
-
-        //std::cout << (publicDoc->write()).get() << "\n";
-
-        // build private section A
-        {
-          ElementPtr sectionAElement = mDocument->getFirstChildElementChecked()->getFirstChildElementChecked()->getFirstChildElementChecked();
-          ElementPtr contactElement = sectionAElement->getFirstChildElementChecked()->getNextSiblingElementChecked();
-          contactElement->setAttribute("id", contactID);
-
-          ElementPtr saltElement = contactElement->getNextSiblingElementChecked();
-          TextPtr saltText = Text::create();
-          saltText->setValue(salt);
-          saltElement->adoptAsLastChild(saltText);
-
-          ElementPtr secretProofElement = saltElement->getNextSiblingElementChecked();
-          TextPtr secretProofText = Text::create();
-
-          // calculate the secret proof
-          {
-            SecureByteBlock rawSalt;
-
-            convertFromBase64(salt, rawSalt);
-
-            SecureByteBlock hashProof(32);
-            SHA256 sha256Proof;
-            sha256Proof.Update((const BYTE *)"proof:", strlen("proof:"));
-            sha256Proof.Update((const BYTE *)password, strlen(password));
-            sha256Proof.Final(hashProof);
-
-            SecureByteBlock hashSecret(32);
-            SHA256 sha256Secret;
-            sha256Secret.Update((const BYTE *)"secret:", strlen("secret:"));
-            sha256Secret.Update(rawSalt, rawSalt.size());
-            sha256Secret.Update((const BYTE *)":", strlen(":"));
-            sha256Secret.Update(hashProof, hashProof.size());
-            sha256Secret.Final(hashSecret);
-            String secret = convertToBase64(hashSecret, hashSecret.size());
-            secretProofText->setValue(secret);
-            secretProofElement->adoptAsLastChild(secretProofText);
-          }
-
-          ElementPtr sectionBElement = mDocument->getFirstChildElementChecked()->getFirstChildElementChecked()->getNextSiblingElementChecked()->getFirstChildElementChecked();
-          ElementPtr encryptedPrivateKeyElement = sectionBElement->getFirstChildElementChecked();
-          TextPtr encryptedPrivateKeyText = Text::create();
-          encryptedPrivateKeyText->setValue(privateString);
-          encryptedPrivateKeyElement->adoptAsLastChild(encryptedPrivateKeyText);
-
-          ElementPtr encryptedPeerElement = encryptedPrivateKeyElement->getNextSiblingElementChecked();
-          boost::shared_array<char> publicPeerAsString;
-          publicPeerAsString = publicDoc->write();
-          String encryptedPeerString = encryptToBase64("peer", password, salt, (const BYTE *)publicPeerAsString.get(), strlen(publicPeerAsString.get()));
-          TextPtr encryptPeerText = Text::create();
-          encryptPeerText->setValue(encryptedPeerString);
-          encryptedPeerElement->adoptAsLastChild(encryptPeerText);
-
-          ElementPtr encryptedContactProfileSecretElement = encryptedPeerElement->getNextSiblingElementChecked();
-          String encryptedContactProfileSecretString = encryptToBase64("profile", password, salt, (const BYTE *)contactProfileSecret.c_str(), contactProfileSecret.size());
-          TextPtr encryptContactProfileSecretText = Text::create();
-          encryptContactProfileSecretText->setValue(encryptedContactProfileSecretString);
-          encryptedContactProfileSecretElement->adoptAsLastChild(encryptContactProfileSecretText);
-
-          actualSignElement(sectionAElement, mPrivateKey);
-          actualSignElement(sectionBElement, mPrivateKey);
-        }
-
-        //std::cout << (mDocument->write()).get() << "\n";
-
-        // build contact profile
-        {
-          ElementPtr contactProfileElement = contactProfileDoc->getFirstChildElementChecked()->getFirstChildElementChecked();
-          contactProfileElement->setAttribute("id", contactID);
-          ElementPtr publicElement = contactProfileElement->getFirstChildElementChecked();
-          publicElement->adoptAsLastChild(publicDoc->getFirstChildElementChecked()->clone());
-
-          ElementPtr privateElement = publicElement->getNextSiblingElementChecked();
-          ElementPtr saltElement = privateElement->getFirstChildElementChecked();
-          TextPtr saltText = Text::create();
-          saltText->setValue(contactSalt);
-          saltElement->adoptAsLastChild(saltText);
-
-          SecureByteBlock contactProofHash(32);
-
-          SHA256 contactProof;
-          contactProof.Update((const BYTE *)"proof:", strlen("proof:"));
-          contactProof.Update((const BYTE *)contactProfileSecret.c_str(), contactProfileSecret.size());
-          contactProof.Final(contactProofHash);
-
-          String contactProofInBase64 = convertToBase64(contactProofHash, contactProofHash.size());
-
-          ElementPtr proofElement = saltElement->getNextSiblingElementChecked();
-          TextPtr proofText = Text::create();
-          proofText->setValue(contactProofInBase64);
-          proofElement->adoptAsLastChild(proofText);
-
-          ElementPtr encryptedPeerElement = proofElement->getNextSiblingElementChecked();
-          boost::shared_array<char> publicPeerAsString;
-          publicPeerAsString = publicDoc->write();
-          String encryptedPeerString = encryptToBase64("peer", contactProfileSecret, contactSalt, (const BYTE *)publicPeerAsString.get(), strlen(publicPeerAsString.get()));
-          TextPtr encryptPeerText = Text::create();
-          encryptPeerText->setValue(encryptedPeerString);
-          encryptedPeerElement->adoptAsLastChild(encryptPeerText);
-
-          const char *emptyProfile = "<profile />";
-          ElementPtr encryptedProfileElement = encryptedPeerElement->getNextSiblingElementChecked();
-          String encryptedProfileString = encryptToBase64("profile", contactProfileSecret, contactSalt, (const BYTE *)emptyProfile, strlen(emptyProfile));
-          TextPtr encryptProfileText = Text::create();
-          encryptProfileText->setValue(encryptedProfileString);
-          encryptedProfileElement->adoptAsLastChild(encryptProfileText);
-
-          ElementPtr contactProfileSecretElement = encryptedProfileElement->getNextSiblingElementChecked();
-          TextPtr contactProfileSecretText = Text::create();
-          contactProfileSecretText->setValue(contactProfileSecret);
-          contactProfileSecretElement->adoptAsLastChild(contactProfileSecretText);
-
-          actualSignElement(contactProfileElement, mPrivateKey);
-        }
-
-        //std::cout << (contactProfileDoc->write()).get() << "\n";
-
-        (mOuter.lock())->mPrivate = mThisWeak.lock();
-        (mOuter.lock())->mPublic = PeerFilePublic::createFromPreGenerated(mOuter.lock(), publicDoc, publicKey);
-        (mOuter.lock())->mContactProfile = PeerContactProfile::createFromPreGenerated(mOuter.lock(), contactProfileDoc);
+        return IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
       }
 
       //-----------------------------------------------------------------------
-      bool PeerFilePrivate::loadFromXML(
-                                        const char *password,
-                                        ElementPtr peerFileRootElement
-                                        )
+      SecureByteBlockPtr PeerFilePrivate::getIV(
+                                                const char *phrase,
+                                                const char *saltInBase64
+                                                )
       {
-        if (!peerFileRootElement) return false;
-        if (NULL == password) return false;
+        return IHelper::hash(String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_MD5);
+      }
 
-        mDocument = Document::create();
-        mDocument->adoptAsLastChild(peerFileRootElement->clone());
+      //-----------------------------------------------------------------------
+      String PeerFilePrivate::encrypt(
+                                      const char *phrase,
+                                      const char *saltAsBase64,
+                                      SecureByteBlock &buffer
+                                      )
+      {
+        SecureByteBlockPtr key = getKey(phrase, saltAsBase64);
+        SecureByteBlockPtr iv = getIV(phrase, saltAsBase64);
+        return IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, buffer));
+      }
 
-        if (!verifyPassword(password)) {
-          ZS_LOG_ERROR(Basic, log("Password does not verify properly for private peer file"))
-          return false;
+      //-----------------------------------------------------------------------
+      String PeerFilePrivate::encrypt(
+                                      const char *phrase,
+                                      const char *saltAsBase64,
+                                      const char *value
+                                      )
+      {
+        SecureByteBlockPtr key = getKey(phrase, saltAsBase64);
+        SecureByteBlockPtr iv = getIV(phrase, saltAsBase64);
+        return IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, value));
+      }
+
+      //-----------------------------------------------------------------------
+      String PeerFilePrivate::decryptString(
+                                            const char *phrase,
+                                            const String &saltAsBase64,
+                                            const String &encryptedStringInBase64
+                                            )
+      {
+        SecureByteBlockPtr key = getKey(phrase, saltAsBase64);
+        SecureByteBlockPtr iv = getIV(phrase, saltAsBase64);
+        SecureByteBlockPtr output = IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(encryptedStringInBase64));
+        return IHelper::convertToString(*output);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr PeerFilePrivate::decryptBuffer(
+                                                        const char *phrase,
+                                                        const String &saltAsBase64,
+                                                        const String &encryptedStringInBase64
+                                                        )
+      {
+        SecureByteBlockPtr key = getKey(phrase, saltAsBase64);
+        SecureByteBlockPtr iv = getIV(phrase, saltAsBase64);
+        return IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(encryptedStringInBase64));
+      }
+
+      //-----------------------------------------------------------------------
+      bool PeerFilePrivate::generateDocuments(
+                                              IRSAPublicKeyPtr publicKey,
+                                              ElementPtr signedSaltBundleEl,
+                                              DocumentPtr &outPublicPeerDocument
+                                              )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!signedSaltBundleEl)
+
+        String contactID;
+        String domain;
+
+        // generate public peer file
+        {
+          DocumentPtr document = Document::create();
+
+          ElementPtr peerEl = Element::create("peer");
+          peerEl->setAttribute("version", "1");
+
+          // public peer section "A"
+          {
+            ElementPtr sectionBundleEl = Element::create("sectionBundle");
+
+            ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
+
+            Time created = zsLib::now();
+            Time expires = created + Duration(Hours(HOOKFLASH_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS));
+
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("created", Stringize<time_t>(zsLib::toEpoch(created))));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("expires", Stringize<time_t>(zsLib::toEpoch(expires))));
+
+            sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
+
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl);
+
+            sectionBundleEl->adoptAsLastChild(sectionEl);
+            peerEl->adoptAsLastChild(sectionBundleEl);
+
+            signElement(sectionEl, false);
+
+            // calculate the contact ID/domain
+
+            ULONG length = 0;
+            boost::shared_array<char> bundleAsJSON = generator->write(sectionBundleEl, &length);
+
+            SHA256 sha256;
+            SecureByteBlock bundleHash(sha256.DigestSize());
+
+            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
+            sha256.Update((const BYTE *)bundleAsJSON.get(), length);
+            sha256.Final(bundleHash);
+
+            contactID = IHelper::convertToHex(bundleHash);
+
+            ElementPtr domainEl;
+            try {
+              ElementPtr saltSignatureEl;
+              if (!IHelper::getSignatureInfo(signedSaltBundleEl->findFirstChildElementChecked("salt"), &saltSignatureEl)) {
+                ZS_LOG_ERROR(Basic, log("failed to find salt signature"))
+              }
+              domainEl = saltSignatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("domain");
+            } catch (CheckFailed &) {
+              ZS_LOG_ERROR(Basic, log("failed to obtain signature domain from signed salt"))
+              return false;
+            }
+            domain = domainEl->getTextDecoded();
+            if (domain.length() < 1) {
+              ZS_LOG_ERROR(Basic, log("domain from signed salt was empty"))
+              return false;
+            }
+          }
+
+          mPeerURI = IPeer::joinURI(domain, contactID);
+
+          ZS_THROW_BAD_STATE_IF(domain.length() < 1)
+          ZS_THROW_BAD_STATE_IF(contactID.length() < 1)
+          ZS_THROW_BAD_STATE_IF(mPeerURI.length() < 1)
+
+          // public section "B"
+          {
+            ElementPtr sectionBundleEl = Element::create("sectionBundle");
+
+            ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "B");
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("contact", mPeerURI));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("findSecret", IHelper::randomString(32)));
+
+            sectionBundleEl->adoptAsLastChild(sectionEl);
+            peerEl->adoptAsLastChild(sectionBundleEl);
+
+            signElement(sectionEl);
+          }
+
+          // public section "C"
+          {
+            ElementPtr sectionBundleEl = Element::create("sectionBundle");
+
+            ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "C");
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("contact", mPeerURI));
+
+            sectionBundleEl->adoptAsLastChild(sectionEl);
+            peerEl->adoptAsLastChild(sectionBundleEl);
+
+            signElement(sectionEl);
+          }
+
+          outPublicPeerDocument = document;
         }
 
-        ElementPtr sectionBElement = findSection("B");
-        if (!sectionBElement) return false;
+        // generate private peer file
+        {
+          mDocument = Document::create();
 
-        ElementPtr encryptedPeerElement = sectionBElement->findFirstChildElement("encryptedPeer");
-        if (!encryptedPeerElement) return false;
+          ElementPtr privatePeerEl = Element::create("privatePeer");
+          privatePeerEl->setAttribute("version", "1");
 
-        SecureByteBlock outRaw;
+          SecureByteBlockPtr salt = IHelper::random(32);
+          String saltAsString = IHelper::convertToBase64(*salt);
 
-        String encryptedPeerAsBase64 = encryptedPeerElement->getText();
-        decryptAndNulTerminateFromBase64("peer", password, getSaltAsBase64(), encryptedPeerAsBase64, outRaw);
+          // private peer section "A"
+          {
+            ElementPtr sectionBundleEl = Element::create("sectionBundle");
 
-        String decodedXML = (CSTR)((const BYTE *)outRaw);
-        if (decodedXML.isEmpty()) return false;
+            ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-        DocumentPtr publicDoc = Document::create();
-        publicDoc->parse(decodedXML);
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
-        PeerFilePublicPtr publicFile = PeerFilePublic::createFromPreGenerated(mOuter.lock(), publicDoc, RSAPublicKeyPtr());
-        if (!publicFile) return false;
+            sectionBundleEl->adoptAsLastChild(sectionEl);
+            privatePeerEl->adoptAsLastChild(sectionBundleEl);
 
-        (mOuter.lock())->mPrivate = mThisWeak.lock();
-        (mOuter.lock())->mPublic = publicFile;
-        if (!publicFile->containsSection("A")) return false;
+            signElement(sectionEl);
+          }
 
-        SecureByteBlock privateKeyBuffer;
-        getPrivateKeyInPCKS8(password, privateKeyBuffer);
-        if (privateKeyBuffer.SizeInBytes() < 1) {
-          ZS_LOG_ERROR(Basic, log("failed to load private key from XML"))
-          return false;
+          // private peer section "B"
+          {
+            ElementPtr sectionBundleEl = Element::create("sectionBundle");
+
+            ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "B");
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
+
+            SecureByteBlockPtr privateKey = mPrivateKey->save();
+
+            String encryptedContact = encrypt("contact", saltAsString, mPeerURI);
+
+            String encryptedPrivateKey = encrypt("privatekey", saltAsString, *privateKey);
+
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> publicPeerAsString = generator->write(outPublicPeerDocument);
+
+            String encryptedPublicPeer = encrypt("peer", saltAsString, (const char *)(publicPeerAsString.get()));
+
+            DocumentPtr docPrivateData = Document::create();
+            boost::shared_array<char> dataAsString = generator->write(docPrivateData);
+
+            mPrivateDataDoc = docPrivateData->clone()->toDocument();
+
+            String encryptedPrivateData = encrypt("data", saltAsString, (const char *)(dataAsString.get()));
+
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedContact", encryptedContact));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateKey", encryptedPrivateKey));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPeer", encryptedPublicPeer));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateData", encryptedPrivateData));
+
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
+
+            sectionBundleEl->adoptAsLastChild(sectionEl);
+            privatePeerEl->adoptAsLastChild(sectionBundleEl);
+
+            signElement(sectionEl);
+          }
+
+          mDocument->adoptAsLastChild(privatePeerEl);
         }
-
-        mPrivateKey = RSAPrivateKey::load(privateKeyBuffer);
-        if (!mPrivateKey) {
-          ZS_LOG_ERROR(Basic, log("loading of private key failed to validate"))
-          return false;
-        }
-
         return true;
       }
 
       //-----------------------------------------------------------------------
-      String PeerFilePrivate::getSaltAsBase64() const
+      bool PeerFilePrivate::loadFromElement(
+                                            ElementPtr peerFileRootElement,
+                                            DocumentPtr &outPublicPeerDocument
+                                            )
       {
-        ElementPtr sectionAElement = findSection("A");
-        if (!sectionAElement) return String();
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFileRootElement)
 
-        ElementPtr saltElement = sectionAElement->findFirstChildElement("salt");
-        if (!saltElement) return String();
+        if ("privatePeer" != peerFileRootElement->getValue()) {
+          ZS_LOG_ERROR(Basic, log("root element is not privatePeer"))
+          return false;
+        }
 
-        return saltElement->getText();
+        mDocument = Document::create();
+        mDocument->adoptAsLastChild(peerFileRootElement->clone());
+
+        ElementPtr sectionAEl = findSection("A");
+        ElementPtr sectionBEl = findSection("B");
+
+        if ((!sectionAEl) || (!sectionBEl)) {
+          ZS_LOG_ERROR(Detail, log("could not find either section 'A' or section 'B' in private peer file"))
+          return false;
+        }
+
+        try {
+          String contact = sectionAEl->findFirstChildElementChecked("contact")->getTextDecoded();
+          String cipher = sectionAEl->findFirstChildElementChecked("cipher")->getTextDecoded();
+          String salt = sectionAEl->findFirstChildElementChecked("salt")->getTextDecoded();
+          String secretProof = sectionAEl->findFirstChildElementChecked("secretProof")->getTextDecoded();
+
+          String encryptedContact = sectionBEl->findFirstChildElementChecked("encryptedContact")->getTextDecoded();
+          String encryptedPrivateKey = sectionBEl->findFirstChildElementChecked("encryptedPrivateKey")->getTextDecoded();
+          String encryptedPeer = sectionBEl->findFirstChildElementChecked("encryptedPeer")->getTextDecoded();
+          String encryptedPrivateData = sectionBEl->findFirstChildElementChecked("encryptedPrivateData")->getTextDecoded();
+
+          // now to decrypt all this data (if possible)
+          if (HOOKFLASH_STACK_PEER_FILE_CIPHER != cipher) {
+            ZS_LOG_WARNING(Detail, log("unsupported cipher suite used in private peer"))
+            return false;
+          }
+
+          String contactID;
+          String domain;
+
+          if (!IPeer::splitURI(contact, domain, contactID)) {
+            ZS_LOG_WARNING(Detail, log("splitting peer URI failed") + ", peer URI=" + contact)
+            return false;
+          }
+
+          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+
+          if (calculatedSecretProof != secretProof) {
+            ZS_LOG_ERROR(Detail, log("private peer file password appears to be incorrect, secret proof calculated=") + calculatedSecretProof + ", expecting=" + secretProof)
+            return false;
+          }
+
+          String decryptedContact = decryptString("contact", salt, encryptedContact);
+          SecureByteBlockPtr decryptedPrivateKey = decryptBuffer("privatekey", salt, encryptedPrivateKey);
+          String decryptedPeer = decryptString("peer", salt, encryptedPeer);
+          String decryptedData = decryptString("data", salt, encryptedPrivateData);
+
+          if (decryptedContact != contact) {
+            ZS_LOG_ERROR(Detail, log("contact does not match encrypted contact, expecting contact=") + contact)
+            return false;
+          }
+
+          mPeerURI = contact;
+          mPrivateKey = IRSAPrivateKey::load(*decryptedPrivateKey);
+          if (!mPrivateKey) {
+            ZS_LOG_ERROR(Detail, log("failed to load private key, peer URI=") + mPeerURI)
+            return false;
+          }
+
+          outPublicPeerDocument = Document::createFromParsedJSON(decryptedPeer);
+          if (!outPublicPeerDocument) {
+            ZS_LOG_ERROR(Detail, log("failed to create public peer document from private peer file, peer URI=") + mPeerURI)
+            return false;
+          }
+
+          mPrivateDataDoc = Document::createFromAutoDetect(decryptedData);
+
+        } catch(CheckFailed &) {
+          ZS_LOG_ERROR(Detail, log("failed to parse private peer file"))
+          return false;
+        }
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool PeerFilePrivate::verifySignatures(PeerFilePublicPtr peerFilePublic)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
+
+        ElementPtr sectionAEl = findSection("A");
+        ElementPtr sectionBEl = findSection("B");
+
+        if ((!sectionAEl) || (!sectionBEl)) {
+          ZS_LOG_ERROR(Detail, log("signature verification failed - could not find either section 'A' or section 'B' in private peer file"))
+          return false;
+        }
+
+        if (mPeerURI != peerFilePublic->forPeerFilePrivate().getPeerURI()) {
+          ZS_LOG_ERROR(Detail, log("public/private peer file URIs do not match, public=") + peerFilePublic->forPeerFilePrivate().getPeerURI() + ", private=" + mPeerURI)
+          return false;
+        }
+
+        if (!peerFilePublic->forPeerFilePrivate().verifySignature(sectionAEl)) {
+          ZS_LOG_ERROR(Detail, log("private peer file section A was not signed properly"))
+          return false;
+        }
+        if (!peerFilePublic->forPeerFilePrivate().verifySignature(sectionBEl)) {
+          ZS_LOG_ERROR(Detail, log("private peer file section B was not signed properly"))
+          return false;
+        }
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -1010,17 +767,19 @@ namespace hookflash
       {
         if (!mDocument) return ElementPtr();
 
-        ElementPtr peerRoot = mDocument->getFirstChildElement();
-        if (!peerRoot) return ElementPtr();
+        ElementPtr peerRootEl = mDocument->getFirstChildElement();
+        if (!peerRootEl) return ElementPtr();
 
-        ElementPtr sectionBundleElement = peerRoot->getFirstChildElement();
-        while (sectionBundleElement) {
-          ElementPtr sectionElement = sectionBundleElement->getFirstChildElement();
-          if (sectionElement) {
-            String id = sectionElement->getAttributeValue("id");
-            if (id == sectionID) return sectionElement;
+        if ("privatePeer" != peerRootEl->getValue()) return ElementPtr();
+
+        ElementPtr sectionBundleEl = peerRootEl->getFirstChildElement();
+        while (sectionBundleEl) {
+          ElementPtr sectionEl = sectionBundleEl->getFirstChildElement();
+          if (sectionEl) {
+            String id = sectionEl->getAttributeValue("id");
+            if (id == sectionID) return sectionEl;
           }
-          sectionBundleElement = sectionBundleElement->getNextSiblingElement();
+          sectionBundleEl = sectionBundleEl->getNextSiblingElement();
         }
         return ElementPtr();
       }
@@ -1029,108 +788,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark PeerFilePrivate::RSAPrivateKey
-      #pragma mark
+    }
 
-      //-----------------------------------------------------------------------
-      PeerFilePrivate::RSAPrivateKey::RSAPrivateKey()
-      {
-      }
-
-      //-------------------------------------------------------------------
-      #pragma mark
-      #pragma mark PeerFilePrivate::RSAPrivateKey => friend PeerFilePrivate
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr PeerFilePrivate::RSAPrivateKey::generate(SecureByteBlock &outPublicKeyBuffer)
-      {
-        AutoSeededRandomPool rng;
-
-        RSAPrivateKeyPtr pThis(new RSAPrivateKey);
-
-        pThis->mPrivateKey.GenerateRandomWithKeySize(rng, 2048);
-        if (!pThis->mPrivateKey.Validate(rng, 3)) {
-          ZS_LOG_ERROR(Basic, "failed to generate a new private key")
-          return RSAPrivateKeyPtr();
-        }
-
-        CryptoPP_PublicKey rsaPublic(pThis->mPrivateKey);
-        if (!rsaPublic.Validate(rng, 3)) {
-          ZS_LOG_ERROR(Basic, "Failed to generate a public key for the new private key")
-          return RSAPrivateKeyPtr();
-        }
-
-        ByteQueue byteQueue;
-        rsaPublic.Save(byteQueue);
-
-        size_t outputLengthInBytes = (size_t)byteQueue.CurrentSize();
-        outPublicKeyBuffer.CleanNew(outputLengthInBytes);
-
-        byteQueue.Get(outPublicKeyBuffer, outputLengthInBytes);
-
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr PeerFilePrivate::RSAPrivateKey::load(const SecureByteBlock &buffer)
-      {
-        AutoSeededRandomPool rng;
-
-        ByteQueue byteQueue;
-        byteQueue.LazyPut(buffer.BytePtr(), buffer.SizeInBytes());
-        byteQueue.FinalizeLazyPut();
-
-        RSAPrivateKeyPtr pThis(new RSAPrivateKey());
-
-        try {
-          pThis->mPrivateKey.Load(byteQueue);
-          if (!pThis->mPrivateKey.Validate(rng, 3)) {
-            ZS_LOG_ERROR(Basic, "Failed to load an existing private key")
-            return RSAPrivateKeyPtr();
-          }
-        } catch (CryptoPP::Exception &e) {
-          ZS_LOG_ERROR(Basic, String("cryptography library threw an exception, reason=") + e.what())
-          return RSAPrivateKeyPtr();
-        }
-
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePrivate::RSAPrivateKey::save(SecureByteBlock &outBuffer) const
-      {
-        ByteQueue byteQueue;
-        mPrivateKey.Save(byteQueue);
-
-        size_t outputLengthInBytes = (size_t)byteQueue.CurrentSize();
-        outBuffer.CleanNew(outputLengthInBytes);
-
-        byteQueue.Get(outBuffer, outputLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerFilePrivate::RSAPrivateKey::sign(
-                                                const String &inStrDataToSign,
-                                                SecureByteBlock &outSignatureResult
-                                                ) const
-      {
-        AutoSeededRandomPool rng;
-
-        CryptoPP_Signer signer(mPrivateKey);
-
-        size_t length = signer.MaxSignatureLength();
-
-        outSignatureResult.CleanNew(length);
-
-        signer.SignMessage(rng, (const BYTE *)(inStrDataToSign.c_str()), inStrDataToSign.length(), outSignatureResult);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    String IPeerFilePrivate::toDebugString(IPeerFilePrivatePtr peerFilePrivate, bool includeCommaPrefix)
+    {
+      if (!peerFilePrivate) return includeCommaPrefix ? String(", peer file private=(null)") : String("peer file private=(null");
+      return IPeerFiles::toDebugString(peerFilePrivate->getAssociatedPeerFiles(), includeCommaPrefix);
     }
   }
 }

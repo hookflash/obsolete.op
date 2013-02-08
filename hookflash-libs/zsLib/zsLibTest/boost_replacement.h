@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -22,12 +22,17 @@
 
 #ifndef BOOST_AUTO_TEST_SUITE
 
+#include <zsLib/types.h>
 #include <iostream>
 
 namespace BoostReplacement
 {
+  zsLib::ULONG &getGlobalPassedVar();
+  zsLib::ULONG &getGlobalFailedVar();
+
   void passed();
   void failed();
+  void output();
 }
 
 #define BOOST_AUTO_TEST_SUITE(xParam) namespace xParam {
@@ -49,11 +54,13 @@ namespace BoostReplacement
 \
   void Test_##xTestCase::test_func()
 
-#define BOOST_CHECK(xValue)                                         \
-  if (!(xValue))                                                    \
-  { std::cout << "***FAILED***: " #xValue "\n"; BoostReplacement::failed(); }                   \
-  else                                                              \
-  { std::cout << "PASSED:       " #xValue "\n"; BoostReplacement::passed(); }
+#define BOOST_CHECK(xValue)                                           \
+  {                                                                   \
+    if (!(xValue))                                                    \
+    { std::cout << "***FAILED***: " #xValue "\n"; BoostReplacement::failed(); } \
+    else                                                                        \
+    { std::cout << "PASSED:       " #xValue "\n"; BoostReplacement::passed(); } \
+  }
 
 #define BOOST_EQUAL(xValue1, xValue2)                               \
   if (!((xValue1) == (xValue2)))                                    \

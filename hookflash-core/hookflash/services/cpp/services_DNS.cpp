@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,17 +22,17 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/IDNS.h>
 #include <hookflash/services/internal/services_DNSMonitor.h>
 #include <hookflash/services/internal/services_Helper.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
 #include <cryptopp/osrng.h>
 
@@ -46,28 +46,52 @@ namespace hookflash
   namespace services
   {
     using zsLib::Stringize;
+    using CryptoPP::AutoSeededRandomPool;
 
-    typedef zsLib::PUID PUID;
-    typedef zsLib::BYTE BYTE;
-    typedef zsLib::WORD WORD;
-    typedef zsLib::DWORD DWORD;
-    typedef zsLib::QWORD QWORD;
-    typedef zsLib::String String;
-    typedef zsLib::IPAddress IPAddress;
-    typedef zsLib::MessageQueueAssociator MessageQueueAssociator;
-    typedef zsLib::RecursiveLock RecursiveLock;
-    typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-    typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
     typedef std::list<String> StringList;
     typedef std::list<IPAddress> IPAddressList;
-    typedef CryptoPP::AutoSeededRandomPool AutoSeededRandomPool;
 
     namespace internal
     {
+      class DNSQuery;
+      typedef boost::shared_ptr<DNSQuery> DNSQueryPtr;
+      typedef boost::weak_ptr<DNSQuery> DNSQueryWeakPtr;
+
+      class DNSAQuery;
+      typedef boost::shared_ptr<DNSAQuery> DNSAQueryPtr;
+      typedef boost::weak_ptr<DNSAQuery> DNSAQueryWeakPtr;
+
+      class DNSAAAAQuery;
+      typedef boost::shared_ptr<DNSAAAAQuery> DNSAAAAQueryPtr;
+      typedef boost::weak_ptr<DNSAAAAQuery> DNSAAAAQueryWeakPtr;
+
+      class DNSSRVQuery;
+      typedef boost::shared_ptr<DNSSRVQuery> DNSSRVQueryPtr;
+      typedef boost::weak_ptr<DNSSRVQuery> DNSSRVQueryWeakPtr;
+
+      class DNSAorAAAAQuery;
+      typedef boost::shared_ptr<DNSAorAAAAQuery> DNSAorAAAAQueryPtr;
+      typedef boost::weak_ptr<DNSAorAAAAQuery> DNSAorAAAAQueryWeakPtr;
+
+      class DNSSRVResolverQuery;
+      typedef boost::shared_ptr<DNSSRVResolverQuery> DNSSRVResolverQueryPtr;
+      typedef boost::weak_ptr<DNSSRVResolverQuery> DNSSRVResolverQueryWeakPtr;
+
+      class DNSInstantResultQuery;
+      typedef boost::shared_ptr<DNSInstantResultQuery> DNSInstantResultQueryPtr;
+      typedef boost::weak_ptr<DNSInstantResultQuery> DNSInstantResultQueryWeakPtr;
+
+      class DNSListQuery;
+      typedef boost::shared_ptr<DNSListQuery> DNSListQueryPtr;
+      typedef boost::weak_ptr<DNSListQuery> DNSListQueryWeakPtr;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark helpers
+      #pragma mark
 
       //-----------------------------------------------------------------------
       static bool srvCompare(const IDNS::SRVResult::SRVRecord &first, const IDNS::SRVResult::SRVRecord &second)
@@ -312,9 +336,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSQuery;
-      typedef boost::shared_ptr<DNSQuery> DNSQueryPtr;
-      typedef boost::weak_ptr<DNSQuery> DNSQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSQuery
+      #pragma mark
 
       class DNSQuery : public IDNSQuery
       {
@@ -345,6 +369,14 @@ namespace hookflash
         typedef boost::shared_ptr<DNSIndirectReference> DNSIndirectReferencePtr;
         typedef boost::weak_ptr<DNSIndirectReference> DNSIndirectReferenceWeakPtr;
 
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSQuery::DNSIndirectReference
+        #pragma mark
+
         class DNSIndirectReference : public DNSMonitor::IResult {
         public:
           //-------------------------------------------------------------------
@@ -358,6 +390,11 @@ namespace hookflash
 
           //-------------------------------------------------------------------
           ~DNSIndirectReference() {}
+
+          //-------------------------------------------------------------------
+          #pragma mark
+          #pragma mark DNSQuery::DNSIndirectReference => DNSMonitor::IResult
+          #pragma mark
 
           //-------------------------------------------------------------------
           virtual void setQuery(struct dns_query *query)  { mQuery = query; }
@@ -414,6 +451,11 @@ namespace hookflash
           }
 
         public:
+          //-------------------------------------------------------------------
+          #pragma mark
+          #pragma mark DNSQuery::DNSIndirectReference => (data)
+          #pragma mark
+
           PUID mID;
           struct dns_query *mQuery;
           DNSQueryWeakPtr mWeakQuery;
@@ -421,6 +463,11 @@ namespace hookflash
         };
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSQuery => (internal)
+        #pragma mark
+
         //---------------------------------------------------------------------
         DNSQuery(IDNSDelegatePtr delegate) :
           mID(zsLib::createPUID()),
@@ -441,6 +488,11 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         ~DNSQuery() { cancel(); }
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSQuery => IDNSQuery
+        #pragma mark
 
         //---------------------------------------------------------------------
         virtual PUID getID() const {return mID;}
@@ -473,6 +525,12 @@ namespace hookflash
         //---------------------------------------------------------------------
         virtual SRVResultPtr getSRV() const {return IDNS::cloneSRV(mSRV);}
 
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSQuery => (internal)
+        #pragma mark
+
         //---------------------------------------------------------------------
         virtual void done()
         {
@@ -490,6 +548,11 @@ namespace hookflash
         }
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSQuery => (data)
+        #pragma mark
+
         RecursiveLock mLock;
         PUID mID;
         DNSQueryWeakPtr mThis;
@@ -508,9 +571,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSAQuery;
-      typedef boost::shared_ptr<DNSAQuery> DNSAQueryPtr;
-      typedef boost::weak_ptr<DNSAQuery> DNSAQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSAQuery
+      #pragma mark
 
       class DNSAQuery : public DNSQuery
       {
@@ -538,6 +601,11 @@ namespace hookflash
 
       protected:
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAQuery => IDNSQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual void onAResult(struct dns_rr_a4 *record)
         {
           AutoRecursiveLock lock(mLock);
@@ -564,6 +632,11 @@ namespace hookflash
           }
         }
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAQuery => (data)
+        #pragma mark
+
         String mName;
       };
 
@@ -571,9 +644,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSAAAAQuery;
-      typedef boost::shared_ptr<DNSAAAAQuery> DNSAAAAQueryPtr;
-      typedef boost::weak_ptr<DNSAAAAQuery> DNSAAAAQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSAAAAQuery
+      #pragma mark
 
       class DNSAAAAQuery : public DNSQuery
       {
@@ -600,6 +673,11 @@ namespace hookflash
         }
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAAAAQuery => IDNSQuery
+        #pragma mark
+
         //---------------------------------------------------------------------
         virtual void onAAAAResult(struct dns_rr_a6 *record)
         {
@@ -628,6 +706,11 @@ namespace hookflash
           }
         }
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAAAAQuery => (data)
+        #pragma mark
+
         String mName;
       };
 
@@ -635,9 +718,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSSRVQuery;
-      typedef boost::shared_ptr<DNSSRVQuery> DNSSRVQueryPtr;
-      typedef boost::weak_ptr<DNSSRVQuery> DNSSRVQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSSRVQuery
+      #pragma mark
 
       class DNSSRVQuery : public DNSQuery
       {
@@ -680,6 +763,11 @@ namespace hookflash
 
       protected:
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVQuery => IDNSQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual void onSRVResult(struct dns_rr_srv *record)
         {
           AutoRecursiveLock lock(mLock);
@@ -718,6 +806,11 @@ namespace hookflash
           }
         }
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVQuery (data)
+        #pragma mark
+
         String mName;
         String mService;
         String mProtocol;
@@ -728,9 +821,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSAorAAAAQuery;
-      typedef boost::shared_ptr<DNSAorAAAAQuery> DNSAorAAAAQueryPtr;
-      typedef boost::weak_ptr<DNSAorAAAAQuery> DNSAorAAAAQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSAorAAAAQuery
+      #pragma mark
 
       class DNSAorAAAAQuery : public MessageQueueAssociator,
                               public IDNSQuery,
@@ -789,6 +882,11 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAorAAAAQuery => IDNSQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual PUID getID() const {return mID;}
 
         //---------------------------------------------------------------------
@@ -824,6 +922,11 @@ namespace hookflash
         virtual SRVResultPtr getSRV() const {return SRVResultPtr();}
 
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAorAAAAQuery => IDNSDelegate
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual void onLookupCompleted(IDNSQueryPtr query)
         {
           AutoRecursiveLock lock(mLock);
@@ -831,6 +934,11 @@ namespace hookflash
         }
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSAorAAAAQuery => (data)
+        #pragma mark
+
         RecursiveLock mLock;
         PUID mID;
 
@@ -845,9 +953,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSSRVResolverQuery;
-      typedef boost::shared_ptr<DNSSRVResolverQuery> DNSSRVResolverQueryPtr;
-      typedef boost::weak_ptr<DNSSRVResolverQuery> DNSSRVResolverQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSSRVResolverQuery
+      #pragma mark
 
       class DNSSRVResolverQuery : public MessageQueueAssociator,
                                   public IDNSQuery,
@@ -956,6 +1064,11 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVResolverQuery => IDNSQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual PUID getID() const {return mID;}
 
         //---------------------------------------------------------------------
@@ -1004,6 +1117,11 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVResolverQuery => IDNSDelegate
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual void onLookupCompleted(IDNSQueryPtr query)
         {
           AutoRecursiveLock lock(mLock);
@@ -1018,6 +1136,12 @@ namespace hookflash
           }
           handleResolverCompleted(query);
         }
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVResolverQuery => (internal)
+        #pragma mark
 
         //---------------------------------------------------------------------
         void handleSRVCompleted()
@@ -1136,6 +1260,11 @@ namespace hookflash
         }
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVResolverQuery => (data)
+        #pragma mark
+
         RecursiveLock mLock;
         PUID mID;
 
@@ -1165,9 +1294,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSInstantResultQuery;
-      typedef boost::shared_ptr<DNSInstantResultQuery> DNSInstantResultQueryPtr;
-      typedef boost::weak_ptr<DNSInstantResultQuery> DNSInstantResultQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSInstantResultQuery
+      #pragma mark
 
       class DNSInstantResultQuery : public IDNSQuery
       {
@@ -1176,6 +1305,11 @@ namespace hookflash
       public:
         //---------------------------------------------------------------------
         static DNSInstantResultQueryPtr create() {return DNSInstantResultQueryPtr(new DNSInstantResultQuery);}
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSSRVResolverQuery => IDNSQuery
+        #pragma mark
 
         //---------------------------------------------------------------------
         virtual PUID getID() const {return mID;}
@@ -1199,6 +1333,11 @@ namespace hookflash
         virtual SRVResultPtr getSRV() const {return IDNS::cloneSRV(mSRV);}
 
       public:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSInstantResultQuery => (data)
+        #pragma mark
+
         AResultPtr mA;
         AAAAResultPtr mAAAA;
         SRVResultPtr mSRV;
@@ -1211,11 +1350,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class DNSListQuery;
-      typedef boost::shared_ptr<DNSListQuery> DNSListQueryPtr;
-      typedef boost::weak_ptr<DNSListQuery> DNSListQueryWeakPtr;
+      #pragma mark
+      #pragma mark DNSListQuery
+      #pragma mark
 
-      class DNSListQuery : public zsLib::MessageQueueAssociator,
+      class DNSListQuery : public MessageQueueAssociator,
                            public IDNSQuery,
                            public IDNSDelegate
       {
@@ -1365,6 +1504,11 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSListQuery => IDNSQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual PUID getID() const {return mID;}
 
         //---------------------------------------------------------------------
@@ -1418,6 +1562,11 @@ namespace hookflash
         }
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSListQuery => IDNSDelegate
+        #pragma mark
+
         //---------------------------------------------------------------------
         virtual void onLookupCompleted(IDNSQueryPtr inQuery)
         {
@@ -1484,12 +1633,22 @@ namespace hookflash
 
       private:
         //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSListQuery => (internal)
+        #pragma mark
+
+        //---------------------------------------------------------------------
         String log(const char *message) const
         {
           return String("DNSListQuery [") + Stringize<PUID>(mID).string() + "] " + message;
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark DNSListQuery => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         PUID mID;
         IDNSQueryWeakPtr mThisWeak;
@@ -1507,6 +1666,9 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IDNS
+    #pragma mark
 
     //-------------------------------------------------------------------------
     IDNSQueryPtr IDNS::lookupA(

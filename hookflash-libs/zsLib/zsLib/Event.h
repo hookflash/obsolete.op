@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -23,7 +23,7 @@
 #ifndef ZSLIB_EVENT_H_46ff6e637b2164767297dd635614b60e
 #define ZSLIB_EVENT_H_46ff6e637b2164767297dd635614b60e
 
-#include <zsLib/internal/Event.h>
+#include <zsLib/internal/zsLib_Event.h>
 
 namespace zsLib
 {

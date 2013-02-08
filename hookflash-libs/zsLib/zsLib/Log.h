@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_LOG_H_47d9d31085744072b865483d323d7b02
 #define ZSLIB_LOG_H_47d9d31085744072b865483d323d7b02
 
-#include <zsLib/internal/Log.h>
+#include <zsLib/internal/zsLib_Log.h>
 
 // forward declare a subsystem (for use in header files); wrap inside the namespace where it should be defined
 #define ZS_DECLARE_FORWARD_SUBSYSTEM(xSubsystem)                        ZS_INTERNAL_DECLARE_FORWARD_SUBSYSTEM(xSubsystem)

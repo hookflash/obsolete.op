@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,32 +22,29 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/stack/internal/stack_PeerSubscription.h>
 #include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_AccountFinder.h>
-#include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/services/IRUDPICESocket.h>
+#include <hookflash/stack/internal/stack_Peer.h>
+#include <hookflash/stack/internal/stack_Location.h>
+#include <hookflash/stack/internal/stack_Stack.h>
+#include <hookflash/stack/internal/stack_Helper.h>
+
+#include <hookflash/stack/IMessageIncoming.h>
 
 #include <zsLib/Log.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 
-#include <algorithm>
+//#include <algorithm>
 
-//#define HOOKFLASH_STACK_SESSION_USERAGENT "hookflash/1.0.1001a (iOS/iPad)"
-#define HOOKFLASH_STACK_PEER_LOCATION_FIND_TIMEOUT_IN_SECONDS (60*2)
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
-
 
 
 namespace hookflash
@@ -58,18 +55,17 @@ namespace hookflash
     {
       using zsLib::Stringize;
 
-      typedef zsLib::String String;
-      typedef zsLib::RecursiveLock RecursiveLock;
-      typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      PeerSubscription::PeerSubscription(IAccountForPeerSubscriptionPtr account) :
-        MessageQueueAssociator(account->getAssociatedMessageQueue()),
+      PeerSubscription::PeerSubscription(
+                                         AccountPtr account,
+                                         IPeerSubscriptionDelegatePtr delegate
+                                         ) :
         mID(zsLib::createPUID()),
-        mAccount(account)
+        mAccount(account),
+        mDelegate(IPeerSubscriptionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate))
       {
         ZS_LOG_DEBUG(log("constructed"))
       }
@@ -77,6 +73,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void PeerSubscription::init()
       {
+        mAccount.lock()->forPeerSubscription().subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -84,102 +81,74 @@ namespace hookflash
       {
         ZS_LOG_DEBUG(log("destroyed"))
         mThisWeak.reset();
+
+        cancel();
       }
 
       //-----------------------------------------------------------------------
-      PeerSubscriptionPtr PeerSubscription::create(
-                                                   IAccountForPeerSubscriptionPtr account,
-                                                   const char *contactID,
-                                                   IPeerSubscriptionDelegatePtr delegate
-                                                   )
+      PeerSubscriptionPtr PeerSubscription::convert(IPeerSubscriptionPtr subscription)
       {
+        return boost::dynamic_pointer_cast<PeerSubscription>(subscription);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerSubscription => IPeerSubscription
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String PeerSubscription::toDebugString(IPeerSubscriptionPtr subscription, bool includeCommaPrefix)
+      {
+        if (!subscription) return includeCommaPrefix ? String(", subscription=(null)") : String("subscription=(null)");
+        return PeerSubscription::convert(subscription)->getDebugValueString(includeCommaPrefix);
+      }
+
+      //-----------------------------------------------------------------------
+      IPeerSubscriptionPtr PeerSubscription::subscribeAll(
+                                                          IAccountPtr account,
+                                                          IPeerSubscriptionDelegatePtr delegate
+                                                          )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(account)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
 
-        PeerSubscriptionPtr pThis(new PeerSubscription(account));
+        PeerSubscriptionPtr pThis(new PeerSubscription(Account::convert(account), delegate));
         pThis->mThisWeak = pThis;
-        pThis->mContactID = contactID;
-        ZS_THROW_INVALID_ARGUMENT_IF(pThis->mContactID.length() < 1)
-        pThis->mDelegate = IPeerSubscriptionDelegateProxy::createWeak(account->getAssociatedMessageQueue(), delegate);
         pThis->init();
         return pThis;
       }
 
       //-----------------------------------------------------------------------
-      String PeerSubscription::getContactID()
+      IPeerSubscriptionPtr PeerSubscription::subscribe(
+                                                       IPeerPtr inPeer,
+                                                       IPeerSubscriptionDelegatePtr delegate
+                                                       )
       {
-        AutoRecursiveLock lock(getLock());
-        return mContactID;
+        ZS_THROW_INVALID_ARGUMENT_IF(!inPeer)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+
+        PeerPtr peer = Peer::convert(inPeer);
+        AccountPtr account = peer->forPeerSubscription().getAccount();
+
+        PeerSubscriptionPtr pThis(new PeerSubscription(account, delegate));
+        pThis->mPeer = peer;
+        pThis->mThisWeak = pThis;
+        pThis->init();
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
-      IPeerSubscription::PeerSubscriptionFindStates PeerSubscription::getFindState() const
+      IPeerPtr PeerSubscription::getSubscribedToPeer() const
       {
         AutoRecursiveLock lock(getLock());
-        IAccountForPeerSubscriptionPtr account = mAccount.lock();
-        if (!account) return PeerSubscriptionFindState_Idle;
-        return (account->isFinding(mContactID) ? PeerSubscriptionFindState_Finding : PeerSubscriptionFindState_Idle);
+        return mPeer;
       }
 
       //-----------------------------------------------------------------------
-      void PeerSubscription::getPeerLocations(
-                                              LocationList &outLocations,
-                                              bool includeOnlyConnectedLocations
-                                              )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("unable to get peer locations as subscription is shutdown"))
-          return;
-        }
-        IAccountForPeerSubscriptionPtr account = mAccount.lock();
-        if (!account) {
-          ZS_LOG_WARNING(Debug, log("unable to get peer locations as account is now gone"))
-          return;
-        }
-        account->getPeerLocations(mContactID, outLocations, includeOnlyConnectedLocations);
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerSubscription::getPeerLocations(
-                                              PeerLocationList &outPeerLocations,
-                                              bool includeOnlyConnectedLocations
-                                              )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("unable to get peer locations as subscription is shutdown"))
-          return;
-        }
-        IAccountForPeerSubscriptionPtr account = mAccount.lock();
-        if (!account) {
-          ZS_LOG_WARNING(Debug, log("unable to get peer locations as account is now gone"))
-          return;
-        }
-        account->getPeerLocations(mContactID, outPeerLocations, includeOnlyConnectedLocations);
-      }
-
-      //-----------------------------------------------------------------------
-      bool PeerSubscription::sendPeerMesage(
-                                            const char *locationID,
-                                            message::MessagePtr message
-                                            )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("unable to send peer location a message as the subscription is shutdown"))
-          return false;
-        }
-
-        IAccountForPeerSubscriptionPtr account = mAccount.lock();
-        if (!account) {
-          ZS_LOG_WARNING(Debug, log("unable to send peer location a message as account is gone"))
-          return false;
-        }
-        return account->sendPeerMessage(mContactID, locationID, message);
-      }
-
-      //-----------------------------------------------------------------------
-      bool PeerSubscription::isShutdown()
+      bool PeerSubscription::PeerSubscription::isShutdown() const
       {
         AutoRecursiveLock lock(getLock());
         return !mDelegate;
@@ -190,98 +159,154 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("cancel called"))
-
-        if (mDelegate) {
-          try {
-            mDelegate->onPeerSubscriptionShutdown(mThisWeak.lock());
-          } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
-          }
-        }
-        mDelegate.reset();
-
-        IAccountForPeerSubscriptionPtr account = mAccount.lock();
-        if (!account) {
-          ZS_LOG_WARNING(Debug, log("unable to notify account of subscription being gone as account is gone"))
+        if (!mDelegate) {
+          ZS_LOG_DEBUG(log("cancel called but already shutdown (probably okay)"))
           return;
         }
 
-        PeerSubscriptionPtr pThis = mThisWeak.lock();
-        if (pThis) {
-          (IAccountForPeerSubscriptionProxy::create(account))->onPeerSubscriptionShutdown(mThisWeak.lock());
+        PeerSubscriptionPtr subscription = mThisWeak.lock();
+
+        if ((mDelegate) &&
+            (subscription)) {
+          try {
+            mDelegate->onPeerSubscriptionShutdown(subscription);
+          } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
+            ZS_LOG_WARNING(Detail, log("delegate already gone"))
+          }
         }
+
+        mDelegate.reset();
+
+        AccountPtr account = mAccount.lock();
+        if (!account) {
+          ZS_LOG_DEBUG(log("cancel called but account gone"))
+          return;
+        }
+
+        account->forPeerSubscription().notifyDestroyed(*this);
       }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void PeerSubscription::notifyPeerSubscriptionLocationsChanged()
+      #pragma mark
+      #pragma mark PeerSubscription => IPeerSubscriptionForAccount
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void PeerSubscription::notifyFindStateChanged(
+                                                    PeerPtr peer,
+                                                    PeerFindStates state
+                                                    )
       {
         AutoRecursiveLock lock(getLock());
         if (!mDelegate) {
-          ZS_LOG_WARNING(Debug, log("unable to notify of location change as subscription is already shutdown"))
+          ZS_LOG_WARNING(Detail, log("notify of find state changed after shutdown"))
           return;
         }
 
+        if (mPeer) {
+          if (mPeer->forPeerSubscription().getPeerURI() != peer->forPeerSubscription().getPeerURI()) {
+            ZS_LOG_DEBUG(log("ignoring find state for peer") + ", notified peer: " + IPeer::toDebugString(peer, false) + ", subscribing peer" + IPeer::toDebugString(mPeer, false))
+            return;
+          }
+        }
+
         try {
-          mDelegate->onPeerSubscriptionLocationsChanged(mThisWeak.lock());
+          mDelegate->onPeerSubscriptionFindStateChanged(mThisWeak.lock(), peer, state);
         } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
-          cancel();
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
         }
       }
 
       //-----------------------------------------------------------------------
-      void PeerSubscription::notifyAccountNotifyPeerSubscriptionShutdown()
+      void PeerSubscription::notifyLocationConnectionStateChanged(
+                                                                  LocationPtr location,
+                                                                  LocationConnectionStates state
+                                                                  )
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (!mDelegate) {
+          ZS_LOG_WARNING(Detail, log("notify of location connection state changed after shutdown"))
+          return;
+        }
+
+        if (mPeer) {
+          PeerPtr peer = location->forPeerSubscription().getPeer();
+          if (!peer) {
+            ZS_LOG_DEBUG(log("ignoring location connection state change from non-peer, subscribing=") + IPeer::toDebugString(mPeer))
+            return;
+          }
+          if (mPeer->forPeerSubscription().getPeerURI() != peer->forPeerSubscription().getPeerURI()) {
+            ZS_LOG_DEBUG(log("ignoring location connection state change") + ", notified peer: " + IPeer::toDebugString(peer, false) + ", subscribing peer" + IPeer::toDebugString(mPeer, false))
+            return;
+          }
+        }
+
+        try {
+          mDelegate->onPeerSubscriptionLocationConnectionStateChanged(mThisWeak.lock(), location, state);
+        } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void PeerSubscription::notifyMessageIncoming(IMessageIncomingPtr message)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (!mDelegate) {
+          ZS_LOG_WARNING(Detail, log("notify of incoming message after shutdown"))
+          return;
+        }
+
+        LocationPtr location = Location::convert(message->getLocation());
+        if (!location) {
+          ZS_LOG_DEBUG(log("ignoring incoming message missing location"))
+          return;
+        }
+        if (mPeer) {
+          PeerPtr peer = Peer::convert(location->forPeerSubscription().getPeer());
+          if (!peer) {
+            ZS_LOG_DEBUG(log("ignoring incoming message from non-peer") + ", subscribing peer" + IPeer::toDebugString(mPeer, false) + ", incoming: " + IMessageIncoming::toDebugString(message, false))
+            return;
+          }
+          if (mPeer->forPeerSubscription().getPeerURI() != peer->forPeerSubscription().getPeerURI()) {
+            ZS_LOG_DEBUG(log("ignoring incoming message for peer") + ", subscribing peer" + IPeer::toDebugString(mPeer, false) + ", incoming: " + IMessageIncoming::toDebugString(message, false))
+            return;
+          }
+        }
+
+        try {
+          mDelegate->onPeerSubscriptionMessageIncoming(mThisWeak.lock(), message);
+        } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void PeerSubscription::notifyShutdown()
       {
         AutoRecursiveLock lock(getLock());
         cancel();
       }
 
       //-----------------------------------------------------------------------
-      void PeerSubscription::notifyAccountPeerFindStateChanged(IPeerSubscription::PeerSubscriptionFindStates state)
-      {
-        AutoRecursiveLock lock(getLock());
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("unable to notify of find state changed as subscription is already shutdown"))
-          return;
-        }
-
-        try {
-          mDelegate->onPeerSubscriptionFindStateChanged(mThisWeak.lock(), state);
-        } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void PeerSubscription::notifyPeerSubscriptionMessage(
-                                                           const char *contactID,
-                                                           const char *locationID,
-                                                           IPeerSubscriptionMessagePtr message
-                                                           )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("unable to notify of peer message as subscription is already shutdown"))
-          return;
-        }
-
-        try {
-          mDelegate->onPeerSubscriptionMessage(mThisWeak.lock(), message);
-        } catch(IPeerSubscriptionDelegateProxy::Exceptions::DelegateGone &) {
-          cancel();
-        }
-      }
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark PeerSubscription => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       RecursiveLock &PeerSubscription::getLock() const
       {
-        IAccountForPeerSubscriptionPtr account(mAccount.lock());
+        AccountPtr account = mAccount.lock();
         if (!account) return mBogusLock;
-        return account->getLock();
+        return account->forPeerSubscription().getLock();
       }
 
       //-----------------------------------------------------------------------
@@ -289,21 +314,48 @@ namespace hookflash
       {
         return String("PeerSubscription [") + Stringize<PUID>(mID).string() + "] " + message;
       }
+
+      //-----------------------------------------------------------------------
+      String PeerSubscription::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("peer subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("subscribing", mPeer ? "peer" : "all", firstTime) +
+               IPeer::toDebugString(mPeer);
+      }
     }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
-    const char *IPeerSubscription::toString(PeerSubscriptionFindStates state)
+    #pragma mark
+    #pragma mark IPeerSubscription
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    String IPeerSubscription::toDebugString(IPeerSubscriptionPtr subscription, bool includeCommaPrefix)
     {
-      switch (state)
-      {
-        case PeerSubscriptionFindState_Idle:      return "Idle";
-        case PeerSubscriptionFindState_Finding:   return "Finding";
-        case PeerSubscriptionFindState_Completed: return "Completed";
-      }
-      return "UNDEFINED";
+      return internal::PeerSubscription::toDebugString(subscription, includeCommaPrefix);
+    }
+
+    //-------------------------------------------------------------------------
+    IPeerSubscriptionPtr IPeerSubscription::subscribeAll(
+                                                         IAccountPtr account,
+                                                         IPeerSubscriptionDelegatePtr delegate
+                                                         )
+    {
+      return internal::PeerSubscription::subscribeAll(account, delegate);
+    }
+
+    //-------------------------------------------------------------------------
+    IPeerSubscriptionPtr IPeerSubscription::subscribe(
+                                                      IPeerPtr peer,
+                                                      IPeerSubscriptionDelegatePtr delegate
+                                                      )
+    {
+      return internal::PeerSubscription::subscribe(peer, delegate);
     }
   }
 }

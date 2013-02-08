@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_NUMERIC_H_505af97f61feb236ca87601e6bf58e58
 #define ZSLIB_NUMERIC_H_505af97f61feb236ca87601e6bf58e58
 
-#include <zsLib/internal/Numeric.h>
+#include <zsLib/internal/zsLib_Numeric.h>
 
 #pragma warning(push)
 #pragma warning(disable:4290)
@@ -64,6 +64,6 @@ namespace zsLib
 
 #pragma warning(pop)
 
-#include <zsLib/internal/Numeric.h>
+#include <zsLib/internal/zsLib_Numeric.h>
 
 #endif // ZSLIB_NUMERIC_H_505af97f61feb236ca87601e6bf58e58

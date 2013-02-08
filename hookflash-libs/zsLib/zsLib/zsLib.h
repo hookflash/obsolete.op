@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -41,6 +41,6 @@
 #include <zsLib/Timer.h>
 #include <zsLib/XML.h>
 //#include <zsLib/zsLib.h>
-#include <zsLib/zsTypes.h>
+#include <zsLib/types.h>
 
 #endif // ZSLIB_ZSLIB_H_ba2ac12d494be731cbd83b31b1d36a5a

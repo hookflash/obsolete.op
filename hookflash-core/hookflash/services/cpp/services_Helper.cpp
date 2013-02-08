@@ -1,17 +1,17 @@
 /*
- 
- Copyright (c) 2012, SMB Phone Inc.
+
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,18 +22,18 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #include <hookflash/services/internal/services_Helper.h>
 #include <hookflash/services/IDNS.h>
 #include <cryptopp/osrng.h>
 #include <zsLib/Stringize.h>
-#include <zsLib/zsHelpers.h>
+#include <zsLib/helpers.h>
 #include <zsLib/Log.h>
 #include <zsLib/ISocket.h>
 #include <zsLib/Socket.h>
@@ -78,35 +78,6 @@ namespace hookflash
     using zsLib::Stringize;
     using zsLib::Numeric;
 
-    typedef zsLib::BYTE BYTE;
-    typedef zsLib::USHORT USHORT;
-    typedef zsLib::ULONG ULONG;
-    typedef zsLib::CSTR CSTR;
-    typedef zsLib::WORD WORD;
-    typedef zsLib::String String;
-    typedef zsLib::Seconds Seconds;
-    typedef zsLib::RecursiveLock RecursiveLock;
-    typedef zsLib::AutoRecursiveLock AutoRecursiveLock;
-    typedef zsLib::ISocketDelegate ISocketDelegate;
-    typedef zsLib::Socket Socket;
-    typedef zsLib::ISocket ISocket;
-    typedef zsLib::ISocketPtr ISocketPtr;
-    typedef zsLib::SocketPtr SocketPtr;
-    typedef zsLib::IPAddress IPAddress;
-    typedef zsLib::Subsystem Subsystem;
-    typedef zsLib::Log Log;
-    typedef zsLib::LogPtr LogPtr;
-    typedef zsLib::ILogDelegate ILogDelegate;
-    typedef zsLib::ITimerDelegate ITimerDelegate;
-    typedef zsLib::TimerPtr TimerPtr;
-    typedef zsLib::Timer Timer;
-    typedef zsLib::Duration Duration;
-    typedef zsLib::Time Time;
-    typedef zsLib::MessageQueueThread MessageQueueThread;
-    typedef zsLib::MessageQueueThreadPtr MessageQueueThreadPtr;
-    typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
-    typedef zsLib::MessageQueueAssociator MessageQueueAssociator;
-
     namespace internal
     {
       interaction ITelnetLoggerAsync;
@@ -136,18 +107,25 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark GlobalLock
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       class GlobalLock
       {
       public:
         GlobalLock() {}
         ~GlobalLock() {}
 
+        //---------------------------------------------------------------------
         static GlobalLock &singleton()
         {
           static GlobalLock lock;
           return lock;
         }
 
+        //---------------------------------------------------------------------
         RecursiveLock &getLock() const
         {
           return mLock;
@@ -157,65 +135,41 @@ namespace hookflash
         mutable RecursiveLock mLock;
       };
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark GlobalLockInit
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       class GlobalLockInit
       {
       public:
+        //---------------------------------------------------------------------
         GlobalLockInit()
         {
           singleton();
         }
 
+        //---------------------------------------------------------------------
         RecursiveLock &singleton()
         {
           return (GlobalLock::singleton()).getLock();
         }
       };
+
       static GlobalLockInit gGlobalLockInit;
 
-      RecursiveLock &Helper::getGlobalLock()
-      {
-        return gGlobalLockInit.singleton();
-      }
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      String Helper::randomString(UINT lengthInChars)
-      {
-        static const char *randomCharArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        static size_t randomSize = strlen(randomCharArray);
+      #pragma mark
+      #pragma mark ServiceThread
+      #pragma mark
 
-        BYTE staticBuffer[256];
-        char staticOutputBuffer[sizeof(staticBuffer)+1];
-
-        boost::shared_array<BYTE> allocatedBuffer;
-        boost::shared_array<char> allocatedOutputBuffer;
-
-        BYTE *buffer = &(staticBuffer[0]);
-        char *output = &(staticOutputBuffer[0]);
-        if (lengthInChars > sizeof(staticBuffer)) {
-          // use the allocated buffer instead
-          allocatedBuffer = boost::shared_array<BYTE>(new BYTE[lengthInChars]);
-          allocatedOutputBuffer = boost::shared_array<char>(new char[lengthInChars+1]);
-          buffer = allocatedBuffer.get();
-          output = allocatedOutputBuffer.get();
-        }
-
-        CryptoPP::AutoSeededRandomPool rng;
-        rng.GenerateBlock(&(buffer[0]), lengthInChars);
-
-        memset(&(output[0]), 0, sizeof(char)*(lengthInChars+1));
-
-        for (UINT loop = 0; loop < lengthInChars; ++loop) {
-          output[loop] = randomCharArray[((buffer[loop])%randomSize)];
-        }
-        return String((CSTR)(&(output[0])));
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       class ServiceThread;
       typedef boost::shared_ptr<ServiceThread> ServiceThreadPtr;
@@ -223,20 +177,24 @@ namespace hookflash
 
       class ServiceThread
       {
+        //---------------------------------------------------------------------
         ServiceThread() {}
 
+        //---------------------------------------------------------------------
         void init()
         {
           mThread = MessageQueueThread::createBasic("com.hookflash.services.serviceThread");
         }
 
       public:
+        //---------------------------------------------------------------------
         ~ServiceThread()
         {
           if (!mThread) return;
           mThread->waitForShutdown();
         }
 
+        //---------------------------------------------------------------------
         static ServiceThreadPtr create()
         {
           ServiceThreadPtr pThis(new ServiceThread);
@@ -245,6 +203,7 @@ namespace hookflash
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         static ServiceThreadPtr singleton()
         {
           AutoRecursiveLock lock(Helper::getGlobalLock());
@@ -252,23 +211,32 @@ namespace hookflash
           return thread;
         }
 
+        //---------------------------------------------------------------------
         MessageQueueThreadPtr getThread() const
         {
           return mThread;
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceThread => (data)
+        #pragma mark
+
         ServiceThreadWeakPtr mThisWeak;
 
         MessageQueueThreadPtr mThread;
       };
 
-      IMessageQueuePtr Helper::getServiceQueue()
-      {
-        ServiceThreadPtr thread = ServiceThread::singleton();
-        return thread->getThread();
-      }
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
 
+      //-----------------------------------------------------------------------
       static String currentThreadIDAsString()
       {
 #ifdef _WIN32
@@ -282,9 +250,6 @@ namespace hookflash
 #endif //_WIN32
       }
 
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       static String toColorString(
                                   const Subsystem &inSubsystem,
@@ -350,6 +315,7 @@ namespace hookflash
         return result;
       }
 
+      //-----------------------------------------------------------------------
       static String toBWString(
                                const Subsystem &inSubsystem,
                                Log::Severity inSeverity,
@@ -391,6 +357,7 @@ namespace hookflash
         return result;
       }
 
+      //-----------------------------------------------------------------------
       static String toWindowsString(
                                     const Subsystem &inSubsystem,
                                     Log::Severity inSeverity,
@@ -419,12 +386,18 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LogLevelLogger
+      #pragma mark
+
       class LogLevelLogger;
       typedef boost::shared_ptr<LogLevelLogger> LogLevelLoggerPtr;
       typedef boost::weak_ptr<LogLevelLogger> LogLevelLoggerWeakPtr;
 
+      //-----------------------------------------------------------------------
       class LogLevelLogger : public ILogDelegate
       {
+        //---------------------------------------------------------------------
         void init()
         {
           LogPtr log = Log::singleton();
@@ -432,11 +405,13 @@ namespace hookflash
         }
 
       public:
+        //---------------------------------------------------------------------
         LogLevelLogger() :
           mDefaultLogLevelSet(false),
           mDefaultLogLevel(Log::None)
         {}
 
+        //---------------------------------------------------------------------
         static LogLevelLoggerPtr create()
         {
           LogLevelLoggerPtr pThis(new LogLevelLogger());
@@ -445,12 +420,14 @@ namespace hookflash
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         static LogLevelLoggerPtr singleton() {
           AutoRecursiveLock lock(Helper::getGlobalLock());
           static LogLevelLoggerPtr logger = LogLevelLogger::create();
           return logger;
         }
 
+        //---------------------------------------------------------------------
         void setLogLevel(Log::Level level)
         {
           AutoRecursiveLock lock(mLock);
@@ -465,6 +442,7 @@ namespace hookflash
           }
         }
 
+        //---------------------------------------------------------------------
         void setLogLevel(const char *component, Log::Level level)
         {
           AutoRecursiveLock lock(mLock);
@@ -477,6 +455,7 @@ namespace hookflash
           (*subsystem).setOutputLevel(level);
         }
 
+        //---------------------------------------------------------------------
         virtual void onNewSubsystem(Subsystem &inSubsystem)
         {
           AutoRecursiveLock lock(mLock);
@@ -495,6 +474,12 @@ namespace hookflash
           inSubsystem.setOutputLevel(level);
         }
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LogLevelLogger => ILogDelegate
+        #pragma mark
+
+        //---------------------------------------------------------------------
         // notification of a log event
         virtual void log(
                          const Subsystem &,
@@ -509,6 +494,11 @@ namespace hookflash
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LogLevelLogger => (data)
+        #pragma mark
+
         LogLevelLoggerWeakPtr mThisWeak;
 
         mutable RecursiveLock mLock;
@@ -527,12 +517,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark StdOutLogger
+      #pragma mark
+
       class StdOutLogger;
       typedef boost::shared_ptr<StdOutLogger> StdOutLoggerPtr;
       typedef boost::weak_ptr<StdOutLogger> StdOutLoggerWeakPtr;
 
       class StdOutLogger : public ILogDelegate
       {
+        //---------------------------------------------------------------------
         void init()
         {
           LogPtr log = Log::singleton();
@@ -540,8 +535,10 @@ namespace hookflash
         }
 
       public:
+        //---------------------------------------------------------------------
         StdOutLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
 
+        //---------------------------------------------------------------------
         static StdOutLoggerPtr create(bool colorizeOutput)
         {
           StdOutLoggerPtr pThis(new StdOutLogger(colorizeOutput));
@@ -550,6 +547,7 @@ namespace hookflash
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         static StdOutLoggerPtr singleton(bool colorizeOutput, bool reset = false) {
           AutoRecursiveLock lock(Helper::getGlobalLock());
           static StdOutLoggerPtr logger = (reset ? StdOutLoggerPtr() : StdOutLogger::create(colorizeOutput));
@@ -566,10 +564,16 @@ namespace hookflash
           return logger;
         }
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark StdOutLogger => ILogDelegate
+        #pragma mark
+
         virtual void onNewSubsystem(Subsystem &)
         {
         }
 
+        //---------------------------------------------------------------------
         // notification of a log event
         virtual void log(
                          const Subsystem &inSubsystem,
@@ -589,6 +593,11 @@ namespace hookflash
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark StdOutLogger => (data)
+        #pragma mark
+
         StdOutLoggerWeakPtr mThisWeak;
         bool mColorizeOutput;
       };
@@ -597,12 +606,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark FileLogger
+      #pragma mark
+
       class FileLogger;
       typedef boost::shared_ptr<FileLogger> FileLoggerPtr;
       typedef boost::weak_ptr<FileLogger> FileLoggerWeakPtr;
 
       class FileLogger : public ILogDelegate
       {
+        //---------------------------------------------------------------------
         void init(const char *fileName)
         {
           mFile.open(fileName, std::ios::out | std::ios::binary);
@@ -611,8 +625,10 @@ namespace hookflash
         }
 
       public:
+        //---------------------------------------------------------------------
         FileLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
 
+        //---------------------------------------------------------------------
         static FileLoggerPtr create(const char *fileName, bool colorizeOutput)
         {
           FileLoggerPtr pThis(new FileLogger(colorizeOutput));
@@ -621,6 +637,7 @@ namespace hookflash
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         static FileLoggerPtr singleton(const char *fileName, bool colorizeOutput, bool reset = false) {
           AutoRecursiveLock lock(Helper::getGlobalLock());
           static FileLoggerPtr logger = (reset ? FileLoggerPtr() : FileLogger::create(fileName, colorizeOutput));
@@ -637,10 +654,16 @@ namespace hookflash
           return logger;
         }
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FileLogger => ILogDelegate
+        #pragma mark
+
         virtual void onNewSubsystem(Subsystem &)
         {
         }
 
+        //---------------------------------------------------------------------
         // notification of a log event
         virtual void log(
                          const Subsystem &inSubsystem,
@@ -665,6 +688,11 @@ namespace hookflash
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FileLogger => (data)
+        #pragma mark
+
         FileLoggerWeakPtr mThisWeak;
         bool mColorizeOutput;
 
@@ -675,12 +703,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark WindowsDebuggerLogger
+      #pragma mark
+
       class WindowsDebuggerLogger;
       typedef boost::shared_ptr<WindowsDebuggerLogger> WindowsDebuggerLoggerPtr;
       typedef boost::weak_ptr<WindowsDebuggerLogger> WindowsDebuggerLoggerWeakPtr;
 
       class WindowsDebuggerLogger : public ILogDelegate
       {
+        //---------------------------------------------------------------------
         void init()
         {
           LogPtr log = Log::singleton();
@@ -688,8 +721,10 @@ namespace hookflash
         }
 
       public:
+        //---------------------------------------------------------------------
         WindowsDebuggerLogger() {}
 
+        //---------------------------------------------------------------------
         static WindowsDebuggerLoggerPtr create()
         {
           WindowsDebuggerLoggerPtr pThis(new WindowsDebuggerLogger());
@@ -698,6 +733,7 @@ namespace hookflash
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         static WindowsDebuggerLoggerPtr singleton(bool reset = false)
         {
 #ifdef _WIN32
@@ -719,10 +755,17 @@ namespace hookflash
 #endif //_WIN32
         }
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark WindowsDebuggerLogger => ILogDelegate
+        #pragma mark
+
+        //---------------------------------------------------------------------
         virtual void onNewSubsystem(Subsystem &)
         {
         }
 
+        //---------------------------------------------------------------------
         // notification of a log event
         virtual void log(
                          const Subsystem &inSubsystem,
@@ -741,6 +784,11 @@ namespace hookflash
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark WindowsDebuggerLogger => (data)
+        #pragma mark
+
         WindowsDebuggerLoggerWeakPtr mThisWeak;
       };
 
@@ -748,6 +796,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TelnetLogger
+      #pragma mark
+
       class TelnetLogger;
       typedef boost::shared_ptr<TelnetLogger> TelnetLoggerPtr;
       typedef boost::weak_ptr<TelnetLogger> TelnetLoggerWeakPtr;
@@ -991,6 +1043,11 @@ namespace hookflash
           }
           return logger;
         }
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TelnetLogger => ILogDelegate
+        #pragma mark
 
         //---------------------------------------------------------------------
         virtual void onNewSubsystem(Subsystem &)
@@ -1381,6 +1438,11 @@ namespace hookflash
         }
 
       private:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TelnetLogger => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
 
         MessageQueueThreadPtr mThread;
@@ -1414,37 +1476,124 @@ namespace hookflash
         String mServerLookupName;
         IDNS::SRVResultPtr mServers;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Helper
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RecursiveLock &Helper::getGlobalLock()
+      {
+        return gGlobalLockInit.singleton();
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::randomString(UINT lengthInChars)
+      {
+        static const char *randomCharArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        static size_t randomSize = strlen(randomCharArray);
+
+        BYTE staticBuffer[256];
+        char staticOutputBuffer[sizeof(staticBuffer)+1];
+
+        boost::shared_array<BYTE> allocatedBuffer;
+        boost::shared_array<char> allocatedOutputBuffer;
+
+        BYTE *buffer = &(staticBuffer[0]);
+        char *output = &(staticOutputBuffer[0]);
+        if (lengthInChars > sizeof(staticBuffer)) {
+          // use the allocated buffer instead
+          allocatedBuffer = boost::shared_array<BYTE>(new BYTE[lengthInChars]);
+          allocatedOutputBuffer = boost::shared_array<char>(new char[lengthInChars+1]);
+          buffer = allocatedBuffer.get();
+          output = allocatedOutputBuffer.get();
+        }
+
+        AutoSeededRandomPool rng;
+        rng.GenerateBlock(&(buffer[0]), lengthInChars);
+
+        memset(&(output[0]), 0, sizeof(char)*(lengthInChars+1));
+
+        for (UINT loop = 0; loop < lengthInChars; ++loop) {
+          output[loop] = randomCharArray[((buffer[loop])%randomSize)];
+        }
+        return String((CSTR)(&(output[0])));
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::random(UINT lengthInBytes)
+      {
+        SecureByteBlockPtr output(new SecureByteBlock);
+        AutoSeededRandomPool rng;
+        output->CleanNew(lengthInBytes);
+        rng.GenerateBlock(*output, lengthInBytes);
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      IMessageQueuePtr Helper::getServiceQueue()
+      {
+        ServiceThreadPtr thread = ServiceThread::singleton();
+        return thread->getThread();
+      }
+
     }
 
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark services::IHelper
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    RecursiveLock &IHelper::getGlobalLock()
+    {
+      return internal::Helper::getGlobalLock();
+    }
+
+    //-------------------------------------------------------------------------
     String IHelper::randomString(UINT lengthInChars)
     {
       return internal::Helper::randomString(lengthInChars);
     }
 
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::random(UINT lengthInBytes)
+    {
+      return internal::Helper::random(lengthInBytes);
+    }
+
+    //-------------------------------------------------------------------------
     IMessageQueuePtr IHelper::getServiceQueue()
     {
       return internal::Helper::getServiceQueue();
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::installStdOutLogger(bool colorizeOutput)
     {
       internal::StdOutLogger::singleton(colorizeOutput);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::installFileLogger(const char *fileName, bool colorizeOutput)
     {
       internal::FileLogger::singleton(fileName, colorizeOutput);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::installTelnetLogger(WORD listenPort, ULONG maxSecondsWaitForSocketToBeAvailable,  bool colorizeOutput)
     {
       internal::TelnetLogger::singleton(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::installOutgoingTelnetLogger(
                                               const char *serverHostWithPort,
                                               bool colorizeOutput,
@@ -1454,42 +1603,50 @@ namespace hookflash
       internal::TelnetLogger::singleton(serverHostWithPort, colorizeOutput, sendStringUponConnection);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::installWindowsDebuggerLogger()
     {
       internal::WindowsDebuggerLogger::singleton();
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::uninstallStdOutLogger()
     {
       internal::StdOutLogger::singleton(false, true);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::uninstallFileLogger()
     {
       internal::FileLogger::singleton(NULL, false, true);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::uninstallTelnetLogger()
     {
       internal::TelnetLogger::singleton(0, 0, false, true);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::uninstallOutgoingTelnetLogger()
     {
       internal::TelnetLogger::singleton((const char *)NULL, false, (const char *)NULL);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::uninstallWindowsDebuggerLogger()
     {
       internal::WindowsDebuggerLogger::singleton(true);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::setLogLevel(Log::Level logLevel)
     {
       internal::LogLevelLoggerPtr logger = internal::LogLevelLogger::singleton();
       logger->setLogLevel(logLevel);
     }
 
+    //-------------------------------------------------------------------------
     void IHelper::setLogLevel(const char *component, Log::Level logLevel)
     {
       internal::LogLevelLoggerPtr logger = internal::LogLevelLogger::singleton();

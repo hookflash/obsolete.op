@@ -1,6 +1,6 @@
 /*
  *  Created by Robin Raymond.
- *  Copyright 2009-2011. Robin Raymond. All rights reserved.
+ *  Copyright 2009-2013. Robin Raymond. All rights reserved.
  *
  * This file is part of zsLib.
  *
@@ -25,7 +25,7 @@
 #ifndef ZSLIB_MESSAGEQUEUE_H_3b3e04ed0435a1db72915c7519694f0f
 #define ZSLIB_MESSAGEQUEUE_H_3b3e04ed0435a1db72915c7519694f0f
 
-#include <zsLib/zsTypes.h>
+#include <zsLib/types.h>
 
 namespace zsLib
 {
@@ -50,7 +50,7 @@ namespace zsLib
   };
 }
 
-#include <zsLib/internal/MessageQueue.h>
+#include <zsLib/internal/zsLib_MessageQueue.h>
 
 namespace zsLib
 {
