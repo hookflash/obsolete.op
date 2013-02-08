@@ -49,6 +49,19 @@ BOOST_AUTO_TEST_SUITE(zsLibStringTest)
 
   BOOST_AUTO_TEST_CASE(TestString)
   {
+    class NullTestString
+    {
+    public:
+      NullTestString(const char *value = NULL) :
+        mValue(value)
+      {
+      }
+
+      zsLib::String getValue() const {return mValue;}
+    private:
+      zsLib::String mValue;
+    };
+
     std::string stdstr_empty;
 
     std::string stdstr1("this is a std::test1");
@@ -56,6 +69,10 @@ BOOST_AUTO_TEST_SUITE(zsLibStringTest)
 
     zsLib::String str1;
 
+    const char *forceNullCSTR = NULL;
+    zsLib::String forceNull(forceNullCSTR);
+    std::string forceNullCopied(forceNull);
+    NullTestString nullStrObj;
     zsLib::String str2("this is a test2");
     zsLib::String wstr2(L"this is a wide test2");
     zsLib::String str4(stdstr1);
@@ -177,6 +194,10 @@ BOOST_AUTO_TEST_SUITE(zsLibStringTest)
     replace6.replaceAll("cream", "");
     replace6.replaceAll(" ,", ",");
 
+    BOOST_CHECK(forceNull.isEmpty());
+    BOOST_EQUAL(zsLib::String(), forceNull);
+    BOOST_EQUAL(forceNullCopied, forceNull);
+    BOOST_EQUAL(zsLib::String(), nullStrObj.getValue())
     BOOST_CHECK(stdstr_empty.empty());
     BOOST_CHECK(str1.empty());
     BOOST_CHECK(str1.isEmpty());
@@ -185,7 +206,7 @@ BOOST_AUTO_TEST_SUITE(zsLibStringTest)
     BOOST_EQUAL(str4, "this is a std::test1");
     BOOST_EQUAL(str5, "this is a wide std::test1");
     BOOST_EQUAL(zsLib::String::copyFrom(buffer, 15), "012345678901234");
-    bool equal6 = (str6, "Τη γλώσσα μου έδωσαν ελληνική");  // I have no idea what this says so if it is bad or insulting, my apologies!
+    bool equal6 = (0 == strcmp(str6, "Τη γλώσσα μου έδωσαν ελληνική"));  // I have no idea what this says so if it is bad or insulting, my apologies!
     BOOST_CHECK(equal6);
     BOOST_EQUAL(str7, buffer7);
     if (sizeof(wchar_t) == sizeof(zsLib::WORD)) {

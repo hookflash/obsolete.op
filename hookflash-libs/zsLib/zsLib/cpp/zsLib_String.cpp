@@ -86,7 +86,7 @@ namespace zsLib
   {
   }
 
-  String::String(CSTR value) : std::string(value ? value : "")
+  String::String(CSTR value) : std::string(value ? value : std::string())
   {
   }
 

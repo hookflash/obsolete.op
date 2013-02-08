@@ -10,3 +10,4 @@ hookflash-libs/boost/boost/project-config.jam.1
 hookflash-libs/boost/boost/tools/build/v2/engine/src/bin.macosxx86_64/
 hookflash-libs/boost/boost/tools/build/v2/engine/src/bootstrap/
 hookflash-staging/
+WorkspaceSettings.xcsettings
