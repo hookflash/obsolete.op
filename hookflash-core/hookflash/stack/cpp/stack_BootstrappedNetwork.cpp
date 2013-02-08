@@ -196,7 +196,7 @@ namespace hookflash
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inDomain)
 
-        String domain(inDomain ? String(domain) : String());
+        String domain(inDomain ? String(inDomain) : String());
         ZS_THROW_INVALID_ARGUMENT_IF(domain.isEmpty())
 
         domain.toLower();
