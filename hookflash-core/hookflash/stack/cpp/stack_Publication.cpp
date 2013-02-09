@@ -190,19 +190,19 @@ namespace hookflash
                                                      Time expires
                                                      )
       {
-        return Publication::create(
-                                   version,
-                                   baseVersion,
-                                   lineage,
-                                   creatorLocation,
-                                   name,
-                                   mimeType,
-                                   dataEl,
-                                   encoding,
-                                   publishToRelationships,
-                                   publishedLocation,
-                                   expires
-                                   );
+        return IPublicationFactory::singleton().create(
+                                                       version,
+                                                       baseVersion,
+                                                       lineage,
+                                                       creatorLocation,
+                                                       name,
+                                                       mimeType,
+                                                       dataEl,
+                                                       encoding,
+                                                       publishToRelationships,
+                                                       publishedLocation,
+                                                       expires
+                                                       );
       }
 
       //-----------------------------------------------------------------------
@@ -415,54 +415,7 @@ namespace hookflash
                                          )
       {
         DocumentPtr doc = createDocumentFromRelationships(relationshipsDocument);
-        return Publication::create(creatorLocation, name, mimeType, doc, publishToRelationships, publishedLocation, expires);
-      }
-
-      //-----------------------------------------------------------------------
-      PublicationPtr Publication::create(
-                                         ULONG version,
-                                         ULONG baseVersion,
-                                         ULONG lineage,
-                                         LocationPtr creatorLocation,
-                                         const char *name,
-                                         const char *mimeType,
-                                         ElementPtr dataEl,
-                                         IPublicationMetaData::Encodings encoding,
-                                         const PublishToRelationshipsMap &publishToRelationships,
-                                         LocationPtr publishedLocation,
-                                         Time expires
-                                         )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!dataEl)
-
-        PublicationPtr pThis(new Publication(creatorLocation, name, mimeType, publishToRelationships, publishedLocation, expires));
-        pThis->mThisWeak = pThis;
-        pThis->mThisWeakPublication = pThis;
-        pThis->mPublication = pThis;
-        pThis->mVersion = version;
-        pThis->mBaseVersion = baseVersion;
-        pThis->mLineage = lineage;
-        switch (encoding) {
-          case IPublicationMetaData::Encoding_Binary: {
-            String base64String = dataEl->getTextDecoded();
-            pThis->mData = IHelper::convertFromBase64(base64String);
-            break;
-          }
-          case IPublicationMetaData::Encoding_JSON: {
-            DocumentPtr doc = Document::create();
-            NodePtr node = dataEl->getFirstChild();
-            while (node) {
-              NodePtr next = node->getNextSibling();
-              node->orphan();
-              doc->adoptAsLastChild(node);
-              node = next;
-            }
-            pThis->mDocument = doc;
-            break;
-          }
-        }
-        pThis->init();
-        return pThis;
+        return IPublicationFactory::singleton().create(creatorLocation, name, mimeType, doc, publishToRelationships, publishedLocation, expires);
       }
 
       //-----------------------------------------------------------------------
@@ -850,6 +803,53 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      PublicationPtr Publication::create(
+                                         ULONG version,
+                                         ULONG baseVersion,
+                                         ULONG lineage,
+                                         LocationPtr creatorLocation,
+                                         const char *name,
+                                         const char *mimeType,
+                                         ElementPtr dataEl,
+                                         IPublicationMetaData::Encodings encoding,
+                                         const PublishToRelationshipsMap &publishToRelationships,
+                                         LocationPtr publishedLocation,
+                                         Time expires
+                                         )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!dataEl)
+
+        PublicationPtr pThis(new Publication(creatorLocation, name, mimeType, publishToRelationships, publishedLocation, expires));
+        pThis->mThisWeak = pThis;
+        pThis->mThisWeakPublication = pThis;
+        pThis->mPublication = pThis;
+        pThis->mVersion = version;
+        pThis->mBaseVersion = baseVersion;
+        pThis->mLineage = lineage;
+        switch (encoding) {
+          case IPublicationMetaData::Encoding_Binary: {
+            String base64String = dataEl->getTextDecoded();
+            pThis->mData = IHelper::convertFromBase64(base64String);
+            break;
+          }
+          case IPublicationMetaData::Encoding_JSON: {
+            DocumentPtr doc = Document::create();
+            NodePtr node = dataEl->getFirstChild();
+            while (node) {
+              NodePtr next = node->getNextSibling();
+              node->orphan();
+              doc->adoptAsLastChild(node);
+              node = next;
+            }
+            pThis->mDocument = doc;
+            break;
+          }
+        }
+        pThis->init();
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
       NodePtr Publication::getDiffs(
                                     ULONG &ioFromVersion,
                                     ULONG toVersion
@@ -1013,7 +1013,7 @@ namespace hookflash
                                          Time expires
                                          )
     {
-      return internal::Publication::create(internal::Location::convert(creatorLocation), name, mimeType, data, publishToRelationships, internal::Location::convert(publishedLocation), expires);
+      return internal::IPublicationFactory::singleton().create(internal::Location::convert(creatorLocation), name, mimeType, data, publishToRelationships, internal::Location::convert(publishedLocation), expires);
     }
 
     //-------------------------------------------------------------------------
@@ -1027,7 +1027,7 @@ namespace hookflash
                                          Time expires
                                          )
     {
-      return internal::Publication::create(internal::Location::convert(creatorLocation), name, mimeType, documentToBeAdopted, publishToRelationships, internal::Location::convert(publishedLocation), expires);
+      return internal::IPublicationFactory::singleton().create(internal::Location::convert(creatorLocation), name, mimeType, documentToBeAdopted, publishToRelationships, internal::Location::convert(publishedLocation), expires);
     }
 
     //-------------------------------------------------------------------------

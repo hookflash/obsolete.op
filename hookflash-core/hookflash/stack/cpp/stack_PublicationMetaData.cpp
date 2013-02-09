@@ -97,53 +97,53 @@ namespace hookflash
                                                                                   Time expires
                                                                                   )
       {
-        return PublicationMetaData::create(
-                                           version,
-                                           baseVersion,
-                                           lineage,
-                                           creatorLocation,
-                                           name,
-                                           mimeType,
-                                           encoding,
-                                           relationships,
-                                           publishedLocation,
-                                           expires
-                                           );
+        return IPublicationMetaDataFactory::singleton().creatPublicationMetaData(
+                                                                                 version,
+                                                                                 baseVersion,
+                                                                                 lineage,
+                                                                                 creatorLocation,
+                                                                                 name,
+                                                                                 mimeType,
+                                                                                 encoding,
+                                                                                 relationships,
+                                                                                 publishedLocation,
+                                                                                 expires
+                                                                                 );
       }
 
       //-----------------------------------------------------------------------
       PublicationMetaDataPtr IPublicationMetaDataForPublicationRepository::createFrom(IPublicationMetaDataPtr metaData)
       {
-        return PublicationMetaData::create(
-                                           metaData->getVersion(),
-                                           metaData->getBaseVersion(),
-                                           metaData->getLineage(),
-                                           Location::convert(metaData->getCreatorLocation()),
-                                           metaData->getName(),
-                                           metaData->getMimeType(),
-                                           metaData->getEncoding(),
-                                           metaData->getRelationships(),
-                                           Location::convert(metaData->getPublishedLocation()),
-                                           metaData->getExpires()
-                                           );
+        return IPublicationMetaDataFactory::singleton().creatPublicationMetaData(
+                                                                                 metaData->getVersion(),
+                                                                                 metaData->getBaseVersion(),
+                                                                                 metaData->getLineage(),
+                                                                                 Location::convert(metaData->getCreatorLocation()),
+                                                                                 metaData->getName(),
+                                                                                 metaData->getMimeType(),
+                                                                                 metaData->getEncoding(),
+                                                                                 metaData->getRelationships(),
+                                                                                 Location::convert(metaData->getPublishedLocation()),
+                                                                                 metaData->getExpires()
+                                                                                 );
       }
 
       //-----------------------------------------------------------------------
       PublicationMetaDataPtr IPublicationMetaDataForPublicationRepository::createForSource(LocationPtr location)
       {
         PublishToRelationshipsMap empty;
-        return PublicationMetaData::create(
-                                           0,
-                                           0,
-                                           0,
-                                           location,
-                                           "",
-                                           "",
-                                           IPublicationMetaData::Encoding_JSON,
-                                           empty,
-                                           location,
-                                           Time()
-                                           );
+        return IPublicationMetaDataFactory::singleton().creatPublicationMetaData(
+                                                                                 0,
+                                                                                 0,
+                                                                                 0,
+                                                                                 location,
+                                                                                 "",
+                                                                                 "",
+                                                                                 IPublicationMetaData::Encoding_JSON,
+                                                                                 empty,
+                                                                                 location,
+                                                                                 Time()
+                                                                                 );
       }
 
       //-----------------------------------------------------------------------
@@ -168,18 +168,18 @@ namespace hookflash
                                                                      Time expires
                                                                      )
       {
-        return PublicationMetaData::create(
-                                           version,
-                                           baseVersion,
-                                           lineage,
-                                           creatorLocation,
-                                           name,
-                                           mimeType,
-                                           encoding,
-                                           relationships,
-                                           publishedLocation,
-                                           expires
-                                           );
+        return IPublicationMetaDataFactory::singleton().creatPublicationMetaData(
+                                                                                 version,
+                                                                                 baseVersion,
+                                                                                 lineage,
+                                                                                 creatorLocation,
+                                                                                 name,
+                                                                                 mimeType,
+                                                                                 encoding,
+                                                                                 relationships,
+                                                                                 publishedLocation,
+                                                                                 expires
+                                                                                 );
       }
 
       //-----------------------------------------------------------------------

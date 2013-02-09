@@ -50,6 +50,56 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPublicationFactory
+      #pragma mark
+
+      interaction IPublicationFactory
+      {
+        typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
+        typedef IPublicationMetaData::Encodings Encodings;
+
+        static IPublicationFactory &singleton();
+
+        virtual PublicationPtr create(
+                                      LocationPtr creatorLocation,
+                                      const char *name,
+                                      const char *mimeType,
+                                      const SecureByteBlock &data,
+                                      const PublishToRelationshipsMap &publishToRelationships,
+                                      LocationPtr publishedLocation,
+                                      Time expires = Time()
+                                      );
+
+        virtual PublicationPtr create(
+                                      LocationPtr creatorLocation,
+                                      const char *name,
+                                      const char *mimeType,
+                                      DocumentPtr documentToBeAdopted,
+                                      const PublishToRelationshipsMap &publishToRelationships,
+                                      LocationPtr publishedLocation,
+                                      Time expires = Time()
+                                      );
+
+        virtual PublicationPtr create(
+                                      ULONG version,
+                                      ULONG baseVersion,
+                                      ULONG lineage,
+                                      LocationPtr creatorLocation,
+                                      const char *name,
+                                      const char *mimeType,
+                                      ElementPtr dataEl,
+                                      Encodings encoding,
+                                      const PublishToRelationshipsMap &publishToRelationships,
+                                      LocationPtr publishedLocation,
+                                      Time expires
+                                      );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IPublicationForPublicationMetaData
       #pragma mark
 
@@ -222,6 +272,9 @@ namespace hookflash
                           public IPublicationForMessages
       {
       public:
+        friend interaction IPublicationFactory;
+        friend interaction IPublication;
+
         typedef IPublication::Encodings Encodings;
         typedef IPublication::RelationshipListPtr RelationshipListPtr;
         typedef IPublication::PublishToRelationshipsMap PublishToRelationshipsMap;
@@ -229,10 +282,6 @@ namespace hookflash
         typedef ULONG VersionNumber;
         typedef DocumentPtr DiffDocument;
         typedef std::map<VersionNumber, DiffDocument> DiffDocumentMap;
-
-        friend interaction IPublication;
-        friend interaction IPublicationForPublicationRepository;
-        friend interaction IPublicationForMessages;
 
       protected:
         Publication(

@@ -46,6 +46,29 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPeerSubscriptionFactory
+      #pragma mark
+
+      interaction IPeerSubscriptionFactory
+      {
+        static IPeerSubscriptionFactory &singleton();
+
+        virtual PeerSubscriptionPtr subscribeAll(
+                                                 IAccountPtr account,
+                                                 IPeerSubscriptionDelegatePtr delegate
+                                                 );
+
+        virtual PeerSubscriptionPtr subscribe(
+                                              IPeerPtr peer,
+                                              IPeerSubscriptionDelegatePtr delegate
+                                              );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IPeerSubscriptionForAccount
       #pragma mark
 
@@ -90,8 +113,8 @@ namespace hookflash
                                public IPeerSubscriptionForAccount
       {
       public:
+        friend interaction IPeerSubscriptionFactory;
         friend interaction IPeerSubscription;
-        friend interaction IPeerSubscriptionForAccount;
 
       protected:
         PeerSubscription(
@@ -114,15 +137,15 @@ namespace hookflash
 
         static String toDebugString(IPeerSubscriptionPtr subscription, bool includeCommaPrefix = true);
 
-        static IPeerSubscriptionPtr subscribeAll(
-                                                 IAccountPtr account,
-                                                 IPeerSubscriptionDelegatePtr delegate
-                                                 );
+        static PeerSubscriptionPtr subscribeAll(
+                                                IAccountPtr account,
+                                                IPeerSubscriptionDelegatePtr delegate
+                                                );
 
-        static IPeerSubscriptionPtr subscribe(
-                                              IPeerPtr peer,
-                                              IPeerSubscriptionDelegatePtr delegate
-                                              );
+        static PeerSubscriptionPtr subscribe(
+                                             IPeerPtr peer,
+                                             IPeerSubscriptionDelegatePtr delegate
+                                             );
 
         virtual PUID getID() const {return mID;}
 

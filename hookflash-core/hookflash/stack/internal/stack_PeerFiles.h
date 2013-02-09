@@ -45,12 +45,36 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPeerFilesFactory
+      #pragma mark
+
+      interaction IPeerFilesFactory
+      {
+        static IPeerFilesFactory &singleton();
+
+        virtual PeerFilesPtr generate(
+                                      const char *password,
+                                      ElementPtr signedSaltBundleEl
+                                      );
+
+        virtual PeerFilesPtr loadFromElement(
+                                             const char *password,
+                                             ElementPtr privatePeerRootElement
+                                             );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark PeerFiles
       #pragma mark
 
       class PeerFiles : public IPeerFiles
       {
       public:
+        friend interaction IPeerFilesFactory;
         friend interaction IPeerFiles;
 
       protected:

@@ -57,7 +57,13 @@ namespace hookflash
                       public IMessageMonitorFactory,
                       public IMessageMonitorManagerFactory,
                       public ILocationFactory,
-                      public IPeerFactory
+                      public IPeerFactory,
+                      public IPeerFilesFactory,
+                      public IPeerFilePrivateFactory,
+                      public IPeerFilePublicFactory,
+                      public IPeerSubscriptionFactory,
+                      public IPublicationFactory,
+                      public IPublicationMetaDataFactory
       {
       public:
         static void override(FactoryPtr override);

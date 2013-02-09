@@ -107,10 +107,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IPeerSubscriptionPtr PeerSubscription::subscribeAll(
-                                                          IAccountPtr account,
-                                                          IPeerSubscriptionDelegatePtr delegate
-                                                          )
+      PeerSubscriptionPtr PeerSubscription::subscribeAll(
+                                                         IAccountPtr account,
+                                                         IPeerSubscriptionDelegatePtr delegate
+                                                         )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(account)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
@@ -122,10 +122,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IPeerSubscriptionPtr PeerSubscription::subscribe(
-                                                       IPeerPtr inPeer,
-                                                       IPeerSubscriptionDelegatePtr delegate
-                                                       )
+      PeerSubscriptionPtr PeerSubscription::subscribe(
+                                                      IPeerPtr inPeer,
+                                                      IPeerSubscriptionDelegatePtr delegate
+                                                      )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inPeer)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
@@ -346,7 +346,7 @@ namespace hookflash
                                                          IPeerSubscriptionDelegatePtr delegate
                                                          )
     {
-      return internal::PeerSubscription::subscribeAll(account, delegate);
+      return internal::IPeerSubscriptionFactory::singleton().subscribeAll(account, delegate);
     }
 
     //-------------------------------------------------------------------------
@@ -355,7 +355,7 @@ namespace hookflash
                                                       IPeerSubscriptionDelegatePtr delegate
                                                       )
     {
-      return internal::PeerSubscription::subscribe(peer, delegate);
+      return internal::IPeerSubscriptionFactory::singleton().subscribe(peer, delegate);
     }
   }
 }

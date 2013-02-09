@@ -85,7 +85,7 @@ namespace hookflash
                                                                                const String &peerURI
                                                                                )
       {
-        return PeerFilePublic::createFromPublicKey(peerFiles, publicDoc, publicKey, peerURI);
+        return IPeerFilePublicFactory::singleton().createFromPublicKey(peerFiles, publicDoc, publicKey, peerURI);
       }
 
       //-----------------------------------------------------------------------
@@ -94,7 +94,7 @@ namespace hookflash
                                                                            DocumentPtr publicDoc
                                                                            )
       {
-        return PeerFilePublic::loadFromElement(peerFiles, publicDoc);
+        return IPeerFilePublicFactory::singleton().loadFromElement(peerFiles, publicDoc);
       }
 
       //-----------------------------------------------------------------------
@@ -569,7 +569,7 @@ namespace hookflash
     //-------------------------------------------------------------------------
     IPeerFilePublicPtr IPeerFilePublic::loadFromElement(ElementPtr publicPeerRootElement)
     {
-      return internal::PeerFilePublic::loadFromElement(publicPeerRootElement);
+      return internal::IPeerFilePublicFactory::singleton().loadFromElement(publicPeerRootElement);
     }
   }
 }

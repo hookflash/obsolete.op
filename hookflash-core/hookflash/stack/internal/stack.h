@@ -42,9 +42,10 @@
 #include <hookflash/stack/internal/stack_MessageMonitor.h>
 #include <hookflash/stack/internal/stack_MessageMonitorManager.h>
 #include <hookflash/stack/internal/stack_Peer.h>
+#include <hookflash/stack/internal/stack_PeerFiles.h>
 #include <hookflash/stack/internal/stack_PeerFilePublic.h>
 #include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/stack/internal/stack_PeerFiles.h>
+#include <hookflash/stack/internal/stack_PeerSubscription.h>
 #include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
 #include <hookflash/stack/internal/stack_ServiceCertificatesValidateQuery.h>

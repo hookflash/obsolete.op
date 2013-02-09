@@ -75,7 +75,7 @@ namespace hookflash
                                                   ElementPtr signedSalt
                                                   )
       {
-        return PeerFilePrivate::generate(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, signedSalt);
+        return IPeerFilePrivateFactory::singleton().generate(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, signedSalt);
       }
 
       //-----------------------------------------------------------------------
@@ -87,7 +87,7 @@ namespace hookflash
                                                          ElementPtr peerFileRootElement
                                                          )
       {
-        return PeerFilePrivate::loadFromElement(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, peerFileRootElement);
+        return IPeerFilePrivateFactory::singleton().loadFromElement(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, peerFileRootElement);
       }
 
       //-----------------------------------------------------------------------

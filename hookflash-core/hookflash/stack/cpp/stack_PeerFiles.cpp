@@ -186,7 +186,7 @@ namespace hookflash
                                        ElementPtr signedSalt
                                        )
     {
-      return internal::PeerFiles::generate(password, signedSalt);
+      return internal::IPeerFilesFactory::singleton().generate(password, signedSalt);
     }
 
     //-------------------------------------------------------------------------
@@ -195,7 +195,7 @@ namespace hookflash
                                               ElementPtr privatePeerRootElement
                                               )
     {
-      return internal::PeerFiles::loadFromElement(password, privatePeerRootElement);
+      return internal::IPeerFilesFactory::singleton().loadFromElement(password, privatePeerRootElement);
     }
   }
 }

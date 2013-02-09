@@ -376,6 +376,238 @@ namespace hookflash
         return Peer::create(account, peerURI);
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilesFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPeerFilesFactory &IPeerFilesFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilesPtr IPeerFilesFactory::generate(
+                                               const char *password,
+                                               ElementPtr signedSaltBundleEl
+                                               )
+      {
+        return PeerFiles::generate(password, signedSaltBundleEl);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilesPtr IPeerFilesFactory::loadFromElement(
+                                                      const char *password,
+                                                      ElementPtr privatePeerRootElement
+                                                      )
+      {
+        return PeerFiles::loadFromElement(password, privatePeerRootElement);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilePrivateFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPeerFilePrivateFactory &IPeerFilePrivateFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      bool IPeerFilePrivateFactory::generate(
+                                                  PeerFilesPtr peerFiles,
+                                                  PeerFilePrivatePtr &outPeerFilePrivate,
+                                                  PeerFilePublicPtr &outPeerFilePublic,
+                                                  const char *password,
+                                                  ElementPtr signedSalt
+                                                  )
+      {
+        return PeerFilePrivate::generate(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, signedSalt);
+      }
+
+      //-----------------------------------------------------------------------
+      bool IPeerFilePrivateFactory::loadFromElement(
+                                                         PeerFilesPtr peerFiles,
+                                                         PeerFilePrivatePtr &outPeerFilePrivate,
+                                                         PeerFilePublicPtr &outPeerFilePublic,
+                                                         const char *password,
+                                                         ElementPtr peerFileRootElement
+                                                         )
+      {
+        return PeerFilePrivate::loadFromElement(peerFiles, outPeerFilePrivate, outPeerFilePublic, password, peerFileRootElement);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilePublicFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPeerFilePublicFactory &IPeerFilePublicFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr IPeerFilePublicFactory::loadFromElement(ElementPtr publicPeerRootElement)
+      {
+        return PeerFilePublic::loadFromElement(publicPeerRootElement);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr IPeerFilePublicFactory::createFromPublicKey(
+                                                                    PeerFilesPtr peerFiles,
+                                                                    DocumentPtr publicDoc,
+                                                                    IRSAPublicKeyPtr publicKey,
+                                                                    const String &peerURI
+                                                                    )
+      {
+        return PeerFilePublic::createFromPublicKey(peerFiles, publicDoc, publicKey, peerURI);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerFilePublicPtr IPeerFilePublicFactory::loadFromElement(
+                                                                PeerFilesPtr peerFiles,
+                                                                DocumentPtr publicDoc
+                                                                )
+      {
+        return PeerFilePublic::loadFromElement(peerFiles, publicDoc);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerSubscriptionFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPeerSubscriptionFactory &IPeerSubscriptionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PeerSubscriptionPtr IPeerSubscriptionFactory::subscribeAll(
+                                                                 IAccountPtr account,
+                                                                 IPeerSubscriptionDelegatePtr delegate
+                                                                 )
+      {
+        return PeerSubscription::subscribeAll(account, delegate);
+      }
+
+      //-----------------------------------------------------------------------
+      PeerSubscriptionPtr IPeerSubscriptionFactory::subscribe(
+                                                              IPeerPtr peer,
+                                                              IPeerSubscriptionDelegatePtr delegate
+                                                              )
+      {
+        return PeerSubscription::subscribe(peer, delegate);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPublicationFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPublicationFactory &IPublicationFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationPtr IPublicationFactory::create(
+                                                 LocationPtr creatorLocation,
+                                                 const char *name,
+                                                 const char *mimeType,
+                                                 const SecureByteBlock &data,
+                                                 const PublishToRelationshipsMap &publishToRelationships,
+                                                 LocationPtr publishedLocation,
+                                                 Time expires
+                                                 )
+      {
+        return Publication::create(creatorLocation, name, mimeType, data, publishToRelationships, publishedLocation, expires);
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationPtr IPublicationFactory::create(
+                                                 LocationPtr creatorLocation,
+                                                 const char *name,
+                                                 const char *mimeType,
+                                                 DocumentPtr documentToBeAdopted,
+                                                 const PublishToRelationshipsMap &publishToRelationships,
+                                                 LocationPtr publishedLocation,
+                                                 Time expires
+                                                 )
+      {
+        return Publication::create(creatorLocation, name, mimeType, documentToBeAdopted, publishToRelationships, publishedLocation, expires);
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationPtr IPublicationFactory::create(
+                                                 ULONG version,
+                                                 ULONG baseVersion,
+                                                 ULONG lineage,
+                                                 LocationPtr creatorLocation,
+                                                 const char *name,
+                                                 const char *mimeType,
+                                                 ElementPtr dataEl,
+                                                 Encodings encoding,
+                                                 const PublishToRelationshipsMap &publishToRelationships,
+                                                 LocationPtr publishedLocation,
+                                                 Time expires
+                                                 )
+      {
+        return Publication::create(version, baseVersion, lineage, creatorLocation, name, mimeType, dataEl, encoding, publishToRelationships, publishedLocation, expires);
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPublicationMetaDataFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPublicationMetaDataFactory &IPublicationMetaDataFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationMetaDataPtr IPublicationMetaDataFactory::creatPublicationMetaData(
+                                                                                   ULONG version,
+                                                                                   ULONG baseVersion,
+                                                                                   ULONG lineage,
+                                                                                   LocationPtr creatorLocation,
+                                                                                   const char *name,
+                                                                                   const char *mimeType,
+                                                                                   Encodings encoding,
+                                                                                   const PublishToRelationshipsMap &relationships,
+                                                                                   LocationPtr publishedLocation,
+                                                                                   Time expires
+                                                                                   )
+      {
+        return PublicationMetaData::create(version, baseVersion, lineage, creatorLocation, name, mimeType, encoding, relationships, publishedLocation, expires);
+      }
     }
   }
 }
