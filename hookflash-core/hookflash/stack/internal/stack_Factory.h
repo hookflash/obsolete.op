@@ -31,14 +31,12 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IHelper.h>
-
-#include <zsLib/String.h>
+#include <hookflash/stack/internal/types.h>
+#include <hookflash/stack/internal/stack.h>
 
 namespace hookflash
 {
-  namespace services
+  namespace stack
   {
     namespace internal
     {
@@ -47,19 +45,40 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Helper
+      #pragma mark Factory
       #pragma mark
 
-      class Helper : public IHelper
+      class Factory : public IAccountFactory,
+                      public IAccountFinderFactory,
+                      public IAccountPeerLocationFactory,
+                      public IBootstrappedNetworkFactory,
+                      public IBootstrappedNetworkManagerFactory,
+                      public IMessageIncomingFactory,
+                      public IMessageMonitorFactory,
+                      public IMessageMonitorManagerFactory,
+                      public ILocationFactory,
+                      public IPeerFactory
       {
       public:
-        static RecursiveLock &getGlobalLock();
+        static void override(FactoryPtr override);
 
-        static String randomString(UINT lengthInChars);
+        static FactoryPtr &singleton();
 
-        static SecureByteBlockPtr random(UINT lengthInBytes);
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (internal)
+        #pragma mark
 
-        static IMessageQueuePtr getServiceQueue();
+        static FactoryPtr create();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (data)
+        #pragma mark
+
+        FactoryPtr mOverride;
       };
     }
   }

@@ -80,7 +80,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       BootstrappedNetworkManagerPtr BootstrappedNetworkManager::singleton()
       {
-        static BootstrappedNetworkManagerPtr global = BootstrappedNetworkManager::create();
+        static BootstrappedNetworkManagerPtr global = IBootstrappedNetworkManagerFactory::singleton().createBootstrappedNetworkManager();
         return global;
       }
 

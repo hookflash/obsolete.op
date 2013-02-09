@@ -183,6 +183,8 @@
 		00ECD48A16A4993B00BA5CC4 /* stack_Location.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ECD48716A4993A00BA5CC4 /* stack_Location.cpp */; };
 		00ECD49016A4C2DC00BA5CC4 /* stack_Peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ECD48E16A4C2DB00BA5CC4 /* stack_Peer.cpp */; };
 		00ECD49116A4C2DC00BA5CC4 /* stack_Peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ECD48E16A4C2DB00BA5CC4 /* stack_Peer.cpp */; };
+		00ED19B316C6C5720069F8E0 /* stack_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED19B116C6C5720069F8E0 /* stack_Factory.cpp */; };
+		00ED19B416C6C5720069F8E0 /* stack_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED19B116C6C5720069F8E0 /* stack_Factory.cpp */; };
 		00F3C99414BB725A00EEDCF0 /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3C84214BB725A00EEDCF0 /* stack_Account.cpp */; };
 		00F3C99514BB725A00EEDCF0 /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3C84214BB725A00EEDCF0 /* stack_Account.cpp */; };
 		00F3C99614BB725A00EEDCF0 /* stack_AccountFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3C84314BB725A00EEDCF0 /* stack_AccountFinder.cpp */; };
@@ -412,6 +414,8 @@
 		00ECD48716A4993A00BA5CC4 /* stack_Location.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Location.cpp; sourceTree = "<group>"; };
 		00ECD48D16A4C2BD00BA5CC4 /* stack_Peer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Peer.h; sourceTree = "<group>"; };
 		00ECD48E16A4C2DB00BA5CC4 /* stack_Peer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Peer.cpp; sourceTree = "<group>"; };
+		00ED19B116C6C5720069F8E0 /* stack_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Factory.cpp; sourceTree = "<group>"; };
+		00ED19B716C6C5AA0069F8E0 /* stack_Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Factory.h; sourceTree = "<group>"; };
 		00F3C84214BB725A00EEDCF0 /* stack_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Account.cpp; sourceTree = "<group>"; };
 		00F3C84314BB725A00EEDCF0 /* stack_AccountFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_AccountFinder.cpp; sourceTree = "<group>"; };
 		00F3C84414BB725A00EEDCF0 /* stack_AccountPeerLocation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_AccountPeerLocation.cpp; sourceTree = "<group>"; };
@@ -853,6 +857,7 @@
 			isa = PBXGroup;
 			children = (
 				00F3C84E14BB725A00EEDCF0 /* stack.cpp */,
+				00ED19B116C6C5720069F8E0 /* stack_Factory.cpp */,
 				00F3C84214BB725A00EEDCF0 /* stack_Account.cpp */,
 				00F3C84314BB725A00EEDCF0 /* stack_AccountFinder.cpp */,
 				00F3C84414BB725A00EEDCF0 /* stack_AccountPeerLocation.cpp */,
@@ -888,6 +893,7 @@
 			children = (
 				00F3C85514BB725A00EEDCF0 /* types.h */,
 				00F3C85614BB725A00EEDCF0 /* stack.h */,
+				00ED19B716C6C5AA0069F8E0 /* stack_Factory.h */,
 				00F3C85714BB725A00EEDCF0 /* stack_Account.h */,
 				00F3C85814BB725A00EEDCF0 /* stack_AccountFinder.h */,
 				00F3C85914BB725A00EEDCF0 /* stack_AccountPeerLocation.h */,
@@ -1132,6 +1138,7 @@
 				008A31A316B3138F00C692E3 /* stack_ServiceIdentitySession.cpp in Sources */,
 				008A31A916B313A400C692E3 /* stack_ServicePeerContactSession.cpp in Sources */,
 				008A31AF16B313DF00C692E3 /* stack_ServiceSaltFetchSignedSaltQuery.cpp in Sources */,
+				00ED19B316C6C5720069F8E0 /* stack_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,6 +1249,7 @@
 				008A31A416B3138F00C692E3 /* stack_ServiceIdentitySession.cpp in Sources */,
 				008A31AA16B313A400C692E3 /* stack_ServicePeerContactSession.cpp in Sources */,
 				008A31B016B313DF00C692E3 /* stack_ServiceSaltFetchSignedSaltQuery.cpp in Sources */,
+				00ED19B416C6C5720069F8E0 /* stack_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

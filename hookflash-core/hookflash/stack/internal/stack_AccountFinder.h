@@ -65,6 +65,24 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountFinderFactory
+      #pragma mark
+
+      interaction IAccountFinderFactory
+      {
+        static IAccountFinderFactory &singleton();
+
+        virtual AccountFinderPtr create(
+                                        IAccountFinderDelegatePtr delegate,
+                                        AccountPtr outer
+                                        );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountFinderForAccount
       #pragma mark
 
@@ -132,7 +150,7 @@ namespace hookflash
                             public ITimerDelegate
       {
       public:
-        friend interaction IAccountFinderForAccount;
+        friend interaction IAccountFinderFactory;
 
       protected:
         AccountFinder(

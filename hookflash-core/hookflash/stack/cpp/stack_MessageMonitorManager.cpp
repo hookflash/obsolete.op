@@ -106,7 +106,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       MessageMonitorManagerPtr MessageMonitorManager::singleton()
       {
-        static MessageMonitorManagerPtr global = MessageMonitorManager::create();
+        static MessageMonitorManagerPtr global = IMessageMonitorManagerFactory::singleton().createMessageMonitorManager();
         return global;
       }
 

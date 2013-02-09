@@ -35,8 +35,10 @@
 #include <hookflash/stack/internal/stack_Account.h>
 #include <hookflash/stack/internal/stack_Diff.h>
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
+#include <hookflash/stack/internal/stack_BootstrappedNetworkManager.h>
 #include <hookflash/stack/internal/stack_Helper.h>
 #include <hookflash/stack/internal/stack_Location.h>
+#include <hookflash/stack/internal/stack_MessageIncoming.h>
 #include <hookflash/stack/internal/stack_MessageMonitor.h>
 #include <hookflash/stack/internal/stack_MessageMonitorManager.h>
 #include <hookflash/stack/internal/stack_Peer.h>

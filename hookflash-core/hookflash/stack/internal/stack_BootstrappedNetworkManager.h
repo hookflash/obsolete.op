@@ -46,6 +46,21 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IBootstrappedNetworkManagerFactory
+      #pragma mark
+
+      interaction IBootstrappedNetworkManagerFactory
+      {
+        static IBootstrappedNetworkManagerFactory &singleton();
+
+        virtual BootstrappedNetworkManagerPtr createBootstrappedNetworkManager();
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IBootstrappedNetworkManagerForBootstrappedNetwork
       #pragma mark
 
@@ -81,12 +96,15 @@ namespace hookflash
       class BootstrappedNetworkManager : public IBootstrappedNetworkManagerForBootstrappedNetwork
       {
       public:
+        friend interaction IBootstrappedNetworkManagerFactory;
         friend interaction IBootstrappedNetworkManagerForBootstrappedNetwork;
 
-        typedef zsLib::PUID PUID;
-        typedef zsLib::String String;
-        typedef zsLib::RecursiveLock RecursiveLock;
+        typedef String Domain;
+        typedef std::map<Domain, BootstrappedNetworkPtr> BootstrappedNetworkMap;
 
+        typedef std::pair<BootstrappedNetworkPtr, IBootstrappedNetworkDelegatePtr> PendingDelegatePair;
+        typedef std::list<PendingDelegatePair> PendingDelegateList;
+        
       protected:
         BootstrappedNetworkManager();
 
@@ -136,12 +154,6 @@ namespace hookflash
         PUID mID;
         mutable RecursiveLock mLock;
         BootstrappedNetworkManagerWeakPtr mThisWeak;
-
-        typedef String Domain;
-        typedef std::map<Domain, BootstrappedNetworkPtr> BootstrappedNetworkMap;
-
-        typedef std::pair<BootstrappedNetworkPtr, IBootstrappedNetworkDelegatePtr> PendingDelegatePair;
-        typedef std::list<PendingDelegatePair> PendingDelegateList;
 
         BootstrappedNetworkMap mBootstrappedNetworks;
         PendingDelegateList mPendingDelegates;

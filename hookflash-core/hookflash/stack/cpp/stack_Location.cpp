@@ -61,13 +61,13 @@ namespace hookflash
       //-----------------------------------------------------------------------
       LocationPtr ILocationForAccount::getForLocal(AccountPtr account)
       {
-        return Location::getForLocal(account);
+        return ILocationFactory::singleton().getForLocal(account);
       }
 
       //-----------------------------------------------------------------------
       LocationPtr ILocationForAccount::getForFinder(AccountPtr account)
       {
-        return Location::getForFinder(account);
+        return ILocationFactory::singleton().getForFinder(account);
       }
 
       //-----------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace hookflash
                                                   const char *locationID
                                                   )
       {
-        return Location::getForPeer(peer, locationID);
+        return ILocationFactory::singleton().getForPeer(peer, locationID);
       }
 
       //-----------------------------------------------------------------------
@@ -96,7 +96,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       LocationPtr ILocationForMessages::getForLocal(AccountPtr account)
       {
-        return Location::getForLocal(account);
+        return ILocationFactory::singleton().getForLocal(account);
       }
 
       //-----------------------------------------------------------------------
@@ -106,7 +106,7 @@ namespace hookflash
                                                const char *locationID
                                                )
       {
-        return Location::create(messageSource, peerURI, locationID);
+        return ILocationFactory::singleton().create(messageSource, peerURI, locationID);
       }
 
       //-----------------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       LocationPtr ILocationForPublicationRepository::getForLocal(AccountPtr account)
       {
-        return Location::getForLocal(account);
+        return ILocationFactory::singleton().getForLocal(account);
       }
 
       //-----------------------------------------------------------------------
@@ -555,13 +555,13 @@ namespace hookflash
     //-------------------------------------------------------------------------
     ILocationPtr ILocation::getForLocal(IAccountPtr account)
     {
-      return internal::Location::getForLocal(account);
+      return internal::ILocationFactory::singleton().getForLocal(account);
     }
 
     //-------------------------------------------------------------------------
     ILocationPtr ILocation::getForFinder(IAccountPtr account)
     {
-      return internal::Location::getForFinder(account);
+      return internal::ILocationFactory::singleton().getForFinder(account);
     }
 
     //-------------------------------------------------------------------------
@@ -570,7 +570,7 @@ namespace hookflash
                                        const char *locationID
                                        )
     {
-      return internal::Location::getForPeer(peer, locationID);
+      return internal::ILocationFactory::singleton().getForPeer(peer, locationID);
     }
 
     //-------------------------------------------------------------------------

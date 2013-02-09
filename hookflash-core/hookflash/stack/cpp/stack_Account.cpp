@@ -85,7 +85,6 @@ namespace hookflash
   {
     namespace internal
     {
-
       using zsLib::Stringize;
 
       using message::IMessageHelper;
@@ -2442,8 +2441,7 @@ namespace hookflash
                                  IServicePeerContactSessionPtr peerContactSession
                                  )
     {
-      return internal::Account::create(delegate, peerContactSession);
+      return internal::IAccountFactory::singleton().create(delegate, peerContactSession);
     }
   }
 }
-

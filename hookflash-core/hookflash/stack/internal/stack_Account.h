@@ -58,6 +58,24 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountFactory
+      #pragma mark
+
+      interaction IAccountFactory
+      {
+        static IAccountFactory &singleton();
+
+        virtual AccountPtr create(
+                                  IAccountDelegatePtr delegate,
+                                  IServicePeerContactSessionPtr peerContactSession
+                                  );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountForAccountFinder
       #pragma mark
 
@@ -290,17 +308,8 @@ namespace hookflash
                       public ITimerDelegate
       {
       public:
+        friend interaction IAccountFactory;
         friend interaction IAccount;
-        friend interaction IAccountAsyncDelegate;
-        friend interaction IAccountForAccountFinder;
-        friend interaction IAccountForAccountPeerLocation;
-        friend interaction IAccountForLocation;
-        friend interaction IAccountForMessageIncoming;
-        friend interaction IAccountForMessages;
-        friend interaction IAccountForPeer;
-        friend interaction IAccountForPeerSubscription;
-        friend interaction IAccountForPublicationRepository;
-        friend interaction IAccountForServicePeerContactSession;
 
         typedef IAccount::AccountStates AccountStates;
 

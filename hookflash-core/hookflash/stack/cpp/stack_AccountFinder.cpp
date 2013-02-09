@@ -111,7 +111,7 @@ namespace hookflash
                                                         AccountPtr outer
                                                         )
       {
-        return AccountFinder::create(delegate, outer);
+        return IAccountFinderFactory::singleton().create(delegate, outer);
       }
 
       //-----------------------------------------------------------------------

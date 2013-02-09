@@ -73,6 +73,25 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountPeerLocationFactory
+      #pragma mark
+
+      interaction IAccountPeerLocationFactory
+      {
+        static IAccountPeerLocationFactory &singleton();
+
+        virtual AccountPeerLocationPtr create(
+                                              IAccountPeerLocationDelegatePtr delegate,
+                                              AccountPtr outer,
+                                              const LocationInfo &locationInfo
+                                              );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountPeerLocationForAccount
       #pragma mark
 
@@ -152,7 +171,7 @@ namespace hookflash
                                   public IMessageMonitorResultDelegate<PeerKeepAliveResult>
       {
       public:
-        friend interaction IAccountPeerLocationForAccount;
+        friend interaction IAccountPeerLocationFactory;
 
         typedef std::list<PeerLocationFindRequestPtr> PendingRequestList;
 

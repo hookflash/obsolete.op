@@ -135,6 +135,10 @@ namespace hookflash
       typedef boost::shared_ptr<Diff> DiffPtr;
       typedef boost::weak_ptr<Diff> DiffWeakPtr;
 
+      class Factory;
+      typedef boost::shared_ptr<Factory> FactoryPtr;
+      typedef boost::weak_ptr<Factory> FactoryWeakPtr;
+
       class Helper;
       typedef boost::shared_ptr<Helper> HelperPtr;
       typedef boost::weak_ptr<Helper> HelperWeakPtr;

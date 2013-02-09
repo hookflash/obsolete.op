@@ -89,13 +89,14 @@ namespace hookflash
       #pragma mark IAccountPeerLocationForAccount
       #pragma mark
 
+      //-----------------------------------------------------------------------
       AccountPeerLocationPtr IAccountPeerLocationForAccount::create(
                                                                     IAccountPeerLocationDelegatePtr delegate,
                                                                     AccountPtr outer,
                                                                     const LocationInfo &locationInfo
                                                                     )
       {
-        return AccountPeerLocation::create(delegate, outer, locationInfo);
+        return IAccountPeerLocationFactory::singleton().create(delegate, outer, locationInfo);
       }
 
       //-----------------------------------------------------------------------

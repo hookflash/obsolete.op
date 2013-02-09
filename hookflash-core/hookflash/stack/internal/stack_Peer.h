@@ -45,6 +45,32 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IPeerFactory
+      #pragma mark
+
+      interaction IPeerFactory
+      {
+        static IPeerFactory &singleton();
+
+        virtual PeerPtr create(
+                               IAccountPtr account,
+                               IPeerFilePublicPtr peerFilePublic
+                               );
+        virtual PeerPtr getFromSignature(
+                                         IAccountPtr account,
+                                         ElementPtr signedElement
+                                         );
+        virtual PeerPtr create(
+                               AccountPtr account,
+                               const char *peerURI
+                               );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IPeerForAccount
       #pragma mark
 
@@ -178,12 +204,10 @@ namespace hookflash
                    public IPeerForPeerPublicationRepository
       {
       public:
+        friend interaction IPeerFactory;
+
         friend interaction IPeer;
-        friend interaction IPeerForAccount;
         friend interaction IPeerForLocation;
-        friend interaction IPeerForMessages;
-        friend interaction IPeerForPeerSubscription;
-        friend interaction IPeerForPeerPublicationRepository;
 
       protected:
         Peer(

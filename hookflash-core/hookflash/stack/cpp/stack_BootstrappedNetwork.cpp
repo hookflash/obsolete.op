@@ -90,12 +90,13 @@ namespace hookflash
       #pragma mark IBootstrappedNetworkForServices
       #pragma mark
 
+      //-----------------------------------------------------------------------
       BootstrappedNetworkPtr IBootstrappedNetworkForServices::prepare(
                                                                       const char *domain,
                                                                       IBootstrappedNetworkDelegatePtr delegate
                                                                       )
       {
-        return BootstrappedNetwork::prepare(domain, delegate);
+        return IBootstrappedNetworkFactory::singleton().prepare(domain, delegate);
       }
 
       //-----------------------------------------------------------------------
@@ -1087,7 +1088,7 @@ namespace hookflash
                                                           IBootstrappedNetworkDelegatePtr delegate
                                                           )
     {
-      return internal::BootstrappedNetwork::prepare(domain, delegate);
+      return internal::IBootstrappedNetworkFactory::singleton().prepare(domain, delegate);
     }
 
     //-------------------------------------------------------------------------

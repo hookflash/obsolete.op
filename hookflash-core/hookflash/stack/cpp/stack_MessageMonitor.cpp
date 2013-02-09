@@ -423,7 +423,7 @@ namespace hookflash
                                                 Duration timeout
                                                 )
     {
-      return internal::MessageMonitor::monitor(delegate, requestMessage, timeout);
+      return internal::IMessageMonitorFactory::singleton().monitor(delegate, requestMessage, timeout);
     }
 
     //-------------------------------------------------------------------------
@@ -434,7 +434,7 @@ namespace hookflash
                                                                  Duration timeout
                                                                  )
     {
-      return internal::MessageMonitor::monitorAndSendToLocation(delegate, peerLocation, message, timeout);
+      return internal::IMessageMonitorFactory::singleton().monitorAndSendToLocation(delegate, peerLocation, message, timeout);
     }
 
     //-------------------------------------------------------------------------
@@ -447,7 +447,7 @@ namespace hookflash
                                                                 Duration timeout
                                                                 )
     {
-      return internal::MessageMonitor::monitorAndSendToService(delegate, bootstrappedNetwork, serviceType, serviceMethodName, message, timeout);
+      return internal::IMessageMonitorFactory::singleton().monitorAndSendToService(delegate, bootstrappedNetwork, serviceType, serviceMethodName, message, timeout);
     }
 
     //-------------------------------------------------------------------------

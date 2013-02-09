@@ -61,6 +61,24 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IBootstrappedNetworkFactory
+      #pragma mark
+
+      interaction IBootstrappedNetworkFactory
+      {
+        static IBootstrappedNetworkFactory &singleton();
+
+        virtual BootstrappedNetworkPtr prepare(
+                                               const char *domain,
+                                               IBootstrappedNetworkDelegatePtr delegate
+                                               );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IBootstrappedNetworkForAccount
       #pragma mark
 
@@ -187,12 +205,12 @@ namespace hookflash
                                   public IMessageSource
       {
       public:
+        friend interaction IBootstrappedNetworkFactory;
         friend interaction IBootstrappedNetwork;
         friend interaction IServiceCertificates;
         friend interaction IServiceIdentity;
         friend interaction IServicePeerContact;
         friend interaction IServiceSalt;
-        friend interaction IBootstrappedNetworkForServices;
 
         typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
         typedef message::ServiceMap ServiceMap;

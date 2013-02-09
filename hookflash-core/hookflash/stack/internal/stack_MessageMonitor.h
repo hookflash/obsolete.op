@@ -48,6 +48,41 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMessageMonitorFactory
+      #pragma mark
+
+      interaction IMessageMonitorFactory
+      {
+        static IMessageMonitorFactory &singleton();
+
+        virtual MessageMonitorPtr monitor(
+                                          IMessageMonitorDelegatePtr delegate,
+                                          message::MessagePtr requestMessage,
+                                          Duration timeout
+                                          );
+
+        virtual MessageMonitorPtr monitorAndSendToLocation(
+                                                           IMessageMonitorDelegatePtr delegate,
+                                                           ILocationPtr peerLocation,
+                                                           message::MessagePtr message,
+                                                           Duration timeout
+                                                           );
+
+        virtual MessageMonitorPtr monitorAndSendToService(
+                                                          IMessageMonitorDelegatePtr delegate,
+                                                          IBootstrappedNetworkPtr bootstrappedNetwork,
+                                                          const char *serviceType,
+                                                          const char *serviceMethodName,
+                                                          message::MessagePtr message,
+                                                          Duration timeout
+                                                          );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMessageMonitorForAccountFinder
       #pragma mark
 
@@ -126,9 +161,8 @@ namespace hookflash
                              public ITimerDelegate
       {
       public:
+        friend interaction IMessageMonitorFactory;
         friend interaction IMessageMonitor;
-        friend interaction IMessageMonitorForAccountFinder;
-        friend interaction IMessageMonitorForAccountPeerLocation;
 
       protected:
         MessageMonitor(IMessageQueuePtr queue);

@@ -64,7 +64,7 @@ namespace hookflash
                                                             message::MessagePtr message
                                                             )
       {
-        return MessageIncoming::create(account, location, message);
+        return IMessageIncomingFactory::singleton().create(account, location, message);
       }
 
       //-----------------------------------------------------------------------

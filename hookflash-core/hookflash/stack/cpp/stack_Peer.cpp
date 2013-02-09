@@ -68,7 +68,7 @@ namespace hookflash
                                        IPeerFilePublicPtr peerFilePublic
                                        )
       {
-        return Peer::create(account, peerFilePublic);
+        return IPeerFactory::singleton().create(account, peerFilePublic);
       }
 
       //-----------------------------------------------------------------------
@@ -85,7 +85,7 @@ namespace hookflash
                                        const char *peerURI
                                        )
       {
-        return Peer::create(account, peerURI);
+        return IPeerFactory::singleton().create(account, peerURI);
       }
 
       //-----------------------------------------------------------------------
@@ -108,7 +108,7 @@ namespace hookflash
                                        IPeerFilePublicPtr peerFilePublic
                                        )
       {
-        return Peer::create(account, peerFilePublic);
+        return IPeerFactory::singleton().create(account, peerFilePublic);
       }
 
       //-----------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace hookflash
                                                  ElementPtr signedElement
                                                  )
       {
-        return Peer::getFromSignature(account, signedElement);
+        return IPeerFactory::singleton().getFromSignature(account, signedElement);
       }
 
       //-----------------------------------------------------------------------
@@ -543,7 +543,7 @@ namespace hookflash
                            IPeerFilePublicPtr peerFilePublic
                            )
     {
-      return internal::Peer::create(account, peerFilePublic);
+      return internal::IPeerFactory::singleton().create(account, peerFilePublic);
     }
 
     //-------------------------------------------------------------------------
@@ -552,7 +552,7 @@ namespace hookflash
                            const char *peerURI
                            )
     {
-      return internal::Peer::create(internal::Account::convert(account), peerURI);
+      return internal::IPeerFactory::singleton().create(internal::Account::convert(account), peerURI);
     }
 
     //-------------------------------------------------------------------------
@@ -561,7 +561,7 @@ namespace hookflash
                                      ElementPtr signedElement
                                      )
     {
-      return internal::Peer::getFromSignature(account, signedElement);
+      return internal::IPeerFactory::singleton().getFromSignature(account, signedElement);
     }
   }
 }
