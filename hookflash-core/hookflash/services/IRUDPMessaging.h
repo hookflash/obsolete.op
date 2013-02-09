@@ -44,6 +44,14 @@ namespace hookflash
 {
   namespace services
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPMessaging
+    #pragma mark
+
     interaction IRUDPMessaging
     {
       typedef boost::shared_array<BYTE> MessageBuffer;
@@ -166,6 +174,14 @@ namespace hookflash
       // NOTE:    Will return an empty string until connected.
       virtual String getRemoteConnectionInfo() = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPMessagingDelegate
+    #pragma mark
 
     interaction IRUDPMessagingDelegate
     {

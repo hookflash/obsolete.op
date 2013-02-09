@@ -72,6 +72,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       static ULONG dwordBoundary(ULONG length)
@@ -113,6 +116,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket
+      #pragma mark
+
       //-----------------------------------------------------------------------
       TURNSocket::TURNSocket(
                              IMessageQueuePtr queue,
@@ -195,6 +203,14 @@ namespace hookflash
         ZS_LOG_BASIC(log("destroyed"))
         cancel();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => ITURNSocket
+      #pragma mark
 
       //-----------------------------------------------------------------------
       TURNSocketPtr TURNSocket::create(
@@ -555,6 +571,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => ITURNSocketAsyncDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void TURNSocket::onStep()
       {
         AutoRecursiveLock lock(mLock);
@@ -564,6 +585,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => ISTUNRequesterDelegate
+      #pragma mark
+
       //-----------------------------------------------------------------------
       void TURNSocket::onSTUNRequesterSendPacket(
                                                  ISTUNRequesterPtr requester,
@@ -704,6 +730,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => IDNSDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void TURNSocket::onLookupCompleted(IDNSQueryPtr query)
       {
         AutoRecursiveLock lock(mLock);
@@ -717,6 +751,14 @@ namespace hookflash
           return;
         }
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => ISocketDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void TURNSocket::onReadReady(ISocketPtr socket)
@@ -1034,6 +1076,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => ITimer
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void TURNSocket::onTimer(TimerPtr timer)
       {
         AutoRecursiveLock lock(mLock);
@@ -1118,6 +1168,12 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       String TURNSocket::log(const char *message) const
       {
@@ -2237,37 +2293,20 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      TURNSocket::ChannelInfoPtr TURNSocket::ChannelInfo::create()
-      {
-        ChannelInfoPtr pThis(new ChannelInfo);
-        pThis->mBound = 0;
-        pThis->mChannelNumber = 0;
-        pThis->mLastSentDataAt = zsLib::now();
-        return pThis;
-      }
-
       //-----------------------------------------------------------------------
-      TURNSocket::PermissionPtr TURNSocket::Permission::create()
-      {
-        PermissionPtr pThis(new Permission);
-        pThis->mInstalled = false;
-        pThis->mLastSentDataAt = zsLib::now();
-        return pThis;
-      }
-
       //-----------------------------------------------------------------------
-      bool TURNSocket::CompareIP::operator()(const IPAddress &op1, const IPAddress &op2) const
-      {
-        return op1 < op2;
-      }
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket::Server
+      #pragma mark
 
       //-----------------------------------------------------------------------
       TURNSocket::Server::Server() :
-        mIsUDP(true),
-        mIsConnected(false),
-        mInformedWriteReady(false),
-        mReadBufferFilledSizeInBytes(0),
-        mWriteBufferFilledSizeInBytes(0)
+      mIsUDP(true),
+      mIsConnected(false),
+      mInformedWriteReady(false),
+      mReadBufferFilledSizeInBytes(0),
+      mWriteBufferFilledSizeInBytes(0)
       {
         memset(&(mReadBuffer[0]), 0, sizeof(mReadBuffer));
         memset(&(mWriteBuffer[0]), 0, sizeof(mWriteBuffer));
@@ -2292,10 +2331,66 @@ namespace hookflash
         ServerPtr pThis(new Server);
         return pThis;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket::CompareIP
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool TURNSocket::CompareIP::operator()(const IPAddress &op1, const IPAddress &op2) const
+      {
+        return op1 < op2;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket::Permission
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      TURNSocket::PermissionPtr TURNSocket::Permission::create()
+      {
+        PermissionPtr pThis(new Permission);
+        pThis->mInstalled = false;
+        pThis->mLastSentDataAt = zsLib::now();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket::ChannelInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      TURNSocket::ChannelInfoPtr TURNSocket::ChannelInfo::create()
+      {
+        ChannelInfoPtr pThis(new ChannelInfo);
+        pThis->mBound = 0;
+        pThis->mChannelNumber = 0;
+        pThis->mLastSentDataAt = zsLib::now();
+        return pThis;
+      }
+
     }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ITURNSocket
+    #pragma mark
+
     //-------------------------------------------------------------------------
     ITURNSocketPtr ITURNSocket::create(
                                        IMessageQueuePtr queue,
@@ -2308,7 +2403,7 @@ namespace hookflash
                                        WORD limitChannelRoRangeEnd
                                        )
     {
-      return internal::TURNSocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
+      return internal::ITURNSocketFactory::singleton().create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
     }
 
     //-------------------------------------------------------------------------
@@ -2324,7 +2419,7 @@ namespace hookflash
                                        WORD limitChannelRoRangeEnd
                                        )
     {
-      return internal::TURNSocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
+      return internal::ITURNSocketFactory::singleton().create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
     }
   }
 }

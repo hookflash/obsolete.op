@@ -58,10 +58,62 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITURNSocketFactory
+      #pragma mark
+
+      interaction ITURNSocketFactory
+      {
+        static ITURNSocketFactory &singleton();
+
+        virtual TURNSocketPtr create(
+                                     IMessageQueuePtr queue,
+                                     ITURNSocketDelegatePtr delegate,
+                                     const char *turnServer,
+                                     const char *turnServerUsername,
+                                     const char *turnServerPassword,
+                                     bool useChannelBinding = false,
+                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     );
+
+        virtual TURNSocketPtr create(
+                                     IMessageQueuePtr queue,
+                                     ITURNSocketDelegatePtr delegate,
+                                     IDNS::SRVResultPtr srvTURNUDP,
+                                     IDNS::SRVResultPtr srvTURNTCP,
+                                     const char *turnServerUsername,
+                                     const char *turnServerPassword,
+                                     bool useChannelBinding = false,
+                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITURNSocketAsyncDelegate
+      #pragma mark
+
       interaction ITURNSocketAsyncDelegate
       {
         virtual void onStep() = 0;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TURNSocket
+      #pragma mark
 
       class TURNSocket : public MessageQueueAssociator,
                          public ITURNSocket,
@@ -72,6 +124,8 @@ namespace hookflash
                          public ITimerDelegate
       {
       public:
+        friend interaction ITURNSocketFactory;
+
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
         typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
         typedef std::list<IPAddress> IPAddressList;
@@ -85,6 +139,15 @@ namespace hookflash
 
         struct ChannelInfo;
         typedef boost::shared_ptr<ChannelInfo> ChannelInfoPtr;
+
+        typedef std::list<ServerPtr> ServerList;
+
+        class CompareIP;
+
+        typedef std::map<IPAddress, PermissionPtr, CompareIP> PermissionMap;
+
+        typedef std::map<IPAddress, ChannelInfoPtr, CompareIP> ChannelIPMap;
+        typedef std::map<WORD, ChannelInfoPtr> ChannelNumberMap;
 
       protected:
 
@@ -116,6 +179,12 @@ namespace hookflash
       public:
         ~TURNSocket();
 
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => ITURNSocket
+        #pragma mark
+
         static TURNSocketPtr create(
                                     IMessageQueuePtr queue,
                                     ITURNSocketDelegatePtr delegate,
@@ -139,7 +208,6 @@ namespace hookflash
                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
                                     );
 
-        //ITURNSocket
         virtual PUID getID() const {return mID;}
 
         virtual TURNSocketStates getState() const;
@@ -172,10 +240,18 @@ namespace hookflash
 
         virtual void notifyWriteReady();
 
-        // ITURNSocketAsyncDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => ITURNSocketAsyncDelegate
+        #pragma mark
+
         virtual void onStep();
 
-        //ISTUNRequesterDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => ISTUNRequesterDelegate
+        #pragma mark
+
         virtual void onSTUNRequesterSendPacket(
                                                ISTUNRequesterPtr requester,
                                                IPAddress destination,
@@ -191,18 +267,35 @@ namespace hookflash
 
         virtual void onSTUNRequesterTimedOut(ISTUNRequesterPtr requester);
 
-        // IDNSDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => IDNSDelegate
+        #pragma mark
+
         virtual void onLookupCompleted(IDNSQueryPtr query);
 
-        // ISocketDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => ISocketDelegate
+        #pragma mark
+
         virtual void onReadReady(ISocketPtr socket);
         virtual void onWriteReady(ISocketPtr socket);
         virtual void onException(ISocketPtr socket);
 
-        // ITimer
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => ITimer
+        #pragma mark
+
         virtual void onTimer(TimerPtr timer);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => (internal)
+        #pragma mark
+
         bool isReady() const {return ITURNSocket::TURNSocketState_Ready ==  mCurrentState;}
         bool isShuttingDown() const {return ITURNSocket::TURNSocketState_ShuttingDown ==  mCurrentState;}
         bool isShutdown() const {return ITURNSocket::TURNSocketState_Shutdown ==  mCurrentState;}
@@ -275,6 +368,12 @@ namespace hookflash
         void getBuffer(RecycledPacketBuffer &outBuffer);
         void recycleBuffer(RecycledPacketBuffer &buffer);
 
+      public:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket::AutoRecycleBuffer
+        #pragma mark
+
         class AutoRecycleBuffer
         {
         public:
@@ -285,7 +384,11 @@ namespace hookflash
           RecycledPacketBuffer &mBuffer;
         };
 
-      public:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket::Server
+        #pragma mark
+
         struct Server
         {
           Server();
@@ -311,10 +414,20 @@ namespace hookflash
           ULONG mWriteBufferFilledSizeInBytes;
         };
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket::CompareIP
+        #pragma mark
+
         class CompareIP { // simple comparison function
         public:
           bool operator()(const IPAddress &op1, const IPAddress &op2) const;
         };
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket::Permission
+        #pragma mark
 
         struct Permission
         {
@@ -329,6 +442,11 @@ namespace hookflash
           PendingDataList mPendingData;
         };
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket::ChannelInfo
+        #pragma mark
+
         struct ChannelInfo
         {
           static ChannelInfoPtr create();
@@ -342,6 +460,11 @@ namespace hookflash
         };
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark TURNSocket => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         TURNSocketWeakPtr mThisWeak;
         TURNSocketPtr mGracefulShutdownReference;
@@ -385,18 +508,13 @@ namespace hookflash
 
         ISTUNRequesterPtr mDeallocateRequester;
 
-        typedef std::list<ServerPtr> ServerList;
         ServerList mServers;
         TimerPtr mActivationTimer;
 
-        typedef std::map<IPAddress, PermissionPtr, CompareIP> PermissionMap;
         PermissionMap mPermissions;
         TimerPtr mPermissionTimer;
         ISTUNRequesterPtr mPermissionRequester;
         ULONG mPermissionRequesterMaxCapacity;
-
-        typedef std::map<IPAddress, ChannelInfoPtr, CompareIP> ChannelIPMap;
-        typedef std::map<WORD, ChannelInfoPtr> ChannelNumberMap;
 
         ChannelIPMap mChannelIPMap;
         ChannelNumberMap mChannelNumberMap;

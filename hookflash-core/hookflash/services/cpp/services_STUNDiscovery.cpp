@@ -51,6 +51,14 @@ namespace hookflash
       using zsLib::Stringize;
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       STUNDiscovery::STUNDiscovery(
                                    IMessageQueuePtr queue,
                                    ISTUNDiscoveryDelegatePtr delegate
@@ -59,6 +67,7 @@ namespace hookflash
         mID(zsLib::createPUID()),
         mDelegate(ISTUNDiscoveryDelegateProxy::createWeak(queue, delegate))
       {
+        ZS_LOG_DEBUG(log("created"))
       }
 
       //-----------------------------------------------------------------------
@@ -78,6 +87,22 @@ namespace hookflash
         }
         step();
       }
+
+      //-----------------------------------------------------------------------
+      STUNDiscovery::~STUNDiscovery()
+      {
+        mThisWeak.reset();
+        ZS_LOG_DEBUG(log("destroyed"))
+        cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery => ISTUNDiscovery
+      #pragma mark
 
       //-----------------------------------------------------------------------
       STUNDiscoveryPtr STUNDiscovery::create(
@@ -146,6 +171,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery => IDNSDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void STUNDiscovery::onLookupCompleted(IDNSQueryPtr query)
       {
         AutoRecursiveLock lock(mLock);
@@ -155,6 +188,14 @@ namespace hookflash
         mSRVQuery.reset();
         step();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery => ISTUNRequesterDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void STUNDiscovery::onSTUNRequesterSendPacket(
@@ -244,6 +285,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void STUNDiscovery::onSTUNRequesterTimedOut(ISTUNRequesterPtr requester)
       {
         AutoRecursiveLock lock(mLock);
@@ -328,13 +377,21 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ISTUNDiscovery
+    #pragma mark
+
+    //-------------------------------------------------------------------------
     ISTUNDiscoveryPtr ISTUNDiscovery::create(
                                              IMessageQueuePtr queue,
                                              ISTUNDiscoveryDelegatePtr delegate,
                                              IDNS::SRVResultPtr service
                                              )
     {
-      return internal::STUNDiscovery::create(queue, delegate, service);
+      return internal::ISTUNDiscoveryFactory::singleton().create(queue, delegate, service);
     }
 
     //-------------------------------------------------------------------------
@@ -344,7 +401,7 @@ namespace hookflash
                                              const char *srvName                // will automatically perform a stun/udp lookup on the name passed in
                                              )
     {
-      return internal::STUNDiscovery::create(queue, delegate, srvName);
+      return internal::ISTUNDiscoveryFactory::singleton().create(queue, delegate, srvName);
     }
 
     //-------------------------------------------------------------------------

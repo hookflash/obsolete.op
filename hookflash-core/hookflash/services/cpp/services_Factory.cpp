@@ -432,6 +432,180 @@ namespace hookflash
       {
         return RUDPListener::create(queue, delegate, port, realm);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPListenerFactory
+      #pragma mark
+
+      //-------------------------------------------------------------------------
+      IRUDPMessagingFactory &IRUDPMessagingFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPMessagingPtr IRUDPMessagingFactory::acceptChannel(
+                                                            IMessageQueuePtr queue,
+                                                            IRUDPListenerPtr listener,
+                                                            IRUDPMessagingDelegatePtr delegate,
+                                                            ULONG maxMessageSizeInBytes
+                                                            )
+      {
+        return RUDPMessaging::acceptChannel(queue, listener, delegate, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPMessagingPtr IRUDPMessagingFactory::acceptChannel(
+                                                            IMessageQueuePtr queue,
+                                                            IRUDPICESocketSessionPtr session,
+                                                            IRUDPMessagingDelegatePtr delegate,
+                                                            ULONG maxMessageSizeInBytes
+                                                            )
+      {
+        return RUDPMessaging::acceptChannel(queue, session, delegate, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPMessagingPtr IRUDPMessagingFactory::openChannel(
+                                                          IMessageQueuePtr queue,
+                                                          IRUDPICESocketSessionPtr session,
+                                                          IRUDPMessagingDelegatePtr delegate,
+                                                          const char *connectionInfo,
+                                                          ULONG maxMessageSizeInBytes
+                                                          )
+      {
+        return RUDPMessaging::openChannel(queue, session, delegate, connectionInfo, maxMessageSizeInBytes);
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNDiscoveryFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ISTUNDiscoveryFactory &ISTUNDiscoveryFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      STUNDiscoveryPtr ISTUNDiscoveryFactory::create(
+                                                     IMessageQueuePtr queue,
+                                                     ISTUNDiscoveryDelegatePtr delegate,
+                                                     IDNS::SRVResultPtr service
+                                                     )
+      {
+        return STUNDiscovery::create(queue, delegate, service);
+      }
+
+      //-----------------------------------------------------------------------
+      STUNDiscoveryPtr ISTUNDiscoveryFactory::create(
+                                                     IMessageQueuePtr queue,
+                                                     ISTUNDiscoveryDelegatePtr delegate,
+                                                     const char *srvName
+                                                     )
+      {
+        return STUNDiscovery::create(queue, delegate, srvName);
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ISTUNRequesterFactory &ISTUNRequesterFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      STUNRequesterPtr ISTUNRequesterFactory::create(
+                                                     IMessageQueuePtr queue,
+                                                     ISTUNRequesterDelegatePtr delegate,
+                                                     IPAddress serverIP,
+                                                     STUNPacketPtr stun,
+                                                     STUNPacket::RFCs usingRFC,
+                                                     Duration maxTimeout
+                                                     )
+      {
+        return STUNRequester::create(queue, delegate, serverIP, stun, usingRFC, maxTimeout);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterFactory
+      #pragma mark
+      
+      //-----------------------------------------------------------------------
+      ISTUNRequesterManagerFactory &ISTUNRequesterManagerFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      STUNRequesterManagerPtr ISTUNRequesterManagerFactory::createSTUNRequesterManager()
+      {
+        return STUNRequesterManager::create();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITURNSocketFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ITURNSocketFactory &ITURNSocketFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      TURNSocketPtr ITURNSocketFactory::create(
+                                         IMessageQueuePtr queue,
+                                         ITURNSocketDelegatePtr delegate,
+                                         const char *turnServer,
+                                         const char *turnServerUsername,
+                                         const char *turnServerPassword,
+                                         bool useChannelBinding,
+                                         WORD limitChannelToRangeStart,
+                                         WORD limitChannelRoRangeEnd
+                                         )
+      {
+        return TURNSocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
+      }
+
+      //-----------------------------------------------------------------------
+      TURNSocketPtr ITURNSocketFactory::create(
+                                         IMessageQueuePtr queue,
+                                         ITURNSocketDelegatePtr delegate,
+                                         IDNS::SRVResultPtr srvTURNUDP,
+                                         IDNS::SRVResultPtr srvTURNTCP,
+                                         const char *turnServerUsername,
+                                         const char *turnServerPassword,
+                                         bool useChannelBinding,
+                                         WORD limitChannelToRangeStart,
+                                         WORD limitChannelRoRangeEnd
+                                         )
+      {
+        return TURNSocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
+      }
     }
   }
 }

@@ -41,6 +41,14 @@ namespace hookflash
 {
   namespace services
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPListener
+    #pragma mark
+
     interaction IRUDPListener
     {
       enum RUDPListenerStates
@@ -71,6 +79,14 @@ namespace hookflash
 
       virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPListenerDelegate
+    #pragma mark
 
     interaction IRUDPListenerDelegate
     {

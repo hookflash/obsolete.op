@@ -53,6 +53,14 @@ namespace hookflash
       typedef RUDPMessaging::MessageBuffer MessageBuffer;
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => IRUDPMessaging
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPMessaging::RUDPMessaging(
                                    IMessageQueuePtr queue,
                                    IRUDPMessagingDelegatePtr delegate,
@@ -71,12 +79,12 @@ namespace hookflash
         ZS_LOG_BASIC(log("created"))
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::init()
       {
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       RUDPMessaging::~RUDPMessaging()
       {
         mThisWeak.reset();
@@ -84,7 +92,13 @@ namespace hookflash
         cancel();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => IRUDPMessaging
+      #pragma mark
+      //-----------------------------------------------------------------------
       RUDPMessagingPtr RUDPMessaging::acceptChannel(
                                                     IMessageQueuePtr queue,
                                                     IRUDPListenerPtr listener,
@@ -108,7 +122,7 @@ namespace hookflash
         return pThis;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       RUDPMessagingPtr RUDPMessaging::acceptChannel(
                                                     IMessageQueuePtr queue,
                                                     IRUDPICESocketSessionPtr session,
@@ -132,7 +146,7 @@ namespace hookflash
         return pThis;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       RUDPMessagingPtr RUDPMessaging::openChannel(
                                                   IMessageQueuePtr queue,
                                                   IRUDPICESocketSessionPtr session,
@@ -179,7 +193,7 @@ namespace hookflash
         return mShutdownReason;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::shutdown()
       {
         AutoRecursiveLock lock(mLock);
@@ -187,7 +201,7 @@ namespace hookflash
         cancel();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::shutdownDirection(Shutdown state)
       {
         IRUDPChannelPtr channel = getChannel();
@@ -195,7 +209,7 @@ namespace hookflash
         channel->shutdownDirection(state);
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       bool RUDPMessaging::send(
                                const BYTE *message,
                                ULONG messsageLengthInBytes
@@ -235,6 +249,7 @@ namespace hookflash
         return channel->send(dest, sizeof(DWORD) + messsageLengthInBytes);
       }
 
+      //-----------------------------------------------------------------------
       MessageBuffer RUDPMessaging::getBufferLargeEnoughForNextMessage()
       {
         ULONG size = getNextReceivedMessageSizeInBytes();
@@ -249,14 +264,14 @@ namespace hookflash
         return buffer;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes)
       {
         AutoRecursiveLock lock(mLock);
         mMaxMessageSizeInBytes = maxMessageSizeInBytes;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       ULONG RUDPMessaging::getNextReceivedMessageSizeInBytes()
       {
         AutoRecursiveLock lock(mLock);
@@ -282,7 +297,7 @@ namespace hookflash
         return mNextMessageSizeInBytes;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       ULONG RUDPMessaging::receive(BYTE *outBuffer)
       {
         AutoRecursiveLock lock(mLock);
@@ -316,7 +331,7 @@ namespace hookflash
         return received;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       IPAddress RUDPMessaging::getConnectedRemoteIP()
       {
         IRUDPChannelPtr channel = getChannel();
@@ -324,7 +339,7 @@ namespace hookflash
         return channel->getConnectedRemoteIP();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       String RUDPMessaging::getRemoteConnectionInfo()
       {
         IRUDPChannelPtr channel = getChannel();
@@ -332,7 +347,15 @@ namespace hookflash
         return channel->getRemoteConnectionInfo();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => IRUDPChannelDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPMessaging::onRDUPChannelStateChanged(
                                                     IRUDPChannelPtr session,
                                                     RUDPChannelStates state
@@ -374,7 +397,7 @@ namespace hookflash
         }
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::onRUDPChannelReadReady(IRUDPChannelPtr session)
       {
         AutoRecursiveLock lock(mLock);
@@ -383,7 +406,7 @@ namespace hookflash
         getNextReceivedMessageSizeInBytes();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::onRUDPChannelWriteReady(IRUDPChannelPtr session)
       {
         AutoRecursiveLock lock(mLock);
@@ -400,12 +423,21 @@ namespace hookflash
         }
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       String RUDPMessaging::log(const char *message) const
       {
         return String("RUDPMessaging [") + Stringize<PUID>(mID).string() + "] " + message;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::cancel()
       {
         AutoRecursiveLock lock(mLock);  // just in case
@@ -442,7 +474,7 @@ namespace hookflash
         mNextMessageSizeInBytes = 0;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::setState(RUDPMessagingStates state)
       {
         if (state == mCurrentState) return;
@@ -462,7 +494,7 @@ namespace hookflash
         }
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::setShutdownReason(RUDPMessagingShutdownReasons reason)
       {
         AutoRecursiveLock lock(mLock);
@@ -479,14 +511,14 @@ namespace hookflash
         mShutdownReason = reason;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       IRUDPChannelPtr RUDPMessaging::getChannel() const
       {
         AutoRecursiveLock lock(mLock);
         return mChannel;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPMessaging::obtainNextMessageSize()
       {
         if (!mChannel) return;
@@ -573,6 +605,11 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPMessaging
+    #pragma mark
+
+    //-------------------------------------------------------------------------
     const char *IRUDPMessaging::toString(RUDPMessagingStates state)
     {
       switch (state) {
@@ -598,7 +635,7 @@ namespace hookflash
                                                     ULONG maxMessageSizeInBytes
                                                     )
     {
-      return internal::RUDPMessaging::acceptChannel(queue, listener, delegate, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, listener, delegate, maxMessageSizeInBytes);
     }
 
     //-------------------------------------------------------------------------
@@ -609,7 +646,7 @@ namespace hookflash
                                                     ULONG maxMessageSizeInBytes
                                                     )
     {
-      return internal::RUDPMessaging::acceptChannel(queue, session, delegate, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, session, delegate, maxMessageSizeInBytes);
     }
 
     //-------------------------------------------------------------------------
@@ -621,7 +658,7 @@ namespace hookflash
                                                   ULONG maxMessageSizeInBytes
                                                   )
     {
-      return internal::RUDPMessaging::openChannel(queue, session, delegate, connectionInfo, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().openChannel(queue, session, delegate, connectionInfo, maxMessageSizeInBytes);
     }
   }
 }

@@ -44,6 +44,11 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ISTUNDiscovery
+    #pragma mark
+
     interaction ISTUNDiscovery
     {
       // NOTE: IDNS::setup must have been called before calling this method
@@ -101,6 +106,11 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ISTUNDiscoveryDelegate
+    #pragma mark
+
     interaction ISTUNDiscoveryDelegate
     {
       typedef services::ISTUNDiscoveryPtr ISTUNDiscoveryPtr;

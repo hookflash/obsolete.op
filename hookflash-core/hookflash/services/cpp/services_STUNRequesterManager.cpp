@@ -31,6 +31,7 @@
 
 #include <hookflash/services/internal/services_STUNRequesterManager.h>
 #include <hookflash/services/internal/services_STUNRequester.h>
+#include <hookflash/services/IHelper.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
@@ -45,6 +46,28 @@ namespace hookflash
     namespace internal
     {
       using zsLib::Stringize;
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterManagerForSTUNRequester
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      STUNRequesterManagerPtr ISTUNRequesterManagerForSTUNRequester::singleton()
+      {
+        return STUNRequesterManager::singleton();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       static STUNRequesterManager::QWORDPair getKey(STUNPacketPtr stun)
@@ -68,33 +91,30 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      class STUNRequesterManagerGlobal
-      {
-      public:
-        STUNRequesterManagerGlobal()
-        {
-          STUNRequesterManager::singleton();
-        }
-
-        void noop()
-        {
-        }
-      };
-
-      // ensure the object is constructed
-      static STUNRequesterManagerGlobal gSTUNRequesterManagerGlobalInit;
-
-      //-----------------------------------------------------------------------
-      static void getGlobalInit()
-      {
-        return gSTUNRequesterManagerGlobalInit.noop();
-      }
+      #pragma mark
+      #pragma mark STUNRequesterManager
+      #pragma mark
 
       //-----------------------------------------------------------------------
       STUNRequesterManager::STUNRequesterManager() :
         mID(zsLib::createPUID())
       {
+        ZS_LOG_DEBUG(log("created"))
       }
+
+      STUNRequesterManager::~STUNRequesterManager()
+      {
+        mThisWeak.reset();
+        ZS_LOG_DEBUG(log("destroyed"))
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequesterManager => ISTUNRequesterManagerFactory
+      #pragma mark
 
       //-----------------------------------------------------------------------
       STUNRequesterManagerPtr STUNRequesterManager::create()
@@ -105,41 +125,20 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequesterManager => ISTUNRequesterManager
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       STUNRequesterManagerPtr STUNRequesterManager::singleton()
       {
-        static STUNRequesterManagerPtr pThis = create();
-        getGlobalInit();
+        AutoRecursiveLock lock(IHelper::getGlobalLock());
+
+        static STUNRequesterManagerPtr pThis = ISTUNRequesterManagerFactory::singleton().createSTUNRequesterManager();
         return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      void STUNRequesterManager::monitorStart(
-                                              STUNRequesterPtr requester,
-                                              STUNPacketPtr request
-                                              )
-      {
-        ZS_THROW_INVALID_USAGE_IF(!requester)
-
-        QWORDPair key = getKey(request);
-
-        AutoRecursiveLock lock(mLock);
-        mRequesters[key] = STUNRequesterPair(requester, requester.get());
-      }
-
-      //-----------------------------------------------------------------------
-      void STUNRequesterManager::monitorStop(STUNRequester *requester)
-      {
-        ZS_THROW_INVALID_USAGE_IF(!requester)
-
-        AutoRecursiveLock lock(mLock);
-
-        for (STUNRequesterMap::iterator iter = mRequesters.begin(); iter != mRequesters.end(); ++iter) {
-          if ((*iter).second.second == requester) {
-            // found the requester, remove it from the monitor map
-            mRequesters.erase(iter);
-            return;
-          }
-        }
       }
 
       //-----------------------------------------------------------------------
@@ -185,7 +184,7 @@ namespace hookflash
           //          Basically, rule of thumb, do not call delegates
           //          synchronously from within the scope of a lock.
           ZS_LOG_TRACE(log("forwarding request to requester object"))
-          remove = requester->handleSTUNPacket(fromIPAddress, stun);
+          remove = requester->forManager().handleSTUNPacket(fromIPAddress, stun);
         } else{
           ZS_LOG_TRACE(log("requester object was previously destroyed thus removing from requester manager"))
           remove = true;
@@ -207,15 +206,64 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequesterManager => ISTUNRequesterManagerForSTUNRequester
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void STUNRequesterManager::monitorStart(
+                                              STUNRequesterPtr requester,
+                                              STUNPacketPtr request
+                                              )
+      {
+        ZS_THROW_INVALID_USAGE_IF(!requester)
+
+        QWORDPair key = getKey(request);
+
+        AutoRecursiveLock lock(mLock);
+        mRequesters[key] = STUNRequesterPair(requester, requester.get());
+      }
+
+      //-----------------------------------------------------------------------
+      void STUNRequesterManager::monitorStop(STUNRequester *requester)
+      {
+        ZS_THROW_INVALID_USAGE_IF(!requester)
+
+        AutoRecursiveLock lock(mLock);
+
+        for (STUNRequesterMap::iterator iter = mRequesters.begin(); iter != mRequesters.end(); ++iter) {
+          if ((*iter).second.second == requester) {
+            // found the requester, remove it from the monitor map
+            mRequesters.erase(iter);
+            return;
+          }
+        }
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequesterManager => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       String STUNRequesterManager::log(const char *message) const
       {
         return String("STUNRequesterManager [") + Stringize<PUID>(mID).string() + "] " + message;
       }
     }
 
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark STUNRequesterManager
+    #pragma mark
+
+    //-------------------------------------------------------------------------
     ISTUNRequesterPtr ISTUNRequesterManager::handlePacket(
                                                           IPAddress fromIPAddress,
                                                           const BYTE *packet,
@@ -227,8 +275,7 @@ namespace hookflash
       ZS_THROW_INVALID_USAGE_IF(!packet)
 
       STUNPacketPtr stun = STUNPacket::parseIfSTUN(packet, packetLengthInBytes, allowedRFCs, false);
-      if (!stun)
-        return ISTUNRequesterPtr();
+      if (!stun) return ISTUNRequesterPtr();
 
       return handleSTUNPacket(fromIPAddress, stun);
     }

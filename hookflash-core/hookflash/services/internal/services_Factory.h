@@ -56,7 +56,12 @@ namespace hookflash
                       public IRUDPChannelStreamFactory,
                       public IRUDPICESocketFactory,
                       public IRUDPICESocketSessionFactory,
-                      public IRUDPListenerFactory
+                      public IRUDPListenerFactory,
+                      public IRUDPMessagingFactory,
+                      public ISTUNDiscoveryFactory,
+                      public ISTUNRequesterFactory,
+                      public ISTUNRequesterManagerFactory,
+                      public ITURNSocketFactory
       {
       public:
         static void override(FactoryPtr override);

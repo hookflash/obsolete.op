@@ -37,6 +37,14 @@ namespace hookflash
 {
   namespace services
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ICanonicalXML
+    #pragma mark
+
     interaction ICanonicalXML
     {
       static String convert(zsLib::XML::ElementPtr element);

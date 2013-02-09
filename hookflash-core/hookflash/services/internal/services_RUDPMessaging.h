@@ -43,11 +43,56 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPMessagingFactory
+      #pragma mark
+
+      interaction IRUDPMessagingFactory
+      {
+        static IRUDPMessagingFactory &singleton();
+
+        virtual RUDPMessagingPtr acceptChannel(
+                                               IMessageQueuePtr queue,
+                                               IRUDPListenerPtr listener,
+                                               IRUDPMessagingDelegatePtr delegate,
+                                               ULONG maxMessageSizeInBytes
+                                               );
+
+        virtual RUDPMessagingPtr acceptChannel(
+                                               IMessageQueuePtr queue,
+                                               IRUDPICESocketSessionPtr session,
+                                               IRUDPMessagingDelegatePtr delegate,
+                                               ULONG maxMessageSizeInBytes
+                                               );
+
+        virtual RUDPMessagingPtr openChannel(
+                                             IMessageQueuePtr queue,
+                                             IRUDPICESocketSessionPtr session,
+                                             IRUDPMessagingDelegatePtr delegate,
+                                             const char *connectionInfo,
+                                             ULONG maxMessageSizeInBytes
+                                             );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging
+      #pragma mark
+
       class RUDPMessaging : public MessageQueueAssociator,
                             public IRUDPMessaging,
                             public IRUDPChannelDelegate
       {
       public:
+        friend interaction IRUDPMessagingFactory;
+        
         typedef IRUDPMessaging::MessageBuffer MessageBuffer;
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
         typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
@@ -64,7 +109,12 @@ namespace hookflash
       public:
         ~RUDPMessaging();
 
-        //IRUDPMessaging
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => IRUDPMessaging
+        #pragma mark
+
         static RUDPMessagingPtr acceptChannel(
                                               IMessageQueuePtr queue,
                                               IRUDPListenerPtr listener,
@@ -113,7 +163,11 @@ namespace hookflash
 
         virtual String getRemoteConnectionInfo();
 
-        //IRUDPChannelDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => IRUDPChannelDelegate
+        #pragma mark
+
         virtual void onRDUPChannelStateChanged(
                                                IRUDPChannelPtr session,
                                                RUDPChannelStates state
@@ -123,6 +177,11 @@ namespace hookflash
         virtual void onRUDPChannelWriteReady(IRUDPChannelPtr session);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => (internal)
+        #pragma mark
+
         bool isShuttingDown() const {return RUDPMessagingState_ShuttingDown == mCurrentState;}
         bool isShutdown() const {return RUDPMessagingState_Shutdown == mCurrentState;}
 
@@ -140,6 +199,11 @@ namespace hookflash
         void getBuffer(RecycledPacketBuffer &outBuffer);
         void recycleBuffer(RecycledPacketBuffer &buffer);
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging::AutoRecycleBuffer
+        #pragma mark
+
         class AutoRecycleBuffer
         {
         public:
@@ -151,6 +215,11 @@ namespace hookflash
         };
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         RUDPMessagingWeakPtr mThisWeak;
         PUID mID;

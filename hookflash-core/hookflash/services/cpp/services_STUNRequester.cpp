@@ -55,6 +55,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester
+      #pragma mark
 
       //-----------------------------------------------------------------------
       STUNRequester::STUNRequester(
@@ -89,10 +92,18 @@ namespace hookflash
       void STUNRequester::init()
       {
         AutoRecursiveLock lock(mLock);
-        STUNRequesterManagerPtr manager = STUNRequesterManager::singleton();
-        manager->monitorStart(mThisWeak.lock(), mSTUNRequest);
+        STUNRequesterManagerPtr manager = ISTUNRequesterManagerForSTUNRequester::singleton();
+        manager->forRequester().monitorStart(mThisWeak.lock(), mSTUNRequest);
         step();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester => STUNRequester
+      #pragma mark
 
       //-----------------------------------------------------------------------
       STUNRequesterPtr STUNRequester::create(
@@ -180,6 +191,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester => ISTUNRequesterForSTUNRequesterManager
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       bool STUNRequester::handleSTUNPacket(
                                            IPAddress fromIPAddress,
                                            STUNPacketPtr packet
@@ -222,6 +241,14 @@ namespace hookflash
         }
         return true;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester => ITimerDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void STUNRequester::onTimer(TimerPtr timer)
@@ -269,6 +296,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       String STUNRequester::log(const char *message) const
       {
         return String("STUNRequester [") + Stringize<PUID>(mID).string() + "] " + message;
@@ -285,8 +320,8 @@ namespace hookflash
           mDelegate.reset();
 
           // tie the lifetime of the monitoring to the delegate
-          STUNRequesterManagerPtr manager = STUNRequesterManager::singleton();
-          manager->monitorStop(this);
+          STUNRequesterManagerPtr manager = ISTUNRequesterManagerForSTUNRequester::singleton();
+          manager->forRequester().monitorStop(this);
         }
 
         if (mTimer) {
@@ -342,6 +377,9 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ISTUNRequester
+    #pragma mark
 
     //-------------------------------------------------------------------------
     ISTUNRequesterPtr ISTUNRequester::create(
@@ -353,7 +391,7 @@ namespace hookflash
                                              Duration maxTimeout
                                              )
     {
-      return internal::STUNRequester::create(queue, delegate, serverIP, stun, usingRFC, maxTimeout);
+      return internal::ISTUNRequesterFactory::singleton().create(queue, delegate, serverIP, stun, usingRFC, maxTimeout);
     }
 
     //-------------------------------------------------------------------------

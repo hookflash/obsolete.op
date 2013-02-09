@@ -40,6 +40,14 @@ namespace hookflash
 {
   namespace services
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPChannel
+    #pragma mark
+
     interaction IRUDPChannel
     {
       enum RUDPChannelStates
@@ -117,6 +125,14 @@ namespace hookflash
       // NOTE:    Will return an empty string until connected.
       virtual String getRemoteConnectionInfo() = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPChannelDelegate
+    #pragma mark
 
     interaction IRUDPChannelDelegate
     {

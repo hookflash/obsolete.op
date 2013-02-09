@@ -44,11 +44,50 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNDiscoveryFactory
+      #pragma mark
+
+      interaction ISTUNDiscoveryFactory
+      {
+        static ISTUNDiscoveryFactory &singleton();
+
+        virtual STUNDiscoveryPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNDiscoveryDelegatePtr delegate,
+                                        IDNS::SRVResultPtr service
+                                        );
+
+        virtual STUNDiscoveryPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNDiscoveryDelegatePtr delegate,
+                                        const char *srvName
+                                        );
+
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNDiscovery
+      #pragma mark
+
       class STUNDiscovery : public MessageQueueAssociator,
                             public ISTUNDiscovery,
                             public IDNSDelegate,
                             public ISTUNRequesterDelegate
       {
+      public:
+        friend interaction ISTUNDiscoveryFactory;
+
+        typedef std::list<IPAddress> IPAddressList;
+
       protected:
         STUNDiscovery(
                       IMessageQueuePtr queue,
@@ -61,6 +100,15 @@ namespace hookflash
                   );
 
       public:
+        ~STUNDiscovery();
+
+      protected:
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNDiscovery => ISTUNDiscovery
+        #pragma mark
+
         static STUNDiscoveryPtr create(
                                        IMessageQueuePtr queue,
                                        ISTUNDiscoveryDelegatePtr delegate,
@@ -72,8 +120,7 @@ namespace hookflash
                                        ISTUNDiscoveryDelegatePtr delegate,
                                        const char *srvName
                                        );
-
-        // ISTUNDiscovery
+        
         virtual PUID getID() const {return mID;}
 
         virtual bool isComplete() const;
@@ -82,10 +129,18 @@ namespace hookflash
 
         virtual IPAddress getMappedAddress() const;
 
-        // IDNSDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNDiscovery => IDNSDelegate
+        #pragma mark
+
         virtual void onLookupCompleted(IDNSQueryPtr query);
 
-        // ISTUNRequesterDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNDiscovery => ISTUNRequesterDelegate
+        #pragma mark
+
         virtual void onSTUNRequesterSendPacket(
                                                ISTUNRequesterPtr requester,
                                                IPAddress destination,
@@ -102,12 +157,22 @@ namespace hookflash
         virtual void onSTUNRequesterTimedOut(ISTUNRequesterPtr requester);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNDiscovery => (internal)
+        #pragma mark
+
         String log(const char *message) const;
 
         void step();
         bool hasContactedServerBefore(const IPAddress &server);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNDiscovery => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         STUNDiscoveryWeakPtr mThisWeak;
 
@@ -122,7 +187,6 @@ namespace hookflash
         IPAddress mServer;
         IPAddress mMapppedAddress;
 
-        typedef std::list<IPAddress> IPAddressList;
         IPAddressList mPreviouslyContactedServers;
       };
     }

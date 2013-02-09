@@ -44,10 +44,63 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterFactory
+      #pragma mark
+
+      interaction ISTUNRequesterFactory
+      {
+        static ISTUNRequesterFactory &singleton();
+
+        virtual STUNRequesterPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNRequesterDelegatePtr delegate,
+                                        IPAddress serverIP,
+                                        STUNPacketPtr stun,
+                                        STUNPacket::RFCs usingRFC,
+                                        Duration maxTimeout = Duration()
+                                        );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterForSTUNRequesterManager
+      #pragma mark
+
+      interaction ISTUNRequesterForSTUNRequesterManager
+      {
+        ISTUNRequesterForSTUNRequesterManager &forManager() {return *this;}
+        const ISTUNRequesterForSTUNRequesterManager &forManager() const {return *this;}
+
+        virtual bool handleSTUNPacket(
+                                      IPAddress fromIPAddress,
+                                      STUNPacketPtr packet
+                                      ) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark STUNRequester
+      #pragma mark
+
       class STUNRequester : public MessageQueueAssociator,
                             public ISTUNRequester,
+                            public ISTUNRequesterForSTUNRequesterManager,
                             public ITimerDelegate
       {
+      public:
+        friend interaction ISTUNRequesterFactory;
+
       protected:
         STUNRequester(
                       IMessageQueuePtr queue,
@@ -62,6 +115,12 @@ namespace hookflash
       public:
         ~STUNRequester();
 
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequester => STUNRequester
+        #pragma mark
+
         static STUNRequesterPtr create(
                                        IMessageQueuePtr queue,
                                        ISTUNRequesterDelegatePtr delegate,
@@ -71,13 +130,6 @@ namespace hookflash
                                        Duration maxTimeout = Duration()
                                        );
 
-
-        bool handleSTUNPacket(
-                              IPAddress fromIPAddress,
-                              STUNPacketPtr packet
-                              );
-
-        // STUNRequester
         virtual PUID getID() const {return mID;}
 
         virtual bool isComplete() const;
@@ -91,16 +143,40 @@ namespace hookflash
 
         virtual Duration getMaxTimeout() const;
 
-        // ITimerDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequester => ISTUNRequesterForSTUNRequesterManager
+        #pragma mark
+
+        virtual bool handleSTUNPacket(
+                                      IPAddress fromIPAddress,
+                                      STUNPacketPtr packet
+                                      );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequester => ITimerDelegate
+        #pragma mark
+
         virtual void onTimer(TimerPtr timer);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequester => (internal)
+        #pragma mark
+
         String log(const char *message) const;
 
         void internalCancel();
         void step();
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequester => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         STUNRequesterWeakPtr mThisWeak;
         PUID mID;

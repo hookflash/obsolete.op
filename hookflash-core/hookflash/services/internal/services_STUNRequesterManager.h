@@ -48,35 +48,109 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark ISTUNRequesterManagerFactory
+      #pragma mark
+
+      interaction ISTUNRequesterManagerFactory
+      {
+        static ISTUNRequesterManagerFactory &singleton();
+
+        virtual STUNRequesterManagerPtr createSTUNRequesterManager();
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterManagerForSTUNRequester
+      #pragma mark
+
+      interaction ISTUNRequesterManagerForSTUNRequester
+      {
+        ISTUNRequesterManagerForSTUNRequester &forRequester() {return *this;}
+        const ISTUNRequesterManagerForSTUNRequester &forRequester() const {return *this;}
+
+        static STUNRequesterManagerPtr singleton();
+
+        virtual void monitorStart(
+                                  STUNRequesterPtr requester,
+                                  STUNPacketPtr stunRequest
+                                  ) = 0;
+        virtual void monitorStop(STUNRequester *requester) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark STUNRequesterManager
       #pragma mark
 
-      class STUNRequesterManager : public ISTUNRequesterManager
+      class STUNRequesterManager : public ISTUNRequesterManager,
+                                   public ISTUNRequesterManagerForSTUNRequester
       {
-      protected:
-        STUNRequesterManager();
-        static STUNRequesterManagerPtr create();
-
       public:
-        static STUNRequesterManagerPtr singleton();
+        friend interaction ISTUNRequesterManagerFactory;
+        friend interaction ISTUNRequesterManager;
+        friend interaction ISTUNRequesterManagerForSTUNRequester;
 
-        void monitorStart(
-                          STUNRequesterPtr requester,
-                          STUNPacketPtr stunRequest
-                          );
-        void monitorStop(STUNRequester *requester);
-
-        ISTUNRequesterPtr handleSTUNPacket(
-                                           IPAddress fromIPAddress,
-                                           STUNPacketPtr stun
-                                           );
-      protected:
-        String log(const char *message) const;
-
-      public:
         typedef std::pair<QWORD, QWORD> QWORDPair;
 
       protected:
+        STUNRequesterManager();
+
+      public:
+        ~STUNRequesterManager();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequesterManager => ISTUNRequesterManagerFactory
+        #pragma mark
+
+        static STUNRequesterManagerPtr create();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequesterManager => ISTUNRequesterManager
+        #pragma mark
+
+        static STUNRequesterManagerPtr singleton();
+
+        virtual ISTUNRequesterPtr handleSTUNPacket(
+                                                   IPAddress fromIPAddress,
+                                                   STUNPacketPtr stun
+                                                   );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequesterManager => ISTUNRequesterManagerForSTUNRequester
+        #pragma mark
+
+        // (duplicate) static STUNRequesterManagerPtr singleton();
+
+        virtual void monitorStart(
+                                  STUNRequesterPtr requester,
+                                  STUNPacketPtr stunRequest
+                                  );
+        virtual void monitorStop(STUNRequester *requester);
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequesterManager => (internal)
+        #pragma mark
+
+        String log(const char *message) const;
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark STUNRequesterManager => (data)
+        #pragma mark
+
         RecursiveLock mLock;
         PUID mID;
         STUNRequesterManagerWeakPtr mThisWeak;

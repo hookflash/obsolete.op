@@ -42,6 +42,14 @@ namespace hookflash
 {
   namespace services
   {
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPICESocketSession
+    #pragma mark
+
     interaction IRUDPICESocketSession
     {
       typedef IICESocket::Candidate Candidate;
@@ -129,6 +137,14 @@ namespace hookflash
       // NOTE: Will return NULL if no channel can be accepted at this time.
       virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPICESocketSessionDelegate
+    #pragma mark
 
     interaction IRUDPICESocketSessionDelegate
     {
