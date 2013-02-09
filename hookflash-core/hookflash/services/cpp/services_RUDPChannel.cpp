@@ -59,6 +59,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       static String sequenceToString(QWORD value)
@@ -69,6 +72,73 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelForRUDPICESocketSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr IRUDPChannelForRUDPICESocketSession::createForRUDPICESocketSessionIncoming(
+                                                                                                IMessageQueuePtr queue,
+                                                                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                                                const IPAddress &remoteIP,
+                                                                                                WORD incomingChannelNumber,
+                                                                                                const char *localUserFrag,
+                                                                                                const char *remoteUserFrag,
+                                                                                                const char *localPassword,
+                                                                                                const char *remotePassword,
+                                                                                                STUNPacketPtr channelOpenPacket,
+                                                                                                STUNPacketPtr &outResponse
+                                                                                                )
+      {
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, channelOpenPacket, outResponse);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr IRUDPChannelForRUDPICESocketSession::createForRUDPICESocketSessionOutgoing(
+                                                                                                IMessageQueuePtr queue,
+                                                                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                                                IRUDPChannelDelegatePtr delegate,
+                                                                                                const IPAddress &remoteIP,
+                                                                                                WORD incomingChannelNumber,
+                                                                                                const char *localUserFrag,
+                                                                                                const char *remoteUserFrag,
+                                                                                                const char *localPassword,
+                                                                                                const char *remotePassword,
+                                                                                                const char *connectionInfo
+                                                                                                )
+      {
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, connectionInfo);
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelForRUDPListener
+      #pragma mark
+
+      RUDPChannelPtr IRUDPChannelForRUDPListener::createForListener(
+                                                                    IMessageQueuePtr queue,
+                                                                    IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                    const IPAddress &remoteIP,
+                                                                    WORD incomingChannelNumber,
+                                                                    STUNPacketPtr channelOpenPacket,
+                                                                    STUNPacketPtr &outResponse
+                                                                    )
+      {
+        return IRUDPChannelFactory::singleton().createForListener(queue, master, remoteIP, incomingChannelNumber, channelOpenPacket, outResponse);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel
+      #pragma mark
+
       //-----------------------------------------------------------------------
       RUDPChannel::RUDPChannel(
                                IMessageQueuePtr queue,
@@ -132,203 +202,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      RUDPChannelPtr RUDPChannel::createForListener(
-                                                    IMessageQueuePtr queue,
-                                                    IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                    const IPAddress &remoteIP,
-                                                    WORD incomingChannelNumber,
-                                                    STUNPacketPtr stun,
-                                                    STUNPacketPtr &outResponse
-                                                    )
-      {
-        String localUsernameFrag;
-        String remoteUsernameFrag;
-        size_t pos = stun->mUsername.find(":");
-        if (String::npos == pos) {
-          localUsernameFrag = stun->mUsername;
-          remoteUsernameFrag = stun->mUsername;
-        } else {
-          // split the string at the fragments
-          localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
-          remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
-        }
-
-        QWORD sequenceNumber = 0;
-        DWORD minimumRTT = 0;
-        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
-        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
-        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
-
-        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
-        if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
-          lifetime = stun->mLifetime;
-        }
-        // do not ever negotiate higher
-        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
-          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
-
-        if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
-          minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
-        }
-
-        RUDPChannelPtr pThis(new RUDPChannel(
-                                             queue,
-                                             master,
-                                             remoteIP,
-                                             localUsernameFrag,
-                                             remoteUsernameFrag,
-                                             localUsernameFrag,
-                                             remoteUsernameFrag,
-                                             minimumRTT,
-                                             lifetime,
-                                             incomingChannelNumber,
-                                             sequenceNumber,
-                                             NULL,
-                                             stun->mChannelNumber,
-                                             stun->mNextSequenceNumber,
-                                             stun->mConnectionInfo
-                                             ));
-
-        pThis->mThisWeak = pThis;
-        pThis->mIncoming = true;
-        pThis->mRealm = stun->mRealm;
-        pThis->mNonce = stun->mNonce;
-        pThis->init();
-        // do not allow sending to the remote party until we receive an ACK or data
-        pThis->mStream = IRUDPChannelStream::create(queue, pThis, pThis->mLocalSequenceNumber, pThis->mRemoteSequenceNumber, pThis->mOutgoingChannelNumber, pThis->mIncomingChannelNumber, pThis->mMinimumRTT);
-        pThis->mStream->holdSendingUntilReceiveSequenceNumber(stun->mNextSequenceNumber);
-        pThis->handleSTUN(stun, outResponse, localUsernameFrag, remoteUsernameFrag);
-        if (!outResponse) {
-          ZS_LOG_WARNING(Detail, pThis->log("failed to provide a STUN response so channel must be closed"))
-          pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
-          pThis->cancel(false);
-        }
-        if (outResponse) {
-          if (STUNPacket::Class_ErrorResponse == outResponse->mClass) {
-            ZS_LOG_WARNING(Detail, pThis->log("channel could not be opened as response was a failure"))
-            pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
-            pThis->cancel(false);
-          }
-        }
-        ZS_LOG_BASIC(pThis->log("created for listener") + ", localUserFrag=" + localUsernameFrag + ", remoteUserFrag=" + remoteUsernameFrag + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
-        return pThis;
-      }
-
       //-----------------------------------------------------------------------
-      RUDPChannelPtr RUDPChannel::createForRUDPICESocketSessionIncoming(
-                                                                        IMessageQueuePtr queue,
-                                                                        IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                                        const IPAddress &remoteIP,
-                                                                        WORD incomingChannelNumber,
-                                                                        const char *localUsernameFrag,
-                                                                        const char *remoteUsernameFrag,
-                                                                        const char *localPassword,
-                                                                        const char *remotePassword,
-                                                                        STUNPacketPtr stun,
-                                                                        STUNPacketPtr &outResponse
-                                                                        )
-      {
-        QWORD sequenceNumber = 0;
-        DWORD minimumRTT = 0;
-        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
-        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
-        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
-
-        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
-        if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
-          lifetime = stun->mLifetime;
-        }
-        // do not ever negotiate higher
-        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
-          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
-
-        if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
-          minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
-        }
-
-        RUDPChannelPtr pThis(new RUDPChannel(
-                                             queue,
-                                             master,
-                                             remoteIP,
-                                             localUsernameFrag,
-                                             remoteUsernameFrag,
-                                             localPassword,
-                                             remotePassword,
-                                             minimumRTT,
-                                             lifetime,
-                                             incomingChannelNumber,
-                                             sequenceNumber,
-                                             NULL,
-                                             stun->mChannelNumber,
-                                             stun->mNextSequenceNumber,
-                                             stun->mConnectionInfo
-                                             ));
-
-        pThis->mThisWeak = pThis;
-        pThis->mIncoming = true;
-        pThis->init();
-        // do not allow sending to the remote party until we receive an ACK or data
-        pThis->mStream = IRUDPChannelStream::create(queue, pThis, pThis->mLocalSequenceNumber, pThis->mRemoteSequenceNumber, pThis->mOutgoingChannelNumber, pThis->mIncomingChannelNumber, pThis->mMinimumRTT);
-        pThis->mStream->holdSendingUntilReceiveSequenceNumber(stun->mNextSequenceNumber);
-        pThis->handleSTUN(stun, outResponse, localUsernameFrag, remoteUsernameFrag);
-        if (!outResponse) {
-          ZS_LOG_WARNING(Detail, pThis->log("failed to create a STUN response for the incoming channel so channel must be closed"))
-          pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
-          pThis->cancel(false);
-        }
-        if (outResponse) {
-          if (STUNPacket::Class_ErrorResponse == outResponse->mClass) {
-            ZS_LOG_WARNING(Detail, pThis->log("failed to create an incoming channel as STUN response was a failure"))
-            pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
-            pThis->cancel(false);
-          }
-        }
-        ZS_LOG_DETAIL(pThis->log("created for socket session incoming") + ", localUsernameFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
-        return pThis;
-      }
-
       //-----------------------------------------------------------------------
-      RUDPChannelPtr RUDPChannel::createForRUDPICESocketSessionOutgoing(
-                                                                        IMessageQueuePtr queue,
-                                                                        IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                                        IRUDPChannelDelegatePtr delegate,
-                                                                        const IPAddress &remoteIP,
-                                                                        WORD incomingChannelNumber,
-                                                                        const char *localUserFrag,
-                                                                        const char *remoteUserFrag,
-                                                                        const char *localPassword,
-                                                                        const char *remotePassword,
-                                                                        const char *connectionInfo
-                                                                        )
-      {
-        QWORD sequenceNumber = 0;
-        DWORD minimumRTT = 0;
-        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
-        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
-        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
-
-        RUDPChannelPtr pThis(new RUDPChannel(
-                                             queue,
-                                             master,
-                                             remoteIP,
-                                             localUserFrag,
-                                             remoteUserFrag,
-                                             localPassword,
-                                             remotePassword,
-                                             minimumRTT,
-                                             HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS,
-                                             incomingChannelNumber,
-                                             sequenceNumber,
-                                             connectionInfo
-                                             ));
-
-        pThis->mThisWeak = pThis;
-        pThis->mDelegate = IRUDPChannelDelegateProxy::createWeak(queue, delegate);
-        pThis->init();
-        // do not allow sending to the remote party until we receive an ACK or data
-        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUserFrag + ", remoteUserFrag=" + remoteUserFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
-        return pThis;
-      }
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => IRUDPChannel
+      #pragma mark
 
       //-----------------------------------------------------------------------
       IRUDPChannel::RUDPChannelStates RUDPChannel::getState() const
@@ -450,6 +329,127 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => IRUDPChannelForRUDPICESocketSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr RUDPChannel::createForRUDPICESocketSessionIncoming(
+                                                                        IMessageQueuePtr queue,
+                                                                        IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                        const IPAddress &remoteIP,
+                                                                        WORD incomingChannelNumber,
+                                                                        const char *localUsernameFrag,
+                                                                        const char *remoteUsernameFrag,
+                                                                        const char *localPassword,
+                                                                        const char *remotePassword,
+                                                                        STUNPacketPtr stun,
+                                                                        STUNPacketPtr &outResponse
+                                                                        )
+      {
+        QWORD sequenceNumber = 0;
+        DWORD minimumRTT = 0;
+        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
+        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
+        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
+
+        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
+          lifetime = stun->mLifetime;
+        }
+        // do not ever negotiate higher
+        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
+          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+
+        if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
+          minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
+        }
+
+        RUDPChannelPtr pThis(new RUDPChannel(
+                                             queue,
+                                             master,
+                                             remoteIP,
+                                             localUsernameFrag,
+                                             remoteUsernameFrag,
+                                             localPassword,
+                                             remotePassword,
+                                             minimumRTT,
+                                             lifetime,
+                                             incomingChannelNumber,
+                                             sequenceNumber,
+                                             NULL,
+                                             stun->mChannelNumber,
+                                             stun->mNextSequenceNumber,
+                                             stun->mConnectionInfo
+                                             ));
+
+        pThis->mThisWeak = pThis;
+        pThis->mIncoming = true;
+        pThis->init();
+        // do not allow sending to the remote party until we receive an ACK or data
+        pThis->mStream = IRUDPChannelStream::create(queue, pThis, pThis->mLocalSequenceNumber, pThis->mRemoteSequenceNumber, pThis->mOutgoingChannelNumber, pThis->mIncomingChannelNumber, pThis->mMinimumRTT);
+        pThis->mStream->holdSendingUntilReceiveSequenceNumber(stun->mNextSequenceNumber);
+        pThis->handleSTUN(stun, outResponse, localUsernameFrag, remoteUsernameFrag);
+        if (!outResponse) {
+          ZS_LOG_WARNING(Detail, pThis->log("failed to create a STUN response for the incoming channel so channel must be closed"))
+          pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
+          pThis->cancel(false);
+        }
+        if (outResponse) {
+          if (STUNPacket::Class_ErrorResponse == outResponse->mClass) {
+            ZS_LOG_WARNING(Detail, pThis->log("failed to create an incoming channel as STUN response was a failure"))
+            pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
+            pThis->cancel(false);
+          }
+        }
+        ZS_LOG_DETAIL(pThis->log("created for socket session incoming") + ", localUsernameFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr RUDPChannel::createForRUDPICESocketSessionOutgoing(
+                                                                        IMessageQueuePtr queue,
+                                                                        IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                        IRUDPChannelDelegatePtr delegate,
+                                                                        const IPAddress &remoteIP,
+                                                                        WORD incomingChannelNumber,
+                                                                        const char *localUserFrag,
+                                                                        const char *remoteUserFrag,
+                                                                        const char *localPassword,
+                                                                        const char *remotePassword,
+                                                                        const char *connectionInfo
+                                                                        )
+      {
+        QWORD sequenceNumber = 0;
+        DWORD minimumRTT = 0;
+        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
+        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
+        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
+
+        RUDPChannelPtr pThis(new RUDPChannel(
+                                             queue,
+                                             master,
+                                             remoteIP,
+                                             localUserFrag,
+                                             remoteUserFrag,
+                                             localPassword,
+                                             remotePassword,
+                                             minimumRTT,
+                                             HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS,
+                                             incomingChannelNumber,
+                                             sequenceNumber,
+                                             connectionInfo
+                                             ));
+
+        pThis->mThisWeak = pThis;
+        pThis->mDelegate = IRUDPChannelDelegateProxy::createWeak(queue, delegate);
+        pThis->init();
+        // do not allow sending to the remote party until we receive an ACK or data
+        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUserFrag + ", remoteUserFrag=" + remoteUserFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        return pThis;
+      }
+      
       //-----------------------------------------------------------------------
       void RUDPChannel::setDelegate(IRUDPChannelDelegatePtr delegate)
       {
@@ -841,6 +841,102 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => IRUDPChannelForRUDPListener
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr RUDPChannel::createForListener(
+                                                    IMessageQueuePtr queue,
+                                                    IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                    const IPAddress &remoteIP,
+                                                    WORD incomingChannelNumber,
+                                                    STUNPacketPtr stun,
+                                                    STUNPacketPtr &outResponse
+                                                    )
+      {
+        String localUsernameFrag;
+        String remoteUsernameFrag;
+        size_t pos = stun->mUsername.find(":");
+        if (String::npos == pos) {
+          localUsernameFrag = stun->mUsername;
+          remoteUsernameFrag = stun->mUsername;
+        } else {
+          // split the string at the fragments
+          localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
+          remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
+        }
+
+        QWORD sequenceNumber = 0;
+        DWORD minimumRTT = 0;
+        IRUDPChannelStream::CongestionAlgorithmList localAlgorithms;
+        IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
+        IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
+
+        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
+          lifetime = stun->mLifetime;
+        }
+        // do not ever negotiate higher
+        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
+          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+
+        if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
+          minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
+        }
+
+        RUDPChannelPtr pThis(new RUDPChannel(
+                                             queue,
+                                             master,
+                                             remoteIP,
+                                             localUsernameFrag,
+                                             remoteUsernameFrag,
+                                             localUsernameFrag,
+                                             remoteUsernameFrag,
+                                             minimumRTT,
+                                             lifetime,
+                                             incomingChannelNumber,
+                                             sequenceNumber,
+                                             NULL,
+                                             stun->mChannelNumber,
+                                             stun->mNextSequenceNumber,
+                                             stun->mConnectionInfo
+                                             ));
+
+        pThis->mThisWeak = pThis;
+        pThis->mIncoming = true;
+        pThis->mRealm = stun->mRealm;
+        pThis->mNonce = stun->mNonce;
+        pThis->init();
+        // do not allow sending to the remote party until we receive an ACK or data
+        pThis->mStream = IRUDPChannelStream::create(queue, pThis, pThis->mLocalSequenceNumber, pThis->mRemoteSequenceNumber, pThis->mOutgoingChannelNumber, pThis->mIncomingChannelNumber, pThis->mMinimumRTT);
+        pThis->mStream->holdSendingUntilReceiveSequenceNumber(stun->mNextSequenceNumber);
+        pThis->handleSTUN(stun, outResponse, localUsernameFrag, remoteUsernameFrag);
+        if (!outResponse) {
+          ZS_LOG_WARNING(Detail, pThis->log("failed to provide a STUN response so channel must be closed"))
+          pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
+          pThis->cancel(false);
+        }
+        if (outResponse) {
+          if (STUNPacket::Class_ErrorResponse == outResponse->mClass) {
+            ZS_LOG_WARNING(Detail, pThis->log("channel could not be opened as response was a failure"))
+            pThis->setShutdownReason(RUDPChannelShutdownReason_OpenFailure);
+            pThis->cancel(false);
+          }
+        }
+        ZS_LOG_BASIC(pThis->log("created for listener") + ", localUserFrag=" + localUsernameFrag + ", remoteUserFrag=" + remoteUsernameFrag + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => IRUDPChannelAsyncDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPChannel::onStep()
       {
         AutoRecursiveLock lock(mLock);
@@ -852,6 +948,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => IRUDPChannelStreamDelegate
+      #pragma mark
+
       //-----------------------------------------------------------------------
       void RUDPChannel::onRUDPChannelStreamStateChanged(
                                                         IRUDPChannelStreamPtr stream,
@@ -995,6 +1096,14 @@ namespace hookflash
           return;
         }
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => ISTUNRequesterDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void RUDPChannel::onSTUNRequesterSendPacket(
@@ -1227,6 +1336,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => ITimerDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPChannel::onTimer(TimerPtr timer)
       {
         sendPendingNow();
@@ -1258,6 +1372,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       String RUDPChannel::log(const char *message) const
       {
@@ -1563,6 +1682,7 @@ namespace hookflash
         return true;
       }
 
+      //-----------------------------------------------------------------------
       void RUDPChannel::sendPendingNow()
       {
         IRUDPChannelStreamPtr stream;
@@ -1593,6 +1713,9 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPChannel
+    #pragma mark
 
     //-------------------------------------------------------------------------
     const char *IRUDPChannel::toString(RUDPChannelStates state)

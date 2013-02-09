@@ -1264,9 +1264,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../../,
 					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -1289,9 +1287,7 @@
 				HEADER_SEARCH_PATHS = (
 					../../../,
 					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
 				);
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -1306,10 +1302,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
@@ -1324,10 +1317,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
@@ -1346,13 +1336,6 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;
@@ -1372,13 +1355,6 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
-				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = hfstack_ios;

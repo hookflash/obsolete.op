@@ -82,6 +82,30 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      static bool logicalXOR(bool value1, bool value2) {
+        return (0 != ((value1 ? 1 : 0) ^ (value2 ? 1 : 0)));
+      }
+
+      //-----------------------------------------------------------------------
+      static String sequenceToString(QWORD value)
+      {
+        return Stringize<QWORD>(value).string() + " (" + Stringize<QWORD>(value & 0xFFFFFF).string() + ")";
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStream
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       const char *IRUDPChannelStream::toString(RUDPChannelStreamStates state)
       {
         switch (state) {
@@ -101,19 +125,97 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      static bool logicalXOR(bool value1, bool value2) {
-        return (0 != ((value1 ? 1 : 0) ^ (value2 ? 1 : 0)));
-      }
-
-      //-----------------------------------------------------------------------
-      static String sequenceToString(QWORD value)
+      void IRUDPChannelStream::getRecommendedStartValues(
+                                                         QWORD &outRecommendedNextSequenceNumberForSending,
+                                                         DWORD &outMinimumRecommendedRTTInMilliseconds,
+                                                         CongestionAlgorithmList &outLocalAlgorithms,
+                                                         CongestionAlgorithmList &outRemoteAlgoirthms
+                                                         )
       {
-        return Stringize<QWORD>(value).string() + " (" + Stringize<QWORD>(value & 0xFFFFFF).string() + ")";
+        AutoSeededRandomPool rng;
+
+        rng.GenerateBlock((BYTE *)(&outRecommendedNextSequenceNumberForSending), sizeof(outRecommendedNextSequenceNumberForSending));
+#if UINT_MAX <= 0xFFFFFFFF
+        QWORD temp = 1;
+        temp = (temp << 48)-1;
+        outRecommendedNextSequenceNumberForSending = (outRecommendedNextSequenceNumberForSending & temp); // can only be 48 bits maximum at the start
+#else
+        outRecommendedNextSequenceNumberForSending = (outRecommendedNextSequenceNumberForSending & 0xFFFFFFFFFF); // can only be 48 bits maximum at the start
+#endif
+
+        // not allowed to be "0"
+        if (0 == outRecommendedNextSequenceNumberForSending)
+          outRecommendedNextSequenceNumberForSending = 1;
+
+        outMinimumRecommendedRTTInMilliseconds = HOOKFLASH_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS;
+
+        outLocalAlgorithms.clear();
+        outRemoteAlgoirthms.clear();
+
+        outLocalAlgorithms.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+        outRemoteAlgoirthms.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+      }
+
+      //-----------------------------------------------------------------------
+      bool IRUDPChannelStream::getResponseToOfferedAlgorithms(
+                                                              const CongestionAlgorithmList &offeredAlgorithmsForLocal,
+                                                              const CongestionAlgorithmList &offeredAlgorithmsForRemote,
+                                                              CongestionAlgorithmList &outResponseAlgorithmsForLocal,
+                                                              CongestionAlgorithmList &outResponseAlgorithmsForRemote
+                                                              )
+      {
+        CongestionAlgorithmList::const_iterator findLocal = find(offeredAlgorithmsForLocal.begin(), offeredAlgorithmsForLocal.end(), IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+        CongestionAlgorithmList::const_iterator findRemote = find(offeredAlgorithmsForRemote.begin(), offeredAlgorithmsForRemote.end(), IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+        if (offeredAlgorithmsForLocal.end() == findLocal)
+          return false;
+        if (offeredAlgorithmsForRemote.end() == findRemote)
+          return false;
+
+        outResponseAlgorithmsForLocal.clear();
+        outResponseAlgorithmsForRemote.clear();
+
+        // only need to select a preferred if the preferred does not match our only choice of "TCPLikeWindow" that available at this time
+        if (offeredAlgorithmsForLocal.begin() != findLocal)
+          outResponseAlgorithmsForLocal.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+
+        if (offeredAlgorithmsForRemote.begin() != findRemote)
+          outResponseAlgorithmsForRemote.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      IRUDPChannelStreamPtr IRUDPChannelStream::create(
+                                                       IMessageQueuePtr queue,
+                                                       IRUDPChannelStreamDelegatePtr delegate,
+                                                       QWORD nextSequenceNumberToUseForSending,
+                                                       QWORD nextSequenberNumberExpectingToReceive,
+                                                       WORD sendingChannelNumber,
+                                                       WORD receivingChannelNumber,
+                                                       DWORD minimumNegotiatedRTT,
+                                                       CongestionAlgorithms algorithmForLocal,
+                                                       CongestionAlgorithms algorithmForRemote
+                                                       )
+      {
+        return internal::IRUDPChannelStreamFactory::singleton().create(
+                                                                       queue,
+                                                                       delegate,
+                                                                       nextSequenceNumberToUseForSending,
+                                                                       nextSequenberNumberExpectingToReceive,
+                                                                       sendingChannelNumber,
+                                                                       receivingChannelNumber,
+                                                                       minimumNegotiatedRTT
+                                                                       );
       }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream
+      #pragma mark
+
       //-----------------------------------------------------------------------
       RUDPChannelStream::RUDPChannelStream(
                                            IMessageQueuePtr queue,
@@ -210,6 +312,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream => IRUDPChannelStream
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       IRUDPChannelStream::RUDPChannelStreamStates RUDPChannelStream::getState() const
       {
         AutoRecursiveLock lock(mLock);
@@ -260,6 +370,7 @@ namespace hookflash
         setState(RUDPChannelStreamState_DirectionalShutdown);
       }
 
+      //-----------------------------------------------------------------------
       void RUDPChannelStream::holdSendingUntilReceiveSequenceNumber(QWORD sequenceNumber)
       {
         AutoRecursiveLock lock(mLock);
@@ -786,6 +897,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream => ITimerDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPChannelStream::onTimer(TimerPtr timer)
       {
         ZS_LOG_TRACE(log("tick") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
@@ -839,6 +958,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream => IRUDPChannelStreamAsync
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPChannelStream::onSendNow()
       {
         ZS_LOG_TRACE(log("on send now called"))
@@ -849,6 +976,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       String RUDPChannelStream::log(const char *message) const
       {
@@ -2012,6 +2144,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream::BufferedPacket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPChannelStream::BufferedPacketPtr RUDPChannelStream::BufferedPacket::create()
       {
         BufferedPacketPtr pThis(new BufferedPacket);
@@ -2073,6 +2213,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream::BufferedData
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPChannelStream::BufferedDataPtr RUDPChannelStream::BufferedData::create()
       {
         BufferedDataPtr pThis(new BufferedData);
@@ -2086,88 +2234,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void IRUDPChannelStream::getRecommendedStartValues(
-                                                         QWORD &outRecommendedNextSequenceNumberForSending,
-                                                         DWORD &outMinimumRecommendedRTTInMilliseconds,
-                                                         CongestionAlgorithmList &outLocalAlgorithms,
-                                                         CongestionAlgorithmList &outRemoteAlgoirthms
-                                                         )
-      {
-        AutoSeededRandomPool rng;
 
-        rng.GenerateBlock((BYTE *)(&outRecommendedNextSequenceNumberForSending), sizeof(outRecommendedNextSequenceNumberForSending));
-#if UINT_MAX <= 0xFFFFFFFF
-        QWORD temp = 1;
-        temp = (temp << 48)-1;
-        outRecommendedNextSequenceNumberForSending = (outRecommendedNextSequenceNumberForSending & temp); // can only be 48 bits maximum at the start
-#else
-        outRecommendedNextSequenceNumberForSending = (outRecommendedNextSequenceNumberForSending & 0xFFFFFFFFFF); // can only be 48 bits maximum at the start
-#endif
-
-        // not allowed to be "0"
-        if (0 == outRecommendedNextSequenceNumberForSending)
-          outRecommendedNextSequenceNumberForSending = 1;
-
-        outMinimumRecommendedRTTInMilliseconds = HOOKFLASH_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS;
-
-        outLocalAlgorithms.clear();
-        outRemoteAlgoirthms.clear();
-
-        outLocalAlgorithms.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-        outRemoteAlgoirthms.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-      }
-
-      //-----------------------------------------------------------------------
-      bool IRUDPChannelStream::getResponseToOfferedAlgorithms(
-                                                              const CongestionAlgorithmList &offeredAlgorithmsForLocal,
-                                                              const CongestionAlgorithmList &offeredAlgorithmsForRemote,
-                                                              CongestionAlgorithmList &outResponseAlgorithmsForLocal,
-                                                              CongestionAlgorithmList &outResponseAlgorithmsForRemote
-                                                              )
-      {
-        CongestionAlgorithmList::const_iterator findLocal = find(offeredAlgorithmsForLocal.begin(), offeredAlgorithmsForLocal.end(), IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-        CongestionAlgorithmList::const_iterator findRemote = find(offeredAlgorithmsForRemote.begin(), offeredAlgorithmsForRemote.end(), IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-        if (offeredAlgorithmsForLocal.end() == findLocal)
-          return false;
-        if (offeredAlgorithmsForRemote.end() == findRemote)
-          return false;
-
-        outResponseAlgorithmsForLocal.clear();
-        outResponseAlgorithmsForRemote.clear();
-
-        // only need to select a preferred if the preferred does not match our only choice of "TCPLikeWindow" that available at this time
-        if (offeredAlgorithmsForLocal.begin() != findLocal)
-          outResponseAlgorithmsForLocal.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-
-        if (offeredAlgorithmsForRemote.begin() != findRemote)
-          outResponseAlgorithmsForRemote.push_back(IRUDPChannel::CongestionAlgorithm_TCPLikeWindowWithSlowCreepUp);
-
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      IRUDPChannelStreamPtr IRUDPChannelStream::create(
-                                                       IMessageQueuePtr queue,
-                                                       IRUDPChannelStreamDelegatePtr delegate,
-                                                       QWORD nextSequenceNumberToUseForSending,
-                                                       QWORD nextSequenberNumberExpectingToReceive,
-                                                       WORD sendingChannelNumber,
-                                                       WORD receivingChannelNumber,
-                                                       DWORD minimumNegotiatedRTT,
-                                                       CongestionAlgorithms algorithmForLocal,
-                                                       CongestionAlgorithms algorithmForRemote
-                                                       )
-      {
-        return internal::RUDPChannelStream::create(
-                                                   queue,
-                                                   delegate,
-                                                   nextSequenceNumberToUseForSending,
-                                                   nextSequenberNumberExpectingToReceive,
-                                                   sendingChannelNumber,
-                                                   receivingChannelNumber,
-                                                   minimumNegotiatedRTT
-                                                   );
-      }
     }
   }
 }

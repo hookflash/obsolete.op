@@ -53,6 +53,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPICESocket::RUDPICESocket(
                                    IMessageQueuePtr queue,
                                    IRUDPICESocketDelegatePtr delegate
@@ -120,6 +125,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket => IRUDPICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPICESocketPtr RUDPICESocket::create(
                                              IMessageQueuePtr queue,
                                              IRUDPICESocketDelegatePtr delegate,
@@ -160,6 +173,7 @@ namespace hookflash
         return mCurrentState;
       }
 
+      //-----------------------------------------------------------------------
       IRUDPICESocketSubscriptionPtr RUDPICESocket::subscribe(IRUDPICESocketDelegatePtr delegate)
       {
         AutoRecursiveLock lock(mLock);
@@ -232,35 +246,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void RUDPICESocket::onICESocketStateChanged(
-                                                  IICESocketPtr socket,
-                                                  ICESocketStates state
-                                                  )
-      {
-        AutoRecursiveLock lock(mLock);
+      #pragma mark
+      #pragma mark RUDPICESocket => IRUDPICESocketForRUDPICESocketSession
+      #pragma mark
 
-        setState((RUDPICESocketStates)state);
-
-        if ((isShutdown()) ||
-            (isShuttingDown())) {
-          cancel();
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       IICESocketPtr RUDPICESocket::getICESocket() const
       {
         return mICESocket;
       }
 
+      //-----------------------------------------------------------------------
       IRUDPICESocketPtr RUDPICESocket::getRUDPICESocket() const
       {
         return mThisWeak.lock();
       }
 
+      //-----------------------------------------------------------------------
       void RUDPICESocket::onRUDPICESessionClosed(PUID sessionID)
       {
         AutoRecursiveLock lock(mLock);
@@ -282,10 +284,39 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void RUDPICESocket::cancelSubscription(PUID subscriptionID)
+      #pragma mark
+      #pragma mark RUDPICESocket => IICESocketDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void RUDPICESocket::onICESocketStateChanged(
+                                                  IICESocketPtr socket,
+                                                  ICESocketStates state
+                                                  )
       {
         AutoRecursiveLock lock(mLock);
-        DelegateMap::iterator found = mDelegates.find(subscriptionID);
+
+        setState((RUDPICESocketStates)state);
+
+        if ((isShutdown()) ||
+            (isShuttingDown())) {
+          cancel();
+        }
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket => friend Subscription
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void RUDPICESocket::cancelSubscription(Subscription &subscription)
+      {
+        AutoRecursiveLock lock(mLock);
+        DelegateMap::iterator found = mDelegates.find(subscription.getID());
         if (found == mDelegates.end()) return;
 
         mDelegates.erase(found);
@@ -297,6 +328,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       String RUDPICESocket::log(const char *message) const
       {
@@ -393,6 +429,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket::Subscription
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPICESocket::Subscription::Subscription(RUDPICESocketPtr outer) :
         mOuter(outer),
         mID(zsLib::createPUID())
@@ -418,7 +459,7 @@ namespace hookflash
         RUDPICESocketPtr outer = mOuter.lock();
         if (!outer) return;
 
-        outer->cancelSubscription(mID);
+        outer->cancelSubscription(*this);
         mOuter.reset();
       }
     }
@@ -427,6 +468,9 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPICESocket
+    #pragma mark
 
     //-------------------------------------------------------------------------
     const char *IRUDPICESocket::toString(RUDPICESocketStates state)
@@ -445,7 +489,7 @@ namespace hookflash
                                              WORD port
                                              )
     {
-      return internal::RUDPICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port);
+      return internal::IRUDPICESocketFactory::singleton().create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port);
     }
 
     //-------------------------------------------------------------------------
@@ -460,7 +504,7 @@ namespace hookflash
                                              WORD port
                                              )
     {
-      return internal::RUDPICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port);
+      return internal::IRUDPICESocketFactory::singleton().create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port);
     }
   }
 }

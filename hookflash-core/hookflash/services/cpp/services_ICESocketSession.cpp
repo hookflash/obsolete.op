@@ -59,6 +59,13 @@ namespace hookflash
       using zsLib::Stringize;
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
       static QWORD randomQWORD()
       {
         BYTE buffer[sizeof(QWORD)];
@@ -107,6 +114,66 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionForICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ICESocketSessionPtr IICESocketSessionForICESocket::create(
+                                                                IMessageQueuePtr queue,
+                                                                IICESocketSessionDelegatePtr delegate,
+                                                                ICESocketPtr socket,
+                                                                ICEControls control
+                                                                )
+      {
+        return IICESocketSessionFactory::singleton().create(queue, delegate, socket, control);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession::CandidatePair
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::create()
+      {
+        CandidatePairPtr pThis(new CandidatePair);
+        pThis->mLocal.mType = ICESocket::Type_Unknown;
+        pThis->mLocal.mPriority = 0;
+        pThis->mLocal.mLocalPreference = 0;
+        pThis->mRemote.mType = ICESocket::Type_Unknown;
+        pThis->mRemote.mPriority = 0;
+        pThis->mRemote.mLocalPreference = 0;
+        pThis->mReceivedRequest = false;
+        pThis->mReceivedResponse = false;
+        pThis->mFailed = false;
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::clone() const
+      {
+        CandidatePairPtr pThis(new CandidatePair);
+        pThis->mLocal = mLocal;
+        pThis->mRemote = mRemote;
+        pThis->mReceivedRequest = mReceivedRequest;
+        pThis->mReceivedResponse = mReceivedResponse;
+        pThis->mFailed = mFailed;
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession
+      #pragma mark
+
       //-----------------------------------------------------------------------
       ICESocketSession::ICESocketSession(
                                          IMessageQueuePtr queue,
@@ -164,11 +231,19 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => IICESocketSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       IICESocketPtr ICESocketSession::getSocket()
       {
-        IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+        ICESocketPtr socket = mICESocketWeak.lock();
         if (!socket) return IICESocketPtr();
-        return socket->getSocket();
+        return socket->forICESocketSession().getSocket();
       }
 
       //-----------------------------------------------------------------------
@@ -225,9 +300,9 @@ namespace hookflash
         mNominated.reset();
         mStartedSearchAt = zsLib::now();
 
-        IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+        ICESocketPtr socket = mICESocketWeak.lock();
         if (socket) {
-          socket->removeRoute(mThisWeak.lock());
+          socket->forICESocketSession().removeRoute(mThisWeak.lock());
         }
 
         if (mKeepAliveTimer) {
@@ -453,6 +528,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => IICESocketSessionForICESocket
+      #pragma mark
+
       //-----------------------------------------------------------------------
       void ICESocketSession::timeout()
       {
@@ -730,9 +810,9 @@ namespace hookflash
 
             mNominated = pairing;
 
-            IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+            ICESocketPtr socket = mICESocketWeak.lock();
             if (socket) {
-              socket->addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
+              socket->forICESocketSession().addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
             }
 
             mInformedWriteReady = false;
@@ -911,6 +991,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => IICESocketSessionAsyncDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void ICESocketSession::onStep()
       {
         AutoRecursiveLock lock(getLock());
@@ -920,6 +1005,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => IICESocketDelegate
+      #pragma mark
+
       //-----------------------------------------------------------------------
       void ICESocketSession::onICESocketStateChanged(
                                                      IICESocketPtr socket,
@@ -933,6 +1023,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => ISTUNRequesterDelegate
+      #pragma mark
+
       //-----------------------------------------------------------------------
       void ICESocketSession::onSTUNRequesterSendPacket(
                                                        ISTUNRequesterPtr requester,
@@ -1158,6 +1253,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => ITimerDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void ICESocketSession::onTimer(TimerPtr timer)
       {
         AutoRecursiveLock lock(getLock());
@@ -1308,12 +1411,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RecursiveLock &ICESocketSession::getLock() const
       {
-        IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+        ICESocketPtr socket = mICESocketWeak.lock();
         if (!socket)
           return mBogusLock;
-        return socket->getLock();
+        return socket->forICESocketSession().getLock();
       }
 
       //-----------------------------------------------------------------------
@@ -1607,9 +1715,9 @@ namespace hookflash
               mLastReceivedDataOrSTUN = tick;
 
               // we are going to nominate this pair...
-              IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+              ICESocketPtr socket = mICESocketWeak.lock();
               if (socket) {
-                socket->addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
+                socket->forICESocketSession().addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
               }
 
               ZS_LOG_DETAIL(log("nominating pair") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
@@ -1750,51 +1858,26 @@ namespace hookflash
           ZS_LOG_WARNING(Debug, log("cannot send packet as ICE session is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
           return false;
         }
-        IICESocketForICESocketSessionPtr socket = mICESocketWeak.lock();
+        ICESocketPtr socket = mICESocketWeak.lock();
         if (!socket) {
           ZS_LOG_WARNING(Debug, log("cannot send packet as ICE socket is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
           return false;
         }
 
         ZS_LOG_TRACE(log("sending packet") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
-        return socket->sendTo(viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
+        return socket->forICESocketSession().sendTo(viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
       }
 
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::create()
-      {
-        CandidatePairPtr pThis(new CandidatePair);
-        pThis->mLocal.mType = ICESocket::Type_Unknown;
-        pThis->mLocal.mPriority = 0;
-        pThis->mLocal.mLocalPreference = 0;
-        pThis->mRemote.mType = ICESocket::Type_Unknown;
-        pThis->mRemote.mPriority = 0;
-        pThis->mRemote.mLocalPreference = 0;
-        pThis->mReceivedRequest = false;
-        pThis->mReceivedResponse = false;
-        pThis->mFailed = false;
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::clone() const
-      {
-        CandidatePairPtr pThis(new CandidatePair);
-        pThis->mLocal = mLocal;
-        pThis->mRemote = mRemote;
-        pThis->mReceivedRequest = mReceivedRequest;
-        pThis->mReceivedResponse = mReceivedResponse;
-        pThis->mFailed = mFailed;
-        return pThis;
-      }
     }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IICESocketSession
+    #pragma mark
+
     //-------------------------------------------------------------------------
     const char *IICESocketSession::toString(ICESocketSessionStates state)
     {

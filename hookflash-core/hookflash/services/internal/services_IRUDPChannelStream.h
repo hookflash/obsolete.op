@@ -45,6 +45,14 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStream
+      #pragma mark
+
       interaction IRUDPChannelStream
       {
         enum RUDPChannelStreamStates
@@ -237,6 +245,14 @@ namespace hookflash
         //          party.
         virtual void notifyExternalACKSent(QWORD ackedSequenceNumber) = 0;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStreamDelegate
+      #pragma mark
 
       interaction IRUDPChannelStreamDelegate
       {

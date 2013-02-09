@@ -46,6 +46,14 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession
+      #pragma mark
+
       class RUDPICESocketSession : public MessageQueueAssociator,
                                    public IRUDPICESocketSession,
                                    public IICESocketSessionDelegate,
@@ -173,7 +181,7 @@ namespace hookflash
         mutable RecursiveLock mBogusLock;
 
         RUDPICESocketSessionWeakPtr mThisWeak;
-        IRUDPICESocketForRUDPICESocketSessionWeakPtr mOuter;
+        RUDPICESocketWeakPtr mOuter;
 
         RUDPICESocketSessionPtr mGracefulShutdownReference;
 

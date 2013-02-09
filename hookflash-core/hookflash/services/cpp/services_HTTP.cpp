@@ -1207,7 +1207,7 @@ namespace hookflash
                              Duration timeout
                              )
     {
-      return internal::HTTP::get(delegate, userAgent, url, timeout);
+      return internal::IHTTPFactory::singleton().get(delegate, userAgent, url, timeout);
     }
 
     //-------------------------------------------------------------------------
@@ -1220,7 +1220,7 @@ namespace hookflash
                               Duration timeout
                               )
     {
-      return IHTTP::post(delegate, userAgent, url, (const BYTE *)postData, (postData ? strlen(postData) : 0), postDataMimeType, timeout);
+      return internal::IHTTPFactory::singleton().post(delegate, userAgent, url, (const BYTE *)postData, (postData ? strlen(postData) : 0), postDataMimeType, timeout);
     }
 
     //-------------------------------------------------------------------------
@@ -1234,7 +1234,7 @@ namespace hookflash
                               Duration timeout
                               )
     {
-      return internal::HTTP::post(delegate, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout);
+      return internal::IHTTPFactory::singleton().post(delegate, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout);
     }
   }
 }

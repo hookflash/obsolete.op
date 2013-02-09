@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		006ACCA2167E824D00B862BE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA1167E824D00B862BE /* UIKit.framework */; };
-		006ACCA4167E828B00B862BE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA3167E828A00B862BE /* CoreFoundation.framework */; };
-		006ACCA6167E82A300B862BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA5167E82A300B862BE /* Foundation.framework */; };
-		006ACCA8167E82AD00B862BE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA7167E82AD00B862BE /* CoreGraphics.framework */; };
-		006ACCAF167E844000B862BE /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCAD167E844000B862BE /* libboost_date_time.a */; };
-		006ACCB0167E844000B862BE /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCAE167E844000B862BE /* libboost_thread.a */; };
-		006ACCB3167E845800B862BE /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCB1167E845700B862BE /* libboost_date_time.a */; };
-		006ACCB4167E845800B862BE /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCB2167E845700B862BE /* libboost_thread.a */; };
-		006ACCB5167E886A00B862BE /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACC9E167E811E00B862BE /* libzsLib.a */; };
-		006ACCB8167E8B8200B862BE /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCB7167E8B8200B862BE /* CoreFoundation.framework */; };
-		006ACCB9167E8C3100B862BE /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA0167E811E00B862BE /* libzsLib_ios.a */; };
 		00A4ED92167E9BC7003F1651 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */; };
 		00A4ED93167E9DA7003F1651 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */; };
 		00A4ED94167E9DA7003F1651 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5D14766D98001678CD /* TestHelper.cpp */; };
@@ -31,6 +20,16 @@
 		00A4ED9C167E9DA7003F1651 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6514766D98001678CD /* TestStringize.cpp */; };
 		00A4ED9D167E9DA7003F1651 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6614766D98001678CD /* TestTimer.cpp */; };
 		00A4ED9E167E9DA7003F1651 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6714766D98001678CD /* TestXML.cpp */; };
+		00ED193C16C5DAFD0069F8E0 /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACC9E167E811E00B862BE /* libzsLib.a */; };
+		00ED194616C5DBD40069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194316C5DBD40069F8E0 /* libboost_date_time.a */; };
+		00ED194716C5DBD40069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194416C5DBD40069F8E0 /* libboost_regex.a */; };
+		00ED194816C5DBD40069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194516C5DBD40069F8E0 /* libboost_thread.a */; };
+		00ED194A16C5DC140069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194916C5DC140069F8E0 /* CoreFoundation.framework */; };
+		00ED194D16C5DC540069F8E0 /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA0167E811E00B862BE /* libzsLib_ios.a */; };
+		00ED195D16C5DCFF0069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */; };
+		00ED195E16C5DCFF0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */; };
+		00ED195F16C5DCFF0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */; };
+		00ED196116C5DD320069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED196016C5DD320069F8E0 /* CoreFoundation.framework */; };
 		E2C658F6147672AF00E62819 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2C658F4147672AF00E62819 /* InfoPlist.strings */; };
 		E2C658F9147672AF00E62819 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658F8147672AF00E62819 /* main.m */; };
 		E2C658FC147672AF00E62819 /* zsLibTest_iosAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658FB147672AF00E62819 /* zsLibTest_iosAppDelegate.m */; };
@@ -67,6 +66,20 @@
 			remoteGlobalIDString = E2DD7F2B141A3ADD006D89BE;
 			remoteInfo = zsLib_ios;
 		};
+		00ED193A16C5DAF10069F8E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteInfo = zsLib;
+		};
+		00ED194B16C5DC4E0069F8E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2DD7F05141A3ADD006D89BE;
+			remoteInfo = zsLib_ios;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,16 +96,15 @@
 
 /* Begin PBXFileReference section */
 		006ACC98167E811D00B862BE /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
-		006ACCA1167E824D00B862BE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		006ACCA3167E828A00B862BE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		006ACCA5167E82A300B862BE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		006ACCA7167E82AD00B862BE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		006ACCAD167E844000B862BE /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = "<group>"; };
-		006ACCAE167E844000B862BE /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = "<group>"; };
-		006ACCB1167E845700B862BE /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = "<group>"; };
-		006ACCB2167E845700B862BE /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = "<group>"; };
-		006ACCB7167E8B8200B862BE /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = boost_replacement.cpp; path = ../../../zsLibTest/boost_replacement.cpp; sourceTree = "<group>"; };
+		00ED194316C5DBD40069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = "<group>"; };
+		00ED194416C5DBD40069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = "<group>"; };
+		00ED194516C5DBD40069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = "<group>"; };
+		00ED194916C5DC140069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = "<group>"; };
+		00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = "<group>"; };
+		00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = "<group>"; };
+		00ED196016C5DD320069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		E2967F5B14766D98001678CD /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = boost_replacement.h; path = ../../../zsLibTest/boost_replacement.h; sourceTree = "<group>"; };
 		E2967F5C14766D98001678CD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../zsLibTest/main.cpp; sourceTree = "<group>"; };
 		E2967F5D14766D98001678CD /* TestHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestHelper.cpp; path = ../../../zsLibTest/TestHelper.cpp; sourceTree = "<group>"; };
@@ -127,13 +139,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				006ACCB9167E8C3100B862BE /* libzsLib_ios.a in Frameworks */,
-				006ACCB3167E845800B862BE /* libboost_date_time.a in Frameworks */,
-				006ACCB4167E845800B862BE /* libboost_thread.a in Frameworks */,
-				006ACCA8167E82AD00B862BE /* CoreGraphics.framework in Frameworks */,
-				006ACCA6167E82A300B862BE /* Foundation.framework in Frameworks */,
-				006ACCA4167E828B00B862BE /* CoreFoundation.framework in Frameworks */,
-				006ACCA2167E824D00B862BE /* UIKit.framework in Frameworks */,
+				00ED196116C5DD320069F8E0 /* CoreFoundation.framework in Frameworks */,
+				00ED195D16C5DCFF0069F8E0 /* libboost_date_time.a in Frameworks */,
+				00ED195E16C5DCFF0069F8E0 /* libboost_regex.a in Frameworks */,
+				00ED195F16C5DCFF0069F8E0 /* libboost_thread.a in Frameworks */,
+				00ED194D16C5DC540069F8E0 /* libzsLib_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,10 +151,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				006ACCB8167E8B8200B862BE /* CoreFoundation.framework in Frameworks */,
-				006ACCB5167E886A00B862BE /* libzsLib.a in Frameworks */,
-				006ACCAF167E844000B862BE /* libboost_date_time.a in Frameworks */,
-				006ACCB0167E844000B862BE /* libboost_thread.a in Frameworks */,
+				00ED194A16C5DC140069F8E0 /* CoreFoundation.framework in Frameworks */,
+				00ED194616C5DBD40069F8E0 /* libboost_date_time.a in Frameworks */,
+				00ED194716C5DBD40069F8E0 /* libboost_regex.a in Frameworks */,
+				00ED194816C5DBD40069F8E0 /* libboost_thread.a in Frameworks */,
+				00ED193C16C5DAFD0069F8E0 /* libzsLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,10 +174,12 @@
 		00AAB8521684B77E00B39964 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				006ACCB1167E845700B862BE /* libboost_date_time.a */,
-				006ACCB2167E845700B862BE /* libboost_thread.a */,
-				006ACCAD167E844000B862BE /* libboost_date_time.a */,
-				006ACCAE167E844000B862BE /* libboost_thread.a */,
+				00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */,
+				00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */,
+				00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */,
+				00ED194316C5DBD40069F8E0 /* libboost_date_time.a */,
+				00ED194416C5DBD40069F8E0 /* libboost_regex.a */,
+				00ED194516C5DBD40069F8E0 /* libboost_thread.a */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -224,11 +237,8 @@
 		E2C658EA147672AE00E62819 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				006ACCA3167E828A00B862BE /* CoreFoundation.framework */,
-				006ACCB7167E8B8200B862BE /* CoreFoundation.framework */,
-				006ACCA7167E82AD00B862BE /* CoreGraphics.framework */,
-				006ACCA5167E82A300B862BE /* Foundation.framework */,
-				006ACCA1167E824D00B862BE /* UIKit.framework */,
+				00ED196016C5DD320069F8E0 /* CoreFoundation.framework */,
+				00ED194916C5DC140069F8E0 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -290,6 +300,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				00ED194C16C5DC4E0069F8E0 /* PBXTargetDependency */,
 			);
 			name = zsLibTest_ios;
 			productName = zsLibTest_ios;
@@ -307,6 +318,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				00ED193B16C5DAF10069F8E0 /* PBXTargetDependency */,
 			);
 			name = zsLibTest;
 			productName = zsLibTest;
@@ -421,6 +433,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		00ED193B16C5DAF10069F8E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = zsLib;
+			targetProxy = 00ED193A16C5DAF10069F8E0 /* PBXContainerItemProxy */;
+		};
+		00ED194C16C5DC4E0069F8E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = zsLib_ios;
+			targetProxy = 00ED194B16C5DC4E0069F8E0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		E2C658F4147672AF00E62819 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -462,7 +487,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../hookflash-staging/include",
+					"../../../../../hookflash-staging/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
@@ -481,7 +506,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../hookflash-staging/include",
+					"../../../../../hookflash-staging/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
@@ -500,15 +525,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/iPhoneOS/include",
-				);
 				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
-					"../zsLib/build/$(CONFIGURATION)-iphoneos",
-					"../../../../../hookflash-staging/iPhoneOS/lib",
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/lib\"",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/armv7s/lib\"",
 				);
 				PRODUCT_NAME = zsLibTest_ios;
 				PROVISIONING_PROFILE = "";
@@ -530,15 +552,12 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/iPhoneOS/include",
-				);
 				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
-					"../zsLib/build/$(CONFIGURATION)-iphoneos",
-					"../../../../../hookflash-staging/iPhoneOS/lib",
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/lib\"",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/armv7s/lib\"",
 				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = zsLibTest_ios;
@@ -563,13 +582,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/include",
-				);
 				LIBRARY_SEARCH_PATHS = (
-					"../zsLib/build/$(CONFIGURATION)",
-					"../../../../../hookflash-staging/lib",
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
@@ -588,13 +603,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/include",
-				);
 				LIBRARY_SEARCH_PATHS = (
-					"../zsLib/build/$(CONFIGURATION)",
-					"../../../../../hookflash-staging/lib",
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../hookflash-staging/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;

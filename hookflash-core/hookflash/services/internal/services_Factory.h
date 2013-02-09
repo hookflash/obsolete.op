@@ -29,9 +29,54 @@
 
  */
 
+#pragma once
+
+#include <hookflash/services/internal/types.h>
 #include <hookflash/services/internal/services.h>
 
-#include <zsLib/Log.h>
+namespace hookflash
+{
+  namespace services
+  {
+    namespace internal
+    {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Factory
+      #pragma mark
 
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services) } }
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_http) } }
+      class Factory : public IDNSFactory,
+                      public IHTTPFactory,
+                      public IICESocketFactory,
+                      public IICESocketSessionFactory,
+                      public IRUDPChannelFactory,
+                      public IRUDPChannelStreamFactory,
+                      public IRUDPICESocketFactory
+      {
+      public:
+        static void override(FactoryPtr override);
+
+        static FactoryPtr &singleton();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (internal)
+        #pragma mark
+
+        static FactoryPtr create();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (data)
+        #pragma mark
+
+        FactoryPtr mOverride;
+      };
+    }
+  }
+}

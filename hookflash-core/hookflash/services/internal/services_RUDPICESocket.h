@@ -43,8 +43,62 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketFactory
+      #pragma mark
+
+      interaction IRUDPICESocketFactory
+      {
+        static IRUDPICESocketFactory &singleton();
+
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        const char *turnServer,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        const char *stunServer,
+                                        WORD port = 0
+                                        );
+
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        IDNS::SRVResultPtr srvTURNUDP,
+                                        IDNS::SRVResultPtr srvTURNTCP,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        IDNS::SRVResultPtr srvSTUN,
+                                        WORD port = 0
+                                        );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketForRUDPICESocketSession
+      #pragma mark
+
       interaction IRUDPICESocketForRUDPICESocketSession
       {
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
+        IRUDPICESocketForRUDPICESocketSession &forSession() {return *this;}
+        const IRUDPICESocketForRUDPICESocketSession &forSession() const {return *this;}
+
+        virtual IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(
+                                                                           IRUDPICESocketSessionDelegatePtr delegate,
+                                                                           const CandidateList &remoteCandidates,
+                                                                           ICEControls control
+                                                                           ) = 0;
+
         virtual IICESocketPtr getICESocket() const = 0;
         virtual IRUDPICESocketPtr getRUDPICESocket() const = 0;
 
@@ -53,12 +107,25 @@ namespace hookflash
         virtual void onRUDPICESessionClosed(PUID sessionID) = 0;
       };
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocket
+      #pragma mark
+
       class RUDPICESocket : public MessageQueueAssociator,
                             public IRUDPICESocket,
                             public IICESocketDelegate,
                             public IRUDPICESocketForRUDPICESocketSession
       {
-      protected:
+      public:
+        friend interaction IRUDPICESocketFactory;
+
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
         class Subscription;
         typedef boost::shared_ptr<Subscription> SubscriptionPtr;
         typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
@@ -88,7 +155,12 @@ namespace hookflash
       public:
         ~RUDPICESocket();
 
-        //IRUDPICESocket
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => IRUDPICESocket
+        #pragma mark
+
         static RUDPICESocketPtr create(
                                        IMessageQueuePtr queue,
                                        IRUDPICESocketDelegatePtr delegate,
@@ -128,13 +200,11 @@ namespace hookflash
                                                                            ICEControls control
                                                                            );
 
-        //IICESocketDelegate
-        virtual void onICESocketStateChanged(
-                                             IICESocketPtr socket,
-                                             ICESocketStates state
-                                             );
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => IRUDPICESocketForRUDPICESocketSession
+        #pragma mark
 
-        // IRUDPICESocketForRUDPICESocketSession
         virtual RecursiveLock &getLock() const {return mLock;}
 
         virtual IICESocketPtr getICESocket() const;
@@ -142,11 +212,31 @@ namespace hookflash
 
         virtual void onRUDPICESessionClosed(PUID sessionID);
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => IICESocketDelegate
+        #pragma mark
+
+        virtual void onICESocketStateChanged(
+                                             IICESocketPtr socket,
+                                             ICESocketStates state
+                                             );
+
       protected:
 
-        void cancelSubscription(PUID subscriptionID);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => friend Subscription
+        #pragma mark
+
+        void cancelSubscription(Subscription &subscription);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => (internal)
+        #pragma mark
+
         String log(const char *message) const;
         bool isShuttingDown();
         bool isShutdown();
@@ -154,7 +244,13 @@ namespace hookflash
         void cancel();
         void setState(RUDPICESocketStates state);
 
-      protected:
+      public:
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket::Subscription
+        #pragma mark
+
         class Subscription : public IRUDPICESocketSubscription
         {
         protected:
@@ -174,6 +270,11 @@ namespace hookflash
         };
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocket => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         RUDPICESocketWeakPtr mThisWeak;
         RUDPICESocketPtr mGracefulShutdownReference;
@@ -196,6 +297,9 @@ namespace hookflash
 ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPICESocketForRUDPICESocketSession)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::RecursiveLock, RecursiveLock)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::PUID, PUID)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionDelegatePtr, IRUDPICESocketSessionDelegatePtr)
+ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(createSessionFromRemoteCandidates, IRUDPICESocketSessionPtr, IRUDPICESocketSessionDelegatePtr, const CandidateList &, ICEControls)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getICESocket, hookflash::services::IICESocketPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getRUDPICESocket, hookflash::services::IRUDPICESocketPtr)

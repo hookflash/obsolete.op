@@ -29,9 +29,23 @@
 
  */
 
-#include <hookflash/services/internal/services.h>
+#pragma once
 
-#include <zsLib/Log.h>
-
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services) } }
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_http) } }
+#include <hookflash/services/internal/types.h>
+#include <hookflash/services/internal/services_CanonicalXML.h>
+#include <hookflash/services/internal/services_DNS.h>
+#include <hookflash/services/internal/services_DNSMonitor.h>
+#include <hookflash/services/internal/services_Helper.h>
+#include <hookflash/services/internal/services_HTTP.h>
+#include <hookflash/services/internal/services_ICESocket.h>
+#include <hookflash/services/internal/services_ICESocketSession.h>
+#include <hookflash/services/internal/services_RUDPChannel.h>
+#include <hookflash/services/internal/services_RUDPChannelStream.h>
+#include <hookflash/services/internal/services_RUDPICESocket.h>
+#include <hookflash/services/internal/services_RUDPICESocketSession.h>
+#include <hookflash/services/internal/services_RUDPListener.h>
+#include <hookflash/services/internal/services_RUDPMessaging.h>
+#include <hookflash/services/internal/services_STUNDiscovery.h>
+#include <hookflash/services/internal/services_STUNRequester.h>
+#include <hookflash/services/internal/services_STUNRequesterManager.h>
+#include <hookflash/services/internal/services_TURNSocket.h>

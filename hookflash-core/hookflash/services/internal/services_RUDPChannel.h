@@ -46,79 +46,66 @@ namespace hookflash
   {
     namespace internal
     {
-      interaction IRUDPChannelForSessionAndListener
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelFactory
+      #pragma mark
+
+      interaction IRUDPChannelFactory
       {
-        virtual void setDelegate(IRUDPChannelDelegatePtr delegate) = 0;
+        static IRUDPChannelFactory &singleton();
 
-        virtual bool handleSTUN(
-                                STUNPacketPtr stun,
-                                STUNPacketPtr &outResponse,
-                                const String &localUsernameFrag,
-                                const String &remoteUsernameFrag
-                                ) = 0;
+        virtual RUDPChannelPtr createForRUDPICESocketSessionIncoming(
+                                                                     IMessageQueuePtr queue,
+                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                     const IPAddress &remoteIP,
+                                                                     WORD incomingChannelNumber,
+                                                                     const char *localUserFrag,
+                                                                     const char *remoteUserFrag,
+                                                                     const char *localPassword,
+                                                                     const char *remotePassword,
+                                                                     STUNPacketPtr channelOpenPacket,
+                                                                     STUNPacketPtr &outResponse
+                                                                     );
 
-        virtual void handleRUDP(
-                                RUDPPacketPtr rudp,
-                                const BYTE *buffer,
-                                ULONG bufferLengthInBytes
-                                ) = 0;
+        virtual RUDPChannelPtr createForRUDPICESocketSessionOutgoing(
+                                                                     IMessageQueuePtr queue,
+                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                     IRUDPChannelDelegatePtr delegate,
+                                                                     const IPAddress &remoteIP,
+                                                                     WORD incomingChannelNumber,
+                                                                     const char *localUserFrag,
+                                                                     const char *remoteUserFrag,
+                                                                     const char *localPassword,
+                                                                     const char *remotePassword,
+                                                                     const char *connectionInfo
+                                                                     );
 
-        virtual void notifyWriteReady() = 0;
-        virtual WORD getIncomingChannelNumber() const = 0;
-        virtual WORD getOutgoingChannelNumber() const = 0;
-
-        virtual void issueConnectIfNotIssued() = 0;
-
-        virtual void shutdownFromTimeout() = 0;
+        virtual RUDPChannelPtr createForListener(
+                                                 IMessageQueuePtr queue,
+                                                 IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                 const IPAddress &remoteIP,
+                                                 WORD incomingChannelNumber,
+                                                 STUNPacketPtr channelOpenPacket,
+                                                 STUNPacketPtr &outResponse
+                                                 );
       };
 
-      interaction IRUDPChannelAsyncDelegate
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelForRUDPICESocketSession
+      #pragma mark
+
+      interaction IRUDPChannelForRUDPICESocketSession
       {
-        virtual void onStep() = 0;
-      };
-
-      class RUDPChannel : public MessageQueueAssociator,
-                          public IRUDPChannel,
-                          public IRUDPChannelForSessionAndListener,
-                          public IRUDPChannelAsyncDelegate,
-                          public IRUDPChannelStreamDelegate,
-                          public ISTUNRequesterDelegate,
-                          public ITimerDelegate
-      {
-      public:
-
-      protected:
-        RUDPChannel(
-                    IMessageQueuePtr queue,
-                    IRUDPChannelDelegateForSessionAndListenerPtr master,
-                    const IPAddress &remoteIP,
-                    const char *localUserFrag,
-                    const char *remoteUserFrag,
-                    const char *localPassword,
-                    const char *remotePassword,
-                    DWORD minimumRTT,
-                    DWORD lifetime,
-                    WORD incomingChannelNumber,
-                    QWORD localSequenceNumber,
-                    const char *localChannelInfo,
-                    WORD outgoingChannelNumber = 0,
-                    QWORD remoteSequenceNumber = 0,
-                    const char *remoteChannelInfo = NULL
-                    );
-
-        void init();
-
-      public:
-        ~RUDPChannel();
-
-        static RUDPChannelPtr createForListener(
-                                                IMessageQueuePtr queue,
-                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                const IPAddress &remoteIP,
-                                                WORD incomingChannelNumber,
-                                                STUNPacketPtr channelOpenPacket,
-                                                STUNPacketPtr &outResponse
-                                                );
+        IRUDPChannelForRUDPICESocketSession &forSession() {return *this;}
+        const IRUDPChannelForRUDPICESocketSession &forSession() const {return *this;}
 
         static RUDPChannelPtr createForRUDPICESocketSessionIncoming(
                                                                     IMessageQueuePtr queue,
@@ -145,7 +132,145 @@ namespace hookflash
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );
-        //IRUDPChannel
+
+        virtual PUID getID() const = 0;
+
+        virtual void setDelegate(IRUDPChannelDelegatePtr delegate) = 0;
+
+        virtual bool handleSTUN(
+                                STUNPacketPtr stun,
+                                STUNPacketPtr &outResponse,
+                                const String &localUsernameFrag,
+                                const String &remoteUsernameFrag
+                                ) = 0;
+
+        virtual void handleRUDP(
+                                RUDPPacketPtr rudp,
+                                const BYTE *buffer,
+                                ULONG bufferLengthInBytes
+                                ) = 0;
+
+        virtual void notifyWriteReady() = 0;
+        virtual WORD getIncomingChannelNumber() const = 0;
+        virtual WORD getOutgoingChannelNumber() const = 0;
+
+        virtual void issueConnectIfNotIssued() = 0;
+
+        virtual void shutdown() = 0;
+        virtual void shutdownFromTimeout() = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelForRUDPListener
+      #pragma mark
+
+      interaction IRUDPChannelForRUDPListener
+      {
+        IRUDPChannelForRUDPListener &forListener() {return *this;}
+        const IRUDPChannelForRUDPListener &forListener() const {return *this;}
+
+        static RUDPChannelPtr createForListener(
+                                                IMessageQueuePtr queue,
+                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                const IPAddress &remoteIP,
+                                                WORD incomingChannelNumber,
+                                                STUNPacketPtr channelOpenPacket,
+                                                STUNPacketPtr &outResponse
+                                                );
+
+        virtual void setDelegate(IRUDPChannelDelegatePtr delegate) = 0;
+
+        virtual bool handleSTUN(
+                                STUNPacketPtr stun,
+                                STUNPacketPtr &outResponse,
+                                const String &localUsernameFrag,
+                                const String &remoteUsernameFrag
+                                ) = 0;
+
+        virtual void handleRUDP(
+                                RUDPPacketPtr rudp,
+                                const BYTE *buffer,
+                                ULONG bufferLengthInBytes
+                                ) = 0;
+
+        virtual void notifyWriteReady() = 0;
+
+        virtual void shutdown() = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelAsyncDelegate
+      #pragma mark
+
+      interaction IRUDPChannelAsyncDelegate
+      {
+        virtual void onStep() = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannel
+      #pragma mark
+
+      class RUDPChannel : public MessageQueueAssociator,
+                          public IRUDPChannel,
+                          public IRUDPChannelForRUDPICESocketSession,
+                          public IRUDPChannelForRUDPListener,
+                          public IRUDPChannelAsyncDelegate,
+                          public IRUDPChannelStreamDelegate,
+                          public ISTUNRequesterDelegate,
+                          public ITimerDelegate
+      {
+      public:
+        friend interaction IRUDPChannelFactory;
+
+        typedef PUID ACKRequestID;
+        typedef std::map<ACKRequestID, ISTUNRequesterPtr> ACKRequestMap;
+
+        typedef std::pair<boost::shared_array<BYTE>, ULONG> PendingSendBuffer;
+        typedef std::list<PendingSendBuffer> PendingSendBufferList;
+
+      protected:
+        RUDPChannel(
+                    IMessageQueuePtr queue,
+                    IRUDPChannelDelegateForSessionAndListenerPtr master,
+                    const IPAddress &remoteIP,
+                    const char *localUserFrag,
+                    const char *remoteUserFrag,
+                    const char *localPassword,
+                    const char *remotePassword,
+                    DWORD minimumRTT,
+                    DWORD lifetime,
+                    WORD incomingChannelNumber,
+                    QWORD localSequenceNumber,
+                    const char *localChannelInfo,
+                    WORD outgoingChannelNumber = 0,
+                    QWORD remoteSequenceNumber = 0,
+                    const char *remoteChannelInfo = NULL
+                    );
+
+        void init();
+
+      public:
+        ~RUDPChannel();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => IRUDPChannel
+        #pragma mark
+
         virtual PUID getID() const {return mID;}
 
         virtual RUDPChannelStates getState() const;
@@ -170,7 +295,39 @@ namespace hookflash
 
         virtual String getRemoteConnectionInfo();
 
-        // IRUDPChannelForSessionAndListener
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => IRUDPChannelForRUDPICESocketSession
+        #pragma mark
+
+        static RUDPChannelPtr createForRUDPICESocketSessionIncoming(
+                                                                    IMessageQueuePtr queue,
+                                                                    IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                    const IPAddress &remoteIP,
+                                                                    WORD incomingChannelNumber,
+                                                                    const char *localUserFrag,
+                                                                    const char *remoteUserFrag,
+                                                                    const char *localPassword,
+                                                                    const char *remotePassword,
+                                                                    STUNPacketPtr channelOpenPacket,
+                                                                    STUNPacketPtr &outResponse
+                                                                    );
+
+        static RUDPChannelPtr createForRUDPICESocketSessionOutgoing(
+                                                                    IMessageQueuePtr queue,
+                                                                    IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                    IRUDPChannelDelegatePtr delegate,
+                                                                    const IPAddress &remoteIP,
+                                                                    WORD incomingChannelNumber,
+                                                                    const char *localUserFrag,
+                                                                    const char *remoteUserFrag,
+                                                                    const char *localPassword,
+                                                                    const char *remotePassword,
+                                                                    const char *connectionInfo
+                                                                    );
+
+        // (duplicate) virtual PUID getID() const;
+
         virtual void setDelegate(IRUDPChannelDelegatePtr delegate);
 
         virtual bool handleSTUN(
@@ -192,12 +349,55 @@ namespace hookflash
 
         virtual void issueConnectIfNotIssued();
 
+        // (duplicate) virtual void shutdown();
+
         virtual void shutdownFromTimeout();
 
-        // IRUDPChannelAsyncDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => IRUDPChannelForRUDPListener
+        #pragma mark
+
+        static RUDPChannelPtr createForListener(
+                                                IMessageQueuePtr queue,
+                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                const IPAddress &remoteIP,
+                                                WORD incomingChannelNumber,
+                                                STUNPacketPtr channelOpenPacket,
+                                                STUNPacketPtr &outResponse
+                                                );
+
+        // (duplicate) virtual void setDelegate(IRUDPChannelDelegatePtr delegate);
+
+        // (duplicate) virtual bool handleSTUN(
+        //                                     STUNPacketPtr stun,
+        //                                     STUNPacketPtr &outResponse,
+        //                                     const String &localUsernameFrag,
+        //                                     const String &remoteUsernameFrag
+        //                                     );
+
+        // (duplicate) virtual void handleRUDP(
+        //                                     RUDPPacketPtr rudp,
+        //                                     const BYTE *buffer,
+        //                                     ULONG bufferLengthInBytes
+        //                                     );
+
+        // (duplicate) virtual void notifyWriteReady();
+
+        // (duplicate) virtual void shutdown();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => IRUDPChannelAsyncDelegate
+        #pragma mark
+
         virtual void onStep();
 
-        //IRUDPChannelStreamDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => IRUDPChannelStreamDelegate
+        #pragma mark
+
         virtual void onRUDPChannelStreamStateChanged(
                                                      IRUDPChannelStreamPtr stream,
                                                      RUDPChannelStreamStates state
@@ -218,7 +418,11 @@ namespace hookflash
                                                            PUID guarenteeDeliveryRequestID = 0
                                                            );
 
-        //ISTUNRequesterDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => ISTUNRequesterDelegate
+        #pragma mark
+
         virtual void onSTUNRequesterSendPacket(
                                                ISTUNRequesterPtr requester,
                                                IPAddress destination,
@@ -234,10 +438,19 @@ namespace hookflash
 
         virtual void onSTUNRequesterTimedOut(ISTUNRequesterPtr requester);
 
-        //ITimerDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => ITimerDelegate
+        #pragma mark
+
         virtual void onTimer(TimerPtr timer);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => (internal)
+        #pragma mark
+
         String log(const char *message) const;
         void fix(STUNPacketPtr stun) const;
 
@@ -262,6 +475,11 @@ namespace hookflash
         void sendPendingNow();
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannel => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         RUDPChannelWeakPtr mThisWeak;
         RUDPChannelPtr mGracefulShutdownReference;
@@ -312,24 +530,26 @@ namespace hookflash
         Time mLastSentData;
         Time mLastReceivedData;
 
-        typedef PUID ACKRequestID;
-        typedef std::map<ACKRequestID, ISTUNRequesterPtr> ACKRequestMap;
         ACKRequestMap mOutstandingACKs;
 
-        typedef std::pair<boost::shared_array<BYTE>, ULONG> PendingSendBuffer;
-        typedef std::list<PendingSendBuffer> PendingSendBufferList;
         PendingSendBufferList mPendingBuffers;
       };
+
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelDelegateForSessionAndListener
+      #pragma mark
 
       interaction IRUDPChannelDelegateForSessionAndListener
       {
         typedef IRUDPChannel::RUDPChannelStates RUDPChannelStates;
+
         virtual void onRUDPChannelStateChanged(
                                                RUDPChannelPtr channel,
                                                RUDPChannelStates state
                                                ) = 0;
 
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         // PURPOSE: Send a packet over the socket interface to the remote party.
         virtual bool notifyRUDPChannelSendPacket(
                                                  RUDPChannelPtr channel,

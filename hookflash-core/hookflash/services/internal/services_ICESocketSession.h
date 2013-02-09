@@ -47,15 +47,56 @@ namespace hookflash
   {
     namespace internal
     {
-      interaction IICESocketSessionAsyncDelegate
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionFactory
+      #pragma mark
+
+      interaction IICESocketSessionFactory
       {
-        virtual void onStep() = 0;
+        typedef IICESocketSession::ICEControls ICEControls;
+
+        static IICESocketSessionFactory &singleton();
+
+        virtual ICESocketSessionPtr create(
+                                           IMessageQueuePtr queue,
+                                           IICESocketSessionDelegatePtr delegate,
+                                           ICESocketPtr socket,
+                                           ICEControls control
+                                           );
       };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionForICESocket
+      #pragma mark
 
       interaction IICESocketSessionForICESocket
       {
+        typedef IICESocketSession::ICEControls ICEControls;
+        typedef IICESocketSession::CandidateList CandidateList;
+
+        IICESocketSessionForICESocket &forICESocket() {return *this;}
+        const IICESocketSessionForICESocket &forICESocket() const {return *this;}
+
+        static ICESocketSessionPtr create(
+                                          IMessageQueuePtr queue,
+                                          IICESocketSessionDelegatePtr delegate,
+                                          ICESocketPtr socket,
+                                          ICEControls control
+                                          );
+
         virtual PUID getID() const = 0;
         virtual void close() = 0;
+
+        virtual void updateRemoteCandidates(const CandidateList &remoteCandidates) = 0;
+
         virtual void timeout() = 0;
 
         virtual bool handleSTUNPacket(
@@ -76,6 +117,27 @@ namespace hookflash
         virtual void notifyRelayWriteReady() = 0;
       };
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionAsyncDelegate
+      #pragma mark
+
+      interaction IICESocketSessionAsyncDelegate
+      {
+        virtual void onStep() = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocketSession
+      #pragma mark
+
       class ICESocketSession : public MessageQueueAssociator,
                                public IICESocketSession,
                                public IICESocketSessionForICESocket,
@@ -85,8 +147,18 @@ namespace hookflash
                                public ITimerDelegate
       {
       public:
+        friend interaction IICESocketSessionFactory;
+
+        typedef IICESocketSession::ICEControls ICEControls;
+        typedef IICESocketSession::CandidateList CandidateList;
+
         struct CandidatePair;
         typedef boost::shared_ptr<CandidatePair> CandidatePairPtr;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ICESocketSession::CandidatePair
+        #pragma mark
 
         struct CandidatePair
         {
@@ -103,6 +175,8 @@ namespace hookflash
           ISTUNRequesterPtr mRequester;
         };
 
+        typedef std::list<CandidatePairPtr> CandidatePairList;
+
       protected:
         ICESocketSession(
                          IMessageQueuePtr queue,
@@ -116,15 +190,12 @@ namespace hookflash
       public:
         ~ICESocketSession();
 
-        static ICESocketSessionPtr create(
-                                          IMessageQueuePtr queue,
-                                          IICESocketSessionDelegatePtr delegate,
-                                          ICESocketPtr socket,
-                                          ICEControls control
-                                          );
-
+      protected:
         //---------------------------------------------------------------------
-        // IICESocketSession
+        #pragma mark
+        #pragma mark ICESocketSession => IICESocketSession
+        #pragma mark
+
         virtual PUID getID() const {return mID;}
 
         virtual IICESocketPtr getSocket();
@@ -159,10 +230,22 @@ namespace hookflash
                                                       );
 
         //---------------------------------------------------------------------
-        // IICESocketSessionForICESocket
+        #pragma mark
+        #pragma mark ICESocketSession => IICESocketSessionForICESocket
+        #pragma mark
 
-        //        virtual PUID getID() const;  // already handled, same meaning...
-        //        virtual void close();               // already handled, same meaning...
+        static ICESocketSessionPtr create(
+                                          IMessageQueuePtr queue,
+                                          IICESocketSessionDelegatePtr delegate,
+                                          ICESocketPtr socket,
+                                          ICEControls control
+                                          );
+
+        // (duplicate) virtual PUID getID() const;
+        // (duplicate) virtual void close();
+
+        // (duplicate) virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
+
         virtual void timeout();
 
         virtual bool handleSTUNPacket(
@@ -183,18 +266,27 @@ namespace hookflash
         virtual void notifyRelayWriteReady();
 
         //---------------------------------------------------------------------
-        // IICESocketSessionAsyncDelegate
+        #pragma mark
+        #pragma mark ICESocketSession => IICESocketSessionAsyncDelegate
+        #pragma mark
+
         virtual void onStep();
 
         //---------------------------------------------------------------------
-        // IICESocketDelegate
+        #pragma mark
+        #pragma mark ICESocketSession => IICESocketDelegate
+        #pragma mark
+
         virtual void onICESocketStateChanged(
                                              IICESocketPtr socket,
                                              ICESocketStates state
                                              );
 
         //---------------------------------------------------------------------
-        // ISTUNRequesterDelegate
+        #pragma mark
+        #pragma mark ICESocketSession => ISTUNRequesterDelegate
+        #pragma mark
+
         virtual void onSTUNRequesterSendPacket(
                                                ISTUNRequesterPtr requester,
                                                IPAddress destination,
@@ -211,10 +303,18 @@ namespace hookflash
         virtual void onSTUNRequesterTimedOut(ISTUNRequesterPtr requester);
 
         //---------------------------------------------------------------------
-        // ITimerDelegate
+        #pragma mark
+        #pragma mark ICESocketSession => ITimerDelegate
+        #pragma mark
+
         virtual void onTimer(TimerPtr timer);
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ICESocketSession => (internal)
+        #pragma mark
+
         RecursiveLock &getLock() const;
 
         String log(const char *message) const;
@@ -238,10 +338,15 @@ namespace hookflash
                     );
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ICESocketSession => (data)
+        #pragma mark
+
         mutable RecursiveLock mBogusLock;
 
         ICESocketSessionWeakPtr mThisWeak;
-        IICESocketForICESocketSessionWeakPtr mICESocketWeak;
+        ICESocketWeakPtr mICESocketWeak;
         PUID mID;
 
         ICESocketSessionStates mCurrentState;
@@ -273,7 +378,6 @@ namespace hookflash
         Duration mKeepAliveSTUNRequestTimeout;
         Duration mBackgroundingTimeout;
 
-        typedef std::list<CandidatePairPtr> CandidatePairList;
         CandidatePairList mCandidatePairs;
 
         CandidateList mRemoteCandidates;

@@ -81,7 +81,7 @@ namespace hookflash
         String    mProtocol;
 
         Candidate(): mType(Type_Unknown), mPriority(0), mLocalPreference(0) {}
-        String toDebugString() const;
+        String toDebugString(bool includeCommaPrefix = true) const;
       };
 
       enum ICEControls

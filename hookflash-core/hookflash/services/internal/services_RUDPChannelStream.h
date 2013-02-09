@@ -50,18 +50,70 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStreamFactory
+      #pragma mark
+
+      interaction IRUDPChannelStreamFactory
+      {
+        static IRUDPChannelStreamFactory &singleton();
+
+        virtual RUDPChannelStreamPtr create(
+                                            IMessageQueuePtr queue,
+                                            IRUDPChannelStreamDelegatePtr delegate,
+                                            QWORD nextSequenceNumberToUseForSending,
+                                            QWORD nextSequenberNumberExpectingToReceive,
+                                            WORD sendingChannelNumber,
+                                            WORD receivingChannelNumber,
+                                            DWORD minimumNegotiatedRTTInMilliseconds
+                                            );
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStreamAsync
+      #pragma mark
+
       interaction IRUDPChannelStreamAsync
       {
         virtual void onSendNow() = 0;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream
+      #pragma mark
 
       class RUDPChannelStream : public MessageQueueAssociator,
                                 public IRUDPChannelStream,
                                 public ITimerDelegate,
                                 public IRUDPChannelStreamAsync
       {
+      public:
+        friend interaction IRUDPChannelStreamFactory;
+
         typedef boost::shared_array<BYTE> RecycleBuffer;
         typedef std::list<RecycleBuffer> RecycleBufferList;
+
+        struct BufferedPacket;
+        typedef boost::shared_ptr<BufferedPacket> BufferedPacketPtr;
+
+        typedef std::map<QWORD, BufferedPacketPtr> BufferedPacketMap;
+
+        struct BufferedData;
+        typedef boost::shared_ptr<BufferedData> BufferedDataPtr;
+
+        typedef std::list<BufferedDataPtr> BufferedDataList;
 
         struct Exceptions
         {
@@ -84,6 +136,13 @@ namespace hookflash
       public:
         ~RUDPChannelStream();
 
+      protected:
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => IRUDPChannelStream
+        #pragma mark
+
         static RUDPChannelStreamPtr create(
                                            IMessageQueuePtr queue,
                                            IRUDPChannelStreamDelegatePtr delegate,
@@ -94,7 +153,6 @@ namespace hookflash
                                            DWORD minimumNegotiatedRTTInMilliseconds
                                            );
 
-        // IRUDPChannelStream
         virtual PUID getID() const {return mID;}
 
         virtual RUDPChannelStreamStates getState() const;
@@ -161,13 +219,26 @@ namespace hookflash
 
         virtual void notifyExternalACKSent(QWORD ackedSequenceNumber);
 
-        // ITimerDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => ITimerDelegate
+        #pragma mark
+
         virtual void onTimer(TimerPtr timer);
 
-        // IRUDPChannelStreamAsync
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => IRUDPChannelStreamAsync
+        #pragma mark
+
         virtual void onSendNow();
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => (internal)
+        #pragma mark
+
         String log(const char *message) const;
         bool isShuttingDown() {return RUDPChannelStreamState_ShuttingDown == mCurrentState;}
         bool isShutdown() {return RUDPChannelStreamState_Shutdown == mCurrentState;}
@@ -223,12 +294,11 @@ namespace hookflash
 
         void closeOnAllDataSent();
 
-      protected:
-        struct BufferedPacket;
-        typedef boost::shared_ptr<BufferedPacket> BufferedPacketPtr;
-
-        struct BufferedData;
-        typedef boost::shared_ptr<BufferedData> BufferedDataPtr;
+      public:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream::BufferedPacket
+        #pragma mark
 
         struct BufferedPacket
         {
@@ -261,7 +331,10 @@ namespace hookflash
           bool mFlagForResendingInNextBurst;    // this packet needs to be resent at the next possible burst window
         };
 
-        typedef std::map<QWORD, BufferedPacketPtr> BufferedPacketMap;
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream::BufferedData
+        #pragma mark
 
         struct BufferedData
         {
@@ -273,9 +346,13 @@ namespace hookflash
 
           ULONG mConsumed;             // how much of the buffer has been consumed
         };
-        typedef std::list<BufferedDataPtr> BufferedDataList;
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => (data)
+        #pragma mark
+
         mutable RecursiveLock mLock;
 
         RUDPChannelStreamWeakPtr mThisWeak;

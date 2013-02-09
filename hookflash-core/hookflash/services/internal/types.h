@@ -89,9 +89,9 @@ namespace hookflash
       using CryptoPP::HexEncoder;
       using CryptoPP::HexDecoder;
 
-      class FinderClient;
-      typedef boost::shared_ptr<FinderClient> FinderClientPtr;
-      typedef boost::weak_ptr<FinderClient> FinderClientWeakPtr;
+      interaction DNS;
+      typedef boost::shared_ptr<DNS> DNSPtr;
+      typedef boost::weak_ptr<DNS> DNSWeakPtr;
 
       class DNSMonitor;
       typedef boost::shared_ptr<DNSMonitor> DNSMonitorPtr;
@@ -100,6 +100,10 @@ namespace hookflash
       class DNSQuery;
       typedef boost::shared_ptr<DNSQuery> DNSQueryPtr;
       typedef boost::weak_ptr<DNSQuery> DNSQueryWeakPtr;
+
+      class Factory;
+      typedef boost::shared_ptr<Factory> FactoryPtr;
+      typedef boost::weak_ptr<Factory> FactoryWeakPtr;
 
       class ICESocket;
       typedef boost::shared_ptr<ICESocket> ICESocketPtr;
@@ -113,10 +117,6 @@ namespace hookflash
       class ICESocketSession;
       typedef boost::shared_ptr<ICESocketSession> ICESocketSessionPtr;
       typedef boost::weak_ptr<ICESocketSession> ICESocketSessionWeakPtr;
-
-      interaction IICESocketSessionForICESocket;
-      typedef boost::shared_ptr<IICESocketSessionForICESocket> IICESocketSessionForICESocketPtr;
-      typedef boost::weak_ptr<IICESocketSessionForICESocket> IICESocketSessionForICESocketWeakPtr;
 
       interaction IICESocketSessionAsyncDelegate;
       typedef boost::shared_ptr<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegatePtr;
@@ -135,11 +135,6 @@ namespace hookflash
       typedef boost::shared_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerPtr;
       typedef boost::weak_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerWeakPtr;
       typedef zsLib::Proxy<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerProxy;
-
-      interaction IRUDPChannelForSessionAndListener;
-      typedef boost::shared_ptr<IRUDPChannelForSessionAndListener> IRUDPChannelForSessionAndListenerPtr;
-      typedef boost::weak_ptr<IRUDPChannelForSessionAndListener> IRUDPChannelForSessionAndListenerWeakPtr;
-      typedef zsLib::Proxy<IRUDPChannelForSessionAndListener> IRUDPChannelForSessionAndListenerProxy;
 
       interaction IRUDPChannelAsyncDelegate;
       typedef boost::shared_ptr<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegatePtr;

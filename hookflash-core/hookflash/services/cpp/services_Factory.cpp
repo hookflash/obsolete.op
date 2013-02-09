@@ -1,0 +1,387 @@
+/*
+
+ Copyright (c) 2013, SMB Phone Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ The views and conclusions contained in the software and documentation are those
+ of the authors and should not be interpreted as representing official policies,
+ either expressed or implied, of the FreeBSD Project.
+
+ */
+
+#include <hookflash/services/internal/services_Factory.h>
+
+#include <zsLib/Log.h>
+
+namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+
+namespace hookflash
+{
+  namespace services
+  {
+    namespace internal
+    {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helper)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Factory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Factory::override(FactoryPtr override)
+      {
+        singleton()->mOverride = override;
+      }
+
+      //-----------------------------------------------------------------------
+      FactoryPtr &Factory::singleton()
+      {
+        static FactoryPtr global = Factory::create();
+        if (global->mOverride) return global->mOverride;
+        return global;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Factory => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      FactoryPtr Factory::create()
+      {
+        return FactoryPtr(new Factory);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IDNSFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IDNSFactory &IDNSFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr IDNSFactory::lookupA(
+                                        IDNSDelegatePtr delegate,
+                                        const char *name
+                                        )
+      {
+        return DNS::lookupA(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr IDNSFactory::lookupAAAA(
+                                           IDNSDelegatePtr delegate,
+                                           const char *name
+                                           )
+      {
+        return DNS::lookupAAAA(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr IDNSFactory::lookupAorAAAA(
+                                              IDNSDelegatePtr delegate,
+                                              const char *name
+                                              )
+      {
+        return DNS::lookupAorAAAA(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr IDNSFactory::lookupSRV(
+                                          IDNSDelegatePtr delegate,
+                                          const char *name,
+                                          const char *service,
+                                          const char *protocol,
+                                          WORD defaultPort,
+                                          WORD defaultPriority,
+                                          WORD defaultWeight,
+                                          SRVLookupTypes lookupType
+                                          )
+      {
+        return DNS::lookupSRV(delegate, name, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IHTTPFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IHTTPFactory &IHTTPFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IHTTPQueryPtr IHTTPFactory::get(
+                                      IHTTPQueryDelegatePtr delegate,
+                                      const char *userAgent,
+                                      const char *url,
+                                      Duration timeout
+                                      )
+      {
+        return HTTP::get(delegate, userAgent, url, timeout);
+      }
+
+      //-----------------------------------------------------------------------
+      IHTTPQueryPtr IHTTPFactory::post(
+                                       IHTTPQueryDelegatePtr delegate,
+                                       const char *userAgent,
+                                       const char *url,
+                                       const BYTE *postData,
+                                       ULONG postDataLengthInBytes,
+                                       const char *postDataMimeType,
+                                       Duration timeout
+                                       )
+      {
+        return HTTP::post(delegate, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IICESocketFactory &IICESocketFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ICESocketPtr IICESocketFactory::create(
+                                             IMessageQueuePtr queue,
+                                             IICESocketDelegatePtr delegate,
+                                             const char *turnServer,
+                                             const char *turnServerUsername,
+                                             const char *turnServerPassword,
+                                             const char *stunServer,
+                                             WORD port,
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             )
+      {
+        return internal::ICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+      }
+
+      //-----------------------------------------------------------------------
+      ICESocketPtr IICESocketFactory::create(
+                                             IMessageQueuePtr queue,
+                                             IICESocketDelegatePtr delegate,
+                                             IDNS::SRVResultPtr srvTURNUDP,
+                                             IDNS::SRVResultPtr srvTURNTCP,
+                                             const char *turnServerUsername,
+                                             const char *turnServerPassword,
+                                             IDNS::SRVResultPtr srvSTUN,
+                                             WORD port,
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             )
+      {
+        return internal::ICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IICESocketSessionFactory &IICESocketSessionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ICESocketSessionPtr IICESocketSessionFactory::create(
+                                                           IMessageQueuePtr queue,
+                                                           IICESocketSessionDelegatePtr delegate,
+                                                           ICESocketPtr socket,
+                                                           ICEControls control
+                                                           )
+      {
+        return internal::ICESocketSession::create(queue, delegate, socket, control);
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRUDPChannelFactory &IRUDPChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr IRUDPChannelFactory::createForRUDPICESocketSessionIncoming(
+                                                                                IMessageQueuePtr queue,
+                                                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                                const IPAddress &remoteIP,
+                                                                                WORD incomingChannelNumber,
+                                                                                const char *localUserFrag,
+                                                                                const char *remoteUserFrag,
+                                                                                const char *localPassword,
+                                                                                const char *remotePassword,
+                                                                                STUNPacketPtr channelOpenPacket,
+                                                                                STUNPacketPtr &outResponse
+                                                                                )
+      {
+        return RUDPChannel::createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, channelOpenPacket, outResponse);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr IRUDPChannelFactory::createForRUDPICESocketSessionOutgoing(
+                                                                                IMessageQueuePtr queue,
+                                                                                IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                                IRUDPChannelDelegatePtr delegate,
+                                                                                const IPAddress &remoteIP,
+                                                                                WORD incomingChannelNumber,
+                                                                                const char *localUserFrag,
+                                                                                const char *remoteUserFrag,
+                                                                                const char *localPassword,
+                                                                                const char *remotePassword,
+                                                                                const char *connectionInfo
+                                                                                )
+      {
+        return RUDPChannel::createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, connectionInfo);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelPtr IRUDPChannelFactory::createForListener(
+                                                            IMessageQueuePtr queue,
+                                                            IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                            const IPAddress &remoteIP,
+                                                            WORD incomingChannelNumber,
+                                                            STUNPacketPtr channelOpenPacket,
+                                                            STUNPacketPtr &outResponse
+                                                            )
+      {
+        return RUDPChannel::createForListener(queue, master, remoteIP, incomingChannelNumber, channelOpenPacket, outResponse);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStreamFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRUDPChannelStreamFactory &IRUDPChannelStreamFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPChannelStreamPtr IRUDPChannelStreamFactory::create(
+                                                             IMessageQueuePtr queue,
+                                                             IRUDPChannelStreamDelegatePtr delegate,
+                                                             QWORD nextSequenceNumberToUseForSending,
+                                                             QWORD nextSequenberNumberExpectingToReceive,
+                                                             WORD sendingChannelNumber,
+                                                             WORD receivingChannelNumber,
+                                                             DWORD minimumNegotiatedRTTInMilliseconds
+                                                             )
+      {
+        return RUDPChannelStream::create(queue, delegate, nextSequenceNumberToUseForSending, nextSequenberNumberExpectingToReceive, sendingChannelNumber, receivingChannelNumber, minimumNegotiatedRTTInMilliseconds);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRUDPICESocketFactory &IRUDPICESocketFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPICESocketPtr IRUDPICESocketFactory::create(
+                                                     IMessageQueuePtr queue,
+                                                     IRUDPICESocketDelegatePtr delegate,
+                                                     const char *turnServer,
+                                                     const char *turnServerUsername,
+                                                     const char *turnServerPassword,
+                                                     const char *stunServer,
+                                                     WORD port
+                                                     )
+      {
+        return RUDPICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port);
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPICESocketPtr IRUDPICESocketFactory::create(
+                                                     IMessageQueuePtr queue,
+                                                     IRUDPICESocketDelegatePtr delegate,
+                                                     IDNS::SRVResultPtr srvTURNUDP,
+                                                     IDNS::SRVResultPtr srvTURNTCP,
+                                                     const char *turnServerUsername,
+                                                     const char *turnServerPassword,
+                                                     IDNS::SRVResultPtr srvSTUN,
+                                                     WORD port
+                                                     )
+      {
+        return RUDPICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port);
+      }
+
+    }
+  }
+}

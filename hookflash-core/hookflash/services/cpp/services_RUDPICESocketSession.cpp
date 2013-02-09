@@ -78,7 +78,7 @@ namespace hookflash
                                       )
       {
         AutoRecursiveLock lock(getLock());
-        mICESession = (mOuter.lock())->getICESocket()->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteCandidates, control);
+        mICESession = (mOuter.lock())->forSession().getICESocket()->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteCandidates, control);
       }
 
       //-----------------------------------------------------------------------
@@ -108,9 +108,9 @@ namespace hookflash
       IRUDPICESocketPtr RUDPICESocketSession::getSocket()
       {
         AutoRecursiveLock lock(getLock());
-        IRUDPICESocketForRUDPICESocketSessionPtr socket = mOuter.lock();
+        RUDPICESocketPtr socket = mOuter.lock();
         if (!socket) return IRUDPICESocketPtr();
-        return socket->getRUDPICESocket();
+        return socket->forSession().getRUDPICESocket();
       }
 
       //-----------------------------------------------------------------------
@@ -269,18 +269,18 @@ namespace hookflash
         ZS_LOG_DEBUG(log("channel openned with nominated pair") + ", local username frag=" + mLocalUsernameFrag + ", remote username frag=" + mRemoteUsernameFrag)
 
         // found a useable channel number therefor create a new session
-        RUDPChannelPtr session = RUDPChannel::createForRUDPICESocketSessionOutgoing(
-                                                                                    getAssociatedMessageQueue(),
-                                                                                    mThisWeak.lock(),
-                                                                                    delegate,
-                                                                                    getConnectedRemoteIP(),
-                                                                                    channelNumber,
-                                                                                    nominatedLocal.mUsernameFrag,
-                                                                                    nominatedRemote.mUsernameFrag,
-                                                                                    nominatedLocal.mPassword,
-                                                                                    nominatedRemote.mPassword,
-                                                                                    connectionInfo
-                                                                                    );
+        RUDPChannelPtr session = IRUDPChannelForRUDPICESocketSession::createForRUDPICESocketSessionOutgoing(
+                                                                                                            getAssociatedMessageQueue(),
+                                                                                                            mThisWeak.lock(),
+                                                                                                            delegate,
+                                                                                                            getConnectedRemoteIP(),
+                                                                                                            channelNumber,
+                                                                                                            nominatedLocal.mUsernameFrag,
+                                                                                                            nominatedRemote.mUsernameFrag,
+                                                                                                            nominatedLocal.mPassword,
+                                                                                                            nominatedRemote.mPassword,
+                                                                                                            connectionInfo
+                                                                                                            );
 
         mLocalChannelNumberSessions[channelNumber] = session;
         issueChannelConnectIfPossible();
@@ -295,7 +295,7 @@ namespace hookflash
         if (mPendingSessions.size() < 1) return IRUDPChannelPtr();
 
         RUDPChannelPtr found = mPendingSessions.front();
-        found->setDelegate(delegate);
+        found->forSession().setDelegate(delegate);
         mPendingSessions.pop_front();
         return found;
       }
@@ -374,7 +374,7 @@ namespace hookflash
         }
 
         // push the RUDP packet to the session to handle
-        session->handleRUDP(rudp, buffer, bufferLengthInBytes);
+        session->forSession().handleRUDP(rudp, buffer, bufferLengthInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -432,7 +432,7 @@ namespace hookflash
           }
 
           if (session) {
-            bool handled = session->handleSTUN(stun, response, localUsernameFrag, remoteUsernameFrag);
+            bool handled = session->forSession().handleSTUN(stun, response, localUsernameFrag, remoteUsernameFrag);
             if ((handled) && (!response)) return true;
           } else {
             bool handled =  handleUnknownChannel(stun, response);
@@ -473,7 +473,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter) {
-          (*iter).second->notifyWriteReady();
+          (*iter).second->forSession().notifyWriteReady();
         }
       }
 
@@ -489,28 +489,28 @@ namespace hookflash
           case IRUDPChannel::RUDPChannelState_Connecting: break;
           case IRUDPChannel::RUDPChannelState_Connected:
           {
-            WORD channelNumber = channel->getIncomingChannelNumber();
+            WORD channelNumber = channel->forSession().getIncomingChannelNumber();
             SessionMap::iterator found = mLocalChannelNumberSessions.find(channelNumber);
             if (found == mLocalChannelNumberSessions.end()) return;
 
-            mRemoteChannelNumberSessions[channel->getOutgoingChannelNumber()] = channel;
+            mRemoteChannelNumberSessions[channel->forSession().getOutgoingChannelNumber()] = channel;
             break;
           }
           case IRUDPChannel::RUDPChannelState_ShuttingDown: break;
           case IRUDPChannel::RUDPChannelState_Shutdown:
           {
-            ZS_LOG_DEBUG(log("channel closed notification") + ", channel ID=" + Stringize<PUID>(channel->getID()).string())
+            ZS_LOG_DEBUG(log("channel closed notification") + ", channel ID=" + Stringize<PUID>(channel->forSession().getID()).string())
             for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter)
             {
               if ((*iter).second != channel) continue;
-              ZS_LOG_TRACE(log("clearing out local channel number") + ", local channel number=" + Stringize<WORD>(channel->getIncomingChannelNumber()).string())
+              ZS_LOG_TRACE(log("clearing out local channel number") + ", local channel number=" + Stringize<WORD>(channel->forSession().getIncomingChannelNumber()).string())
               mLocalChannelNumberSessions.erase(iter);
               break;
             }
             for (SessionMap::iterator iter = mRemoteChannelNumberSessions.begin(); iter != mRemoteChannelNumberSessions.end(); ++iter)
             {
               if ((*iter).second != channel) continue;
-              ZS_LOG_TRACE(log("clearing out remote channel number") + ", remote channel number=" + Stringize<WORD>(channel->getOutgoingChannelNumber()).string())
+              ZS_LOG_TRACE(log("clearing out remote channel number") + ", remote channel number=" + Stringize<WORD>(channel->forSession().getOutgoingChannelNumber()).string())
               mRemoteChannelNumberSessions.erase(iter);
               break;
             }
@@ -549,9 +549,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RecursiveLock &RUDPICESocketSession::getLock() const
       {
-        IRUDPICESocketForRUDPICESocketSessionPtr outer = mOuter.lock();
+        RUDPICESocketPtr outer = mOuter.lock();
         if (!outer) return mBogusLock;
-        return outer->getLock();
+        return outer->forSession().getLock();
       }
 
       //-----------------------------------------------------------------------
@@ -588,9 +588,9 @@ namespace hookflash
 
         for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter) {
           if (RUDPICESocketSessionShutdownReason_Closed != reason) {
-            (*iter).second->shutdownFromTimeout();
+            (*iter).second->forSession().shutdownFromTimeout();
           } else {
-            (*iter).second->shutdown();
+            (*iter).second->forSession().shutdown();
           }
         }
 
@@ -760,18 +760,18 @@ namespace hookflash
           if (!hasCandidate) break;
 
           // found a useable channel number therefor create a new session
-          RUDPChannelPtr session = RUDPChannel::createForRUDPICESocketSessionIncoming(
-                                                                                      getAssociatedMessageQueue(),
-                                                                                      mThisWeak.lock(),
-                                                                                      getConnectedRemoteIP(),
-                                                                                      channelNumber,
-                                                                                      nominatedLocal.mUsernameFrag,
-                                                                                      nominatedRemote.mUsernameFrag,
-                                                                                      nominatedLocal.mPassword,
-                                                                                      nominatedRemote.mPassword,
-                                                                                      stun,
-                                                                                      response
-                                                                                      );
+          RUDPChannelPtr session = IRUDPChannelForRUDPICESocketSession::createForRUDPICESocketSessionIncoming(
+                                                                                                              getAssociatedMessageQueue(),
+                                                                                                              mThisWeak.lock(),
+                                                                                                              getConnectedRemoteIP(),
+                                                                                                              channelNumber,
+                                                                                                              nominatedLocal.mUsernameFrag,
+                                                                                                              nominatedRemote.mUsernameFrag,
+                                                                                                              nominatedLocal.mPassword,
+                                                                                                              nominatedRemote.mPassword,
+                                                                                                              stun,
+                                                                                                              response
+                                                                                                              );
           if (!response) {
             // there must be a response or it is an error
             stun->mErrorCode = STUNPacket::ErrorCode_BadRequest;
@@ -810,9 +810,9 @@ namespace hookflash
         if (!isReady()) return;
 
         for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter) {
-          SessionMap::iterator found = mRemoteChannelNumberSessions.find((*iter).second->getOutgoingChannelNumber());
+          SessionMap::iterator found = mRemoteChannelNumberSessions.find((*iter).second->forSession().getOutgoingChannelNumber());
           if (found == mRemoteChannelNumberSessions.end()) {
-            (*iter).second->issueConnectIfNotIssued();
+            (*iter).second->forSession().issueConnectIfNotIssued();
           }
         }
       }

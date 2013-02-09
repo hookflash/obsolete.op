@@ -34,6 +34,9 @@
 #include <zsLib/Exception.h>
 #include <hookflash/services/IDNS.h>
 #include <hookflash/services/ISTUNDiscovery.h>
+
+#include <hookflash/services/internal/services_Factory.h>
+
 #include <zsLib/Socket.h>
 
 //#include <boost/test/unit_test_suite.hpp>
@@ -59,6 +62,74 @@ namespace hookflash
   {
     namespace test
     {
+      class TestDNSFactory;
+      typedef boost::shared_ptr<TestDNSFactory> TestDNSFactoryPtr;
+      typedef boost::weak_ptr<TestDNSFactory> TestDNSFactoryWeakPtr;
+
+      class TestDNSFactory : public services::internal::Factory
+      {
+      public:
+        TestDNSFactory() :
+          mACount(0),
+          mAAAACount(0),
+          mAorAAAACount(0),
+          mSRVCount(0)
+        {}
+
+        virtual IDNSQueryPtr lookupA(
+                                     IDNSDelegatePtr delegate,
+                                     const char *name
+                                     )
+        {
+          ++mACount;
+          return services::internal::IDNSFactory::lookupA(delegate, name);
+        }
+
+        virtual IDNSQueryPtr lookupAAAA(
+                                       IDNSDelegatePtr delegate,
+                                       const char *name
+                                       )
+        {
+          ++mAAAACount;
+          return services::internal::IDNSFactory::lookupAAAA(delegate, name);
+        }
+
+        virtual IDNSQueryPtr lookupAorAAAA(
+                                          IDNSDelegatePtr delegate,
+                                          const char *name
+                                          )
+        {
+          ++mAorAAAACount;
+          return services::internal::IDNSFactory::lookupAorAAAA(delegate, name);
+        }
+
+        virtual IDNSQueryPtr lookupSRV(
+                                       IDNSDelegatePtr delegate,
+                                       const char *name,
+                                       const char *service,                        // e.g. stun
+                                       const char *protocol,                       // e.g. udp
+                                       WORD defaultPort,
+                                       WORD defaultPriority,
+                                       WORD defaultWeight,
+                                       SRVLookupTypes lookupType
+                                       )
+        {
+          ++mSRVCount;
+          return services::internal::IDNSFactory::lookupSRV(delegate, name, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
+        }
+        
+        ULONG getACount() const {return mACount;}
+        ULONG getAAAACount() const {return mAAAACount;}
+        ULONG getAorAAAACount() const {return mAorAAAACount;}
+        ULONG getSRVCount() const {return mSRVCount;}
+
+      protected:
+        ULONG mACount;
+        ULONG mAAAACount;
+        ULONG mAorAAAACount;
+        ULONG mSRVCount;
+      };
+
       class TestDNSCallback;
       typedef boost::shared_ptr<TestDNSCallback> TestDNSCallbackPtr;
       typedef boost::weak_ptr<TestDNSCallback> TestDNSCallbackWeakPtr;
@@ -192,6 +263,8 @@ namespace hookflash
   }
 }
 
+using hookflash::services::test::TestDNSFactory;
+using hookflash::services::test::TestDNSFactoryPtr;
 using hookflash::services::test::TestDNSCallback;
 using hookflash::services::test::TestDNSCallbackPtr;
 
@@ -200,6 +273,10 @@ void doTestDNS()
   if (!HOOKFLASH_SERVICE_TEST_DO_DNS_TEST) return;
 
   BOOST_INSTALL_LOGGER();
+
+  TestDNSFactoryPtr overrideFactory(new TestDNSFactory);
+
+  hookflash::services::internal::Factory::override(overrideFactory);
 
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
@@ -260,6 +337,11 @@ void doTestDNS()
   boost::this_thread::sleep(zsLib::Seconds(10));
 
   BOOST_EQUAL(matchingTotal, testObject->getTotalProcessed());
+
+  BOOST_EQUAL(8, overrideFactory->getACount())
+  BOOST_EQUAL(8, overrideFactory->getAAAACount())
+  BOOST_EQUAL(5, overrideFactory->getAorAAAACount())
+  BOOST_EQUAL(6, overrideFactory->getSRVCount())
 
   IDNS::AResultPtr a1 = testObject->getA(query);
   IDNS::AResultPtr a2 = testObject->getA(query2);

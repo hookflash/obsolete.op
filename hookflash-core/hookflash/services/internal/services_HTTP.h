@@ -53,6 +53,36 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IHTTPFactory
+      #pragma mark
+
+      interaction IHTTPFactory
+      {
+        static IHTTPFactory &singleton();
+
+        virtual IHTTPQueryPtr get(
+                                  IHTTPQueryDelegatePtr delegate,
+                                  const char *userAgent,
+                                  const char *url,
+                                  Duration timeout
+                                  );
+
+        virtual IHTTPQueryPtr post(
+                                   IHTTPQueryDelegatePtr delegate,
+                                   const char *userAgent,
+                                   const char *url,
+                                   const BYTE *postData,
+                                   ULONG postDataLengthInBytes,
+                                   const char *postDataMimeType,
+                                   Duration timeout
+                                   );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark HTTP
       #pragma mark
 
@@ -60,6 +90,7 @@ namespace hookflash
       {
       public:
         friend class HTTPGlobalSafeReference;
+        friend interaction IHTTPFactory;
 
         class HTTPQuery;
         typedef boost::shared_ptr<HTTPQuery> HTTPQueryPtr;
@@ -73,6 +104,7 @@ namespace hookflash
       public:
         ~HTTP();
 
+      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark HTTP => IHTTP

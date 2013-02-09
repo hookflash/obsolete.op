@@ -16,6 +16,8 @@
 		0006D75013FA83F1001F1CE8 /* services_TURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0006D74713FA83F1001F1CE8 /* services_TURNSocket.cpp */; };
 		00126A5213E07DA200B98DB9 /* services_STUNRequester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00126A5013E07DA200B98DB9 /* services_STUNRequester.cpp */; };
 		00126A5813E0AB6000B98DB9 /* services_STUNRequesterManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00126A5613E0AB6000B98DB9 /* services_STUNRequesterManager.cpp */; };
+		00138A3116C55AA100CDC6DF /* services_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00138A3016C55AA100CDC6DF /* services_Factory.cpp */; };
+		00138A3216C55AA100CDC6DF /* services_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00138A3016C55AA100CDC6DF /* services_Factory.cpp */; };
 		003FCC0713D40FE20098146E /* services_STUNPacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003FCC0613D40FE20098146E /* services_STUNPacket.cpp */; };
 		00473325141D1FFA006B8B20 /* services_RUDPChannelStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00473324141D1FFA006B8B20 /* services_RUDPChannelStream.cpp */; };
 		0073051D15C80E2400C5091D /* services_HTTP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0073051C15C80E2400C5091D /* services_HTTP.cpp */; };
@@ -27,7 +29,7 @@
 		00EF21721404F1FC008836CF /* services_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21701404F1FC008836CF /* services_Helper.cpp */; };
 		00EF21751404F7D5008836CF /* services_ICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21741404F7D5008836CF /* services_ICESocket.cpp */; };
 		00EF21771404F831008836CF /* services_RUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21761404F830008836CF /* services_RUDPICESocket.cpp */; };
-		00EF21791404F8D5008836CF /* services_Services.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21781404F8D3008836CF /* services_Services.cpp */; };
+		00EF21791404F8D5008836CF /* services_services.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21781404F8D3008836CF /* services_services.cpp */; };
 		5289713A148F7F3200AB9E8C /* services_RUDPChannelStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00473324141D1FFA006B8B20 /* services_RUDPChannelStream.cpp */; };
 		E2DD7FCF141A5FFC006D89BE /* services_DNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ADB78E13D30E69002DE6A7 /* services_DNS.cpp */; };
 		E2DD7FD0141A5FFC006D89BE /* services_DNSMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ADB78F13D30E69002DE6A7 /* services_DNSMonitor.cpp */; };
@@ -46,7 +48,7 @@
 		E2DD7FDF141A5FFC006D89BE /* services_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21701404F1FC008836CF /* services_Helper.cpp */; };
 		E2DD7FE0141A5FFC006D89BE /* services_ICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21741404F7D5008836CF /* services_ICESocket.cpp */; };
 		E2DD7FE1141A5FFC006D89BE /* services_RUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21761404F830008836CF /* services_RUDPICESocket.cpp */; };
-		E2DD7FE2141A5FFC006D89BE /* services_Services.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21781404F8D3008836CF /* services_Services.cpp */; };
+		E2DD7FE2141A5FFC006D89BE /* services_services.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00EF21781404F8D3008836CF /* services_services.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,10 @@
 		00126A5013E07DA200B98DB9 /* services_STUNRequester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_STUNRequester.cpp; path = ../../../hookflash/services/cpp/services_STUNRequester.cpp; sourceTree = "<group>"; };
 		00126A5413E0AA4A00B98DB9 /* services_STUNRequesterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = services_STUNRequesterManager.h; path = ../../../hookflash/services/internal/services_STUNRequesterManager.h; sourceTree = "<group>"; };
 		00126A5613E0AB6000B98DB9 /* services_STUNRequesterManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_STUNRequesterManager.cpp; path = ../../../hookflash/services/cpp/services_STUNRequesterManager.cpp; sourceTree = "<group>"; };
+		00138A3016C55AA100CDC6DF /* services_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_Factory.cpp; path = ../../../hookflash/services/cpp/services_Factory.cpp; sourceTree = "<group>"; };
+		00138A3316C55AAF00CDC6DF /* services_Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = services_Factory.h; path = ../../../hookflash/services/internal/services_Factory.h; sourceTree = "<group>"; };
+		00138A3616C55B9500CDC6DF /* services.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = services.h; path = ../../../hookflash/services/internal/services.h; sourceTree = "<group>"; };
+		00138A3716C5756B00CDC6DF /* services_DNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = services_DNS.h; path = ../../../hookflash/services/internal/services_DNS.h; sourceTree = "<group>"; };
 		001DD11413DF07A7007BDC4A /* services_ICESocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = services_ICESocket.h; path = ../../../hookflash/services/internal/services_ICESocket.h; sourceTree = "<group>"; };
 		001DD11A13E039D4007BDC4A /* services_STUNRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = services_STUNRequester.h; path = ../../../hookflash/services/internal/services_STUNRequester.h; sourceTree = "<group>"; };
 		003FCC0413D40EBB0098146E /* STUNPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STUNPacket.h; path = ../../../hookflash/services/STUNPacket.h; sourceTree = SOURCE_ROOT; };
@@ -107,7 +113,7 @@
 		00EF21701404F1FC008836CF /* services_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_Helper.cpp; path = ../../../hookflash/services/cpp/services_Helper.cpp; sourceTree = "<group>"; };
 		00EF21741404F7D5008836CF /* services_ICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_ICESocket.cpp; path = ../../../hookflash/services/cpp/services_ICESocket.cpp; sourceTree = "<group>"; };
 		00EF21761404F830008836CF /* services_RUDPICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_RUDPICESocket.cpp; path = ../../../hookflash/services/cpp/services_RUDPICESocket.cpp; sourceTree = "<group>"; };
-		00EF21781404F8D3008836CF /* services_Services.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_Services.cpp; path = ../../../hookflash/services/cpp/services_Services.cpp; sourceTree = "<group>"; };
+		00EF21781404F8D3008836CF /* services_services.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = services_services.cpp; path = ../../../hookflash/services/cpp/services_services.cpp; sourceTree = "<group>"; };
 		D2AAC046055464E500DB518D /* libhfservices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfservices.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2DD7FE7141A5FFC006D89BE /* libhfservices_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfservices_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -170,11 +176,12 @@
 		00ADB78013D30E0D002DE6A7 /* cpp */ = {
 			isa = PBXGroup;
 			children = (
-				00EF21781404F8D3008836CF /* services_Services.cpp */,
-				00EF21701404F1FC008836CF /* services_Helper.cpp */,
+				00EF21781404F8D3008836CF /* services_services.cpp */,
+				00138A3016C55AA100CDC6DF /* services_Factory.cpp */,
 				00BF557213FF95ED002E9EB5 /* services_CanonicalXML.cpp */,
 				00ADB78E13D30E69002DE6A7 /* services_DNS.cpp */,
 				00ADB78F13D30E69002DE6A7 /* services_DNSMonitor.cpp */,
+				00EF21701404F1FC008836CF /* services_Helper.cpp */,
 				0073051C15C80E2400C5091D /* services_HTTP.cpp */,
 				00EF21741404F7D5008836CF /* services_ICESocket.cpp */,
 				0006D73F13FA83F1001F1CE8 /* services_ICESocketSession.cpp */,
@@ -198,7 +205,10 @@
 			isa = PBXGroup;
 			children = (
 				00ADB78C13D30E50002DE6A7 /* types.h */,
+				00138A3616C55B9500CDC6DF /* services.h */,
+				00138A3316C55AAF00CDC6DF /* services_Factory.h */,
 				00BF557013FF9577002E9EB5 /* services_CanonicalXML.h */,
+				00138A3716C5756B00CDC6DF /* services_DNS.h */,
 				00ADB78A13D30E50002DE6A7 /* services_DNSMonitor.h */,
 				00EF216E1404F1D0008836CF /* services_Helper.h */,
 				0073051F15C80E4A00C5091D /* services_HTTP.h */,
@@ -341,9 +351,10 @@
 				00EF21721404F1FC008836CF /* services_Helper.cpp in Sources */,
 				00EF21751404F7D5008836CF /* services_ICESocket.cpp in Sources */,
 				00EF21771404F831008836CF /* services_RUDPICESocket.cpp in Sources */,
-				00EF21791404F8D5008836CF /* services_Services.cpp in Sources */,
+				00EF21791404F8D5008836CF /* services_services.cpp in Sources */,
 				00473325141D1FFA006B8B20 /* services_RUDPChannelStream.cpp in Sources */,
 				0073051D15C80E2400C5091D /* services_HTTP.cpp in Sources */,
+				00138A3116C55AA100CDC6DF /* services_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,8 +380,9 @@
 				E2DD7FDF141A5FFC006D89BE /* services_Helper.cpp in Sources */,
 				E2DD7FE0141A5FFC006D89BE /* services_ICESocket.cpp in Sources */,
 				E2DD7FE1141A5FFC006D89BE /* services_RUDPICESocket.cpp in Sources */,
-				E2DD7FE2141A5FFC006D89BE /* services_Services.cpp in Sources */,
+				E2DD7FE2141A5FFC006D89BE /* services_services.cpp in Sources */,
 				0073051E15C80E2400C5091D /* services_HTTP.cpp in Sources */,
+				00138A3216C55AA100CDC6DF /* services_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,10 +398,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
 				);
 				PRODUCT_NAME = hfservices;
@@ -403,10 +412,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
 				);
 				PRODUCT_NAME = hfservices;
@@ -430,9 +436,8 @@
 				HEADER_SEARCH_PATHS = (
 					../../../,
 					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/udns",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -456,9 +461,8 @@
 				HEADER_SEARCH_PATHS = (
 					../../../,
 					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
+					"../../../../hookflash-libs/udns",
 				);
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -478,10 +482,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
 				);
 				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
@@ -503,10 +504,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
 				);
 				OTHER_CFLAGS = "-DHAVE_CONFIG_H";

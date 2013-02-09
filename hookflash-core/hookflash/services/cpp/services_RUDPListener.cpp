@@ -273,7 +273,7 @@ namespace hookflash
 
         RUDPChannelPtr session = mPendingSessions.front();
         mPendingSessions.pop_front();
-        session->setDelegate(delegate);
+        session->forListener().setDelegate(delegate);
         return session;
       }
 
@@ -366,7 +366,7 @@ namespace hookflash
 
           if (!response) {
             if (session) {
-              bool handled = session->handleSTUN(stun, response, localUsernameFrag, remoteUsernameFrag);
+              bool handled = session->forListener().handleSTUN(stun, response, localUsernameFrag, remoteUsernameFrag);
               if ((handled) && (!response)) return;
               break;
             } else {
@@ -419,7 +419,7 @@ namespace hookflash
           }
 
           // push the RUDP packet to the session to handle
-          session->handleRUDP(rudp, buffer.get(), bytesRead);
+          session->forListener().handleRUDP(rudp, buffer.get(), bytesRead);
         }
       }
 
@@ -429,7 +429,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter) {
           RUDPChannelPtr session = (*iter).second;
-          session->notifyWriteReady();
+          session->forListener().notifyWriteReady();
         }
       }
 
@@ -517,7 +517,7 @@ namespace hookflash
         if (mLocalChannelNumberSessions.size() > 0) {
           for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter) {
             RUDPChannelPtr session = (*iter).second;
-            session->shutdown();
+            session->forListener().shutdown();
           }
         }
 
@@ -730,7 +730,7 @@ namespace hookflash
           ChannelPair local(remoteIP, channelNumber);
           ChannelPair remote(remoteIP, stun->mChannelNumber);
 
-          RUDPChannelPtr session = RUDPChannel::createForListener(getAssociatedMessageQueue(), mThisWeak.lock(), remoteIP, channelNumber, stun, response);
+          RUDPChannelPtr session = IRUDPChannelForRUDPListener::createForListener(getAssociatedMessageQueue(), mThisWeak.lock(), remoteIP, channelNumber, stun, response);
           if (!response) {
             // there must be a response or it is an error
             stun->mErrorCode = STUNPacket::ErrorCode_BadRequest;

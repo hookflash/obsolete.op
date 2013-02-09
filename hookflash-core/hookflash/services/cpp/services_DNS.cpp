@@ -30,6 +30,7 @@
  */
 
 #include <hookflash/services/IDNS.h>
+#include <hookflash/services/internal/services_DNS.h>
 #include <hookflash/services/internal/services_DNSMonitor.h>
 #include <hookflash/services/internal/services_Helper.h>
 #include <zsLib/helpers.h>
@@ -1660,6 +1661,231 @@ namespace hookflash
 
         DNSQueryList mQueries;
       };
+
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark DNS => IDNS
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr DNS::lookupA(
+                                IDNSDelegatePtr delegate,
+                                const char *name
+                                )
+      {
+        ZS_THROW_INVALID_USAGE_IF(!name)
+        ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
+
+        IPAddressList ips;
+        if (internal::isIPAddressList(name, 0, ips)) {
+          internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
+          delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
+
+          AResultPtr resultA = AResultPtr(new AResult);
+          resultA->mName = name;
+          resultA->mTTL = 3600;
+
+          AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
+          resultAAAA->mName = name;
+          resultAAAA->mTTL = 3600;
+
+          for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
+            const IPAddress &ip = (*iter);
+
+            if (ip.isIPv4()) {
+              ZS_LOG_DEBUG(String("DNS A record found (no resolve required): ip=") + ip.string())
+              temp->mA = resultA;
+              resultA->mIPAddresses.push_back(ip);
+            } else {
+              ZS_LOG_ERROR(Debug, String("DNS A record found ip but was IPv6 address for A record lookup: inut=") + name + ", result ip=" + ip.string())
+              temp->mAAAA = resultAAAA;
+              resultAAAA->mIPAddresses.push_back(ip);
+            }
+          }
+          delegate->onLookupCompleted(temp);
+          return temp;
+        }
+
+        ZS_LOG_DEBUG(String("DNS A lookup: name=") + name)
+
+        StringList dnsList;
+        if (internal::isDNSsList(name, dnsList)) {
+          return internal::DNSListQuery::createA(delegate, dnsList);
+        }
+
+        return internal::DNSAQuery::create(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr DNS::lookupAAAA(
+                                   IDNSDelegatePtr delegate,
+                                   const char *name
+                                   )
+      {
+        ZS_THROW_INVALID_USAGE_IF(!name)
+        ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
+
+        IPAddressList ips;
+        if (internal::isIPAddressList(name, 0, ips)) {
+          internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
+          delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
+
+          AResultPtr result = AResultPtr(new AResult);
+          result->mName = name;
+          result->mTTL = 3600;
+          result->mIPAddresses = ips;
+
+          temp->mAAAA = result;
+
+          for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
+            const IPAddress &ip = (*iter);
+            ZS_LOG_DEBUG(String("DNS AAAA record found (no resolve required): ip=") + ip.string())
+          }
+
+          delegate->onLookupCompleted(temp);
+          return temp;
+        }
+
+        ZS_LOG_DEBUG(String("DNS AAAA lookup: name=") + name)
+
+        StringList dnsList;
+        if (internal::isDNSsList(name, dnsList)) {
+          return internal::DNSListQuery::createAAAA(delegate, dnsList);
+        }
+
+        return internal::DNSAAAAQuery::create(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr DNS::lookupAorAAAA(
+                                      IDNSDelegatePtr delegate,
+                                      const char *name
+                                      )
+      {
+        ZS_THROW_INVALID_USAGE_IF(!name)
+        ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
+
+        IPAddressList ips;
+        if (internal::isIPAddressList(name, 0, ips)) {
+          internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
+          delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
+
+          AResultPtr resultA = AResultPtr(new AResult);
+          resultA->mName = name;
+          resultA->mTTL = 3600;
+
+          AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
+          resultAAAA->mName = name;
+          resultAAAA->mTTL = 3600;
+
+          for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
+            const IPAddress &ip = (*iter);
+
+            if (ip.isIPv4()) {
+              ZS_LOG_DEBUG(String("DNS A or AAAA record found A record (no resolve required): input=") + name + ", result ip=" + ip.string())
+              temp->mA = resultA;
+              resultA->mIPAddresses.push_back(ip);
+            } else {
+              ZS_LOG_DEBUG(String("DNS A or AAAA record found AAAA record (no resolve required): input=") + name + ", result ip=" + ip.string())
+              temp->mAAAA = resultAAAA;
+              resultAAAA->mIPAddresses.push_back(ip);
+            }
+          }
+          delegate->onLookupCompleted(temp);
+          return temp;
+        }
+
+        ZS_LOG_DEBUG(String("DNS A or AAAA lookup: name=") + name)
+
+        StringList dnsList;
+        if (internal::isDNSsList(name, dnsList)) {
+          return internal::DNSListQuery::createAorAAAA(delegate, dnsList);
+        }
+
+        return internal::DNSAorAAAAQuery::create(delegate, name);
+      }
+
+      //-----------------------------------------------------------------------
+      IDNSQueryPtr DNS::lookupSRV(
+                                  IDNSDelegatePtr delegate,
+                                  const char *name,
+                                  const char *service,
+                                  const char *protocol,
+                                  WORD defaultPort,
+                                  WORD defaultPriority,
+                                  WORD defaultWeight,
+                                  SRVLookupTypes lookupType
+                                  )
+      {
+        ZS_THROW_INVALID_USAGE_IF(!delegate)
+        ZS_THROW_INVALID_USAGE_IF(!name)
+        ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
+
+        IPAddressList ips;
+        if (internal::isIPAddressList(name, defaultPort, ips)) {
+          internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
+          delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
+
+          SRVResultPtr result(new SRVResult);
+          result->mName = name;
+          result->mService = service;
+          result->mProtocol = protocol;
+          result->mTTL = 3600;
+
+          SRVResult::SRVRecord record;
+          record.mPriority = defaultPriority;
+          record.mWeight = defaultWeight;
+          record.mPort = defaultPort;
+          record.mName = name;
+
+          AResultPtr resultA = AResultPtr(new AResult);
+          resultA->mName = name;
+          resultA->mTTL = 3600;
+
+          AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
+          resultAAAA->mName = name;
+          resultAAAA->mTTL = 3600;
+
+          for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
+            const IPAddress &ip = (*iter);
+
+            if (ip.isIPv4()) {
+              resultA->mIPAddresses.push_back(ip);
+              record.mAResult = resultA;
+            } else {
+              resultAAAA->mIPAddresses.push_back(ip);
+              record.mAAAAResult = resultAAAA;
+            }
+
+            ZS_LOG_DEBUG(String("DNS SRV record found SRV record (no resolve required): input=") + String(name) + ", result ip=" + ip.string())
+          }
+
+          result->mRecords.push_back(record);
+
+          internal::sortSRV(result);
+
+          temp->mSRV = result;
+          delegate->onLookupCompleted(temp);
+          return temp;
+        }
+
+        ZS_LOG_DEBUG(String("DNS SRV lookup: name=") + name + ", service=" + service + ", protocol=" + protocol + ", default port=" + Stringize<WORD>(defaultPort).string() + ", type=" + Stringize<int>((int)lookupType).string())
+        
+        StringList dnsList;
+        if (internal::isDNSsList(name, dnsList)) {
+          return internal::DNSListQuery::createSRV(delegate, dnsList, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
+        }
+        
+        if (SRVLookupType_LookupOnly != lookupType) {
+          return internal::DNSSRVResolverQuery::create(delegate, name, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
+        }
+        return internal::DNSSRVQuery::create(delegate, name, service, protocol);
+      }
+      
     }
 
     //-------------------------------------------------------------------------
@@ -1676,47 +1902,7 @@ namespace hookflash
                                const char *name
                                )
     {
-      ZS_THROW_INVALID_USAGE_IF(!name)
-      ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
-
-      IPAddressList ips;
-      if (internal::isIPAddressList(name, 0, ips)) {
-        internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
-        delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
-
-        AResultPtr resultA = AResultPtr(new AResult);
-        resultA->mName = name;
-        resultA->mTTL = 3600;
-
-        AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
-        resultAAAA->mName = name;
-        resultAAAA->mTTL = 3600;
-
-        for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
-          const IPAddress &ip = (*iter);
-
-          if (ip.isIPv4()) {
-            ZS_LOG_DEBUG(String("DNS A record found (no resolve required): ip=") + ip.string())
-            temp->mA = resultA;
-            resultA->mIPAddresses.push_back(ip);
-          } else {
-            ZS_LOG_ERROR(Debug, String("DNS A record found ip but was IPv6 address for A record lookup: inut=") + name + ", result ip=" + ip.string())
-            temp->mAAAA = resultAAAA;
-            resultAAAA->mIPAddresses.push_back(ip);
-          }
-        }
-        delegate->onLookupCompleted(temp);
-        return temp;
-      }
-
-      ZS_LOG_DEBUG(String("DNS A lookup: name=") + name)
-
-      StringList dnsList;
-      if (internal::isDNSsList(name, dnsList)) {
-        return internal::DNSListQuery::createA(delegate, dnsList);
-      }
-
-      return internal::DNSAQuery::create(delegate, name);
+      return internal::IDNSFactory::singleton().lookupA(delegate, name);
     }
 
     //-------------------------------------------------------------------------
@@ -1725,38 +1911,7 @@ namespace hookflash
                                   const char *name
                                   )
     {
-      ZS_THROW_INVALID_USAGE_IF(!name)
-      ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
-
-      IPAddressList ips;
-      if (internal::isIPAddressList(name, 0, ips)) {
-        internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
-        delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
-
-        AResultPtr result = AResultPtr(new AResult);
-        result->mName = name;
-        result->mTTL = 3600;
-        result->mIPAddresses = ips;
-
-        temp->mAAAA = result;
-
-        for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
-          const IPAddress &ip = (*iter);
-          ZS_LOG_DEBUG(String("DNS AAAA record found (no resolve required): ip=") + ip.string())
-        }
-
-        delegate->onLookupCompleted(temp);
-        return temp;
-      }
-
-      ZS_LOG_DEBUG(String("DNS AAAA lookup: name=") + name)
-
-      StringList dnsList;
-      if (internal::isDNSsList(name, dnsList)) {
-        return internal::DNSListQuery::createAAAA(delegate, dnsList);
-      }
-
-      return internal::DNSAAAAQuery::create(delegate, name);
+      return internal::IDNSFactory::singleton().lookupAAAA(delegate, name);
     }
 
     //-------------------------------------------------------------------------
@@ -1765,47 +1920,7 @@ namespace hookflash
                                      const char *name
                                      )
     {
-      ZS_THROW_INVALID_USAGE_IF(!name)
-      ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
-
-      IPAddressList ips;
-      if (internal::isIPAddressList(name, 0, ips)) {
-        internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
-        delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
-
-        AResultPtr resultA = AResultPtr(new AResult);
-        resultA->mName = name;
-        resultA->mTTL = 3600;
-
-        AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
-        resultAAAA->mName = name;
-        resultAAAA->mTTL = 3600;
-
-        for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
-          const IPAddress &ip = (*iter);
-
-          if (ip.isIPv4()) {
-            ZS_LOG_DEBUG(String("DNS A or AAAA record found A record (no resolve required): input=") + name + ", result ip=" + ip.string())
-            temp->mA = resultA;
-            resultA->mIPAddresses.push_back(ip);
-          } else {
-            ZS_LOG_DEBUG(String("DNS A or AAAA record found AAAA record (no resolve required): input=") + name + ", result ip=" + ip.string())
-            temp->mAAAA = resultAAAA;
-            resultAAAA->mIPAddresses.push_back(ip);
-          }
-        }
-        delegate->onLookupCompleted(temp);
-        return temp;
-      }
-
-      ZS_LOG_DEBUG(String("DNS A or AAAA lookup: name=") + name)
-
-      StringList dnsList;
-      if (internal::isDNSsList(name, dnsList)) {
-        return internal::DNSListQuery::createAorAAAA(delegate, dnsList);
-      }
-
-      return internal::DNSAorAAAAQuery::create(delegate, name);
+      return internal::IDNSFactory::singleton().lookupAorAAAA(delegate, name);
     }
 
     //-------------------------------------------------------------------------
@@ -1820,71 +1935,9 @@ namespace hookflash
                                  SRVLookupTypes lookupType
                                  )
     {
-      ZS_THROW_INVALID_USAGE_IF(!delegate)
-      ZS_THROW_INVALID_USAGE_IF(!name)
-      ZS_THROW_INVALID_USAGE_IF(String(name).length() < 1)
-
-      IPAddressList ips;
-      if (internal::isIPAddressList(name, defaultPort, ips)) {
-        internal::DNSInstantResultQueryPtr temp = internal::DNSInstantResultQuery::create();
-        delegate = IDNSDelegateProxy::create(internal::Helper::getServiceQueue(), delegate);
-
-        SRVResultPtr result(new SRVResult);
-        result->mName = name;
-        result->mService = service;
-        result->mProtocol = protocol;
-        result->mTTL = 3600;
-
-        SRVResult::SRVRecord record;
-        record.mPriority = defaultPriority;
-        record.mWeight = defaultWeight;
-        record.mPort = defaultPort;
-        record.mName = name;
-
-        AResultPtr resultA = AResultPtr(new AResult);
-        resultA->mName = name;
-        resultA->mTTL = 3600;
-
-        AAAAResultPtr resultAAAA = AAAAResultPtr(new AAAAResult);
-        resultAAAA->mName = name;
-        resultAAAA->mTTL = 3600;
-
-        for (IPAddressList::iterator iter = ips.begin(); iter != ips.end(); ++iter) {
-          const IPAddress &ip = (*iter);
-
-          if (ip.isIPv4()) {
-            resultA->mIPAddresses.push_back(ip);
-            record.mAResult = resultA;
-          } else {
-            resultAAAA->mIPAddresses.push_back(ip);
-            record.mAAAAResult = resultAAAA;
-          }
-
-          ZS_LOG_DEBUG(String("DNS SRV record found SRV record (no resolve required): input=") + String(name) + ", result ip=" + ip.string())
-        }
-
-        result->mRecords.push_back(record);
-
-        internal::sortSRV(result);
-
-        temp->mSRV = result;
-        delegate->onLookupCompleted(temp);
-        return temp;
-      }
-
-      ZS_LOG_DEBUG(String("DNS SRV lookup: name=") + name + ", service=" + service + ", protocol=" + protocol + ", default port=" + Stringize<WORD>(defaultPort).string() + ", type=" + Stringize<int>((int)lookupType).string())
-
-      StringList dnsList;
-      if (internal::isDNSsList(name, dnsList)) {
-        return internal::DNSListQuery::createSRV(delegate, dnsList, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
-      }
-
-      if (SRVLookupType_LookupOnly != lookupType) {
-        return internal::DNSSRVResolverQuery::create(delegate, name, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
-      }
-      return internal::DNSSRVQuery::create(delegate, name, service, protocol);
+      return internal::IDNSFactory::singleton().lookupSRV(delegate, name, service, protocol, defaultPort, defaultPriority, defaultWeight, lookupType);
     }
-
+    
     //-------------------------------------------------------------------------
     IDNS::AResultPtr IDNS::convertIPAddressesToAResult(
                                                        const std::list<IPAddress> &ipAddresses,

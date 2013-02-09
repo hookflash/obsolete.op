@@ -72,7 +72,7 @@ namespace hookflash
 
       void TestStackCallback::init()
       {
-        mNetwork = IBootstrappedNetwork::prepare("provisioning-unstable-dev.hookflash.me", mThisWeak.lock());
+        mNetwork = IBootstrappedNetwork::prepare("unstable.hookflash.me", mThisWeak.lock());
       }
 
       void TestStackCallback::onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)

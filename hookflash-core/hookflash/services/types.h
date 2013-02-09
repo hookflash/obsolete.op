@@ -62,14 +62,6 @@ namespace hookflash
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
 
-    interaction IFinderClient;
-    typedef boost::shared_ptr<IFinderClient> IFinderClientPtr;
-    typedef boost::weak_ptr<IFinderClient> IFinderClientWeakPtr;
-
-    interaction IFinderClientDelegate;
-    typedef boost::shared_ptr<IFinderClientDelegate> IFinderClientDelegatePtr;
-    typedef boost::weak_ptr<IFinderClientDelegate> IFinderClientDelegateWeakPtr;
-
     interaction ICanonicalXML;
     typedef boost::shared_ptr<ICanonicalXML> ICanonicalXMLPtr;
     typedef boost::weak_ptr<ICanonicalXML> ICanonicalXMLWeakPtr;

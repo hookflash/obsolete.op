@@ -79,6 +79,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       static bool compareLocalIPs(const IPAddress &ip1, const IPAddress &ip2)
@@ -119,6 +122,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       ICESocket::ICESocket(
                            IMessageQueuePtr queue,
                            IICESocketDelegatePtr delegate,
@@ -156,12 +165,39 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      void ICESocket::init()
+      {
+        AutoRecursiveLock lock(mLock);
+        ZS_LOG_DETAIL(log("init"))
+
+        // before we do anything we must be sure we bind the UDP socket
+        if (!bindUDP())
+          return;
+
+        step();
+      }
+      
+      //-----------------------------------------------------------------------
       ICESocket::~ICESocket()
       {
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();
       }
+
+      //-----------------------------------------------------------------------
+      ICESocketPtr ICESocket::convert(IICESocketPtr socket)
+      {
+        return boost::dynamic_pointer_cast<ICESocket>(socket);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => IICESocket
+      #pragma mark
 
       //-----------------------------------------------------------------------
       ICESocketPtr ICESocket::create(
@@ -223,24 +259,13 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ICESocket::init()
-      {
-        AutoRecursiveLock lock(mLock);
-        ZS_LOG_DETAIL(log("init"))
-
-        // before we do anything we must be sure we bind the UDP socket
-        if (!bindUDP())
-          return;
-
-        step();
-      }
-
       IICESocket::ICESocketStates ICESocket::getState() const
       {
         AutoRecursiveLock lock(mLock);
         return mCurrentState;
       }
 
+      //-----------------------------------------------------------------------
       IICESocketSubscriptionPtr ICESocket::subscribe(IICESocketDelegatePtr delegate)
       {
         ZS_LOG_DETAIL(log("subscribing to socket state"))
@@ -264,12 +289,6 @@ namespace hookflash
         // remember the subscriber
         mDelegates[subscription->mID] = delegate;
         return subscription;
-      }
-
-      //-----------------------------------------------------------------------
-      ICESocketPtr ICESocket::convert(IICESocketPtr socket)
-      {
-        return boost::dynamic_pointer_cast<ICESocket>(socket);
       }
 
       //-----------------------------------------------------------------------
@@ -346,22 +365,124 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
 
-        ICESocketSessionPtr session = ICESocketSession::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), control);
+        ICESocketSessionPtr session = IICESocketSessionForICESocket::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), control);
         ZS_THROW_BAD_STATE_IF(!session)
 
         if ((isShuttingDown()) ||
             (isShutdown())) {
           ZS_LOG_WARNING(Basic, log("create session called after socket is being shutdown"))
           // immediately close the session since we are shutting down
-          session->close();
+          session->forICESocket().close();
           return session;
         }
 
         // remember the session for later
-        mSessions[session->getID()] = session;
-        session->updateRemoteCandidates(remoteCandidates);
+        mSessions[session->forICESocket().getID()] = session;
+        session->forICESocket().updateRemoteCandidates(remoteCandidates);
         return session;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => IICESocketForICESocketSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ICESocket::sendTo(
+                             IICESocket::Types viaTransport,
+                             const IPAddress &destination,
+                             const BYTE *buffer,
+                             ULONG bufferLengthInBytes,
+                             bool isUserData
+                             )
+      {
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Debug, log("cannot send packet via ICE socket as it is already shutdown") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+          return false;
+        }
+
+        if (viaTransport == Type_Relayed) {
+          if (!mTURNSocket) {
+            ZS_LOG_WARNING(Debug, log("cannot send packet via TURN socket as it is not connected") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+            return false;
+          }
+
+          mTURNLastUsed = zsLib::now();
+          return mTURNSocket->sendPacket(destination, buffer, bufferLengthInBytes, isUserData);
+        }
+
+        if (!mUDPSocket) {
+          ZS_LOG_WARNING(Debug, log("cannot send packet as UDP socket is not set") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+          return false;
+        }
+
+        // attempt to send the packet over the UDP buffer
+        try {
+          bool wouldBlock = false;
+#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+          if (true) return true;
+#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+          if (!destination.isAddressEqual(IPAddress(HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
+            return true;
+          }
+#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+          ULONG bytesSent = mUDPSocket->sendTo(destination, buffer, bufferLengthInBytes, &wouldBlock);
+          ZS_LOG_TRACE(log("sending packet") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false") + ", bytes sent=" + Stringize<ULONG>(bytesSent).string() + ", would block=" + (wouldBlock ? "true" : "false"))
+          return ((!wouldBlock) && (bufferLengthInBytes == bytesSent));
+        } catch(ISocket::Exceptions::Unspecified &error) {
+          ZS_LOG_ERROR(Detail, log("sendTo error") + ", error=" + Stringize<int>(error.getErrorCode()).string())
+        }
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      void ICESocket::addRoute(ICESocketSessionPtr session, const IPAddress &source)
+      {
+        removeRoute(session);
+        mRoutes[source] = session;
+      }
+
+      //-----------------------------------------------------------------------
+      void ICESocket::removeRoute(ICESocketSessionPtr inSession)
+      {
+        for (QuickRouteMap::iterator iter = mRoutes.begin(); iter != mRoutes.end(); ++iter) {
+          ICESocketSessionPtr &session = (*iter).second;
+          if (session == inSession) {
+            mRoutes.erase(iter);
+            return;
+          }
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void ICESocket::onICESocketSessionClosed(PUID sessionID)
+      {
+        ZS_LOG_DETAIL(log("notified ICE session closed") + ", session id=" + Stringize<PUID>(sessionID).string())
+
+        AutoRecursiveLock lock(mLock);
+        ICESocketSessionMap::iterator found = mSessions.find(sessionID);
+        if (found == mSessions.end()) {
+          ZS_LOG_WARNING(Detail, log("session is not found (must have already been closed)") + ", session id=" + Stringize<PUID>(sessionID).string())
+          return;
+        }
+
+        removeRoute((*found).second);
+        mSessions.erase(found);
+        
+        step();
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => ISocketDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void ICESocket::monitorWriteReadyOnAllSessions(bool monitor)
@@ -426,7 +547,7 @@ namespace hookflash
         ZS_LOG_TRACE(log("write ready"))
         AutoRecursiveLock lock(mLock);
         for(ICESocketSessionMap::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter) {
-          (*iter).second->notifyLocalWriteReady();
+          (*iter).second->forICESocket().notifyLocalWriteReady();
         }
 
         if (mTURNSocket) {
@@ -469,9 +590,9 @@ namespace hookflash
               ICESocketSessionMap::iterator current = iterSession;
               ++iterSession;
 
-              IICESocketSessionForICESocketPtr &session = (*current).second;
-              ZS_LOG_WARNING(Detail, log("forcing socket session to timeout") + ", session ID=" + Stringize<PUID>(session->getID()).string())
-              session->timeout();
+              ICESocketSessionPtr &session = (*current).second;
+              ZS_LOG_WARNING(Detail, log("forcing socket session to timeout") + ", session ID=" + Stringize<PUID>(session->forICESocket().getID()).string())
+              session->forICESocket().timeout();
             }
             mSessions.clear();
             mRoutes.clear();
@@ -487,6 +608,14 @@ namespace hookflash
         bindUDP();
         step();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => ITURNSocketDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void ICESocket::onTURNSocketStateChanged(
@@ -565,9 +694,17 @@ namespace hookflash
         ZS_LOG_TRACE(log("notified that TURN is write ready") + ", TURN socket ID=" + Stringize<PUID>(socket->getID()).string())
         AutoRecursiveLock lock(mLock);
         for(ICESocketSessionMap::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter) {
-          (*iter).second->notifyRelayWriteReady();
+          (*iter).second->forICESocket().notifyRelayWriteReady();
         }
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => ISTUNDiscoveryDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void ICESocket::onSTUNDiscoverySendPacket(
@@ -625,95 +762,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      bool ICESocket::sendTo(
-                             IICESocket::Types viaTransport,
-                             const IPAddress &destination,
-                             const BYTE *buffer,
-                             ULONG bufferLengthInBytes,
-                             bool isUserData
-                             )
-      {
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("cannot send packet via ICE socket as it is already shutdown") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
-          return false;
-        }
-
-        if (viaTransport == Type_Relayed) {
-          if (!mTURNSocket) {
-            ZS_LOG_WARNING(Debug, log("cannot send packet via TURN socket as it is not connected") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
-            return false;
-          }
-
-          mTURNLastUsed = zsLib::now();
-          return mTURNSocket->sendPacket(destination, buffer, bufferLengthInBytes, isUserData);
-        }
-
-        if (!mUDPSocket) {
-          ZS_LOG_WARNING(Debug, log("cannot send packet as UDP socket is not set") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
-          return false;
-        }
-
-        // attempt to send the packet over the UDP buffer
-        try {
-          bool wouldBlock = false;
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
-          if (true) return true;
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-          if (!destination.isAddressEqual(IPAddress(HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
-            return true;
-          }
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-          ULONG bytesSent = mUDPSocket->sendTo(destination, buffer, bufferLengthInBytes, &wouldBlock);
-          ZS_LOG_TRACE(log("sending packet") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false") + ", bytes sent=" + Stringize<ULONG>(bytesSent).string() + ", would block=" + (wouldBlock ? "true" : "false"))
-          return ((!wouldBlock) && (bufferLengthInBytes == bytesSent));
-        } catch(ISocket::Exceptions::Unspecified &error) {
-          ZS_LOG_ERROR(Detail, log("sendTo error") + ", error=" + Stringize<int>(error.getErrorCode()).string())
-        }
-        return false;
-      }
-
-      //-----------------------------------------------------------------------
-      void ICESocket::addRoute(IICESocketSessionForICESocketPtr session, const IPAddress &source)
-      {
-        removeRoute(session);
-        mRoutes[source] = session;
-      }
-
-      //-----------------------------------------------------------------------
-      void ICESocket::removeRoute(IICESocketSessionForICESocketPtr inSession)
-      {
-        for (QuickRouteMap::iterator iter = mRoutes.begin(); iter != mRoutes.end(); ++iter) {
-          IICESocketSessionForICESocketPtr &session = (*iter).second;
-          if (session == inSession) {
-            mRoutes.erase(iter);
-            return;
-          }
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void ICESocket::onICESocketSessionClosed(PUID sessionID)
-      {
-        ZS_LOG_DETAIL(log("notified ICE session closed") + ", session id=" + Stringize<PUID>(sessionID).string())
-
-        AutoRecursiveLock lock(mLock);
-        ICESocketSessionMap::iterator found = mSessions.find(sessionID);
-        if (found == mSessions.end()) {
-          ZS_LOG_WARNING(Detail, log("session is not found (must have already been closed)") + ", session id=" + Stringize<PUID>(sessionID).string())
-          return;
-        }
-
-        removeRoute((*found).second);
-        mSessions.erase(found);
-
-        step();
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => ITimerDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void ICESocket::onTimer(TimerPtr timer)
@@ -731,223 +782,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-      void ICESocket::getLocalIPs(IPAddressList &outList)
-      {
-        outList.clear();
-        outList = mLocalIPs;
-      }
+      #pragma mark
+      #pragma mark ICESocket => friend Subscription
+      #pragma mark
 
       //-----------------------------------------------------------------------
-      IPAddress ICESocket::getReflectedIP()
-      {
-        IPAddress result;
-
-        if (mTURNSocket) {
-          if (ITURNSocket::TURNSocketState_Ready == mTURNSocket->getState()) {
-            result = mTURNSocket->getReflectedIP();
-          }
-        }
-
-        if (result.isAddressEmpty()) {
-          if (mSTUNDiscovery) {
-            result = mSTUNDiscovery->getMappedAddress();
-          }
-        }
-
-        if (!result.isAddressEmpty()) {
-          if (result.isPortEmpty()) {
-            result.setPort(mBindPort);  // just in case TURN TCP gave a port of "0"
-          }
-        }
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      IPAddress ICESocket::getRelayedIP()
-      {
-        if (mTURNSocket) {
-          if (ITURNSocket::TURNSocketState_Ready == mTURNSocket->getState()) {
-            return mTURNSocket->getRelayedIP();
-          }
-        }
-        return IPAddress();
-      }
-
-      //-----------------------------------------------------------------------
-      void ICESocket::internalReceivedData(
-                                           IICESocket::Types viaTransport,
-                                           const IPAddress &source,
-                                           const BYTE *buffer,
-                                           ULONG bufferLengthInBytes
-                                           )
-      {
-        // WARNING: DO NOT CALL THIS METHOD WHILE INSIDE A LOCK AS IT COULD
-        //          ** DEADLOCK **. This method calls delegates synchronously.
-        STUNPacketPtr stun = STUNPacket::parseIfSTUN(buffer, bufferLengthInBytes, STUNPacket::RFC_AllowAll, false, "ICESocket", mID);
-
-        if (stun) {
-          ZS_LOG_DEBUG(log("received STUN packet") + ", via=" + toString(viaTransport) + ", ip=" + source.string() + ", class=" + stun->classAsString() + ", method=" + stun->methodAsString())
-          ITURNSocketPtr turn;
-          if (IICESocket::Type_Relayed != normalize(viaTransport)) {
-
-            // scope: going into a lock to obtain
-            {
-              AutoRecursiveLock lock(getLock());
-              turn = mTURNSocket;
-            }
-
-            if (turn) {
-              if (turn->handleSTUNPacket(source, stun)) return;
-            }
-          }
-
-          if (!turn) {
-            // if TURN was used, we would already called this routine... (i.e. prevent double lookup)
-            if (ISTUNRequesterManager::handleSTUNPacket(source, stun)) return;
-          }
-
-          IICESocketSessionForICESocketPtr next;
-
-          if (STUNPacket::Method_Binding == stun->mMethod) {
-            if ((STUNPacket::Class_Request != stun->mClass) &&
-                (STUNPacket::Class_Indication != stun->mClass)) {
-              ZS_LOG_WARNING(Detail, log("ignoring STUN binding which is not a request/indication"))
-              return;
-            }
-          }
-
-          if (STUNPacket::RFC_5766_TURN == stun->guessRFC(STUNPacket::RFC_AllowAll)) {
-            ZS_LOG_TRACE(log("ignoring TURN message (likely for cancelled requests)"))
-            return;    // ignore any ICE indications
-          }
-
-          if (stun->mUsername.isEmpty()) {
-            ZS_LOG_WARNING(Detail, log("did not find ICE username on packet thus ignoring STUN packet"))
-            return;  // no username is present - this cannot be for us...
-          }
-
-          // username is present... but does it have the correct components?
-          size_t pos = stun->mUsername.find(":");
-          if (String::npos == pos) {
-            ZS_LOG_WARNING(Detail, log("did not find \":\" in username on packet thus ignoring STUN packet"))
-            return;  // no ":" means that it can't be an ICE requeest
-          }
-
-          // split the string at the post
-          String localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
-          String remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
-
-          while (true)
-          {
-            // scope: find the next socket session to test in the list while in a lock
-            {
-              AutoRecursiveLock lock(getLock());
-              if (mSessions.size() < 1) break;  // no sessions to check
-
-              if (!next) {
-                next = (*(mSessions.begin())).second;
-              } else {
-                ICESocketSessionMap::iterator iter = mSessions.find(next->getID());
-                if (iter == mSessions.end()) {
-                  // should have been found BUT it is possible the list was
-                  // changed while outside the lock so start the search from
-                  // the beginning again...
-                  next = (*(mSessions.begin())).second;
-                } else {
-                  ++iter;
-                  if (iter == mSessions.end()) {
-                    // while it is possible that a new session was inserted
-                    // while we were processing we don't have ot check it
-                    // as this packet could not possibly be for that session.
-                    break;
-                  }
-                  next = (*iter).second;
-                }
-              }
-            }
-
-            if (!next) break;
-            if (next->handleSTUNPacket(viaTransport, source, stun, localUsernameFrag, remoteUsernameFrag)) return;
-          }
-
-          ZS_LOG_WARNING(Debug, log("did not find session that handles STUN packet"))
-
-          // no STUN outlets left to check so just exit...
-          return;
-        }
-
-        // this isn't a STUN packet but it might be TURN channel data (but not if came from TURN)
-        if (IICESocket::Type_Relayed != normalize(viaTransport)) {
-          ITURNSocketPtr turn;
-
-          // scope: going into a lock to obtain
-          {
-            AutoRecursiveLock lock(getLock());
-            turn = mTURNSocket;
-          }
-
-          if (turn) {
-            if (turn->handleChannelData(source, buffer, bufferLengthInBytes)) return;
-          }
-        }
-
-        IICESocketSessionForICESocketPtr next;
-
-        // try to find a quick route to the session
-        {
-          AutoRecursiveLock lock(getLock());
-          QuickRouteMap::iterator found = mRoutes.find(source);
-          if (found != mRoutes.end()) {
-            next = (*found).second;
-          }
-        }
-
-        if (next) {
-          // we found a quick route - but does it actually handle the packet
-          // (it is possible for two routes to have same IP in strange firewall
-          // configruations thus we might pick the wrong session)
-          if (next->handlePacket(viaTransport, source, buffer, bufferLengthInBytes)) return;
-
-          // we chose wrong, so allow the "hunt" method to take over
-          next.reset();
-        }
-
-        // this could be channel data for one of the sessions, check each session
-        while (true)
-        {
-          // scope: find the next socket session to test in the list while in a lock
-          {
-            AutoRecursiveLock lock(getLock());
-            if (mSessions.size() < 1) break;  // no sessions to check
-
-            if (!next) {
-              next = (*(mSessions.begin())).second;
-            } else {
-              ICESocketSessionMap::iterator iter = mSessions.find(next->getID());
-              if (iter == mSessions.end()) {
-                next = (*(mSessions.begin())).second;   // start the search over since the previous entry we last searched was not in the map
-              } else {
-                ++iter;
-                if (iter == mSessions.end()) break;
-                next = (*iter).second;
-              }
-            }
-          }
-
-          if (!next) break;
-          if (next->handlePacket(viaTransport, source, buffer, bufferLengthInBytes)) return;
-        }
-
-        ZS_LOG_WARNING(Trace, log("did not find any socket session to handle data packet"))
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      void ICESocket::cancelSubscription(PUID subscriptionID)
+      void ICESocket::cancelSubscription(Subscription &subscription)
       {
         AutoRecursiveLock lock(getLock());
+        PUID subscriptionID = subscription.getID();
         DelegateMap::iterator found = mDelegates.find(subscriptionID);
         if (found == mDelegates.end()) {
           ZS_LOG_DETAIL(log("subscription not found (already cancelled?)") + ", subscription ID=" + Stringize<PUID>(subscriptionID).string())
@@ -957,7 +800,14 @@ namespace hookflash
         ZS_LOG_DETAIL(log("subscription cancelled") + ", subscription ID=" + Stringize<PUID>(subscriptionID).string())
         mDelegates.erase(found);
       }
-
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket => (internal)
+      #pragma mark
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1011,7 +861,7 @@ namespace hookflash
 
           // close down all the ICE sessions immediately
           for(ICESocketSessionMap::iterator iter = temp.begin(); iter != temp.end(); ++iter) {
-            (*iter).second->close();
+            (*iter).second->forICESocket().close();
           }
         }
         mRoutes.clear();
@@ -1185,109 +1035,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ICESocket::gatherLocalIPs()
-      {
-        if (!mLocalIPs.empty())
-          return true;
-
-#ifdef _WIN32
-
-        // http://tangentsoft.net/wskfaq/examples/ipaddr.html
-
-        // OR
-        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: START ---"))
-
-        ULONG size = 0;
-
-        // the 1st call is just to get the table size
-        if(GetIpAddrTable(NULL, &size, FALSE) == ERROR_INSUFFICIENT_BUFFER)
-        {
-          // now that you know the size, allocate a pointer
-          MIB_IPADDRTABLE *ipAddr = (MIB_IPADDRTABLE *) new BYTE[size];
-          // the 2nd call is to retrieve the info for real
-          if(GetIpAddrTable(ipAddr, &size, TRUE) == NO_ERROR)
-          {
-            // need to loop it to handle multiple interfaces
-            for(DWORD i = 0; i < ipAddr->dwNumEntries; i++)
-            {
-              // this is the IP address
-              DWORD dwordIP = ntohl(ipAddr->table[i].dwAddr);
-              IPAddress ip(dwordIP);
-
-              if (ip.isAddressEmpty()) continue;
-              if (ip.isLoopback()) continue;
-              if (ip.isAddrAny()) continue;
-
-              ip.setPort(mBindPort);
-
-              ZS_LOG_DEBUG(log("found local IP") + ", ip=" + ip.string())
-
-              mLocalIPs.push_back(ip);
-            }
-          }
-        }
-        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: END ---"))
-#elif _ANDROID
-	int fd;
- 	struct ifreq ifr;
-
- 	fd = socket(AF_INET, SOCK_DGRAM, 0);
-
- 	/* I want to get an IPv4 IP address */
- 	ifr.ifr_addr.sa_family = AF_INET;
-
- 	/* I want IP address attached to "eth0" */
- 	strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
-
- 	ioctl(fd, SIOCGIFADDR, &ifr);
-
- 	close(fd);
-#else
-        ifaddrs *ifAddrStruct = NULL;
-        ifaddrs *ifa = NULL;
-
-        getifaddrs(&ifAddrStruct);
-
-        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: START ---"))
-        for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
-        {
-          IPAddress ip;
-          if (AF_INET == ifa ->ifa_addr->sa_family) {
-            ip = IPAddress(*((sockaddr_in *)ifa->ifa_addr));      // this is an IPv4 address
-          } else if (AF_INET6 == ifa->ifa_addr->sa_family) {
-#if 0
-            // NOT GOING TO SUPPORT JUST YET
-            ip = IPAddress(*((sockaddr_in6 *)ifa->ifa_addr));     // this is an IPv6 address
-#endif //0
-          }
-
-          // do not add these addresses...
-          if (ip.isAddressEmpty()) continue;
-          if (ip.isLoopback()) continue;
-          if (ip.isAddrAny()) continue;
-
-          ip.setPort(mBindPort);
-
-          ZS_LOG_DEBUG(log("found local IP") + ", local IP=" + ip.string())
-
-          mLocalIPs.push_back(ip);
-        }
-        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: END ---"))
-
-        if (ifAddrStruct) {
-          freeifaddrs(ifAddrStruct);
-          ifAddrStruct = NULL;
-        }
-#endif //_WIN32
-
-        if (mLocalIPs.empty()) {
-          cancel();
-          return false;
-        }
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
       bool ICESocket::bindUDP()
       {
         if (mUDPSocket) {
@@ -1356,12 +1103,326 @@ namespace hookflash
         if (!mMonitoringWriteReady) {
           monitorWriteReadyOnAllSessions(false);
         }
-
+        
         ZS_LOG_DEBUG(log("UDP is now rebinded successfully"))
+        
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      bool ICESocket::gatherLocalIPs()
+      {
+        if (!mLocalIPs.empty())
+          return true;
 
+#ifdef _WIN32
+
+        // http://tangentsoft.net/wskfaq/examples/ipaddr.html
+
+        // OR
+        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: START ---"))
+
+        ULONG size = 0;
+
+        // the 1st call is just to get the table size
+        if(GetIpAddrTable(NULL, &size, FALSE) == ERROR_INSUFFICIENT_BUFFER)
+        {
+          // now that you know the size, allocate a pointer
+          MIB_IPADDRTABLE *ipAddr = (MIB_IPADDRTABLE *) new BYTE[size];
+          // the 2nd call is to retrieve the info for real
+          if(GetIpAddrTable(ipAddr, &size, TRUE) == NO_ERROR)
+          {
+            // need to loop it to handle multiple interfaces
+            for(DWORD i = 0; i < ipAddr->dwNumEntries; i++)
+            {
+              // this is the IP address
+              DWORD dwordIP = ntohl(ipAddr->table[i].dwAddr);
+              IPAddress ip(dwordIP);
+
+              if (ip.isAddressEmpty()) continue;
+              if (ip.isLoopback()) continue;
+              if (ip.isAddrAny()) continue;
+
+              ip.setPort(mBindPort);
+
+              ZS_LOG_DEBUG(log("found local IP") + ", ip=" + ip.string())
+
+              mLocalIPs.push_back(ip);
+            }
+          }
+        }
+        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: END ---"))
+#elif _ANDROID
+        int fd;
+        struct ifreq ifr;
+
+        fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+        /* I want to get an IPv4 IP address */
+        ifr.ifr_addr.sa_family = AF_INET;
+
+        /* I want IP address attached to "eth0" */
+        strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
+
+        ioctl(fd, SIOCGIFADDR, &ifr);
+
+        close(fd);
+#else
+        ifaddrs *ifAddrStruct = NULL;
+        ifaddrs *ifa = NULL;
+
+        getifaddrs(&ifAddrStruct);
+
+        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: START ---"))
+        for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next)
+        {
+          IPAddress ip;
+          if (AF_INET == ifa ->ifa_addr->sa_family) {
+            ip = IPAddress(*((sockaddr_in *)ifa->ifa_addr));      // this is an IPv4 address
+          } else if (AF_INET6 == ifa->ifa_addr->sa_family) {
+#if 0
+            // NOT GOING TO SUPPORT JUST YET
+            ip = IPAddress(*((sockaddr_in6 *)ifa->ifa_addr));     // this is an IPv6 address
+#endif //0
+          }
+
+          // do not add these addresses...
+          if (ip.isAddressEmpty()) continue;
+          if (ip.isLoopback()) continue;
+          if (ip.isAddrAny()) continue;
+
+          ip.setPort(mBindPort);
+
+          ZS_LOG_DEBUG(log("found local IP") + ", local IP=" + ip.string())
+
+          mLocalIPs.push_back(ip);
+        }
+        ZS_LOG_DEBUG(log("--- GATHERING LOCAL IPs: END ---"))
+
+        if (ifAddrStruct) {
+          freeifaddrs(ifAddrStruct);
+          ifAddrStruct = NULL;
+        }
+#endif //_WIN32
+
+        if (mLocalIPs.empty()) {
+          cancel();
+          return false;
+        }
         return true;
       }
 
+      //-----------------------------------------------------------------------
+      void ICESocket::getLocalIPs(IPAddressList &outList)
+      {
+        outList.clear();
+        outList = mLocalIPs;
+      }
+
+      //-----------------------------------------------------------------------
+      IPAddress ICESocket::getReflectedIP()
+      {
+        IPAddress result;
+
+        if (mTURNSocket) {
+          if (ITURNSocket::TURNSocketState_Ready == mTURNSocket->getState()) {
+            result = mTURNSocket->getReflectedIP();
+          }
+        }
+
+        if (result.isAddressEmpty()) {
+          if (mSTUNDiscovery) {
+            result = mSTUNDiscovery->getMappedAddress();
+          }
+        }
+
+        if (!result.isAddressEmpty()) {
+          if (result.isPortEmpty()) {
+            result.setPort(mBindPort);  // just in case TURN TCP gave a port of "0"
+          }
+        }
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      IPAddress ICESocket::getRelayedIP()
+      {
+        if (mTURNSocket) {
+          if (ITURNSocket::TURNSocketState_Ready == mTURNSocket->getState()) {
+            return mTURNSocket->getRelayedIP();
+          }
+        }
+        return IPAddress();
+      }
+
+      //-----------------------------------------------------------------------
+      void ICESocket::internalReceivedData(
+                                           IICESocket::Types viaTransport,
+                                           const IPAddress &source,
+                                           const BYTE *buffer,
+                                           ULONG bufferLengthInBytes
+                                           )
+      {
+        // WARNING: DO NOT CALL THIS METHOD WHILE INSIDE A LOCK AS IT COULD
+        //          ** DEADLOCK **. This method calls delegates synchronously.
+        STUNPacketPtr stun = STUNPacket::parseIfSTUN(buffer, bufferLengthInBytes, STUNPacket::RFC_AllowAll, false, "ICESocket", mID);
+
+        if (stun) {
+          ZS_LOG_DEBUG(log("received STUN packet") + ", via=" + toString(viaTransport) + ", ip=" + source.string() + ", class=" + stun->classAsString() + ", method=" + stun->methodAsString())
+          ITURNSocketPtr turn;
+          if (IICESocket::Type_Relayed != normalize(viaTransport)) {
+
+            // scope: going into a lock to obtain
+            {
+              AutoRecursiveLock lock(getLock());
+              turn = mTURNSocket;
+            }
+
+            if (turn) {
+              if (turn->handleSTUNPacket(source, stun)) return;
+            }
+          }
+
+          if (!turn) {
+            // if TURN was used, we would already called this routine... (i.e. prevent double lookup)
+            if (ISTUNRequesterManager::handleSTUNPacket(source, stun)) return;
+          }
+
+          ICESocketSessionPtr next;
+
+          if (STUNPacket::Method_Binding == stun->mMethod) {
+            if ((STUNPacket::Class_Request != stun->mClass) &&
+                (STUNPacket::Class_Indication != stun->mClass)) {
+              ZS_LOG_WARNING(Detail, log("ignoring STUN binding which is not a request/indication"))
+              return;
+            }
+          }
+
+          if (STUNPacket::RFC_5766_TURN == stun->guessRFC(STUNPacket::RFC_AllowAll)) {
+            ZS_LOG_TRACE(log("ignoring TURN message (likely for cancelled requests)"))
+            return;    // ignore any ICE indications
+          }
+
+          if (stun->mUsername.isEmpty()) {
+            ZS_LOG_WARNING(Detail, log("did not find ICE username on packet thus ignoring STUN packet"))
+            return;  // no username is present - this cannot be for us...
+          }
+
+          // username is present... but does it have the correct components?
+          size_t pos = stun->mUsername.find(":");
+          if (String::npos == pos) {
+            ZS_LOG_WARNING(Detail, log("did not find \":\" in username on packet thus ignoring STUN packet"))
+            return;  // no ":" means that it can't be an ICE requeest
+          }
+
+          // split the string at the post
+          String localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
+          String remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
+
+          while (true)
+          {
+            // scope: find the next socket session to test in the list while in a lock
+            {
+              AutoRecursiveLock lock(getLock());
+              if (mSessions.size() < 1) break;  // no sessions to check
+
+              if (!next) {
+                next = (*(mSessions.begin())).second;
+              } else {
+                ICESocketSessionMap::iterator iter = mSessions.find(next->forICESocket().getID());
+                if (iter == mSessions.end()) {
+                  // should have been found BUT it is possible the list was
+                  // changed while outside the lock so start the search from
+                  // the beginning again...
+                  next = (*(mSessions.begin())).second;
+                } else {
+                  ++iter;
+                  if (iter == mSessions.end()) {
+                    // while it is possible that a new session was inserted
+                    // while we were processing we don't have ot check it
+                    // as this packet could not possibly be for that session.
+                    break;
+                  }
+                  next = (*iter).second;
+                }
+              }
+            }
+
+            if (!next) break;
+            if (next->forICESocket().handleSTUNPacket(viaTransport, source, stun, localUsernameFrag, remoteUsernameFrag)) return;
+          }
+
+          ZS_LOG_WARNING(Debug, log("did not find session that handles STUN packet"))
+
+          // no STUN outlets left to check so just exit...
+          return;
+        }
+
+        // this isn't a STUN packet but it might be TURN channel data (but not if came from TURN)
+        if (IICESocket::Type_Relayed != normalize(viaTransport)) {
+          ITURNSocketPtr turn;
+
+          // scope: going into a lock to obtain
+          {
+            AutoRecursiveLock lock(getLock());
+            turn = mTURNSocket;
+          }
+
+          if (turn) {
+            if (turn->handleChannelData(source, buffer, bufferLengthInBytes)) return;
+          }
+        }
+
+        ICESocketSessionPtr next;
+
+        // try to find a quick route to the session
+        {
+          AutoRecursiveLock lock(getLock());
+          QuickRouteMap::iterator found = mRoutes.find(source);
+          if (found != mRoutes.end()) {
+            next = (*found).second;
+          }
+        }
+
+        if (next) {
+          // we found a quick route - but does it actually handle the packet
+          // (it is possible for two routes to have same IP in strange firewall
+          // configruations thus we might pick the wrong session)
+          if (next->forICESocket().handlePacket(viaTransport, source, buffer, bufferLengthInBytes)) return;
+
+          // we chose wrong, so allow the "hunt" method to take over
+          next.reset();
+        }
+
+        // this could be channel data for one of the sessions, check each session
+        while (true)
+        {
+          // scope: find the next socket session to test in the list while in a lock
+          {
+            AutoRecursiveLock lock(getLock());
+            if (mSessions.size() < 1) break;  // no sessions to check
+
+            if (!next) {
+              next = (*(mSessions.begin())).second;
+            } else {
+              ICESocketSessionMap::iterator iter = mSessions.find(next->forICESocket().getID());
+              if (iter == mSessions.end()) {
+                next = (*(mSessions.begin())).second;   // start the search over since the previous entry we last searched was not in the map
+              } else {
+                ++iter;
+                if (iter == mSessions.end()) break;
+                next = (*iter).second;
+              }
+            }
+          }
+          
+          if (!next) break;
+          if (next->forICESocket().handlePacket(viaTransport, source, buffer, bufferLengthInBytes)) return;
+        }
+        
+        ZS_LOG_WARNING(Trace, log("did not find any socket session to handle data packet"))
+      }
+      
       //-----------------------------------------------------------------------
       bool ICESocket::clearRelayedCandidates(bool checkOnly)
       {
@@ -1489,7 +1550,7 @@ namespace hookflash
         }
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void ICESocket::getBuffer(RecycledPacketBuffer &outBuffer)
       {
         AutoRecursiveLock lock(mLock);
@@ -1502,7 +1563,7 @@ namespace hookflash
         mRecycledBuffers.pop_front();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void ICESocket::recycleBuffer(RecycledPacketBuffer &buffer)
       {
         AutoRecursiveLock lock(mLock);
@@ -1515,10 +1576,15 @@ namespace hookflash
         mRecycledBuffers.push_back(buffer);
       }
 
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICESocket::Subscription
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       ICESocket::Subscription::Subscription(ICESocketPtr outer) :
         mOuter(outer),
         mID(zsLib::createPUID())
@@ -1541,7 +1607,7 @@ namespace hookflash
         ICESocketPtr outer = mOuter.lock();
         if (!outer) return;
 
-        outer->cancelSubscription(mID);
+        outer->cancelSubscription(*this);
       }
     }
 
@@ -1589,15 +1655,15 @@ namespace hookflash
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
     {
-      return internal::ICESocket::create(
-                                         queue,
-                                         delegate,
-                                         turnServer,
-                                         turnServerUsername,
-                                         turnServerPassword,
-                                         stunServer,
-                                         port,
-                                         firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+      return internal::IICESocketFactory::singleton().create(
+                                                             queue,
+                                                             delegate,
+                                                             turnServer,
+                                                             turnServerUsername,
+                                                             turnServerPassword,
+                                                             stunServer,
+                                                             port,
+                                                             firstWORDInAnyPacketWillNotConflictWithTURNChannels);
     }
 
     //-------------------------------------------------------------------------
@@ -1613,27 +1679,28 @@ namespace hookflash
                                      bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
                                      )
     {
-      return internal::ICESocket::create(
-                                         queue,
-                                         delegate,
-                                         srvTURNUDP,
-                                         srvTURNTCP,
-                                         turnServerUsername,
-                                         turnServerPassword,
-                                         srvSTUN,
-                                         port,
-                                         firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+      return internal::IICESocketFactory::singleton().create(
+                                                             queue,
+                                                             delegate,
+                                                             srvTURNUDP,
+                                                             srvTURNTCP,
+                                                             turnServerUsername,
+                                                             turnServerPassword,
+                                                             srvSTUN,
+                                                             port,
+                                                             firstWORDInAnyPacketWillNotConflictWithTURNChannels);
     }
 
-    String IICESocket::Candidate::toDebugString() const
+    //-------------------------------------------------------------------------
+    String IICESocket::Candidate::toDebugString(bool includeCommaPrefix) const
     {
-      return String(", type=") + IICESocket::toString(mType) +
-                    ", ip=" + mIPAddress.string() +
-                    ", priority=" + Stringize<DWORD>(mPriority).string() +
-                    ", preference=" + Stringize<WORD>(mLocalPreference).string() +
-                    ", usernameFrag=" + mUsernameFrag +
-                    ", password=" + mPassword +
-                    ", protocol=" + mProtocol;
+      return includeCommaPrefix ? String(", type=") : String("type=") + IICESocket::toString(mType) +
+             ", ip=" + mIPAddress.string() +
+             ", priority=" + Stringize<DWORD>(mPriority).string() +
+             ", preference=" + Stringize<WORD>(mLocalPreference).string() +
+             ", usernameFrag=" + mUsernameFrag +
+             ", password=" + mPassword +
+             ", protocol=" + mProtocol;
     }
   }
 }
