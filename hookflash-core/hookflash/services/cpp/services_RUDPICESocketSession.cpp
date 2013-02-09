@@ -56,6 +56,34 @@ namespace hookflash
       using zsLib::Stringize;
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketSessionForRUDPICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RUDPICESocketSessionPtr IRUDPICESocketSessionForRUDPICESocket::create(
+                                                                            IMessageQueuePtr queue,
+                                                                            RUDPICESocketPtr parent,
+                                                                            IRUDPICESocketSessionDelegatePtr delegate,
+                                                                            const CandidateList &remoteCandidates,
+                                                                            ICEControls control
+                                                                            )
+      {
+        return IRUDPICESocketSessionFactory::singleton().create(queue, parent, delegate, remoteCandidates, control);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPICESocketSession::RUDPICESocketSession(
                                                  IMessageQueuePtr queue,
                                                  RUDPICESocketPtr parent,
@@ -103,6 +131,14 @@ namespace hookflash
         pThis->init(remoteCandidates, control);
         return pThis;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession => RUDPICESocketSession
+      #pragma mark
 
       //-----------------------------------------------------------------------
       IRUDPICESocketPtr RUDPICESocketSession::getSocket()
@@ -301,6 +337,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession => IICESocketSessionDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPICESocketSession::onICESocketSessionStateChanged(
                                                                 IICESocketSessionPtr session,
                                                                 ICESocketSessionStates state
@@ -478,6 +522,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession => IRUDPChannelDelegateForSessionAndListener
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPICESocketSession::onRUDPChannelStateChanged(
                                                            RUDPChannelPtr channel,
                                                            RUDPChannelStates state
@@ -546,6 +598,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPICESocketSession => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       RecursiveLock &RUDPICESocketSession::getLock() const
       {
@@ -822,6 +879,9 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPICESocketSession
+    #pragma mark
 
     //-------------------------------------------------------------------------
     const char *IRUDPICESocketSession::toString(RUDPICESocketSessionStates states)
@@ -838,6 +898,7 @@ namespace hookflash
       return "UNDEFINED";
     }
 
+    //-------------------------------------------------------------------------
     const char *IRUDPICESocketSession::toString(RUDPICESocketSessionShutdownReasons reason)
     {
       return IICESocketSession::toString((IICESocketSession::ICESocketSessionShutdownReasons)reason);

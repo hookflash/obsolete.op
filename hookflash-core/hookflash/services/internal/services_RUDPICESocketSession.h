@@ -51,14 +51,80 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IRUDPICESocketSessionFactory
+      #pragma mark
+
+      interaction IRUDPICESocketSessionFactory
+      {
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
+        static IRUDPICESocketSessionFactory &singleton();
+
+        virtual RUDPICESocketSessionPtr create(
+                                               IMessageQueuePtr queue,
+                                               RUDPICESocketPtr parent,
+                                               IRUDPICESocketSessionDelegatePtr delegate,
+                                               const CandidateList &remoteCandidates,
+                                               ICEControls control
+                                               );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketSessionForRUDPICESocket
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      interaction IRUDPICESocketSessionForRUDPICESocket
+      {
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
+        IRUDPICESocketSessionForRUDPICESocket &forSocket() {return *this;}
+        const IRUDPICESocketSessionForRUDPICESocket &forSocket() const {return *this;}
+
+        static RUDPICESocketSessionPtr create(
+                                              IMessageQueuePtr queue,
+                                              RUDPICESocketPtr parent,
+                                              IRUDPICESocketSessionDelegatePtr delegate,
+                                              const CandidateList &remoteCandidates,
+                                              ICEControls control
+                                              );
+
+        virtual PUID getID() const = 0;
+
+        virtual void shutdown() = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark RUDPICESocketSession
       #pragma mark
 
       class RUDPICESocketSession : public MessageQueueAssociator,
                                    public IRUDPICESocketSession,
+                                   public IRUDPICESocketSessionForRUDPICESocket,
                                    public IICESocketSessionDelegate,
                                    public IRUDPChannelDelegateForSessionAndListener
       {
+      public:
+        friend interaction IRUDPICESocketSessionFactory;
+
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
+        typedef WORD ChannelNumber;
+        typedef std::map<ChannelNumber, RUDPChannelPtr> SessionMap;
+
+        typedef std::list<RUDPChannelPtr> PendingSessionList;
+
       protected:
         RUDPICESocketSession(
                              IMessageQueuePtr queue,
@@ -74,15 +140,12 @@ namespace hookflash
       public:
         ~RUDPICESocketSession();
 
-        static RUDPICESocketSessionPtr create(
-                                              IMessageQueuePtr queue,
-                                              RUDPICESocketPtr parent,
-                                              IRUDPICESocketSessionDelegatePtr delegate,
-                                              const CandidateList &remoteCandidates,
-                                              ICEControls control
-                                              );
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => RUDPICESocketSession
+        #pragma mark
 
-        //RUDPICESocketSession
         virtual PUID getID() const {return mID;}
 
         virtual IRUDPICESocketPtr getSocket();
@@ -118,7 +181,24 @@ namespace hookflash
 
         virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate);
 
-        //IICESocketSessionDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => IRUDPICESocketSessionForRUDPICESocket
+        #pragma mark
+
+        static RUDPICESocketSessionPtr create(
+                                              IMessageQueuePtr queue,
+                                              RUDPICESocketPtr parent,
+                                              IRUDPICESocketSessionDelegatePtr delegate,
+                                              const CandidateList &remoteCandidates,
+                                              ICEControls control
+                                              );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => IICESocketSessionDelegate
+        #pragma mark
+
         virtual void onICESocketSessionStateChanged(
                                                     IICESocketSessionPtr session,
                                                     ICESocketSessionStates state
@@ -139,7 +219,11 @@ namespace hookflash
 
         virtual void onICESocketSessionWriteReady(IICESocketSessionPtr session);
 
-        // IRUDPChannelDelegateForSessionAndListener
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => IRUDPChannelDelegateForSessionAndListener
+        #pragma mark
+
         virtual void onRUDPChannelStateChanged(
                                                RUDPChannelPtr channel,
                                                RUDPChannelStates state
@@ -153,6 +237,11 @@ namespace hookflash
                                                  );
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => (internal)
+        #pragma mark
+
         RecursiveLock &getLock() const;
 
         String log(const char *message) const;
@@ -178,6 +267,11 @@ namespace hookflash
         void issueChannelConnectIfPossible();
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPICESocketSession => (data)
+        #pragma mark
+
         mutable RecursiveLock mBogusLock;
 
         RUDPICESocketSessionWeakPtr mThisWeak;
@@ -196,12 +290,9 @@ namespace hookflash
         String mLocalUsernameFrag;
         String mRemoteUsernameFrag;
 
-        typedef WORD ChannelNumber;
-        typedef std::map<ChannelNumber, RUDPChannelPtr> SessionMap;
         SessionMap mLocalChannelNumberSessions;   // local channel numbers are the channel numbers we expect to receive from the remote party
         SessionMap mRemoteChannelNumberSessions;  // remote channel numbers are the channel numbers we expect to send to the remote party
 
-        typedef std::list<RUDPChannelPtr> PendingSessionList;
         PendingSessionList mPendingSessions;
       };
     }

@@ -230,15 +230,15 @@ namespace hookflash
                                                                                 )
       {
         AutoRecursiveLock lock(mLock);
-        RUDPICESocketSessionPtr session = RUDPICESocketSession::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, remoteCandidates, control);
+        RUDPICESocketSessionPtr session = IRUDPICESocketSessionForRUDPICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, remoteCandidates, control);
 
         if ((isShuttingDown()) ||
             (isShutdown())) {
-          session->shutdown();
+          session->forSocket().shutdown();
           return session;
         }
 
-        mSessions[session->getID()] = session;
+        mSessions[session->forSocket().getID()] = session;
         return session;
       }
 
@@ -363,7 +363,7 @@ namespace hookflash
 
         if (mSessions.size() > 0) {
           for (SessionMap::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter) {
-            (*iter).second->shutdown();
+            (*iter).second->forSocket().shutdown();
           }
         }
 

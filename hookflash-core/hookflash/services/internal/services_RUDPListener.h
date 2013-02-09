@@ -50,14 +50,53 @@ namespace hookflash
   {
     namespace internal
     {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPListenerFactory
+      #pragma mark
+
+      interaction IRUDPListenerFactory
+      {
+        static IRUDPListenerFactory &singleton();
+
+        virtual RUDPListenerPtr create(
+                                       IMessageQueuePtr queue,
+                                       IRUDPListenerDelegatePtr delegate,
+                                       WORD port,
+                                       const char *realm
+                                       );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener
+      #pragma mark
+
       class RUDPListener : public MessageQueueAssociator,
                            public IRUDPListener,
                            public ISocketDelegate,
                            public IRUDPChannelDelegateForSessionAndListener
       {
-      protected:
+      public:
+        friend interaction IRUDPListenerFactory;
+
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
         typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
+
+        class CompareChannelPair;
+
+        typedef IPAddress RemoteIP;
+        typedef WORD ChannelNumber;
+        typedef std::pair<RemoteIP, WORD> ChannelPair;
+        typedef std::map<ChannelPair, RUDPChannelPtr, CompareChannelPair> SessionMap;
+
+        typedef std::list<RUDPChannelPtr> PendingSessionList;
 
       protected:
         RUDPListener(
@@ -72,7 +111,12 @@ namespace hookflash
       public:
         ~RUDPListener();
 
-        //IRUDPListener
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener => IRUDPListener
+        #pragma mark
+
         virtual PUID getID() const {return mID;}
 
         static RUDPListenerPtr create(
@@ -90,12 +134,20 @@ namespace hookflash
 
         virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate);
 
-        //ISocketDelegate
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener => ISocketDelegate
+        #pragma mark
+
         virtual void onReadReady(ISocketPtr socket);
         virtual void onWriteReady(ISocketPtr socket);
         virtual void onException(ISocketPtr socket);
 
-        //IRUDPChannelDelegateForSessionAndListener
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener => IRUDPChannelDelegateForSessionAndListener
+        #pragma mark
+
         virtual void onRUDPChannelStateChanged(
                                                RUDPChannelPtr channel,
                                                RUDPChannelStates state
@@ -109,6 +161,11 @@ namespace hookflash
                                                  );
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener => (internal)
+        #pragma mark
+
         String log(const char *message) const;
         void fix(STUNPacketPtr stun) const;
 
@@ -141,6 +198,12 @@ namespace hookflash
         void getBuffer(RecycledPacketBuffer &outBuffer);
         void recycleBuffer(RecycledPacketBuffer &buffer);
 
+      public:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener::AutoRecycleBuffer
+        #pragma mark
+
         class AutoRecycleBuffer
         {
         public:
@@ -151,8 +214,10 @@ namespace hookflash
           RecycledPacketBuffer &mBuffer;
         };
 
-        // remote IP address and channel number
-        typedef std::pair<IPAddress, WORD> ChannelPair;
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener::CompareChannelPair
+        #pragma mark
 
         class CompareChannelPair { // simple comparison function
         public:
@@ -160,6 +225,11 @@ namespace hookflash
         };
 
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPListener => (internal)
+        #pragma mark
+
         mutable RecursiveLock mLock;
         RUDPListenerWeakPtr mThisWeak;
         IRUDPListenerDelegatePtr mDelegate;
@@ -173,11 +243,9 @@ namespace hookflash
 
         SocketPtr mUDPSocket;
 
-        typedef std::map<ChannelPair, RUDPChannelPtr, CompareChannelPair> SessionMap;
         SessionMap mLocalChannelNumberSessions;   // local channel numbers are the channel numbers we expect to receive from the remote party
         SessionMap mRemoteChannelNumberSessions;  // remote channel numbers are the channel numbers we expect to send to the remote party
 
-        typedef std::list<RUDPChannelPtr> PendingSessionList;
         PendingSessionList mPendingSessions;
 
         RecycledPacketBufferList mRecycledBuffers;

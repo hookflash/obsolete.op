@@ -74,6 +74,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helper)
+      #pragma mark
 
       //-----------------------------------------------------------------------
       String convertToHex(
@@ -192,6 +195,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       RUDPListener::RUDPListener(
                                  IMessageQueuePtr queue,
                                  IRUDPListenerDelegatePtr delegate,
@@ -225,6 +233,14 @@ namespace hookflash
         ZS_LOG_BASIC(log("destroyed"))
         cancel();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener => IRUDPListener
+      #pragma mark
 
       //-----------------------------------------------------------------------
       RUDPListenerPtr RUDPListener::create(
@@ -276,6 +292,14 @@ namespace hookflash
         session->forListener().setDelegate(delegate);
         return session;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener => ISocketDelegate
+      #pragma mark
 
       //-----------------------------------------------------------------------
       void RUDPListener::onReadReady(ISocketPtr socket)
@@ -440,6 +464,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener => IRUDPChannelDelegateForSessionAndListener
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       void RUDPListener::onRUDPChannelStateChanged(
                                                    RUDPChannelPtr channel,
                                                    RUDPChannelStates state
@@ -490,6 +522,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener => (internal)
+      #pragma mark
+
       //-----------------------------------------------------------------------
       String RUDPListener::log(const char *message) const
       {
@@ -546,7 +583,7 @@ namespace hookflash
         mRecycledBuffers.clear();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPListener::setState(RUDPListenerStates state)
       {
         if (mCurrentState == state) return;
@@ -567,7 +604,7 @@ namespace hookflash
         }
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       bool RUDPListener::bindUDP()
       {
         mUDPSocket = Socket::createUDP();
@@ -590,7 +627,7 @@ namespace hookflash
         return true;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       bool RUDPListener::sendTo(
                                 const IPAddress &destination,
                                 const BYTE *buffer,
@@ -613,7 +650,7 @@ namespace hookflash
         return false;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       bool RUDPListener::handledNonce(
                                       const IPAddress &remoteIP,
                                       STUNPacketPtr &stun,
@@ -639,7 +676,7 @@ namespace hookflash
         return true;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       bool RUDPListener::handleUnknownChannel(
                                               const IPAddress &remoteIP,
                                               STUNPacketPtr &stun,
@@ -761,7 +798,7 @@ namespace hookflash
         return response;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPListener::getBuffer(RecycledPacketBuffer &outBuffer)
       {
         AutoRecursiveLock lock(mLock);
@@ -774,7 +811,7 @@ namespace hookflash
         mRecycledBuffers.pop_front();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       void RUDPListener::recycleBuffer(RecycledPacketBuffer &buffer)
       {
         AutoRecursiveLock lock(mLock);
@@ -788,7 +825,15 @@ namespace hookflash
         buffer.reset();
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPListener::CompareChannelPair
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       bool RUDPListener::CompareChannelPair::operator()(const ChannelPair &op1, const ChannelPair &op2) const
       {
         if (op1.first < op2.first)
@@ -827,7 +872,7 @@ namespace hookflash
                                            const char *realm
                                            )
     {
-      return internal::RUDPListener::create(queue, delegate, port, realm);
+      return internal::IRUDPListenerFactory::singleton().create(queue, delegate, port, realm);
     }
   }
 }

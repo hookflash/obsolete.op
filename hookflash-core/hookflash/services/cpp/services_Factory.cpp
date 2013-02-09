@@ -382,6 +382,56 @@ namespace hookflash
         return RUDPICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port);
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketSessionFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRUDPICESocketSessionFactory &IRUDPICESocketSessionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPICESocketSessionPtr IRUDPICESocketSessionFactory::create(
+                                                                   IMessageQueuePtr queue,
+                                                                   RUDPICESocketPtr parent,
+                                                                   IRUDPICESocketSessionDelegatePtr delegate,
+                                                                   const CandidateList &remoteCandidates,
+                                                                   ICEControls control
+                                                                   )
+      {
+        return RUDPICESocketSession::create(queue, parent, delegate, remoteCandidates, control);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPListenerFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRUDPListenerFactory &IRUDPListenerFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RUDPListenerPtr IRUDPListenerFactory::create(
+                                                   IMessageQueuePtr queue,
+                                                   IRUDPListenerDelegatePtr delegate,
+                                                   WORD port,
+                                                   const char *realm
+                                                   )
+      {
+        return RUDPListener::create(queue, delegate, port, realm);
+      }
     }
   }
 }
