@@ -7,17 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		000106CF14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000106CE14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp */; };
-		00AAB8571684BA8500B39964 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB8561684BA8500B39964 /* boost_replacement.cpp */; };
-		00AAB8581684BA8500B39964 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AAB8561684BA8500B39964 /* boost_replacement.cpp */; };
-		00AAB8591684BB8A00B39964 /* TestCanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5B14BBACF900EEDCF0 /* TestCanonicalXML.cpp */; };
-		00AAB85A1684BB8A00B39964 /* TestDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5C14BBACF900EEDCF0 /* TestDNS.cpp */; };
-		00AAB85B1684BB8A00B39964 /* TestICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5D14BBACF900EEDCF0 /* TestICESocket.cpp */; };
-		00AAB85C1684BB8A00B39964 /* TestSTUNDiscovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC6014BBACF900EEDCF0 /* TestSTUNDiscovery.cpp */; };
-		00AAB85D1684BB8A00B39964 /* TestTURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC6114BBACF900EEDCF0 /* TestTURNSocket.cpp */; };
-		00AAB85E1684BB8A00B39964 /* TestRUDPICESocketLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000106CE14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp */; };
-		00AAB85F1684BB8A00B39964 /* TestRUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5E14BBACF900EEDCF0 /* TestRUDPICESocket.cpp */; };
-		00AAB8601684BB8A00B39964 /* TestRUDPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5F14BBACF900EEDCF0 /* TestRUDPListener.cpp */; };
 		00ED196216C5E13C0069F8E0 /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00138A4416C5CBB100CDC6DF /* libzsLib.a */; };
 		00ED196316C5E1490069F8E0 /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00138A4616C5CBB100CDC6DF /* libzsLib_ios.a */; };
 		00ED196516C5E16A0069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED196416C5E16A0069F8E0 /* CoreFoundation.framework */; };
@@ -34,14 +23,25 @@
 		00ED198516C5EB1F0069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */; };
 		00ED198616C5EB1F0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198316C5EB1F0069F8E0 /* libboost_regex.a */; };
 		00ED198716C5EB1F0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198416C5EB1F0069F8E0 /* libboost_thread.a */; };
-		00F3CC6214BBACF900EEDCF0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5A14BBACF900EEDCF0 /* main.cpp */; };
-		00F3CC6314BBACF900EEDCF0 /* TestCanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5B14BBACF900EEDCF0 /* TestCanonicalXML.cpp */; };
-		00F3CC6414BBACF900EEDCF0 /* TestDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5C14BBACF900EEDCF0 /* TestDNS.cpp */; };
-		00F3CC6514BBACF900EEDCF0 /* TestICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5D14BBACF900EEDCF0 /* TestICESocket.cpp */; };
-		00F3CC6614BBACF900EEDCF0 /* TestRUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5E14BBACF900EEDCF0 /* TestRUDPICESocket.cpp */; };
-		00F3CC6714BBACF900EEDCF0 /* TestRUDPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC5F14BBACF900EEDCF0 /* TestRUDPListener.cpp */; };
-		00F3CC6814BBACF900EEDCF0 /* TestSTUNDiscovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC6014BBACF900EEDCF0 /* TestSTUNDiscovery.cpp */; };
-		00F3CC6914BBACF900EEDCF0 /* TestTURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00F3CC6114BBACF900EEDCF0 /* TestTURNSocket.cpp */; };
+		00ED2CCE16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */; };
+		00ED2CCF16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */; };
+		00ED2CD016C7D4FF0069F8E0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2516C7D4FE0069F8E0 /* main.cpp */; };
+		00ED2CD216C7D4FF0069F8E0 /* TestCanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2616C7D4FE0069F8E0 /* TestCanonicalXML.cpp */; };
+		00ED2CD316C7D4FF0069F8E0 /* TestCanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2616C7D4FE0069F8E0 /* TestCanonicalXML.cpp */; };
+		00ED2CD416C7D4FF0069F8E0 /* TestDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2716C7D4FE0069F8E0 /* TestDNS.cpp */; };
+		00ED2CD516C7D4FF0069F8E0 /* TestDNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2716C7D4FE0069F8E0 /* TestDNS.cpp */; };
+		00ED2CD616C7D4FF0069F8E0 /* TestICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2816C7D4FE0069F8E0 /* TestICESocket.cpp */; };
+		00ED2CD716C7D4FF0069F8E0 /* TestICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2816C7D4FE0069F8E0 /* TestICESocket.cpp */; };
+		00ED2CD816C7D4FF0069F8E0 /* TestRUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2916C7D4FE0069F8E0 /* TestRUDPICESocket.cpp */; };
+		00ED2CD916C7D4FF0069F8E0 /* TestRUDPICESocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2916C7D4FE0069F8E0 /* TestRUDPICESocket.cpp */; };
+		00ED2CDA16C7D4FF0069F8E0 /* TestRUDPICESocketLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2A16C7D4FE0069F8E0 /* TestRUDPICESocketLoopback.cpp */; };
+		00ED2CDB16C7D4FF0069F8E0 /* TestRUDPICESocketLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2A16C7D4FE0069F8E0 /* TestRUDPICESocketLoopback.cpp */; };
+		00ED2CDC16C7D4FF0069F8E0 /* TestRUDPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2B16C7D4FE0069F8E0 /* TestRUDPListener.cpp */; };
+		00ED2CDD16C7D4FF0069F8E0 /* TestRUDPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2B16C7D4FE0069F8E0 /* TestRUDPListener.cpp */; };
+		00ED2CDE16C7D4FF0069F8E0 /* TestSTUNDiscovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2C16C7D4FE0069F8E0 /* TestSTUNDiscovery.cpp */; };
+		00ED2CDF16C7D4FF0069F8E0 /* TestSTUNDiscovery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2C16C7D4FE0069F8E0 /* TestSTUNDiscovery.cpp */; };
+		00ED2CE016C7D4FF0069F8E0 /* TestTURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2D16C7D4FE0069F8E0 /* TestTURNSocket.cpp */; };
+		00ED2CE116C7D4FF0069F8E0 /* TestTURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2D16C7D4FE0069F8E0 /* TestTURNSocket.cpp */; };
 		2AB8923B147AA32800A58B77 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2AB89239147AA32800A58B77 /* InfoPlist.strings */; };
 		2AB8923E147AA32800A58B77 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB8923D147AA32800A58B77 /* main.m */; };
 		2AB89241147AA32800A58B77 /* hfServicesTest_iOSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AB89240147AA32800A58B77 /* hfServicesTest_iOSAppDelegate.m */; };
@@ -179,10 +179,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		000106CE14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestRUDPICESocketLoopback.cpp; path = ../../../hookflash/services/test/TestRUDPICESocketLoopback.cpp; sourceTree = "<group>"; };
 		00138A3E16C5CBB000CDC6DF /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = "../../../../hookflash-libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj"; sourceTree = "<group>"; };
-		00AAB8561684BA8500B39964 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = boost_replacement.cpp; path = ../../../hookflash/services/test/boost_replacement.cpp; sourceTree = "<group>"; };
-		00AAB8611684BF7700B39964 /* config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../../hookflash/services/test/config.h; sourceTree = "<group>"; };
 		00ED190D16C5CC420069F8E0 /* udns.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns.xcodeproj; path = "../../../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj"; sourceTree = "<group>"; };
 		00ED191816C5CC5A0069F8E0 /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = "../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj"; sourceTree = "<group>"; };
 		00ED196416C5E16A0069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
@@ -194,15 +191,18 @@
 		00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = "<group>"; };
 		00ED198316C5EB1F0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = "<group>"; };
 		00ED198416C5EB1F0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = "<group>"; };
-		00F3CC5914BBACF900EEDCF0 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = boost_replacement.h; path = ../../../hookflash/services/test/boost_replacement.h; sourceTree = "<group>"; };
-		00F3CC5A14BBACF900EEDCF0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../hookflash/services/test/main.cpp; sourceTree = "<group>"; };
-		00F3CC5B14BBACF900EEDCF0 /* TestCanonicalXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestCanonicalXML.cpp; path = ../../../hookflash/services/test/TestCanonicalXML.cpp; sourceTree = "<group>"; };
-		00F3CC5C14BBACF900EEDCF0 /* TestDNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestDNS.cpp; path = ../../../hookflash/services/test/TestDNS.cpp; sourceTree = "<group>"; };
-		00F3CC5D14BBACF900EEDCF0 /* TestICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestICESocket.cpp; path = ../../../hookflash/services/test/TestICESocket.cpp; sourceTree = "<group>"; };
-		00F3CC5E14BBACF900EEDCF0 /* TestRUDPICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestRUDPICESocket.cpp; path = ../../../hookflash/services/test/TestRUDPICESocket.cpp; sourceTree = "<group>"; };
-		00F3CC5F14BBACF900EEDCF0 /* TestRUDPListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestRUDPListener.cpp; path = ../../../hookflash/services/test/TestRUDPListener.cpp; sourceTree = "<group>"; };
-		00F3CC6014BBACF900EEDCF0 /* TestSTUNDiscovery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestSTUNDiscovery.cpp; path = ../../../hookflash/services/test/TestSTUNDiscovery.cpp; sourceTree = "<group>"; };
-		00F3CC6114BBACF900EEDCF0 /* TestTURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestTURNSocket.cpp; path = ../../../hookflash/services/test/TestTURNSocket.cpp; sourceTree = "<group>"; };
+		00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
+		00ED2B2316C7D4FE0069F8E0 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
+		00ED2B2416C7D4FE0069F8E0 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		00ED2B2516C7D4FE0069F8E0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		00ED2B2616C7D4FE0069F8E0 /* TestCanonicalXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestCanonicalXML.cpp; sourceTree = "<group>"; };
+		00ED2B2716C7D4FE0069F8E0 /* TestDNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestDNS.cpp; sourceTree = "<group>"; };
+		00ED2B2816C7D4FE0069F8E0 /* TestICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestICESocket.cpp; sourceTree = "<group>"; };
+		00ED2B2916C7D4FE0069F8E0 /* TestRUDPICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestRUDPICESocket.cpp; sourceTree = "<group>"; };
+		00ED2B2A16C7D4FE0069F8E0 /* TestRUDPICESocketLoopback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestRUDPICESocketLoopback.cpp; sourceTree = "<group>"; };
+		00ED2B2B16C7D4FE0069F8E0 /* TestRUDPListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestRUDPListener.cpp; sourceTree = "<group>"; };
+		00ED2B2C16C7D4FE0069F8E0 /* TestSTUNDiscovery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSTUNDiscovery.cpp; sourceTree = "<group>"; };
+		00ED2B2D16C7D4FE0069F8E0 /* TestTURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTURNSocket.cpp; sourceTree = "<group>"; };
 		00F3CCAE14BBC53400EEDCF0 /* hfservices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfservices.xcodeproj; path = ../hfservices/hfservices.xcodeproj; sourceTree = "<group>"; };
 		2A9B3D66147AA26D0039601D /* hfservicestest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hfservicestest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AB8922D147AA32800A58B77 /* hfservicestest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hfservicestest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -295,6 +295,42 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		00ED2A8016C7D4FE0069F8E0 /* hookflash */ = {
+			isa = PBXGroup;
+			children = (
+				00ED2AE116C7D4FE0069F8E0 /* services */,
+			);
+			name = hookflash;
+			path = ../../../hookflash;
+			sourceTree = "<group>";
+		};
+		00ED2AE116C7D4FE0069F8E0 /* services */ = {
+			isa = PBXGroup;
+			children = (
+				00ED2B2116C7D4FE0069F8E0 /* test */,
+			);
+			path = services;
+			sourceTree = "<group>";
+		};
+		00ED2B2116C7D4FE0069F8E0 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				00ED2B2416C7D4FE0069F8E0 /* config.h */,
+				00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */,
+				00ED2B2316C7D4FE0069F8E0 /* boost_replacement.h */,
+				00ED2B2516C7D4FE0069F8E0 /* main.cpp */,
+				00ED2B2616C7D4FE0069F8E0 /* TestCanonicalXML.cpp */,
+				00ED2B2716C7D4FE0069F8E0 /* TestDNS.cpp */,
+				00ED2B2816C7D4FE0069F8E0 /* TestICESocket.cpp */,
+				00ED2B2916C7D4FE0069F8E0 /* TestRUDPICESocket.cpp */,
+				00ED2B2A16C7D4FE0069F8E0 /* TestRUDPICESocketLoopback.cpp */,
+				00ED2B2B16C7D4FE0069F8E0 /* TestRUDPListener.cpp */,
+				00ED2B2C16C7D4FE0069F8E0 /* TestSTUNDiscovery.cpp */,
+				00ED2B2D16C7D4FE0069F8E0 /* TestTURNSocket.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
 		00F3CCAF14BBC53400EEDCF0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,8 +343,8 @@
 		2A9B3D5B147AA26D0039601D = {
 			isa = PBXGroup;
 			children = (
+				00ED2A8016C7D4FE0069F8E0 /* hookflash */,
 				2AB89253147AA3FE00A58B77 /* Projects */,
-				2AB89216147AA2C600A58B77 /* Source */,
 				2AB89236147AA32800A58B77 /* hfServicesTest_iOS */,
 				2AB8922F147AA32800A58B77 /* Frameworks */,
 				002BE3BB1498DDD000FA77D2 /* Libraries */,
@@ -323,25 +359,6 @@
 				2AB8922D147AA32800A58B77 /* hfservicestest_ios.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		2AB89216147AA2C600A58B77 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				00AAB8611684BF7700B39964 /* config.h */,
-				00F3CC5914BBACF900EEDCF0 /* boost_replacement.h */,
-				00AAB8561684BA8500B39964 /* boost_replacement.cpp */,
-				00F3CC5A14BBACF900EEDCF0 /* main.cpp */,
-				00F3CC5B14BBACF900EEDCF0 /* TestCanonicalXML.cpp */,
-				00F3CC5C14BBACF900EEDCF0 /* TestDNS.cpp */,
-				00F3CC5D14BBACF900EEDCF0 /* TestICESocket.cpp */,
-				00F3CC6014BBACF900EEDCF0 /* TestSTUNDiscovery.cpp */,
-				00F3CC6114BBACF900EEDCF0 /* TestTURNSocket.cpp */,
-				000106CE14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp */,
-				00F3CC5E14BBACF900EEDCF0 /* TestRUDPICESocket.cpp */,
-				00F3CC5F14BBACF900EEDCF0 /* TestRUDPListener.cpp */,
-			);
-			name = Source;
 			sourceTree = "<group>";
 		};
 		2AB8922F147AA32800A58B77 /* Frameworks */ = {
@@ -570,16 +587,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00F3CC6214BBACF900EEDCF0 /* main.cpp in Sources */,
-				00F3CC6314BBACF900EEDCF0 /* TestCanonicalXML.cpp in Sources */,
-				00F3CC6414BBACF900EEDCF0 /* TestDNS.cpp in Sources */,
-				00F3CC6514BBACF900EEDCF0 /* TestICESocket.cpp in Sources */,
-				00F3CC6614BBACF900EEDCF0 /* TestRUDPICESocket.cpp in Sources */,
-				00F3CC6714BBACF900EEDCF0 /* TestRUDPListener.cpp in Sources */,
-				00F3CC6814BBACF900EEDCF0 /* TestSTUNDiscovery.cpp in Sources */,
-				00F3CC6914BBACF900EEDCF0 /* TestTURNSocket.cpp in Sources */,
-				000106CF14C7FA87001093B4 /* TestRUDPICESocketLoopback.cpp in Sources */,
-				00AAB8571684BA8500B39964 /* boost_replacement.cpp in Sources */,
+				00ED2CCE16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */,
+				00ED2CD016C7D4FF0069F8E0 /* main.cpp in Sources */,
+				00ED2CD216C7D4FF0069F8E0 /* TestCanonicalXML.cpp in Sources */,
+				00ED2CD416C7D4FF0069F8E0 /* TestDNS.cpp in Sources */,
+				00ED2CD616C7D4FF0069F8E0 /* TestICESocket.cpp in Sources */,
+				00ED2CD816C7D4FF0069F8E0 /* TestRUDPICESocket.cpp in Sources */,
+				00ED2CDA16C7D4FF0069F8E0 /* TestRUDPICESocketLoopback.cpp in Sources */,
+				00ED2CDC16C7D4FF0069F8E0 /* TestRUDPListener.cpp in Sources */,
+				00ED2CDE16C7D4FF0069F8E0 /* TestSTUNDiscovery.cpp in Sources */,
+				00ED2CE016C7D4FF0069F8E0 /* TestTURNSocket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -587,19 +604,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00AAB8591684BB8A00B39964 /* TestCanonicalXML.cpp in Sources */,
-				00AAB85A1684BB8A00B39964 /* TestDNS.cpp in Sources */,
-				00AAB85B1684BB8A00B39964 /* TestICESocket.cpp in Sources */,
-				00AAB85C1684BB8A00B39964 /* TestSTUNDiscovery.cpp in Sources */,
-				00AAB85D1684BB8A00B39964 /* TestTURNSocket.cpp in Sources */,
-				00AAB85E1684BB8A00B39964 /* TestRUDPICESocketLoopback.cpp in Sources */,
-				00AAB85F1684BB8A00B39964 /* TestRUDPICESocket.cpp in Sources */,
-				00AAB8601684BB8A00B39964 /* TestRUDPListener.cpp in Sources */,
 				2AB8923E147AA32800A58B77 /* main.m in Sources */,
 				2AB89241147AA32800A58B77 /* hfServicesTest_iOSAppDelegate.m in Sources */,
 				2AB89245147AA32800A58B77 /* hfServicesTest_iOSAppDelegate_iPhone.m in Sources */,
 				2AB8924C147AA32800A58B77 /* hfServicesTest_iOSAppDelegate_iPad.mm in Sources */,
-				00AAB8581684BA8500B39964 /* boost_replacement.cpp in Sources */,
+				00ED2CCF16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */,
+				00ED2CD316C7D4FF0069F8E0 /* TestCanonicalXML.cpp in Sources */,
+				00ED2CD516C7D4FF0069F8E0 /* TestDNS.cpp in Sources */,
+				00ED2CD716C7D4FF0069F8E0 /* TestICESocket.cpp in Sources */,
+				00ED2CD916C7D4FF0069F8E0 /* TestRUDPICESocket.cpp in Sources */,
+				00ED2CDB16C7D4FF0069F8E0 /* TestRUDPICESocketLoopback.cpp in Sources */,
+				00ED2CDD16C7D4FF0069F8E0 /* TestRUDPListener.cpp in Sources */,
+				00ED2CDF16C7D4FF0069F8E0 /* TestSTUNDiscovery.cpp in Sources */,
+				00ED2CE116C7D4FF0069F8E0 /* TestTURNSocket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,7 +759,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../hookflash-staging/lib\"",
+					"../../../../hookflash-staging/lib",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PREBINDING = NO;
@@ -767,7 +784,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../hookflash-staging/lib\"",
+					"../../../../hookflash-staging/lib",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PREBINDING = NO;
@@ -796,7 +813,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../hookflash-staging/iPhoneOS/lib\"",
+					"../../../../hookflash-staging/iPhoneOS/lib",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-x",
@@ -830,7 +847,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../hookflash-staging/iPhoneOS/lib\"",
+					"../../../../hookflash-staging/iPhoneOS/lib",
 				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (

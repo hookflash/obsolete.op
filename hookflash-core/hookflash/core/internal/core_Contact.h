@@ -168,12 +168,8 @@ namespace hookflash
                       public IContactForCall
       {
       public:
+        friend interaction IContactFactory;
         friend interaction IContact;
-        friend interaction IContactForAccount;
-        friend interaction IContactForContactPeerFilePublicLookup;
-        friend interaction IContactForConversationThread;
-        friend interaction IContactForCall;
-        friend interaction IContactForIdentityLookup;
 
       protected:
         Contact();
@@ -308,6 +304,40 @@ namespace hookflash
 
         String mFindSecret;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IContactFactory
+      #pragma mark
+
+      interaction IContactFactory
+      {
+        static IContactFactory &singleton();
+
+        virtual ContactPtr createFromPeerURI(
+                                             IAccountPtr account,
+                                             const char *peerURI,
+                                             const char *findSecret,
+                                             const char *inStableID,
+                                             const char *inUserID
+                                             );
+
+        virtual ContactPtr createFromPeer(
+                                          AccountPtr account,
+                                          IPeerPtr peer,
+                                          const char *userIDIfKnown = NULL
+                                          );
+
+        virtual ContactPtr createFromPeerFilePublic(
+                                                    AccountPtr account,
+                                                    IPeerFilePublicPtr publicPeerFile,
+                                                    const char *previousStableUniqueID = NULL // (if known)
+                                                    );
+      };
+
     }
   }
 }

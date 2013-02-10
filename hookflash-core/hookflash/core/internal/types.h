@@ -216,6 +216,10 @@ namespace hookflash
       typedef boost::shared_ptr<ConversationThreadDocumentFetcher> ConversationThreadDocumentFetcherPtr;
       typedef boost::weak_ptr<ConversationThreadDocumentFetcher> ConversationThreadDocumentFetcherWeakPtr;
 
+      interaction Factory;
+      typedef boost::shared_ptr<Factory> FactoryPtr;
+      typedef boost::weak_ptr<Factory> FactoryWeakPtr;
+
       class Identity;
       typedef boost::shared_ptr<Identity> IdentityPtr;
       typedef boost::weak_ptr<Identity> IdentityWeakPtr;

@@ -324,11 +324,8 @@ namespace hookflash
                                   public IConversationThreadAsync
       {
       public:
+        friend interaction IConversationThreadFactory;
         friend interaction IConversationThread;
-        friend interaction IConversationThreadForAccount;
-        friend interaction IConversationThreadForCall;
-        friend interaction IConversationThreadForHost;
-        friend interaction IConversationThreadForSlave;
 
         enum ConversationThreadStates
         {
@@ -435,7 +432,6 @@ namespace hookflash
         #pragma mark ConversationThread => IConversationThreadForAccount
         #pragma mark
 
-        // (duplicate) virtual IConversationThreadPtr convertIConversationThread() const;
         static ConversationThreadPtr create(
                                             AccountPtr account,
                                             ILocationPtr peerLocation,
@@ -609,6 +605,30 @@ namespace hookflash
 
         // used to remember the last notified state for a contact
         ContactStateMap mLastReportedContactStates;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadFactory
+      #pragma mark
+
+      interaction IConversationThreadFactory
+      {
+        static IConversationThreadFactory &singleton();
+
+        virtual ConversationThreadPtr createConversationThread(
+                                                               IAccountPtr account,
+                                                               ElementPtr profileBundleEl
+                                                               );
+        virtual ConversationThreadPtr createConversationThread(
+                                                               AccountPtr account,
+                                                               ILocationPtr peerLocation,
+                                                               IPublicationMetaDataPtr metaData,
+                                                               const SplitMap &split
+                                                               );
       };
     }
   }

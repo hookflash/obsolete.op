@@ -113,6 +113,7 @@ namespace hookflash
                                                  public stack::IPublicationFetcherDelegate
       {
       public:
+        friend interaction IConversationThreadDocumentFetcherFactory;
         friend interaction IConversationThreadDocumentFetcher;
 
         typedef std::pair<ILocationPtr, IPublicationMetaDataPtr> PeerLocationPublicationPair;
@@ -134,6 +135,7 @@ namespace hookflash
 
         static String toDebugString(ConversationThreadDocumentFetcherPtr fetcher, bool includeCommaPrefix = true);
 
+      protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark ConversationThreadDocumentFetcher => IConversationThreadDocumentFetcher
@@ -199,6 +201,24 @@ namespace hookflash
         IPublicationFetcherPtr mFetcher;
 
         PendingPublicationList mPendingPublications;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadDocumentFetcherFactory
+      #pragma mark
+
+      interaction IConversationThreadDocumentFetcherFactory
+      {
+        static IConversationThreadDocumentFetcherFactory &singleton();
+
+        virtual ConversationThreadDocumentFetcherPtr create(
+                                                            IConversationThreadDocumentFetcherDelegatePtr delegate,
+                                                            IPublicationRepositoryPtr repository
+                                                            );
       };
     }
   }

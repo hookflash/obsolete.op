@@ -7,96 +7,96 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		000491971687BA7100517C54 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491881687BA7100517C54 /* core_Account.cpp */; };
-		000491981687BA7100517C54 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491881687BA7100517C54 /* core_Account.cpp */; };
-		000491991687BA7100517C54 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491891687BA7100517C54 /* core_Call.cpp */; };
-		0004919A1687BA7100517C54 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491891687BA7100517C54 /* core_Call.cpp */; };
-		0004919B1687BA7100517C54 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918A1687BA7100517C54 /* core_CallTransport.cpp */; };
-		0004919C1687BA7100517C54 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918A1687BA7100517C54 /* core_CallTransport.cpp */; };
-		0004919D1687BA7100517C54 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918B1687BA7100517C54 /* core_Contact.cpp */; };
-		0004919E1687BA7100517C54 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918B1687BA7100517C54 /* core_Contact.cpp */; };
-		0004919F1687BA7100517C54 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918C1687BA7100517C54 /* core_ConversationThread.cpp */; };
-		000491A01687BA7100517C54 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918C1687BA7100517C54 /* core_ConversationThread.cpp */; };
-		000491A11687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */; };
-		000491A21687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */; };
-		000491A31687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */; };
-		000491A41687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */; };
-		000491A51687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */; };
-		000491A61687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */; };
-		000491A71687BA7100517C54 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491901687BA7100517C54 /* core_Helper.cpp */; };
-		000491A81687BA7100517C54 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491901687BA7100517C54 /* core_Helper.cpp */; };
-		000491A91687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */; };
-		000491AA1687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */; };
-		000491AB1687BA7100517C54 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491921687BA7100517C54 /* core_Logger.cpp */; };
-		000491AC1687BA7100517C54 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491921687BA7100517C54 /* core_Logger.cpp */; };
-		000491AD1687BA7100517C54 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491931687BA7100517C54 /* core_MediaEngine.cpp */; };
-		000491AE1687BA7100517C54 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491931687BA7100517C54 /* core_MediaEngine.cpp */; };
-		000491AF1687BA7100517C54 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491941687BA7100517C54 /* core_Stack.cpp */; };
-		000491B01687BA7100517C54 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491941687BA7100517C54 /* core_Stack.cpp */; };
-		000491B31687BA7100517C54 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491961687BA7100517C54 /* core.cpp */; };
-		000491B41687BA7100517C54 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000491961687BA7100517C54 /* core.cpp */; };
-		000E21DB16C00F5A00F288E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000E21D916C00F5900F288E0 /* core_Identity.cpp */; };
-		000E21DC16C00F5A00F288E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000E21D916C00F5900F288E0 /* core_Identity.cpp */; };
-		00DFACFA16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */; };
-		00DFACFB16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */; };
-		00DFAD0016C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */; };
-		00DFAD0116C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */; };
-		00DFAD0616C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */; };
-		00DFAD0716C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */; };
-		00DFAD0816C3D1B300D8E27C /* core_IdentityLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */; };
-		00DFAD0916C3D1B300D8E27C /* core_IdentityLookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */; };
+		00ED1C6116C7CC710069F8E0 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9416C7CC700069F8E0 /* core.cpp */; };
+		00ED1C6216C7CC710069F8E0 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9416C7CC700069F8E0 /* core.cpp */; };
+		00ED1C6316C7CC710069F8E0 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9516C7CC700069F8E0 /* core_Account.cpp */; };
+		00ED1C6416C7CC710069F8E0 /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9516C7CC700069F8E0 /* core_Account.cpp */; };
+		00ED1C6516C7CC710069F8E0 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9616C7CC700069F8E0 /* core_Call.cpp */; };
+		00ED1C6616C7CC710069F8E0 /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9616C7CC700069F8E0 /* core_Call.cpp */; };
+		00ED1C6716C7CC710069F8E0 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9716C7CC700069F8E0 /* core_CallTransport.cpp */; };
+		00ED1C6816C7CC710069F8E0 /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9716C7CC700069F8E0 /* core_CallTransport.cpp */; };
+		00ED1C6916C7CC710069F8E0 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9816C7CC710069F8E0 /* core_Contact.cpp */; };
+		00ED1C6A16C7CC710069F8E0 /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9816C7CC710069F8E0 /* core_Contact.cpp */; };
+		00ED1C6B16C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9916C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp */; };
+		00ED1C6C16C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9916C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp */; };
+		00ED1C6D16C7CC710069F8E0 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9A16C7CC710069F8E0 /* core_ConversationThread.cpp */; };
+		00ED1C6E16C7CC710069F8E0 /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9A16C7CC710069F8E0 /* core_ConversationThread.cpp */; };
+		00ED1C6F16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9B16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp */; };
+		00ED1C7016C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9B16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp */; };
+		00ED1C7116C7CC710069F8E0 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9C16C7CC710069F8E0 /* core_ConversationThreadHost.cpp */; };
+		00ED1C7216C7CC710069F8E0 /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9C16C7CC710069F8E0 /* core_ConversationThreadHost.cpp */; };
+		00ED1C7316C7CC710069F8E0 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9D16C7CC710069F8E0 /* core_ConversationThreadSlave.cpp */; };
+		00ED1C7416C7CC710069F8E0 /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9D16C7CC710069F8E0 /* core_ConversationThreadSlave.cpp */; };
+		00ED1C7516C7CC710069F8E0 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9E16C7CC710069F8E0 /* core_Helper.cpp */; };
+		00ED1C7616C7CC710069F8E0 /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9E16C7CC710069F8E0 /* core_Helper.cpp */; };
+		00ED1C7716C7CC710069F8E0 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9F16C7CC710069F8E0 /* core_IConversationThreadParser.cpp */; };
+		00ED1C7816C7CC710069F8E0 /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1A9F16C7CC710069F8E0 /* core_IConversationThreadParser.cpp */; };
+		00ED1C7916C7CC710069F8E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA016C7CC710069F8E0 /* core_Identity.cpp */; };
+		00ED1C7A16C7CC710069F8E0 /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA016C7CC710069F8E0 /* core_Identity.cpp */; };
+		00ED1C7B16C7CC710069F8E0 /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA116C7CC710069F8E0 /* core_IdentityLookup.cpp */; };
+		00ED1C7C16C7CC710069F8E0 /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA116C7CC710069F8E0 /* core_IdentityLookup.cpp */; };
+		00ED1C7D16C7CC710069F8E0 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA216C7CC710069F8E0 /* core_Logger.cpp */; };
+		00ED1C7E16C7CC710069F8E0 /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA216C7CC710069F8E0 /* core_Logger.cpp */; };
+		00ED1C7F16C7CC710069F8E0 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA316C7CC710069F8E0 /* core_MediaEngine.cpp */; };
+		00ED1C8016C7CC710069F8E0 /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA316C7CC710069F8E0 /* core_MediaEngine.cpp */; };
+		00ED1C8116C7CC710069F8E0 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA416C7CC710069F8E0 /* core_Stack.cpp */; };
+		00ED1C8216C7CC710069F8E0 /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED1AA416C7CC710069F8E0 /* core_Stack.cpp */; };
+		00ED359416C811DB0069F8E0 /* core_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED359216C811DB0069F8E0 /* core_Factory.cpp */; };
+		00ED359516C811DB0069F8E0 /* core_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED359216C811DB0069F8E0 /* core_Factory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		000490EB1687B98A00517C54 /* core.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core.h; path = ../../../hookflash/core/core.h; sourceTree = "<group>"; };
-		000490EC1687B98A00517C54 /* types.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../hookflash/core/types.h; sourceTree = "<group>"; };
-		000490ED1687B98A00517C54 /* IAccount.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IAccount.h; path = ../../../hookflash/core/IAccount.h; sourceTree = "<group>"; };
-		000490EE1687B98A00517C54 /* ICall.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ICall.h; path = ../../../hookflash/core/ICall.h; sourceTree = "<group>"; };
-		000490EF1687B98A00517C54 /* IContact.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IContact.h; path = ../../../hookflash/core/IContact.h; sourceTree = "<group>"; };
-		000490F01687B98A00517C54 /* IConversationThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IConversationThread.h; path = ../../../hookflash/core/IConversationThread.h; sourceTree = "<group>"; };
-		000490F11687B98A00517C54 /* IHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IHelper.h; path = ../../../hookflash/core/IHelper.h; sourceTree = "<group>"; };
-		000490F21687B98A00517C54 /* ILogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ILogger.h; path = ../../../hookflash/core/ILogger.h; sourceTree = "<group>"; };
-		000490F31687B98A00517C54 /* IMediaEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IMediaEngine.h; path = ../../../hookflash/core/IMediaEngine.h; sourceTree = "<group>"; };
-		000490F41687B98A00517C54 /* IStack.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IStack.h; path = ../../../hookflash/core/IStack.h; sourceTree = "<group>"; };
-		000491881687BA7100517C54 /* core_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Account.cpp; path = ../../../hookflash/core/cpp/core_Account.cpp; sourceTree = "<group>"; };
-		000491891687BA7100517C54 /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Call.cpp; path = ../../../hookflash/core/cpp/core_Call.cpp; sourceTree = "<group>"; };
-		0004918A1687BA7100517C54 /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_CallTransport.cpp; path = ../../../hookflash/core/cpp/core_CallTransport.cpp; sourceTree = "<group>"; };
-		0004918B1687BA7100517C54 /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Contact.cpp; path = ../../../hookflash/core/cpp/core_Contact.cpp; sourceTree = "<group>"; };
-		0004918C1687BA7100517C54 /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThread.cpp; path = ../../../hookflash/core/cpp/core_ConversationThread.cpp; sourceTree = "<group>"; };
-		0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadDocumentFetcher.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
-		0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadHost.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
-		0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ConversationThreadSlave.cpp; path = ../../../hookflash/core/cpp/core_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
-		000491901687BA7100517C54 /* core_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Helper.cpp; path = ../../../hookflash/core/cpp/core_Helper.cpp; sourceTree = "<group>"; };
-		000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_IConversationThreadParser.cpp; path = ../../../hookflash/core/cpp/core_IConversationThreadParser.cpp; sourceTree = "<group>"; };
-		000491921687BA7100517C54 /* core_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Logger.cpp; path = ../../../hookflash/core/cpp/core_Logger.cpp; sourceTree = "<group>"; };
-		000491931687BA7100517C54 /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_MediaEngine.cpp; path = ../../../hookflash/core/cpp/core_MediaEngine.cpp; sourceTree = "<group>"; };
-		000491941687BA7100517C54 /* core_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Stack.cpp; path = ../../../hookflash/core/cpp/core_Stack.cpp; sourceTree = "<group>"; };
-		000491961687BA7100517C54 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core.cpp; path = ../../../hookflash/core/cpp/core.cpp; sourceTree = "<group>"; };
-		000491C61687BAB300517C54 /* core_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Account.h; path = ../../../hookflash/core/internal/core_Account.h; sourceTree = "<group>"; };
-		000491C71687BAB300517C54 /* core_Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Call.h; path = ../../../hookflash/core/internal/core_Call.h; sourceTree = "<group>"; };
-		000491C81687BAB300517C54 /* core_CallTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_CallTransport.h; path = ../../../hookflash/core/internal/core_CallTransport.h; sourceTree = "<group>"; };
-		000491C91687BAB300517C54 /* core_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Contact.h; path = ../../../hookflash/core/internal/core_Contact.h; sourceTree = "<group>"; };
-		000491CA1687BAB300517C54 /* core_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThread.h; path = ../../../hookflash/core/internal/core_ConversationThread.h; sourceTree = "<group>"; };
-		000491CB1687BAB300517C54 /* core_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadDocumentFetcher.h; path = ../../../hookflash/core/internal/core_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
-		000491CC1687BAB300517C54 /* core_ConversationThreadHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadHost.h; path = ../../../hookflash/core/internal/core_ConversationThreadHost.h; sourceTree = "<group>"; };
-		000491CD1687BAB300517C54 /* core_ConversationThreadSlave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ConversationThreadSlave.h; path = ../../../hookflash/core/internal/core_ConversationThreadSlave.h; sourceTree = "<group>"; };
-		000491CE1687BAB300517C54 /* core_Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Helper.h; path = ../../../hookflash/core/internal/core_Helper.h; sourceTree = "<group>"; };
-		000491CF1687BAB300517C54 /* core_IConversationThreadParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_IConversationThreadParser.h; path = ../../../hookflash/core/internal/core_IConversationThreadParser.h; sourceTree = "<group>"; };
-		000491D01687BAB300517C54 /* core_Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Logger.h; path = ../../../hookflash/core/internal/core_Logger.h; sourceTree = "<group>"; };
-		000491D11687BAB300517C54 /* core_MediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_MediaEngine.h; path = ../../../hookflash/core/internal/core_MediaEngine.h; sourceTree = "<group>"; };
-		000491D21687BAB300517C54 /* core_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_Stack.h; path = ../../../hookflash/core/internal/core_Stack.h; sourceTree = "<group>"; };
-		000491D41687BAB300517C54 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core.h; path = ../../../hookflash/core/internal/core.h; sourceTree = "<group>"; };
-		000491D51687BAB300517C54 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = types.h; path = ../../../hookflash/core/internal/types.h; sourceTree = "<group>"; };
-		000E21D916C00F5900F288E0 /* core_Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_Identity.cpp; path = ../../../hookflash/core/cpp/core_Identity.cpp; sourceTree = "<group>"; };
-		000E21E016C00F8F00F288E0 /* core_Identity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = core_Identity.h; path = ../../../hookflash/core/internal/core_Identity.h; sourceTree = "<group>"; };
-		0045CEDD16BEEDD900042A91 /* IIdentity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIdentity.h; path = ../../../hookflash/core/IIdentity.h; sourceTree = "<group>"; };
-		0045CEDE16BF0B3000042A91 /* IIdentityLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IIdentityLookup.h; path = ../../../hookflash/core/IIdentityLookup.h; sourceTree = "<group>"; };
-		0045CEDF16BF0B5000042A91 /* IContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = IContactPeerFilePublicLookup.h; path = ../../../hookflash/core/IContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
 		00BF50C213FCF665002E9EB5 /* libhfcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_IdentityLookup.cpp; path = ../../../hookflash/core/cpp/core_IdentityLookup.cpp; sourceTree = "<group>"; };
-		00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core_ContactPeerFilePublicLookup.cpp; path = ../../../hookflash/core/cpp/core_ContactPeerFilePublicLookup.cpp; sourceTree = "<group>"; };
-		00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_ContactPeerFilePublicLookup.h; path = ../../../hookflash/core/internal/core_ContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
-		00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = core_IdentityLookup.h; path = ../../../hookflash/core/internal/core_IdentityLookup.h; sourceTree = "<group>"; };
+		00ED1A9116C7CC700069F8E0 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		00ED1A9416C7CC700069F8E0 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
+		00ED1A9516C7CC700069F8E0 /* core_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Account.cpp; sourceTree = "<group>"; };
+		00ED1A9616C7CC700069F8E0 /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Call.cpp; sourceTree = "<group>"; };
+		00ED1A9716C7CC700069F8E0 /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_CallTransport.cpp; sourceTree = "<group>"; };
+		00ED1A9816C7CC710069F8E0 /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Contact.cpp; sourceTree = "<group>"; };
+		00ED1A9916C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ContactPeerFilePublicLookup.cpp; sourceTree = "<group>"; };
+		00ED1A9A16C7CC710069F8E0 /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThread.cpp; sourceTree = "<group>"; };
+		00ED1A9B16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
+		00ED1A9C16C7CC710069F8E0 /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
+		00ED1A9D16C7CC710069F8E0 /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
+		00ED1A9E16C7CC710069F8E0 /* core_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Helper.cpp; sourceTree = "<group>"; };
+		00ED1A9F16C7CC710069F8E0 /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IConversationThreadParser.cpp; sourceTree = "<group>"; };
+		00ED1AA016C7CC710069F8E0 /* core_Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Identity.cpp; sourceTree = "<group>"; };
+		00ED1AA116C7CC710069F8E0 /* core_IdentityLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IdentityLookup.cpp; sourceTree = "<group>"; };
+		00ED1AA216C7CC710069F8E0 /* core_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Logger.cpp; sourceTree = "<group>"; };
+		00ED1AA316C7CC710069F8E0 /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_MediaEngine.cpp; sourceTree = "<group>"; };
+		00ED1AA416C7CC710069F8E0 /* core_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Stack.cpp; sourceTree = "<group>"; };
+		00ED1AA516C7CC710069F8E0 /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAccount.h; sourceTree = "<group>"; };
+		00ED1AA616C7CC710069F8E0 /* ICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICall.h; sourceTree = "<group>"; };
+		00ED1AA716C7CC710069F8E0 /* IContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IContact.h; sourceTree = "<group>"; };
+		00ED1AA816C7CC710069F8E0 /* IContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
+		00ED1AA916C7CC710069F8E0 /* IConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IConversationThread.h; sourceTree = "<group>"; };
+		00ED1AAA16C7CC710069F8E0 /* IHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IHelper.h; sourceTree = "<group>"; };
+		00ED1AAB16C7CC710069F8E0 /* IIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIdentity.h; sourceTree = "<group>"; };
+		00ED1AAC16C7CC710069F8E0 /* IIdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIdentityLookup.h; sourceTree = "<group>"; };
+		00ED1AAD16C7CC710069F8E0 /* ILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILogger.h; sourceTree = "<group>"; };
+		00ED1AAE16C7CC710069F8E0 /* IMediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMediaEngine.h; sourceTree = "<group>"; };
+		00ED1AB016C7CC710069F8E0 /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		00ED1AB116C7CC710069F8E0 /* core_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Account.h; sourceTree = "<group>"; };
+		00ED1AB216C7CC710069F8E0 /* core_Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Call.h; sourceTree = "<group>"; };
+		00ED1AB316C7CC710069F8E0 /* core_CallTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_CallTransport.h; sourceTree = "<group>"; };
+		00ED1AB416C7CC710069F8E0 /* core_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Contact.h; sourceTree = "<group>"; };
+		00ED1AB516C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
+		00ED1AB616C7CC710069F8E0 /* core_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThread.h; sourceTree = "<group>"; };
+		00ED1AB716C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
+		00ED1AB816C7CC710069F8E0 /* core_ConversationThreadHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadHost.h; sourceTree = "<group>"; };
+		00ED1AB916C7CC710069F8E0 /* core_ConversationThreadSlave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadSlave.h; sourceTree = "<group>"; };
+		00ED1ABA16C7CC710069F8E0 /* core_Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Helper.h; sourceTree = "<group>"; };
+		00ED1ABB16C7CC710069F8E0 /* core_IConversationThreadParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_IConversationThreadParser.h; sourceTree = "<group>"; };
+		00ED1ABC16C7CC710069F8E0 /* core_Identity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Identity.h; sourceTree = "<group>"; };
+		00ED1ABD16C7CC710069F8E0 /* core_IdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_IdentityLookup.h; sourceTree = "<group>"; };
+		00ED1ABE16C7CC710069F8E0 /* core_Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Logger.h; sourceTree = "<group>"; };
+		00ED1ABF16C7CC710069F8E0 /* core_MediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_MediaEngine.h; sourceTree = "<group>"; };
+		00ED1AC016C7CC710069F8E0 /* core_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Stack.h; sourceTree = "<group>"; };
+		00ED1AC116C7CC710069F8E0 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		00ED1AC216C7CC710069F8E0 /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStack.h; sourceTree = "<group>"; };
+		00ED1ACA16C7CC710069F8E0 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		00ED359216C811DB0069F8E0 /* core_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Factory.cpp; sourceTree = "<group>"; };
+		00ED359816C812790069F8E0 /* core_Factory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_Factory.h; sourceTree = "<group>"; };
 		52897137148F7E6100AB9E8C /* libhfservices_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libhfservices_ios.a; path = "../../../../services/projects/xcode/hfservices/build/Debug-iphoneos/libhfservices_ios.a"; sourceTree = "<group>"; };
 		77027DCD149CCE520077D344 /* libwebrtc_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libwebrtc_ios.a; path = "../../../../webRTC/projects/xcode/webrtc_ios/build/Release-iphoneos/libwebrtc_ios.a"; sourceTree = "<group>"; };
 		77027F2B149CD2380077D344 /* libcryptopp_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcryptopp_ios.a; path = "../../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/build/Release-iphoneos/libcryptopp_ios.a"; sourceTree = "<group>"; };
@@ -172,81 +172,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		000490EA1687B96600517C54 /* core */ = {
-			isa = PBXGroup;
-			children = (
-				000491871687BA5B00517C54 /* cpp */,
-				000491C51687BA9C00517C54 /* internal */,
-				000490EC1687B98A00517C54 /* types.h */,
-				000490EB1687B98A00517C54 /* core.h */,
-				000490ED1687B98A00517C54 /* IAccount.h */,
-				000490EE1687B98A00517C54 /* ICall.h */,
-				000490EF1687B98A00517C54 /* IContact.h */,
-				0045CEDF16BF0B5000042A91 /* IContactPeerFilePublicLookup.h */,
-				000490F01687B98A00517C54 /* IConversationThread.h */,
-				000490F11687B98A00517C54 /* IHelper.h */,
-				0045CEDD16BEEDD900042A91 /* IIdentity.h */,
-				0045CEDE16BF0B3000042A91 /* IIdentityLookup.h */,
-				000490F21687B98A00517C54 /* ILogger.h */,
-				000490F31687B98A00517C54 /* IMediaEngine.h */,
-				000490F41687B98A00517C54 /* IStack.h */,
-			);
-			name = core;
-			sourceTree = "<group>";
-		};
-		000491871687BA5B00517C54 /* cpp */ = {
-			isa = PBXGroup;
-			children = (
-				000491961687BA7100517C54 /* core.cpp */,
-				000491881687BA7100517C54 /* core_Account.cpp */,
-				000491891687BA7100517C54 /* core_Call.cpp */,
-				0004918A1687BA7100517C54 /* core_CallTransport.cpp */,
-				0004918B1687BA7100517C54 /* core_Contact.cpp */,
-				00DFACFE16C3D18000D8E27C /* core_ContactPeerFilePublicLookup.cpp */,
-				0004918C1687BA7100517C54 /* core_ConversationThread.cpp */,
-				0004918D1687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp */,
-				0004918E1687BA7100517C54 /* core_ConversationThreadHost.cpp */,
-				0004918F1687BA7100517C54 /* core_ConversationThreadSlave.cpp */,
-				000491911687BA7100517C54 /* core_IConversationThreadParser.cpp */,
-				000491901687BA7100517C54 /* core_Helper.cpp */,
-				000E21D916C00F5900F288E0 /* core_Identity.cpp */,
-				00DFACF816C3D10700D8E27C /* core_IdentityLookup.cpp */,
-				000491921687BA7100517C54 /* core_Logger.cpp */,
-				000491931687BA7100517C54 /* core_MediaEngine.cpp */,
-				000491941687BA7100517C54 /* core_Stack.cpp */,
-			);
-			name = cpp;
-			sourceTree = "<group>";
-		};
-		000491C51687BA9C00517C54 /* internal */ = {
-			isa = PBXGroup;
-			children = (
-				000491D51687BAB300517C54 /* types.h */,
-				000491D41687BAB300517C54 /* core.h */,
-				000491C61687BAB300517C54 /* core_Account.h */,
-				000491C71687BAB300517C54 /* core_Call.h */,
-				000491C81687BAB300517C54 /* core_CallTransport.h */,
-				000491C91687BAB300517C54 /* core_Contact.h */,
-				00DFAD0416C3D1AC00D8E27C /* core_ContactPeerFilePublicLookup.h */,
-				000491CA1687BAB300517C54 /* core_ConversationThread.h */,
-				000491CB1687BAB300517C54 /* core_ConversationThreadDocumentFetcher.h */,
-				000491CC1687BAB300517C54 /* core_ConversationThreadHost.h */,
-				000491CD1687BAB300517C54 /* core_ConversationThreadSlave.h */,
-				000491CF1687BAB300517C54 /* core_IConversationThreadParser.h */,
-				000491CE1687BAB300517C54 /* core_Helper.h */,
-				000E21E016C00F8F00F288E0 /* core_Identity.h */,
-				00DFAD0516C3D1AE00D8E27C /* core_IdentityLookup.h */,
-				000491D01687BAB300517C54 /* core_Logger.h */,
-				000491D11687BAB300517C54 /* core_MediaEngine.h */,
-				000491D21687BAB300517C54 /* core_Stack.h */,
-			);
-			name = internal;
-			sourceTree = "<group>";
-		};
 		00BF50B713FCF664002E9EB5 = {
 			isa = PBXGroup;
 			children = (
-				00BF50C913FCF683002E9EB5 /* hookflash */,
+				00ED1A8F16C7CC700069F8E0 /* hookflash */,
 				E288B1CD1419FA4900222C2A /* Libraries */,
 				E288B1631419F21400222C2A /* Projects */,
 				00BF50C313FCF665002E9EB5 /* Products */,
@@ -262,12 +191,86 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		00BF50C913FCF683002E9EB5 /* hookflash */ = {
+		00ED1A8F16C7CC700069F8E0 /* hookflash */ = {
 			isa = PBXGroup;
 			children = (
-				000490EA1687B96600517C54 /* core */,
+				00ED1A9016C7CC700069F8E0 /* core */,
 			);
 			name = hookflash;
+			path = ../../../hookflash;
+			sourceTree = "<group>";
+		};
+		00ED1A9016C7CC700069F8E0 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				00ED1A9216C7CC700069F8E0 /* cpp */,
+				00ED1AAF16C7CC710069F8E0 /* internal */,
+				00ED1ACA16C7CC710069F8E0 /* types.h */,
+				00ED1A9116C7CC700069F8E0 /* core.h */,
+				00ED1AA516C7CC710069F8E0 /* IAccount.h */,
+				00ED1AA616C7CC710069F8E0 /* ICall.h */,
+				00ED1AA716C7CC710069F8E0 /* IContact.h */,
+				00ED1AA816C7CC710069F8E0 /* IContactPeerFilePublicLookup.h */,
+				00ED1AA916C7CC710069F8E0 /* IConversationThread.h */,
+				00ED1AAA16C7CC710069F8E0 /* IHelper.h */,
+				00ED1AAB16C7CC710069F8E0 /* IIdentity.h */,
+				00ED1AAC16C7CC710069F8E0 /* IIdentityLookup.h */,
+				00ED1AAD16C7CC710069F8E0 /* ILogger.h */,
+				00ED1AAE16C7CC710069F8E0 /* IMediaEngine.h */,
+				00ED1AC216C7CC710069F8E0 /* IStack.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		00ED1A9216C7CC700069F8E0 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				00ED1A9416C7CC700069F8E0 /* core.cpp */,
+				00ED1A9516C7CC700069F8E0 /* core_Account.cpp */,
+				00ED1A9616C7CC700069F8E0 /* core_Call.cpp */,
+				00ED1A9716C7CC700069F8E0 /* core_CallTransport.cpp */,
+				00ED1A9816C7CC710069F8E0 /* core_Contact.cpp */,
+				00ED1A9916C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp */,
+				00ED1A9A16C7CC710069F8E0 /* core_ConversationThread.cpp */,
+				00ED1A9B16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp */,
+				00ED1A9C16C7CC710069F8E0 /* core_ConversationThreadHost.cpp */,
+				00ED1A9D16C7CC710069F8E0 /* core_ConversationThreadSlave.cpp */,
+				00ED1A9F16C7CC710069F8E0 /* core_IConversationThreadParser.cpp */,
+				00ED359216C811DB0069F8E0 /* core_Factory.cpp */,
+				00ED1A9E16C7CC710069F8E0 /* core_Helper.cpp */,
+				00ED1AA016C7CC710069F8E0 /* core_Identity.cpp */,
+				00ED1AA116C7CC710069F8E0 /* core_IdentityLookup.cpp */,
+				00ED1AA216C7CC710069F8E0 /* core_Logger.cpp */,
+				00ED1AA316C7CC710069F8E0 /* core_MediaEngine.cpp */,
+				00ED1AA416C7CC710069F8E0 /* core_Stack.cpp */,
+			);
+			path = cpp;
+			sourceTree = "<group>";
+		};
+		00ED1AAF16C7CC710069F8E0 /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				00ED1AC116C7CC710069F8E0 /* types.h */,
+				00ED1AB016C7CC710069F8E0 /* core.h */,
+				00ED1AB116C7CC710069F8E0 /* core_Account.h */,
+				00ED1AB216C7CC710069F8E0 /* core_Call.h */,
+				00ED1AB316C7CC710069F8E0 /* core_CallTransport.h */,
+				00ED1AB416C7CC710069F8E0 /* core_Contact.h */,
+				00ED1AB516C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.h */,
+				00ED1AB616C7CC710069F8E0 /* core_ConversationThread.h */,
+				00ED1AB716C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.h */,
+				00ED1AB816C7CC710069F8E0 /* core_ConversationThreadHost.h */,
+				00ED1AB916C7CC710069F8E0 /* core_ConversationThreadSlave.h */,
+				00ED1ABB16C7CC710069F8E0 /* core_IConversationThreadParser.h */,
+				00ED359816C812790069F8E0 /* core_Factory.h */,
+				00ED1ABA16C7CC710069F8E0 /* core_Helper.h */,
+				00ED1ABC16C7CC710069F8E0 /* core_Identity.h */,
+				00ED1ABD16C7CC710069F8E0 /* core_IdentityLookup.h */,
+				00ED1ABE16C7CC710069F8E0 /* core_Logger.h */,
+				00ED1ABF16C7CC710069F8E0 /* core_MediaEngine.h */,
+				00ED1AC016C7CC710069F8E0 /* core_Stack.h */,
+			);
+			path = internal;
 			sourceTree = "<group>";
 		};
 		E288B1631419F21400222C2A /* Projects */ = {
@@ -345,8 +348,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00DFAD0616C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */,
-				00DFAD0816C3D1B300D8E27C /* core_IdentityLookup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,8 +355,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00DFAD0716C3D1B300D8E27C /* core_ContactPeerFilePublicLookup.h in Headers */,
-				00DFAD0916C3D1B300D8E27C /* core_IdentityLookup.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,23 +423,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				000491971687BA7100517C54 /* core_Account.cpp in Sources */,
-				000491991687BA7100517C54 /* core_Call.cpp in Sources */,
-				0004919B1687BA7100517C54 /* core_CallTransport.cpp in Sources */,
-				0004919D1687BA7100517C54 /* core_Contact.cpp in Sources */,
-				0004919F1687BA7100517C54 /* core_ConversationThread.cpp in Sources */,
-				000491A11687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
-				000491A31687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */,
-				000491A51687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */,
-				000491A71687BA7100517C54 /* core_Helper.cpp in Sources */,
-				000491A91687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */,
-				000491AB1687BA7100517C54 /* core_Logger.cpp in Sources */,
-				000491AD1687BA7100517C54 /* core_MediaEngine.cpp in Sources */,
-				000491AF1687BA7100517C54 /* core_Stack.cpp in Sources */,
-				000491B31687BA7100517C54 /* core.cpp in Sources */,
-				000E21DB16C00F5A00F288E0 /* core_Identity.cpp in Sources */,
-				00DFACFA16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */,
-				00DFAD0016C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */,
+				00ED1C6116C7CC710069F8E0 /* core.cpp in Sources */,
+				00ED1C6316C7CC710069F8E0 /* core_Account.cpp in Sources */,
+				00ED1C6516C7CC710069F8E0 /* core_Call.cpp in Sources */,
+				00ED1C6716C7CC710069F8E0 /* core_CallTransport.cpp in Sources */,
+				00ED1C6916C7CC710069F8E0 /* core_Contact.cpp in Sources */,
+				00ED1C6B16C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp in Sources */,
+				00ED1C6D16C7CC710069F8E0 /* core_ConversationThread.cpp in Sources */,
+				00ED1C6F16C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
+				00ED1C7116C7CC710069F8E0 /* core_ConversationThreadHost.cpp in Sources */,
+				00ED1C7316C7CC710069F8E0 /* core_ConversationThreadSlave.cpp in Sources */,
+				00ED1C7516C7CC710069F8E0 /* core_Helper.cpp in Sources */,
+				00ED1C7716C7CC710069F8E0 /* core_IConversationThreadParser.cpp in Sources */,
+				00ED1C7916C7CC710069F8E0 /* core_Identity.cpp in Sources */,
+				00ED1C7B16C7CC710069F8E0 /* core_IdentityLookup.cpp in Sources */,
+				00ED1C7D16C7CC710069F8E0 /* core_Logger.cpp in Sources */,
+				00ED1C7F16C7CC710069F8E0 /* core_MediaEngine.cpp in Sources */,
+				00ED1C8116C7CC710069F8E0 /* core_Stack.cpp in Sources */,
+				00ED359416C811DB0069F8E0 /* core_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,23 +448,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				000491981687BA7100517C54 /* core_Account.cpp in Sources */,
-				0004919A1687BA7100517C54 /* core_Call.cpp in Sources */,
-				0004919C1687BA7100517C54 /* core_CallTransport.cpp in Sources */,
-				0004919E1687BA7100517C54 /* core_Contact.cpp in Sources */,
-				000491A01687BA7100517C54 /* core_ConversationThread.cpp in Sources */,
-				000491A21687BA7100517C54 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
-				000491A41687BA7100517C54 /* core_ConversationThreadHost.cpp in Sources */,
-				000491A61687BA7100517C54 /* core_ConversationThreadSlave.cpp in Sources */,
-				000491A81687BA7100517C54 /* core_Helper.cpp in Sources */,
-				000491AA1687BA7100517C54 /* core_IConversationThreadParser.cpp in Sources */,
-				000491AC1687BA7100517C54 /* core_Logger.cpp in Sources */,
-				000491AE1687BA7100517C54 /* core_MediaEngine.cpp in Sources */,
-				000491B01687BA7100517C54 /* core_Stack.cpp in Sources */,
-				000491B41687BA7100517C54 /* core.cpp in Sources */,
-				000E21DC16C00F5A00F288E0 /* core_Identity.cpp in Sources */,
-				00DFACFB16C3D10900D8E27C /* core_IdentityLookup.cpp in Sources */,
-				00DFAD0116C3D18200D8E27C /* core_ContactPeerFilePublicLookup.cpp in Sources */,
+				00ED1C6216C7CC710069F8E0 /* core.cpp in Sources */,
+				00ED1C6416C7CC710069F8E0 /* core_Account.cpp in Sources */,
+				00ED1C6616C7CC710069F8E0 /* core_Call.cpp in Sources */,
+				00ED1C6816C7CC710069F8E0 /* core_CallTransport.cpp in Sources */,
+				00ED1C6A16C7CC710069F8E0 /* core_Contact.cpp in Sources */,
+				00ED1C6C16C7CC710069F8E0 /* core_ContactPeerFilePublicLookup.cpp in Sources */,
+				00ED1C6E16C7CC710069F8E0 /* core_ConversationThread.cpp in Sources */,
+				00ED1C7016C7CC710069F8E0 /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
+				00ED1C7216C7CC710069F8E0 /* core_ConversationThreadHost.cpp in Sources */,
+				00ED1C7416C7CC710069F8E0 /* core_ConversationThreadSlave.cpp in Sources */,
+				00ED1C7616C7CC710069F8E0 /* core_Helper.cpp in Sources */,
+				00ED1C7816C7CC710069F8E0 /* core_IConversationThreadParser.cpp in Sources */,
+				00ED1C7A16C7CC710069F8E0 /* core_Identity.cpp in Sources */,
+				00ED1C7C16C7CC710069F8E0 /* core_IdentityLookup.cpp in Sources */,
+				00ED1C7E16C7CC710069F8E0 /* core_Logger.cpp in Sources */,
+				00ED1C8016C7CC710069F8E0 /* core_MediaEngine.cpp in Sources */,
+				00ED1C8216C7CC710069F8E0 /* core_Stack.cpp in Sources */,
+				00ED359516C811DB0069F8E0 /* core_Factory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,20 +491,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
-					../../../../webRTC/webRTC/src,
-					../../../../webRTC/webRTC/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC/src/video_engine/main/interface,
-					../../../../webRTC/webRTC/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC/src/common_video/interface/,
-					../../../../webRTC/webRTC/src/system_wrappers/interface,
-					../../../../webRTC/webRTC/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC/src/modules/interface,
-					../../../../webRTC/webRTC/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC/src/common_video/vplib/main/interface,
-					../../../../webRTC/webRTC/src/voice_engine/main/interface,
-					../../../../webRTC/webRTC/src,
-					../../../../webRTC/webRTC/src/video_engine/include,
+					"../../../../hookflash-libs/webRTC/src",
+					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/src",
+					"../../../../hookflash-libs/webRTC/src/video_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -531,20 +531,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
-					../../../../webRTC/webRTC/src,
-					../../../../webRTC/webRTC/src/modules/video_render/main/source/iPhone,
-					../../../../webRTC/webRTC/src/video_engine/main/interface,
-					../../../../webRTC/webRTC/src/modules/video_coding/codecs/interface/,
-					../../../../webRTC/webRTC/src/common_video/interface/,
-					../../../../webRTC/webRTC/src/system_wrappers/interface,
-					../../../../webRTC/webRTC/src/modules/video_render/main/interface,
-					../../../../webRTC/webRTC/src/modules/interface,
-					../../../../webRTC/webRTC/src/modules/video_capture/main/interface,
-					../../../../webRTC/webRTC/src/common_video/vplib/main/interface,
-					../../../../webRTC/webRTC/src/voice_engine/main/interface,
-					../../../../webRTC/webRTC/src,
-					../../../../webRTC/webRTC/src/video_engine/include,
+					"../../../../hookflash-libs/webRTC/src",
+					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/interface",
+					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/src",
+					"../../../../hookflash-libs/webRTC/src/video_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -568,23 +567,8 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
-					"../../../../hookflash-libs/WebRTC/src",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -606,23 +590,8 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
+					"$(inherited)",
 					"../../../../hookflash-staging/include",
-					"../../../../hookflash-libs/WebRTC/src",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -647,23 +616,8 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
-					"../../../../hookflash-libs/WebRTC/src",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
+					"$(inherited)",
+					"../../../../hookflash-staging/iPhoneOS/include",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
@@ -696,23 +650,8 @@
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-staging/include",
-					"../../../../hookflash-libs/WebRTC/src",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/WebRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/WebRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/interface",
-					"../../../../hookflash-libs/WebRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/WebRTC/src/video_engine/include",
+					"$(inherited)",
+					"../../../../hookflash-staging/iPhoneOS/include",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",

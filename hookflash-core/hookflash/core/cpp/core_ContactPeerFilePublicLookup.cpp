@@ -498,7 +498,7 @@ namespace hookflash
                                                                          const ContactList &contacts
                                                                          )
     {
-      return internal::ContactPeerFilePublicLookup::create(delegate, contacts);
+      return internal::IContactPeerFilePublicLookupFactory::singleton().create(delegate, contacts);
     }
     
     //-------------------------------------------------------------------------

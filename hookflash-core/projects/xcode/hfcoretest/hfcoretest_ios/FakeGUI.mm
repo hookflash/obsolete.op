@@ -31,7 +31,6 @@
 
 
 #import "FakeGUI.h"
-#include "hookflash/hookflashTypes.h"
 
 
 @implementation FakeGUI

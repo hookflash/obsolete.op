@@ -85,8 +85,8 @@ namespace hookflash
                                           public IMessageMonitorResultDelegate<PublicPeerFilesGetResult>
       {
       public:
+        friend interaction IContactPeerFilePublicLookupFactory;
         friend interaction IContactPeerFilePublicLookup;
-        friend interaction IContactPeerFilePublicLookupForAccount;
 
         typedef String Domain;
         typedef std::map<Domain, IBootstrappedNetworkPtr> BootstrappedNetworkMap;
@@ -207,6 +207,25 @@ namespace hookflash
         ContactMap mContacts;
         ContactList mResults;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IContactPeerFilePublicLookupFactory
+      #pragma mark
+
+      interaction IContactPeerFilePublicLookupFactory
+      {
+        static IContactPeerFilePublicLookupFactory &singleton();
+
+        virtual ContactPeerFilePublicLookupPtr create(
+                                                      IContactPeerFilePublicLookupDelegatePtr delegate,
+                                                      const ContactList &contacts
+                                                      );
+      };
+      
     }
   }
 }

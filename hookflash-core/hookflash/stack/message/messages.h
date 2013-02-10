@@ -42,43 +42,76 @@
 #include <hookflash/stack/message/IMessageFactoryManager.h>
 
 #include <hookflash/stack/message/bootstrapped-finder/MessageFactoryBootstrappedFinder.h>
+#include <hookflash/stack/message/bootstrapped-finder/FindersGetRequest.h>
+#include <hookflash/stack/message/bootstrapped-finder/FindersGetResult.h>
 
 #include <hookflash/stack/message/bootstrapper/MessageFactoryBootstrapper.h>
+#include <hookflash/stack/message/bootstrapper/ServicesGetRequest.h>
+#include <hookflash/stack/message/bootstrapper/ServicesGetResult.h>
 
 #include <hookflash/stack/message/certificates/MessageFactoryCertificates.h>
+#include <hookflash/stack/message/certificates/CertificatesGetRequest.h>
+#include <hookflash/stack/message/certificates/CertificatesGetResult.h>
 
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
+#include <hookflash/stack/message/identity/IdentityAssociateRequest.h>
+#include <hookflash/stack/message/identity/IdentityAssociateResult.h>
+#include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
+#include <hookflash/stack/message/identity/IdentityLoginCompleteRequest.h>
+#include <hookflash/stack/message/identity/IdentityLoginCompleteResult.h>
+#include <hookflash/stack/message/identity/IdentityLoginNotify.h>
+#include <hookflash/stack/message/identity/IdentityLoginStartRequest.h>
+#include <hookflash/stack/message/identity/IdentityLoginStartResult.h>
+#include <hookflash/stack/message/identity/IdentitySignRequest.h>
+#include <hookflash/stack/message/identity/IdentitySignResult.h>
 
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
 
 #include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishResult.h>
-#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
-#include <hookflash/stack/message/peer-common/PeerGetResult.h>
 #include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>
 #include <hookflash/stack/message/peer-common/PeerDeleteResult.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
+#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
+#include <hookflash/stack/message/peer-common/PeerGetResult.h>
 #include <hookflash/stack/message/peer-common/PeerPublishNotifyRequest.h>
 #include <hookflash/stack/message/peer-common/PeerPublishNotifyResult.h>
+#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
+#include <hookflash/stack/message/peer-common/PeerPublishResult.h>
+#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
+#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
+
+#include <hookflash/stack/message/peer-contact/MessageFactoryPeerContact.h>
+#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateRequest.h>
+#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateResult.h>
+#include <hookflash/stack/message/peer-contact/PeerContactLoginRequest.h>
+#include <hookflash/stack/message/peer-contact/PeerContactLoginResult.h>
+#include <hookflash/stack/message/peer-contact/PeerContactServicesGetRequest.h>
+#include <hookflash/stack/message/peer-contact/PeerContactServicesGetResult.h>
+#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetRequest.h>
+#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetResult.h>
+#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetRequest.h>
+#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetResult.h>
+#include <hookflash/stack/message/peer-contact/PublicPeerFilesGetRequest.h>
+#include <hookflash/stack/message/peer-contact/PublicPeerFilesGetResult.h>
 
 #include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
+#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <hookflash/stack/message/peer-finder/PeerLocationFindResult.h>
+#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
 #include <hookflash/stack/message/peer-finder/SessionCreateRequest.h>
 #include <hookflash/stack/message/peer-finder/SessionCreateResult.h>
 #include <hookflash/stack/message/peer-finder/SessionDeleteRequest.h>
 #include <hookflash/stack/message/peer-finder/SessionDeleteResult.h>
 #include <hookflash/stack/message/peer-finder/SessionKeepAliveRequest.h>
 #include <hookflash/stack/message/peer-finder/SessionKeepAliveResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
-
-#include <hookflash/stack/message/peer-to-peer/MessageFactoryPeerToPeer.h>
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyRequest.h>
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyResult.h>
 
 #include <hookflash/stack/message/peer-salt/MessageFactoryPeerSalt.h>
 #include <hookflash/stack/message/peer-salt/SignedSaltGetRequest.h>
 #include <hookflash/stack/message/peer-salt/SignedSaltGetResult.h>
 
+#include <hookflash/stack/message/peer-to-peer/MessageFactoryPeerToPeer.h>
+#include <hookflash/stack/message/peer-to-peer/PeerIdentifyRequest.h>
+#include <hookflash/stack/message/peer-to-peer/PeerIdentifyResult.h>
+#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
+#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveResult.h>

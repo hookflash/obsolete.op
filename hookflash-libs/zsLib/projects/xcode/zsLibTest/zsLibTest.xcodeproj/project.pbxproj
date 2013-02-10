@@ -7,19 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00A4ED92167E9BC7003F1651 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */; };
-		00A4ED93167E9DA7003F1651 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */; };
-		00A4ED94167E9DA7003F1651 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5D14766D98001678CD /* TestHelper.cpp */; };
-		00A4ED95167E9DA7003F1651 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5E14766D98001678CD /* TestIPAddress.cpp */; };
-		00A4ED96167E9DA7003F1651 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5F14766D98001678CD /* TestNumeric.cpp */; };
-		00A4ED97167E9DA7003F1651 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6014766D98001678CD /* TestProxy.cpp */; };
-		00A4ED98167E9DA7003F1651 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6114766D98001678CD /* TestProxyUsingGUIThread.cpp */; };
-		00A4ED99167E9DA7003F1651 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6214766D98001678CD /* TestSocket.cpp */; };
-		00A4ED9A167E9DA7003F1651 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6314766D98001678CD /* TestSocketAsync.cpp */; };
-		00A4ED9B167E9DA7003F1651 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6414766D98001678CD /* TestString.cpp */; };
-		00A4ED9C167E9DA7003F1651 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6514766D98001678CD /* TestStringize.cpp */; };
-		00A4ED9D167E9DA7003F1651 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6614766D98001678CD /* TestTimer.cpp */; };
-		00A4ED9E167E9DA7003F1651 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6714766D98001678CD /* TestXML.cpp */; };
 		00ED193C16C5DAFD0069F8E0 /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACC9E167E811E00B862BE /* libzsLib.a */; };
 		00ED194616C5DBD40069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194316C5DBD40069F8E0 /* libboost_date_time.a */; };
 		00ED194716C5DBD40069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194416C5DBD40069F8E0 /* libboost_regex.a */; };
@@ -30,6 +17,31 @@
 		00ED195E16C5DCFF0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */; };
 		00ED195F16C5DCFF0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */; };
 		00ED196116C5DD320069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED196016C5DD320069F8E0 /* CoreFoundation.framework */; };
+		00ED2A6616C7D4580069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */; };
+		00ED2A6716C7D4580069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */; };
+		00ED2A6816C7D4580069F8E0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5A16C7D4580069F8E0 /* main.cpp */; };
+		00ED2A6A16C7D4580069F8E0 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */; };
+		00ED2A6B16C7D4580069F8E0 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */; };
+		00ED2A6C16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */; };
+		00ED2A6D16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */; };
+		00ED2A6E16C7D4580069F8E0 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */; };
+		00ED2A6F16C7D4580069F8E0 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */; };
+		00ED2A7016C7D4580069F8E0 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */; };
+		00ED2A7116C7D4580069F8E0 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */; };
+		00ED2A7216C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */; };
+		00ED2A7316C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */; };
+		00ED2A7416C7D4580069F8E0 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */; };
+		00ED2A7516C7D4580069F8E0 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */; };
+		00ED2A7616C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */; };
+		00ED2A7716C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */; };
+		00ED2A7816C7D4580069F8E0 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6216C7D4580069F8E0 /* TestString.cpp */; };
+		00ED2A7916C7D4580069F8E0 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6216C7D4580069F8E0 /* TestString.cpp */; };
+		00ED2A7A16C7D4580069F8E0 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */; };
+		00ED2A7B16C7D4580069F8E0 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */; };
+		00ED2A7C16C7D4580069F8E0 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */; };
+		00ED2A7D16C7D4580069F8E0 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */; };
+		00ED2A7E16C7D4580069F8E0 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6516C7D4580069F8E0 /* TestXML.cpp */; };
+		00ED2A7F16C7D4580069F8E0 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6516C7D4580069F8E0 /* TestXML.cpp */; };
 		E2C658F6147672AF00E62819 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2C658F4147672AF00E62819 /* InfoPlist.strings */; };
 		E2C658F9147672AF00E62819 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658F8147672AF00E62819 /* main.m */; };
 		E2C658FC147672AF00E62819 /* zsLibTest_iosAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658FB147672AF00E62819 /* zsLibTest_iosAppDelegate.m */; };
@@ -37,18 +49,6 @@
 		E2C65903147672AF00E62819 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2C65901147672AF00E62819 /* MainWindow_iPhone.xib */; };
 		E2C65907147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2C65906147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm */; };
 		E2C6590A147672AF00E62819 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2C65908147672AF00E62819 /* MainWindow_iPad.xib */; };
-		E2F1A4D414767D3A00EA4481 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5C14766D98001678CD /* main.cpp */; };
-		E2F1A4D514767D3A00EA4481 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5D14766D98001678CD /* TestHelper.cpp */; };
-		E2F1A4D614767D3A00EA4481 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5E14766D98001678CD /* TestIPAddress.cpp */; };
-		E2F1A4D714767D3A00EA4481 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F5F14766D98001678CD /* TestNumeric.cpp */; };
-		E2F1A4D814767D3A00EA4481 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6014766D98001678CD /* TestProxy.cpp */; };
-		E2F1A4D914767D3A00EA4481 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6114766D98001678CD /* TestProxyUsingGUIThread.cpp */; };
-		E2F1A4DA14767D3A00EA4481 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6214766D98001678CD /* TestSocket.cpp */; };
-		E2F1A4DB14767D3A00EA4481 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6314766D98001678CD /* TestSocketAsync.cpp */; };
-		E2F1A4DC14767D3A00EA4481 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6414766D98001678CD /* TestString.cpp */; };
-		E2F1A4DD14767D3A00EA4481 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6514766D98001678CD /* TestStringize.cpp */; };
-		E2F1A4DE14767D3A00EA4481 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6614766D98001678CD /* TestTimer.cpp */; };
-		E2F1A4DF14767D3A00EA4481 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2967F6714766D98001678CD /* TestXML.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,7 +96,6 @@
 
 /* Begin PBXFileReference section */
 		006ACC98167E811D00B862BE /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
-		00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = boost_replacement.cpp; path = ../../../zsLibTest/boost_replacement.cpp; sourceTree = "<group>"; };
 		00ED194316C5DBD40069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = "<group>"; };
 		00ED194416C5DBD40069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = "<group>"; };
 		00ED194516C5DBD40069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = "<group>"; };
@@ -105,19 +104,20 @@
 		00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = "<group>"; };
 		00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = "<group>"; };
 		00ED196016C5DD320069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		E2967F5B14766D98001678CD /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = boost_replacement.h; path = ../../../zsLibTest/boost_replacement.h; sourceTree = "<group>"; };
-		E2967F5C14766D98001678CD /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../../zsLibTest/main.cpp; sourceTree = "<group>"; };
-		E2967F5D14766D98001678CD /* TestHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestHelper.cpp; path = ../../../zsLibTest/TestHelper.cpp; sourceTree = "<group>"; };
-		E2967F5E14766D98001678CD /* TestIPAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestIPAddress.cpp; path = ../../../zsLibTest/TestIPAddress.cpp; sourceTree = "<group>"; };
-		E2967F5F14766D98001678CD /* TestNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestNumeric.cpp; path = ../../../zsLibTest/TestNumeric.cpp; sourceTree = "<group>"; };
-		E2967F6014766D98001678CD /* TestProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestProxy.cpp; path = ../../../zsLibTest/TestProxy.cpp; sourceTree = "<group>"; };
-		E2967F6114766D98001678CD /* TestProxyUsingGUIThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestProxyUsingGUIThread.cpp; path = ../../../zsLibTest/TestProxyUsingGUIThread.cpp; sourceTree = "<group>"; };
-		E2967F6214766D98001678CD /* TestSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestSocket.cpp; path = ../../../zsLibTest/TestSocket.cpp; sourceTree = "<group>"; };
-		E2967F6314766D98001678CD /* TestSocketAsync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestSocketAsync.cpp; path = ../../../zsLibTest/TestSocketAsync.cpp; sourceTree = "<group>"; };
-		E2967F6414766D98001678CD /* TestString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestString.cpp; path = ../../../zsLibTest/TestString.cpp; sourceTree = "<group>"; };
-		E2967F6514766D98001678CD /* TestStringize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestStringize.cpp; path = ../../../zsLibTest/TestStringize.cpp; sourceTree = "<group>"; };
-		E2967F6614766D98001678CD /* TestTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestTimer.cpp; path = ../../../zsLibTest/TestTimer.cpp; sourceTree = "<group>"; };
-		E2967F6714766D98001678CD /* TestXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestXML.cpp; path = ../../../zsLibTest/TestXML.cpp; sourceTree = "<group>"; };
+		00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
+		00ED2A5916C7D4580069F8E0 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
+		00ED2A5A16C7D4580069F8E0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestHelper.cpp; sourceTree = "<group>"; };
+		00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestIPAddress.cpp; sourceTree = "<group>"; };
+		00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNumeric.cpp; sourceTree = "<group>"; };
+		00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxy.cpp; sourceTree = "<group>"; };
+		00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxyUsingGUIThread.cpp; sourceTree = "<group>"; };
+		00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocket.cpp; sourceTree = "<group>"; };
+		00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocketAsync.cpp; sourceTree = "<group>"; };
+		00ED2A6216C7D4580069F8E0 /* TestString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestString.cpp; sourceTree = "<group>"; };
+		00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestStringize.cpp; sourceTree = "<group>"; };
+		00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTimer.cpp; sourceTree = "<group>"; };
+		00ED2A6516C7D4580069F8E0 /* TestXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestXML.cpp; sourceTree = "<group>"; };
 		E2C658E8147672AE00E62819 /* zsLibTest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zsLibTest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2C658F3147672AE00E62819 /* zsLibTest_ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "zsLibTest_ios-Info.plist"; sourceTree = "<group>"; };
 		E2C658F5147672AF00E62819 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -184,12 +184,35 @@
 			name = Libraries;
 			sourceTree = "<group>";
 		};
+		00ED2A5716C7D4580069F8E0 /* zsLibTest */ = {
+			isa = PBXGroup;
+			children = (
+				00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */,
+				00ED2A5916C7D4580069F8E0 /* boost_replacement.h */,
+				00ED2A5A16C7D4580069F8E0 /* main.cpp */,
+				00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */,
+				00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */,
+				00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */,
+				00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */,
+				00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */,
+				00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */,
+				00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */,
+				00ED2A6216C7D4580069F8E0 /* TestString.cpp */,
+				00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */,
+				00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */,
+				00ED2A6516C7D4580069F8E0 /* TestXML.cpp */,
+			);
+			name = zsLibTest;
+			path = ../../../zsLibTest;
+			sourceTree = "<group>";
+		};
 		E2967F4314766D71001678CD = {
 			isa = PBXGroup;
 			children = (
+				00ED2A5716C7D4580069F8E0 /* zsLibTest */,
+				E2C658F1147672AE00E62819 /* zsLibTest_ios */,
 				E2C658E21476727700E62819 /* Projects */,
 				E2967F5A14766D80001678CD /* Source */,
-				E2C658F1147672AE00E62819 /* zsLibTest_ios */,
 				E2C658EA147672AE00E62819 /* Frameworks */,
 				00AAB8521684B77E00B39964 /* Libraries */,
 				E2967F4F14766D71001678CD /* Products */,
@@ -208,20 +231,6 @@
 		E2967F5A14766D80001678CD /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				E2967F5B14766D98001678CD /* boost_replacement.h */,
-				00A4ED91167E9BC7003F1651 /* boost_replacement.cpp */,
-				E2967F5C14766D98001678CD /* main.cpp */,
-				E2967F5D14766D98001678CD /* TestHelper.cpp */,
-				E2967F5E14766D98001678CD /* TestIPAddress.cpp */,
-				E2967F5F14766D98001678CD /* TestNumeric.cpp */,
-				E2967F6014766D98001678CD /* TestProxy.cpp */,
-				E2967F6114766D98001678CD /* TestProxyUsingGUIThread.cpp */,
-				E2967F6214766D98001678CD /* TestSocket.cpp */,
-				E2967F6314766D98001678CD /* TestSocketAsync.cpp */,
-				E2967F6414766D98001678CD /* TestString.cpp */,
-				E2967F6514766D98001678CD /* TestStringize.cpp */,
-				E2967F6614766D98001678CD /* TestTimer.cpp */,
-				E2967F6714766D98001678CD /* TestXML.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -392,22 +401,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00A4ED93167E9DA7003F1651 /* boost_replacement.cpp in Sources */,
-				00A4ED94167E9DA7003F1651 /* TestHelper.cpp in Sources */,
-				00A4ED95167E9DA7003F1651 /* TestIPAddress.cpp in Sources */,
-				00A4ED96167E9DA7003F1651 /* TestNumeric.cpp in Sources */,
-				00A4ED97167E9DA7003F1651 /* TestProxy.cpp in Sources */,
-				00A4ED98167E9DA7003F1651 /* TestProxyUsingGUIThread.cpp in Sources */,
-				00A4ED99167E9DA7003F1651 /* TestSocket.cpp in Sources */,
-				00A4ED9A167E9DA7003F1651 /* TestSocketAsync.cpp in Sources */,
-				00A4ED9B167E9DA7003F1651 /* TestString.cpp in Sources */,
-				00A4ED9C167E9DA7003F1651 /* TestStringize.cpp in Sources */,
-				00A4ED9D167E9DA7003F1651 /* TestTimer.cpp in Sources */,
-				00A4ED9E167E9DA7003F1651 /* TestXML.cpp in Sources */,
 				E2C658F9147672AF00E62819 /* main.m in Sources */,
 				E2C658FC147672AF00E62819 /* zsLibTest_iosAppDelegate.m in Sources */,
 				E2C65900147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m in Sources */,
 				E2C65907147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm in Sources */,
+				00ED2A6716C7D4580069F8E0 /* boost_replacement.cpp in Sources */,
+				00ED2A6B16C7D4580069F8E0 /* TestHelper.cpp in Sources */,
+				00ED2A6D16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */,
+				00ED2A6F16C7D4580069F8E0 /* TestNumeric.cpp in Sources */,
+				00ED2A7116C7D4580069F8E0 /* TestProxy.cpp in Sources */,
+				00ED2A7316C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */,
+				00ED2A7516C7D4580069F8E0 /* TestSocket.cpp in Sources */,
+				00ED2A7716C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */,
+				00ED2A7916C7D4580069F8E0 /* TestString.cpp in Sources */,
+				00ED2A7B16C7D4580069F8E0 /* TestStringize.cpp in Sources */,
+				00ED2A7D16C7D4580069F8E0 /* TestTimer.cpp in Sources */,
+				00ED2A7F16C7D4580069F8E0 /* TestXML.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,19 +424,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2F1A4D414767D3A00EA4481 /* main.cpp in Sources */,
-				00A4ED92167E9BC7003F1651 /* boost_replacement.cpp in Sources */,
-				E2F1A4D514767D3A00EA4481 /* TestHelper.cpp in Sources */,
-				E2F1A4D614767D3A00EA4481 /* TestIPAddress.cpp in Sources */,
-				E2F1A4D714767D3A00EA4481 /* TestNumeric.cpp in Sources */,
-				E2F1A4D814767D3A00EA4481 /* TestProxy.cpp in Sources */,
-				E2F1A4D914767D3A00EA4481 /* TestProxyUsingGUIThread.cpp in Sources */,
-				E2F1A4DA14767D3A00EA4481 /* TestSocket.cpp in Sources */,
-				E2F1A4DB14767D3A00EA4481 /* TestSocketAsync.cpp in Sources */,
-				E2F1A4DC14767D3A00EA4481 /* TestString.cpp in Sources */,
-				E2F1A4DD14767D3A00EA4481 /* TestStringize.cpp in Sources */,
-				E2F1A4DE14767D3A00EA4481 /* TestTimer.cpp in Sources */,
-				E2F1A4DF14767D3A00EA4481 /* TestXML.cpp in Sources */,
+				00ED2A6616C7D4580069F8E0 /* boost_replacement.cpp in Sources */,
+				00ED2A6816C7D4580069F8E0 /* main.cpp in Sources */,
+				00ED2A6A16C7D4580069F8E0 /* TestHelper.cpp in Sources */,
+				00ED2A6C16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */,
+				00ED2A6E16C7D4580069F8E0 /* TestNumeric.cpp in Sources */,
+				00ED2A7016C7D4580069F8E0 /* TestProxy.cpp in Sources */,
+				00ED2A7216C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */,
+				00ED2A7416C7D4580069F8E0 /* TestSocket.cpp in Sources */,
+				00ED2A7616C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */,
+				00ED2A7816C7D4580069F8E0 /* TestString.cpp in Sources */,
+				00ED2A7A16C7D4580069F8E0 /* TestStringize.cpp in Sources */,
+				00ED2A7C16C7D4580069F8E0 /* TestTimer.cpp in Sources */,
+				00ED2A7E16C7D4580069F8E0 /* TestXML.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,10 +494,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = ../../..;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -504,10 +510,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					../../..,
-					"../../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = ../../..;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				SDKROOT = macosx;
 			};
@@ -525,13 +528,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/iPhoneOS/include",
+				);
 				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/lib\"",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/armv7s/lib\"",
+					"../../../../../hookflash-staging/iPhoneOS/lib",
 				);
 				PRODUCT_NAME = zsLibTest_ios;
 				PROVISIONING_PROFILE = "";
@@ -553,13 +558,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/iPhoneOS/include",
+				);
 				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/lib\"",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/iPhoneOS/armv7s/lib\"",
+					"../../../../../hookflash-staging/iPhoneOS/lib",
 				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PRODUCT_NAME = zsLibTest_ios;
@@ -584,10 +591,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/include",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/lib\"",
+					"../../../../../hookflash-staging/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
@@ -606,10 +616,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = "$(inherited)";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/include",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../../../../hookflash-staging/lib\"",
+					"../../../../../hookflash-staging/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;

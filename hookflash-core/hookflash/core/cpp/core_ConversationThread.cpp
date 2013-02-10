@@ -121,7 +121,7 @@ namespace hookflash
                                                                   const SplitMap &split
                                                                   )
       {
-        return ConversationThread::create(account, peerLocation, metaData, split);
+        return IConversationThreadFactory::singleton().createConversationThread(account, peerLocation, metaData, split);
       }
 
       //-----------------------------------------------------------------------
@@ -1568,7 +1568,7 @@ namespace hookflash
                                                        ElementPtr profileBundleEl
                                                        )
     {
-      return internal::ConversationThread::create(account, profileBundleEl);
+      return internal::IConversationThreadFactory::singleton().createConversationThread(account, profileBundleEl);
     }
 
     //-----------------------------------------------------------------------

@@ -203,9 +203,8 @@ namespace hookflash
                              public ITimerDelegate
       {
       public:
+        friend interaction ICallTransportFactory;
         friend interaction ICallTransport;
-        friend interaction ICallTransportForAccount;
-        friend interaction ICallTransportForCall;
 
         typedef ICallTransport::CallTransportStates CallTransportStates;
 
@@ -462,6 +461,28 @@ namespace hookflash
 
         TransportSocketList mObsoleteSockets;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICallTransportFactory
+      #pragma mark
+
+      interaction ICallTransportFactory
+      {
+        static ICallTransportFactory &singleton();
+
+        virtual CallTransportPtr create(
+                                        ICallTransportDelegatePtr delegate,
+                                        const char *turnServer,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        const char *stunServer
+                                        );
+      };
+      
     }
   }
 }

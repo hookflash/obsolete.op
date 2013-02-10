@@ -154,9 +154,7 @@ namespace hookflash
                     public ITimerDelegate
       {
       public:
-        friend interaction ICall;
-        friend interaction ICallForConversationThread;
-        friend interaction ICallForCallTransport;
+        friend interaction ICallFactory;
 
         struct Exceptions
         {
@@ -726,6 +724,33 @@ namespace hookflash
 
         bool mNotifiedCallTransportDestroyed;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ICallFactory
+      #pragma mark
+
+      interaction ICallFactory
+      {
+        static ICallFactory &singleton();
+
+        virtual CallPtr placeCall(
+                                  IConversationThreadPtr conversationThread,
+                                  IContactPtr toContact,
+                                  bool includeAudio,
+                                  bool includeVideo
+                                  );
+
+        virtual CallPtr createForIncomingCall(
+                                              ConversationThreadPtr inConversationThread,
+                                              ContactPtr callerContact,
+                                              const DialogPtr &remoteDialog
+                                              );
+      };
+
     }
   }
 }

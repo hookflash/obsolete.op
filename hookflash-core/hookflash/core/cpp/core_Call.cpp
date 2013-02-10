@@ -125,7 +125,7 @@ namespace hookflash
                                                                 const DialogPtr &remoteDialog
                                                                 )
       {
-        return Call::createForIncomingCall(inConversationThread, callerContact, remoteDialog);
+        return ICallFactory::singleton().createForIncomingCall(inConversationThread, callerContact, remoteDialog);
       }
 
       //-----------------------------------------------------------------------
@@ -2803,7 +2803,7 @@ namespace hookflash
                               bool includeVideo
                               )
     {
-      return internal::Call::placeCall(conversationThread, toContact, includeAudio, includeVideo);
+      return internal::ICallFactory::singleton().placeCall(conversationThread, toContact, includeAudio, includeVideo);
     }
 
     //-------------------------------------------------------------------------

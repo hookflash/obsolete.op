@@ -64,7 +64,7 @@ namespace hookflash
                                                     const char *userIDIfKnown
                                                     )
       {
-        return Contact::createFromPeer(account, peer, userIDIfKnown);
+        return IContactFactory::singleton().createFromPeer(account, peer, userIDIfKnown);
       }
 
       //-----------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace hookflash
                                                                          IPeerFilePublicPtr peerFilePublic
                                                                          )
       {
-        return Contact::createFromPeerFilePublic(account, peerFilePublic);
+        return IContactFactory::singleton().createFromPeerFilePublic(account, peerFilePublic);
       }
 
       //-----------------------------------------------------------------------
@@ -108,7 +108,7 @@ namespace hookflash
                                                               const char *userID
                                                               )
       {
-        return Contact::createFromPeerURI(account, peerURI, findSecret, NULL, userID);
+        return IContactFactory::singleton().createFromPeerURI(account, peerURI, findSecret, NULL, userID);
       }
 
       //-----------------------------------------------------------------------
@@ -176,7 +176,7 @@ namespace hookflash
           return ContactPtr();
         }
 
-        return createFromPeerFilePublic(account, peerFilePublic, previousStableUniqueID);
+        return IContactFactory::singleton().createFromPeerFilePublic(account, peerFilePublic, previousStableUniqueID);
       }
 
       //-----------------------------------------------------------------------
@@ -549,7 +549,7 @@ namespace hookflash
                                             const char *previousStableUniqueID
                                             )
     {
-      return internal::Contact::createFromPeerURI(account, peerURI, findSecret, previousStableUniqueID, NULL);
+      return internal::IContactFactory::singleton().createFromPeerURI(account, peerURI, findSecret, previousStableUniqueID, NULL);
     }
 
     //-------------------------------------------------------------------------

@@ -32,6 +32,4 @@
 #pragma once
 
 #include <hookflash/stack/message/internal/types.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryManager.h>
-#include <hookflash/stack/message/internal/stack_message_MessageRequestUnknown.h>
+#include <hookflash/stack/message/messages.h>

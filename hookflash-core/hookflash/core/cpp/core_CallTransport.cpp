@@ -112,7 +112,7 @@ namespace hookflash
                                                         const char *stunServer
                                                         )
       {
-        return CallTransport::create(delegate, turnServer, turnServerUsername, turnServerPassword, stunServer);
+        return ICallTransportFactory::singleton().create(delegate, turnServer, turnServerUsername, turnServerPassword, stunServer);
       }
 
       //-----------------------------------------------------------------------

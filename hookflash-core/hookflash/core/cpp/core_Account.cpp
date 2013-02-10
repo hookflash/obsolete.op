@@ -2034,7 +2034,7 @@ namespace hookflash
                                 IIdentityPtr identity
                                 )
     {
-      return internal::Account::login(delegate, conversationThreadDelegate, callDelegate, peerContactServiceDomain, identity);
+      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, peerContactServiceDomain, identity);
     }
 
     //-------------------------------------------------------------------------
@@ -2046,7 +2046,7 @@ namespace hookflash
                                   const char *peerFilePrivateSecret
                                   )
     {
-      return internal::Account::relogin(delegate, conversationThreadDelegate, callDelegate, peerFilePrivateEl, peerFilePrivateSecret);
+      return internal::IAccountFactory::singleton().relogin(delegate, conversationThreadDelegate, callDelegate, peerFilePrivateEl, peerFilePrivateSecret);
     }
   }
 }

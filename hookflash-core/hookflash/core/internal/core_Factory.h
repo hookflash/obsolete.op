@@ -1,6 +1,6 @@
 /*
 
- Copyright (c) 2012, SMB Phone Inc.
+ Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
 
  Redistribution and use in source and binary forms, with or without
@@ -31,22 +31,52 @@
 
 #pragma once
 
-#include <hookflash/stack/message/PeerToBootstrapperServicesGetResult.h>
+#include <hookflash/core/internal/types.h>
+#include <hookflash/core/internal/core.h>
 
 namespace hookflash
 {
-  namespace stack
+  namespace core
   {
-    namespace message
+    namespace internal
     {
-      namespace internal
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Factory
+      #pragma mark
+
+      class Factory : public IAccountFactory,
+                      public ICallFactory,
+                      public ICallTransportFactory,
+                      public IContactFactory,
+                      public IContactPeerFilePublicLookupFactory,
+                      public IConversationThreadFactory,
+                      public IConversationThreadDocumentFetcherFactory
       {
-        class PeerToBootstrapperServicesGetResult
-        {
-        public:
-          static PeerToBootstrapperServicesGetResultPtr create(ElementPtr root);
-        };
-      }
+      public:
+        static void override(FactoryPtr override);
+
+        static FactoryPtr &singleton();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (internal)
+        #pragma mark
+
+        static FactoryPtr create();
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Factory => (data)
+        #pragma mark
+
+        FactoryPtr mOverride;
+      };
     }
   }
 }

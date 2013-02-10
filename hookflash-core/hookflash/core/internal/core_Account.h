@@ -192,11 +192,8 @@ namespace hookflash
                       public IAccountAsyncDelegate
       {
       public:
+        friend interaction IAccountFactory;
         friend interaction IAccount;
-        friend interaction IAccountForCall;
-        friend interaction IAccountForContact;
-        friend interaction IAccountForConversationThread;
-        friend interaction IAccountForIdentityLookup;
 
         interaction IContactSubscriptionAsyncDelegate;
         typedef boost::shared_ptr<IContactSubscriptionAsyncDelegate> IContactSubscriptionAsyncDelegatePtr;
@@ -815,6 +812,35 @@ namespace hookflash
 
         IPublicationPtr mSubscribersPermissionDocument;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountFactory
+      #pragma mark
+
+      interaction IAccountFactory
+      {
+        static IAccountFactory &singleton();
+
+        virtual AccountPtr login(
+                                 IAccountDelegatePtr delegate,
+                                 IConversationThreadDelegatePtr conversationThreadDelegate,
+                                 ICallDelegatePtr callDelegate,
+                                 const char *peerContactServiceDomain,
+                                 IIdentityPtr identity
+                                 );
+        virtual AccountPtr relogin(
+                                   IAccountDelegatePtr delegate,
+                                   IConversationThreadDelegatePtr conversationThreadDelegate,
+                                   ICallDelegatePtr callDelegate,
+                                   ElementPtr peerFilePrivateEl,
+                                   const char *peerFilePrivateSecret
+                                   );
+      };
+
     }
   }
 }

@@ -53,6 +53,14 @@ namespace hookflash
       using stack::IPublicationFetcher;
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       static bool isSamePublication(IPublicationMetaDataPtr obj1, IPublicationMetaDataPtr obj2)
       {
         if (obj1->getCreatorLocation() != obj2->getCreatorLocation()) return false;
@@ -92,7 +100,7 @@ namespace hookflash
                                                                                        IPublicationRepositoryPtr repository
                                                                                        )
       {
-        return ConversationThreadDocumentFetcher::create(delegate, repository);
+        return IConversationThreadDocumentFetcherFactory::singleton().create(delegate, repository);
       }
 
       //-----------------------------------------------------------------------
