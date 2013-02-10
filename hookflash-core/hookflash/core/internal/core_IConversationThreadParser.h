@@ -32,11 +32,8 @@
 #pragma once
 
 #include <hookflash/core/internal/types.h>
-//#include <hookflash/core/IConversationThread.h>
 #include <hookflash/core/ICall.h>
-//
-//#include <hookflash/stack/types.h>
-//#include <hookflash/stack/IHelper.h>
+
 #include <hookflash/services/IICESocket.h>
 
 #include <zsLib/Exception.h>

@@ -220,6 +220,7 @@ namespace hookflash
                                                             IPublicationRepositoryPtr repository
                                                             );
       };
+
     }
   }
 }

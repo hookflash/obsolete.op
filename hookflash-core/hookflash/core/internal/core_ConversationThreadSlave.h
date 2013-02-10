@@ -98,7 +98,8 @@ namespace hookflash
                                        public IPeerSubscriptionDelegate
       {
       public:
-        friend interaction IConversationThreadSlaveForConversationThread;
+        friend interaction IConversationThreadSlaveFactory;
+//        friend interaction IConversationThreadSlaveForConversationThread;
 
         enum ConversationThreadSlaveStates
         {
@@ -320,6 +321,27 @@ namespace hookflash
 
         CallHandlers mIncomingCallHandlers;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadHostFactory
+      #pragma mark
+
+      interaction IConversationThreadSlaveFactory
+      {
+        static IConversationThreadSlaveFactory &singleton();
+
+        virtual ConversationThreadSlavePtr createConversationThreadSlave(
+                                                                         ConversationThreadPtr baseThread,
+                                                                         ILocationPtr peerLocation,
+                                                                         IPublicationMetaDataPtr metaData,
+                                                                         const SplitMap &split
+                                                                         );
+      };
+
     }
   }
 }

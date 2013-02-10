@@ -95,26 +95,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaEngineForTestApplication
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      void IMediaEngineForTestApplication::setup(IMediaEngineDelegatePtr delegate)
-      {
-        MediaEngine::setup(delegate);
-      }
-
-      //-----------------------------------------------------------------------
-      MediaEnginePtr IMediaEngineForTestApplication::singleton()
-      {
-        return MediaEngine::singleton();
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark MediaEngine
       #pragma mark
 
@@ -505,7 +485,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       MediaEnginePtr MediaEngine::singleton(IMediaEngineDelegatePtr delegate)
       {
-        static MediaEnginePtr engine = create(delegate);
+        static MediaEnginePtr engine = IMediaEngineFactory::singleton().createMediaEngine(delegate);
         return engine;
       }
 
@@ -1028,39 +1008,6 @@ namespace hookflash
         return 0;
       }
 
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark MediaEngine => IMediaEngineForTestApplication
-      #pragma mark
-      //-----------------------------------------------------------------------
-      void MediaEngine::setReceiverAddress(String receiverAddress)
-      {
-  #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot set receiver address")
-  #endif
-        AutoRecursiveLock lock(mLock);
-
-        ZS_LOG_DEBUG(log("set receiver address - value: ") + receiverAddress)
-
-        mReceiverAddress = receiverAddress;
-      }
-
-      //-----------------------------------------------------------------------
-      String MediaEngine::getReceiverAddress() const
-      {
-  #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot get receiver address")
-  #endif
-        AutoRecursiveLock lock(mLock);
-
-        ZS_LOG_DEBUG(log("get receiver address - value: ") + mReceiverAddress)
-
-        return mReceiverAddress;
-      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1805,6 +1752,32 @@ namespace hookflash
           mVcpm = NULL;
           mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         }
+      }
+
+      //-----------------------------------------------------------------------
+      void MediaEngine::setReceiverAddress(String receiverAddress)
+      {
+#ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
+        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot set receiver address")
+#endif
+        AutoRecursiveLock lock(mLock);
+
+        ZS_LOG_DEBUG(log("set receiver address - value: ") + receiverAddress)
+
+        mReceiverAddress = receiverAddress;
+      }
+
+      //-----------------------------------------------------------------------
+      String MediaEngine::getReceiverAddress() const
+      {
+#ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
+        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot get receiver address")
+#endif
+        AutoRecursiveLock lock(mLock);
+
+        ZS_LOG_DEBUG(log("get receiver address - value: ") + mReceiverAddress)
+
+        return mReceiverAddress;
       }
 
       //-----------------------------------------------------------------------

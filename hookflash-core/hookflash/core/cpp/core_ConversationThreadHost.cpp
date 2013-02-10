@@ -80,7 +80,7 @@ namespace hookflash
                                                                                      IConversationThreadParser::Details::ConversationThreadStates state
                                                                                      )
       {
-        return ConversationThreadHost::create(baseThread, state);
+        return IConversationThreadHostFactory::singleton().createConversationThreadHost(baseThread, state);
       }
 
       //-----------------------------------------------------------------------

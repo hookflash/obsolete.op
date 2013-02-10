@@ -38,11 +38,8 @@
 #include <hookflash/core/internal/core_Stack.h>
 
 #include <hookflash/stack/IPublication.h>
-//#include <hookflash/stack/IAccount.h>
-//#include <hookflash/stack/IPeerLocation.h>
 #include <hookflash/stack/IHelper.h>
 
-//#include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 
@@ -83,7 +80,7 @@ namespace hookflash
                                                                                        const SplitMap &split
                                                                                        )
       {
-        return ConversationThreadSlave::create(baseThread, peerLocation, metaData, split);
+        return IConversationThreadSlaveFactory::singleton().createConversationThreadSlave(baseThread, peerLocation, metaData, split);
       }
 
       //-----------------------------------------------------------------------

@@ -95,7 +95,7 @@ namespace hookflash
                                       public IConversationThreadHostAsync
       {
       public:
-        friend interaction IConversationThreadHostForConversationThread;
+        friend interaction IConversationThreadHostFactory;
 
         enum ConversationThreadHostStates
         {
@@ -666,6 +666,24 @@ namespace hookflash
         MessageDeliveryStatesMap mMessageDeliveryStates;
 
         PeerContactMap mPeerContacts;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadHostFactory
+      #pragma mark
+
+      interaction IConversationThreadHostFactory
+      {
+        static IConversationThreadHostFactory &singleton();
+
+        virtual ConversationThreadHostPtr createConversationThreadHost(
+                                                                       ConversationThreadPtr baseThread,
+                                                                       IConversationThreadParser::Details::ConversationThreadStates state = IConversationThreadParser::Details::ConversationThreadState_Open
+                                                                       );
       };
     }
   }

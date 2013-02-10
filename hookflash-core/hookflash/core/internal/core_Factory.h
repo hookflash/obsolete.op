@@ -54,7 +54,12 @@ namespace hookflash
                       public IContactFactory,
                       public IContactPeerFilePublicLookupFactory,
                       public IConversationThreadFactory,
-                      public IConversationThreadDocumentFetcherFactory
+                      public IConversationThreadDocumentFetcherFactory,
+                      public IConversationThreadHostFactory,
+                      public IConversationThreadSlaveFactory,
+                      public IIdentityFactory,
+                      public IIdentityLookupFactory,
+                      public IMediaEngineFactory
       {
       public:
         static void override(FactoryPtr override);

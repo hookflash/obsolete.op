@@ -78,8 +78,8 @@ namespace hookflash
                        public IServiceIdentitySessionDelegate
       {
       public:
+        friend interaction IIdentityFactory;
         friend interaction IIdentity;
-        friend interaction IIdentityForAccount;
 
       protected:
         Identity(IMessageQueuePtr queue);
@@ -181,6 +181,29 @@ namespace hookflash
 
         IServiceIdentitySessionPtr mSession;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IIdentityFactory
+      #pragma mark
+
+      interaction IIdentityFactory
+      {
+        static IIdentityFactory &singleton();
+
+        virtual IdentityPtr login(
+                                  IIdentityDelegatePtr delegate,
+                                  const char *redirectAfterLoginCompleteURL,
+                                  const char *identityURI_or_identityBaseURI,
+                                  const char *identityProviderDomain = NULL // needed if identity is a legacy type
+                                  );
+
+        virtual IdentityPtr createFromExistingSession(IServiceIdentitySessionPtr session);
+      };
+
     }
   }
 }

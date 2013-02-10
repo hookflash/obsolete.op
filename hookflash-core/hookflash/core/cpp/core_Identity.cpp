@@ -31,7 +31,6 @@
 
 #include <hookflash/core/internal/core_Identity.h>
 #include <hookflash/core/internal/core_Stack.h>
-//#include <hookflash/core/internal/core_Account.h>
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IHelper.h>
@@ -108,7 +107,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       IdentityPtr IIdentityForAccount::createFromExistingSession(IServiceIdentitySessionPtr session)
       {
-        return Identity::createFromExistingSession(session);
+        return IIdentityFactory::singleton().createFromExistingSession(session);
       }
 
       //-----------------------------------------------------------------------
@@ -434,7 +433,7 @@ namespace hookflash
                                   const char *identityProviderDomain
                                   )
     {
-      return internal::Identity::login(delegate, redirectAfterLoginCompleteURL, identityURI_or_identityBaseURI, identityProviderDomain);
+      return internal::IIdentityFactory::singleton().login(delegate, redirectAfterLoginCompleteURL, identityURI_or_identityBaseURI, identityProviderDomain);
     }
 
     //-------------------------------------------------------------------------

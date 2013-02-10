@@ -652,7 +652,7 @@ namespace hookflash
                                                const IdentityURIList &identityURIs
                                                )
     {
-      return internal::IdentityLookup::create(account, delegate, identityURIs);
+      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs);
     }
 
     //-------------------------------------------------------------------------

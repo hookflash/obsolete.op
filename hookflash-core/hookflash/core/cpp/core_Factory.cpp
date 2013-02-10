@@ -308,6 +308,129 @@ namespace hookflash
       {
         return ConversationThreadDocumentFetcher::create(delegate, repository);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadHostFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IConversationThreadHostFactory &IConversationThreadHostFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ConversationThreadHostPtr IConversationThreadHostFactory::createConversationThreadHost(
+                                                                                             ConversationThreadPtr baseThread,
+                                                                                             IConversationThreadParser::Details::ConversationThreadStates state
+                                                                                             )
+      {
+        return ConversationThreadHost::create(baseThread, state);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IConversationThreadSlaveFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IConversationThreadSlaveFactory &IConversationThreadSlaveFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ConversationThreadSlavePtr IConversationThreadSlaveFactory::createConversationThreadSlave(
+                                                                                                ConversationThreadPtr baseThread,
+                                                                                                ILocationPtr peerLocation,
+                                                                                                IPublicationMetaDataPtr metaData,
+                                                                                                const SplitMap &split
+                                                                                                )
+      {
+        return ConversationThreadSlave::create(baseThread, peerLocation, metaData, split);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IIdentityFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IIdentityFactory &IIdentityFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityPtr IIdentityFactory::login(
+                                          IIdentityDelegatePtr delegate,
+                                          const char *redirectAfterLoginCompleteURL,
+                                          const char *identityURI_or_identityBaseURI,
+                                          const char *identityProviderDomain
+                                          )
+      {
+        return Identity::login(delegate, redirectAfterLoginCompleteURL, identityURI_or_identityBaseURI, identityProviderDomain);
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityPtr IIdentityFactory::createFromExistingSession(IServiceIdentitySessionPtr session)
+      {
+        return Identity::createFromExistingSession(session);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IIdentityLookupFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IIdentityLookupFactory &IIdentityLookupFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityLookupPtr IIdentityLookupFactory::create(
+                                                      IAccountPtr account,
+                                                      IIdentityLookupDelegatePtr delegate,
+                                                      const IdentityURIList &identityURIs
+                                                      )
+      {
+        return IdentityLookup::create(account, delegate, identityURIs);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaEngineFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IMediaEngineFactory &IMediaEngineFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      MediaEnginePtr IMediaEngineFactory::createMediaEngine(IMediaEngineDelegatePtr delegate)
+      {
+        return MediaEngine::create(delegate);
+      }
     }
   }
 }

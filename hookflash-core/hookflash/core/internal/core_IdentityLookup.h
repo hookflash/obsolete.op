@@ -66,6 +66,7 @@ namespace hookflash
                              public IMessageMonitorResultDelegate<IdentityLookupResult>
       {
       public:
+        friend interaction IIdentityLookupFactory;
         friend interaction IIdentityLookup;
 
         typedef String Domain;
@@ -196,6 +197,25 @@ namespace hookflash
         DomainOrLegacyTypeToDomainMap mTypeToDomainMap;
 
         IdentityLookupInfoList mResults;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IIdentityLookupFactory
+      #pragma mark
+
+      interaction IIdentityLookupFactory
+      {
+        static IIdentityLookupFactory &singleton();
+
+        virtual IdentityLookupPtr create(
+                                         IAccountPtr account,
+                                         IIdentityLookupDelegatePtr delegate,
+                                         const IdentityURIList &identityURIs
+                                         );
       };
     }
   }

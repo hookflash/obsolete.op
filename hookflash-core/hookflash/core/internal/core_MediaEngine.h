@@ -115,49 +115,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaEngineForTestApplication
-      #pragma mark
-
-      interaction IMediaEngineForTestApplication
-      {
-        IMediaEngineForTestApplication &forTestApplication() {return *this;}
-        const IMediaEngineForTestApplication &forTestApplication() const {return *this;}
-
-        static MediaEnginePtr singleton();
-
-        static void setup(IMediaEngineDelegatePtr delegate);
-
-        virtual void setVideoOrientation() = 0;
-
-        virtual void setCaptureRenderView(void *renderView) = 0;
-        virtual void setChannelRenderView(void *renderView) = 0;
-
-        virtual void setEcEnabled(bool enabled) = 0;
-        virtual void setAgcEnabled(bool enabled) = 0;
-        virtual void setNsEnabled(bool enabled) = 0;
-        virtual void setRecordFile(String fileName) = 0;
-        virtual String getRecordFile() const = 0;
-
-        virtual void setMuteEnabled(bool enabled) = 0;
-        virtual bool getMuteEnabled() = 0;
-        virtual void setLoudspeakerEnabled(bool enabled) = 0;
-        virtual bool getLoudspeakerEnabled() = 0;
-
-        virtual void setReceiverAddress(String receiverAddress) = 0;
-        virtual String getReceiverAddress() const = 0;
-
-        virtual void startVoice() = 0;
-        virtual void stopVoice() = 0;
-
-        virtual void startVideo() = 0;
-        virtual void stopVideo() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark MediaEngine
       #pragma mark
 
@@ -165,16 +122,15 @@ namespace hookflash
                           public IMediaEngine,
                           public IMediaEngineForStack,
                           public IMediaEngineForCallTransport,
-                          public IMediaEngineForTestApplication,
                           public ITimerDelegate,
                           public webrtc::TraceCallback,
                           public webrtc::VoiceEngineObserver
       {
       public:
+        friend interaction IMediaEngineFactory;
         friend interaction IMediaEngine;
         friend interaction IMediaEngineForStack;
         friend interaction IMediaEngineForCallTransport;
-        friend interaction IMediaEngineForTestApplication;
 
         typedef webrtc::Transport Transport;
         typedef webrtc::TraceLevel TraceLevel;
@@ -273,14 +229,6 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaEngine => IMediaEngineForTestApplication
-        #pragma mark
-
-        virtual void setReceiverAddress(String receiverAddress);
-        virtual String getReceiverAddress() const;
-
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark MediaEngine => ITimerDelegate
         #pragma mark
 
@@ -315,6 +263,9 @@ namespace hookflash
 
         virtual void internalStartVideo(CameraTypes cameraType);
         virtual void internalStopVideo();
+
+        virtual void setReceiverAddress(String receiverAddress);
+        virtual String getReceiverAddress() const;
 
       protected:
         int setVideoCaptureRotationAndCodecParameters();
@@ -438,6 +389,21 @@ namespace hookflash
 
       private:
         TimerPtr mVoiceStatisticsTimer;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaEngineFactory
+      #pragma mark
+
+      interaction IMediaEngineFactory
+      {
+        static IMediaEngineFactory &singleton();
+
+        virtual MediaEnginePtr createMediaEngine(IMediaEngineDelegatePtr delegate);
       };
     }
   }
