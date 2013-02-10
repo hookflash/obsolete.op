@@ -234,7 +234,7 @@ int VoEExternalMediaImpl::ExternalRecordingInsertData(
         {
             // Use stored delay value given the last call
             // to ExternalPlayoutGetData.
-            totalDelayMS = current_delay_ms + playout_delay_ms_;
+          totalDelayMS = current_delay_ms;// + playout_delay_ms_;
             // Compensate for block sizes larger than 10ms
             totalDelayMS -= (WebRtc_Word16)(i*10);
             if (totalDelayMS < 0)
@@ -334,7 +334,7 @@ int VoEExternalMediaImpl::ExternalPlayoutGetData(
     lengthSamples = audioFrame._payloadDataLengthInSamples;
 
     // Store current playout delay (to be used by ExternalRecordingInsertData).
-    playout_delay_ms_ = current_delay_ms;
+    //playout_delay_ms_ = current_delay_ms;
 
     return 0;
 #else

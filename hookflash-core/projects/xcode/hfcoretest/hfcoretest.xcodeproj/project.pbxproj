@@ -168,6 +168,16 @@
 		E29CE566141BCBA90050A1EC /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = E29CE564141BCBA90050A1EC /* MainWindow.xib */; };
 		E29CE56A141BCC3B0050A1EC /* AppViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E29CE568141BCC3B0050A1EC /* AppViewController.mm */; };
 		E29CE56B141BCC3B0050A1EC /* AppViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E29CE569141BCC3B0050A1EC /* AppViewController.xib */; };
+		E2BBD93C16C864C0001E5B09 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD93B16C864C0001E5B09 /* QTKit.framework */; };
+		E2BBD9BF16C8654F001E5B09 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD9BE16C8654F001E5B09 /* AppKit.framework */; };
+		E2BBD9C116C865B9001E5B09 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD9C016C865B9001E5B09 /* CoreAudio.framework */; };
+		E2BBD9C316C86605001E5B09 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD9C216C86605001E5B09 /* AudioToolbox.framework */; };
+		E2BBD9C516C86637001E5B09 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD9C416C86637001E5B09 /* CoreVideo.framework */; };
+		E2BBD9C616C866F3001E5B09 /* libaudio_conference_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BCBCBF16B9450600A30A96 /* libaudio_conference_mixer.a */; };
+		E2BBD9C716C8671E001E5B09 /* libwebrtc_video_coding.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BCBCDD16B9450600A30A96 /* libwebrtc_video_coding.a */; };
+		E2BBD9C816C86754001E5B09 /* libvideo_processing_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BCBD4D16B9450600A30A96 /* libvideo_processing_sse2.a */; };
+		E2BBD9CA16C8676F001E5B09 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BBD9C916C8676F001E5B09 /* OpenGL.framework */; };
+		E2BBD9CB16C867B0001E5B09 /* libaec_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2BCBD3D16B9450600A30A96 /* libaec_sse2.a */; };
 		E2CBC4A61600972B00E6BE31 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2CBC4A41600972B00E6BE31 /* ViewController.xib */; };
 		E2DB9A27160092E700E178AA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2DB9A25160092E700E178AA /* InfoPlist.strings */; };
 		E2DB9A29160092E700E178AA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2DB9A28160092E700E178AA /* main.m */; };
@@ -2368,6 +2378,12 @@
 		E29CE567141BCC3A0050A1EC /* AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppViewController.h; sourceTree = "<group>"; };
 		E29CE568141BCC3B0050A1EC /* AppViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppViewController.mm; sourceTree = "<group>"; };
 		E29CE569141BCC3B0050A1EC /* AppViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AppViewController.xib; sourceTree = "<group>"; };
+		E2BBD93B16C864C0001E5B09 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
+		E2BBD9BE16C8654F001E5B09 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		E2BBD9C016C865B9001E5B09 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		E2BBD9C216C86605001E5B09 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E2BBD9C416C86637001E5B09 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		E2BBD9C916C8676F001E5B09 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E2BCBB8516B9450000A30A96 /* modules_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules_ios.xcodeproj; path = "../../../../hookflash-libs/WebRTC/src/modules/modules_ios.xcodeproj"; sourceTree = "<group>"; };
 		E2BCBB8816B9450000A30A96 /* modules.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules.xcodeproj; path = "../../../../hookflash-libs/WebRTC/src/modules/modules.xcodeproj"; sourceTree = "<group>"; };
 		E2BCBDDA16B9452700A30A96 /* common_audio_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio_ios.xcodeproj; path = "../../../../hookflash-libs/WebRTC/src/common_audio/common_audio_ios.xcodeproj"; sourceTree = "<group>"; };
@@ -2409,6 +2425,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2BBD9CB16C867B0001E5B09 /* libaec_sse2.a in Frameworks */,
+				E2BBD9CA16C8676F001E5B09 /* OpenGL.framework in Frameworks */,
+				E2BBD9C816C86754001E5B09 /* libvideo_processing_sse2.a in Frameworks */,
+				E2BBD9C716C8671E001E5B09 /* libwebrtc_video_coding.a in Frameworks */,
+				E2BBD9C616C866F3001E5B09 /* libaudio_conference_mixer.a in Frameworks */,
+				E2BBD9C516C86637001E5B09 /* CoreVideo.framework in Frameworks */,
+				E2BBD9C316C86605001E5B09 /* AudioToolbox.framework in Frameworks */,
+				E2BBD9C116C865B9001E5B09 /* CoreAudio.framework in Frameworks */,
+				E2BBD9BF16C8654F001E5B09 /* AppKit.framework in Frameworks */,
+				E2BBD93C16C864C0001E5B09 /* QTKit.framework in Frameworks */,
 				00ED1A6616C75F250069F8E0 /* CoreFoundation.framework in Frameworks */,
 				00ED348216C7DA5E0069F8E0 /* libaec.a in Frameworks */,
 				00ED347F16C7DA490069F8E0 /* libaecm.a in Frameworks */,
@@ -2579,6 +2605,12 @@
 		00BF531C13FCF92A002E9EB5 = {
 			isa = PBXGroup;
 			children = (
+				E2BBD9C916C8676F001E5B09 /* OpenGL.framework */,
+				E2BBD9C416C86637001E5B09 /* CoreVideo.framework */,
+				E2BBD9C216C86605001E5B09 /* AudioToolbox.framework */,
+				E2BBD9C016C865B9001E5B09 /* CoreAudio.framework */,
+				E2BBD9BE16C8654F001E5B09 /* AppKit.framework */,
+				E2BBD93B16C864C0001E5B09 /* QTKit.framework */,
 				00ED30F016C7D5E40069F8E0 /* hookflash */,
 				E2DD7B7E141A26AE006D89BE /* hfcoretest_ios */,
 				E2DB9A22160092E700E178AA /* hfmediatest_ios */,
@@ -5480,9 +5512,7 @@
 				);
 				INFOPLIST_FILE = "hfmediatest_ios/hfmediatest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-x",
@@ -5516,9 +5546,7 @@
 				);
 				INFOPLIST_FILE = "hfmediatest_ios/hfmediatest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (
