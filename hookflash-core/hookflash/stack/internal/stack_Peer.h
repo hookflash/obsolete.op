@@ -45,32 +45,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPeerFactory
-      #pragma mark
-
-      interaction IPeerFactory
-      {
-        static IPeerFactory &singleton();
-
-        virtual PeerPtr create(
-                               IAccountPtr account,
-                               IPeerFilePublicPtr peerFilePublic
-                               );
-        virtual PeerPtr getFromSignature(
-                                         IAccountPtr account,
-                                         ElementPtr signedElement
-                                         );
-        virtual PeerPtr create(
-                               AccountPtr account,
-                               const char *peerURI
-                               );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IPeerForAccount
       #pragma mark
 
@@ -360,6 +334,33 @@ namespace hookflash
 
         String mPeerURI;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFactory
+      #pragma mark
+
+      interaction IPeerFactory
+      {
+        static IPeerFactory &singleton();
+
+        virtual PeerPtr create(
+                               IAccountPtr account,
+                               IPeerFilePublicPtr peerFilePublic
+                               );
+        virtual PeerPtr getFromSignature(
+                                         IAccountPtr account,
+                                         ElementPtr signedElement
+                                         );
+        virtual PeerPtr create(
+                               AccountPtr account,
+                               const char *peerURI
+                               );
+      };
+
     }
   }
 }

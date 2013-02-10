@@ -46,31 +46,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ILocationFactory
-      #pragma mark
-
-      interaction ILocationFactory
-      {
-        static ILocationFactory &singleton();
-
-        virtual LocationPtr getForLocal(IAccountPtr account);
-        virtual LocationPtr getForFinder(IAccountPtr account);
-        virtual LocationPtr getForPeer(
-                                       IPeerPtr peer,
-                                       const char *locationID
-                                       );
-        virtual LocationPtr create(
-                                   IMessageSourcePtr messageSource,
-                                   const char *peerURI,
-                                   const char *locationID
-                                   );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ILocationForAccount
       #pragma mark
 
@@ -366,6 +341,32 @@ namespace hookflash
         PeerPtr mPeer;
         String mLocationID;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ILocationFactory
+      #pragma mark
+
+      interaction ILocationFactory
+      {
+        static ILocationFactory &singleton();
+
+        virtual LocationPtr getForLocal(IAccountPtr account);
+        virtual LocationPtr getForFinder(IAccountPtr account);
+        virtual LocationPtr getForPeer(
+                                       IPeerPtr peer,
+                                       const char *locationID
+                                       );
+        virtual LocationPtr create(
+                                   IMessageSourcePtr messageSource,
+                                   const char *peerURI,
+                                   const char *locationID
+                                   );
+      };
+
     }
   }
 }

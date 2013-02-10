@@ -46,21 +46,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMessageMonitorManagerFactory
-      #pragma mark
-
-      interaction IMessageMonitorManagerFactory
-      {
-        static IMessageMonitorManagerFactory &singleton();
-
-        virtual MessageMonitorManagerPtr createMessageMonitorManager();
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IMessageMonitorManagerForMessageMonitor
       #pragma mark
 
@@ -147,6 +132,22 @@ namespace hookflash
         typedef std::map<String, MessageMonitorWeakPtr> MonitorMap;
         MonitorMap mMonitors;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMessageMonitorManagerFactory
+      #pragma mark
+
+      interaction IMessageMonitorManagerFactory
+      {
+        static IMessageMonitorManagerFactory &singleton();
+
+        virtual MessageMonitorManagerPtr createMessageMonitorManager();
+      };
+
     }
   }
 }

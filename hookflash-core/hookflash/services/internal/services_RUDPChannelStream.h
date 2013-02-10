@@ -55,29 +55,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPChannelStreamFactory
-      #pragma mark
-
-      interaction IRUDPChannelStreamFactory
-      {
-        static IRUDPChannelStreamFactory &singleton();
-
-        virtual RUDPChannelStreamPtr create(
-                                            IMessageQueuePtr queue,
-                                            IRUDPChannelStreamDelegatePtr delegate,
-                                            QWORD nextSequenceNumberToUseForSending,
-                                            QWORD nextSequenberNumberExpectingToReceive,
-                                            WORD sendingChannelNumber,
-                                            WORD receivingChannelNumber,
-                                            DWORD minimumNegotiatedRTTInMilliseconds
-                                            );
-      };
-      
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IRUDPChannelStreamAsync
       #pragma mark
 
@@ -428,6 +405,30 @@ namespace hookflash
         PUID mForceACKOfSentPacketsRequestID;                // the identification of the request that is causing the force
         bool mForceACKNextTimePossible;                      // force an ACK at the next possibel interval
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelStreamFactory
+      #pragma mark
+
+      interaction IRUDPChannelStreamFactory
+      {
+        static IRUDPChannelStreamFactory &singleton();
+
+        virtual RUDPChannelStreamPtr create(
+                                            IMessageQueuePtr queue,
+                                            IRUDPChannelStreamDelegatePtr delegate,
+                                            QWORD nextSequenceNumberToUseForSending,
+                                            QWORD nextSequenberNumberExpectingToReceive,
+                                            WORD sendingChannelNumber,
+                                            WORD receivingChannelNumber,
+                                            DWORD minimumNegotiatedRTTInMilliseconds
+                                            );
+      };
+
     }
   }
 }

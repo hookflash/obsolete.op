@@ -608,6 +608,209 @@ namespace hookflash
       {
         return PublicationMetaData::create(version, baseVersion, lineage, creatorLocation, name, mimeType, encoding, relationships, publishedLocation, expires);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPublicationRepositoryFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IPublicationRepositoryFactory &IPublicationRepositoryFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      PublicationRepositoryPtr IPublicationRepositoryFactory::createPublicationRepository(AccountPtr account)
+      {
+        return PublicationRepository::create(account);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPrivateKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPrivateKeyFactory &IRSAPrivateKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::generate(RSAPublicKeyPtr &outPublicKey)
+      {
+        return RSAPrivateKey::generate(outPublicKey);
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::loadPrivateKey(const SecureByteBlock &buffer)
+      {
+        return RSAPrivateKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPublicKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPublicKeyFactory &IRSAPublicKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPublicKeyPtr IRSAPublicKeyFactory::loadPublicKey(const SecureByteBlock &buffer)
+      {
+        return RSAPublicKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceCertificatesValidateQueryFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServiceCertificatesValidateQueryFactory &IServiceCertificatesValidateQueryFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceCertificatesValidateQueryPtr IServiceCertificatesValidateQueryFactory::queryIfValidSignature(
+                                                                                                          IServiceCertificatesValidateQueryDelegatePtr delegate,
+                                                                                                          ElementPtr signedElement
+                                                                                                          )
+      {
+        return ServiceCertificatesValidateQuery::queryIfValidSignature(delegate, signedElement);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceCertificatesValidateQueryFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServiceIdentitySessionFactory &IServiceIdentitySessionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentity(
+                                                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                                                  const char *redirectAfterLoginCompleteURL,
+                                                                                  const char *identityURI,
+                                                                                  IServiceIdentityPtr provider
+                                                                                  )
+      {
+        return ServiceIdentitySession::loginWithIdentity(delegate, redirectAfterLoginCompleteURL, identityURI, provider);
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityTBD(
+                                                                                     IServiceIdentitySessionDelegatePtr delegate,
+                                                                                     const char *redirectAfterLoginCompleteURL,
+                                                                                     IServiceIdentityPtr provider,
+                                                                                     const char *legacyIdentityBaseURI
+                                                                                     )
+      {
+        return ServiceIdentitySession::loginWithIdentityTBD(delegate, redirectAfterLoginCompleteURL, provider, legacyIdentityBaseURI);
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityBundle(
+                                                                                        IServiceIdentitySessionDelegatePtr delegate,
+                                                                                        const char *redirectAfterLoginCompleteURL,
+                                                                                        ElementPtr signedIdentityBundle
+                                                                                        )
+      {
+        return ServiceIdentitySession::loginWithIdentityBundle(delegate, redirectAfterLoginCompleteURL, signedIdentityBundle);
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::relogin(
+                                                                        IServiceIdentitySessionDelegatePtr delegate,
+                                                                        const char *redirectAfterLoginCompleteURL,
+                                                                        IServiceIdentityPtr provider,
+                                                                        const char *identityReloginAccessKey
+                                                                        )
+      {
+        return ServiceIdentitySession::relogin(delegate, redirectAfterLoginCompleteURL, provider, identityReloginAccessKey);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServicePeerContactSessionFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServicePeerContactSessionFactory &IServicePeerContactSessionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ServicePeerContactSessionPtr IServicePeerContactSessionFactory::login(
+                                                                            IServicePeerContactSessionDelegatePtr delegate,
+                                                                            IServicePeerContactPtr servicePeerContact,
+                                                                            IServiceIdentitySessionPtr identitySession
+                                                                            )
+      {
+        return ServicePeerContactSession::login(delegate, servicePeerContact, identitySession);
+      }
+
+      //-----------------------------------------------------------------------
+      ServicePeerContactSessionPtr IServicePeerContactSessionFactory::relogin(
+                                                                              IServicePeerContactSessionDelegatePtr delegate,
+                                                                              IPeerFilesPtr existingPeerFiles
+                                                                              )
+      {
+        return ServicePeerContactSession::relogin(delegate, existingPeerFiles);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceSaltFetchSignedSaltQueryFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServiceSaltFetchSignedSaltQueryFactory &IServiceSaltFetchSignedSaltQueryFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceSaltFetchSignedSaltQueryPtr IServiceSaltFetchSignedSaltQueryFactory::fetchSignedSalt(
+                                                                                                  IServiceSaltFetchSignedSaltQueryDelegatePtr delegate,
+                                                                                                  IServiceSaltPtr serviceSalt,
+                                                                                                  UINT totalToFetch
+                                                                                                  )
+      {
+        return ServiceSaltFetchSignedSaltQuery::fetchSignedSalt(delegate, serviceSalt, totalToFetch);
+      }
     }
   }
 }

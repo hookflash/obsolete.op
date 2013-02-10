@@ -71,7 +71,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RSAPublicKeyPtr IRSAPublicKeyForRSAPrivateKey::load(const SecureByteBlock &buffer)
       {
-        return RSAPublicKey::load(buffer);
+        return IRSAPublicKeyFactory::singleton().loadPublicKey(buffer);
       }
 
       //-----------------------------------------------------------------------
@@ -258,7 +258,7 @@ namespace hookflash
     //-------------------------------------------------------------------------
     IRSAPublicKeyPtr IRSAPublicKey::load(const SecureByteBlock &buffer)
     {
-      return internal::RSAPublicKey::load(buffer);
+      return internal::IRSAPublicKeyFactory::singleton().loadPublicKey(buffer);
     }
 
   }

@@ -51,30 +51,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPICESocketSessionFactory
-      #pragma mark
-
-      interaction IRUDPICESocketSessionFactory
-      {
-        typedef IICESocket::CandidateList CandidateList;
-        typedef IICESocket::ICEControls ICEControls;
-
-        static IRUDPICESocketSessionFactory &singleton();
-
-        virtual RUDPICESocketSessionPtr create(
-                                               IMessageQueuePtr queue,
-                                               RUDPICESocketPtr parent,
-                                               IRUDPICESocketSessionDelegatePtr delegate,
-                                               const CandidateList &remoteCandidates,
-                                               ICEControls control
-                                               );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IRUDPICESocketSessionForRUDPICESocket
       #pragma mark
 
@@ -295,6 +271,31 @@ namespace hookflash
 
         PendingSessionList mPendingSessions;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketSessionFactory
+      #pragma mark
+
+      interaction IRUDPICESocketSessionFactory
+      {
+        typedef IICESocket::CandidateList CandidateList;
+        typedef IICESocket::ICEControls ICEControls;
+
+        static IRUDPICESocketSessionFactory &singleton();
+
+        virtual RUDPICESocketSessionPtr create(
+                                               IMessageQueuePtr queue,
+                                               RUDPICESocketPtr parent,
+                                               IRUDPICESocketSessionDelegatePtr delegate,
+                                               const CandidateList &remoteCandidates,
+                                               ICEControls control
+                                               );
+      };
+      
     }
   }
 }

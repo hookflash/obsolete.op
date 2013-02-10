@@ -71,8 +71,8 @@ namespace hookflash
                            public IRSAPublicKeyForRSAPrivateKey
       {
       public:
+        friend interaction IRSAPublicKeyFactory;
         friend interaction IRSAPublicKey;
-        friend interaction IRSAPublicKeyForRSAPrivateKey;
 
         typedef CryptoPP::RSA::PublicKey PublicKey;
 
@@ -130,6 +130,21 @@ namespace hookflash
 
         PUID mID;
         PublicKey mPublicKey;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPublicKeyFactory
+      #pragma mark
+
+      interaction IRSAPublicKeyFactory
+      {
+        static IRSAPublicKeyFactory &singleton();
+
+        virtual RSAPublicKeyPtr loadPublicKey(const SecureByteBlock &buffer);
       };
     }
   }

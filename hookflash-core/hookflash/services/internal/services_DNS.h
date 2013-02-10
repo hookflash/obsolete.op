@@ -45,47 +45,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IDNSFactory
-      #pragma mark
-
-      interaction IDNSFactory
-      {
-        typedef IDNS::SRVLookupTypes SRVLookupTypes;
-
-        static IDNSFactory &singleton();
-
-        virtual IDNSQueryPtr lookupA(
-                                     IDNSDelegatePtr delegate,
-                                     const char *name
-                                     );
-
-        virtual IDNSQueryPtr lookupAAAA(
-                                        IDNSDelegatePtr delegate,
-                                        const char *name
-                                        );
-
-        virtual IDNSQueryPtr lookupAorAAAA(
-                                           IDNSDelegatePtr delegate,
-                                           const char *name
-                                           );
-
-        virtual IDNSQueryPtr lookupSRV(
-                                       IDNSDelegatePtr delegate,
-                                       const char *name,
-                                       const char *service,
-                                       const char *protocol,
-                                       WORD defaultPort,
-                                       WORD defaultPriority,
-                                       WORD defaultWeight,
-                                       SRVLookupTypes lookupType
-                                       );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IDNS
       #pragma mark
 
@@ -125,6 +84,48 @@ namespace hookflash
                                       SRVLookupTypes lookupType
                                       );
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IDNSFactory
+      #pragma mark
+
+      interaction IDNSFactory
+      {
+        typedef IDNS::SRVLookupTypes SRVLookupTypes;
+
+        static IDNSFactory &singleton();
+
+        virtual IDNSQueryPtr lookupA(
+                                     IDNSDelegatePtr delegate,
+                                     const char *name
+                                     );
+
+        virtual IDNSQueryPtr lookupAAAA(
+                                        IDNSDelegatePtr delegate,
+                                        const char *name
+                                        );
+
+        virtual IDNSQueryPtr lookupAorAAAA(
+                                           IDNSDelegatePtr delegate,
+                                           const char *name
+                                           );
+
+        virtual IDNSQueryPtr lookupSRV(
+                                       IDNSDelegatePtr delegate,
+                                       const char *name,
+                                       const char *service,
+                                       const char *protocol,
+                                       WORD defaultPort,
+                                       WORD defaultPriority,
+                                       WORD defaultWeight,
+                                       SRVLookupTypes lookupType
+                                       );
+      };
+      
     }
   }
 }

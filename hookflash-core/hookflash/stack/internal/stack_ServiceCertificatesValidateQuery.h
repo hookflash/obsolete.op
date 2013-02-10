@@ -52,10 +52,11 @@ namespace hookflash
       #pragma mark
 
       class ServiceCertificatesValidateQuery : public zsLib::MessageQueueAssociator,
-                                              public IServiceCertificatesValidateQuery,
-                                              public IBootstrappedNetworkDelegate
+                                               public IServiceCertificatesValidateQuery,
+                                               public IBootstrappedNetworkDelegate
       {
       public:
+        friend interaction IServiceCertificatesValidateQueryFactory;
         friend interaction IServiceCertificatesValidateQuery;
 
       protected:
@@ -139,6 +140,25 @@ namespace hookflash
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceCertificatesValidateQueryFactory
+      #pragma mark
+
+      interaction IServiceCertificatesValidateQueryFactory
+      {
+        static IServiceCertificatesValidateQueryFactory &singleton();
+
+        virtual ServiceCertificatesValidateQueryPtr queryIfValidSignature(
+                                                                          IServiceCertificatesValidateQueryDelegatePtr delegate,
+                                                                          ElementPtr signedElement
+                                                                          );
+      };
+
     }
   }
 }

@@ -154,10 +154,8 @@ namespace hookflash
                                         public IMessageMonitorResultDelegate<PeerContactServicesGetResult>
       {
       public:
+        friend interaction IServicePeerContactSessionFactory;
         friend interaction IServicePeerContactSession;
-        friend interaction IServicePeerContactSessionForAccount;
-        friend interaction IServicePeerContactSessionForServiceIdentity;
-        friend interaction IMessageSource;
 
         typedef PUID ServiceIdentitySessionID;
         typedef std::map<ServiceIdentitySessionID, ServiceIdentitySessionPtr> ServiceIdentitySessionMap;
@@ -434,6 +432,31 @@ namespace hookflash
         ServiceIdentitySessionMap mPendingUpdateIdentities;
         ServiceIdentitySessionMap mPendingRemoveIdentities;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServicePeerContactSessionFactory
+      #pragma mark
+
+      interaction IServicePeerContactSessionFactory
+      {
+        static IServicePeerContactSessionFactory &singleton();
+
+        virtual ServicePeerContactSessionPtr login(
+                                                   IServicePeerContactSessionDelegatePtr delegate,
+                                                   IServicePeerContactPtr servicePeerContact,
+                                                   IServiceIdentitySessionPtr identitySession
+                                                   );
+
+        virtual ServicePeerContactSessionPtr relogin(
+                                                     IServicePeerContactSessionDelegatePtr delegate,
+                                                     IPeerFilesPtr existingPeerFiles
+                                                     );
+      };
+      
     }
   }
 }

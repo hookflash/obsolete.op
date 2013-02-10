@@ -46,21 +46,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IBootstrappedNetworkManagerFactory
-      #pragma mark
-
-      interaction IBootstrappedNetworkManagerFactory
-      {
-        static IBootstrappedNetworkManagerFactory &singleton();
-
-        virtual BootstrappedNetworkManagerPtr createBootstrappedNetworkManager();
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IBootstrappedNetworkManagerForBootstrappedNetwork
       #pragma mark
 
@@ -158,6 +143,22 @@ namespace hookflash
         BootstrappedNetworkMap mBootstrappedNetworks;
         PendingDelegateList mPendingDelegates;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IBootstrappedNetworkManagerFactory
+      #pragma mark
+
+      interaction IBootstrappedNetworkManagerFactory
+      {
+        static IBootstrappedNetworkManagerFactory &singleton();
+
+        virtual BootstrappedNetworkManagerPtr createBootstrappedNetworkManager();
+      };
+
     }
   }
 }

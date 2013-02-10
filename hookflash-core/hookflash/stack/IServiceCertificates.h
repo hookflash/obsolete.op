@@ -100,7 +100,7 @@ namespace hookflash
 
     interaction IServiceCertificatesValidateQueryDelegate
     {
-      virtual void onServiceCertificatesValidateQueryCompleted(IServiceCertificatesValidateQueryPtr query);
+      virtual void onServiceCertificatesValidateQueryCompleted(IServiceCertificatesValidateQueryPtr query) = 0;
     };
   }
 }

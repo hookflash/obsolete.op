@@ -48,40 +48,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPICESocketFactory
-      #pragma mark
-
-      interaction IRUDPICESocketFactory
-      {
-        static IRUDPICESocketFactory &singleton();
-
-        virtual RUDPICESocketPtr create(
-                                        IMessageQueuePtr queue,
-                                        IRUDPICESocketDelegatePtr delegate,
-                                        const char *turnServer,
-                                        const char *turnServerUsername,
-                                        const char *turnServerPassword,
-                                        const char *stunServer,
-                                        WORD port = 0
-                                        );
-
-        virtual RUDPICESocketPtr create(
-                                        IMessageQueuePtr queue,
-                                        IRUDPICESocketDelegatePtr delegate,
-                                        IDNS::SRVResultPtr srvTURNUDP,
-                                        IDNS::SRVResultPtr srvTURNTCP,
-                                        const char *turnServerUsername,
-                                        const char *turnServerPassword,
-                                        IDNS::SRVResultPtr srvSTUN,
-                                        WORD port = 0
-                                        );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IRUDPICESocketForRUDPICESocketSession
       #pragma mark
 
@@ -290,6 +256,41 @@ namespace hookflash
         typedef std::map<PUID, RUDPICESocketSessionPtr> SessionMap;
         SessionMap mSessions;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPICESocketFactory
+      #pragma mark
+
+      interaction IRUDPICESocketFactory
+      {
+        static IRUDPICESocketFactory &singleton();
+
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        const char *turnServer,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        const char *stunServer,
+                                        WORD port = 0
+                                        );
+
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        IDNS::SRVResultPtr srvTURNUDP,
+                                        IDNS::SRVResultPtr srvTURNTCP,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        IDNS::SRVResultPtr srvSTUN,
+                                        WORD port = 0
+                                        );
+      };
+      
     }
   }
 }

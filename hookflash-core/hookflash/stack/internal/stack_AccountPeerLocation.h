@@ -73,25 +73,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountPeerLocationFactory
-      #pragma mark
-
-      interaction IAccountPeerLocationFactory
-      {
-        static IAccountPeerLocationFactory &singleton();
-
-        virtual AccountPeerLocationPtr create(
-                                              IAccountPeerLocationDelegatePtr delegate,
-                                              AccountPtr outer,
-                                              const LocationInfo &locationInfo
-                                              );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IAccountPeerLocationForAccount
       #pragma mark
 
@@ -395,6 +376,25 @@ namespace hookflash
                                                           AccountPeerLocationPtr peerLocation,
                                                           MessagePtr message
                                                           ) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountPeerLocationFactory
+      #pragma mark
+
+      interaction IAccountPeerLocationFactory
+      {
+        static IAccountPeerLocationFactory &singleton();
+
+        virtual AccountPeerLocationPtr create(
+                                              IAccountPeerLocationDelegatePtr delegate,
+                                              AccountPtr outer,
+                                              const LocationInfo &locationInfo
+                                              );
       };
 
     }

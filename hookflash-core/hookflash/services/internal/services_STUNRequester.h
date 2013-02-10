@@ -49,28 +49,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ISTUNRequesterFactory
-      #pragma mark
-
-      interaction ISTUNRequesterFactory
-      {
-        static ISTUNRequesterFactory &singleton();
-
-        virtual STUNRequesterPtr create(
-                                        IMessageQueuePtr queue,
-                                        ISTUNRequesterDelegatePtr delegate,
-                                        IPAddress serverIP,
-                                        STUNPacketPtr stun,
-                                        STUNPacket::RFCs usingRFC,
-                                        Duration maxTimeout = Duration()
-                                        );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ISTUNRequesterForSTUNRequesterManager
       #pragma mark
 
@@ -197,6 +175,29 @@ namespace hookflash
         Time mRequestStartTime;
         Duration mMaxTimeout;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterFactory
+      #pragma mark
+
+      interaction ISTUNRequesterFactory
+      {
+        static ISTUNRequesterFactory &singleton();
+
+        virtual STUNRequesterPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNRequesterDelegatePtr delegate,
+                                        IPAddress serverIP,
+                                        STUNPacketPtr stun,
+                                        STUNPacket::RFCs usingRFC,
+                                        Duration maxTimeout = Duration()
+                                        );
+      };
+
     }
   }
 }

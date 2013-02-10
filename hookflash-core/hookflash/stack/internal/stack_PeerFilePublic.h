@@ -46,33 +46,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPeerFilePublicFactory
-      #pragma mark
-
-      interaction IPeerFilePublicFactory
-      {
-        static IPeerFilePublicFactory &singleton();
-
-        virtual PeerFilePublicPtr loadFromElement(ElementPtr publicPeerRootElement);
-
-        virtual PeerFilePublicPtr createFromPublicKey(
-                                                      PeerFilesPtr peerFiles,
-                                                      DocumentPtr publicDoc,
-                                                      IRSAPublicKeyPtr publicKey,
-                                                      const String &peerURI
-                                                      );
-
-        virtual PeerFilePublicPtr loadFromElement(
-                                                  PeerFilesPtr peerFiles,
-                                                  DocumentPtr publicDoc
-                                                  );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IPeerFilePublicForPeerFiles
       #pragma mark
 
@@ -227,6 +200,34 @@ namespace hookflash
 
         IRSAPublicKeyPtr mPublicKey;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilePublicFactory
+      #pragma mark
+
+      interaction IPeerFilePublicFactory
+      {
+        static IPeerFilePublicFactory &singleton();
+
+        virtual PeerFilePublicPtr loadFromElement(ElementPtr publicPeerRootElement);
+
+        virtual PeerFilePublicPtr createFromPublicKey(
+                                                      PeerFilesPtr peerFiles,
+                                                      DocumentPtr publicDoc,
+                                                      IRSAPublicKeyPtr publicKey,
+                                                      const String &peerURI
+                                                      );
+
+        virtual PeerFilePublicPtr loadFromElement(
+                                                  PeerFilesPtr peerFiles,
+                                                  DocumentPtr publicDoc
+                                                  );
+      };
+      
     }
   }
 }

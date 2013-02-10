@@ -61,24 +61,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IBootstrappedNetworkFactory
-      #pragma mark
-
-      interaction IBootstrappedNetworkFactory
-      {
-        static IBootstrappedNetworkFactory &singleton();
-
-        virtual BootstrappedNetworkPtr prepare(
-                                               const char *domain,
-                                               IBootstrappedNetworkDelegatePtr delegate
-                                               );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IBootstrappedNetworkForAccount
       #pragma mark
 
@@ -479,6 +461,25 @@ namespace hookflash
 
         PendingRequestMap mPendingRequests;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IBootstrappedNetworkFactory
+      #pragma mark
+
+      interaction IBootstrappedNetworkFactory
+      {
+        static IBootstrappedNetworkFactory &singleton();
+
+        virtual BootstrappedNetworkPtr prepare(
+                                               const char *domain,
+                                               IBootstrappedNetworkDelegatePtr delegate
+                                               );
+      };
+
     }
   }
 }

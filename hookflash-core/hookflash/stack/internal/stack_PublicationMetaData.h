@@ -47,35 +47,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPublicationMetaDataFactory
-      #pragma mark
-
-      interaction IPublicationMetaDataFactory
-      {
-        typedef IPublicationMetaData::Encodings Encodings;
-        typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
-
-        static IPublicationMetaDataFactory &singleton();
-
-        virtual PublicationMetaDataPtr creatPublicationMetaData(
-                                                                ULONG version,
-                                                                ULONG baseVersion,
-                                                                ULONG lineage,
-                                                                LocationPtr creatorLocation,
-                                                                const char *name,
-                                                                const char *mimeType,
-                                                                Encodings encoding,
-                                                                const PublishToRelationshipsMap &relationships,
-                                                                LocationPtr publishedLocation,
-                                                                Time expires
-                                                                );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IPublicationMetaDataForPublication
       #pragma mark
 
@@ -362,6 +333,36 @@ namespace hookflash
 
         PublishToRelationshipsMap mPublishedRelationships;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPublicationMetaDataFactory
+      #pragma mark
+
+      interaction IPublicationMetaDataFactory
+      {
+        typedef IPublicationMetaData::Encodings Encodings;
+        typedef IPublicationMetaData::PublishToRelationshipsMap PublishToRelationshipsMap;
+
+        static IPublicationMetaDataFactory &singleton();
+
+        virtual PublicationMetaDataPtr creatPublicationMetaData(
+                                                                ULONG version,
+                                                                ULONG baseVersion,
+                                                                ULONG lineage,
+                                                                LocationPtr creatorLocation,
+                                                                const char *name,
+                                                                const char *mimeType,
+                                                                Encodings encoding,
+                                                                const PublishToRelationshipsMap &relationships,
+                                                                LocationPtr publishedLocation,
+                                                                Time expires
+                                                                );
+      };
+      
     }
   }
 }

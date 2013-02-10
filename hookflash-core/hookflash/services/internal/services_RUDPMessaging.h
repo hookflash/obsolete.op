@@ -48,41 +48,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPMessagingFactory
-      #pragma mark
-
-      interaction IRUDPMessagingFactory
-      {
-        static IRUDPMessagingFactory &singleton();
-
-        virtual RUDPMessagingPtr acceptChannel(
-                                               IMessageQueuePtr queue,
-                                               IRUDPListenerPtr listener,
-                                               IRUDPMessagingDelegatePtr delegate,
-                                               ULONG maxMessageSizeInBytes
-                                               );
-
-        virtual RUDPMessagingPtr acceptChannel(
-                                               IMessageQueuePtr queue,
-                                               IRUDPICESocketSessionPtr session,
-                                               IRUDPMessagingDelegatePtr delegate,
-                                               ULONG maxMessageSizeInBytes
-                                               );
-
-        virtual RUDPMessagingPtr openChannel(
-                                             IMessageQueuePtr queue,
-                                             IRUDPICESocketSessionPtr session,
-                                             IRUDPMessagingDelegatePtr delegate,
-                                             const char *connectionInfo,
-                                             ULONG maxMessageSizeInBytes
-                                             );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark RUDPMessaging
       #pragma mark
 
@@ -241,6 +206,42 @@ namespace hookflash
 
         RecycledPacketBufferList mRecycledBuffers;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPMessagingFactory
+      #pragma mark
+
+      interaction IRUDPMessagingFactory
+      {
+        static IRUDPMessagingFactory &singleton();
+
+        virtual RUDPMessagingPtr acceptChannel(
+                                               IMessageQueuePtr queue,
+                                               IRUDPListenerPtr listener,
+                                               IRUDPMessagingDelegatePtr delegate,
+                                               ULONG maxMessageSizeInBytes
+                                               );
+
+        virtual RUDPMessagingPtr acceptChannel(
+                                               IMessageQueuePtr queue,
+                                               IRUDPICESocketSessionPtr session,
+                                               IRUDPMessagingDelegatePtr delegate,
+                                               ULONG maxMessageSizeInBytes
+                                               );
+
+        virtual RUDPMessagingPtr openChannel(
+                                             IMessageQueuePtr queue,
+                                             IRUDPICESocketSessionPtr session,
+                                             IRUDPMessagingDelegatePtr delegate,
+                                             const char *connectionInfo,
+                                             ULONG maxMessageSizeInBytes
+                                             );
+      };
+      
     }
   }
 }

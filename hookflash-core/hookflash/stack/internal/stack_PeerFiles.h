@@ -45,29 +45,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPeerFilesFactory
-      #pragma mark
-
-      interaction IPeerFilesFactory
-      {
-        static IPeerFilesFactory &singleton();
-
-        virtual PeerFilesPtr generate(
-                                      const char *password,
-                                      ElementPtr signedSaltBundleEl
-                                      );
-
-        virtual PeerFilesPtr loadFromElement(
-                                             const char *password,
-                                             ElementPtr privatePeerRootElement
-                                             );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark PeerFiles
       #pragma mark
 
@@ -133,6 +110,30 @@ namespace hookflash
         PeerFilePublicPtr mPublic;
         PeerFilePrivatePtr mPrivate;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilesFactory
+      #pragma mark
+
+      interaction IPeerFilesFactory
+      {
+        static IPeerFilesFactory &singleton();
+
+        virtual PeerFilesPtr generate(
+                                      const char *password,
+                                      ElementPtr signedSaltBundleEl
+                                      );
+
+        virtual PeerFilesPtr loadFromElement(
+                                             const char *password,
+                                             ElementPtr privatePeerRootElement
+                                             );
+      };
+      
     }
   }
 }

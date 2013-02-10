@@ -79,8 +79,8 @@ namespace hookflash
                                     public ITimerDelegate
       {
       public:
+        friend interaction IPublicationRepositoryFactory;
         friend interaction IPublicationRepository;
-        friend interaction IPublicationRepositoryForAccount;
 
         struct CacheCompare
         {
@@ -1186,6 +1186,22 @@ namespace hookflash
 
         CachedPeerSourceMap mCachedPeerSources;               // represents the document notification state of each peer subscribing to this location
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPublicationRepositoryFactory
+      #pragma mark
+
+      interaction IPublicationRepositoryFactory
+      {
+        static IPublicationRepositoryFactory &singleton();
+
+        virtual PublicationRepositoryPtr createPublicationRepository(AccountPtr account);
+      };
+
     }
   }
 }

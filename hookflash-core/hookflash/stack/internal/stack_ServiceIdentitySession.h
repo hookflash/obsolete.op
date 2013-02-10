@@ -125,9 +125,8 @@ namespace hookflash
                                      public IMessageMonitorResultDelegate<IdentitySignResult>
       {
       public:
+        friend interaction IServiceIdentitySessionFactory;
         friend interaction IServiceIdentitySession;
-        friend interaction IMessageSource;
-        friend interaction IServiceIdentitySessionForServicePeerContact;
 
         typedef std::list<DocumentPtr> DocumentList;
 
@@ -390,6 +389,46 @@ namespace hookflash
         bool mDownloadedSignedIdentityBundle;
 
         DocumentList mPendingMessagesToDeliver;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceIdentitySessionFactory
+      #pragma mark
+
+      interaction IServiceIdentitySessionFactory
+      {
+        static IServiceIdentitySessionFactory &singleton();
+
+        virtual ServiceIdentitySessionPtr loginWithIdentity(
+                                                            IServiceIdentitySessionDelegatePtr delegate,
+                                                            const char *redirectAfterLoginCompleteURL,
+                                                            const char *identityURI,
+                                                            IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
+                                                            );
+
+        virtual ServiceIdentitySessionPtr loginWithIdentityTBD(
+                                                               IServiceIdentitySessionDelegatePtr delegate,
+                                                               const char *redirectAfterLoginCompleteURL,
+                                                               IServiceIdentityPtr provider,
+                                                               const char *legacyIdentityBaseURI = NULL
+                                                               );
+
+        virtual ServiceIdentitySessionPtr loginWithIdentityBundle(
+                                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                                  const char *redirectAfterLoginCompleteURL,
+                                                                  ElementPtr signedIdentityBundle
+                                                                  );
+
+        virtual ServiceIdentitySessionPtr relogin(
+                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                  const char *redirectAfterLoginCompleteURL,
+                                                  IServiceIdentityPtr provider,
+                                                  const char *identityReloginAccessKey
+                                                  );
       };
     }
   }

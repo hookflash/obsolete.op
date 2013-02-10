@@ -48,21 +48,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ISTUNRequesterManagerFactory
-      #pragma mark
-
-      interaction ISTUNRequesterManagerFactory
-      {
-        static ISTUNRequesterManagerFactory &singleton();
-
-        virtual STUNRequesterManagerPtr createSTUNRequesterManager();
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ISTUNRequesterManagerForSTUNRequester
       #pragma mark
 
@@ -159,6 +144,22 @@ namespace hookflash
         typedef std::map<QWORDPair, STUNRequesterPair> STUNRequesterMap;
         STUNRequesterMap mRequesters;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNRequesterManagerFactory
+      #pragma mark
+
+      interaction ISTUNRequesterManagerFactory
+      {
+        static ISTUNRequesterManagerFactory &singleton();
+
+        virtual STUNRequesterManagerPtr createSTUNRequesterManager();
+      };
+
     }
   }
 }

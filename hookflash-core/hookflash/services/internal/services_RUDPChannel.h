@@ -51,54 +51,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPChannelFactory
-      #pragma mark
-
-      interaction IRUDPChannelFactory
-      {
-        static IRUDPChannelFactory &singleton();
-
-        virtual RUDPChannelPtr createForRUDPICESocketSessionIncoming(
-                                                                     IMessageQueuePtr queue,
-                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                                     const IPAddress &remoteIP,
-                                                                     WORD incomingChannelNumber,
-                                                                     const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
-                                                                     const char *localPassword,
-                                                                     const char *remotePassword,
-                                                                     STUNPacketPtr channelOpenPacket,
-                                                                     STUNPacketPtr &outResponse
-                                                                     );
-
-        virtual RUDPChannelPtr createForRUDPICESocketSessionOutgoing(
-                                                                     IMessageQueuePtr queue,
-                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                                     IRUDPChannelDelegatePtr delegate,
-                                                                     const IPAddress &remoteIP,
-                                                                     WORD incomingChannelNumber,
-                                                                     const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
-                                                                     const char *localPassword,
-                                                                     const char *remotePassword,
-                                                                     const char *connectionInfo
-                                                                     );
-
-        virtual RUDPChannelPtr createForListener(
-                                                 IMessageQueuePtr queue,
-                                                 IRUDPChannelDelegateForSessionAndListenerPtr master,
-                                                 const IPAddress &remoteIP,
-                                                 WORD incomingChannelNumber,
-                                                 STUNPacketPtr channelOpenPacket,
-                                                 STUNPacketPtr &outResponse
-                                                 );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IRUDPChannelForRUDPICESocketSession
       #pragma mark
 
@@ -558,6 +510,55 @@ namespace hookflash
                                                  ULONG packetLengthInBytes
                                                  ) = 0;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPChannelFactory
+      #pragma mark
+
+      interaction IRUDPChannelFactory
+      {
+        static IRUDPChannelFactory &singleton();
+
+        virtual RUDPChannelPtr createForRUDPICESocketSessionIncoming(
+                                                                     IMessageQueuePtr queue,
+                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                     const IPAddress &remoteIP,
+                                                                     WORD incomingChannelNumber,
+                                                                     const char *localUserFrag,
+                                                                     const char *remoteUserFrag,
+                                                                     const char *localPassword,
+                                                                     const char *remotePassword,
+                                                                     STUNPacketPtr channelOpenPacket,
+                                                                     STUNPacketPtr &outResponse
+                                                                     );
+
+        virtual RUDPChannelPtr createForRUDPICESocketSessionOutgoing(
+                                                                     IMessageQueuePtr queue,
+                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                                     IRUDPChannelDelegatePtr delegate,
+                                                                     const IPAddress &remoteIP,
+                                                                     WORD incomingChannelNumber,
+                                                                     const char *localUserFrag,
+                                                                     const char *remoteUserFrag,
+                                                                     const char *localPassword,
+                                                                     const char *remotePassword,
+                                                                     const char *connectionInfo
+                                                                     );
+
+        virtual RUDPChannelPtr createForListener(
+                                                 IMessageQueuePtr queue,
+                                                 IRUDPChannelDelegateForSessionAndListenerPtr master,
+                                                 const IPAddress &remoteIP,
+                                                 WORD incomingChannelNumber,
+                                                 STUNPacketPtr channelOpenPacket,
+                                                 STUNPacketPtr &outResponse
+                                                 );
+      };
+      
     }
   }
 }

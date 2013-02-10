@@ -1387,7 +1387,7 @@ namespace hookflash
                                                                     IServiceIdentitySessionPtr identitySession
                                                                     )
     {
-      return internal::ServicePeerContactSession::login(delegate, servicePeerContact, identitySession);
+      return internal::IServicePeerContactSessionFactory::singleton().login(delegate, servicePeerContact, identitySession);
     }
 
     //-------------------------------------------------------------------------
@@ -1396,7 +1396,7 @@ namespace hookflash
                                                                       IPeerFilesPtr existingPeerFiles
                                                                       )
     {
-      return internal::ServicePeerContactSession::relogin(delegate, existingPeerFiles);
+      return internal::IServicePeerContactSessionFactory::singleton().relogin(delegate, existingPeerFiles);
     }
 
   }

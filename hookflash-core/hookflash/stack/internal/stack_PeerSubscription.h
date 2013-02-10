@@ -46,29 +46,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPeerSubscriptionFactory
-      #pragma mark
-
-      interaction IPeerSubscriptionFactory
-      {
-        static IPeerSubscriptionFactory &singleton();
-
-        virtual PeerSubscriptionPtr subscribeAll(
-                                                 IAccountPtr account,
-                                                 IPeerSubscriptionDelegatePtr delegate
-                                                 );
-
-        virtual PeerSubscriptionPtr subscribe(
-                                              IPeerPtr peer,
-                                              IPeerSubscriptionDelegatePtr delegate
-                                              );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IPeerSubscriptionForAccount
       #pragma mark
 
@@ -208,6 +185,29 @@ namespace hookflash
         IPeerSubscriptionDelegatePtr mDelegate;
       };
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerSubscriptionFactory
+      #pragma mark
+
+      interaction IPeerSubscriptionFactory
+      {
+        static IPeerSubscriptionFactory &singleton();
+
+        virtual PeerSubscriptionPtr subscribeAll(
+                                                 IAccountPtr account,
+                                                 IPeerSubscriptionDelegatePtr delegate
+                                                 );
+
+        virtual PeerSubscriptionPtr subscribe(
+                                              IPeerPtr peer,
+                                              IPeerSubscriptionDelegatePtr delegate
+                                              );
+      };
+      
     }
   }
 }

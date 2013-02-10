@@ -72,8 +72,7 @@ namespace hookflash
       class RSAPrivateKey : public IRSAPrivateKey
       {
       public:
-        friend interaction IRSAPrivateKey;
-        friend interaction IRSAPrivateKeyForRSAPublicKey;
+        friend interaction IRSAPrivateKeyFactory;
 
         typedef CryptoPP::RSA::PrivateKey PrivateKey;
 
@@ -126,6 +125,24 @@ namespace hookflash
 
         PrivateKey mPrivateKey;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPrivateKeyFactory
+      #pragma mark
+
+      interaction IRSAPrivateKeyFactory
+      {
+        static IRSAPrivateKeyFactory &singleton();
+
+        virtual RSAPrivateKeyPtr generate(RSAPublicKeyPtr &outPublicKey);
+
+        virtual RSAPrivateKeyPtr loadPrivateKey(const SecureByteBlock &buffer);
+      };
+      
     }
   }
 }

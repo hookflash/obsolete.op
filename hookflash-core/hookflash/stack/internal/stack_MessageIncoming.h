@@ -45,25 +45,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMessageIncomingFactory
-      #pragma mark
-
-      interaction IMessageIncomingFactory
-      {
-        static IMessageIncomingFactory &singleton();
-
-        virtual MessageIncomingPtr create(
-                                          AccountPtr account,
-                                          LocationPtr location,
-                                          message::MessagePtr message
-                                          );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IMessageIncomingForAccount
       #pragma mark
 
@@ -176,6 +157,26 @@ namespace hookflash
 
         bool mResponseSent;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMessageIncomingFactory
+      #pragma mark
+
+      interaction IMessageIncomingFactory
+      {
+        static IMessageIncomingFactory &singleton();
+
+        virtual MessageIncomingPtr create(
+                                          AccountPtr account,
+                                          LocationPtr location,
+                                          message::MessagePtr message
+                                          );
+      };
+
     }
   }
 }

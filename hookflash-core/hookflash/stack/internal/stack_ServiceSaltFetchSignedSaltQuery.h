@@ -63,6 +63,7 @@ namespace hookflash
                                               public IMessageMonitorResultDelegate<SignedSaltGetResult>
       {
       public:
+        friend interaction IServiceSaltFetchSignedSaltQueryFactory;
         friend interaction IServiceSaltFetchSignedSaltQuery;
 
         typedef message::peer_salt::SaltBundleList SaltBundleList;
@@ -167,6 +168,26 @@ namespace hookflash
         WORD mLastError;
         String mLastErrorReason;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceSaltFetchSignedSaltQueryFactory
+      #pragma mark
+
+      interaction IServiceSaltFetchSignedSaltQueryFactory
+      {
+        static IServiceSaltFetchSignedSaltQueryFactory &singleton();
+
+        virtual ServiceSaltFetchSignedSaltQueryPtr fetchSignedSalt(
+                                                                   IServiceSaltFetchSignedSaltQueryDelegatePtr delegate,
+                                                                   IServiceSaltPtr serviceSalt,
+                                                                   UINT totalToFetch = 1
+                                                                   );
+      };
+
     }
   }
 }

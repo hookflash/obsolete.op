@@ -53,36 +53,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IHTTPFactory
-      #pragma mark
-
-      interaction IHTTPFactory
-      {
-        static IHTTPFactory &singleton();
-
-        virtual IHTTPQueryPtr get(
-                                  IHTTPQueryDelegatePtr delegate,
-                                  const char *userAgent,
-                                  const char *url,
-                                  Duration timeout
-                                  );
-
-        virtual IHTTPQueryPtr post(
-                                   IHTTPQueryDelegatePtr delegate,
-                                   const char *userAgent,
-                                   const char *url,
-                                   const BYTE *postData,
-                                   ULONG postDataLengthInBytes,
-                                   const char *postDataMimeType,
-                                   Duration timeout
-                                   );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark HTTP
       #pragma mark
 
@@ -328,6 +298,37 @@ namespace hookflash
         typedef std::map<CURL *, HTTPQueryPtr> HTTPCurlMap;
         HTTPCurlMap mCurlMap;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IHTTPFactory
+      #pragma mark
+
+      interaction IHTTPFactory
+      {
+        static IHTTPFactory &singleton();
+
+        virtual IHTTPQueryPtr get(
+                                  IHTTPQueryDelegatePtr delegate,
+                                  const char *userAgent,
+                                  const char *url,
+                                  Duration timeout
+                                  );
+
+        virtual IHTTPQueryPtr post(
+                                   IHTTPQueryDelegatePtr delegate,
+                                   const char *userAgent,
+                                   const char *url,
+                                   const BYTE *postData,
+                                   ULONG postDataLengthInBytes,
+                                   const char *postDataMimeType,
+                                   Duration timeout
+                                   );
+      };
+      
     }
   }
 }

@@ -71,7 +71,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RSAPrivateKeyPtr IRSAPrivateKeyForRSAPublicKey::generate(RSAPublicKeyPtr &outPublicKey)
       {
-        return RSAPrivateKey::generate(outPublicKey);
+        return IRSAPrivateKeyFactory::singleton().generate(outPublicKey);
       }
 
       //-----------------------------------------------------------------------
@@ -177,6 +177,7 @@ namespace hookflash
         output->CleanNew(outputLengthInBytes);
 
         byteQueue.Get(*output, outputLengthInBytes);
+        return output;
       }
 
       //-----------------------------------------------------------------------
@@ -263,7 +264,7 @@ namespace hookflash
     IRSAPrivateKeyPtr IRSAPrivateKey::generate(IRSAPublicKeyPtr &outPublicKey)
     {
       internal::RSAPublicKeyPtr publicKey;
-      IRSAPrivateKeyPtr result = internal::RSAPrivateKey::generate(publicKey);
+      IRSAPrivateKeyPtr result = internal::IRSAPrivateKeyFactory::singleton().generate(publicKey);
       outPublicKey = publicKey;
       return result;
     }
@@ -271,7 +272,7 @@ namespace hookflash
     //-------------------------------------------------------------------------
     IRSAPrivateKeyPtr IRSAPrivateKey::load(const SecureByteBlock &buffer)
     {
-      return internal::RSAPrivateKey::load(buffer);
+      return internal::IRSAPrivateKeyFactory::singleton().loadPrivateKey(buffer);
     }
   }
 }

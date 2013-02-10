@@ -65,24 +65,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountFinderFactory
-      #pragma mark
-
-      interaction IAccountFinderFactory
-      {
-        static IAccountFinderFactory &singleton();
-
-        virtual AccountFinderPtr create(
-                                        IAccountFinderDelegatePtr delegate,
-                                        AccountPtr outer
-                                        );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IAccountFinderForAccount
       #pragma mark
 
@@ -378,6 +360,24 @@ namespace hookflash
                                                     AccountFinderPtr finder,
                                                     MessagePtr message
                                                     ) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountFinderFactory
+      #pragma mark
+
+      interaction IAccountFinderFactory
+      {
+        static IAccountFinderFactory &singleton();
+
+        virtual AccountFinderPtr create(
+                                        IAccountFinderDelegatePtr delegate,
+                                        AccountPtr outer
+                                        );
       };
 
     }

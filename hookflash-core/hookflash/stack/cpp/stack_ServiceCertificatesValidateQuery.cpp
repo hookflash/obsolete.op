@@ -324,7 +324,7 @@ namespace hookflash
                                                                                                 ElementPtr signedElement
                                                                                                 )
     {
-      return internal::ServiceCertificatesValidateQuery::queryIfValidSignature(delegate, signedElement);
+      return internal::IServiceCertificatesValidateQueryFactory::singleton().queryIfValidSignature(delegate, signedElement);
     }
   }
 }

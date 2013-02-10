@@ -52,28 +52,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IICESocketSessionFactory
-      #pragma mark
-
-      interaction IICESocketSessionFactory
-      {
-        typedef IICESocketSession::ICEControls ICEControls;
-
-        static IICESocketSessionFactory &singleton();
-
-        virtual ICESocketSessionPtr create(
-                                           IMessageQueuePtr queue,
-                                           IICESocketSessionDelegatePtr delegate,
-                                           ICESocketPtr socket,
-                                           ICEControls control
-                                           );
-      };
-      
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IICESocketSessionForICESocket
       #pragma mark
 
@@ -382,6 +360,29 @@ namespace hookflash
 
         CandidateList mRemoteCandidates;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketSessionFactory
+      #pragma mark
+
+      interaction IICESocketSessionFactory
+      {
+        typedef IICESocketSession::ICEControls ICEControls;
+
+        static IICESocketSessionFactory &singleton();
+
+        virtual ICESocketSessionPtr create(
+                                           IMessageQueuePtr queue,
+                                           IICESocketSessionDelegatePtr delegate,
+                                           ICESocketPtr socket,
+                                           ICEControls control
+                                           );
+      };
+
     }
   }
 }

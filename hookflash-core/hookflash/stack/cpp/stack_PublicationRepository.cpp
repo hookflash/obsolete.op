@@ -111,7 +111,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       PublicationRepositoryPtr IPublicationRepositoryForAccount::create(AccountPtr account)
       {
-        return PublicationRepository::create(account);
+        return IPublicationRepositoryFactory::singleton().createPublicationRepository(account);
       }
 
       //-----------------------------------------------------------------------

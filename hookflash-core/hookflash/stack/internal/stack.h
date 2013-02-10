@@ -48,9 +48,10 @@
 #include <hookflash/stack/internal/stack_PeerSubscription.h>
 #include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <hookflash/stack/internal/stack_PublicationRepository.h>
+#include <hookflash/stack/internal/stack_RSAPrivateKey.h>
+#include <hookflash/stack/internal/stack_RSAPublicKey.h>
 #include <hookflash/stack/internal/stack_ServiceCertificatesValidateQuery.h>
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
 #include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
 #include <hookflash/stack/internal/stack_ServiceSaltFetchSignedSaltQuery.h>
-#include <hookflash/stack/internal/stack_RSAPrivateKey.h>
-#include <hookflash/stack/internal/stack_RSAPublicKey.h>

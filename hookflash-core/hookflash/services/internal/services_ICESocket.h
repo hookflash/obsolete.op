@@ -56,42 +56,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IICESocketFactory
-      #pragma mark
-
-      interaction IICESocketFactory
-      {
-        static IICESocketFactory &singleton();
-
-        virtual ICESocketPtr create(
-                                    IMessageQueuePtr queue,
-                                    IICESocketDelegatePtr delegate,
-                                    const char *turnServer,
-                                    const char *turnServerUsername,
-                                    const char *turnServerPassword,
-                                    const char *stunServer,
-                                    WORD port = 0,
-                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
-                                    );
-
-        virtual ICESocketPtr create(
-                                    IMessageQueuePtr queue,
-                                    IICESocketDelegatePtr delegate,
-                                    IDNS::SRVResultPtr srvTURNUDP,
-                                    IDNS::SRVResultPtr srvTURNTCP,
-                                    const char *turnServerUsername,
-                                    const char *turnServerPassword,
-                                    IDNS::SRVResultPtr srvSTUN,
-                                    WORD port = 0,
-                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
-                                    );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IICESocketForICESocketSession
       #pragma mark
 
@@ -438,6 +402,42 @@ namespace hookflash
         QuickRouteMap mRoutes;
 
         RecycledPacketBufferList mRecycledBuffers;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IICESocketFactory
+      #pragma mark
+
+      interaction IICESocketFactory
+      {
+        static IICESocketFactory &singleton();
+
+        virtual ICESocketPtr create(
+                                    IMessageQueuePtr queue,
+                                    IICESocketDelegatePtr delegate,
+                                    const char *turnServer,
+                                    const char *turnServerUsername,
+                                    const char *turnServerPassword,
+                                    const char *stunServer,
+                                    WORD port = 0,
+                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                    );
+
+        virtual ICESocketPtr create(
+                                    IMessageQueuePtr queue,
+                                    IICESocketDelegatePtr delegate,
+                                    IDNS::SRVResultPtr srvTURNUDP,
+                                    IDNS::SRVResultPtr srvTURNTCP,
+                                    const char *turnServerUsername,
+                                    const char *turnServerPassword,
+                                    IDNS::SRVResultPtr srvSTUN,
+                                    WORD port = 0,
+                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                    );
       };
     }
   }

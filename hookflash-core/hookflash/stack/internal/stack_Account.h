@@ -58,24 +58,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountFactory
-      #pragma mark
-
-      interaction IAccountFactory
-      {
-        static IAccountFactory &singleton();
-
-        virtual AccountPtr create(
-                                  IAccountDelegatePtr delegate,
-                                  IServicePeerContactSessionPtr peerContactSession
-                                  );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IAccountForAccountFinder
       #pragma mark
 
@@ -737,6 +719,25 @@ namespace hookflash
         PeerMap mPeers;
         LocationMap mLocations;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IAccountFactory
+      #pragma mark
+
+      interaction IAccountFactory
+      {
+        static IAccountFactory &singleton();
+
+        virtual AccountPtr create(
+                                  IAccountDelegatePtr delegate,
+                                  IServicePeerContactSessionPtr peerContactSession
+                                  );
+      };
+
     }
   }
 }

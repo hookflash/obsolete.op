@@ -49,35 +49,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IPeerFilePrivateFactory
-      #pragma mark
-
-      interaction IPeerFilePrivateFactory
-      {
-        static IPeerFilePrivateFactory &singleton();
-
-        virtual bool generate(
-                              PeerFilesPtr peerFiles,
-                              PeerFilePrivatePtr &outPeerFilePrivate,
-                              PeerFilePublicPtr &outPeerFilePublic,
-                              const char *password,
-                              ElementPtr signedSaltBundleEl
-                              );
-
-        virtual bool loadFromElement(
-                                     PeerFilesPtr peerFiles,
-                                     PeerFilePrivatePtr &outPeerFilePrivate,
-                                     PeerFilePublicPtr &outPeerFilePublic,
-                                     const char *password,
-                                     ElementPtr peerFileRootElement
-                                     );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IPeerFilePrivateForPeerFiles
       #pragma mark
 
@@ -259,6 +230,36 @@ namespace hookflash
 
         IRSAPrivateKeyPtr mPrivateKey;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IPeerFilePrivateFactory
+      #pragma mark
+
+      interaction IPeerFilePrivateFactory
+      {
+        static IPeerFilePrivateFactory &singleton();
+
+        virtual bool generate(
+                              PeerFilesPtr peerFiles,
+                              PeerFilePrivatePtr &outPeerFilePrivate,
+                              PeerFilePublicPtr &outPeerFilePublic,
+                              const char *password,
+                              ElementPtr signedSaltBundleEl
+                              );
+
+        virtual bool loadFromElement(
+                                     PeerFilesPtr peerFiles,
+                                     PeerFilePrivatePtr &outPeerFilePrivate,
+                                     PeerFilePublicPtr &outPeerFilePublic,
+                                     const char *password,
+                                     ElementPtr peerFileRootElement
+                                     );
+      };
+      
     }
   }
 }

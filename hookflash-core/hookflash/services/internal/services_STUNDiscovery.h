@@ -49,32 +49,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ISTUNDiscoveryFactory
-      #pragma mark
-
-      interaction ISTUNDiscoveryFactory
-      {
-        static ISTUNDiscoveryFactory &singleton();
-
-        virtual STUNDiscoveryPtr create(
-                                        IMessageQueuePtr queue,
-                                        ISTUNDiscoveryDelegatePtr delegate,
-                                        IDNS::SRVResultPtr service
-                                        );
-
-        virtual STUNDiscoveryPtr create(
-                                        IMessageQueuePtr queue,
-                                        ISTUNDiscoveryDelegatePtr delegate,
-                                        const char *srvName
-                                        );
-
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark STUNDiscovery
       #pragma mark
 
@@ -189,6 +163,33 @@ namespace hookflash
 
         IPAddressList mPreviouslyContactedServers;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISTUNDiscoveryFactory
+      #pragma mark
+
+      interaction ISTUNDiscoveryFactory
+      {
+        static ISTUNDiscoveryFactory &singleton();
+
+        virtual STUNDiscoveryPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNDiscoveryDelegatePtr delegate,
+                                        IDNS::SRVResultPtr service
+                                        );
+
+        virtual STUNDiscoveryPtr create(
+                                        IMessageQueuePtr queue,
+                                        ISTUNDiscoveryDelegatePtr delegate,
+                                        const char *srvName
+                                        );
+
+      };
+      
     }
   }
 }

@@ -63,7 +63,14 @@ namespace hookflash
                       public IPeerFilePublicFactory,
                       public IPeerSubscriptionFactory,
                       public IPublicationFactory,
-                      public IPublicationMetaDataFactory
+                      public IPublicationMetaDataFactory,
+                      public IPublicationRepositoryFactory,
+                      public IRSAPrivateKeyFactory,
+                      public IRSAPublicKeyFactory,
+                      public IServiceCertificatesValidateQueryFactory,
+                      public IServiceIdentitySessionFactory,
+                      public IServicePeerContactSessionFactory,
+                      public IServiceSaltFetchSignedSaltQueryFactory
       {
       public:
         static void override(FactoryPtr override);

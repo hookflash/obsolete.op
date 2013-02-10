@@ -97,7 +97,7 @@ namespace hookflash
                                                                                       const char *identityReloginAccessKey
                                                                                       )
       {
-        return ServiceIdentitySession::relogin(IServiceIdentitySessionDelegatePtr(), NULL, network, identityReloginAccessKey);
+        return IServiceIdentitySessionFactory::singleton().relogin(IServiceIdentitySessionDelegatePtr(), NULL, network, identityReloginAccessKey);
       }
 
       //-----------------------------------------------------------------------
@@ -1598,7 +1598,7 @@ namespace hookflash
                                                                           IServiceIdentityPtr provider
                                                                           )
     {
-      return internal::ServiceIdentitySession::loginWithIdentity(delegate, redirectAfterLoginCompleteURL, identityURI, provider);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentity(delegate, redirectAfterLoginCompleteURL, identityURI, provider);
     }
 
     //-------------------------------------------------------------------------
@@ -1609,7 +1609,7 @@ namespace hookflash
                                                                              const char *legacyIdentityBaseURI
                                                                              )
     {
-      return internal::ServiceIdentitySession::loginWithIdentityTBD(delegate, redirectAfterLoginCompleteURL, provider, legacyIdentityBaseURI);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityTBD(delegate, redirectAfterLoginCompleteURL, provider, legacyIdentityBaseURI);
     }
 
     //-------------------------------------------------------------------------
@@ -1619,7 +1619,7 @@ namespace hookflash
                                                                                 ElementPtr signedIdentityBundle
                                                                                 )
     {
-      return internal::ServiceIdentitySession::loginWithIdentityBundle(delegate, redirectAfterLoginCompleteURL, signedIdentityBundle);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityBundle(delegate, redirectAfterLoginCompleteURL, signedIdentityBundle);
     }
 
     //-------------------------------------------------------------------------
@@ -1630,7 +1630,7 @@ namespace hookflash
                                                                 const char *identityReloginAccessKey
                                                                 )
     {
-      return internal::ServiceIdentitySession::relogin(delegate, redirectAfterLoginCompleteURL, provider, identityReloginAccessKey);
+      return internal::IServiceIdentitySessionFactory::singleton().relogin(delegate, redirectAfterLoginCompleteURL, provider, identityReloginAccessKey);
     }
   }
 }

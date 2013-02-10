@@ -63,42 +63,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ITURNSocketFactory
-      #pragma mark
-
-      interaction ITURNSocketFactory
-      {
-        static ITURNSocketFactory &singleton();
-
-        virtual TURNSocketPtr create(
-                                     IMessageQueuePtr queue,
-                                     ITURNSocketDelegatePtr delegate,
-                                     const char *turnServer,
-                                     const char *turnServerUsername,
-                                     const char *turnServerPassword,
-                                     bool useChannelBinding = false,
-                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
-                                     );
-
-        virtual TURNSocketPtr create(
-                                     IMessageQueuePtr queue,
-                                     ITURNSocketDelegatePtr delegate,
-                                     IDNS::SRVResultPtr srvTURNUDP,
-                                     IDNS::SRVResultPtr srvTURNTCP,
-                                     const char *turnServerUsername,
-                                     const char *turnServerPassword,
-                                     bool useChannelBinding = false,
-                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
-                                     );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ITURNSocketAsyncDelegate
       #pragma mark
 
@@ -521,6 +485,43 @@ namespace hookflash
 
         RecycledPacketBufferList mRecycledBuffers;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITURNSocketFactory
+      #pragma mark
+
+      interaction ITURNSocketFactory
+      {
+        static ITURNSocketFactory &singleton();
+
+        virtual TURNSocketPtr create(
+                                     IMessageQueuePtr queue,
+                                     ITURNSocketDelegatePtr delegate,
+                                     const char *turnServer,
+                                     const char *turnServerUsername,
+                                     const char *turnServerPassword,
+                                     bool useChannelBinding = false,
+                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     );
+
+        virtual TURNSocketPtr create(
+                                     IMessageQueuePtr queue,
+                                     ITURNSocketDelegatePtr delegate,
+                                     IDNS::SRVResultPtr srvTURNUDP,
+                                     IDNS::SRVResultPtr srvTURNTCP,
+                                     const char *turnServerUsername,
+                                     const char *turnServerPassword,
+                                     bool useChannelBinding = false,
+                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     );
+      };
+      
     }
   }
 }

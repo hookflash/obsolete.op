@@ -55,26 +55,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPListenerFactory
-      #pragma mark
-
-      interaction IRUDPListenerFactory
-      {
-        static IRUDPListenerFactory &singleton();
-
-        virtual RUDPListenerPtr create(
-                                       IMessageQueuePtr queue,
-                                       IRUDPListenerDelegatePtr delegate,
-                                       WORD port,
-                                       const char *realm
-                                       );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark RUDPListener
       #pragma mark
 
@@ -253,6 +233,27 @@ namespace hookflash
         BYTE mMagic[16];
         String mRealm;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRUDPListenerFactory
+      #pragma mark
+
+      interaction IRUDPListenerFactory
+      {
+        static IRUDPListenerFactory &singleton();
+
+        virtual RUDPListenerPtr create(
+                                       IMessageQueuePtr queue,
+                                       IRUDPListenerDelegatePtr delegate,
+                                       WORD port,
+                                       const char *realm
+                                       );
+      };
+
     }
   }
 }

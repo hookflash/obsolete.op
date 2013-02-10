@@ -400,7 +400,7 @@ namespace hookflash
                                                                                           UINT totalToFetch
                                                                                           )
     {
-      return internal::ServiceSaltFetchSignedSaltQuery::fetchSignedSalt(delegate, serviceSalt, totalToFetch);
+      return internal::IServiceSaltFetchSignedSaltQueryFactory::singleton().fetchSignedSalt(delegate, serviceSalt, totalToFetch);
     }
   }
 }

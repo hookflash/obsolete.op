@@ -48,41 +48,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMessageMonitorFactory
-      #pragma mark
-
-      interaction IMessageMonitorFactory
-      {
-        static IMessageMonitorFactory &singleton();
-
-        virtual MessageMonitorPtr monitor(
-                                          IMessageMonitorDelegatePtr delegate,
-                                          message::MessagePtr requestMessage,
-                                          Duration timeout
-                                          );
-
-        virtual MessageMonitorPtr monitorAndSendToLocation(
-                                                           IMessageMonitorDelegatePtr delegate,
-                                                           ILocationPtr peerLocation,
-                                                           message::MessagePtr message,
-                                                           Duration timeout
-                                                           );
-
-        virtual MessageMonitorPtr monitorAndSendToService(
-                                                          IMessageMonitorDelegatePtr delegate,
-                                                          IBootstrappedNetworkPtr bootstrappedNetwork,
-                                                          const char *serviceType,
-                                                          const char *serviceMethodName,
-                                                          message::MessagePtr message,
-                                                          Duration timeout
-                                                          );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IMessageMonitorForAccountFinder
       #pragma mark
 
@@ -282,6 +247,42 @@ namespace hookflash
         String mMessageID;
         message::MessagePtr mOriginalMessage;
       };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMessageMonitorFactory
+      #pragma mark
+
+      interaction IMessageMonitorFactory
+      {
+        static IMessageMonitorFactory &singleton();
+
+        virtual MessageMonitorPtr monitor(
+                                          IMessageMonitorDelegatePtr delegate,
+                                          message::MessagePtr requestMessage,
+                                          Duration timeout
+                                          );
+
+        virtual MessageMonitorPtr monitorAndSendToLocation(
+                                                           IMessageMonitorDelegatePtr delegate,
+                                                           ILocationPtr peerLocation,
+                                                           message::MessagePtr message,
+                                                           Duration timeout
+                                                           );
+
+        virtual MessageMonitorPtr monitorAndSendToService(
+                                                          IMessageMonitorDelegatePtr delegate,
+                                                          IBootstrappedNetworkPtr bootstrappedNetwork,
+                                                          const char *serviceType,
+                                                          const char *serviceMethodName,
+                                                          message::MessagePtr message,
+                                                          Duration timeout
+                                                          );
+      };
+      
     }
   }
 }
