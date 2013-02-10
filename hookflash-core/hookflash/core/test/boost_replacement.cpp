@@ -40,6 +40,8 @@
 
 typedef hookflash::services::IHelper IHelper;
 
+void doFakeGUITest();
+
 
 namespace BoostReplacement
 {
@@ -112,5 +114,6 @@ namespace BoostReplacement
   
   void runAllTests()
   {
+    doFakeGUITest();
   }
 }

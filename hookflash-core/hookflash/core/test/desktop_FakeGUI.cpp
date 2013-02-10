@@ -29,324 +29,74 @@
  
  */
 
+#include "config.h"
 #include "desktop_FakeGUI.h"
 #include "boost_replacement.h"
 
-#include <zsLib/helpers.h>
-#include <zsLib/Stringize.h>
-#include <zsLib/MessageQueueThread.h>
-#include <boost/thread.hpp>
+#ifdef __APPLE__
+#include <CoreFoundation/CoreFoundation.h>
+#endif //__APPLE__
 
 #include <zsLib/Log.h>
 
-// NORMALLY we would not include private header but it's the only way to create an account bypassing the provisioning service for the sake of the unit test
-#include <hookflash/core/internal/core_Account.h>
+namespace hookflash { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(hfcoretest) } } }
 
-namespace hfcoretest { ZS_DECLARE_SUBSYSTEM(hfcoretest) }
-
-typedef zsLib::MessageQueueThreadPtr MessageQueueThreadPtr;
-
-typedef hookflash::core::IStack IStack;
-typedef hookflash::core::IStackPtr IStackPtr;
-typedef hookflash::core::ILogger ILogger;
-
-namespace hfcoretest
+namespace hookflash
 {
-  FakeGUITimer::FakeGUITimer(
-                             zsLib::IMessageQueuePtr queue,
-                             FakeGUIPtr outer
-                             ) :
-    MessageQueueAssociator(queue)
+  namespace core
   {
-    mOuter = outer;
-  }
-  
-  void FakeGUITimer::init()
-  {
-    mTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
-  }
-  
-  FakeGUITimerPtr FakeGUITimer::create(
-                                       zsLib::IMessageQueuePtr queue,
-                                       FakeGUIPtr outer
-                                       )
-  {
-    FakeGUITimerPtr pThis(new FakeGUITimer(queue, outer));
-    pThis->mThisWeak = pThis;
-    pThis->init();
-    return pThis;
-  }
-  
-  FakeGUITimer::~FakeGUITimer()
-  {
-  }
-  
-  // TimerDelegate
-  void FakeGUITimer::onTimer(zsLib::TimerPtr timer)
-  {
-    FakeGUIPtr gui = mOuter.lock();
-    if (!gui) return;
-    gui->tick();
-  }
-  
-  FakeGUI::FakeGUI() :
-    mShouldShutdown(false),
-    mRunLoop(0),
-    mHangupAtLoop(0)
-  {}
+    namespace test
+    {
+      FakeGUI::FakeGUI()
+      {
+      }
 
-  FakeGUIPtr FakeGUI::create()
-  {
-    FakeGUIPtr pThis = FakeGUIPtr(new FakeGUI());
-    pThis->mThisWeak = pThis;
-    pThis->init();
-    return pThis;
-  }
-  
-  void FakeGUI::init()
-  {
-  }
-  
-  void FakeGUI::go(
-                   zsLib::IMessageQueuePtr queue,
-                   hookflash::core::IStackPtr stack
-                   )
-  {
-    std::cout << "WAITING:      Waiting for core test to complete...\n";
-    mStack = stack;
-    mTimer = FakeGUITimer::create(queue, mThisWeak.lock());
-  }
-  
-  void FakeGUI::tick()
-  {
-    ++mRunLoop;
+      void FakeGUI::init()
+      {
+        IStack::singleton()->setup(mThisWeak.lock(), mThisWeak.lock(), "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+      }
 
-    if ((mHangupAtLoop == mRunLoop) &&
-        (0 != mHangupAtLoop)) {
-      mHangupAtLoop = 0;
-      if (mCall) {
-        mCall->hangup();
-        mCall.reset();
-        mHangupAtLoop = mRunLoop + 30;
-      } else {
-        mConversationThread.reset();
-      }
-    }
-    
-    switch (mRunLoop) {
-#ifdef OPENPEER_TEST
-      case 1:
+      FakeGUI::~FakeGUI()
       {
-        // attempt to load the private peer file...
-        FILE *file = fopen("/tmp/peer_load.txt", "r");
-        if (file) {
-          char buffer[1024*64+1];
-          memset(&(buffer[0]), 0, sizeof(buffer));
-          fread(buffer, sizeof(char), sizeof(buffer)-sizeof(char), file);
-          fclose(file);
-          
-          mPrivatePeerFile = (zsLib::CSTR)buffer;
-          
-          if (OPENPEER_TEST_GENERATE_NEW_PRIVATE_PEER) {
-            mPrivatePeerFile.clear();
-          }
-        }
-        break;
+        mThisWeak.reset();
       }
-      case 2:
+
+      FakeGUIPtr FakeGUI::create()
       {
-        if (mPrivatePeerFile.isEmpty()) break;
-        
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        ZS_LOG_BASIC("LOADING:      Loading previous peer file instead of generating new peer file.")
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        mAccount = hookflash::core::internal::Account::loadExisting(
-                                                                    mStack,
-                                                                    mThisWeak.lock(),
-                                                                    mThisWeak.lock(),
-                                                                    mThisWeak.lock(),
-                                                                    mThisWeak.lock(),
-                                                                    mThisWeak.lock(),
-                                                                    mPrivatePeerFile,
-                                                                    "123456",
-                                                                    "192.168.2.30:5446",
-                                                                    "siptest.yakolako.com",//URL_TURNSERVER
-                                                                    "toto",
-                                                                    "toto",
-                                                                    "siptest.yakolako.com"//URL_STUNSERVER
-                                                                    );
+        FakeGUIPtr pThis(new FakeGUI);
+        pThis->mThisWeak = pThis;
+        pThis->init();
+        return pThis;
       }
-      case 3:
+
+      void FakeGUI::onStackShutdown(IStackAutoCleanupPtr)
       {
-        if (!mPrivatePeerFile.isEmpty()) break;
-        
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        ZS_LOG_BASIC("GENERATING:   Account generation for \"John Doe\" in progress.")
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        mAccount = hookflash::core::internal::Account::generate(
-                                                                mStack,
-                                                                mThisWeak.lock(),
-                                                                mThisWeak.lock(),
-                                                                mThisWeak.lock(),
-                                                                mThisWeak.lock(),
-                                                                mThisWeak.lock(),
-                                                                "<whatever></whatever>",
-                                                                NULL,
-                                                                "123456",
-                                                                "192.168.2.30:5446",
-                                                                "siptest.yakolako.com", // URL_TURNSERVER
-                                                                "toto",
-                                                                "toto",
-                                                                "turn.hookflash.me" // URL_STUNSERVER
-                                                                );
-        
-        break;
-      }
-#endif //OPENPEER_TEST
-        
-#ifdef PROVISIONING_TEST
-        
-        
-      case 5:
-      {
-        break;
-      }
-        
-      case 9:
-      {
-        ZS_LOG_BASIC("-----------------------------------------------------------------------------------------------")
-        ZS_LOG_BASIC("FIRST TIME OAUTH LOGIN:")
-        ZS_LOG_BASIC("-----------------------------------------------------------------------------------------------")
-        
-        mProvisioningAccount = hookflash::core::provisioning::IAccount::create(mThisWeak.lock(), mThisWeak.lock(), "hfapi.hookflash.me");
-        break;
-      }
-        
-        
-#endif // PROVISIONING_TEST
-        
-#ifdef OPENPEER_TEST
-      case 600:
-      {
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        ZS_LOG_BASIC("SHUTDOWN:     Account shutdown in progress.")
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        mAccount->shutdown();
-        break;
-      }
-#endif // OPENPEER_TEST
-        
-      case 650: 
-      {
-        mTimer.reset();
-        
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        ZS_LOG_BASIC("SHUTDOWN:     Stack shutdown in progress.")
-        ZS_LOG_BASIC("--------------------------------------------------------------------------------")
-        mStack->shutdown();
-        break;
-      }
-    }
-  }
-  
-  void FakeGUI::onStackShutdown(hookflash::core::IStackAutoCleanupPtr ignoreThisArgument)
-  {
-#ifdef _WIN32
-    ::PostThreadMessage(
-                        mThreadID,  // this won't change after spawned so it is thread safe
-                        WM_QUIT,
-                        0,
-                        0
-                        );
-#endif //_WIN32
 #ifdef __APPLE__
-    CFRunLoopStop(mRunLoopRef);
-#endif //__APPLE__
-  }
-  
-  void FakeGUI::onNewSubsystem(
-                               zsLib::PTRNUMBER subsystemID,
-                               const char *subsystemName
-                               )
-  {
-    zsLib::AutoRecursiveLock lock(mLock);
-    mSubsystemMap[subsystemID] = subsystemName;
-  }
-  
-  void FakeGUI::onLog(
-                      zsLib::PTRNUMBER subsystemID,
-                      const char *subsystemName,
-                      ILogger::Severity inSeverity,
-                      ILogger::Level inLevel,
-                      const char *inMessage,
-                      const char *inFunction,
-                      const char *inFilePath,
-                      zsLib::ULONG inLineNumber
-                      )
-  {
-  }
-  
+        CFRunLoopStop(CFRunLoopGetCurrent());
+#endif // __APPLE__
+      }
 
-  void FakeGUI::onAccountStateChanged(
-                                      hookflash::core::IAccountPtr account,
-                                      hookflash::core::IAccount::AccountStates state
-                                      )
-  {}
-  
-  
+      void FakeGUI::onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute)
+      {
+      }
 
-  
+    }
+  }
 }
 
-using namespace hfcoretest;
+using hookflash::core::test::FakeGUI;
+using hookflash::core::test::FakeGUIPtr;
 
 void doFakeGUITest()
 {
-  bool skip = false;
-  if (skip) return;
-  
+  if (!HOOKFLASH_CORE_TEST_DO_FAKE_GUI_TEST) return;
+
   BOOST_INSTALL_LOGGER();
-  
-  IStackPtr stack;
-  bool thrown = false;
-  try {
-    stack = IStack::singleton();
-  } catch(...) {
-    thrown = true;
-  }
-  BOOST_CHECK(thrown) // this should throw!
-  thrown = false;
-  
-  //IStack::setup();
-  
-  try {
-    stack = IStack::singleton();
-  } catch(...) {
-    thrown = true;
-  }
-  BOOST_CHECK(!thrown)  // this shoudl not throw because IClient::setup() was called
-  thrown = false;
-  
-  MessageQueueThreadPtr mainThreadQueue = zsLib::MessageQueueThread::singletonUsingCurrentGUIThreadsMessageQueue();
-  MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
-  FakeGUIPtr testGUI = FakeGUI::create();
-  IStack::singleton()->setup(testGUI, testGUI, testGUI, testGUI, "uuid", "hookflash/1.0.FakeGUI (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+  FakeGUIPtr fakeGUI = FakeGUI::create();
 
-  ILogger::setLogLevel(ILogger::Trace);
-  // IClient::setLogLevel("hookflash_provisioning_message", IClient::Log::Trace);
+//  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
 
-  ILogger::installStdOutLogger(false);
-  // ILogger::installFileLogger("/tmp/hookflash.fifo", true);
-  // ILogger::installTelnetLogger(59999, 60, true);
-  // ILogger::installWindowsDebuggerLogger();
-  ILogger::installCustomLogger(testGUI);
-
-  testGUI->go(
-              mainThreadQueue,
-              stack
-              );
-  
 #ifdef _WIN32
   MSG msg;
   ZeroMemory(&msg, sizeof(msg));
@@ -360,5 +110,80 @@ void doFakeGUITest()
   CFRunLoopRun();
 #endif //__APPLE__
 
-  stack->shutdown();
+}
+
+void foo()
+{
+//  if (!HOOKFLASH_SERVICE_TEST_DO_STACK_TEST) return;
+//
+//  BOOST_INSTALL_LOGGER();
+//
+//  zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
+//  zsLib::MessageQueueThreadPtr threadDelegate(zsLib::MessageQueueThread::createBasic());
+//  zsLib::MessageQueueThreadPtr threadStack(zsLib::MessageQueueThread::createBasic());
+//  zsLib::MessageQueueThreadPtr threadServices(zsLib::MessageQueueThread::createBasic());
+//
+//  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+//
+//  TestStackCallbackPtr testObject = TestStackCallback::create(thread);
+//
+//  std::cout << "WAITING:      Waiting for stack test to complete (max wait is 60 seconds).\n";
+//
+//  ULONG expectingProcessed = 0;
+//
+//  // count from each object
+//  expectingProcessed += (testObject ? 1 : 0);
+//
+//  // check to see if all test routines have completed
+//  {
+//    ULONG lastProcessed = 0;
+//    ULONG totalWait = 0;
+//    do
+//    {
+//      ULONG totalProcessed = 0;
+//      if (totalProcessed != lastProcessed) {
+//        lastProcessed = totalProcessed;
+//        std::cout << "WAITING:      [" << totalProcessed << "\n";
+//      }
+//
+//      // tally up count from each object
+//      totalProcessed += testObject->mCount;
+//
+//      if (totalProcessed < expectingProcessed) {
+//        ++totalWait;
+//        boost::this_thread::sleep(zsLib::Seconds(1));
+//      }
+//      else
+//        break;
+//    } while (totalWait < (60)); // max three minutes
+//    BOOST_CHECK(totalWait < (60));
+//  }
+//
+//  std::cout << "\n\nWAITING:      All tests have finished. Waiting for 'bogus' events to process (10 second wait).\n";
+//  boost::this_thread::sleep(zsLib::Seconds(10));
+//
+//  BOOST_CHECK(testObject->mNetworkDone)
+//  BOOST_CHECK(testObject->mNetwork->isPreparationComplete())
+//  BOOST_CHECK(testObject->mNetwork->wasSuccessful())
+//
+//  // wait for shutdown
+//  {
+//    ULONG count = 0;
+//    do
+//    {
+//      count = 0;
+//
+//      count += thread->getTotalUnprocessedMessages();
+//      count += threadDelegate->getTotalUnprocessedMessages();
+//      count += threadStack->getTotalUnprocessedMessages();
+//      count += threadServices->getTotalUnprocessedMessages();
+//      if (0 != count)
+//        boost::this_thread::yield();
+//    } while (count > 0);
+//    
+//    thread->waitForShutdown();
+//  }
+//  BOOST_UNINSTALL_LOGGER()
+//  zsLib::proxyDump();
+//  BOOST_EQUAL(zsLib::proxyGetTotalConstructed(), 0);
 }

@@ -877,8 +877,10 @@
 					CRYPTOPP_DISABLE_SSE2,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "hfStackTest_ios/hfStackTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-x",
 					"objective-c++",
@@ -907,8 +909,10 @@
 					CRYPTOPP_DISABLE_SSE2,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "hfStackTest_ios/hfStackTest_ios-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-x",
