@@ -212,7 +212,7 @@ namespace hookflash
 
         AutoRecursiveLock lock(account->forContact().getLock());
 
-        ContactPtr existingPeer = account->IAccountForContact::findContact(peerURI);
+        ContactPtr existingPeer = account->forContact().findContact(peerURI);
         if (existingPeer) {
           if (existingPeer->mFindSecret.isEmpty()) {
             existingPeer->mFindSecret = findSecret;
@@ -360,7 +360,7 @@ namespace hookflash
 
         AutoRecursiveLock lock(account->forContact().getLock());
 
-        ContactPtr existingPeer = account->IAccountForContact::findContact(peer->getPeerURI());
+        ContactPtr existingPeer = account->forContact().findContact(peer->getPeerURI());
         if (existingPeer) {
           if (userID.hasData()) {
             if (existingPeer->mUserID.isEmpty()) {
@@ -450,7 +450,7 @@ namespace hookflash
         AutoRecursiveLock lock(account->forContact().getLock());
 
         String peerURI = peer->getPeerURI();
-        ContactPtr existingPeer = account->IAccountForContact::findContact(peerURI);
+        ContactPtr existingPeer = account->forContact().findContact(peerURI);
         if (existingPeer) {
           if (stableID.hasData()) {
             if (existingPeer->mCalculatedUniqueID.isEmpty()) {

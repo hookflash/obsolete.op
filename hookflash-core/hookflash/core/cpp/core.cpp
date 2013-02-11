@@ -47,5 +47,60 @@ namespace hookflash
       return ((mContact) ||
               (mProfileBundleEl));
     }
+
+    IdentityLookupInfo::IdentityLookupInfo() :
+      mPriority(0),
+      mWeight(0)
+    {
+    }
+
+
+    bool IdentityLookupInfo::hasData() const
+    {
+      return ((mContact) ||
+              (mIdentityURI.hasData()) ||
+              (mUserID.hasData()) ||
+              (0 != mPriority) ||
+              (0 != mWeight) ||
+              (Time() != mLastUpdated) ||
+              (Time() != mExpires) ||
+              (mName.hasData()) ||
+              (mProfileURL.hasData()) ||
+              (mVProfileURL.hasData()) ||
+              (mAvatars.size() > 0));
+    }
+    
+/*
+    struct IdentityLookupInfo
+    {
+      struct Avatar
+      {
+        String mName;
+        String mURL;
+        int mWidth;
+        int mHeight;
+      };
+      typedef std::list<Avatar> AvatarList;
+
+      IContactPtr mContact;
+
+      String mIdentityURI;
+      String mUserID;
+
+      WORD mPriority;
+      WORD mWeight;
+
+      Time mLastUpdated;
+      Time mExpires;
+
+      String mName;
+      String mProfileURL;
+      String mVProfileURL;
+
+      AvatarList mAvatars;
+
+      IdentityLookupInfo();
+      bool hasData()
+ */
   }
 }

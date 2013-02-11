@@ -2605,12 +2605,6 @@
 		00BF531C13FCF92A002E9EB5 = {
 			isa = PBXGroup;
 			children = (
-				E2BBD9C916C8676F001E5B09 /* OpenGL.framework */,
-				E2BBD9C416C86637001E5B09 /* CoreVideo.framework */,
-				E2BBD9C216C86605001E5B09 /* AudioToolbox.framework */,
-				E2BBD9C016C865B9001E5B09 /* CoreAudio.framework */,
-				E2BBD9BE16C8654F001E5B09 /* AppKit.framework */,
-				E2BBD93B16C864C0001E5B09 /* QTKit.framework */,
 				00ED30F016C7D5E40069F8E0 /* hookflash */,
 				E2DD7B7E141A26AE006D89BE /* hfcoretest_ios */,
 				E2DB9A22160092E700E178AA /* hfmediatest_ios */,
@@ -3080,6 +3074,12 @@
 		E2DD7B77141A26AE006D89BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2BBD9C916C8676F001E5B09 /* OpenGL.framework */,
+				E2BBD9C416C86637001E5B09 /* CoreVideo.framework */,
+				E2BBD9C216C86605001E5B09 /* AudioToolbox.framework */,
+				E2BBD9C016C865B9001E5B09 /* CoreAudio.framework */,
+				E2BBD9BE16C8654F001E5B09 /* AppKit.framework */,
+				E2BBD93B16C864C0001E5B09 /* QTKit.framework */,
 				00ED1A6516C75F250069F8E0 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
