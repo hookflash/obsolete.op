@@ -7,22 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		001BBE4516C909CE0013E408 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 001BBE4416C909CE0013E408 /* CoreFoundation.framework */; };
+		001BBE4716C909DB0013E408 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 001BBE4616C909DB0013E408 /* CoreFoundation.framework */; };
+		001BBE4916C90A060013E408 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 001BBE4816C90A060013E408 /* libcurl.dylib */; };
+		001BBE4A16C90B3E0013E408 /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00138A4616C5CBB100CDC6DF /* libzsLib_ios.a */; };
+		001BBE4B16C90B520013E408 /* libudns_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED191516C5CC430069F8E0 /* libudns_ios.a */; };
+		001BBE4C16C90B580013E408 /* libcryptopp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED192016C5CC5A0069F8E0 /* libcryptopp_ios.a */; };
+		001BBE4D16C90B9F0013E408 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198416C5EB1F0069F8E0 /* libboost_thread.a */; };
+		001BBE4E16C90BA30013E408 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198316C5EB1F0069F8E0 /* libboost_regex.a */; };
+		001BBE4F16C90BA70013E408 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */; };
 		00ED196216C5E13C0069F8E0 /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00138A4416C5CBB100CDC6DF /* libzsLib.a */; };
-		00ED196316C5E1490069F8E0 /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00138A4616C5CBB100CDC6DF /* libzsLib_ios.a */; };
-		00ED196516C5E16A0069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED196416C5E16A0069F8E0 /* CoreFoundation.framework */; };
-		00ED196716C5E1760069F8E0 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED196616C5E1760069F8E0 /* CoreFoundation.framework */; };
 		00ED196E16C5E1B50069F8E0 /* libhfservices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F3CCB414BBC53400EEDCF0 /* libhfservices.a */; };
-		00ED197016C5E1D00069F8E0 /* libhfservices_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F3CCB614BBC53400EEDCF0 /* libhfservices_ios.a */; };
 		00ED197116C5E1F70069F8E0 /* libcryptopp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED191E16C5CC5A0069F8E0 /* libcryptopp.a */; };
-		00ED197216C5E2000069F8E0 /* libcryptopp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED192016C5CC5A0069F8E0 /* libcryptopp_ios.a */; };
 		00ED197C16C5E3DA0069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED197916C5E3DA0069F8E0 /* libboost_date_time.a */; };
 		00ED197D16C5E3DA0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED197A16C5E3DA0069F8E0 /* libboost_regex.a */; };
 		00ED197E16C5E3DA0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED197B16C5E3DA0069F8E0 /* libboost_thread.a */; };
-		00ED198016C5E4060069F8E0 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED197F16C5E4060069F8E0 /* libcurl.dylib */; };
 		00ED198116C5E45C0069F8E0 /* libudns.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED191316C5CC430069F8E0 /* libudns.a */; };
-		00ED198516C5EB1F0069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */; };
-		00ED198616C5EB1F0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198316C5EB1F0069F8E0 /* libboost_regex.a */; };
-		00ED198716C5EB1F0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED198416C5EB1F0069F8E0 /* libboost_thread.a */; };
 		00ED2CCE16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */; };
 		00ED2CCF16C7D4FF0069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */; };
 		00ED2CD016C7D4FF0069F8E0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2B2516C7D4FE0069F8E0 /* main.cpp */; };
@@ -180,17 +180,17 @@
 
 /* Begin PBXFileReference section */
 		00138A3E16C5CBB000CDC6DF /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = "../../../../hookflash-libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj"; sourceTree = "<group>"; };
+		001BBE4416C909CE0013E408 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		001BBE4616C909DB0013E408 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		001BBE4816C90A060013E408 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/lib/libcurl.dylib; sourceTree = DEVELOPER_DIR; };
 		00ED190D16C5CC420069F8E0 /* udns.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns.xcodeproj; path = "../../../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj"; sourceTree = "<group>"; };
 		00ED191816C5CC5A0069F8E0 /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = "../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj"; sourceTree = "<group>"; };
-		00ED196416C5E16A0069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		00ED196616C5E1760069F8E0 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		00ED197916C5E3DA0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = "<group>"; };
-		00ED197A16C5E3DA0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = "<group>"; };
-		00ED197B16C5E3DA0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = "<group>"; };
-		00ED197F16C5E4060069F8E0 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
-		00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = "<group>"; };
-		00ED198316C5EB1F0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = "<group>"; };
-		00ED198416C5EB1F0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = "<group>"; };
+		00ED197916C5E3DA0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
+		00ED197A16C5E3DA0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
+		00ED197B16C5E3DA0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
+		00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
+		00ED198316C5EB1F0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
+		00ED198416C5EB1F0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
 		00ED2B2216C7D4FE0069F8E0 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
 		00ED2B2316C7D4FE0069F8E0 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
 		00ED2B2416C7D4FE0069F8E0 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
@@ -225,14 +225,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00ED198116C5E45C0069F8E0 /* libudns.a in Frameworks */,
-				00ED196516C5E16A0069F8E0 /* CoreFoundation.framework in Frameworks */,
+				001BBE4916C90A060013E408 /* libcurl.dylib in Frameworks */,
+				001BBE4516C909CE0013E408 /* CoreFoundation.framework in Frameworks */,
 				00ED197C16C5E3DA0069F8E0 /* libboost_date_time.a in Frameworks */,
 				00ED197D16C5E3DA0069F8E0 /* libboost_regex.a in Frameworks */,
 				00ED197E16C5E3DA0069F8E0 /* libboost_thread.a in Frameworks */,
-				00ED198016C5E4060069F8E0 /* libcurl.dylib in Frameworks */,
-				00ED197116C5E1F70069F8E0 /* libcryptopp.a in Frameworks */,
 				00ED196E16C5E1B50069F8E0 /* libhfservices.a in Frameworks */,
+				00ED197116C5E1F70069F8E0 /* libcryptopp.a in Frameworks */,
+				00ED198116C5E45C0069F8E0 /* libudns.a in Frameworks */,
 				00ED196216C5E13C0069F8E0 /* libzsLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,13 +241,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00ED198516C5EB1F0069F8E0 /* libboost_date_time.a in Frameworks */,
-				00ED198616C5EB1F0069F8E0 /* libboost_regex.a in Frameworks */,
-				00ED198716C5EB1F0069F8E0 /* libboost_thread.a in Frameworks */,
-				00ED196716C5E1760069F8E0 /* CoreFoundation.framework in Frameworks */,
-				00ED197216C5E2000069F8E0 /* libcryptopp_ios.a in Frameworks */,
-				00ED197016C5E1D00069F8E0 /* libhfservices_ios.a in Frameworks */,
-				00ED196316C5E1490069F8E0 /* libzsLib_ios.a in Frameworks */,
+				001BBE4C16C90B580013E408 /* libcryptopp_ios.a in Frameworks */,
+				001BBE4B16C90B520013E408 /* libudns_ios.a in Frameworks */,
+				001BBE4A16C90B3E0013E408 /* libzsLib_ios.a in Frameworks */,
+				001BBE4716C909DB0013E408 /* CoreFoundation.framework in Frameworks */,
+				001BBE4D16C90B9F0013E408 /* libboost_thread.a in Frameworks */,
+				001BBE4E16C90BA30013E408 /* libboost_regex.a in Frameworks */,
+				001BBE4F16C90BA70013E408 /* libboost_date_time.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +269,6 @@
 				00ED198216C5EB1F0069F8E0 /* libboost_date_time.a */,
 				00ED198316C5EB1F0069F8E0 /* libboost_regex.a */,
 				00ED198416C5EB1F0069F8E0 /* libboost_thread.a */,
-				00ED197F16C5E4060069F8E0 /* libcurl.dylib */,
 				00ED197916C5E3DA0069F8E0 /* libboost_date_time.a */,
 				00ED197A16C5E3DA0069F8E0 /* libboost_regex.a */,
 				00ED197B16C5E3DA0069F8E0 /* libboost_thread.a */,
@@ -364,8 +363,9 @@
 		2AB8922F147AA32800A58B77 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				00ED196616C5E1760069F8E0 /* CoreFoundation.framework */,
-				00ED196416C5E16A0069F8E0 /* CoreFoundation.framework */,
+				001BBE4816C90A060013E408 /* libcurl.dylib */,
+				001BBE4616C909DB0013E408 /* CoreFoundation.framework */,
+				001BBE4416C909CE0013E408 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -474,6 +474,9 @@
 /* Begin PBXProject section */
 		2A9B3D5D147AA26D0039601D /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
 			buildConfigurationList = 2A9B3D60147AA26D0039601D /* Build configuration list for PBXProject "hfservicestest" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -697,6 +700,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -706,6 +713,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../../,
@@ -715,7 +723,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -723,6 +731,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"NDEBUG=1",
@@ -731,6 +743,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../../,
@@ -739,7 +752,7 @@
 					"../../../../hookflash-libs/udns",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 			};
 			name = Release;
 		};
@@ -762,8 +775,8 @@
 					"../../../../hookflash-staging/lib",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
-				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
 			};
 			name = Debug;
@@ -787,8 +800,8 @@
 					"../../../../hookflash-staging/lib",
 				);
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
-				PREBINDING = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
 			};
 			name = Release;
@@ -804,7 +817,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "hfServicesTest_iOS/hfServicesTest_iOS-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
@@ -814,6 +827,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/lib",
+					"\"$(SRCROOT)/../../../../hookflash-staging/iPhoneOS/lib\"",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-x",
@@ -838,7 +852,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "hfServicesTest_iOS/hfServicesTest_iOS-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
@@ -848,6 +862,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/lib",
+					"\"$(SRCROOT)/../../../../hookflash-staging/iPhoneOS/lib\"",
 				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_CPLUSPLUSFLAGS = (

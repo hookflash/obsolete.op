@@ -342,6 +342,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = udns;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -354,6 +355,7 @@
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/lib;
 				PRODUCT_NAME = udns;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -367,7 +369,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -380,7 +382,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;

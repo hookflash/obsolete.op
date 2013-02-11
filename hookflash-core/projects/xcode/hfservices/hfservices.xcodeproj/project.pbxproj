@@ -403,6 +403,7 @@
 					"../../../../hookflash-staging/include",
 				);
 				PRODUCT_NAME = hfservices;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -417,6 +418,7 @@
 					"../../../../hookflash-staging/include",
 				);
 				PRODUCT_NAME = hfservices;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -441,7 +443,7 @@
 					"../../../../hookflash-libs/udns",
 				);
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -465,7 +467,7 @@
 					"../../../../hookflash-libs/cryptopp",
 					"../../../../hookflash-libs/udns",
 				);
-				SDKROOT = macosx;
+				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
