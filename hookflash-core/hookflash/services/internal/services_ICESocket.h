@@ -90,7 +90,8 @@ namespace hookflash
       #pragma mark ICESocket
       #pragma mark
 
-      class ICESocket : public MessageQueueAssociator,
+      class ICESocket : public Noop,
+                        public MessageQueueAssociator,
                         public IICESocket,
                         public ISocketDelegate,
                         public ITURNSocketDelegate,
@@ -132,6 +133,7 @@ namespace hookflash
                   const char *stunServer,
                   WORD port
                   );
+        ICESocket(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {}
 
         void init();
 

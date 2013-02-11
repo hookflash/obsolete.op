@@ -47,6 +47,7 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Noop;
       using zsLib::AutoRecursiveLock;
       using zsLib::CSTR;
       using zsLib::PTRNUMBER;

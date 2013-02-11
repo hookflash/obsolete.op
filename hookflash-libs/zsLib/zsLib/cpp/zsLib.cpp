@@ -28,3 +28,6 @@ namespace zsLib {ZS_IMPLEMENT_SUBSYSTEM(zsLib)}
 
 //#pragma GCC visibility pop
 
+namespace zsLib
+{
+};

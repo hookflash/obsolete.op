@@ -156,6 +156,16 @@ namespace zsLib
   typedef boost::shared_ptr<Timer> TimerPtr;
   typedef boost::weak_ptr<Timer> TimerWeakPtr;
 
+  struct Noop
+  {
+    Noop(bool noop = false) : mNoop(noop) {}
+    Noop(const Noop &noop) : mNoop(noop.mNoop) {}
+
+    bool isNoop() const {return mNoop;}
+
+    bool mNoop;
+  };
+
   namespace XML
   {
     class Node;

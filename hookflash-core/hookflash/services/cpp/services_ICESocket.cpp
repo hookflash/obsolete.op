@@ -180,6 +180,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ICESocket::~ICESocket()
       {
+        if (isNoop()) return;
+
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

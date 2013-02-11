@@ -56,7 +56,8 @@ namespace hookflash
       #pragma mark HTTP
       #pragma mark
 
-      class HTTP : public IHTTP
+      class HTTP : public Noop,
+                   public IHTTP
       {
       public:
         friend class HTTPGlobalSafeReference;
@@ -67,7 +68,9 @@ namespace hookflash
         typedef boost::weak_ptr<HTTPQuery> HTTPQueryWeakPtr;
         friend class HTTPQuery;
 
+      protected:
         HTTP();
+        HTTP(Noop) : Noop(true) {}
 
         void init();
 

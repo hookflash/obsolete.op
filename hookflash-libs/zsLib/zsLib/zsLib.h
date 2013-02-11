@@ -25,6 +25,7 @@
 #ifndef ZSLIB_ZSLIB_H_ba2ac12d494be731cbd83b31b1d36a5a
 #define ZSLIB_ZSLIB_H_ba2ac12d494be731cbd83b31b1d36a5a
 
+#include <zsLib/helpers.h>
 #include <zsLib/Event.h>
 #include <zsLib/Exception.h>
 #include <zsLib/IPAddress.h>

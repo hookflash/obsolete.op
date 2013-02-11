@@ -41,6 +41,7 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Noop;
       using zsLib::BYTE;
       using zsLib::CSTR;
       using zsLib::INT;
