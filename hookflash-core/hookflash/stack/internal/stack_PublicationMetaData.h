@@ -167,7 +167,8 @@ namespace hookflash
       #pragma mark PublicationMetaData
       #pragma mark
 
-      class PublicationMetaData : public IPublicationMetaData,
+      class PublicationMetaData : public Noop,
+                                  public IPublicationMetaData,
                                   public IPublicationMetaDataForPublication,
                                   public IPublicationMetaDataForPublicationRepository,
                                   public IPublicationMetaDataForMessages
@@ -192,6 +193,7 @@ namespace hookflash
                             LocationPtr publishedLocation,
                             Time expires
                             );
+        PublicationMetaData(Noop) : Noop(true) {}
 
         void init();
 

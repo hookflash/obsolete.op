@@ -40,6 +40,7 @@ namespace hookflash
   {
     namespace internal
     {
+      using zsLib::Noop;
       using zsLib::CSTR;
       using zsLib::Seconds;
       using zsLib::Hours;

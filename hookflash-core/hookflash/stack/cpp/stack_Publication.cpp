@@ -253,6 +253,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       Publication::~Publication()
       {
+        if (isNoop()) return;
         mThisWeakPublication.reset();
         ZS_LOG_DEBUG(log("destroyed") + getDebugValuesString())
       }

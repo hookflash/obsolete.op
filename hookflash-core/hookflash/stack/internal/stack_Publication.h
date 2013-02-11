@@ -243,6 +243,8 @@ namespace hookflash
                     Time expires
                     );
 
+        Publication(Noop) : PublicationMetaData(Noop(true)) {}
+
         void init();
 
       public:

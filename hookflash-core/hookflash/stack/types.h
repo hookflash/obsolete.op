@@ -49,7 +49,6 @@ namespace hookflash
 
   namespace stack
   {
-    using zsLib::Noop;
     using zsLib::PUID;
     using zsLib::BYTE;
     using zsLib::WORD;

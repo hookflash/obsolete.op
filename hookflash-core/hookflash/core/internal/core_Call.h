@@ -145,7 +145,8 @@ namespace hookflash
       #pragma mark Call
       #pragma mark
 
-      class Call  : // public zsLib::MessageQueueAssociator,  // we do NOT want to inherit from an queue associator object will use multiple queues
+      class Call  : public Noop,
+                    // public zsLib::MessageQueueAssociator,  // we do NOT want to inherit from an queue associator object will use multiple queues
                     public ICall,
                     public ICallForConversationThread,
                     public ICallForCallTransport,
@@ -204,6 +205,7 @@ namespace hookflash
              bool hasVideo,
              const char *callID
              );
+        Call(Noop) : Noop(true) {}
 
         void init();
 
