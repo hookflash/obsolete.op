@@ -179,7 +179,8 @@ namespace hookflash
       #pragma mark Account
       #pragma mark
 
-      class Account : public MessageQueueAssociator,
+      class Account : public Noop,
+                      public MessageQueueAssociator,
                       public IAccount,
                       public IAccountForCall,
                       public IAccountForContact,
@@ -230,6 +231,8 @@ namespace hookflash
                 IConversationThreadDelegatePtr conversationThreadDelegate,
                 ICallDelegatePtr callDelegate
                 );
+        
+        Account(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

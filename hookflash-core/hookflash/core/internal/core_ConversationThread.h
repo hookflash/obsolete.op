@@ -315,7 +315,8 @@ namespace hookflash
       #pragma mark ConversationThread
       #pragma mark
 
-      class ConversationThread  : public MessageQueueAssociator,
+      class ConversationThread  : public Noop,
+                                  public MessageQueueAssociator,
                                   public IConversationThread,
                                   public IConversationThreadForAccount,
                                   public IConversationThreadForCall,
@@ -363,6 +364,8 @@ namespace hookflash
                            AccountPtr account,
                            const char *threadID
                            );
+        
+        ConversationThread(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

@@ -69,7 +69,8 @@ namespace hookflash
       #pragma mark RSAPrivateKey
       #pragma mark
 
-      class RSAPrivateKey : public IRSAPrivateKey
+      class RSAPrivateKey : public Noop,
+                            public IRSAPrivateKey
       {
       public:
         friend interaction IRSAPrivateKeyFactory;
@@ -78,6 +79,8 @@ namespace hookflash
 
       protected:
         RSAPrivateKey();
+        
+        RSAPrivateKey(Noop) : Noop(true) {};
 
       public:
         ~RSAPrivateKey();

@@ -47,10 +47,6 @@ usage_darwin(){
 	echo "Usage: build {arm|x86|all|clean|help}"
 }
 
-usage_darwin_clean(){
-	echo "Usage: build clean {arm|x86|all}"
-}
-
 help_linux(){
 	caption
 	usage_linux
@@ -70,10 +66,6 @@ usage_linux(){
 	echo "Usage: build {arm|x86|all|clean|help}"
 }
 
-usage_linux_clean(){
-	echo "Usage: build clean {arm|x86|all}"
-}
-
 build_darwin(){
 	echo "`$TXT_B``$TXT_C 2`boost build for OS X started...`$TXT_R`"
 
@@ -88,42 +80,8 @@ build_darwin(){
 	./bjam --prefix=$STAGING_PREFIX architecture=x86 address-model=32 link=static install ; validate_before
 }
 
-clean_darwin(){
-	echo "Cleaning OSX architecture..."
-	rm -rf $STAGING_PREFIX/include/boost
-	rm -f $STAGING_PREFIX/lib/libboost_*
-	echo "Done!"
-}
-
 build_ios(){
-	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
-	#export ARCH="armv7"
-	#build_ios_with_arm_version_set
-	export ARCH="armv7s"
-	build_ios_with_arm_version_set
-
-	mkdir -p $STAGING_PREFIX/iPhoneOS/lib
-	mkdir -p $STAGING_PREFIX/iPhoneOS/include/boost
-	rm -rf $STAGING_PREFIX/iPhoneOS/include/boost
-	cp -R $STAGING_PREFIX/iPhoneOS/$ARCH/include/boost $STAGING_PREFIX/iPhoneOS/include/boost
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_regex.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_regex.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_regex.a
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_thread.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_thread.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_thread.a
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_date_time.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_date_time.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_date_time.a
-	cp $STAGING_PREFIX/iPhoneOS/$ARCH/lib/libboost_* $STAGING_PREFIX/iPhoneOS/lib/
-}
-
-build_ios_with_arm_version_set() {
-	if [ "$ARCH" == "" ]; then
-		echo "`$TXT_C 1`ARM version not set! Exiting...`$TXT_R`"
-		exit 1
-	fi
-	if [ "$SDK" == "" ]; then
-		echo "`$TXT_C 1`SDK version not set! Exiting...`$TXT_R`"
-		exit 1
-	fi
-	echo "`$TXT_B``$TXT_C 2`boost build for iOS started for arch:$ARCH and SDK:$SDK...`$TXT_R`"
-
-    #export SDK="6.0"
+    export SDK="6.1"
     export DEVELOPER="/Applications/Xcode.app/Contents/Developer"
  
 	echo "`$TXT_B``$TXT_C 2`boost build for iOS started...`$TXT_R`"
@@ -136,36 +94,40 @@ build_ios_with_arm_version_set() {
 	
 	#creating user-config.jam
 	echo """using darwin : $SDK~iphone
-   : $DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc -arch $ARCH -mthumb -fvisibility=hidden -fvisibility-inlines-hidden
+   : /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc -arch armv7 -mthumb -fvisibility=hidden -fvisibility-inlines-hidden
    : <striper>
    : <architecture>arm <target-os>iphone
+   ;
+
+using darwin : $SDK~iphonesim
+   : /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc -arch i386 -fvisibility=hidden -fvisibility-inlines-hidden
+   : <striper>
+   : <architecture>x86 <target-os>iphone
    ;
 """ > ~/user-config.jam ; validate_before
 	
 	./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
 	
-	./bjam --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH toolset=darwin architecture=arm target-os=iphone macosx-version=iphone-${SDK} define=_LITTLE_ENDIAN link=static install ; validate_before
-	#./bjam --prefix=$STAGING_PREFIX/iPhoneSimulator toolset=darwin architecture=x86 target-os=iphone macosx-version=iphonesim-${SDK} link=static install ; validate_before
+	./bjam --prefix=$STAGING_PREFIX/iPhoneOS toolset=darwin architecture=arm target-os=iphone macosx-version=iphone-${SDK} define=_LITTLE_ENDIAN link=static install ; validate_before
+	./bjam --prefix=$STAGING_PREFIX/iPhoneSimulator toolset=darwin architecture=x86 target-os=iphone macosx-version=iphonesim-${SDK} link=static install ; validate_before
 
 
 	### LEGACY PROBLEM FIX ###################
-	#cd "$STAGING_PREFIX"
-	#	rm -rf iPhoneOS5.0
-	#	ln -s iPhoneOS iPhoneOS5.0
-	#	rm -rf iPhoneOS5.1
-	#	ln -s iPhoneOS iPhoneOS5.1
-	#	rm -rf iPhoneOS6.0
-	#	ln -s iPhoneOS iPhoneOS6.0
-	#cd -
+	cd "$STAGING_PREFIX"
+		rm -rf iPhoneOS5.0
+		ln -s iPhoneOS iPhoneOS5.0
+		rm -rf iPhoneOS5.1
+		ln -s iPhoneOS iPhoneOS5.1
+		rm -rf iPhoneOS6.0
+		ln -s iPhoneOS iPhoneOS6.0
+	cd -
 }
 
-clean_ios(){
-	echo "Cleaning iOS architecture..."
-	rm -rf $STAGING_PREFIX/iPhoneOS/include/boost
-	rm -f $STAGING_PREFIX/iPhoneOS/lib/libboost_*
-	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s/include/boost
-	rm -f $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_*
-	echo "Done!"
+clean_darwin(){
+	echo -e "`$TXT_C 1`Clean is not working. Use help or contact maintainer for info.`$TXT_R`"
+	exit 1
+	#rm -rf $STAGING_PREFIX/iPhoneOS*
+	#rm -rf $STAGING_PREFIX/iPhoneSimulator*
 }
 
 build_linux(){
@@ -178,21 +140,13 @@ build_linux(){
 	./bjam --prefix=$STAGING_PREFIX cxxflags=-fPIC link=static install; validate_before
 }
 
-clean_linux(){
-	echo "Cleaning Linux architecture..."
-	rm -rf $STAGING_PREFIX/include/boost
-	rm -f $STAGING_PREFIX/lib/libboost_*
-	echo "Done!"
-}
-
 build_android(){
 	echo -e "`$TXT_C 1`Android build is not working. Use help or contact maintainer for info.`$TXT_R`"
 	exit 1
 }
 
-clean_android(){
-	echo "Cleaning Android architecture..."
-	echo -e "`$TXT_C 1`Android clean is not working. Use help or contact maintainer for info.`$TXT_R`"
+clean_linux(){
+	echo -e "`$TXT_C 1`Linux clean is not working. Use help or contact maintainer for info.`$TXT_R`"
 	exit 1
 }
 
@@ -211,22 +165,7 @@ case "$UNAME" in
 				build_android
 				;;
 			clean)
-				case "$2" in
-					x86|x86_64|i386)
-					clean_linux
-					;;
-				arm|android)
-					clean_android
-					;;
-				all)
-					clean_linux
-					clean_android
-					;;
-				*)
-					usage_linux_clean
-					exit 1
-					;;
-				esac
+				clean_linux
 				;;
 			help)
 				help_linux
@@ -251,22 +190,7 @@ case "$UNAME" in
 				build_ios
 				;;
 			clean)
-				case "$2" in
-					x86|x86_64|i386|osx)
-					clean_darwin
-					;;
-				arm|ios)
-					clean_ios
-					;;
-				all)
-					clean_darwin
-					clean_ios
-					;;
-				*)
-					usage_darwin_clean
-					exit 1
-					;;
-				esac
+				clean_darwin
 				;;
 			help)
 				help_darwin

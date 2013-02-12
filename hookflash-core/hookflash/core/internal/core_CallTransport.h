@@ -195,7 +195,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       #pragma mark CallTransport
 
-      class CallTransport  : public MessageQueueAssociator,
+      class CallTransport  : public Noop,
+                             public MessageQueueAssociator,
                              public ICallTransport,
                              public ICallTransportForAccount,
                              public ICallTransportForCall,
@@ -224,6 +225,8 @@ namespace hookflash
                       const char *turnServerPassword,
                       const char *stunServer
                       );
+        
+        CallTransport(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

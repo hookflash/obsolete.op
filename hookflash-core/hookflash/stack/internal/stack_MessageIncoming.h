@@ -74,7 +74,8 @@ namespace hookflash
       #pragma mark MessageIncoming
       #pragma mark
 
-      class MessageIncoming : public IMessageIncoming,
+      class MessageIncoming : public Noop,
+                              public IMessageIncoming,
                               public IMessageIncomingForAccount
       {
       public:
@@ -87,6 +88,8 @@ namespace hookflash
                         LocationPtr location,
                         message::MessagePtr message
                         );
+        
+        MessageIncoming(Noop) : Noop(true) {};
 
         void init();
 

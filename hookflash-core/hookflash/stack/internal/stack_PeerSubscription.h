@@ -86,7 +86,8 @@ namespace hookflash
       #pragma mark PeerSubscription
       #pragma mark
 
-      class PeerSubscription : public IPeerSubscription,
+      class PeerSubscription : public Noop,
+                               public IPeerSubscription,
                                public IPeerSubscriptionForAccount
       {
       public:
@@ -98,6 +99,8 @@ namespace hookflash
                          AccountPtr account,
                          IPeerSubscriptionDelegatePtr delegate
                          );
+        
+        PeerSubscription(Noop) : Noop(true) {};
 
         void init();
 

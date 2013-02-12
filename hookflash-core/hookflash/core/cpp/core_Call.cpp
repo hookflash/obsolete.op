@@ -224,7 +224,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       Call::~Call()
       {
-        if (isNoop()) true;
+        if (isNoop()) return;
 
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))

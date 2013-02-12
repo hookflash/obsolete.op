@@ -71,7 +71,8 @@ namespace hookflash
       #pragma mark RUDPChannelStream
       #pragma mark
 
-      class RUDPChannelStream : public MessageQueueAssociator,
+      class RUDPChannelStream : public Noop,
+                                public MessageQueueAssociator,
                                 public IRUDPChannelStream,
                                 public ITimerDelegate,
                                 public IRUDPChannelStreamAsync
@@ -107,6 +108,7 @@ namespace hookflash
                           WORD receivingChannelNumber,
                           DWORD minimumNegotiatedRTTInMilliseconds
                           );
+        RUDPChannelStream(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

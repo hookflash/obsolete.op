@@ -79,7 +79,8 @@ namespace hookflash
       #pragma mark TURNSocket
       #pragma mark
 
-      class TURNSocket : public MessageQueueAssociator,
+      class TURNSocket : public Noop,
+                         public MessageQueueAssociator,
                          public ITURNSocket,
                          public ITURNSocketAsyncDelegate,
                          public ISTUNRequesterDelegate,
@@ -137,6 +138,8 @@ namespace hookflash
                    WORD limitChannelToRangeStart,
                    WORD limitChannelRoRangeEnd
                    );
+        
+        TURNSocket(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

@@ -270,7 +270,8 @@ namespace hookflash
       #pragma mark Account
       #pragma mark
 
-      class Account : public MessageQueueAssociator,
+      class Account : public Noop,
+                      public MessageQueueAssociator,
                       public IAccount,
                       public IAccountForAccountFinder,
                       public IAccountForAccountPeerLocation,
@@ -318,6 +319,8 @@ namespace hookflash
                 IAccountDelegatePtr delegate,
                 ServicePeerContactSessionPtr peerContactSession
                 );
+        
+        Account(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

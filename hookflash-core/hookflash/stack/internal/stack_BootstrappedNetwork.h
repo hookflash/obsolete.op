@@ -171,7 +171,8 @@ namespace hookflash
       #pragma mark BootstrappedNetwork
       #pragma mark
 
-      class BootstrappedNetwork : public zsLib::MessageQueueAssociator,
+      class BootstrappedNetwork : public Noop,
+                                  public zsLib::MessageQueueAssociator,
                                   public IBootstrappedNetwork,
                                   public IServiceCertificates,
                                   public IServiceIdentity,
@@ -217,6 +218,9 @@ namespace hookflash
                             IMessageQueuePtr queue,
                             const char *domain
                             );
+        
+        BootstrappedNetwork(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
+        
         void init();
 
       public:

@@ -117,7 +117,8 @@ namespace hookflash
       #pragma mark
       #pragma mark
 
-      class MessageMonitor : public MessageQueueAssociator,
+      class MessageMonitor : public Noop,
+                             public MessageQueueAssociator,
                              public IMessageMonitor,
                              public IMessageMonitorAsyncDelegate,
                              public IMessageMonitorForAccountFinder,
@@ -131,6 +132,8 @@ namespace hookflash
 
       protected:
         MessageMonitor(IMessageQueuePtr queue);
+        
+        MessageMonitor(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(Duration timeout);
 

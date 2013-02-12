@@ -112,6 +112,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RUDPICESocketSession::~RUDPICESocketSession()
       {
+        if (isNoop()) return;
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

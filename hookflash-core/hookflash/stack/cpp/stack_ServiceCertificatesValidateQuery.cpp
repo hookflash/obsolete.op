@@ -123,6 +123,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceCertificatesValidateQuery::~ServiceCertificatesValidateQuery()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_DEBUG(log("destroyed"))
         cancel();

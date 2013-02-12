@@ -76,7 +76,8 @@ namespace hookflash
       #pragma mark MessageMonitorManager
       #pragma mark
 
-      class MessageMonitorManager : public IMessageMonitorManagerForMessageMonitor
+      class MessageMonitorManager : public Noop,
+                                    public IMessageMonitorManagerForMessageMonitor
       {
       public:
         friend interaction IMessageMonitorManagerFactory;
@@ -84,6 +85,8 @@ namespace hookflash
 
       protected:
         MessageMonitorManager();
+        
+        MessageMonitorManager(Noop) : Noop(true) {};
 
         static MessageMonitorManagerPtr create();
 

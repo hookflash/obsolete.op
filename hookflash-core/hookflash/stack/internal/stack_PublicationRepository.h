@@ -72,7 +72,8 @@ namespace hookflash
       #pragma mark PublicationRepository
       #pragma mark
 
-      class PublicationRepository : public MessageQueueAssociator,
+      class PublicationRepository : public Noop,
+                                    public MessageQueueAssociator,
                                     public IPublicationRepository,
                                     public IPublicationRepositoryForAccount,
                                     public IPeerSubscriptionDelegate,
@@ -172,6 +173,8 @@ namespace hookflash
                               IMessageQueuePtr queue,
                               AccountPtr account
                               );
+        
+        PublicationRepository(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

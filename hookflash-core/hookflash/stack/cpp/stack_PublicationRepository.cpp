@@ -165,6 +165,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       PublicationRepository::~PublicationRepository()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_DEBUG(log("destroyed"))
         cancel();

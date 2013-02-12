@@ -170,7 +170,8 @@ namespace hookflash
       #pragma mark Peer
       #pragma mark
 
-      class Peer : public IPeer,
+      class Peer : public Noop,
+                   public IPeer,
                    public IPeerForAccount,
                    public IPeerForLocation,
                    public IPeerForMessages,
@@ -189,6 +190,8 @@ namespace hookflash
              IPeerFilePublicPtr peerFilePublic,
              const String &peerURI
              );
+        
+        Peer(Noop) : Noop(true) {};
 
         void init();
 

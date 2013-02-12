@@ -211,6 +211,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ICESocketSession::~ICESocketSession()
       {
+        if (isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

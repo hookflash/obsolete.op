@@ -92,6 +92,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RSAPublicKey::~RSAPublicKey()
       {
+        if(isNoop()) return;
+        
         ZS_LOG_DEBUG(log("destroyed"))
       }
 

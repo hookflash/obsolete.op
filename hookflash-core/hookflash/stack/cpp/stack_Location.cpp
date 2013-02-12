@@ -251,6 +251,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       Location::~Location()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_DEBUG(log("destroyed"))
 

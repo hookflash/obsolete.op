@@ -78,7 +78,8 @@ namespace hookflash
       #pragma mark ContactPeerFilePublicLookup
       #pragma mark
 
-      class ContactPeerFilePublicLookup : public MessageQueueAssociator,
+      class ContactPeerFilePublicLookup : public Noop,
+                                          public MessageQueueAssociator,
                                           public IContactPeerFilePublicLookup,
                                           public IContactPeerFilePublicLookupForAccount,
                                           public IBootstrappedNetworkDelegate,
@@ -108,6 +109,8 @@ namespace hookflash
                                     IContactPeerFilePublicLookupDelegatePtr delegate,
                                     const ContactList &contacts
                                     );
+        
+        ContactPeerFilePublicLookup(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

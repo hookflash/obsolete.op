@@ -120,7 +120,8 @@ namespace hookflash
       #pragma mark AccountFinder
       #pragma mark
 
-      class AccountFinder : public MessageQueueAssociator,
+      class AccountFinder : public Noop,
+                            public MessageQueueAssociator,
                             public IAccountFinderForAccount,
                             public IAccountFinderAsyncDelegate,
                             public IRUDPICESocketDelegate,
@@ -140,6 +141,8 @@ namespace hookflash
                       IAccountFinderDelegatePtr delegate,
                       AccountPtr outer
                       );
+        
+        AccountFinder(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

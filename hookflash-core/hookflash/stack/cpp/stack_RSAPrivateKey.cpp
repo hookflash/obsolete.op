@@ -92,6 +92,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RSAPrivateKey::~RSAPrivateKey()
       {
+        if(isNoop()) return;
+        
         ZS_LOG_DEBUG("destoyed")
       }
 

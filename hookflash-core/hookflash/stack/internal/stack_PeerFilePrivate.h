@@ -84,7 +84,8 @@ namespace hookflash
       #pragma mark PeerFilePrivate
       #pragma mark
 
-      class PeerFilePrivate : public IPeerFilePrivate,
+      class PeerFilePrivate : public Noop,
+                              public IPeerFilePrivate,
                               public IPeerFilePrivateForPeerFiles
       {
       public:
@@ -92,6 +93,8 @@ namespace hookflash
 
       protected:
         PeerFilePrivate(PeerFilesPtr peerFiles);
+        
+        PeerFilePrivate(Noop) : Noop(true) {};
 
         void init();
 

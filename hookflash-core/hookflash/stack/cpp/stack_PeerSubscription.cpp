@@ -79,6 +79,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       PeerSubscription::~PeerSubscription()
       {
+        if(isNoop()) return;
+        
         ZS_LOG_DEBUG(log("destroyed"))
         mThisWeak.reset();
 

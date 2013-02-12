@@ -229,6 +229,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RUDPListener::~RUDPListener()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

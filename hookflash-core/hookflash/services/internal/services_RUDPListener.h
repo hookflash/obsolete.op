@@ -58,7 +58,8 @@ namespace hookflash
       #pragma mark RUDPListener
       #pragma mark
 
-      class RUDPListener : public MessageQueueAssociator,
+      class RUDPListener : public Noop,
+                           public MessageQueueAssociator,
                            public IRUDPListener,
                            public ISocketDelegate,
                            public IRUDPChannelDelegateForSessionAndListener
@@ -85,6 +86,8 @@ namespace hookflash
                      WORD port,
                      const char *realm
                      );
+        
+        RUDPListener(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

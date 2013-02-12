@@ -57,7 +57,8 @@ namespace hookflash
       #pragma mark ServiceSaltFetchSignedSaltQuery
       #pragma mark
 
-      class ServiceSaltFetchSignedSaltQuery : public zsLib::MessageQueueAssociator,
+      class ServiceSaltFetchSignedSaltQuery : public Noop,
+                                              public zsLib::MessageQueueAssociator,
                                               public IServiceSaltFetchSignedSaltQuery,
                                               public IBootstrappedNetworkDelegate,
                                               public IMessageMonitorResultDelegate<SignedSaltGetResult>
@@ -75,6 +76,9 @@ namespace hookflash
                                         IServiceSaltPtr serviceSalt,
                                         UINT totalToFetch
                                         );
+        
+        ServiceSaltFetchSignedSaltQuery(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
+        
         void init();
 
       public:

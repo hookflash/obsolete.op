@@ -51,7 +51,8 @@ namespace hookflash
       #pragma mark RUDPMessaging
       #pragma mark
 
-      class RUDPMessaging : public MessageQueueAssociator,
+      class RUDPMessaging : public Noop,
+                            public MessageQueueAssociator,
                             public IRUDPMessaging,
                             public IRUDPChannelDelegate
       {
@@ -68,6 +69,8 @@ namespace hookflash
                      IRUDPMessagingDelegatePtr delegate,
                       ULONG maxMessageSizeInBytes
                      );
+        
+        RUDPMessaging(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

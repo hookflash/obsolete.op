@@ -60,7 +60,8 @@ namespace hookflash
       #pragma mark IdentityLookup
       #pragma mark
 
-      class IdentityLookup : public MessageQueueAssociator,
+      class IdentityLookup : public Noop,
+                             public MessageQueueAssociator,
                              public IIdentityLookup,
                              public IBootstrappedNetworkDelegate,
                              public IMessageMonitorResultDelegate<IdentityLookupResult>
@@ -93,6 +94,8 @@ namespace hookflash
                        AccountPtr account,
                        IIdentityLookupDelegatePtr delegate
                        );
+        
+        IdentityLookup(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(const IdentityURIList &identityURIs);
 

@@ -78,7 +78,8 @@ namespace hookflash
       #pragma mark BootstrappedNetworkManager
       #pragma mark
 
-      class BootstrappedNetworkManager : public IBootstrappedNetworkManagerForBootstrappedNetwork
+      class BootstrappedNetworkManager : public Noop,
+                                         public IBootstrappedNetworkManagerForBootstrappedNetwork
       {
       public:
         friend interaction IBootstrappedNetworkManagerFactory;
@@ -92,6 +93,8 @@ namespace hookflash
         
       protected:
         BootstrappedNetworkManager();
+        
+        BootstrappedNetworkManager(Noop) : Noop(true) {};
 
         void init();
 

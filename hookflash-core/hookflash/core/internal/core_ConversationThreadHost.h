@@ -90,7 +90,8 @@ namespace hookflash
       #pragma mark ConversationThreadHost
       #pragma mark
 
-      class ConversationThreadHost  : public MessageQueueAssociator,
+      class ConversationThreadHost  : public Noop,
+                                      public MessageQueueAssociator,
                                       public IConversationThreadHostForConversationThread,
                                       public IConversationThreadHostAsync
       {
@@ -135,6 +136,8 @@ namespace hookflash
                                ConversationThreadPtr baseThread,
                                const char *threadID
                                );
+        
+        ConversationThreadHost(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(IConversationThreadParser::Details::ConversationThreadStates state);
 

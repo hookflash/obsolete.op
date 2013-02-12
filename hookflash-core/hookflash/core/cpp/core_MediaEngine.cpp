@@ -157,12 +157,23 @@ namespace hookflash
         mMachineName = machine;
         free(machine);
       }
+      
+      MediaEngine::MediaEngine(Noop) :
+      Noop(true),
+      MessageQueueAssociator(IMessageQueuePtr()),
+      mRedirectVoiceTransport("voice"),
+      mRedirectVideoTransport("video")
+      {
+        
+      }
 
       //-----------------------------------------------------------------------
       MediaEngine::~MediaEngine()
       {
         // scope: delete voice engine
         {
+          if(isNoop()) return;
+          
           if (mVoiceBase) {
             mError = mVoiceBase->DeRegisterVoiceEngineObserver();
             if (mError < 0) {

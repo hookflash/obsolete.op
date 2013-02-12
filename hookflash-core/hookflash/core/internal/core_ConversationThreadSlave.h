@@ -90,7 +90,8 @@ namespace hookflash
       #pragma mark ConversationThreadSlave
       #pragma mark
 
-      class ConversationThreadSlave  : public MessageQueueAssociator,
+      class ConversationThreadSlave  : public Noop,
+                                       public MessageQueueAssociator,
                                        public IConversationThreadSlaveForConversationThread,
                                        public IConversationThreadDocumentFetcherDelegate,
                                        public IConversationThreadSlaveAsync,
@@ -130,6 +131,8 @@ namespace hookflash
                                 ConversationThreadPtr baseThread,
                                 const char *threadID
                                 );
+        
+        ConversationThreadSlave(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

@@ -141,6 +141,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ConversationThreadHost::~ConversationThreadHost()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

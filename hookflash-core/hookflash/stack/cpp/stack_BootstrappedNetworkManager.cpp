@@ -57,6 +57,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       BootstrappedNetworkManager::~BootstrappedNetworkManager()
       {
+        if(isNoop()) return;
+        
         ZS_LOG_DEBUG(log("destroyed"))
       }
 

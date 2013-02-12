@@ -175,7 +175,8 @@ namespace hookflash
       #pragma mark RUDPChannel
       #pragma mark
 
-      class RUDPChannel : public MessageQueueAssociator,
+      class RUDPChannel : public Noop,
+                          public MessageQueueAssociator,
                           public IRUDPChannel,
                           public IRUDPChannelForRUDPICESocketSession,
                           public IRUDPChannelForRUDPListener,
@@ -211,6 +212,7 @@ namespace hookflash
                     QWORD remoteSequenceNumber = 0,
                     const char *remoteChannelInfo = NULL
                     );
+        RUDPChannel(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

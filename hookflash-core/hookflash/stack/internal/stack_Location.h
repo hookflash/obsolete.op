@@ -184,7 +184,8 @@ namespace hookflash
       #pragma mark Location
       #pragma mark
 
-      class Location : public ILocation,
+      class Location : public Noop,
+                       public ILocation,
                        public ILocationForAccount,
                        public ILocationForMessages,
                        public ILocationForPeerSubscription,
@@ -206,6 +207,8 @@ namespace hookflash
                  PeerPtr peer,
                  const char *locationID
                  );
+        
+        Location(Noop) : Noop(true) {};
 
         void init();
 

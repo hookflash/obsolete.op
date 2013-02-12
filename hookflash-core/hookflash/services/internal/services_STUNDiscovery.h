@@ -52,7 +52,8 @@ namespace hookflash
       #pragma mark STUNDiscovery
       #pragma mark
 
-      class STUNDiscovery : public MessageQueueAssociator,
+      class STUNDiscovery : public Noop,
+                            public MessageQueueAssociator,
                             public ISTUNDiscovery,
                             public IDNSDelegate,
                             public ISTUNRequesterDelegate
@@ -67,6 +68,8 @@ namespace hookflash
                       IMessageQueuePtr queue,
                       ISTUNDiscoveryDelegatePtr delegate
                       );
+        
+        STUNDiscovery(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(
                   IDNS::SRVResultPtr service,

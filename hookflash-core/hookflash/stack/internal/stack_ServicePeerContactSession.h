@@ -139,7 +139,8 @@ namespace hookflash
       #pragma mark ServicePeerContactSession
       #pragma mark
 
-      class ServicePeerContactSession : public zsLib::MessageQueueAssociator,
+      class ServicePeerContactSession : public Noop,
+                                        public zsLib::MessageQueueAssociator,
                                         public IServicePeerContactSession,
                                         public IMessageSource,
                                         public IServicePeerContactSessionForAccount,
@@ -166,6 +167,8 @@ namespace hookflash
                                   BootstrappedNetworkPtr network,
                                   IServicePeerContactSessionDelegatePtr delegate
                                   );
+        
+        ServicePeerContactSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

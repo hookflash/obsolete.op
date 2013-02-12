@@ -73,7 +73,8 @@ namespace hookflash
       #pragma mark STUNRequesterManager
       #pragma mark
 
-      class STUNRequesterManager : public ISTUNRequesterManager,
+      class STUNRequesterManager : public Noop,
+                                   public ISTUNRequesterManager,
                                    public ISTUNRequesterManagerForSTUNRequester
       {
       public:
@@ -85,6 +86,8 @@ namespace hookflash
 
       protected:
         STUNRequesterManager();
+        
+        STUNRequesterManager(Noop) : Noop(true) {};
 
       public:
         ~STUNRequesterManager();

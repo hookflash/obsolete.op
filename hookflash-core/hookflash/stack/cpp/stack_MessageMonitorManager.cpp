@@ -88,6 +88,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       MessageMonitorManager::~MessageMonitorManager()
       {
+        if(isNoop()) return;
+        
         AutoRecursiveLock lock(mLock);
         mThisWeak.reset();
         mMonitors.clear();

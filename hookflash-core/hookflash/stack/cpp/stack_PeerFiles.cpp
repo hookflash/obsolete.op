@@ -66,6 +66,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       PeerFiles::~PeerFiles()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_DEBUG(log("destroyed"))
       }

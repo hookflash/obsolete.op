@@ -48,7 +48,8 @@ namespace hookflash
       #pragma mark PeerFiles
       #pragma mark
 
-      class PeerFiles : public IPeerFiles
+      class PeerFiles : public Noop,
+                        public IPeerFiles
       {
       public:
         friend interaction IPeerFilesFactory;
@@ -56,6 +57,8 @@ namespace hookflash
 
       protected:
         PeerFiles();
+        
+        PeerFiles(Noop) : Noop(true) {};
 
       public:
         ~PeerFiles();

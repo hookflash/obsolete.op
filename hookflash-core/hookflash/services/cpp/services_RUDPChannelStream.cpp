@@ -281,6 +281,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RUDPChannelStream::~RUDPChannelStream()
       {
+        if(isNoop()) return;
+        
         ZS_LOG_BASIC(log("destroyed"))
         mThisWeak.reset();
         cancel();

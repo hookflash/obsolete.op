@@ -84,7 +84,8 @@ namespace hookflash
       #pragma mark RUDPICESocketSession
       #pragma mark
 
-      class RUDPICESocketSession : public MessageQueueAssociator,
+      class RUDPICESocketSession : public Noop,
+                                   public MessageQueueAssociator,
                                    public IRUDPICESocketSession,
                                    public IRUDPICESocketSessionForRUDPICESocket,
                                    public IICESocketSessionDelegate,
@@ -107,6 +108,8 @@ namespace hookflash
                              RUDPICESocketPtr parent,
                              IRUDPICESocketSessionDelegatePtr delegate
                              );
+        
+        RUDPICESocketSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(
                   const CandidateList &remoteCandidates,

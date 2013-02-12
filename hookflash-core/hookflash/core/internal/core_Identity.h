@@ -72,7 +72,8 @@ namespace hookflash
       #pragma mark Identity
       #pragma mark
 
-      class Identity : public MessageQueueAssociator,
+      class Identity : public Noop,
+                       public MessageQueueAssociator,
                        public IIdentity,
                        public IIdentityForAccount,
                        public IServiceIdentitySessionDelegate
@@ -83,6 +84,8 @@ namespace hookflash
 
       protected:
         Identity(IMessageQueuePtr queue);
+        
+        Identity(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

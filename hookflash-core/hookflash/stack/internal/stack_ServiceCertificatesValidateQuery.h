@@ -51,7 +51,8 @@ namespace hookflash
       #pragma mark ServiceCertificatesValidateQuery
       #pragma mark
 
-      class ServiceCertificatesValidateQuery : public zsLib::MessageQueueAssociator,
+      class ServiceCertificatesValidateQuery : public Noop,
+                                               public zsLib::MessageQueueAssociator,
                                                public IServiceCertificatesValidateQuery,
                                                public IBootstrappedNetworkDelegate
       {
@@ -65,6 +66,9 @@ namespace hookflash
                                         IServiceCertificatesValidateQueryDelegatePtr delegate,
                                         ElementPtr signedElement
                                         );
+        
+        ServiceCertificatesValidateQuery(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
+        
         void init();
 
       public:

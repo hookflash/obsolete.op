@@ -133,6 +133,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ConversationThreadSlave::~ConversationThreadSlave()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

@@ -118,7 +118,8 @@ namespace hookflash
       #pragma mark MediaEngine
       #pragma mark
 
-      class MediaEngine : public MessageQueueAssociator,
+      class MediaEngine : public Noop,
+                          public MessageQueueAssociator,
                           public IMediaEngine,
                           public IMediaEngineForStack,
                           public IMediaEngineForCallTransport,
@@ -160,6 +161,8 @@ namespace hookflash
                     IMessageQueuePtr queue,
                     IMediaEngineDelegatePtr delegate
                     );
+        
+        MediaEngine(Noop);// : Noop(true), MessageQueueAssociator(IMessageQueuePtr());
 
         void init();
 

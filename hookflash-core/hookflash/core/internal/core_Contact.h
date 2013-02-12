@@ -161,7 +161,8 @@ namespace hookflash
       #pragma mark Contact
       #pragma mark
 
-      class Contact : public IContact,
+      class Contact : public Noop,
+                      public IContact,
                       public IContactForAccount,
                       public IContactForContactPeerFilePublicLookup,
                       public IContactForConversationThread,
@@ -173,6 +174,8 @@ namespace hookflash
 
       protected:
         Contact();
+        
+        Contact(Noop) : Noop(true) {};
 
         void init();
 

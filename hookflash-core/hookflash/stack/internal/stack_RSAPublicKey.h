@@ -67,7 +67,8 @@ namespace hookflash
       #pragma mark RSAPublicKey
       #pragma mark
 
-      class RSAPublicKey : public IRSAPublicKey,
+      class RSAPublicKey : public Noop,
+                           public IRSAPublicKey,
                            public IRSAPublicKeyForRSAPrivateKey
       {
       public:
@@ -78,6 +79,8 @@ namespace hookflash
 
       protected:
         RSAPublicKey();
+        
+        RSAPublicKey(Noop) : Noop(true) {};
 
       public:
         ~RSAPublicKey();

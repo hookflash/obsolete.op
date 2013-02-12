@@ -116,7 +116,8 @@ namespace hookflash
       #pragma mark ICESocketSession
       #pragma mark
 
-      class ICESocketSession : public MessageQueueAssociator,
+      class ICESocketSession : public Noop,
+                               public MessageQueueAssociator,
                                public IICESocketSession,
                                public IICESocketSessionForICESocket,
                                public IICESocketSessionAsyncDelegate,
@@ -162,6 +163,8 @@ namespace hookflash
                          ICESocketPtr socket,
                          ICEControls control
                          );
+        
+        ICESocketSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

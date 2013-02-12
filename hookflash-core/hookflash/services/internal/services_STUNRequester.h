@@ -71,7 +71,8 @@ namespace hookflash
       #pragma mark STUNRequester
       #pragma mark
 
-      class STUNRequester : public MessageQueueAssociator,
+      class STUNRequester : public Noop,
+                            public MessageQueueAssociator,
                             public ISTUNRequester,
                             public ISTUNRequesterForSTUNRequesterManager,
                             public ITimerDelegate
@@ -88,6 +89,9 @@ namespace hookflash
                       STUNPacket::RFCs usingRFC,
                       Duration maxTimeout
                       );
+        
+        STUNRequester(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
+        
         void init();
 
       public:

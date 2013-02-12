@@ -84,6 +84,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       STUNRequester::~STUNRequester()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         cancel();
       }

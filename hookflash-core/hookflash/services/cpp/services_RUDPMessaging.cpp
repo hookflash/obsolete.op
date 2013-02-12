@@ -87,6 +87,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       RUDPMessaging::~RUDPMessaging()
       {
+        if(isNoop()) return;
+        
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();

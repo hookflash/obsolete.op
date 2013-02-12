@@ -108,7 +108,8 @@ namespace hookflash
       #pragma mark ConversationThreadDocumentFetcher
       #pragma mark
 
-      class ConversationThreadDocumentFetcher  : public MessageQueueAssociator,
+      class ConversationThreadDocumentFetcher  : public Noop,
+                                                 public MessageQueueAssociator,
                                                  public IConversationThreadDocumentFetcher,
                                                  public stack::IPublicationFetcherDelegate
       {
@@ -125,6 +126,8 @@ namespace hookflash
                                           IConversationThreadDocumentFetcherDelegatePtr delegate,
                                           IPublicationRepositoryPtr repository
                                           );
+        
+        ConversationThreadDocumentFetcher(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

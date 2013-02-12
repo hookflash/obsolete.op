@@ -113,7 +113,8 @@ namespace hookflash
       #pragma mark ServiceIdentitySession
       #pragma mark
 
-      class ServiceIdentitySession : public zsLib::MessageQueueAssociator,
+      class ServiceIdentitySession : public Noop,
+                                     public zsLib::MessageQueueAssociator,
                                      public IServiceIdentitySession,
                                      public IMessageSource,
                                      public IServiceIdentitySessionForServicePeerContact,
@@ -137,6 +138,8 @@ namespace hookflash
                                IServiceIdentitySessionDelegatePtr delegate,
                                const char *redirectAfterLoginCompleteURL
                                );
+        
+        ServiceIdentitySession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

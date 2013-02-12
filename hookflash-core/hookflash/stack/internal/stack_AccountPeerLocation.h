@@ -142,7 +142,8 @@ namespace hookflash
       #pragma mark AccountPeerLocation
       #pragma mark
 
-      class AccountPeerLocation : public MessageQueueAssociator,
+      class AccountPeerLocation : public Noop,
+                                  public MessageQueueAssociator,
                                   public IAccountPeerLocationForAccount,
                                   public IAccountPeerLocationAsyncDelegate,
                                   public services::IRUDPICESocketDelegate,
@@ -163,6 +164,8 @@ namespace hookflash
                             AccountPtr outer,
                             const LocationInfo &locationInfo
                             );
+        
+        AccountPeerLocation(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 

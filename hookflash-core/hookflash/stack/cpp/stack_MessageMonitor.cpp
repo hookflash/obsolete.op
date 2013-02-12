@@ -103,6 +103,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       MessageMonitor::~MessageMonitor()
       {
+        if(isNoop()) return;
+        
         AutoRecursiveLock lock(getLock());
         mThisWeak.reset();
         cancel();
