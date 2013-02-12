@@ -248,8 +248,10 @@ case "$UNAME" in
 					clean_ios
 					;;
 				*)
-					usage_darwin_clean
-					exit 1
+					clean_darwin
+					clean_ios
+					#usage_darwin_clean
+					#exit 1
 					;;
 				esac
 				;;

@@ -103,6 +103,7 @@ clean_darwin(){
 }
 
 build_ios(){
+	LIPO="xcrun -sdk iphoneos lipo"
 	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
 	export ARCH="armv7"
 	build_ios_with_arm_version_set
@@ -115,7 +116,10 @@ build_ios(){
 
 	cp -R $STAGING_PREFIX/iPhoneOS/$ARCH/include/curl $STAGING_PREFIX/iPhoneOS/include/curl
 	
-	lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libcurl.a -output $STAGING_PREFIX/iPhoneOS/lib/libcurl.a
+	$LIPO -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libcurl.a -output $STAGING_PREFIX/iPhoneOS/lib/libcurl.a
+	
+	rm -rf $STAGING_PREFIX/iPhoneOS/armv7
+	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s
 }
 
 build_ios_with_arm_version_set() {
@@ -325,8 +329,10 @@ case "$UNAME" in
 						clean_ios
 						;;
 					*)
-						usage_darwin_clean
-						exit 1
+						clean_darwin
+						clean_ios
+						#usage_darwin_clean
+						#exit 1
 						;;
 				esac
 				;;
@@ -334,8 +340,9 @@ case "$UNAME" in
 				help_darwin
 				;;
 			*)
-				usage_darwin
-				exit 1
+				build_ios
+				#usage_darwin
+				#exit 1
 				;;
 		esac
 		;;
