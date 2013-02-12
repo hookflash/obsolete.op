@@ -77,7 +77,7 @@ usage_linux_clean(){
 build_darwin(){
 	echo "`$TXT_B``$TXT_C 2`boost build for OS X started...`$TXT_R`"
 
-	cd $BASEDIR/../../boost
+	pushd $BASEDIR/../../boost
 	
 	#removing old user-config.jam
 	touch ~/user-config.jam
@@ -86,6 +86,8 @@ build_darwin(){
 	./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
 	./bjam clean; validate_before
 	./bjam --prefix=$STAGING_PREFIX architecture=x86 address-model=32 link=static install ; validate_before
+	
+	popd
 }
 
 clean_darwin(){
@@ -98,8 +100,6 @@ clean_darwin(){
 build_ios(){
 	#SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
 	DEVELOPER=`xcode-select -print-path`
-	#/Platforms/iPhoneOS.platform/Developer/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2
-	#COMPILER=$DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/llvm-gcc-4.2/bin/llvm-gcc-4.2
 	COMPILER=$DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc
 	ARCH=armv7
 	IOS_PREFIX=$STAGING_PREFIX/iPhoneOS
@@ -111,7 +111,6 @@ build_ios(){
 	mkdir -p $IOS_PREFIX
 	echo "`$TXT_B``$TXT_C 2`boost build for iOS started...`$TXT_R`"
 	
-	# <compileflags>-arch $ARCH  
 	pushd $BASEDIR/../../boost
 		#creating user-config.jam
 		touch ~/user-config.jam
@@ -124,11 +123,11 @@ build_ios(){
 : <architecture>arm <target-os>iphone
 ;
 """ > ~/user-config.jam ; validate_before
+# <compileflags>-arch $ARCH  
 	
-		#include=/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.1.sdk/usr/include/c++/4.2.1/armv7-apple-darwin10 	
 		./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
 		./bjam --prefix=$IOS_PREFIX toolset=darwin cflags="-fvisibility=default -fvisibility-inlines-hidden -mthumb -arch $ARCH" architecture=arm target-os=iphone macosx-version=iphone-6.1 link=static threading=multi define=_LITTLE_ENDIAN install
-		#./bjam --prefix=$IOS_PREFIX toolset=darwin architecture=arm target-os=iphone macosx-version=iphone-6.1 define=_LITTLE_ENDIAN link=static install ; validate_before
+		rm ~/user-config.jam
 	popd
 	
 	pushd $TOOLS
@@ -151,8 +150,6 @@ clean_ios(){
 	echo "Cleaning iOS architecture..."
 	rm -rf $STAGING_PREFIX/iPhoneOS/include/boost
 	rm -f $STAGING_PREFIX/iPhoneOS/lib/libboost_*
-	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s/include/boost
-	rm -f $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_*
 	echo "Done!"
 }
 
