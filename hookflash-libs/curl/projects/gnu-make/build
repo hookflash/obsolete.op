@@ -173,7 +173,7 @@ build_ios_with_arm_version_set() {
 	cat $BASEDIR/../../curl/Makefile.template > $BASEDIR/../../curl/Makefile
 
 	#./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH --without-ssl --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
-	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH --without-libssh2 --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
+	./configure --host=${ARCH}-apple-darwin --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH --without-libssh2 --without-zlib --with-random=/dev/urandom --disable-shared --enable-static --disable-ipv6 --disable-manual --disable-verbose ; validate_before
 	
 	pushd "lib"
 	make; validate_before
