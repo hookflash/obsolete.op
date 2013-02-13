@@ -7,83 +7,45 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		001BBE3B16C905700013E408 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 001BBE3A16C905700013E408 /* CoreFoundation.framework */; };
-		001BBE4316C908C40013E408 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 001BBE4216C908C40013E408 /* CoreFoundation.framework */; };
-		008D216F16C90F86004F145F /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACCA0167E811E00B862BE /* libzsLib_ios.a */; };
-		00ED193C16C5DAFD0069F8E0 /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 006ACC9E167E811E00B862BE /* libzsLib.a */; };
-		00ED194616C5DBD40069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194316C5DBD40069F8E0 /* libboost_date_time.a */; };
-		00ED194716C5DBD40069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194416C5DBD40069F8E0 /* libboost_regex.a */; };
-		00ED194816C5DBD40069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED194516C5DBD40069F8E0 /* libboost_thread.a */; };
-		00ED195D16C5DCFF0069F8E0 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */; };
-		00ED195E16C5DCFF0069F8E0 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */; };
-		00ED195F16C5DCFF0069F8E0 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */; };
-		00ED2A6616C7D4580069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */; };
-		00ED2A6716C7D4580069F8E0 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */; };
-		00ED2A6816C7D4580069F8E0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5A16C7D4580069F8E0 /* main.cpp */; };
-		00ED2A6A16C7D4580069F8E0 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */; };
-		00ED2A6B16C7D4580069F8E0 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */; };
-		00ED2A6C16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */; };
-		00ED2A6D16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */; };
-		00ED2A6E16C7D4580069F8E0 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */; };
-		00ED2A6F16C7D4580069F8E0 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */; };
-		00ED2A7016C7D4580069F8E0 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */; };
-		00ED2A7116C7D4580069F8E0 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */; };
-		00ED2A7216C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */; };
-		00ED2A7316C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */; };
-		00ED2A7416C7D4580069F8E0 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */; };
-		00ED2A7516C7D4580069F8E0 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */; };
-		00ED2A7616C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */; };
-		00ED2A7716C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */; };
-		00ED2A7816C7D4580069F8E0 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6216C7D4580069F8E0 /* TestString.cpp */; };
-		00ED2A7916C7D4580069F8E0 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6216C7D4580069F8E0 /* TestString.cpp */; };
-		00ED2A7A16C7D4580069F8E0 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */; };
-		00ED2A7B16C7D4580069F8E0 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */; };
-		00ED2A7C16C7D4580069F8E0 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */; };
-		00ED2A7D16C7D4580069F8E0 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */; };
-		00ED2A7E16C7D4580069F8E0 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6516C7D4580069F8E0 /* TestXML.cpp */; };
-		00ED2A7F16C7D4580069F8E0 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ED2A6516C7D4580069F8E0 /* TestXML.cpp */; };
-		E2C658F6147672AF00E62819 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E2C658F4147672AF00E62819 /* InfoPlist.strings */; };
-		E2C658F9147672AF00E62819 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658F8147672AF00E62819 /* main.m */; };
-		E2C658FC147672AF00E62819 /* zsLibTest_iosAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658FB147672AF00E62819 /* zsLibTest_iosAppDelegate.m */; };
-		E2C65900147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = E2C658FF147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m */; };
-		E2C65903147672AF00E62819 /* MainWindow_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2C65901147672AF00E62819 /* MainWindow_iPhone.xib */; };
-		E2C65907147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2C65906147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm */; };
-		E2C6590A147672AF00E62819 /* MainWindow_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = E2C65908147672AF00E62819 /* MainWindow_iPad.xib */; };
+		0063D2B816CB08B600E6DB4D /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2B516CB08A100E6DB4D /* libzsLib.a */; };
+		0066856E16C9DD6E00259F81 /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856016C9DD6E00259F81 /* boost_replacement.cpp */; };
+		0066856F16C9DD6E00259F81 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856216C9DD6E00259F81 /* main.cpp */; };
+		0066857016C9DD6E00259F81 /* TestHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856316C9DD6E00259F81 /* TestHelper.cpp */; };
+		0066857116C9DD6E00259F81 /* TestIPAddress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856416C9DD6E00259F81 /* TestIPAddress.cpp */; };
+		0066857216C9DD6E00259F81 /* TestNumeric.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856516C9DD6E00259F81 /* TestNumeric.cpp */; };
+		0066857316C9DD6E00259F81 /* TestProxy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856616C9DD6E00259F81 /* TestProxy.cpp */; };
+		0066857416C9DD6E00259F81 /* TestProxyUsingGUIThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856716C9DD6E00259F81 /* TestProxyUsingGUIThread.cpp */; };
+		0066857516C9DD6E00259F81 /* TestSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856816C9DD6E00259F81 /* TestSocket.cpp */; };
+		0066857616C9DD6E00259F81 /* TestSocketAsync.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856916C9DD6E00259F81 /* TestSocketAsync.cpp */; };
+		0066857716C9DD6E00259F81 /* TestString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856A16C9DD6E00259F81 /* TestString.cpp */; };
+		0066857816C9DD6E00259F81 /* TestStringize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856B16C9DD6E00259F81 /* TestStringize.cpp */; };
+		0066857916C9DD6E00259F81 /* TestTimer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856C16C9DD6E00259F81 /* TestTimer.cpp */; };
+		0066857A16C9DD6E00259F81 /* TestXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0066856D16C9DD6E00259F81 /* TestXML.cpp */; };
+		0066858916C9E0E500259F81 /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0066858616C9E0E400259F81 /* libboost_date_time.a */; };
+		0066858A16C9E0E500259F81 /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0066858716C9E0E400259F81 /* libboost_regex.a */; };
+		0066858B16C9E0E500259F81 /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0066858816C9E0E400259F81 /* libboost_thread.a */; };
+		0066858D16C9E16200259F81 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0066858C16C9E16200259F81 /* CoreFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		006ACC9D167E811E00B862BE /* PBXContainerItemProxy */ = {
+		0063D2B416CB08A100E6DB4D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
+			containerPortal = 0063D2B016CB08A100E6DB4D /* zsLib.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC046055464E500DB518D;
+			remoteGlobalIDString = 006680AE16C9CE4300259F81;
 			remoteInfo = zsLib;
 		};
-		006ACC9F167E811E00B862BE /* PBXContainerItemProxy */ = {
+		0063D2B616CB08AD00E6DB4D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E2DD7F2B141A3ADD006D89BE;
-			remoteInfo = zsLib_ios;
-		};
-		00ED193A16C5DAF10069F8E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
+			containerPortal = 0063D2B016CB08A100E6DB4D /* zsLib.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D;
+			remoteGlobalIDString = 006680AD16C9CE4300259F81;
 			remoteInfo = zsLib;
-		};
-		00ED194B16C5DC4E0069F8E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = E2DD7F05141A3ADD006D89BE;
-			remoteInfo = zsLib_ios;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		E2F1A4C0147679EA00EA4481 /* CopyFiles */ = {
+		0066853616C9DD1600259F81 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
@@ -95,536 +57,274 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		001BBE3A16C905700013E408 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		001BBE4216C908C40013E408 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/CoreFoundation.framework; sourceTree = DEVELOPER_DIR; };
-		006ACC98167E811D00B862BE /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
-		00ED194316C5DBD40069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
-		00ED194416C5DBD40069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
-		00ED194516C5DBD40069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
-		00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
-		00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
-		00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/iPhoneOS/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
-		00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
-		00ED2A5916C7D4580069F8E0 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
-		00ED2A5A16C7D4580069F8E0 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestHelper.cpp; sourceTree = "<group>"; };
-		00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestIPAddress.cpp; sourceTree = "<group>"; };
-		00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNumeric.cpp; sourceTree = "<group>"; };
-		00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxy.cpp; sourceTree = "<group>"; };
-		00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxyUsingGUIThread.cpp; sourceTree = "<group>"; };
-		00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocket.cpp; sourceTree = "<group>"; };
-		00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocketAsync.cpp; sourceTree = "<group>"; };
-		00ED2A6216C7D4580069F8E0 /* TestString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestString.cpp; sourceTree = "<group>"; };
-		00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestStringize.cpp; sourceTree = "<group>"; };
-		00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTimer.cpp; sourceTree = "<group>"; };
-		00ED2A6516C7D4580069F8E0 /* TestXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestXML.cpp; sourceTree = "<group>"; };
-		E2C658E8147672AE00E62819 /* zsLibTest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = zsLibTest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2C658F3147672AE00E62819 /* zsLibTest_ios-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "zsLibTest_ios-Info.plist"; sourceTree = "<group>"; };
-		E2C658F5147672AF00E62819 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E2C658F7147672AF00E62819 /* zsLibTest_ios-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "zsLibTest_ios-Prefix.pch"; sourceTree = "<group>"; };
-		E2C658F8147672AF00E62819 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		E2C658FA147672AF00E62819 /* zsLibTest_iosAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zsLibTest_iosAppDelegate.h; sourceTree = "<group>"; };
-		E2C658FB147672AF00E62819 /* zsLibTest_iosAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = zsLibTest_iosAppDelegate.m; sourceTree = "<group>"; };
-		E2C658FE147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = zsLibTest_iosAppDelegate_iPhone.h; path = iPhone/zsLibTest_iosAppDelegate_iPhone.h; sourceTree = "<group>"; };
-		E2C658FF147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = zsLibTest_iosAppDelegate_iPhone.m; path = iPhone/zsLibTest_iosAppDelegate_iPhone.m; sourceTree = "<group>"; };
-		E2C65902147672AF00E62819 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = iPhone/en.lproj/MainWindow_iPhone.xib; sourceTree = "<group>"; };
-		E2C65905147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = zsLibTest_iosAppDelegate_iPad.h; path = iPad/zsLibTest_iosAppDelegate_iPad.h; sourceTree = "<group>"; };
-		E2C65906147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = zsLibTest_iosAppDelegate_iPad.mm; path = iPad/zsLibTest_iosAppDelegate_iPad.mm; sourceTree = "<group>"; };
-		E2C65909147672AF00E62819 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = iPad/en.lproj/MainWindow_iPad.xib; sourceTree = "<group>"; };
-		E2F1A4C2147679EA00EA4481 /* zsLibTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = zsLibTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0063D2B016CB08A100E6DB4D /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
+		0066853816C9DD1600259F81 /* zsLibTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = zsLibTest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0066856016C9DD6E00259F81 /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
+		0066856116C9DD6E00259F81 /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
+		0066856216C9DD6E00259F81 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0066856316C9DD6E00259F81 /* TestHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestHelper.cpp; sourceTree = "<group>"; };
+		0066856416C9DD6E00259F81 /* TestIPAddress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestIPAddress.cpp; sourceTree = "<group>"; };
+		0066856516C9DD6E00259F81 /* TestNumeric.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestNumeric.cpp; sourceTree = "<group>"; };
+		0066856616C9DD6E00259F81 /* TestProxy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxy.cpp; sourceTree = "<group>"; };
+		0066856716C9DD6E00259F81 /* TestProxyUsingGUIThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestProxyUsingGUIThread.cpp; sourceTree = "<group>"; };
+		0066856816C9DD6E00259F81 /* TestSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocket.cpp; sourceTree = "<group>"; };
+		0066856916C9DD6E00259F81 /* TestSocketAsync.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestSocketAsync.cpp; sourceTree = "<group>"; };
+		0066856A16C9DD6E00259F81 /* TestString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestString.cpp; sourceTree = "<group>"; };
+		0066856B16C9DD6E00259F81 /* TestStringize.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestStringize.cpp; sourceTree = "<group>"; };
+		0066856C16C9DD6E00259F81 /* TestTimer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTimer.cpp; sourceTree = "<group>"; };
+		0066856D16C9DD6E00259F81 /* TestXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestXML.cpp; sourceTree = "<group>"; };
+		0066858616C9E0E400259F81 /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
+		0066858716C9E0E400259F81 /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
+		0066858816C9E0E400259F81 /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
+		0066858C16C9E16200259F81 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		E2C658E5147672AE00E62819 /* Frameworks */ = {
+		0066853516C9DD1600259F81 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				001BBE3B16C905700013E408 /* CoreFoundation.framework in Frameworks */,
-				00ED195D16C5DCFF0069F8E0 /* libboost_date_time.a in Frameworks */,
-				00ED195E16C5DCFF0069F8E0 /* libboost_regex.a in Frameworks */,
-				00ED195F16C5DCFF0069F8E0 /* libboost_thread.a in Frameworks */,
-				008D216F16C90F86004F145F /* libzsLib_ios.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2F1A4BF147679EA00EA4481 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				001BBE4316C908C40013E408 /* CoreFoundation.framework in Frameworks */,
-				00ED194616C5DBD40069F8E0 /* libboost_date_time.a in Frameworks */,
-				00ED194716C5DBD40069F8E0 /* libboost_regex.a in Frameworks */,
-				00ED194816C5DBD40069F8E0 /* libboost_thread.a in Frameworks */,
-				00ED193C16C5DAFD0069F8E0 /* libzsLib.a in Frameworks */,
+				0063D2B816CB08B600E6DB4D /* libzsLib.a in Frameworks */,
+				0066858D16C9E16200259F81 /* CoreFoundation.framework in Frameworks */,
+				0066858916C9E0E500259F81 /* libboost_date_time.a in Frameworks */,
+				0066858A16C9E0E500259F81 /* libboost_regex.a in Frameworks */,
+				0066858B16C9E0E500259F81 /* libboost_thread.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		006ACC99167E811D00B862BE /* Products */ = {
+		0063D2B116CB08A100E6DB4D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				006ACC9E167E811E00B862BE /* libzsLib.a */,
-				006ACCA0167E811E00B862BE /* libzsLib_ios.a */,
+				0063D2B516CB08A100E6DB4D /* libzsLib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		00AAB8521684B77E00B39964 /* Libraries */ = {
+		0066852F16C9DD1500259F81 = {
 			isa = PBXGroup;
 			children = (
-				00ED195A16C5DCFF0069F8E0 /* libboost_date_time.a */,
-				00ED195B16C5DCFF0069F8E0 /* libboost_regex.a */,
-				00ED195C16C5DCFF0069F8E0 /* libboost_thread.a */,
-				00ED194316C5DBD40069F8E0 /* libboost_date_time.a */,
-				00ED194416C5DBD40069F8E0 /* libboost_regex.a */,
-				00ED194516C5DBD40069F8E0 /* libboost_thread.a */,
+				0066855F16C9DD6E00259F81 /* zsLibTest */,
+				0066857B16C9DDBA00259F81 /* Projects */,
+				0066858E16C9E17200259F81 /* Frameworks */,
+				0066858516C9E0BC00259F81 /* Libraries */,
+				0066853916C9DD1600259F81 /* Products */,
 			);
-			name = Libraries;
 			sourceTree = "<group>";
 		};
-		00ED2A5716C7D4580069F8E0 /* zsLibTest */ = {
+		0066853916C9DD1600259F81 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				00ED2A5816C7D4580069F8E0 /* boost_replacement.cpp */,
-				00ED2A5916C7D4580069F8E0 /* boost_replacement.h */,
-				00ED2A5A16C7D4580069F8E0 /* main.cpp */,
-				00ED2A5B16C7D4580069F8E0 /* TestHelper.cpp */,
-				00ED2A5C16C7D4580069F8E0 /* TestIPAddress.cpp */,
-				00ED2A5D16C7D4580069F8E0 /* TestNumeric.cpp */,
-				00ED2A5E16C7D4580069F8E0 /* TestProxy.cpp */,
-				00ED2A5F16C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp */,
-				00ED2A6016C7D4580069F8E0 /* TestSocket.cpp */,
-				00ED2A6116C7D4580069F8E0 /* TestSocketAsync.cpp */,
-				00ED2A6216C7D4580069F8E0 /* TestString.cpp */,
-				00ED2A6316C7D4580069F8E0 /* TestStringize.cpp */,
-				00ED2A6416C7D4580069F8E0 /* TestTimer.cpp */,
-				00ED2A6516C7D4580069F8E0 /* TestXML.cpp */,
+				0066853816C9DD1600259F81 /* zsLibTest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0066855F16C9DD6E00259F81 /* zsLibTest */ = {
+			isa = PBXGroup;
+			children = (
+				0066856016C9DD6E00259F81 /* boost_replacement.cpp */,
+				0066856116C9DD6E00259F81 /* boost_replacement.h */,
+				0066856216C9DD6E00259F81 /* main.cpp */,
+				0066856316C9DD6E00259F81 /* TestHelper.cpp */,
+				0066856416C9DD6E00259F81 /* TestIPAddress.cpp */,
+				0066856516C9DD6E00259F81 /* TestNumeric.cpp */,
+				0066856616C9DD6E00259F81 /* TestProxy.cpp */,
+				0066856716C9DD6E00259F81 /* TestProxyUsingGUIThread.cpp */,
+				0066856816C9DD6E00259F81 /* TestSocket.cpp */,
+				0066856916C9DD6E00259F81 /* TestSocketAsync.cpp */,
+				0066856A16C9DD6E00259F81 /* TestString.cpp */,
+				0066856B16C9DD6E00259F81 /* TestStringize.cpp */,
+				0066856C16C9DD6E00259F81 /* TestTimer.cpp */,
+				0066856D16C9DD6E00259F81 /* TestXML.cpp */,
 			);
 			name = zsLibTest;
 			path = ../../../zsLibTest;
 			sourceTree = "<group>";
 		};
-		E2967F4314766D71001678CD = {
+		0066857B16C9DDBA00259F81 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				00ED2A5716C7D4580069F8E0 /* zsLibTest */,
-				E2C658F1147672AE00E62819 /* zsLibTest_ios */,
-				E2C658E21476727700E62819 /* Projects */,
-				E2967F5A14766D80001678CD /* Source */,
-				E2C658EA147672AE00E62819 /* Frameworks */,
-				00AAB8521684B77E00B39964 /* Libraries */,
-				E2967F4F14766D71001678CD /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		E2967F4F14766D71001678CD /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E2C658E8147672AE00E62819 /* zsLibTest_ios.app */,
-				E2F1A4C2147679EA00EA4481 /* zsLibTest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		E2967F5A14766D80001678CD /* Source */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
-		E2C658E21476727700E62819 /* Projects */ = {
-			isa = PBXGroup;
-			children = (
-				006ACC98167E811D00B862BE /* zsLib.xcodeproj */,
+				0063D2B016CB08A100E6DB4D /* zsLib.xcodeproj */,
 			);
 			name = Projects;
 			sourceTree = "<group>";
 		};
-		E2C658EA147672AE00E62819 /* Frameworks */ = {
+		0066858516C9E0BC00259F81 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				001BBE4216C908C40013E408 /* CoreFoundation.framework */,
-				001BBE3A16C905700013E408 /* CoreFoundation.framework */,
+				0066858616C9E0E400259F81 /* libboost_date_time.a */,
+				0066858716C9E0E400259F81 /* libboost_regex.a */,
+				0066858816C9E0E400259F81 /* libboost_thread.a */,
+			);
+			name = Libraries;
+			sourceTree = "<group>";
+		};
+		0066858E16C9E17200259F81 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0066858C16C9E16200259F81 /* CoreFoundation.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		E2C658F1147672AE00E62819 /* zsLibTest_ios */ = {
-			isa = PBXGroup;
-			children = (
-				E2C658FA147672AF00E62819 /* zsLibTest_iosAppDelegate.h */,
-				E2C658FB147672AF00E62819 /* zsLibTest_iosAppDelegate.m */,
-				E2C658FD147672AF00E62819 /* iPhone */,
-				E2C65904147672AF00E62819 /* iPad */,
-				E2C658F2147672AE00E62819 /* Supporting Files */,
-			);
-			path = zsLibTest_ios;
-			sourceTree = "<group>";
-		};
-		E2C658F2147672AE00E62819 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E2C658F3147672AE00E62819 /* zsLibTest_ios-Info.plist */,
-				E2C658F4147672AF00E62819 /* InfoPlist.strings */,
-				E2C658F7147672AF00E62819 /* zsLibTest_ios-Prefix.pch */,
-				E2C658F8147672AF00E62819 /* main.m */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E2C658FD147672AF00E62819 /* iPhone */ = {
-			isa = PBXGroup;
-			children = (
-				E2C658FE147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.h */,
-				E2C658FF147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m */,
-				E2C65901147672AF00E62819 /* MainWindow_iPhone.xib */,
-			);
-			name = iPhone;
-			sourceTree = "<group>";
-		};
-		E2C65904147672AF00E62819 /* iPad */ = {
-			isa = PBXGroup;
-			children = (
-				E2C65905147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.h */,
-				E2C65906147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm */,
-				E2C65908147672AF00E62819 /* MainWindow_iPad.xib */,
-			);
-			name = iPad;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E2C658E7147672AE00E62819 /* zsLibTest_ios */ = {
+		0066853716C9DD1600259F81 /* zsLibTest */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2C6590B147672AF00E62819 /* Build configuration list for PBXNativeTarget "zsLibTest_ios" */;
+			buildConfigurationList = 0066854116C9DD1600259F81 /* Build configuration list for PBXNativeTarget "zsLibTest" */;
 			buildPhases = (
-				E2C658E4147672AE00E62819 /* Sources */,
-				E2C658E5147672AE00E62819 /* Frameworks */,
-				E2C658E6147672AE00E62819 /* Resources */,
+				0066853416C9DD1600259F81 /* Sources */,
+				0066853516C9DD1600259F81 /* Frameworks */,
+				0066853616C9DD1600259F81 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				00ED194C16C5DC4E0069F8E0 /* PBXTargetDependency */,
-			);
-			name = zsLibTest_ios;
-			productName = zsLibTest_ios;
-			productReference = E2C658E8147672AE00E62819 /* zsLibTest_ios.app */;
-			productType = "com.apple.product-type.application";
-		};
-		E2F1A4C1147679EA00EA4481 /* zsLibTest */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E2F1A4C8147679EB00EA4481 /* Build configuration list for PBXNativeTarget "zsLibTest" */;
-			buildPhases = (
-				E2F1A4BE147679EA00EA4481 /* Sources */,
-				E2F1A4BF147679EA00EA4481 /* Frameworks */,
-				E2F1A4C0147679EA00EA4481 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				00ED193B16C5DAF10069F8E0 /* PBXTargetDependency */,
+				0063D2B716CB08AD00E6DB4D /* PBXTargetDependency */,
 			);
 			name = zsLibTest;
 			productName = zsLibTest;
-			productReference = E2F1A4C2147679EA00EA4481 /* zsLibTest */;
+			productReference = 0066853816C9DD1600259F81 /* zsLibTest */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		E2967F4514766D71001678CD /* Project object */ = {
+		0066853016C9DD1500259F81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "SMB Phone Inc.";
 			};
-			buildConfigurationList = E2967F4814766D71001678CD /* Build configuration list for PBXProject "zsLibTest" */;
+			buildConfigurationList = 0066853316C9DD1500259F81 /* Build configuration list for PBXProject "zsLibTest" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = E2967F4314766D71001678CD;
-			productRefGroup = E2967F4F14766D71001678CD /* Products */;
+			mainGroup = 0066852F16C9DD1500259F81;
+			productRefGroup = 0066853916C9DD1600259F81 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 006ACC99167E811D00B862BE /* Products */;
-					ProjectRef = 006ACC98167E811D00B862BE /* zsLib.xcodeproj */;
+					ProductGroup = 0063D2B116CB08A100E6DB4D /* Products */;
+					ProjectRef = 0063D2B016CB08A100E6DB4D /* zsLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
 			targets = (
-				E2F1A4C1147679EA00EA4481 /* zsLibTest */,
-				E2C658E7147672AE00E62819 /* zsLibTest_ios */,
+				0066853716C9DD1600259F81 /* zsLibTest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		006ACC9E167E811E00B862BE /* libzsLib.a */ = {
+		0063D2B516CB08A100E6DB4D /* libzsLib.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libzsLib.a;
-			remoteRef = 006ACC9D167E811E00B862BE /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		006ACCA0167E811E00B862BE /* libzsLib_ios.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libzsLib_ios.a;
-			remoteRef = 006ACC9F167E811E00B862BE /* PBXContainerItemProxy */;
+			remoteRef = 0063D2B416CB08A100E6DB4D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
 
-/* Begin PBXResourcesBuildPhase section */
-		E2C658E6147672AE00E62819 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E2C658F6147672AF00E62819 /* InfoPlist.strings in Resources */,
-				E2C65903147672AF00E62819 /* MainWindow_iPhone.xib in Resources */,
-				E2C6590A147672AF00E62819 /* MainWindow_iPad.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		E2C658E4147672AE00E62819 /* Sources */ = {
+		0066853416C9DD1600259F81 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E2C658F9147672AF00E62819 /* main.m in Sources */,
-				E2C658FC147672AF00E62819 /* zsLibTest_iosAppDelegate.m in Sources */,
-				E2C65900147672AF00E62819 /* zsLibTest_iosAppDelegate_iPhone.m in Sources */,
-				E2C65907147672AF00E62819 /* zsLibTest_iosAppDelegate_iPad.mm in Sources */,
-				00ED2A6716C7D4580069F8E0 /* boost_replacement.cpp in Sources */,
-				00ED2A6B16C7D4580069F8E0 /* TestHelper.cpp in Sources */,
-				00ED2A6D16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */,
-				00ED2A6F16C7D4580069F8E0 /* TestNumeric.cpp in Sources */,
-				00ED2A7116C7D4580069F8E0 /* TestProxy.cpp in Sources */,
-				00ED2A7316C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */,
-				00ED2A7516C7D4580069F8E0 /* TestSocket.cpp in Sources */,
-				00ED2A7716C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */,
-				00ED2A7916C7D4580069F8E0 /* TestString.cpp in Sources */,
-				00ED2A7B16C7D4580069F8E0 /* TestStringize.cpp in Sources */,
-				00ED2A7D16C7D4580069F8E0 /* TestTimer.cpp in Sources */,
-				00ED2A7F16C7D4580069F8E0 /* TestXML.cpp in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2F1A4BE147679EA00EA4481 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				00ED2A6616C7D4580069F8E0 /* boost_replacement.cpp in Sources */,
-				00ED2A6816C7D4580069F8E0 /* main.cpp in Sources */,
-				00ED2A6A16C7D4580069F8E0 /* TestHelper.cpp in Sources */,
-				00ED2A6C16C7D4580069F8E0 /* TestIPAddress.cpp in Sources */,
-				00ED2A6E16C7D4580069F8E0 /* TestNumeric.cpp in Sources */,
-				00ED2A7016C7D4580069F8E0 /* TestProxy.cpp in Sources */,
-				00ED2A7216C7D4580069F8E0 /* TestProxyUsingGUIThread.cpp in Sources */,
-				00ED2A7416C7D4580069F8E0 /* TestSocket.cpp in Sources */,
-				00ED2A7616C7D4580069F8E0 /* TestSocketAsync.cpp in Sources */,
-				00ED2A7816C7D4580069F8E0 /* TestString.cpp in Sources */,
-				00ED2A7A16C7D4580069F8E0 /* TestStringize.cpp in Sources */,
-				00ED2A7C16C7D4580069F8E0 /* TestTimer.cpp in Sources */,
-				00ED2A7E16C7D4580069F8E0 /* TestXML.cpp in Sources */,
+				0066856E16C9DD6E00259F81 /* boost_replacement.cpp in Sources */,
+				0066856F16C9DD6E00259F81 /* main.cpp in Sources */,
+				0066857016C9DD6E00259F81 /* TestHelper.cpp in Sources */,
+				0066857116C9DD6E00259F81 /* TestIPAddress.cpp in Sources */,
+				0066857216C9DD6E00259F81 /* TestNumeric.cpp in Sources */,
+				0066857316C9DD6E00259F81 /* TestProxy.cpp in Sources */,
+				0066857416C9DD6E00259F81 /* TestProxyUsingGUIThread.cpp in Sources */,
+				0066857516C9DD6E00259F81 /* TestSocket.cpp in Sources */,
+				0066857616C9DD6E00259F81 /* TestSocketAsync.cpp in Sources */,
+				0066857716C9DD6E00259F81 /* TestString.cpp in Sources */,
+				0066857816C9DD6E00259F81 /* TestStringize.cpp in Sources */,
+				0066857916C9DD6E00259F81 /* TestTimer.cpp in Sources */,
+				0066857A16C9DD6E00259F81 /* TestXML.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		00ED193B16C5DAF10069F8E0 /* PBXTargetDependency */ = {
+		0063D2B716CB08AD00E6DB4D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = zsLib;
-			targetProxy = 00ED193A16C5DAF10069F8E0 /* PBXContainerItemProxy */;
-		};
-		00ED194C16C5DC4E0069F8E0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = zsLib_ios;
-			targetProxy = 00ED194B16C5DC4E0069F8E0 /* PBXContainerItemProxy */;
+			targetProxy = 0063D2B616CB08AD00E6DB4D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		E2C658F4147672AF00E62819 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E2C658F5147672AF00E62819 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		E2C65901147672AF00E62819 /* MainWindow_iPhone.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E2C65902147672AF00E62819 /* en */,
-			);
-			name = MainWindow_iPhone.xib;
-			sourceTree = "<group>";
-		};
-		E2C65908147672AF00E62819 /* MainWindow_iPad.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E2C65909147672AF00E62819 /* en */,
-			);
-			name = MainWindow_iPad.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
-		E2967F5514766D71001678CD /* Debug */ = {
+		0066853F16C9DD1600259F81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../../..;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		E2967F5614766D71001678CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = ../../..;
-				SDKROOT = iphoneos;
-			};
-			name = Release;
-		};
-		E2C6590C147672AF00E62819 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/iPhoneOS/include",
-				);
-				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/iPhoneOS/lib",
-				);
-				PRODUCT_NAME = zsLibTest_ios;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		E2C6590D147672AF00E62819 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "zsLibTest_ios/zsLibTest_ios-Prefix.pch";
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/iPhoneOS/include",
-				);
-				INFOPLIST_FILE = "zsLibTest_ios/zsLibTest_ios-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/iPhoneOS/lib",
-				);
-				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
-				PRODUCT_NAME = zsLibTest_ios;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		E2F1A4C9147679EB00EA4481 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../../hookflash-staging/lib",
-				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../../..;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
-				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
 			};
 			name = Debug;
 		};
-		E2F1A4CA147679EB00EA4481 /* Release */ = {
+		0066854016C9DD1600259F81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../../..;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		0066854216C9DD1600259F81 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"../../../../../hookflash-staging/include",
@@ -634,42 +334,46 @@
 					"../../../../../hookflash-staging/lib",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				STANDARD_C_PLUS_PLUS_LIBRARY_TYPE = static;
+			};
+			name = Debug;
+		};
+		0066854316C9DD1600259F81 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/include",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../../hookflash-staging/lib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E2967F4814766D71001678CD /* Build configuration list for PBXProject "zsLibTest" */ = {
+		0066853316C9DD1500259F81 /* Build configuration list for PBXProject "zsLibTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E2967F5514766D71001678CD /* Debug */,
-				E2967F5614766D71001678CD /* Release */,
+				0066853F16C9DD1600259F81 /* Debug */,
+				0066854016C9DD1600259F81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2C6590B147672AF00E62819 /* Build configuration list for PBXNativeTarget "zsLibTest_ios" */ = {
+		0066854116C9DD1600259F81 /* Build configuration list for PBXNativeTarget "zsLibTest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E2C6590C147672AF00E62819 /* Debug */,
-				E2C6590D147672AF00E62819 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E2F1A4C8147679EB00EA4481 /* Build configuration list for PBXNativeTarget "zsLibTest" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E2F1A4C9147679EB00EA4481 /* Debug */,
-				E2F1A4CA147679EB00EA4481 /* Release */,
+				0066854216C9DD1600259F81 /* Debug */,
+				0066854316C9DD1600259F81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = E2967F4514766D71001678CD /* Project object */;
+	rootObject = 0066853016C9DD1500259F81 /* Project object */;
 }

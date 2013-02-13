@@ -7,97 +7,68 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0024532E13C04FC9008ADEE1 /* dnsget.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531213C04FC9008ADEE1 /* dnsget.c */; };
-		0024532F13C04FC9008ADEE1 /* ex-rdns.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531313C04FC9008ADEE1 /* ex-rdns.c */; };
-		0024533013C04FC9008ADEE1 /* getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531413C04FC9008ADEE1 /* getopt.c */; };
-		0024533113C04FC9008ADEE1 /* inet_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531513C04FC9008ADEE1 /* inet_XtoX.c */; };
-		0024533213C04FC9008ADEE1 /* rblcheck.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531A13C04FC9008ADEE1 /* rblcheck.c */; };
-		0024533313C04FC9008ADEE1 /* udns_bl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531C13C04FC9008ADEE1 /* udns_bl.c */; };
-		0024533413C04FC9008ADEE1 /* udns_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531D13C04FC9008ADEE1 /* udns_codes.c */; };
-		0024533513C04FC9008ADEE1 /* udns_dn.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531E13C04FC9008ADEE1 /* udns_dn.c */; };
-		0024533613C04FC9008ADEE1 /* udns_dntosp.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531F13C04FC9008ADEE1 /* udns_dntosp.c */; };
-		0024533713C04FC9008ADEE1 /* udns_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532013C04FC9008ADEE1 /* udns_init.c */; };
-		0024533813C04FC9008ADEE1 /* udns_jran.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532113C04FC9008ADEE1 /* udns_jran.c */; };
-		0024533913C04FC9008ADEE1 /* udns_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532213C04FC9008ADEE1 /* udns_misc.c */; };
-		0024533A13C04FC9008ADEE1 /* udns_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532313C04FC9008ADEE1 /* udns_parse.c */; };
-		0024533B13C04FC9008ADEE1 /* udns_resolver.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532413C04FC9008ADEE1 /* udns_resolver.c */; };
-		0024533C13C04FC9008ADEE1 /* udns_rr_a.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532513C04FC9008ADEE1 /* udns_rr_a.c */; };
-		0024533D13C04FC9008ADEE1 /* udns_rr_mx.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532613C04FC9008ADEE1 /* udns_rr_mx.c */; };
-		0024533E13C04FC9008ADEE1 /* udns_rr_naptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532713C04FC9008ADEE1 /* udns_rr_naptr.c */; };
-		0024533F13C04FC9008ADEE1 /* udns_rr_ptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532813C04FC9008ADEE1 /* udns_rr_ptr.c */; };
-		0024534013C04FC9008ADEE1 /* udns_rr_srv.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532913C04FC9008ADEE1 /* udns_rr_srv.c */; };
-		0024534113C04FC9008ADEE1 /* udns_rr_txt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532A13C04FC9008ADEE1 /* udns_rr_txt.c */; };
-		0024534213C04FC9008ADEE1 /* udns_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532B13C04FC9008ADEE1 /* udns_XtoX.c */; };
-		E2DD7EEA141A392B006D89BE /* dnsget.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531213C04FC9008ADEE1 /* dnsget.c */; };
-		E2DD7EEB141A392B006D89BE /* ex-rdns.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531313C04FC9008ADEE1 /* ex-rdns.c */; };
-		E2DD7EEC141A392B006D89BE /* getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531413C04FC9008ADEE1 /* getopt.c */; };
-		E2DD7EED141A392B006D89BE /* inet_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531513C04FC9008ADEE1 /* inet_XtoX.c */; };
-		E2DD7EEE141A392B006D89BE /* rblcheck.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531A13C04FC9008ADEE1 /* rblcheck.c */; };
-		E2DD7EEF141A392B006D89BE /* udns_bl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531C13C04FC9008ADEE1 /* udns_bl.c */; };
-		E2DD7EF0141A392B006D89BE /* udns_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531D13C04FC9008ADEE1 /* udns_codes.c */; };
-		E2DD7EF1141A392B006D89BE /* udns_dn.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531E13C04FC9008ADEE1 /* udns_dn.c */; };
-		E2DD7EF2141A392B006D89BE /* udns_dntosp.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024531F13C04FC9008ADEE1 /* udns_dntosp.c */; };
-		E2DD7EF3141A392B006D89BE /* udns_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532013C04FC9008ADEE1 /* udns_init.c */; };
-		E2DD7EF4141A392B006D89BE /* udns_jran.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532113C04FC9008ADEE1 /* udns_jran.c */; };
-		E2DD7EF5141A392B006D89BE /* udns_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532213C04FC9008ADEE1 /* udns_misc.c */; };
-		E2DD7EF6141A392B006D89BE /* udns_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532313C04FC9008ADEE1 /* udns_parse.c */; };
-		E2DD7EF7141A392B006D89BE /* udns_resolver.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532413C04FC9008ADEE1 /* udns_resolver.c */; };
-		E2DD7EF8141A392B006D89BE /* udns_rr_a.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532513C04FC9008ADEE1 /* udns_rr_a.c */; };
-		E2DD7EF9141A392B006D89BE /* udns_rr_mx.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532613C04FC9008ADEE1 /* udns_rr_mx.c */; };
-		E2DD7EFA141A392B006D89BE /* udns_rr_naptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532713C04FC9008ADEE1 /* udns_rr_naptr.c */; };
-		E2DD7EFB141A392B006D89BE /* udns_rr_ptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532813C04FC9008ADEE1 /* udns_rr_ptr.c */; };
-		E2DD7EFC141A392B006D89BE /* udns_rr_srv.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532913C04FC9008ADEE1 /* udns_rr_srv.c */; };
-		E2DD7EFD141A392B006D89BE /* udns_rr_txt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532A13C04FC9008ADEE1 /* udns_rr_txt.c */; };
-		E2DD7EFE141A392B006D89BE /* udns_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0024532B13C04FC9008ADEE1 /* udns_XtoX.c */; };
+		0066823016C9D98E00259F81 /* dnsget.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821316C9D98E00259F81 /* dnsget.c */; };
+		0066823116C9D98E00259F81 /* ex-rdns.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821416C9D98E00259F81 /* ex-rdns.c */; };
+		0066823216C9D98E00259F81 /* getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821516C9D98E00259F81 /* getopt.c */; };
+		0066823316C9D98E00259F81 /* inet_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821616C9D98E00259F81 /* inet_XtoX.c */; };
+		0066823416C9D98E00259F81 /* rblcheck.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821B16C9D98E00259F81 /* rblcheck.c */; };
+		0066823616C9D98E00259F81 /* udns_bl.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066821F16C9D98E00259F81 /* udns_bl.c */; };
+		0066823716C9D98E00259F81 /* udns_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822016C9D98E00259F81 /* udns_codes.c */; };
+		0066823816C9D98E00259F81 /* udns_dn.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822116C9D98E00259F81 /* udns_dn.c */; };
+		0066823916C9D98E00259F81 /* udns_dntosp.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822216C9D98E00259F81 /* udns_dntosp.c */; };
+		0066823A16C9D98E00259F81 /* udns_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822316C9D98E00259F81 /* udns_init.c */; };
+		0066823B16C9D98E00259F81 /* udns_jran.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822416C9D98E00259F81 /* udns_jran.c */; };
+		0066823C16C9D98E00259F81 /* udns_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822516C9D98E00259F81 /* udns_misc.c */; };
+		0066823D16C9D98E00259F81 /* udns_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822616C9D98E00259F81 /* udns_parse.c */; };
+		0066823E16C9D98E00259F81 /* udns_resolver.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822716C9D98E00259F81 /* udns_resolver.c */; };
+		0066823F16C9D98E00259F81 /* udns_rr_a.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822816C9D98E00259F81 /* udns_rr_a.c */; };
+		0066824016C9D98E00259F81 /* udns_rr_mx.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822916C9D98E00259F81 /* udns_rr_mx.c */; };
+		0066824116C9D98E00259F81 /* udns_rr_naptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822A16C9D98E00259F81 /* udns_rr_naptr.c */; };
+		0066824216C9D98E00259F81 /* udns_rr_ptr.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822B16C9D98E00259F81 /* udns_rr_ptr.c */; };
+		0066824316C9D98E00259F81 /* udns_rr_srv.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822C16C9D98E00259F81 /* udns_rr_srv.c */; };
+		0066824416C9D98E00259F81 /* udns_rr_txt.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822D16C9D98E00259F81 /* udns_rr_txt.c */; };
+		0066824516C9D98E00259F81 /* udns_XtoX.c in Sources */ = {isa = PBXBuildFile; fileRef = 0066822E16C9D98E00259F81 /* udns_XtoX.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0024530E13C04FC9008ADEE1 /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = configure; path = ../../../udns/configure; sourceTree = SOURCE_ROOT; };
-		0024530F13C04FC9008ADEE1 /* configure.lib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = configure.lib; path = ../../../udns/configure.lib; sourceTree = SOURCE_ROOT; };
-		0024531013C04FC9008ADEE1 /* COPYING.LGPL */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = COPYING.LGPL; path = ../../../udns/COPYING.LGPL; sourceTree = SOURCE_ROOT; };
-		0024531113C04FC9008ADEE1 /* dnsget.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = dnsget.1; path = ../../../udns/dnsget.1; sourceTree = SOURCE_ROOT; };
-		0024531213C04FC9008ADEE1 /* dnsget.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dnsget.c; path = ../../../udns/dnsget.c; sourceTree = SOURCE_ROOT; };
-		0024531313C04FC9008ADEE1 /* ex-rdns.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "ex-rdns.c"; path = "../../../udns/ex-rdns.c"; sourceTree = SOURCE_ROOT; };
-		0024531413C04FC9008ADEE1 /* getopt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = getopt.c; path = ../../../udns/getopt.c; sourceTree = SOURCE_ROOT; };
-		0024531513C04FC9008ADEE1 /* inet_XtoX.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = inet_XtoX.c; path = ../../../udns/inet_XtoX.c; sourceTree = SOURCE_ROOT; };
-		0024531613C04FC9008ADEE1 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Makefile.in; path = ../../../udns/Makefile.in; sourceTree = SOURCE_ROOT; };
-		0024531713C04FC9008ADEE1 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = NEWS; path = ../../../udns/NEWS; sourceTree = SOURCE_ROOT; };
-		0024531813C04FC9008ADEE1 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = NOTES; path = ../../../udns/NOTES; sourceTree = SOURCE_ROOT; };
-		0024531913C04FC9008ADEE1 /* rblcheck.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; name = rblcheck.1; path = ../../../udns/rblcheck.1; sourceTree = SOURCE_ROOT; };
-		0024531A13C04FC9008ADEE1 /* rblcheck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rblcheck.c; path = ../../../udns/rblcheck.c; sourceTree = SOURCE_ROOT; };
-		0024531B13C04FC9008ADEE1 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TODO; path = ../../../udns/TODO; sourceTree = SOURCE_ROOT; };
-		0024531C13C04FC9008ADEE1 /* udns_bl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_bl.c; path = ../../../udns/udns_bl.c; sourceTree = SOURCE_ROOT; };
-		0024531D13C04FC9008ADEE1 /* udns_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_codes.c; path = ../../../udns/udns_codes.c; sourceTree = SOURCE_ROOT; };
-		0024531E13C04FC9008ADEE1 /* udns_dn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_dn.c; path = ../../../udns/udns_dn.c; sourceTree = SOURCE_ROOT; };
-		0024531F13C04FC9008ADEE1 /* udns_dntosp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_dntosp.c; path = ../../../udns/udns_dntosp.c; sourceTree = SOURCE_ROOT; };
-		0024532013C04FC9008ADEE1 /* udns_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_init.c; path = ../../../udns/udns_init.c; sourceTree = SOURCE_ROOT; };
-		0024532113C04FC9008ADEE1 /* udns_jran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_jran.c; path = ../../../udns/udns_jran.c; sourceTree = SOURCE_ROOT; };
-		0024532213C04FC9008ADEE1 /* udns_misc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_misc.c; path = ../../../udns/udns_misc.c; sourceTree = SOURCE_ROOT; };
-		0024532313C04FC9008ADEE1 /* udns_parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_parse.c; path = ../../../udns/udns_parse.c; sourceTree = SOURCE_ROOT; };
-		0024532413C04FC9008ADEE1 /* udns_resolver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_resolver.c; path = ../../../udns/udns_resolver.c; sourceTree = SOURCE_ROOT; };
-		0024532513C04FC9008ADEE1 /* udns_rr_a.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_a.c; path = ../../../udns/udns_rr_a.c; sourceTree = SOURCE_ROOT; };
-		0024532613C04FC9008ADEE1 /* udns_rr_mx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_mx.c; path = ../../../udns/udns_rr_mx.c; sourceTree = SOURCE_ROOT; };
-		0024532713C04FC9008ADEE1 /* udns_rr_naptr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_naptr.c; path = ../../../udns/udns_rr_naptr.c; sourceTree = SOURCE_ROOT; };
-		0024532813C04FC9008ADEE1 /* udns_rr_ptr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_ptr.c; path = ../../../udns/udns_rr_ptr.c; sourceTree = SOURCE_ROOT; };
-		0024532913C04FC9008ADEE1 /* udns_rr_srv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_srv.c; path = ../../../udns/udns_rr_srv.c; sourceTree = SOURCE_ROOT; };
-		0024532A13C04FC9008ADEE1 /* udns_rr_txt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_rr_txt.c; path = ../../../udns/udns_rr_txt.c; sourceTree = SOURCE_ROOT; };
-		0024532B13C04FC9008ADEE1 /* udns_XtoX.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = udns_XtoX.c; path = ../../../udns/udns_XtoX.c; sourceTree = SOURCE_ROOT; };
-		0024532C13C04FC9008ADEE1 /* udns.3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = udns.3; path = ../../../udns/udns.3; sourceTree = SOURCE_ROOT; };
-		0024532D13C04FC9008ADEE1 /* udns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = udns.h; path = ../../../udns/udns.h; sourceTree = SOURCE_ROOT; };
-		0024568513C3C59E008ADEE1 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = ../../../udns/config.h; sourceTree = SOURCE_ROOT; };
-		D2AAC046055464E500DB518D /* libudns.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libudns.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E2DD7F03141A392B006D89BE /* libudns_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libudns_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0066820516C9D91300259F81 /* libudns.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libudns.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0066820E16C9D98E00259F81 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		0066820F16C9D98E00259F81 /* configure */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = configure; sourceTree = "<group>"; };
+		0066821016C9D98E00259F81 /* configure.lib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = configure.lib; sourceTree = "<group>"; };
+		0066821116C9D98E00259F81 /* COPYING.LGPL */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING.LGPL; sourceTree = "<group>"; };
+		0066821216C9D98E00259F81 /* dnsget.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = dnsget.1; sourceTree = "<group>"; };
+		0066821316C9D98E00259F81 /* dnsget.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dnsget.c; sourceTree = "<group>"; };
+		0066821416C9D98E00259F81 /* ex-rdns.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ex-rdns.c"; sourceTree = "<group>"; };
+		0066821516C9D98E00259F81 /* getopt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = getopt.c; sourceTree = "<group>"; };
+		0066821616C9D98E00259F81 /* inet_XtoX.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inet_XtoX.c; sourceTree = "<group>"; };
+		0066821716C9D98E00259F81 /* Makefile.in */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Makefile.in; sourceTree = "<group>"; };
+		0066821816C9D98E00259F81 /* NEWS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NEWS; sourceTree = "<group>"; };
+		0066821916C9D98E00259F81 /* NOTES */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = NOTES; sourceTree = "<group>"; };
+		0066821A16C9D98E00259F81 /* rblcheck.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = rblcheck.1; sourceTree = "<group>"; };
+		0066821B16C9D98E00259F81 /* rblcheck.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rblcheck.c; sourceTree = "<group>"; };
+		0066821C16C9D98E00259F81 /* TODO */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO; sourceTree = "<group>"; };
+		0066821D16C9D98E00259F81 /* udns.3 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = udns.3; sourceTree = "<group>"; };
+		0066821E16C9D98E00259F81 /* udns.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udns.h; sourceTree = "<group>"; };
+		0066821F16C9D98E00259F81 /* udns_bl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_bl.c; sourceTree = "<group>"; };
+		0066822016C9D98E00259F81 /* udns_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_codes.c; sourceTree = "<group>"; };
+		0066822116C9D98E00259F81 /* udns_dn.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_dn.c; sourceTree = "<group>"; };
+		0066822216C9D98E00259F81 /* udns_dntosp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_dntosp.c; sourceTree = "<group>"; };
+		0066822316C9D98E00259F81 /* udns_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_init.c; sourceTree = "<group>"; };
+		0066822416C9D98E00259F81 /* udns_jran.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_jran.c; sourceTree = "<group>"; };
+		0066822516C9D98E00259F81 /* udns_misc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_misc.c; sourceTree = "<group>"; };
+		0066822616C9D98E00259F81 /* udns_parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_parse.c; sourceTree = "<group>"; };
+		0066822716C9D98E00259F81 /* udns_resolver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_resolver.c; sourceTree = "<group>"; };
+		0066822816C9D98E00259F81 /* udns_rr_a.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_a.c; sourceTree = "<group>"; };
+		0066822916C9D98E00259F81 /* udns_rr_mx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_mx.c; sourceTree = "<group>"; };
+		0066822A16C9D98E00259F81 /* udns_rr_naptr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_naptr.c; sourceTree = "<group>"; };
+		0066822B16C9D98E00259F81 /* udns_rr_ptr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_ptr.c; sourceTree = "<group>"; };
+		0066822C16C9D98E00259F81 /* udns_rr_srv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_srv.c; sourceTree = "<group>"; };
+		0066822D16C9D98E00259F81 /* udns_rr_txt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_rr_txt.c; sourceTree = "<group>"; };
+		0066822E16C9D98E00259F81 /* udns_XtoX.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = udns_XtoX.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		D289987405E68DCB004EDB86 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2DD7EFF141A392B006D89BE /* Frameworks */ = {
+		0066820216C9D91300259F81 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -107,99 +78,67 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0024534613C04FD4008ADEE1 /* c */ = {
+		006681FC16C9D91300259F81 = {
 			isa = PBXGroup;
 			children = (
-				0024531213C04FC9008ADEE1 /* dnsget.c */,
-				0024531313C04FC9008ADEE1 /* ex-rdns.c */,
-				0024531413C04FC9008ADEE1 /* getopt.c */,
-				0024531513C04FC9008ADEE1 /* inet_XtoX.c */,
-				0024531A13C04FC9008ADEE1 /* rblcheck.c */,
-				0024531C13C04FC9008ADEE1 /* udns_bl.c */,
-				0024531D13C04FC9008ADEE1 /* udns_codes.c */,
-				0024531E13C04FC9008ADEE1 /* udns_dn.c */,
-				0024531F13C04FC9008ADEE1 /* udns_dntosp.c */,
-				0024532013C04FC9008ADEE1 /* udns_init.c */,
-				0024532113C04FC9008ADEE1 /* udns_jran.c */,
-				0024532213C04FC9008ADEE1 /* udns_misc.c */,
-				0024532313C04FC9008ADEE1 /* udns_parse.c */,
-				0024532413C04FC9008ADEE1 /* udns_resolver.c */,
-				0024532513C04FC9008ADEE1 /* udns_rr_a.c */,
-				0024532613C04FC9008ADEE1 /* udns_rr_mx.c */,
-				0024532713C04FC9008ADEE1 /* udns_rr_naptr.c */,
-				0024532813C04FC9008ADEE1 /* udns_rr_ptr.c */,
-				0024532913C04FC9008ADEE1 /* udns_rr_srv.c */,
-				0024532A13C04FC9008ADEE1 /* udns_rr_txt.c */,
-				0024532B13C04FC9008ADEE1 /* udns_XtoX.c */,
+				0066820C16C9D98E00259F81 /* udns */,
+				0066820616C9D91300259F81 /* Products */,
 			);
-			name = c;
 			sourceTree = "<group>";
 		};
-		0024535213C0508A008ADEE1 /* other */ = {
+		0066820616C9D91300259F81 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0024568513C3C59E008ADEE1 /* config.h */,
-				0024530E13C04FC9008ADEE1 /* configure */,
-				0024530F13C04FC9008ADEE1 /* configure.lib */,
-				0024531613C04FC9008ADEE1 /* Makefile.in */,
-			);
-			name = other;
-			sourceTree = "<group>";
-		};
-		08FB7794FE84155DC02AAC07 /* udns */ = {
-			isa = PBXGroup;
-			children = (
-				08FB7795FE84155DC02AAC07 /* Source */,
-				C6A0FF2B0290797F04C91782 /* Documentation */,
-				1AB674ADFE9D54B511CA2CBB /* Products */,
-			);
-			name = udns;
-			sourceTree = "<group>";
-		};
-		08FB7795FE84155DC02AAC07 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				0024534613C04FD4008ADEE1 /* c */,
-				0024535213C0508A008ADEE1 /* other */,
-				0024532D13C04FC9008ADEE1 /* udns.h */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
-		1AB674ADFE9D54B511CA2CBB /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D2AAC046055464E500DB518D /* libudns.a */,
-				E2DD7F03141A392B006D89BE /* libudns_ios.a */,
+				0066820516C9D91300259F81 /* libudns.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C6A0FF2B0290797F04C91782 /* Documentation */ = {
+		0066820C16C9D98E00259F81 /* udns */ = {
 			isa = PBXGroup;
 			children = (
-				0024531013C04FC9008ADEE1 /* COPYING.LGPL */,
-				0024531113C04FC9008ADEE1 /* dnsget.1 */,
-				0024531913C04FC9008ADEE1 /* rblcheck.1 */,
-				0024532C13C04FC9008ADEE1 /* udns.3 */,
-				0024531713C04FC9008ADEE1 /* NEWS */,
-				0024531813C04FC9008ADEE1 /* NOTES */,
-				0024531B13C04FC9008ADEE1 /* TODO */,
+				0066820E16C9D98E00259F81 /* config.h */,
+				0066820F16C9D98E00259F81 /* configure */,
+				0066821016C9D98E00259F81 /* configure.lib */,
+				0066821116C9D98E00259F81 /* COPYING.LGPL */,
+				0066821216C9D98E00259F81 /* dnsget.1 */,
+				0066821316C9D98E00259F81 /* dnsget.c */,
+				0066821416C9D98E00259F81 /* ex-rdns.c */,
+				0066821516C9D98E00259F81 /* getopt.c */,
+				0066821616C9D98E00259F81 /* inet_XtoX.c */,
+				0066821716C9D98E00259F81 /* Makefile.in */,
+				0066821816C9D98E00259F81 /* NEWS */,
+				0066821916C9D98E00259F81 /* NOTES */,
+				0066821A16C9D98E00259F81 /* rblcheck.1 */,
+				0066821B16C9D98E00259F81 /* rblcheck.c */,
+				0066821C16C9D98E00259F81 /* TODO */,
+				0066821D16C9D98E00259F81 /* udns.3 */,
+				0066821E16C9D98E00259F81 /* udns.h */,
+				0066821F16C9D98E00259F81 /* udns_bl.c */,
+				0066822016C9D98E00259F81 /* udns_codes.c */,
+				0066822116C9D98E00259F81 /* udns_dn.c */,
+				0066822216C9D98E00259F81 /* udns_dntosp.c */,
+				0066822316C9D98E00259F81 /* udns_init.c */,
+				0066822416C9D98E00259F81 /* udns_jran.c */,
+				0066822516C9D98E00259F81 /* udns_misc.c */,
+				0066822616C9D98E00259F81 /* udns_parse.c */,
+				0066822716C9D98E00259F81 /* udns_resolver.c */,
+				0066822816C9D98E00259F81 /* udns_rr_a.c */,
+				0066822916C9D98E00259F81 /* udns_rr_mx.c */,
+				0066822A16C9D98E00259F81 /* udns_rr_naptr.c */,
+				0066822B16C9D98E00259F81 /* udns_rr_ptr.c */,
+				0066822C16C9D98E00259F81 /* udns_rr_srv.c */,
+				0066822D16C9D98E00259F81 /* udns_rr_txt.c */,
+				0066822E16C9D98E00259F81 /* udns_XtoX.c */,
 			);
-			name = Documentation;
+			name = udns;
+			path = ../../../udns;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		D2AAC043055464E500DB518D /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2DD7EE7141A392B006D89BE /* Headers */ = {
+		0066820316C9D91300259F81 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -209,13 +148,13 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		D2AAC045055464E500DB518D /* udns */ = {
+		0066820416C9D91300259F81 /* udns */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "udns" */;
+			buildConfigurationList = 0066820916C9D91300259F81 /* Build configuration list for PBXNativeTarget "udns" */;
 			buildPhases = (
-				D2AAC043055464E500DB518D /* Headers */,
-				D2AAC044055464E500DB518D /* Sources */,
-				D289987405E68DCB004EDB86 /* Frameworks */,
+				0066820116C9D91300259F81 /* Sources */,
+				0066820216C9D91300259F81 /* Frameworks */,
+				0066820316C9D91300259F81 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -223,243 +162,164 @@
 			);
 			name = udns;
 			productName = udns;
-			productReference = D2AAC046055464E500DB518D /* libudns.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		E2DD7EE6141A392B006D89BE /* udns_ios */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E2DD7F00141A392B006D89BE /* Build configuration list for PBXNativeTarget "udns_ios" */;
-			buildPhases = (
-				E2DD7EE7141A392B006D89BE /* Headers */,
-				E2DD7EE9141A392B006D89BE /* Sources */,
-				E2DD7EFF141A392B006D89BE /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = udns_ios;
-			productName = udns;
-			productReference = E2DD7F03141A392B006D89BE /* libudns_ios.a */;
+			productReference = 0066820516C9D91300259F81 /* libudns.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		08FB7793FE84155DC02AAC07 /* Project object */ = {
+		006681FD16C9D91300259F81 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "SMB Phone Inc.";
 			};
-			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "udns" */;
+			buildConfigurationList = 0066820016C9D91300259F81 /* Build configuration list for PBXProject "udns" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
-			hasScannedForEncodings = 1;
+			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				en,
 			);
-			mainGroup = 08FB7794FE84155DC02AAC07 /* udns */;
+			mainGroup = 006681FC16C9D91300259F81;
+			productRefGroup = 0066820616C9D91300259F81 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D2AAC045055464E500DB518D /* udns */,
-				E2DD7EE6141A392B006D89BE /* udns_ios */,
+				0066820416C9D91300259F81 /* udns */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		D2AAC044055464E500DB518D /* Sources */ = {
+		0066820116C9D91300259F81 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0024532E13C04FC9008ADEE1 /* dnsget.c in Sources */,
-				0024532F13C04FC9008ADEE1 /* ex-rdns.c in Sources */,
-				0024533013C04FC9008ADEE1 /* getopt.c in Sources */,
-				0024533113C04FC9008ADEE1 /* inet_XtoX.c in Sources */,
-				0024533213C04FC9008ADEE1 /* rblcheck.c in Sources */,
-				0024533313C04FC9008ADEE1 /* udns_bl.c in Sources */,
-				0024533413C04FC9008ADEE1 /* udns_codes.c in Sources */,
-				0024533513C04FC9008ADEE1 /* udns_dn.c in Sources */,
-				0024533613C04FC9008ADEE1 /* udns_dntosp.c in Sources */,
-				0024533713C04FC9008ADEE1 /* udns_init.c in Sources */,
-				0024533813C04FC9008ADEE1 /* udns_jran.c in Sources */,
-				0024533913C04FC9008ADEE1 /* udns_misc.c in Sources */,
-				0024533A13C04FC9008ADEE1 /* udns_parse.c in Sources */,
-				0024533B13C04FC9008ADEE1 /* udns_resolver.c in Sources */,
-				0024533C13C04FC9008ADEE1 /* udns_rr_a.c in Sources */,
-				0024533D13C04FC9008ADEE1 /* udns_rr_mx.c in Sources */,
-				0024533E13C04FC9008ADEE1 /* udns_rr_naptr.c in Sources */,
-				0024533F13C04FC9008ADEE1 /* udns_rr_ptr.c in Sources */,
-				0024534013C04FC9008ADEE1 /* udns_rr_srv.c in Sources */,
-				0024534113C04FC9008ADEE1 /* udns_rr_txt.c in Sources */,
-				0024534213C04FC9008ADEE1 /* udns_XtoX.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E2DD7EE9141A392B006D89BE /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E2DD7EEA141A392B006D89BE /* dnsget.c in Sources */,
-				E2DD7EEB141A392B006D89BE /* ex-rdns.c in Sources */,
-				E2DD7EEC141A392B006D89BE /* getopt.c in Sources */,
-				E2DD7EED141A392B006D89BE /* inet_XtoX.c in Sources */,
-				E2DD7EEE141A392B006D89BE /* rblcheck.c in Sources */,
-				E2DD7EEF141A392B006D89BE /* udns_bl.c in Sources */,
-				E2DD7EF0141A392B006D89BE /* udns_codes.c in Sources */,
-				E2DD7EF1141A392B006D89BE /* udns_dn.c in Sources */,
-				E2DD7EF2141A392B006D89BE /* udns_dntosp.c in Sources */,
-				E2DD7EF3141A392B006D89BE /* udns_init.c in Sources */,
-				E2DD7EF4141A392B006D89BE /* udns_jran.c in Sources */,
-				E2DD7EF5141A392B006D89BE /* udns_misc.c in Sources */,
-				E2DD7EF6141A392B006D89BE /* udns_parse.c in Sources */,
-				E2DD7EF7141A392B006D89BE /* udns_resolver.c in Sources */,
-				E2DD7EF8141A392B006D89BE /* udns_rr_a.c in Sources */,
-				E2DD7EF9141A392B006D89BE /* udns_rr_mx.c in Sources */,
-				E2DD7EFA141A392B006D89BE /* udns_rr_naptr.c in Sources */,
-				E2DD7EFB141A392B006D89BE /* udns_rr_ptr.c in Sources */,
-				E2DD7EFC141A392B006D89BE /* udns_rr_srv.c in Sources */,
-				E2DD7EFD141A392B006D89BE /* udns_rr_txt.c in Sources */,
-				E2DD7EFE141A392B006D89BE /* udns_XtoX.c in Sources */,
+				0066823016C9D98E00259F81 /* dnsget.c in Sources */,
+				0066823116C9D98E00259F81 /* ex-rdns.c in Sources */,
+				0066823216C9D98E00259F81 /* getopt.c in Sources */,
+				0066823316C9D98E00259F81 /* inet_XtoX.c in Sources */,
+				0066823416C9D98E00259F81 /* rblcheck.c in Sources */,
+				0066823616C9D98E00259F81 /* udns_bl.c in Sources */,
+				0066823716C9D98E00259F81 /* udns_codes.c in Sources */,
+				0066823816C9D98E00259F81 /* udns_dn.c in Sources */,
+				0066823916C9D98E00259F81 /* udns_dntosp.c in Sources */,
+				0066823A16C9D98E00259F81 /* udns_init.c in Sources */,
+				0066823B16C9D98E00259F81 /* udns_jran.c in Sources */,
+				0066823C16C9D98E00259F81 /* udns_misc.c in Sources */,
+				0066823D16C9D98E00259F81 /* udns_parse.c in Sources */,
+				0066823E16C9D98E00259F81 /* udns_resolver.c in Sources */,
+				0066823F16C9D98E00259F81 /* udns_rr_a.c in Sources */,
+				0066824016C9D98E00259F81 /* udns_rr_mx.c in Sources */,
+				0066824116C9D98E00259F81 /* udns_rr_naptr.c in Sources */,
+				0066824216C9D98E00259F81 /* udns_rr_ptr.c in Sources */,
+				0066824316C9D98E00259F81 /* udns_rr_srv.c in Sources */,
+				0066824416C9D98E00259F81 /* udns_rr_txt.c in Sources */,
+				0066824516C9D98E00259F81 /* udns_XtoX.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB91EC08733DB70010E9CD /* Debug */ = {
+		0066820716C9D91300259F81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = udns;
-				SDKROOT = macosx;
-			};
-			name = Debug;
-		};
-		1DEB91ED08733DB70010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = udns;
-				SDKROOT = macosx;
-			};
-			name = Release;
-		};
-		1DEB91F008733DB70010E9CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
-		1DEB91F108733DB70010E9CD /* Release */ = {
+		0066820816C9D91300259F81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = HAVE_CONFIG_H;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
-		E2DD7F01141A392B006D89BE /* Debug */ = {
+		0066820A16C9D91300259F81 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					TARGET_OS_IPHONE,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = udns_ios;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		E2DD7F02141A392B006D89BE /* Release */ = {
+		0066820B16C9D91300259F81 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					HAVE_CONFIG_H,
-					TARGET_OS_IPHONE,
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
-				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = udns_ios;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "udns" */ = {
+		0066820016C9D91300259F81 /* Build configuration list for PBXProject "udns" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91EC08733DB70010E9CD /* Debug */,
-				1DEB91ED08733DB70010E9CD /* Release */,
+				0066820716C9D91300259F81 /* Debug */,
+				0066820816C9D91300259F81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "udns" */ = {
+		0066820916C9D91300259F81 /* Build configuration list for PBXNativeTarget "udns" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DEB91F008733DB70010E9CD /* Debug */,
-				1DEB91F108733DB70010E9CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E2DD7F00141A392B006D89BE /* Build configuration list for PBXNativeTarget "udns_ios" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E2DD7F01141A392B006D89BE /* Debug */,
-				E2DD7F02141A392B006D89BE /* Release */,
+				0066820A16C9D91300259F81 /* Debug */,
+				0066820B16C9D91300259F81 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+	rootObject = 006681FD16C9D91300259F81 /* Project object */;
 }
