@@ -573,7 +573,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv6 armv7";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -654,7 +653,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
 				SKIP_INSTALL = YES;
-				VALID_ARCHS = "armv6 armv7";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",

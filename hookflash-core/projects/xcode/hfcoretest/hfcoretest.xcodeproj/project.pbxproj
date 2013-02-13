@@ -2955,6 +2955,7 @@
 				0063CD7816CAEFE400E6DB4D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
