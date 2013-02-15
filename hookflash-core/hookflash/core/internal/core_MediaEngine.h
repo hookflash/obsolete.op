@@ -266,7 +266,8 @@ namespace hookflash
 
         virtual void internalStartVideo(CameraTypes cameraType);
         virtual void internalStopVideo();
-
+        
+      public:
         virtual void setReceiverAddress(String receiverAddress);
         virtual String getReceiverAddress() const;
 
