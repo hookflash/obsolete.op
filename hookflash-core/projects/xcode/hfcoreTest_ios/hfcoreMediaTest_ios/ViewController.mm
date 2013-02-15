@@ -63,7 +63,7 @@
 {
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
   if (self)
-    self.title = @"Media Test";
+    self.title = @"Media Engine Test";
   
   return self;
 }
@@ -71,14 +71,29 @@
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged) name:@"orientationChanged" object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged)
+                                               name:@"orientationChanged" object:nil];
   [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
+  
+  [_imgView1 addObserver:self forKeyPath:@"image"
+                 options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+                 context:NULL];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change
+                       context:(void *)context
+{
+  if (object == _imgView1 && [keyPath isEqualToString:@"image"])
+  {
+    UIImage* image = [change objectForKey:NSKeyValueChangeNewKey];
+  }
 }
 
 - (void)viewDidUnload
 {
   [super viewDidUnload];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:@"orientationChanged" object:nil];
+  [_imgView1 removeObserver:self forKeyPath:@"image"];
 }
 
 - (void)orientationChanged
