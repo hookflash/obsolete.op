@@ -1,0 +1,6 @@
+directory: tools
+
+This directory contains scripts used by "build" script in parent directory.
+Do not attempt to use these scripts on their own. The end result of such use is undefined.
+For more information contact maintainer. Information about maintainer shows up when you call "./build help" from parent directory (using standard unix shell, bash or zsh).
+

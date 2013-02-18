@@ -98,7 +98,7 @@ clean_darwin(){
 }
 
 build_ios(){
-	#SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
+	xcode_version=`system_profiler SPDeveloperToolsDataType | grep -B 1 Xcode.app | grep -v Xcode.app | grep -v -- -- | awk 'NR==1 {print $2}'`
 	DEVELOPER=`xcode-select -print-path`
 	COMPILER=$DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc
 	ARCH=armv7
@@ -117,7 +117,7 @@ build_ios(){
 		rm ~/user-config.jam
 		touch ~/user-config.jam
 		echo """using darwin
-: 4.6~iphone
+: $xcode_version~iphone
 : $COMPILER
 : <striper> <compileflags>-mthumb <compileflags>-fvisibility=hidden <compileflags>-fvisibility-inlines-hidden <compileflags>-D_LITTLE_ENDIAN
 : <architecture>arm <target-os>iphone

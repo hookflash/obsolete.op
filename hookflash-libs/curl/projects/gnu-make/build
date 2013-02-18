@@ -105,9 +105,15 @@ clean_darwin(){
 build_ios(){
 	LIPO="xcrun -sdk iphoneos lipo"
 	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
-	export ARCH="armv7"
+	export ARCH_1="armv6"
+	export ARCH_2="armv7"
+	export ARCH_3="armv7s"
+
+	export ARCH=$ARCH_1
 	build_ios_with_arm_version_set
-	export ARCH="armv7s"
+	export ARCH=$ARCH_2
+	build_ios_with_arm_version_set
+	export ARCH=$ARCH_3
 	build_ios_with_arm_version_set
 	
 	mkdir -p $STAGING_PREFIX/iPhoneOS/lib
@@ -116,10 +122,11 @@ build_ios(){
 
 	cp -R $STAGING_PREFIX/iPhoneOS/$ARCH/include/curl $STAGING_PREFIX/iPhoneOS/include/curl
 	
-	$LIPO -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libcurl.a -output $STAGING_PREFIX/iPhoneOS/lib/libcurl.a
+	$LIPO -create $STAGING_PREFIX/iPhoneOS/$ARCH_1/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/$ARCH_2/lib/libcurl.a $STAGING_PREFIX/iPhoneOS/$ARCH_3/lib/libcurl.a -output $STAGING_PREFIX/iPhoneOS/lib/libcurl.a
 	
-	rm -rf $STAGING_PREFIX/iPhoneOS/armv7
-	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s
+	rm -rf $STAGING_PREFIX/iPhoneOS/$ARCH_1
+	rm -rf $STAGING_PREFIX/iPhoneOS/$ARCH_2
+	rm -rf $STAGING_PREFIX/iPhoneOS/$ARCH_3
 }
 
 build_ios_with_arm_version_set() {
