@@ -1,0 +1,25 @@
+
+**** Build of configuration Simulator-Debug for project OpenPeer10 ****
+
+**** Internal Builder is used for build               ****
+qcc -o src/hfcore.o ../src/hfcore.c -V4.6.3,gcc_ntox86_cpp -w1 -shared -I/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/public -I/Applications/bbndk/target_10_1_0_338/qnx6/usr/include/freetype2 -I/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/usr/include -I/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost -D_FORTIFY_SOURCE=2 -c -O0 -g -fstack-protector-strong
+qcc -o libOpenPeer10.so src/hfcore.o -V4.6.3,gcc_ntox86_cpp -w1 -lang-c++ -shared -g -Wl,-z,relro -Wl,-z,now -L/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Simulator-Debug -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/x86/lib -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/x86/usr/lib
+Build complete for project OpenPeer10
+Time consumed: 293  ms.  
+
+**** Build of configuration Simulator-Debug for project TestHarness ****
+
+**** Internal Builder is used for build               ****
+qcc -o TestHarness test/PrintSomethingLinked.o src/printStuff.o src/main.o -lbps -lscreen -lm -lOpenPeer10 -V4.6.3,gcc_ntox86_cpp -w1 -lang-c++ -g -Wl,-z,relro -Wl,-z,now -L/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Simulator-Debug -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/x86/lib -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/x86/usr/lib
+Build complete for project TestHarness
+Time consumed: 166  ms.  
+
+**** Build of configuration Simulator-Debug for project OpenPeer10 ****
+
+**** Internal Builder is used for build               ****
+Nothing to build for OpenPeer10
+
+**** Build of configuration Simulator-Debug for project TestHarness ****
+
+**** Internal Builder is used for build               ****
+Nothing to build for TestHarness
