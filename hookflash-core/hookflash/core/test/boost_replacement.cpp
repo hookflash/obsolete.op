@@ -41,7 +41,7 @@
 typedef hookflash::services::IHelper IHelper;
 
 void doFakeGUITest();
-
+void doMediaEngineTest();
 
 namespace BoostReplacement
 {
@@ -115,5 +115,6 @@ namespace BoostReplacement
   void runAllTests()
   {
     doFakeGUITest();
+    doMediaEngineTest();
   }
 }
