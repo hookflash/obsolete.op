@@ -83,6 +83,8 @@
 		0063DA1316CB48A400E6DB4D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063DA1216CB48A400E6DB4D /* CoreVideo.framework */; };
 		0063DA1716CB4A0F00E6DB4D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063DA1616CB4A0F00E6DB4D /* AVFoundation.framework */; };
 		0063DA1916CB4A8200E6DB4D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063DA1816CB4A8200E6DB4D /* CoreMedia.framework */; };
+		E22F931916CE78E600AB0A9E /* TestMediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22F931716CE78E600AB0A9E /* TestMediaEngine.cpp */; };
+		E22F931A16CE78E600AB0A9E /* TestMediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E22F931716CE78E600AB0A9E /* TestMediaEngine.cpp */; };
 		E2437EFB16CBD62200441ABD /* libaec_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D96816CB3DC600E6DB4D /* libaec_ios.a */; };
 		E2437EFC16CBD62200441ABD /* libaecm_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D96A16CB3DC600E6DB4D /* libaecm_ios.a */; };
 		E2437EFD16CBD62200441ABD /* libagc_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D96C16CB3DC600E6DB4D /* libagc_ios.a */; };
@@ -1276,6 +1278,8 @@
 		0063DA1216CB48A400E6DB4D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0063DA1616CB4A0F00E6DB4D /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0063DA1816CB4A8200E6DB4D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		E22F931716CE78E600AB0A9E /* TestMediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMediaEngine.cpp; sourceTree = "<group>"; };
+		E22F931816CE78E600AB0A9E /* TestMediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMediaEngine.h; sourceTree = "<group>"; };
 		E2437F4516CBD62200441ABD /* hfcoreMediaTest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hfcoreMediaTest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E243806116CBD91900441ABD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = hfcoreMediaTest_ios/AppDelegate.h; sourceTree = "<group>"; };
 		E243806216CBD91900441ABD /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = hfcoreMediaTest_ios/AppDelegate.mm; sourceTree = "<group>"; };
@@ -1528,6 +1532,8 @@
 				0063D63D16CB362300E6DB4D /* desktop_FakeGUI.cpp */,
 				0063D63E16CB362300E6DB4D /* desktop_FakeGUI.h */,
 				0063D63F16CB362300E6DB4D /* main.cpp */,
+				E22F931816CE78E600AB0A9E /* TestMediaEngine.h */,
+				E22F931716CE78E600AB0A9E /* TestMediaEngine.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -2414,6 +2420,7 @@
 				0063D5F216CB35D800E6DB4D /* DetailViewController.m in Sources */,
 				0063D7D816CB362400E6DB4D /* boost_replacement.cpp in Sources */,
 				0063D7D916CB362400E6DB4D /* desktop_FakeGUI.cpp in Sources */,
+				E22F931916CE78E600AB0A9E /* TestMediaEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2425,6 +2432,7 @@
 				E243806816CBD91900441ABD /* MediaEngineDelegateWrapper.mm in Sources */,
 				E243806916CBD91900441ABD /* ViewController.mm in Sources */,
 				E243807116CBD95400441ABD /* main.m in Sources */,
+				E22F931A16CE78E600AB0A9E /* TestMediaEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

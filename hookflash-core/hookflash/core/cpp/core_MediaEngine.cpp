@@ -42,9 +42,6 @@
 
 #include <video_capture_factory.h>
 
-#define HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-//#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-//#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
 #define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
 //#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
 #define HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL (-1)
@@ -159,151 +156,67 @@ namespace hookflash
       }
       
       MediaEngine::MediaEngine(Noop) :
-      Noop(true),
-      MessageQueueAssociator(IMessageQueuePtr()),
-      mRedirectVoiceTransport("voice"),
-      mRedirectVideoTransport("video")
+        Noop(true),
+        MessageQueueAssociator(IMessageQueuePtr()),
+        mError(0),
+        mMtu(HOOKFLASH_MEDIA_ENGINE_MTU),
+        mID(zsLib::createPUID()),
+        mEcEnabled(false),
+        mAgcEnabled(false),
+        mNsEnabled(false),
+        mRecordFile(""),
+        mReceiverAddress(""),
+        mVoiceChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVoiceTransport(NULL),
+        mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVideoTransport(NULL),
+        mCaptureId(0),
+        mCameraType(CameraType_None),
+        mVoiceEngine(NULL),
+        mVoiceBase(NULL),
+        mVoiceCodec(NULL),
+        mVoiceNetwork(NULL),
+        mVoiceRtpRtcp(NULL),
+        mVoiceAudioProcessing(NULL),
+        mVoiceVolumeControl(NULL),
+        mVoiceHardware(NULL),
+        mVoiceFile(NULL),
+        mVoiceEngineReady(false),
+        mVcpm(NULL),
+        mVideoEngine(NULL),
+        mVideoBase(NULL),
+        mVideoNetwork(NULL),
+        mVideoRender(NULL),
+        mVideoCapture(NULL),
+        mVideoRtpRtcp(NULL),
+        mVideoCodec(NULL),
+        mVideoEngineReady(false),
+        mIPhoneCaptureRenderView(NULL),
+        mIPhoneChannelRenderView(NULL),
+        mRedirectVoiceTransport("voice"),
+        mRedirectVideoTransport("video"),
+        mLifetimeWantAudio(false),
+        mLifetimeWantVideo(false),
+        mLifetimeHasAudio(false),
+        mLifetimeHasVideo(false),
+        mLifetimeInProgress(false),
+        mLifetimeWantCameraType(IMediaEngine::CameraType_Front)
       {
-        
+        int name[] = {CTL_HW, HW_MACHINE};
+        size_t size;
+        sysctl(name, 2, NULL, &size, NULL, 0);
+        char *machine = (char *)malloc(size);
+        sysctl(name, 2, machine, &size, NULL, 0);
+        mMachineName = machine;
+        free(machine);
       }
 
       //-----------------------------------------------------------------------
       MediaEngine::~MediaEngine()
       {
-        // scope: delete voice engine
-        {
-          if(isNoop()) return;
-          
-          if (mVoiceBase) {
-            mError = mVoiceBase->DeRegisterVoiceEngineObserver();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to deregister voice engine observer (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-            mError = mVoiceBase->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice base (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceCodec) {
-            mError = mVoiceCodec->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceNetwork) {
-            mError = mVoiceNetwork->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice network (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceRtpRtcp) {
-            mError = mVoiceRtpRtcp->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice RTP/RTCP (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceAudioProcessing) {
-            mError = mVoiceAudioProcessing->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release audio processing (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceVolumeControl) {
-            mError = mVoiceVolumeControl->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release volume control (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceHardware) {
-            mError = mVoiceHardware->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release audio hardware (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVoiceFile) {
-            mError = mVoiceFile->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice file (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (!VoiceEngine::Delete(mVoiceEngine)) {
-            ZS_LOG_ERROR(Detail, log("failed to delete voice engine"))
-            return;
-          }
-        }
-
-        // scope; delete video engine
-        {
-          if (mVideoBase) {
-            mError = mVideoBase->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVideoNetwork) {
-            mError = mVideoNetwork->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video network (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVideoRender) {
-            mError = mVideoRender->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video render (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVideoCapture) {
-            mError = mVideoCapture->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVideoRtpRtcp) {
-            mError = mVideoRtpRtcp->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video RTP/RTCP (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (mVideoCodec) {
-            mError = mVideoCodec->Release();
-            if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          }
-
-          if (!VideoEngine::Delete(mVideoEngine)) {
-            ZS_LOG_ERROR(Detail, log("failed to delete video engine"))
-            return;
-          }
-        }
+        if(isNoop()) return;
+        
+        destroyMediaEngine();
       }
 
       //-----------------------------------------------------------------------
@@ -421,12 +334,8 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("failed to set voice engine for video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return;
         }
-
-  #ifndef HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
-  #else
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Debug);
-  #endif
+        
+        setLogLevel();
 
         Log::Level logLevel = ZS_GET_LOG_LEVEL();
 
@@ -474,6 +383,149 @@ namespace hookflash
             return;
           }
         }
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::destroyMediaEngine()
+      {
+        // scope: delete voice engine
+        {
+          if (mVoiceBase) {
+            mError = mVoiceBase->DeRegisterVoiceEngineObserver();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to deregister voice engine observer (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+            mError = mVoiceBase->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release voice base (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceCodec) {
+            mError = mVoiceCodec->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceNetwork) {
+            mError = mVoiceNetwork->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release voice network (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceRtpRtcp) {
+            mError = mVoiceRtpRtcp->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release voice RTP/RTCP (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceAudioProcessing) {
+            mError = mVoiceAudioProcessing->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release audio processing (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceVolumeControl) {
+            mError = mVoiceVolumeControl->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release volume control (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceHardware) {
+            mError = mVoiceHardware->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release audio hardware (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVoiceFile) {
+            mError = mVoiceFile->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release voice file (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (!VoiceEngine::Delete(mVoiceEngine)) {
+            ZS_LOG_ERROR(Detail, log("failed to delete voice engine"))
+            return;
+          }
+        }
+        
+        // scope; delete video engine
+        {
+          if (mVideoBase) {
+            mError = mVideoBase->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVideoNetwork) {
+            mError = mVideoNetwork->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video network (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVideoRender) {
+            mError = mVideoRender->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video render (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVideoCapture) {
+            mError = mVideoCapture->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVideoRtpRtcp) {
+            mError = mVideoRtpRtcp->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video RTP/RTCP (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (mVideoCodec) {
+            mError = mVideoCodec->Release();
+            if (mError < 0) {
+              ZS_LOG_ERROR(Detail, log("failed to release video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              return;
+            }
+          }
+          
+          if (!VideoEngine::Delete(mVideoEngine)) {
+            ZS_LOG_ERROR(Detail, log("failed to delete video engine"))
+            return;
+          }
+        }
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::setLogLevel()
+      {
+        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
       }
 
       //---------------------------------------------------------------------
@@ -850,9 +902,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::registerVoiceExternalTransport(Transport &transport)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot be registered")
-  #endif
         AutoRecursiveLock lock(mLock);
 
         ZS_LOG_DEBUG(log("register voice external transport"))
@@ -865,9 +914,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::deregisterVoiceExternalTransport()
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot be deregistered")
-  #endif
         AutoRecursiveLock lock(mLock);
 
         ZS_LOG_DEBUG(log("deregister voice external transport"))
@@ -880,10 +926,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVoiceRTPPacket(const void *data, unsigned int length)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
-  #endif
-
         int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
@@ -908,10 +950,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVoiceRTCPPacket(const void* data, unsigned int length)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
-  #endif
-
         int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
@@ -936,9 +974,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::registerVideoExternalTransport(Transport &transport)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot be registered")
-  #endif
         AutoRecursiveLock lock(mLock);
 
         ZS_LOG_DEBUG(log("register video external transport"))
@@ -951,9 +986,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::deregisterVideoExternalTransport()
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot be deregistered")
-  #endif
         AutoRecursiveLock lock(mLock);
 
         ZS_LOG_DEBUG(log("deregister video external transport"))
@@ -966,10 +998,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVideoRTPPacket(const void *data, const int length)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
-  #endif
-
         int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
@@ -994,10 +1022,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVideoRTCPPacket(const void *data, const int length)
       {
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is disabled - cannot receive data")
-  #endif
-
         int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
@@ -1019,35 +1043,6 @@ namespace hookflash
         return 0;
       }
 
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark MediaEngine => ITimerDelegate
-      #pragma mark
-      //-----------------------------------------------------------------------
-      void MediaEngine::onTimer(TimerPtr timer)
-      {
-        AutoRecursiveLock lock(mLock);
-
-        if (timer == mVoiceStatisticsTimer)
-        {
-          unsigned int averageJitterMs;
-          unsigned int maxJitterMs;
-          unsigned int discardedPackets;
-
-          mError = mVoiceRtpRtcp->GetRTPStatistics(mVoiceChannel, averageJitterMs, maxJitterMs, discardedPackets);
-          if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to get RTP statistics for voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-            return;
-          }
-
-  //        printf("=== Jitter buffer - Average jitter: %d, Max jitter: %d, Discarded pacets: %d\n", averageJitterMs, maxJitterMs, discardedPackets);
-        }
-      }
-
       //---------------------------------------------------------------------
       //---------------------------------------------------------------------
       //---------------------------------------------------------------------
@@ -1058,8 +1053,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void MediaEngine::Print(const webrtc::TraceLevel level, const char *traceString, const int length)
       {
-  //      printf("%s\n", traceString);
-
         switch (level) {
           case webrtc::kTraceApiCall:
           case webrtc::kTraceStateInfo:
@@ -1251,22 +1244,10 @@ namespace hookflash
             return;
           }
 
-  #ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-          mVoiceStatisticsTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
-  #endif
-
-  #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-          if (NULL != mVoiceTransport) {
-            mError = mVoiceNetwork->RegisterExternalTransport(mVoiceChannel, *mVoiceTransport);
-            if (0 != mError) {
-              ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-              return;
-            }
-          } else {
-            ZS_LOG_ERROR(Detail, log("external voice transport is not set"))
+          mError = registerVoiceTransport();
+          if (mError != 0)
             return;
-          }
-  #endif
+
           webrtc::EcModes ecMode = getEcMode();
           if (ecMode == webrtc::kEcUnchanged) {
             ZS_LOG_ERROR(Detail, log("machine name is not supported"))
@@ -1366,11 +1347,10 @@ namespace hookflash
             }
           }
 
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-          mVoiceBase->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
-          mVoiceBase->SetLocalReceiver(mVoiceChannel, 20010);
-  #endif
-
+          mError = setVoiceTransportParameters();
+          if (mError != 0)
+            return;
+          
           mError = mVoiceBase->StartSend(mVoiceChannel);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
@@ -1414,13 +1394,6 @@ namespace hookflash
 
           ZS_LOG_DEBUG(log("stop voice"))
 
-  #ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-          if (mVoiceStatisticsTimer) {
-            mVoiceStatisticsTimer->cancel();
-            mVoiceStatisticsTimer.reset();
-          }
-  #endif
-
           mError = mVoiceBase->StopSend(mVoiceChannel);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
@@ -1455,6 +1428,30 @@ namespace hookflash
           }
           mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         }
+      }
+      
+      //-----------------------------------------------------------------------
+      int MediaEngine::registerVoiceTransport()
+      {
+        if (NULL != mVoiceTransport) {
+          mError = mVoiceNetwork->RegisterExternalTransport(mVoiceChannel, *mVoiceTransport);
+          if (0 != mError) {
+            ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            return mError;
+          }
+        } else {
+          ZS_LOG_ERROR(Detail, log("external voice transport is not set"))
+          return -1;
+        }
+        
+        return 0;
+      }
+      
+      //-----------------------------------------------------------------------
+      int MediaEngine::setVoiceTransportParameters()
+      {
+        // No transport parameters for external transport.
+        return 0;
       }
 
       //-----------------------------------------------------------------------
@@ -1558,19 +1555,10 @@ namespace hookflash
             return;
           }
 
-  #ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-          if (NULL != mVideoTransport) {
-            mError = mVideoNetwork->RegisterSendTransport(mVideoChannel, *mVideoTransport);
-            if (0 != mError) {
-              ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-              return;
-            }
-          } else {
-            ZS_LOG_ERROR(Detail, log("external video transport is not set"))
+          mError = registerVideoTransport();
+          if (0 != mError)
             return;
-          }
-  #endif
-
+          
           mError = mVideoNetwork->SetMTU(mVideoChannel, mMtu);
           if (0 != mError) {
             ZS_LOG_ERROR(Detail, log("failed to set MTU for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1659,11 +1647,11 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-  #ifndef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-          mError = mVideoNetwork->SetSendDestination(mVideoChannel, mReceiverAddress.c_str(), 20000);
-          mError = mVideoNetwork->SetLocalReceiver(mVideoChannel, 20000);
-  #endif
-
+          
+          mError = setVideoTransportParameters();
+          if (mError != 0)
+            return;
+          
           mError = mVideoBase->StartSend(mVideoChannel);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1687,7 +1675,7 @@ namespace hookflash
           mVideoEngineReady = true;
         }
       }
-
+      
       //-----------------------------------------------------------------------
       void MediaEngine::internalStopVideo()
       {
@@ -1764,31 +1752,28 @@ namespace hookflash
           mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         }
       }
-
+      
       //-----------------------------------------------------------------------
-      void MediaEngine::setReceiverAddress(String receiverAddress)
+      int MediaEngine::registerVideoTransport()
       {
-#ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot set receiver address")
-#endif
-        AutoRecursiveLock lock(mLock);
-
-        ZS_LOG_DEBUG(log("set receiver address - value: ") + receiverAddress)
-
-        mReceiverAddress = receiverAddress;
+        if (NULL != mVideoTransport) {
+          mError = mVideoNetwork->RegisterSendTransport(mVideoChannel, *mVideoTransport);
+          if (0 != mError) {
+            ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return mError;
+          }
+        } else {
+          ZS_LOG_ERROR(Detail, log("external video transport is not set"))
+          return -1;
+        }
+        return 0;
       }
-
+      
       //-----------------------------------------------------------------------
-      String MediaEngine::getReceiverAddress() const
+      int MediaEngine::setVideoTransportParameters()
       {
-#ifdef HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
-        ZS_THROW_INVALID_USAGE("external transport is enabled - cannot get receiver address")
-#endif
-        AutoRecursiveLock lock(mLock);
-
-        ZS_LOG_DEBUG(log("get receiver address - value: ") + mReceiverAddress)
-
-        return mReceiverAddress;
+        // No transport parameters for external transport.
+        return 0;
       }
 
       //-----------------------------------------------------------------------
