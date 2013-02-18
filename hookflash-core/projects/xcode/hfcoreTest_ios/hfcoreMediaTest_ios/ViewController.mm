@@ -8,7 +8,8 @@
 
 #import "ViewController.h"
 #import "MediaEngineDelegateWrapper.h"
-//#include <hookflash/IClient.h>
+#include <hookflash/core/internal/core_MediaEngine.h>
+#include <hookflash/core/test/TestMediaEngine.h>
 
 @implementation ViewController
 
@@ -28,9 +29,14 @@
   //    IClient::setLogLevel("hookflash_media", IClient::Log::Debug);         // recommend Debug
   //    IClient::installTelnetLogger(59999, 60, true);
 
+  hookflash::core::test::TestMediaEngineFactoryPtr overrideFactory(new hookflash::core::test::TestMediaEngineFactory);
+  
+  hookflash::core::internal::Factory::override(overrideFactory);
+
   hookflash::core::internal::IMediaEngineForStack::setup(mediaEngineDelegatePtr);
   
   hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
+  hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
   hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
   
   mediaEngine->setCaptureRenderView((__bridge void*)_imgView1);
@@ -42,7 +48,7 @@
   mediaEngine->setMuteEnabled(false);
   mediaEngine->setLoudspeakerEnabled(false);
   
-  mediaEngineInternal->setReceiverAddress("127.0.0.1");
+  testMediaEngineInternal->setReceiverAddress("127.0.0.1");
   
   mediaEngineInternal->forCallTransport().startVoice();
   mediaEngineInternal->forCallTransport().startVideo();

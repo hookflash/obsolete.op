@@ -35,7 +35,6 @@
 #include <hookflash/core/IMediaEngine.h>
 
 #include <zsLib/MessageQueueAssociator.h>
-#include <zsLib/Timer.h>
 
 #include <voe_base.h>
 #include <voe_codec.h>
@@ -123,7 +122,6 @@ namespace hookflash
                           public IMediaEngine,
                           public IMediaEngineForStack,
                           public IMediaEngineForCallTransport,
-                          public ITimerDelegate,
                           public webrtc::TraceCallback,
                           public webrtc::VoiceEngineObserver
       {
@@ -162,11 +160,14 @@ namespace hookflash
                     IMediaEngineDelegatePtr delegate
                     );
         
-        MediaEngine(Noop);// : Noop(true), MessageQueueAssociator(IMessageQueuePtr());
+        MediaEngine(Noop);
 
         void init();
 
         static MediaEnginePtr create(IMediaEngineDelegatePtr delegate);
+        
+        void destroyMediaEngine();
+        virtual void setLogLevel();
 
       public:
         ~MediaEngine();
@@ -232,17 +233,10 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaEngine => ITimerDelegate
-        #pragma mark
-
-        void onTimer(TimerPtr timer);
-
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark MediaEngine => TraceCallback
         #pragma mark
 
-        void Print(const TraceLevel level, const char *traceString, const int length);
+        virtual void Print(const TraceLevel level, const char *traceString, const int length);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -263,13 +257,15 @@ namespace hookflash
       protected:
         virtual void internalStartVoice();
         virtual void internalStopVoice();
+        
+        virtual int registerVoiceTransport();
+        virtual int setVoiceTransportParameters();
 
         virtual void internalStartVideo(CameraTypes cameraType);
         virtual void internalStopVideo();
         
-      public:
-        virtual void setReceiverAddress(String receiverAddress);
-        virtual String getReceiverAddress() const;
+        virtual int registerVideoTransport();
+        virtual int setVideoTransportParameters();
 
       protected:
         int setVideoCaptureRotationAndCodecParameters();
@@ -390,9 +386,6 @@ namespace hookflash
         CameraTypes mLifetimeWantCameraType;
 
         mutable RecursiveLock mMediaEngineReadyLock;
-
-      private:
-        TimerPtr mVoiceStatisticsTimer;
       };
 
       //-----------------------------------------------------------------------
