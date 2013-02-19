@@ -115,7 +115,7 @@ namespace hookflash
         mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
         mVideoTransport(&mRedirectVideoTransport),
         mCaptureId(0),
-        mCameraType(CameraType_None),
+        mCameraType(CameraType_Front),
         mVoiceEngine(NULL),
         mVoiceBase(NULL),
         mVoiceCodec(NULL),
@@ -135,16 +135,19 @@ namespace hookflash
         mVideoRtpRtcp(NULL),
         mVideoCodec(NULL),
         mVideoEngineReady(false),
+        mContinuousVideoCapture(false),
         mIPhoneCaptureRenderView(NULL),
         mIPhoneChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
-        mLifetimeWantVideo(false),
+        mLifetimeWantVideoCapture(false),
+        mLifetimeWantVideoChannel(false),
         mLifetimeHasAudio(false),
-        mLifetimeHasVideo(false),
+        mLifetimeHasVideoCapture(false),
+        mLifetimeHasVideoChannel(false),
         mLifetimeInProgress(false),
-        mLifetimeWantCameraType(IMediaEngine::CameraType_Front)
+        mLifetimeWantCameraType(CameraType_Front)
       {
         int name[] = {CTL_HW, HW_MACHINE};
         size_t size;
@@ -171,7 +174,7 @@ namespace hookflash
         mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
         mVideoTransport(NULL),
         mCaptureId(0),
-        mCameraType(CameraType_None),
+        mCameraType(CameraType_Front),
         mVoiceEngine(NULL),
         mVoiceBase(NULL),
         mVoiceCodec(NULL),
@@ -191,16 +194,19 @@ namespace hookflash
         mVideoRtpRtcp(NULL),
         mVideoCodec(NULL),
         mVideoEngineReady(false),
+        mContinuousVideoCapture(false),
         mIPhoneCaptureRenderView(NULL),
         mIPhoneChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
-        mLifetimeWantVideo(false),
+        mLifetimeWantVideoCapture(false),
+        mLifetimeWantVideoChannel(false),
         mLifetimeHasAudio(false),
-        mLifetimeHasVideo(false),
+        mLifetimeHasVideoCapture(false),
+        mLifetimeHasVideoChannel(false),
         mLifetimeInProgress(false),
-        mLifetimeWantCameraType(IMediaEngine::CameraType_Front)
+        mLifetimeWantCameraType(CameraType_Front)
       {
         int name[] = {CTL_HW, HW_MACHINE};
         size_t size;
@@ -747,6 +753,26 @@ namespace hookflash
             return OutputAudioRoute_BuiltInSpeaker;
         }
       }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::setContinuousVideoCapture(bool continuousVideoCapture)
+      {
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("set continuous video capture - value: ") + (continuousVideoCapture ? "true" : "false"))
+        
+        mContinuousVideoCapture = continuousVideoCapture;
+      }
+
+      //-----------------------------------------------------------------------
+      bool MediaEngine::getContinuousVideoCapture()
+      {
+        AutoRecursiveLock lock(mLock);
+        
+        ZS_LOG_DEBUG(log("get continuous video capture"))
+        
+        return mContinuousVideoCapture;
+      }
 
       //-----------------------------------------------------------------------
       IMediaEngine::CameraTypes MediaEngine::getCameraType() const
@@ -763,6 +789,28 @@ namespace hookflash
           mLifetimeWantCameraType = type;
         }
 
+        ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::startVideoCapture()
+      {
+        {
+          AutoRecursiveLock lock(mLifetimeLock);
+          mLifetimeWantVideoCapture = true;
+        }
+        
+        ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::stopVideoCapture()
+      {
+        {
+          AutoRecursiveLock lock(mLifetimeLock);
+          mLifetimeWantVideoCapture = false;
+        }
+        
         ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
       }
 
@@ -878,22 +926,22 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void MediaEngine::startVideo()
+      void MediaEngine::startVideoChannel()
       {
         {
           AutoRecursiveLock lock(mLifetimeLock);
-          mLifetimeWantVideo = true;
+          mLifetimeWantVideoChannel = true;
         }
 
         ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
       }
 
       //-----------------------------------------------------------------------
-      void MediaEngine::stopVideo()
+      void MediaEngine::stopVideoChannel()
       {
         {
           AutoRecursiveLock lock(mLifetimeLock);
-          mLifetimeWantVideo = false;
+          mLifetimeWantVideoChannel = false;
         }
 
         ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
@@ -1147,9 +1195,11 @@ namespace hookflash
         bool firstAttempt = true;
 
         bool wantAudio = false;
-        bool wantVideo = false;
+        bool wantVideoCapture = false;
+        bool wantVideoChannel = false;
         bool hasAudio = false;
-        bool hasVideo = false;
+        bool hasVideoCapture = false;
+        bool hasVideoChannel = false;
         CameraTypes wantCameraType = IMediaEngine::CameraType_None;
 
         // attempt to get the lifetime lock
@@ -1168,10 +1218,16 @@ namespace hookflash
 
           mLifetimeInProgress = true;
 
+          if (mLifetimeWantVideoChannel)
+            mLifetimeWantVideoCapture = true;
+          else if (!mContinuousVideoCapture)
+            mLifetimeWantVideoCapture = false;
           wantAudio = mLifetimeWantAudio;
-          wantVideo = mLifetimeWantVideo;
+          wantVideoCapture = mLifetimeWantVideoCapture;
+          wantVideoChannel = mLifetimeWantVideoChannel;
           hasAudio = mLifetimeHasAudio;
-          hasVideo = mLifetimeHasVideo;
+          hasVideoCapture = mLifetimeHasVideoCapture;
+          hasVideoChannel = mLifetimeHasVideoChannel;
           wantCameraType = mLifetimeWantCameraType;
           break;
         }
@@ -1179,13 +1235,18 @@ namespace hookflash
         {
           AutoRecursiveLock lock(mLock);
 
-          if (wantVideo) {
+          if (wantVideoCapture) {
             if (wantCameraType != mCameraType) {
               ZS_LOG_DEBUG(log("camera type needs to change") + ", was=" + IMediaEngine::toString(mCameraType) + ", desired=" + IMediaEngine::toString(wantCameraType))
-              if (hasVideo) {
-                ZS_LOG_DEBUG(log("video must be stopped first before camera type can be swapped (will try again)"))
-                wantVideo = false;  // pretend that we don't want video so it will be stopped
+              mCameraType = wantCameraType;
+              if (hasVideoCapture) {
+                ZS_LOG_DEBUG(log("video capture must be stopped first before camera type can be swapped (will try again)"))
+                wantVideoCapture = false;  // pretend that we don't want video so it will be stopped
                 repeat = true;      // repeat this thread operation again to start video back up again after
+                if (hasVideoChannel) {
+                  ZS_LOG_DEBUG(log("video channel must be stopped first before camera type can be swapped (will try again)"))
+                  wantVideoChannel = false;  // pretend that we don't want video so it will be stopped
+                }
               }
             }
           }
@@ -1199,14 +1260,26 @@ namespace hookflash
               internalStopVoice();
             }
           }
+          
+          if (wantVideoCapture) {
+            if (!hasVideoCapture) {
+              internalStartVideoCapture();
+            }
+          }
 
-          if (wantVideo) {
-            if (!hasVideo) {
-              internalStartVideo(IMediaEngine::CameraType_Front);
+          if (wantVideoChannel) {
+            if (!hasVideoChannel) {
+              internalStartVideoChannel();
             }
           } else {
-            if (hasVideo) {
-              internalStopVideo();
+            if (hasVideoChannel) {
+              internalStopVideoChannel();
+            }
+          }
+          
+          if (!wantVideoCapture) {
+            if (hasVideoCapture) {
+              internalStopVideoCapture();
             }
           }
         }
@@ -1215,7 +1288,8 @@ namespace hookflash
           AutoRecursiveLock lock(mLifetimeLock);
 
           mLifetimeHasAudio = wantAudio;
-          mLifetimeHasVideo = wantVideo;
+          mLifetimeHasVideoCapture = wantVideoCapture;
+          mLifetimeHasVideoChannel = wantVideoChannel;
 
           mLifetimeInProgress = false;
         }
@@ -1453,17 +1527,15 @@ namespace hookflash
         // No transport parameters for external transport.
         return 0;
       }
-
+      
       //-----------------------------------------------------------------------
-      void MediaEngine::internalStartVideo(CameraTypes cameraType)
+      void MediaEngine::internalStartVideoCapture()
       {
         {
           AutoRecursiveLock lock(mLock);
-
-          ZS_LOG_DEBUG(log("start video - camera type: ") + (cameraType == CameraType_Back ? "back" : "front"))
-
-          mCameraType = cameraType;
-
+          
+          ZS_LOG_DEBUG(log("start video capture - camera type: ") + (mCameraType == CameraType_Back ? "back" : "front"))
+          
           const unsigned int KMaxDeviceNameLength = 128;
           const unsigned int KMaxUniqueIdLength = 256;
           char deviceName[KMaxDeviceNameLength];
@@ -1471,12 +1543,12 @@ namespace hookflash
           char uniqueId[KMaxUniqueIdLength];
           memset(uniqueId, 0, KMaxUniqueIdLength);
           WebRtc_UWord32 captureIdx;
-
-          if (cameraType == CameraType_Back)
+          
+          if (mCameraType == CameraType_Back)
           {
             captureIdx = 0;
           }
-          else if (cameraType == CameraType_Front)
+          else if (mCameraType == CameraType_Front)
           {
             captureIdx = 1;
           }
@@ -1485,30 +1557,23 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("camera type is not set"))
             return;
           }
-
-  #ifdef _IPHONE_
+          
+#ifdef _IPHONE_
           void *captureView = mIPhoneCaptureRenderView;
-          void *channelView = mIPhoneChannelRenderView;
-  #else
+#else
           void *captureView = mIPhoneCaptureRenderView;
-          void *channelView = mIPhoneChannelRenderView;
-  #endif
-
+#endif
           if (captureView == NULL) {
             ZS_LOG_ERROR(Detail, log("capture view is not set"))
             return;
           }
-          if (channelView == NULL) {
-            ZS_LOG_ERROR(Detail, log("channel view is not set"))
-            return;
-          }
-
+          
           webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
           if (devInfo == NULL) {
             ZS_LOG_ERROR(Detail, log("failed to create video capture device info"))
             return;
           }
-
+          
           mError = devInfo->GetDeviceName(captureIdx, deviceName,
                                           KMaxDeviceNameLength, uniqueId,
                                           KMaxUniqueIdLength);
@@ -1516,13 +1581,13 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to get video device name"))
             return;
           }
-
+          
           mVcpm = webrtc::VideoCaptureFactory::Create(1, uniqueId);
           if (mVcpm == NULL) {
             ZS_LOG_ERROR(Detail, log("failed to create video capture module"))
             return;
           }
-
+          
           mError = mVideoCapture->AllocateCaptureDevice(*mVcpm, mCaptureId);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to allocate video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1530,7 +1595,7 @@ namespace hookflash
           }
           mVcpm->AddRef();
           delete devInfo;
-
+          
           webrtc::RotateCapturedFrame orientation;
           mError = mVideoCapture->GetOrientation(NULL, orientation);
           if (mError != 0) {
@@ -1542,10 +1607,89 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+          
+          int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
+          mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
+          if (mError != 0)
+            return;
 
-          mError = mVideoCapture->StartCapture(mCaptureId);
+          webrtc::CaptureCapability capability;
+          capability.width = width;
+          capability.height = height;
+          capability.maxFPS = maxFramerate;
+          capability.rawType = webrtc::kVideoI420;
+          mError = mVideoCapture->StartCapture(mCaptureId, capability);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          
+          mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
+                                             1.0F);
+          if (0 != mError) {
+            ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          
+          mError = mVideoRender->StartRender(mCaptureId);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+        }
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaEngine::internalStopVideoCapture()
+      {
+        {
+          AutoRecursiveLock lock(mLock);
+          
+          ZS_LOG_DEBUG(log("stop video capture"))
+          
+          mError = mVideoRender->StopRender(mCaptureId);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          mError = mVideoRender->RemoveRenderer(mCaptureId);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          mError = mVideoCapture->StopCapture(mCaptureId);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          mError = mVideoCapture->ReleaseCaptureDevice(mCaptureId);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+          
+          if (mVcpm != NULL)
+            mVcpm->Release();
+          
+          mVcpm = NULL;
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void MediaEngine::internalStartVideoChannel()
+      {
+        {
+          AutoRecursiveLock lock(mLock);
+          
+          ZS_LOG_DEBUG(log("start video channel"))
+          
+#ifdef _IPHONE_
+          void *channelView = mIPhoneChannelRenderView;
+#else
+          void *channelView = mIPhoneChannelRenderView;
+#endif
+          if (channelView == NULL) {
+            ZS_LOG_ERROR(Detail, log("channel view is not set"))
             return;
           }
 
@@ -1605,13 +1749,6 @@ namespace hookflash
             }
           }
 
-          mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
-                                             1.0F);
-          if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-            return;
-          }
-
           mError = mVideoRender->AddRenderer(mVideoChannel, channelView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
@@ -1639,12 +1776,6 @@ namespace hookflash
 
           mError = setVideoCaptureRotationAndCodecParameters();
           if (mError != 0) {
-            return;
-          }
-
-          mError = mVideoRender->StartRender(mCaptureId);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
           
@@ -1677,7 +1808,7 @@ namespace hookflash
       }
       
       //-----------------------------------------------------------------------
-      void MediaEngine::internalStopVideo()
+      void MediaEngine::internalStopVideoChannel()
       {
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
@@ -1687,18 +1818,8 @@ namespace hookflash
         {
           AutoRecursiveLock lock(mLock);
 
-          ZS_LOG_DEBUG(log("stop video"))
+          ZS_LOG_DEBUG(log("stop video channel"))
 
-          mError = mVideoRender->StopRender(mCaptureId);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-            return;
-          }
-          mError = mVideoRender->RemoveRenderer(mCaptureId);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-            return;
-          }
           mError = mVideoBase->StopSend(mVideoChannel);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1734,21 +1855,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          mError = mVideoCapture->StopCapture(mCaptureId);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-            return;
-          }
-          mError = mVideoCapture->ReleaseCaptureDevice(mCaptureId);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-            return;
-          }
 
-          if (mVcpm != NULL)
-            mVcpm->Release();
-
-          mVcpm = NULL;
           mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
         }
       }
@@ -1775,19 +1882,10 @@ namespace hookflash
         // No transport parameters for external transport.
         return 0;
       }
-
+      
       //-----------------------------------------------------------------------
-      int MediaEngine::setVideoCaptureRotationAndCodecParameters()
+      int MediaEngine::getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height, int& maxFramerate, int& maxBitrate)
       {
-        webrtc::RotateCapturedFrame orientation;
-        mError = mVideoCapture->GetOrientation(NULL, orientation);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return mError;
-        }
-
-        webrtc::VideoCodec videoCodec;
-        int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
         String iPadString("iPad");
         String iPad2String("iPad2");
         String iPad3String("iPad3");
@@ -1933,20 +2031,46 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("camera type is not set"))
           return -1;
         }
-        memset(&videoCodec, 0, sizeof(VideoCodec));
-        mError = mVideoCodec->GetSendCodec(mVideoChannel, videoCodec);
+        return 0;
+      }
+
+      //-----------------------------------------------------------------------
+      int MediaEngine::setVideoCaptureRotationAndCodecParameters()
+      {
+        webrtc::RotateCapturedFrame orientation;
+        mError = mVideoCapture->GetOrientation(NULL, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return mError;
         }
-        videoCodec.width = width;
-        videoCodec.height = height;
-        videoCodec.maxFramerate = maxFramerate;
-        videoCodec.maxBitrate = maxBitrate;
-        mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
+        mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return mError;
+        }
+
+        int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
+        mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
+        if (mError != 0)
+          return mError;
+        
+        if (mVideoChannel != HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL) {
+          webrtc::VideoCodec videoCodec;
+          memset(&videoCodec, 0, sizeof(VideoCodec));
+          mError = mVideoCodec->GetSendCodec(mVideoChannel, videoCodec);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return mError;
+          }
+          videoCodec.width = width;
+          videoCodec.height = height;
+          videoCodec.maxFramerate = maxFramerate;
+          videoCodec.maxBitrate = maxBitrate;
+          mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
+          if (mError != 0) {
+            ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return mError;
+          }
         }
 
         const char *rotationString = NULL;
@@ -1969,7 +2093,7 @@ namespace hookflash
 
         if (rotationString) {
           ZS_LOG_DEBUG(log("video capture rotation and codec size set - rotation: ") + rotationString + ", width: " + Stringize<INT>(width).string() + ", height: " + Stringize<INT>(height).string())
-          }
+        }
 
         return 0;
       }

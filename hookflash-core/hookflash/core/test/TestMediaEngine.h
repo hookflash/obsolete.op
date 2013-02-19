@@ -130,9 +130,11 @@ namespace hookflash
         virtual int registerVoiceTransport();
         virtual int setVoiceTransportParameters();
         
-        virtual void internalStartVideo(CameraTypes cameraType);
-        virtual void internalStopVideo();
-        
+        virtual void internalStartVideoCapture();
+        virtual void internalStopVideoCapture();
+        virtual void internalStartVideoChannel();
+        virtual void internalStopVideoChannel();
+
         virtual int registerVideoTransport();
         virtual int setVideoTransportParameters();
         
