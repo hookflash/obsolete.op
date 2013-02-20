@@ -1,0 +1,6 @@
+#include <string>
+
+class Log {
+public:
+	static void WriteToLog(const std::wstring& message);
+};

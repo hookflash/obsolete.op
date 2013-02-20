@@ -20,9 +20,9 @@
  *
  */
 
-#ifdef _WIN32
+#ifdef __QNX__
 
-#include <zsLib/internal/MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.h>
+#include <zsLib/internal/MessageQueueThreadUsingBlackberryChannels.h>
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
@@ -33,106 +33,88 @@
 
 #include <tchar.h>
 
+#include <bps/bps.h>
+
 namespace zsLib { ZS_DECLARE_SUBSYSTEM(zsLib) }
 
 namespace zsLib
 {
   namespace internal
   {
-    static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+//    static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    class MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper
+    class MessageQueueThreadUsingBlackberryChannelsWrapper
     {
     public:
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper() : mThreadQueue(MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::create())
+      MessageQueueThreadUsingBlackberryChannelsWrapper() : mThreadQueue(MessageQueueThreadUsingBlackberryChannels::create())
       {
         mThreadQueue->setup();
       }
-      ~MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper()
+      ~MessageQueueThreadUsingBlackberryChannelsWrapper()
       {
         mThreadQueue->waitForShutdown();
       }
 
     public:
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr mThreadQueue;
+      MessageQueueThreadUsingBlackberryChannelsPtr mThreadQueue;
     };
 
-    typedef boost::thread_specific_ptr<MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper> MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapperThreadPtr;
+    typedef boost::thread_specific_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper> MessageQueueThreadUsingBlackberryChannelsWrapperThreadPtr;
 
-    class MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsGlobal
+    class MessageQueueThreadUsingBlackberryChannelsGlobal
     {
     public:
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsGlobal() :
-        mRegisteredWindowClass(0),
-        mHiddenWindowClassName(_T("zsLibHiddenWindowe059928c0dab4631bdaeab09d5b25847")),
-        mCustomMessageName(_T("zsLibCustomMessage3bbf9fd89d067b42860cc9074d64539f")),
-        mModule(::GetModuleHandle(NULL))
+      MessageQueueThreadUsingBlackberryChannelsGlobal() :
+        mCustomMessageName(_T("zsLibCustomMessage4cce8fd89d067b42860cc9074d64539f"))
       {
-        WNDCLASS wndClass;
-        memset(&wndClass, 0, sizeof(wndClass));
+    	// From the BB docs:
+    	// Your application can call the bps_initialize() function more than once. An application that
+    	// calls the bps_initialize() function multiple times should call the bps_shutdown() function the
+    	//same number of times.
+    	bbps_initialize();
 
-        wndClass.style = CS_HREDRAW | CS_VREDRAW;
-        wndClass.lpfnWndProc = windowProc;
-        wndClass.cbClsExtra = 0;
-        wndClass.cbWndExtra = 0;
-        wndClass.hInstance = mModule;
-        wndClass.hIcon = NULL;
-        wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
-        wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
-        wndClass.lpszMenuName = NULL;
-        wndClass.lpszClassName = mHiddenWindowClassName;
-
-        mRegisteredWindowClass = ::RegisterClass(&wndClass);
-        ZS_THROW_BAD_STATE_MSG_IF(0 == mRegisteredWindowClass, "RegisterClass failed with error: " + zsLib::Stringize<DWORD>(::GetLastError()).string())
-
-        mCustomMessage = ::RegisterWindowMessage(mCustomMessageName);
-        ZS_THROW_BAD_STATE_IF(0 == mCustomMessage)
+        // [TODO] LAG figure out the equivalent for BB
+    	// mCustomMessage = ::RegisterWindowMessage(mCustomMessageName);
       }
 
-      ~MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsGlobal()
+      ~MessageQueueThreadUsingBlackberryChannelsGlobal()
       {
-        if (0 != mRegisteredWindowClass)
-        {
-          ZS_THROW_BAD_STATE_IF(0 == ::UnregisterClass(mHiddenWindowClassName, mModule))
-          mRegisteredWindowClass = 0;
-        }
+    	// See not above regarding bps_initialize.
+    	bps_shutdown();
       }
 
     public:
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapperThreadPtr mThreadQueueWrapper;
-      HMODULE mModule;
-      ATOM mRegisteredWindowClass;
-      const TCHAR *mHiddenWindowClassName;
+      MessageQueueThreadUsingBlackberryChannelsWrapperThreadPtr mThreadQueueWrapper;
       const TCHAR *mCustomMessageName;
       UINT mCustomMessage;
     };
 
-    static MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsGlobal &getGlobal()
+    static MessageQueueThreadUsingBlackberryChannelsGlobal &getGlobal()
     {
-      static MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsGlobal global;
+      static MessageQueueThreadUsingBlackberryChannelsGlobal global;
       return global;
     }
 
-    static MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr getThreadMessageQueue()
+    static MessageQueueThreadUsingBlackberryChannelsPtr getThreadMessageQueue()
     {
       if (! getGlobal().mThreadQueueWrapper.get())
-        getGlobal().mThreadQueueWrapper.reset(new MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper);
+        getGlobal().mThreadQueueWrapper.reset(new MessageQueueThreadUsingBlackberryChannelsWrapper);
       return getGlobal().mThreadQueueWrapper->mThreadQueue;
     }
 
-    MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::singleton()
+    MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::singleton()
     {
       return getThreadMessageQueue();
     }
 
-    MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::create()
+    MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::create()
     {
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr thread(new MessageQueueThreadUsingCurrentGUIMessageQueueForWindows);
+      MessageQueueThreadUsingBlackberryChannelsPtr thread(new MessageQueueThreadUsingBlackberryChannels);
       thread->mQueue = zsLib::MessageQueue::create(thread);
       return thread;
     }
 
-    void MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::setup()
+    void MessageQueueThreadUsingBlackberryChannels::setup()
     {
       // make sure the window message queue was created by peeking a message
       MSG msg;
@@ -155,12 +137,12 @@ namespace zsLib
       ZS_THROW_BAD_STATE_IF(NULL == mHWND)
     }
 
-    MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::MessageQueueThreadUsingCurrentGUIMessageQueueForWindows() :
+    MessageQueueThreadUsingBlackberryChannels::MessageQueueThreadUsingBlackberryChannels() :
       mHWND(NULL)
     {
     }
 
-    MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::~MessageQueueThreadUsingCurrentGUIMessageQueueForWindows()
+    MessageQueueThreadUsingBlackberryChannels::~MessageQueueThreadUsingBlackberryChannels()
     {
       if (NULL != mHWND)
       {
@@ -169,7 +151,7 @@ namespace zsLib
       }
     }
 
-    void MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::process()
+    void MessageQueueThreadUsingBlackberryChannels::process()
     {
       MessageQueuePtr queue;
 
@@ -183,7 +165,7 @@ namespace zsLib
       queue->processOnlyOneMessage(); // process only one messsage at a time since this must be syncrhonized through the GUI message queue
     }
 
-    void MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::post(IMessageQueueMessagePtr message)
+    void MessageQueueThreadUsingBlackberryChannels::post(IMessageQueueMessagePtr message)
     {
       MessageQueuePtr queue;
       {
@@ -196,7 +178,7 @@ namespace zsLib
       queue->post(message);
     }
 
-    UINT MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::getTotalUnprocessedMessages() const
+    UINT MessageQueueThreadUsingBlackberryChannels::getTotalUnprocessedMessages() const
     {
       AutoLock lock(mLock);
       if (!mQueue)
@@ -205,7 +187,7 @@ namespace zsLib
       return mQueue->getTotalUnprocessedMessages();
     }
 
-    void MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::notifyMessagePosted()
+    void MessageQueueThreadUsingBlackberryChannels::notifyMessagePosted()
     {
       AutoLock lock(mLock);
       if (NULL == mHWND) {
@@ -215,7 +197,7 @@ namespace zsLib
       ZS_THROW_BAD_STATE_IF(0 == ::PostMessage(mHWND, getGlobal().mCustomMessage, (WPARAM)0, (LPARAM)0))
     }
 
-    void MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::waitForShutdown()
+    void MessageQueueThreadUsingBlackberryChannels::waitForShutdown()
     {
       AutoLock lock(mLock);
       mQueue.reset();
@@ -232,11 +214,11 @@ namespace zsLib
       if (getGlobal().mCustomMessage != uMsg)
         return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
 
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr queue(getThreadMessageQueue());
+      MessageQueueThreadUsingBlackberryChannelsPtr queue(getThreadMessageQueue());
       queue->process();
       return (LRESULT)0;
     }
   }
 }
 
-#endif //_WIN32
+#endif // __QNX__

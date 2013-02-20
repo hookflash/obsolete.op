@@ -22,10 +22,10 @@
 
 #pragma once
 
-#ifdef _WIN32
+#ifdef __QNX__
 
-#ifndef ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGCURRENTGUIMESSAGEQUEUEFORWINDOWS_H_e059928c0dab4631bdaeab09d5b25847
-#define ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGCURRENTGUIMESSAGEQUEUEFORWINDOWS_H_e059928c0dab4631bdaeab09d5b25847
+#ifndef ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGBLACKBERRYCHANNELS_H_b359128a0bad4631bdaeab09d5b25847
+#define ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGBLACKBERRYCHANNELS_H_b359128a0bad4631bdaeab09d5b25847
 
 #include <zsLib/MessageQueue.h>
 #include <zsLib/MessageQueueThread.h>
@@ -35,16 +35,16 @@ namespace zsLib
 {
   namespace internal
   {
-    class MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper;
+    class MessageQueueThreadUsingBlackberryChannelsWrapper;
 
-    class MessageQueueThreadUsingCurrentGUIMessageQueueForWindows;
-    typedef boost::shared_ptr<MessageQueueThreadUsingCurrentGUIMessageQueueForWindows> MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr;
-    typedef boost::weak_ptr<MessageQueueThreadUsingCurrentGUIMessageQueueForWindows> MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWeakPtr;
+    class MessageQueueThreadUsingBlackberryChannels;
+    typedef boost::shared_ptr<MessageQueueThreadUsingBlackberryChannels> MessageQueueThreadUsingBlackberryChannelsPtr;
+    typedef boost::weak_ptr<MessageQueueThreadUsingBlackberryChannels> MessageQueueThreadUsingBlackberryChannelsWeakPtr;
 
-    class MessageQueueThreadUsingCurrentGUIMessageQueueForWindows : public MessageQueueThread,
+    class MessageQueueThreadUsingBlackberryChannels : public MessageQueueThread,
                                                                     public IMessageQueueNotify
     {
-      friend class MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsWrapper;
+      friend class MessageQueueThreadUsingBlackberryChannelsWrapper;
 
     public:
       struct Exceptions
@@ -53,14 +53,14 @@ namespace zsLib
       };
 
     protected:
-      MessageQueueThreadUsingCurrentGUIMessageQueueForWindows();
-      static MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr create();
+      MessageQueueThreadUsingBlackberryChannels();
+      static MessageQueueThreadUsingBlackberryChannelsPtr create();
       void setup();
 
     public:
-      ~MessageQueueThreadUsingCurrentGUIMessageQueueForWindows();
+      ~MessageQueueThreadUsingBlackberryChannels();
 
-      static MessageQueueThreadUsingCurrentGUIMessageQueueForWindowsPtr singleton();
+      static MessageQueueThreadUsingBlackberryChannelsPtr singleton();
 
       // IMessageQueue
       virtual void post(IMessageQueueMessagePtr message);
@@ -80,11 +80,11 @@ namespace zsLib
       mutable Lock mLock;
 
       MessageQueuePtr mQueue;
-      HWND mHWND;
+      int mChannelId;
     };
   }
 }
 
-#endif //ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGCURRENTGUIMESSAGEQUEUEFORWINDOWS_H_e059928c0dab4631bdaeab09d5b25847
+#endif // ZSLIB_INTERNAL_MESSAGEQUEUETHREADUSINGBLACKBERRYCHANNELS_H_b359128a0bad4631bdaeab09d5b25847
 
-#endif //_WIN32
+#endif // __QNX__

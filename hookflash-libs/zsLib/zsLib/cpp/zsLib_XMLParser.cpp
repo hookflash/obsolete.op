@@ -31,6 +31,8 @@
 
 namespace zsLib {ZS_DECLARE_SUBSYSTEM(zsLib)}
 
+using namespace std;
+
 namespace zsLib
 {
 

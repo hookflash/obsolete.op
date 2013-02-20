@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;OpenPeer10/src/hfcore.c&apos; to &apos;hfcore.cpp&apos;" description="Rename resource &apos;hfcore.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/hfcore.c" name="hfcore.cpp" stamp="1361208120533" updateReferences="true"/>
+</session>
