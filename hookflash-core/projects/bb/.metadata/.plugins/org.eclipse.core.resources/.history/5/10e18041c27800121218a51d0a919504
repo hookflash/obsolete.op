@@ -1,0 +1,6 @@
+#include <stdio.h>
+//#include "boost/smart_ptr.hpp"
+
+void printSomethingLinked(const char* text) {
+  fprintf(stderr, "From printSomethingLinked: %s", text);
+}

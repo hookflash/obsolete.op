@@ -35,6 +35,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1399500637" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.384451985" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -105,6 +106,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.557567646" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1072973464" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -130,7 +132,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1111812947" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.351015407" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs"/>
+								<option id="com.qnx.qcc.option.linker.libraries.351015407" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.2113616496" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -180,6 +182,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.2109191182" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1960955782" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -205,7 +208,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1507674462" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.387233842" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs"/>
+								<option id="com.qnx.qcc.option.linker.libraries.387233842" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
 								<inputType id="com.qnx.qcc.inputType.linker.1448061878" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -255,6 +258,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.407816383" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1565802223" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -328,6 +332,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.983183731" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1283098487" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -337,7 +342,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.769372705" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1985438368" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.includePath.1333931624" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.1333931624" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.749708523" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1986971689" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -350,7 +355,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1466143042" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.libraries.1519595845" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1519595845" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/Simulator-Debug/libbbzsLib.a"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.199395865" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -399,6 +406,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1746662865" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1512281191" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -473,6 +481,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/src"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1812658828" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1477005485" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">

@@ -8749,3 +8749,51 @@ java.lang.RuntimeException:  No indexer for project P/TestHarness
 	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1530)
 	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:45)
 	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+!SESSION 2013-02-19 21:59:51.847 -----------------------------------------------
+eclipse.buildId=10.1.0
+java.version=1.6.0_37
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui.workbench 2 0 2013-02-19 22:00:15.135
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2013-02-19 22:00:15.135
+!MESSAGE Conflict for 'AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction':
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@b125bd),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@b125bd)),sourcePriority=16640)
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@b125bd),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@b125bd)),sourcePriority=16640)
+
+!ENTRY org.eclipse.core.net 1 0 2013-02-19 22:00:16.605
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.rim.tad.tools.qml.core 4 0 2013-02-19 22:00:32.627
+!MESSAGE  No indexer for project P/CleanApp
+
+!ENTRY org.eclipse.core.resources 4 2 2013-02-19 22:00:32.628
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 0
+java.lang.RuntimeException:  No indexer for project P/CleanApp
+	at com.rim.tad.tools.qml.core.internal.QMLCorePlugin.error(QMLCorePlugin.java:296)
+	at com.rim.tad.tools.qml.core.internal.QMLCorePlugin.error(QMLCorePlugin.java:280)
+	at com.rim.tad.tools.qml.core.internal.indexer.FileIndexerManager$1$1.visit(FileIndexerManager.java:89)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:69)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:80)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:80)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:49)
+	at com.rim.tad.tools.qml.core.internal.indexer.FileIndexerManager$1.resourceChanged(FileIndexerManager.java:67)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:291)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:285)
+	at org.eclipse.core.internal.events.NotificationManager.broadcastChanges(NotificationManager.java:149)
+	at org.eclipse.core.internal.resources.Workspace.broadcastPostChange(Workspace.java:395)
+	at org.eclipse.core.internal.resources.Workspace.endOperation(Workspace.java:1530)
+	at org.eclipse.core.internal.resources.InternalWorkspaceJob.run(InternalWorkspaceJob.java:45)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:54)
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-02-19 22:00:51.769
+!MESSAGE Indexer for project P/CleanApp not found!

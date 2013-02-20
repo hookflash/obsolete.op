@@ -1,0 +1,30 @@
+#include <iostream>
+#define BOOST_DISABLE_ASSERTS 1
+#include "boost/smart_ptr.hpp"
+
+using namespace std;
+
+namespace hookflash {
+  namespace blackberry {
+
+  	  class PrintStuff
+  	  {
+  	  public:
+  		  PrintStuff() {
+  		  }
+
+  		  void DoPrint(const std::string& text)
+  		  {
+  			  cout << "Printing Stuff = " << text << endl;
+  		  }
+  	  };
+  }
+}
+
+extern "C" void printStuff(const char* str);
+
+void printStuff(const char* str)
+{
+	boost::shared_ptr<hookflash::blackberry::PrintStuff> printer(new hookflash::blackberry::PrintStuff());
+	printer->DoPrint(str);
+}
