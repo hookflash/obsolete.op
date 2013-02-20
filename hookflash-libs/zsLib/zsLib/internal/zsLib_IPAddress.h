@@ -34,6 +34,9 @@
 #include <ws2def.h>
 #include <ws2tcpip.h>
 #else
+#ifdef __QNX__
+#include <sys/socket.h>
+#endif // __QNX__
 #include <netinet/in.h>
 #endif //_WIN32
 

@@ -85,6 +85,11 @@ namespace zsLib
 
         {
           AutoLock lock(mLock);
+#ifdef __QNX__
+          if (!mThreadName.isEmpty()) {
+            pthread_setname_np(pthread_self(), mThreadName);
+          }
+#else
 #ifndef _LINUX
 #ifndef _ANDROID
           if (!mThreadName.isEmpty()) {
@@ -92,6 +97,8 @@ namespace zsLib
           }
 #endif // _ANDROID
 #endif // _LINUX
+#endif // __QNX__
+
 
           queue = mQueue;
           if (!mQueue)

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="FileSystemImportWizard">
+		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_PATH_VARIABLE_SELECTED_ID"/>
+		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_OVERWRITE_EXISTING_RESOURCES_ID"/>
+		<item value="false" key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID"/>
+		<item value="" key="WizardFileSystemResourceImportPage1.STORE_PATH_VARIABLE_NAME_ID"/>
+		<item value="true" key="WizardFileSystemResourceImportPage1.STORE_CREATE_VIRTUAL_FOLDERS_ID"/>
+		<item value="true" key="WizardFileSystemResourceImportPage1.STORE_CREATE_LINKS_IN_WORKSPACE_ID"/>
+		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
+			<item value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib/zsLib/internal"/>
+			<item value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib/zsLib/cpp"/>
+			<item value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib/zsLib"/>
+		</list>
+	</section>
+	<section name="ImportExportAction">
+		<item value="org.eclipse.ui.wizards.import.FileSystem" key="ImportExportPage.STORE_SELECTED_IMPORT_WIZARD_ID"/>
+		<list key="ImportExportPage.STORE_EXPANDED_IMPORT_CATEGORIES">
+			<item value="org.eclipse.ui.Basic"/>
+		</list>
+	</section>
+</section>

@@ -70,12 +70,20 @@ namespace zsLib
 
   DWORD atomicGetValue32(DWORD &value)
   {
+#ifdef __QNX__
+    return boost::interprocess::ipcdetail::atomic_read32((boost::uint32_t *)&value);
+#else
     return boost::interprocess::detail::atomic_read32((boost::uint32_t *)&value);
+#endif
   }
 
   void atomicSetValue32(DWORD &value, DWORD newValue)
   {
-    boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
+#ifdef __QNX__
+    boost::interprocess::ipcdetail::atomic_write32((boost::uint32_t *)&value, newValue);
+#else
+	boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
+#endif
   }
 
   Time now()

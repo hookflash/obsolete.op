@@ -23,7 +23,7 @@
 #include <zsLib/IPAddress.h>
 #include <zsLib/Numeric.h>
 
-#ifdef _LINUX
+#if (defined _LINUX || defined __QNX__)
 #include <stdio.h>
 #endif //_LINUX
 

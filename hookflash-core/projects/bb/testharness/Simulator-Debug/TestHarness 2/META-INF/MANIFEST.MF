@@ -1,0 +1,47 @@
+Archive-Manifest-Version: 1.5
+Archive-Created-By: BlackBerry Elf BAR Packager 1.9
+
+Package-Type: application
+Package-Author: Example Inc.
+Package-Author-Id: testRXhhbXBsZSBJbmMuICAgICA
+Package-Name: com.example.TestHarness
+Package-Id: testDev_TestHarness702a70ed
+Package-Version: 1.0.0.1
+Package-Version-Id: testMS4wLjAuMSAgICAgICAgICA
+Package-Architecture: x86
+
+Application-Name: TestHarness
+Application-Id: testDev_TestHarness702a70ed
+Application-Description: The TestHarness application
+Application-Version: 1.0.0.1
+Application-Version-Id: testMS4wLjAuMSAgICAgICAgICA
+Application-Category: core.games
+Application-Requires-System: BlackBerry 10/10.0.9.0
+Application-Development-Mode: true
+
+Entry-Point-Name: TestHarness
+Entry-Point-Key: e1
+Entry-Point: LD_LIBRARY_PATH=app/native/lib LD_BIND_NOW=1 app/native/TestHarness
+Entry-Point-Type: Qnx/Elf
+Entry-Point-Icon: native/icon.png
+Entry-Point-System-Actions: run_native
+
+Archive-Asset-Name: native/bar-descriptor.xml
+Archive-Asset-SHA-512-Digest: Z1Aq_ok8XLr58jbOj034gzHFKawUq_Ja04S1SwjgiXziWOKd-l9yS7na9S4Fi1BGFzKPvsLeeC3TGdH9kMPJ1g
+
+Archive-Asset-Name: native/assets/blah/radio2.jpg
+Archive-Asset-SHA-512-Digest: 4lOXUoo7-KkIqqieOl0dK1zVE5MnVHJqyaAflFmmadk9Ifyyji_fkGwCvGXONpnYZGaawqdpYeNtGpRJPqP3BQ
+
+Archive-Asset-Name: native/icon.png
+Archive-Asset-SHA-512-Digest: cDyyTf-3OIUlDa4QJas8D21pZ7sMV6suHDZNJoQzquGgsYrIItk0LIbcvzOIOgeuAl4CDONzM-NJ9POH_piHDw
+
+Archive-Asset-Name: native/TestHarness
+Archive-Asset-SHA-512-Digest: te7Ehg3GFZaDbG1RCesugN6jaeWp3qLkKMdK3hb5TD1yFcHO1eUSDAIQhByo8Z3gottsr8mMiR5vksApDdOmCA
+Archive-Asset-Type: Qnx/Elf
+
+Archive-Asset-Name: native/lib/libOpenPeer10.so
+Archive-Asset-SHA-512-Digest: AQTgnQEkVFT_hnFm8yS0MLj8eHhLc0XnmRNNDZD4bPezBHTlQzwFE8gflE6PLB25qF0hKxI9X2TjDJEEHbXzRA
+Archive-Asset-Type: Qnx/Elf
+
+Archive-Asset-Name: native/assets/.assets.index
+Archive-Asset-SHA-512-Digest: Z17Ho_wRjXX1OeiC5tR4GuW4B3dYYtp5yl9IHTPjsHrDZ3hWlbUBsJd7uOH688Rh1PtzBNjotD3vlJ4wfcOFmg
