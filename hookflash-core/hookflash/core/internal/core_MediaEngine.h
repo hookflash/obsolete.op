@@ -99,9 +99,9 @@ namespace hookflash
         virtual int deregisterVoiceExternalTransport() = 0;
         virtual int receivedVoiceRTPPacket(const void *data, unsigned int length) = 0;
         virtual int receivedVoiceRTCPPacket(const void *data, unsigned int length) = 0;
-
-        virtual void startVideo() = 0;
-        virtual void stopVideo() = 0;
+        
+        virtual void startVideoChannel() = 0;
+        virtual void stopVideoChannel() = 0;
 
         virtual int registerVideoExternalTransport(Transport &transport) = 0;
         virtual int deregisterVideoExternalTransport() = 0;
@@ -196,9 +196,15 @@ namespace hookflash
         virtual void setLoudspeakerEnabled(bool enabled);
         virtual bool getLoudspeakerEnabled();
         virtual OutputAudioRoutes getOutputAudioRoute();
+        
+        virtual void setContinuousVideoCapture(bool continuousVideoCapture);
+        virtual bool getContinuousVideoCapture();
 
         virtual CameraTypes getCameraType() const;
         virtual void setCameraType(CameraTypes type);
+        
+        virtual void startVideoCapture();
+        virtual void stopVideoCapture();
 
         virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat);
         virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat);
@@ -217,9 +223,9 @@ namespace hookflash
 
         virtual void startVoice();
         virtual void stopVoice();
-
-        virtual void startVideo();
-        virtual void stopVideo();
+        
+        virtual void startVideoChannel();
+        virtual void stopVideoChannel();
 
         virtual int registerVoiceExternalTransport(Transport &transport);
         virtual int deregisterVoiceExternalTransport();
@@ -261,13 +267,17 @@ namespace hookflash
         virtual int registerVoiceTransport();
         virtual int setVoiceTransportParameters();
 
-        virtual void internalStartVideo(CameraTypes cameraType);
-        virtual void internalStopVideo();
+        virtual void internalStartVideoCapture();
+        virtual void internalStopVideoCapture();
+        virtual void internalStartVideoChannel();
+        virtual void internalStopVideoChannel();
         
         virtual int registerVideoTransport();
         virtual int setVideoTransportParameters();
 
       protected:
+        int getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height,
+                                      int& maxFramerate, int& maxBitrate);
         int setVideoCaptureRotationAndCodecParameters();
         EcModes getEcMode();
 
@@ -369,6 +379,7 @@ namespace hookflash
         void *mIPhoneCaptureRenderView;
         void *mIPhoneChannelRenderView;
         bool mVideoEngineReady;
+        bool mContinuousVideoCapture;
 
         RedirectTransport mRedirectVoiceTransport;
         RedirectTransport mRedirectVideoTransport;
@@ -377,10 +388,12 @@ namespace hookflash
         mutable RecursiveLock mLifetimeLock;
 
         bool mLifetimeWantAudio;
-        bool mLifetimeWantVideo;
+        bool mLifetimeWantVideoCapture;
+        bool mLifetimeWantVideoChannel;
 
         bool mLifetimeHasAudio;
-        bool mLifetimeHasVideo;
+        bool mLifetimeHasVideoCapture;
+        bool mLifetimeHasVideoChannel;
 
         bool mLifetimeInProgress;
         CameraTypes mLifetimeWantCameraType;

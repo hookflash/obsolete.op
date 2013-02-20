@@ -13,6 +13,8 @@
 {
     IBOutlet UIButton* _btnStartTest1;
     IBOutlet UIButton* _btnStartTest2;
+    IBOutlet UIButton* _btnStartTest3;
+    IBOutlet UIButton* _btnStartTest4;
     IBOutlet UIImageView* _imgView1;
     IBOutlet UIImageView* _imgView2;
   
@@ -23,5 +25,7 @@
 
 -(IBAction)startTest1;
 -(IBAction)startTest2;
+-(IBAction)startTest3;
+-(IBAction)startTest4;
 
 @end

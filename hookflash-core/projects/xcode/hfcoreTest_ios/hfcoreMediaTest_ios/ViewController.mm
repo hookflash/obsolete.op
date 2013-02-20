@@ -47,22 +47,42 @@
   mediaEngine->setNsEnabled(false);
   mediaEngine->setMuteEnabled(false);
   mediaEngine->setLoudspeakerEnabled(false);
+  mediaEngine->setContinuousVideoCapture(true);
   
-  testMediaEngineInternal->setReceiverAddress("127.0.0.1");
-  
-  mediaEngineInternal->forCallTransport().startVoice();
-  mediaEngineInternal->forCallTransport().startVideo();
+  mediaEngine->startVideoCapture();
 }
 
 -(IBAction)startTest2
 {
   hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
+  hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
   hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
   
+  testMediaEngineInternal->setReceiverAddress("127.0.0.1");
+  
+  mediaEngineInternal->forCallTransport().startVoice();
+  mediaEngineInternal->forCallTransport().startVideoChannel();
+  
   mediaEngine->setVideoOrientation();
+}
+
+-(IBAction)startTest3
+{
+  hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
+  hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
+  hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
   
   mediaEngineInternal->forCallTransport().stopVoice();
-  mediaEngineInternal->forCallTransport().stopVideo();
+  mediaEngineInternal->forCallTransport().stopVideoChannel();
+}
+
+-(IBAction)startTest4
+{
+  hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
+  hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
+  hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+  
+  mediaEngine->stopVideoCapture();
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

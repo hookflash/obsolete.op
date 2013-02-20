@@ -201,7 +201,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void TestMediaEngine::Print(const webrtc::TraceLevel level, const char *traceString, const int length)
       {
-        //printf("%s\n", traceString);
+        printf("%s\n", traceString);
         MediaEngine::Print(level, traceString, length);
       }
       
@@ -250,15 +250,27 @@ namespace hookflash
       }
       
       //-----------------------------------------------------------------------
-      void TestMediaEngine::internalStartVideo(CameraTypes cameraType)
+      void TestMediaEngine::internalStartVideoCapture()
       {
-        MediaEngine::internalStartVideo(cameraType);
+        MediaEngine::internalStartVideoCapture();
       }
       
       //-----------------------------------------------------------------------
-      void TestMediaEngine::internalStopVideo()
+      void TestMediaEngine::internalStopVideoCapture()
       {
-        MediaEngine::internalStopVideo();
+        MediaEngine::internalStopVideoCapture();
+      }
+      
+      //-----------------------------------------------------------------------
+      void TestMediaEngine::internalStartVideoChannel()
+      {
+        MediaEngine::internalStartVideoChannel();
+      }
+      
+      //-----------------------------------------------------------------------
+      void TestMediaEngine::internalStopVideoChannel()
+      {
+        MediaEngine::internalStopVideoChannel();
       }
 
       //-----------------------------------------------------------------------
@@ -308,7 +320,5 @@ void doMediaEngineTest()
   
   hookflash::core::internal::Factory::override(overrideFactory);
   
-//  TestMediaEnginePtr testObject = TestMediaEngine::create(thread);
-
 
 }
