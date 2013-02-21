@@ -1845,11 +1845,9 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to disconnect capture device from video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          mError = mVideoNetwork->DeregisterSendTransport(mVideoChannel);
-          if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          mError = deregisterVideoTransport();
+          if (0 != mError)
             return;
-          }
           mError = mVideoBase->DeleteChannel(mVideoChannel);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1872,6 +1870,17 @@ namespace hookflash
         } else {
           ZS_LOG_ERROR(Detail, log("external video transport is not set"))
           return -1;
+        }
+        return 0;
+      }
+      
+      //-----------------------------------------------------------------------
+      int MediaEngine::deregisterVideoTransport()
+      {
+        mError = mVideoNetwork->DeregisterSendTransport(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return mError;
         }
         return 0;
       }

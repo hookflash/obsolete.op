@@ -280,6 +280,12 @@ namespace hookflash
       }
       
       //-----------------------------------------------------------------------
+      int TestMediaEngine::deregisterVideoTransport()
+      {
+        return 0;
+      }
+      
+      //-----------------------------------------------------------------------
       int TestMediaEngine::setVideoTransportParameters()
       {
         mError = mVideoNetwork->SetSendDestination(mVideoChannel, mReceiverAddress.c_str(), 20000);
