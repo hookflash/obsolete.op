@@ -448,7 +448,7 @@ namespace zsLib
         }
         else
         {
-          if (tolower(*temp) != tolower(*pos))
+          if (std::tolower(*temp) != std::tolower(*pos))
             return false;
         }
         ++temp;

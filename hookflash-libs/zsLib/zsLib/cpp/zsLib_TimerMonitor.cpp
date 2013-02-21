@@ -124,11 +124,16 @@ namespace zsLib
     {
       bool shouldShutdown = false;
 
+#ifdef __QNX__
+      pthread_setname_np(pthread_self(), "com.zslib.timer");
+#else
 #ifndef _LINUX
 #ifndef _ANDROID
       pthread_setname_np("com.zslib.timer");
 #endif // _ANDROID
 #endif // _LINUX
+#endif // __QNX__
+
 
       do
       {

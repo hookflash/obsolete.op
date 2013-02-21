@@ -88,9 +88,15 @@ namespace hookflash
       virtual void setLoudspeakerEnabled(bool enabled) = 0;
       virtual bool getLoudspeakerEnabled() = 0;
       virtual OutputAudioRoutes getOutputAudioRoute() = 0;
+      
+      virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
+      virtual bool getContinuousVideoCapture() = 0;
 
       virtual CameraTypes getCameraType() const = 0;
-      virtual void setCameraType(CameraTypes type)  = 0;
+      virtual void setCameraType(CameraTypes type) = 0;
+      
+      virtual void startVideoCapture() = 0;
+      virtual void stopVideoCapture() = 0;
 
       virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat) = 0;
       virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat) = 0;

@@ -3,6 +3,7 @@
 *.xcscheme
 *.pbxuser
 *.mode1v3
+*.snap
 xcschememanagement.plist
 hookflash-staging/
 WorkspaceSettings.xcsettings
@@ -63,4 +64,17 @@ hookflash-libs/cryptopp/cryptopp/*.o
 hookflash-libs/cryptopp/cryptopp/*.a
 hookflash-libs/cryptopp/cryptopp/*.out
 hookflash-libs/cryptopp/cryptopp/*.so
-
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/OpenPeer10/.indexes/e4/
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.ui.workbench/workbench.xml
+/hookflash-core/projects/bb/bbzsLib/Simulator-Debug/src/cpp/zsLib_XMLText.o
+*.o
+/hookflash-core/projects/bb/bbzsLib/Simulator-Debug/libbbzsLib.a
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.ui.workbench/dialog_settings.xml
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.root/7.tree
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.root/6.tree
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/TestHarness/.markers
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/OpenPeer10/.markers
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/bbzsLib/.markers
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.cdt.core/.log
+/hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/com.qnx.tools.ide.qde.core/qdeBuildInfo

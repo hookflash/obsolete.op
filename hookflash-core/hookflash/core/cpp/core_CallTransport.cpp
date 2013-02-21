@@ -706,7 +706,7 @@ namespace hookflash
             engine->forCallTransport().startVoice();
           }
           if (hasVideo) {
-            engine->forCallTransport().startVideo();
+            engine->forCallTransport().startVideoChannel();
           }
         }
       }
@@ -738,7 +738,7 @@ namespace hookflash
 
         if (hasVideo) {
           ZS_LOG_DETAIL(log("stopping media engine video"))
-          engine->forCallTransport().stopVideo();
+          engine->forCallTransport().stopVideoChannel();
         }
         if (hasAudio) {
           ZS_LOG_DETAIL(log("stopping media engine audio"))

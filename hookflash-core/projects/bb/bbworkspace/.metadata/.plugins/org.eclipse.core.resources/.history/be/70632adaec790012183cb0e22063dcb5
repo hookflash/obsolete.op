@@ -1,0 +1,8 @@
+#include "bbLog.h"
+#include "stdio.h"
+
+void Log::WriteToLog(const std::wstring& message)
+{
+	wfprintf(stderr, message.c_str());
+}
+

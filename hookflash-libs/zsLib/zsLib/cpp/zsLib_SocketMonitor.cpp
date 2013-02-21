@@ -75,12 +75,14 @@ namespace zsLib
     {
     }
 
+    //-------------------------------------------------------------------------
     SocketMonitor::~SocketMonitor()
     {
       mThisWeak.reset();
       cancel();
     }
 
+    //-------------------------------------------------------------------------
     SocketMonitorPtr SocketMonitor::create()
     {
       SocketMonitorPtr pThis = SocketMonitorPtr(new SocketMonitor);
@@ -88,6 +90,7 @@ namespace zsLib
       return pThis;
     }
 
+    //-------------------------------------------------------------------------
     SocketMonitorPtr SocketMonitor::singleton()
     {
       static SocketMonitorPtr singleton = SocketMonitor::create();
@@ -95,6 +98,7 @@ namespace zsLib
       return singleton;
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::monitorBegin(
                                      SocketPtr socket,
                                      bool monitorRead,
@@ -144,6 +148,7 @@ namespace zsLib
         event->wait();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::monitorEnd(zsLib::Socket &socket)
     {
       EventPtr event;
@@ -173,6 +178,7 @@ namespace zsLib
         event->wait();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::monitorRead(const zsLib::Socket &socket)
     {
       AutoRecursiveLock lock(mLock);
@@ -189,6 +195,7 @@ namespace zsLib
       wakeUp();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::monitorWrite(const zsLib::Socket &socket)
     {
       AutoRecursiveLock lock(mLock);
@@ -205,6 +212,7 @@ namespace zsLib
       wakeUp();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::monitorException(const zsLib::Socket &socket)
     {
       AutoRecursiveLock lock(mLock);
@@ -221,13 +229,18 @@ namespace zsLib
       wakeUp();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::operator()()
     {
+#ifdef __QNX__
+      pthread_setname_np(pthread_self(), "com.zslib.socketMonitor");
+#else
 #ifndef _LINUX
 #ifndef _ANDROID
       pthread_setname_np("com.zslib.socketMonitor");
 #endif // _ANDROID
 #endif // _LINUX
+#endif // __QNX__
 
       createWakeUpSocket();
 
@@ -410,6 +423,7 @@ namespace zsLib
       }
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::cancel()
     {
       ThreadPtr thread;
@@ -433,6 +447,7 @@ namespace zsLib
       }
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::processWaiting()
     {
       for (EventList::iterator iter = mWaitingForRebuildList.begin(); iter != mWaitingForRebuildList.end(); ++iter)
@@ -442,6 +457,7 @@ namespace zsLib
       mWaitingForRebuildList.clear();
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::wakeUp()
     {
       int errorCode = 0;
@@ -470,6 +486,7 @@ namespace zsLib
       }
     }
 
+    //-------------------------------------------------------------------------
     void SocketMonitor::createWakeUpSocket()
     {
       AutoRecursiveLock lock(mLock);
@@ -526,21 +543,31 @@ namespace zsLib
       mExceptionSet.add(mWakeUpSocket->getSocket());
     }
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark SocketSet
+    #pragma mark
     SocketSet::SocketSet()
     {
       FD_ZERO((::fd_set *)&mSet);
       mCount = 0;
     }
 
-    SocketSet::~SocketSet()
+    //-------------------------------------------------------------------------
+   SocketSet::~SocketSet()
     {
     }
 
+   //-------------------------------------------------------------------------
     u_int &SocketSet::count() const
     {
       return mCount;
     }
 
+    //-------------------------------------------------------------------------
     SOCKET SocketSet::getHighestSocket() const
     {
       MonitoredSocketSet::const_reverse_iterator iter = mMonitoredSockets.rbegin();
@@ -550,6 +577,7 @@ namespace zsLib
       return (*iter);
     }
 
+    //-------------------------------------------------------------------------
     ::fd_set *SocketSet::getSet() const
     {
       if (0 == count())
@@ -558,6 +586,7 @@ namespace zsLib
       return (::fd_set *)&mSet;
     }
 
+    //-------------------------------------------------------------------------
     void SocketSet::add(SOCKET inSocket)
     {
       if (INVALID_SOCKET == inSocket)
@@ -572,6 +601,7 @@ namespace zsLib
       FD_SET(inSocket, &mSet);
     }
 
+    //-------------------------------------------------------------------------
     void SocketSet::remove(SOCKET inSocket)
     {
       if (INVALID_SOCKET == inSocket)
@@ -589,15 +619,18 @@ namespace zsLib
       FD_CLR(inSocket, &mSet);
     }
 
+    //-------------------------------------------------------------------------
     bool SocketSet::isSet(SOCKET inSocket)
     {
       return (bool)(FD_ISSET(inSocket, &mSet) ? true : false);
     }
 
+    //-------------------------------------------------------------------------
     void SocketSet::clear()
     {
       mMonitoredSockets.clear();
       FD_ZERO(&mSet);
     }
+
   }
 }

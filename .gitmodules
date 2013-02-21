@@ -1,0 +1,3 @@
+[submodule "hookflash-libs/bbBoost"]
+	path = hookflash-libs/bbBoost
+	url = https://github.com/openpeer/op.git

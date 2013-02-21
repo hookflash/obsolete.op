@@ -1,0 +1,8 @@
+#include "bbLog.h"
+#include "iostream.h"
+
+void Log::WriteToLog(const std::wstring& message)
+{
+	wcout << message << std::endl;
+}
+
