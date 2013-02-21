@@ -146,6 +146,11 @@ install:
 	$(CP) *.so $(PREFIX)/lib
 	$(CP) *.exe $(PREFIX)/bin
 
+install.so:
+	$(MKDIR) -p $(PREFIX)/include/cryptopp $(PREFIX)/lib $(PREFIX)/bin
+	$(CP) *.h $(PREFIX)/include/cryptopp
+	$(CP) *.so $(PREFIX)/lib
+
 libcryptopp.a: $(LIBOBJS)
 	$(AR) $(ARFLAGS) $@ $(LIBOBJS)
 	$(RANLIB) $@
