@@ -1,2 +1,0 @@
-->Change "insert" and "push_back"/"push_front" to catch non-const rvalues
-->Add an example with stateful allocators
