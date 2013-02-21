@@ -69,6 +69,7 @@
 		0063D5C216CB32B500E6DB4D /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D5C116CB32B500E6DB4D /* OpenGL.framework */; };
 		0063D5C316CB330800E6DB4D /* libvideo_processing_sse2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D53E16CB2D5500E6DB4D /* libvideo_processing_sse2.a */; };
 		0063D5C816CB358E00E6DB4D /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D4A416CB2D5500E6DB4D /* libiLBC.a */; };
+		E210969516D4CECA002147D1 /* TestMediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E210969316D4CECA002147D1 /* TestMediaEngine.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1226,6 +1227,8 @@
 		0063D5BD16CB32A500E6DB4D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		0063D5BF16CB32AD00E6DB4D /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		0063D5C116CB32B500E6DB4D /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		E210969316D4CECA002147D1 /* TestMediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestMediaEngine.cpp; sourceTree = "<group>"; };
+		E210969416D4CECA002147D1 /* TestMediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestMediaEngine.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1343,6 +1346,8 @@
 				0063CDBB16CAF01900E6DB4D /* desktop_FakeGUI.cpp */,
 				0063CDBC16CAF01900E6DB4D /* desktop_FakeGUI.h */,
 				0063CDBD16CAF01900E6DB4D /* main.cpp */,
+				E210969416D4CECA002147D1 /* TestMediaEngine.h */,
+				E210969316D4CECA002147D1 /* TestMediaEngine.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -2561,6 +2566,7 @@
 				0063CF5616CAF01A00E6DB4D /* boost_replacement.cpp in Sources */,
 				0063CF5716CAF01A00E6DB4D /* desktop_FakeGUI.cpp in Sources */,
 				0063CF5816CAF01A00E6DB4D /* main.cpp in Sources */,
+				E210969516D4CECA002147D1 /* TestMediaEngine.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
