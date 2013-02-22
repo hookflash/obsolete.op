@@ -11,6 +11,9 @@
 
 #ifdef USE_WINDOWS_STYLE_SOCKETS
 #include <winsock2.h>
+#elif __QNX__
+#include <sys/select.h>
+#include <sys/types.h>
 #else
 #include <sys/types.h>
 #endif
