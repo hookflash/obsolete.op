@@ -273,6 +273,7 @@ namespace hookflash
         virtual void internalStopVideoChannel();
         
         virtual int registerVideoTransport();
+        virtual int deregisterVideoTransport();
         virtual int setVideoTransportParameters();
 
       protected:
