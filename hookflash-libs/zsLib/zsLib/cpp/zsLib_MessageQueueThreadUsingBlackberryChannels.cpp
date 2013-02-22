@@ -22,16 +22,13 @@
 
 #ifdef __QNX__
 
-#include <zsLib/internal/MessageQueueThreadUsingBlackberryChannels.h>
+#include <zsLib/internal/zsLib_MessageQueueThreadUsingBlackberryChannels.h>
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
 
 #include <boost/ref.hpp>
 #include <boost/thread.hpp>
-#include <boost/thread.hpp>
-
-#include <tchar.h>
 
 #include <bps/bps.h>
 
@@ -41,8 +38,13 @@ namespace zsLib
 {
   namespace internal
   {
-//    static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark zsLib::internal::MessageQueueThreadUsingBlackberryChannelsWrapper
+    #pragma mark
     class MessageQueueThreadUsingBlackberryChannelsWrapper
     {
     public:
@@ -61,26 +63,29 @@ namespace zsLib
 
     typedef boost::thread_specific_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper> MessageQueueThreadUsingBlackberryChannelsWrapperThreadPtr;
 
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark zsLib::internal::MessageQueueThreadUsingBlackberryChannelsGlobal
+    #pragma mark
     class MessageQueueThreadUsingBlackberryChannelsGlobal
     {
     public:
-      MessageQueueThreadUsingBlackberryChannelsGlobal() :
-        mCustomMessageName(_T("zsLibCustomMessage4cce8fd89d067b42860cc9074d64539f"))
+      MessageQueueThreadUsingBlackberryChannelsGlobal()
       {
-    	// From the BB docs:
-    	// Your application can call the bps_initialize() function more than once. An application that
-    	// calls the bps_initialize() function multiple times should call the bps_shutdown() function the
-    	//same number of times.
-    	bbps_initialize();
-
-        // [TODO] LAG figure out the equivalent for BB
-    	// mCustomMessage = ::RegisterWindowMessage(mCustomMessageName);
+        // From the BB docs:
+        // Your application can call the bps_initialize() function more than once. An application that
+        // calls the bps_initialize() function multiple times should call the bps_shutdown() function the
+        //same number of times.
+        bps_initialize();
       }
 
       ~MessageQueueThreadUsingBlackberryChannelsGlobal()
       {
-    	// See not above regarding bps_initialize.
-    	bps_shutdown();
+        // See not above regarding bps_initialize.
+        bps_shutdown();
       }
 
     public:
@@ -89,12 +94,14 @@ namespace zsLib
       UINT mCustomMessage;
     };
 
+    //-----------------------------------------------------------------------
     static MessageQueueThreadUsingBlackberryChannelsGlobal &getGlobal()
     {
       static MessageQueueThreadUsingBlackberryChannelsGlobal global;
       return global;
     }
 
+    //-----------------------------------------------------------------------
     static MessageQueueThreadUsingBlackberryChannelsPtr getThreadMessageQueue()
     {
       if (! getGlobal().mThreadQueueWrapper.get())
@@ -102,11 +109,13 @@ namespace zsLib
       return getGlobal().mThreadQueueWrapper->mThreadQueue;
     }
 
+    //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::singleton()
     {
       return getThreadMessageQueue();
     }
 
+    //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::create()
     {
       MessageQueueThreadUsingBlackberryChannelsPtr thread(new MessageQueueThreadUsingBlackberryChannels);
@@ -114,43 +123,38 @@ namespace zsLib
       return thread;
     }
 
-    void MessageQueueThreadUsingBlackberryChannels::setup()
-    {
-      // make sure the window message queue was created by peeking a message
-      MSG msg;
-      memset(&msg, 0, sizeof(msg));
-      ::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark zsLib::internal::MessageQueueThreadUsingBlackberryChannels
+    #pragma mark
 
-      mHWND = ::CreateWindow(
-        getGlobal().mHiddenWindowClassName,
-        _T("zsLibHiddenWindow9127b0cb49457fdb969054c57cff6ed5efe771c0"),
-        0,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        CW_USEDEFAULT,
-        NULL,
-        NULL,
-        getGlobal().mModule,
-        NULL
-      );
-      ZS_THROW_BAD_STATE_IF(NULL == mHWND)
-    }
-
+    //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannels::MessageQueueThreadUsingBlackberryChannels() :
-      mHWND(NULL)
+    mChannelId(0)
     {
     }
 
+    //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannels::~MessageQueueThreadUsingBlackberryChannels()
     {
-      if (NULL != mHWND)
+      if (0 != mChannelId)
       {
-        ZS_THROW_BAD_STATE_IF(0 == ::DestroyWindow(mHWND))
-        mHWND = NULL;
+        ZS_THROW_BAD_STATE_IF(BPS_FAILURE == bps_channel_destroy(mChannelId))
+        mChannelId = 0;
       }
     }
 
+    //-----------------------------------------------------------------------
+    void MessageQueueThreadUsingBlackberryChannels::setup()
+    {
+      int status = bps_channel_create(&mChannelId, 0); // last arg is reserved for future use.
+      ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
+    }
+
+    //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::process()
     {
       MessageQueuePtr queue;
@@ -165,6 +169,7 @@ namespace zsLib
       queue->processOnlyOneMessage(); // process only one messsage at a time since this must be syncrhonized through the GUI message queue
     }
 
+    //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::post(IMessageQueueMessagePtr message)
     {
       MessageQueuePtr queue;
@@ -178,6 +183,7 @@ namespace zsLib
       queue->post(message);
     }
 
+    //-----------------------------------------------------------------------
     UINT MessageQueueThreadUsingBlackberryChannels::getTotalUnprocessedMessages() const
     {
       AutoLock lock(mLock);
@@ -187,36 +193,37 @@ namespace zsLib
       return mQueue->getTotalUnprocessedMessages();
     }
 
+    //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::notifyMessagePosted()
     {
       AutoLock lock(mLock);
-      if (NULL == mHWND) {
+      if (0 == mChannelId) {
         ZS_THROW_CUSTOM(Exceptions::MessageQueueAlreadyDeleted, "message posted to message queue after message queue was deleted.")
       }
 
-      ZS_THROW_BAD_STATE_IF(0 == ::PostMessage(mHWND, getGlobal().mCustomMessage, (WPARAM)0, (LPARAM)0))
+      int status = bps_channel_exec(mChannelId, &MessageQueueThreadUsingBlackberryChannels::channelExec, NULL);
+      ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
     }
 
+    //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::waitForShutdown()
     {
       AutoLock lock(mLock);
       mQueue.reset();
 
-      if (NULL != mHWND)
+      if (0 != mChannelId)
       {
-        ZS_THROW_BAD_STATE_IF(0 == ::DestroyWindow(mHWND))
-        mHWND = NULL;
+        ZS_THROW_BAD_STATE_IF(BPS_FAILURE == bps_channel_destroy(mChannelId))
+        mChannelId = 0;
       }
     }
 
-    static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    //-----------------------------------------------------------------------
+    int MessageQueueThreadUsingBlackberryChannels::channelExec(void* thisPtr)
     {
-      if (getGlobal().mCustomMessage != uMsg)
-        return ::DefWindowProc(hWnd, uMsg, wParam, lParam);
-
       MessageQueueThreadUsingBlackberryChannelsPtr queue(getThreadMessageQueue());
       queue->process();
-      return (LRESULT)0;
+      return BPS_SUCCESS;
     }
   }
 }

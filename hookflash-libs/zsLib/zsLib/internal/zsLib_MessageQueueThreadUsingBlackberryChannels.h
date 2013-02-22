@@ -62,6 +62,9 @@ namespace zsLib
 
       static MessageQueueThreadUsingBlackberryChannelsPtr singleton();
 
+      // The Blackberry specific static. The arg is a pointer to this. This static then calls the
+      static int channelExec(void* thisPtr);
+
       // IMessageQueue
       virtual void post(IMessageQueueMessagePtr message);
 
