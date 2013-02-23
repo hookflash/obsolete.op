@@ -40,6 +40,8 @@ namespace hookflash { namespace core { namespace test { ZS_IMPLEMENT_SUBSYSTEM(h
 //#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
 //#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
 
+using namespace std;
+
 namespace hookflash
 {
   namespace core

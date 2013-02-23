@@ -1186,7 +1186,11 @@ namespace hookflash
       void MediaEngine::operator()()
       {
   #ifndef _LINUX
+  # ifdef __QNX__
+        pthread_setname_np(pthread_self(), "com.hookflash.core.mediaEngine");
+  # else
         pthread_setname_np("com.hookflash.core.mediaEngine");
+  # endif
   #endif
         ZS_LOG_DEBUG(log("media engine lifetime thread spawned"))
 
