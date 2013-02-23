@@ -35,6 +35,9 @@
 # include <sys/socket.h>
 # include <netinet/in.h>
 #endif
+#ifdef __QNX__
+# include <sys/select.h>
+#endif
 #include <time.h>
 #include <errno.h>
 #include <stdarg.h>
