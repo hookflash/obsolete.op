@@ -77,7 +77,7 @@ usage_linux_clean(){
 build_darwin(){
 	echo "`$TXT_B``$TXT_C 2`boost build for OS X started...`$TXT_R`"
 
-	cd $BASEDIR/../../boost
+	pushd $BASEDIR/../../boost
 	
 	#removing old user-config.jam
 	touch ~/user-config.jam
@@ -86,6 +86,8 @@ build_darwin(){
 	./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
 	./bjam clean; validate_before
 	./bjam --prefix=$STAGING_PREFIX architecture=x86 address-model=32 link=static install ; validate_before
+	
+	popd
 }
 
 clean_darwin(){
@@ -96,75 +98,58 @@ clean_darwin(){
 }
 
 build_ios(){
-	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
-	#export ARCH="armv7"
-	#build_ios_with_arm_version_set
-	export ARCH="armv7s"
-	build_ios_with_arm_version_set
-
-	mkdir -p $STAGING_PREFIX/iPhoneOS/lib
-	mkdir -p $STAGING_PREFIX/iPhoneOS/include/boost
-	rm -rf $STAGING_PREFIX/iPhoneOS/include/boost
-	cp -R $STAGING_PREFIX/iPhoneOS/$ARCH/include/boost $STAGING_PREFIX/iPhoneOS/include/boost
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_regex.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_regex.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_regex.a
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_thread.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_thread.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_thread.a
-	#lipo -create $STAGING_PREFIX/iPhoneOS/armV7/lib/libboost_date_time.a $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_date_time.a -output $STAGING_PREFIX/iPhoneOS/lib/libboost_date_time.a
-	cp $STAGING_PREFIX/iPhoneOS/$ARCH/lib/libboost_* $STAGING_PREFIX/iPhoneOS/lib/
-}
-
-build_ios_with_arm_version_set() {
-	if [ "$ARCH" == "" ]; then
-		echo "`$TXT_C 1`ARM version not set! Exiting...`$TXT_R`"
-		exit 1
-	fi
-	if [ "$SDK" == "" ]; then
-		echo "`$TXT_C 1`SDK version not set! Exiting...`$TXT_R`"
-		exit 1
-	fi
-	echo "`$TXT_B``$TXT_C 2`boost build for iOS started for arch:$ARCH and SDK:$SDK...`$TXT_R`"
-
-    #export SDK="6.0"
-    export DEVELOPER="/Applications/Xcode.app/Contents/Developer"
- 
+	#SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
+	DEVELOPER=`xcode-select -print-path`
+	COMPILER=$DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc
+	ARCH=armv7
+	IOS_PREFIX=$STAGING_PREFIX/iPhoneOS
+	
+	TOOLS="tools"
+	CONVERT="armv7s_convert"
+	CONVERT_SCRIPT="convert_armv7_to_armv7s.sh"
+	
+	mkdir -p $IOS_PREFIX
 	echo "`$TXT_B``$TXT_C 2`boost build for iOS started...`$TXT_R`"
 	
-	cd $BASEDIR/../../boost
-	
-	#removing old user-config.jam
-	touch ~/user-config.jam
-	rm -f ~/user-config.jam; validate_before
-	
-	#creating user-config.jam
-	echo """using darwin : $SDK~iphone
-   : $DEVELOPER/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc -arch $ARCH -mthumb -fvisibility=hidden -fvisibility-inlines-hidden
-   : <striper>
-   : <architecture>arm <target-os>iphone
-   ;
+	pushd $BASEDIR/../../boost
+		#creating user-config.jam
+		touch ~/user-config.jam
+		rm ~/user-config.jam
+		touch ~/user-config.jam
+		echo """using darwin
+: 4.6~iphone
+: $COMPILER
+: <striper> <compileflags>-mthumb <compileflags>-fvisibility=hidden <compileflags>-fvisibility-inlines-hidden <compileflags>-D_LITTLE_ENDIAN
+: <architecture>arm <target-os>iphone
+;
 """ > ~/user-config.jam ; validate_before
+# <compileflags>-arch $ARCH  
 	
-	./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
+		./bootstrap.sh --with-libraries=thread,date_time,regex ; validate_before
+		./bjam --prefix=$IOS_PREFIX toolset=darwin cflags="-fvisibility=default -fvisibility-inlines-hidden -mthumb -arch $ARCH" architecture=arm target-os=iphone macosx-version=iphone-6.1 link=static threading=multi define=_LITTLE_ENDIAN install
+		rm ~/user-config.jam
+	popd
 	
-	./bjam --prefix=$STAGING_PREFIX/iPhoneOS/$ARCH toolset=darwin architecture=arm target-os=iphone macosx-version=iphone-${SDK} define=_LITTLE_ENDIAN link=static install ; validate_before
-	#./bjam --prefix=$STAGING_PREFIX/iPhoneSimulator toolset=darwin architecture=x86 target-os=iphone macosx-version=iphonesim-${SDK} link=static install ; validate_before
-
-
-	### LEGACY PROBLEM FIX ###################
-	#cd "$STAGING_PREFIX"
-	#	rm -rf iPhoneOS5.0
-	#	ln -s iPhoneOS iPhoneOS5.0
-	#	rm -rf iPhoneOS5.1
-	#	ln -s iPhoneOS iPhoneOS5.1
-	#	rm -rf iPhoneOS6.0
-	#	ln -s iPhoneOS iPhoneOS6.0
-	#cd -
+	pushd $TOOLS
+		clang -o $CONVERT $CONVERT.c
+		mv $CONVERT $IOS_PREFIX/lib/$CONVERT
+		cp $CONVERT_SCRIPT $IOS_PREFIX/lib/$CONVERT_SCRIPT
+	popd
+	
+	pushd $IOS_PREFIX/lib
+		./$CONVERT_SCRIPT libboost_date_time.a
+		./$CONVERT_SCRIPT libboost_regex.a
+		./$CONVERT_SCRIPT libboost_system.a
+		./$CONVERT_SCRIPT libboost_thread.a
+		rm $CONVERT_SCRIPT
+		rm ./$CONVERT
+	popd
 }
 
 clean_ios(){
 	echo "Cleaning iOS architecture..."
 	rm -rf $STAGING_PREFIX/iPhoneOS/include/boost
 	rm -f $STAGING_PREFIX/iPhoneOS/lib/libboost_*
-	rm -rf $STAGING_PREFIX/iPhoneOS/armv7s/include/boost
-	rm -f $STAGING_PREFIX/iPhoneOS/armv7s/lib/libboost_*
 	echo "Done!"
 }
 
@@ -263,8 +248,10 @@ case "$UNAME" in
 					clean_ios
 					;;
 				*)
-					usage_darwin_clean
-					exit 1
+					clean_darwin
+					clean_ios
+					#usage_darwin_clean
+					#exit 1
 					;;
 				esac
 				;;
@@ -272,8 +259,10 @@ case "$UNAME" in
 				help_darwin
 				;;
 			*)
-				usage_darwin
-				exit 1
+				build_darwin
+				build_ios
+				#usage_darwin
+				#exit 1
 				;;
 		esac
 		;;
