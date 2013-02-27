@@ -94,7 +94,7 @@ protected:
     MediaFile* _moduleFile;
 
 private:
-    OutStream* _stream;
+//    OutStream* _stream;
     CodecInst codec_info_;
     ACMAMRPackingFormat _amrFormat;
 

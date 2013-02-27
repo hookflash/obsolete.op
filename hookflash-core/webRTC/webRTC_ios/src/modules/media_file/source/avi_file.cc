@@ -148,7 +148,7 @@ AviFile::AviFile()
       _videoConfigParameters(),
       _videoConfigLength(0),
       _videoStreamName(),
-      _videoStreamNameLength(0),
+//      _videoStreamNameLength(0),
       _audioConfigParameters(),
       _audioStreamName(),
       _videoStream(),

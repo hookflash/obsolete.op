@@ -49,7 +49,7 @@ protected:
     virtual ~VoEExternalMediaImpl();
 
 private:
-    int playout_delay_ms_;
+//    int playout_delay_ms_;
     voe::SharedData* shared_;
 };
 

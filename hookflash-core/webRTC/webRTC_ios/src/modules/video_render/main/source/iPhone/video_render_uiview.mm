@@ -31,21 +31,21 @@ _stopWidth( 0.0f),
 _stopHeight( 0.0f),
 _stretchedWidth( 0),
 _stretchedHeight( 0),
-_oldStretchedHeight( 0),
-_oldStretchedWidth( 0),
-_xOldWidth( 0),
-_yOldHeight( 0),
+//_oldStretchedHeight( 0),
+//_oldStretchedWidth( 0),
+//_xOldWidth( 0),
+//_yOldHeight( 0),
 _buffer( 0),
 _bufferSize( 0),
 _incommingBufferSize( 0),
 _bufferIsUpdated( false),
 _numberOfStreams( 0),
-_pixelFormat(0),
-_pixelDataType(0),
-_bVideoSizeStartedChanging(false),
-_framesDelivered(0),
-_lastFramerateReportTime(TickTime::Now()),
-_lastFramerateReportFramesDelivered(0)
+//_pixelFormat(0),
+//_pixelDataType(0),
+//_bVideoSizeStartedChanging(false),
+_framesDelivered(0)
+//_lastFramerateReportTime(TickTime::Now()),
+//_lastFramerateReportFramesDelivered(0)
 {
 
 }

@@ -38,7 +38,7 @@ int WebRtcNetEQ_UpdateIatStatistics(AutomodeInst_t *inst, int maxBufLen,
     WebRtc_Word32 tempsum = 0; /* temp summation */
     WebRtc_Word32 tempvar; /* temporary variable */
     int retval = 0; /* return value */
-    WebRtc_Word16 packetLenSamp; /* packet speech length in samples */
+    WebRtc_Word16 packetLenSamp = NULL; /* packet speech length in samples */
 
     /****************/
     /* Sanity check */

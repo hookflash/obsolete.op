@@ -29,8 +29,8 @@ ViEPerformanceMonitor::ViEPerformanceMonitor(int engine_id)
       pointer_cs_(CriticalSectionWrapper::CreateCriticalSection()),
       monitor_thread_(NULL),
       monitor_event_(*EventWrapper::Create()),
-      average_application_cpu_(kVieCpuStartValue),
-      average_system_cpu_(kVieCpuStartValue),
+//      average_application_cpu_(kVieCpuStartValue),
+//      average_system_cpu_(kVieCpuStartValue),
       cpu_(NULL),
       vie_base_observer_(NULL) {
 }

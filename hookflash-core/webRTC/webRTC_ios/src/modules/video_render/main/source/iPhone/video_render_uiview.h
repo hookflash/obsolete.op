@@ -84,21 +84,21 @@ private:
     float _stopHeight;
     int _stretchedWidth;
     int _stretchedHeight;
-    int _oldStretchedHeight;
-    int _oldStretchedWidth;
-    int _xOldWidth;
-    int _yOldHeight;
+//    int _oldStretchedHeight;
+//    int _oldStretchedWidth;
+//    int _xOldWidth;
+//    int _yOldHeight;
     unsigned char* _buffer;
     int _bufferSize;
     int _incommingBufferSize;
     bool _bufferIsUpdated;
     int _numberOfStreams;
-    int _pixelFormat;
-    int _pixelDataType;
-    bool _bVideoSizeStartedChanging;
+//    int _pixelFormat;
+//    int _pixelDataType;
+//    bool _bVideoSizeStartedChanging;
     int _framesDelivered;
-    TickTime _lastFramerateReportTime;
-    int _lastFramerateReportFramesDelivered;
+//    TickTime _lastFramerateReportTime;
+//    int _lastFramerateReportFramesDelivered;
 };
 
 class VideoRenderUIView

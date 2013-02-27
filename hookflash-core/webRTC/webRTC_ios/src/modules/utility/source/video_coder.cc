@@ -14,7 +14,8 @@
 
 namespace webrtc {
 VideoCoder::VideoCoder(WebRtc_UWord32 instanceID)
-    : _instanceID( instanceID),
+    :
+//      _instanceID( instanceID),
       _vcm(VideoCodingModule::Create(instanceID)),
       _decodedVideo(0)
 {

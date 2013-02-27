@@ -217,7 +217,7 @@ private:
     WebRtc_Word32 _id;
     CriticalSectionWrapper& _moduleCrit;
     void* _ptrWindow;
-    VideoRenderType _renderType;
+//    VideoRenderType _renderType;
     bool _fullScreen;
 
     IVideoRender* _ptrRenderer;

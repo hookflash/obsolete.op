@@ -21,7 +21,8 @@
 
 namespace webrtc {
 AudioCoder::AudioCoder(WebRtc_UWord32 instanceID)
-    : _instanceID(instanceID),
+    :
+//      _instanceID(instanceID),
       _acm(AudioCodingModule::Create(instanceID)),
       _receiveCodec(),
       _encodeTimestamp(0),

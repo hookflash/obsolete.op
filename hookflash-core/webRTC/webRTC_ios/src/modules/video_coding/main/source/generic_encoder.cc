@@ -150,8 +150,8 @@ _mediaOpt(NULL),
 _encodedBytes(0),
 _payloadType(0),
 _codecType(kVideoCodecUnknown),
-_internalSource(false),
-_bitStreamAfterEncoder(NULL)
+_internalSource(false)
+//_bitStreamAfterEncoder(NULL)
 {
 #ifdef DEBUG_ENCODER_BIT_STREAM
     _bitStreamAfterEncoder = fopen("encoderBitStream.bit", "wb");

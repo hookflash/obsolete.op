@@ -35,7 +35,7 @@ class ACMDTMFDetection {
 
  private:
   ACMResampler _resampler;
-  bool _init;
+//  bool _init;
 };
 
 } // namespace webrtc

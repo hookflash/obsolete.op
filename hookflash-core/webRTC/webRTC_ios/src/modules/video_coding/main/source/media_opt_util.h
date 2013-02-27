@@ -385,7 +385,7 @@ private:
     VCMExpFilter              _packetsPerFrame;
     VCMExpFilter              _packetsPerFrameKey;
     float                     _residualPacketLossFec;
-    WebRtc_UWord8             _boostRateKey;
+//    WebRtc_UWord8             _boostRateKey;
     WebRtc_UWord16            _codecWidth;
     WebRtc_UWord16            _codecHeight;
     int                       _numLayers;

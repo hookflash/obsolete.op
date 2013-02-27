@@ -201,7 +201,7 @@ TransmitMixer::TransmitMixer(const WebRtc_UWord32 instanceId) :
     _mute(false),
     _remainingMuteMicTimeMs(0),
     _mixingFrequency(0),
-    _includeAudioLevelIndication(false),
+//    _includeAudioLevelIndication(false),
     swap_stereo_channels_(false)
 {
     WEBRTC_TRACE(kTraceMemory, kTraceVoice, VoEId(_instanceId, -1),

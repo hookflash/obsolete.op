@@ -103,7 +103,7 @@ ModuleVideoRenderImpl::ModuleVideoRenderImpl(
                                              void* window,
                                              const bool fullscreen) :
     _id(id), _moduleCrit(*CriticalSectionWrapper::CreateCriticalSection()),
-            _ptrWindow(window), _renderType(videoRenderType),
+            _ptrWindow(window), /* _renderType(videoRenderType), */
             _fullScreen(fullscreen), _ptrRenderer(NULL),
             _streamRenderMap(*(new MapWrapper()))
 {
