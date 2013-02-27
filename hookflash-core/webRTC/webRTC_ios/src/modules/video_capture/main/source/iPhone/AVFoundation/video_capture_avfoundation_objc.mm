@@ -216,12 +216,40 @@
   
     if (_index == FRONT_CAMERA_INDEX)
     {
-        _captureWidth = 640;
-        _captureHeight = 480;
+        if ([_machineName hasPrefix:@"iPod"])
+        {
+            _captureWidth = 640;
+            _captureHeight = 480;
+        }
+        else if ([_machineName hasPrefix:@"iPhone5"])
+        {
+            _captureWidth = 1280;
+            _captureHeight = 720;
+        }
+        else if ([_machineName hasPrefix:@"iPhone"])
+        {
+            _captureWidth = 640;
+            _captureHeight = 480;
+        }
+        else if ([_machineName hasPrefix:@"iPad"])
+        {
+            _captureWidth = 640;
+            _captureHeight = 480;
+        }
     }
     else if (_index == BACK_CAMERA_INDEX)
     {
-        if ([_machineName hasPrefix:@"iPhone"] || [_machineName hasPrefix:@"iPod"] || [_machineName hasPrefix:@"iPad2"])
+        if ([_machineName hasPrefix:@"iPod"])
+        {
+            _captureWidth = 1280;
+            _captureHeight = 720;
+        }
+        else if ([_machineName hasPrefix:@"iPhone5"])
+        {
+            _captureWidth = 1920;
+            _captureHeight = 1080;
+        }
+        else if ([_machineName hasPrefix:@"iPhone"])
         {
             _captureWidth = 1280;
             _captureHeight = 720;
@@ -230,6 +258,11 @@
         {
             _captureWidth = 1920;
             _captureHeight = 1080;
+        }
+        else if ([_machineName hasPrefix:@"iPad"])
+        {
+            _captureWidth = 1280;
+            _captureHeight = 720;
         }
     }
 

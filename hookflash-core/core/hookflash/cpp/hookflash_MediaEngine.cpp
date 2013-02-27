@@ -1901,6 +1901,7 @@ namespace hookflash
       String iPad2String("iPad2");
       String iPad3String("iPad3");
       String iPhoneString("iPhone");
+      String iPhone5String("iPhone5");
       String iPhone4SString("iPhone4,1");
       String iPodString("iPod");
       String iPod4String("iPod4,1");
@@ -1916,6 +1917,11 @@ namespace hookflash
             height = 90;
             maxFramerate = 5;
             maxBitrate = 100;
+          } else if (mMachineName.compare(0, iPhone5String.size(), iPhone5String) >= 0) {
+            width = 480;
+            height = 270;
+            maxFramerate = 15;
+            maxBitrate = 250;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 320;
             height = 180;
@@ -1951,6 +1957,11 @@ namespace hookflash
             height = 160;
             maxFramerate = 5;
             maxBitrate = 100;
+          } else if (mMachineName.compare(0, iPhone5String.size(), iPhone5String) >= 0) {
+            width = 270;
+            height = 480;
+            maxFramerate = 15;
+            maxBitrate = 250;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 180;
             height = 320;
@@ -1988,6 +1999,11 @@ namespace hookflash
             height = 120;
             maxFramerate = 5;
             maxBitrate = 100;
+          } else if (mMachineName.compare(0, iPhone5String.size(), iPhone5String) >= 0) {
+            width = 320;
+            height = 180;
+            maxFramerate = 15;
+            maxBitrate = 250;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 320;
             height = 240;
@@ -2018,6 +2034,11 @@ namespace hookflash
             height = 160;
             maxFramerate = 5;
             maxBitrate = 100;
+          } else if (mMachineName.compare(0, iPhone5String.size(), iPhone5String) >= 0) {
+            width = 180;
+            height = 320;
+            maxFramerate = 15;
+            maxBitrate = 250;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 240;
             height = 320;
@@ -2090,6 +2111,7 @@ namespace hookflash
       String iPad2String("iPad2");
       String iPad3String("iPad3");
       String iPhoneString("iPhone");
+      String iPhone5String("iPhone5");
       String iPhone4SString("iPhone4,1");
       String iPodString("iPod");
       String iPod4String("iPod4,1");
@@ -2098,6 +2120,8 @@ namespace hookflash
         return webrtc::kEcAec;
       } else if (mMachineName.compare(0, iPodString.size(), iPodString) >= 0) {
         return webrtc::kEcAecm;
+      } else if (mMachineName.compare(0, iPhone5String.size(), iPhone5String) >= 0) {
+        return webrtc::kEcAec;
       } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
         return webrtc::kEcAec;
       } else if (mMachineName.compare(0, iPhoneString.size(), iPhoneString) >= 0) {
