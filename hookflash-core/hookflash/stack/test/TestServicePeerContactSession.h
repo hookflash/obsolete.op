@@ -70,10 +70,46 @@ namespace hookflash
       class TestCallback;
       typedef boost::shared_ptr<TestCallback> TestCallbackPtr;
       typedef boost::weak_ptr<TestCallback> TestCallbackWeakPtr;
+      
+      class TestHTTPQuery;
+      typedef boost::shared_ptr<TestHTTPQuery> TestHTTPQueryPtr;
+      typedef boost::weak_ptr<TestHTTPQuery> TestHTTPQueryWeakPtr;
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+#pragma mark
+#pragma mark TestHTTPQuery
+#pragma mark
+      class TestHTTPQuery :public hookflash::services::internal::HTTP::HTTPQuery
+      {
+      protected:
+        TestHTTPQuery(
+                  services::internal::HTTPPtr outer,
+                  services::IHTTPQueryDelegatePtr delegate,
+                  bool isPost,
+                  const char *userAgent,
+                  const char *url,
+                  const BYTE *postData,
+                  ULONG postDataLengthInBytes,
+                  const char *postDataMimeType,
+                  Duration timeout
+                      ) : HTTPQuery(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout){}
+      public:
+        void writeBody(zsLib::String messageBody);
+        static TestHTTPQueryPtr create(
+                                 services::internal::HTTPPtr outer,
+                                 services::IHTTPQueryDelegatePtr delegate,
+                                 bool isPost,
+                                 const char *userAgent,
+                                 const char *url,
+                                 const BYTE *postData,
+                                 ULONG postDataLengthInBytes,
+                                 const char *postDataMimeType,
+                                 Duration timeout
+                                 );
+
+      };
 #pragma mark
 #pragma mark TestCallback
 #pragma mark

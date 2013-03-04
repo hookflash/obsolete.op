@@ -99,11 +99,7 @@ namespace hookflash
         mThisWeak.reset();
       }
       //-----------------------------------------------------------------------
-//      void TestBootstrappedNetwork::onHTTPCompleted(IHTTPQueryPtr query)
-//      {
-//        int i = 0;
-//        i++;
-//      }
+
       void TestBootstrappedNetwork::initialize(IBootstrappedNetworkDelegatePtr delegate)
       {
         if(delegate)
@@ -112,13 +108,6 @@ namespace hookflash
         }
         mCompleted = true;
       }
-      
-//      void TestBootstrappedNetwork::onStep()
-//      {
-//        ZS_LOG_DEBUG(log("on step"))
-//        AutoRecursiveLock lock(getLock());
-//        step();
-//      }
       
       bool TestBootstrappedNetwork::isPreparationComplete() const
       {
@@ -144,38 +133,24 @@ namespace hookflash
                                                        message::MessagePtr message
                                                        )
       {
-        /*
-         HTTP::HTTPQueryPtr HTTP::HTTPQuery::create(
-         HTTPPtr outer,
-         IHTTPQueryDelegatePtr delegate,
-         bool isPost,
-         const char *userAgent,
-         const char *url,
-         const BYTE *postData,
-         ULONG postDataLengthInBytes,
-         const char *postDataMimeType,
-         Duration timeout
-         )
-         */
         DocumentPtr doc = message->encode();
         ULONG postDataLengthInBytes = 0;
         boost::shared_array<char> postData = doc->writeAsJSON(&postDataLengthInBytes);
         
-        //hookflash::services::internal::HTTPPtr pHttp = hookflash::services::internal::HTTP::singleton();
         
         Duration timeout = Duration(Seconds(HOOKFLASH_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
         
-        hookflash::services::internal::HTTP::HTTPQueryPtr query = hookflash::services::internal::HTTP::HTTPQuery::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
+        TestHTTPQueryPtr query = TestHTTPQuery::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
         
         mPendingRequests[query] = message;
         
         if (!strcmp(serviceMethodName,"peer-contact-login"))
         {
-          zsLib::String navodnici = "\"";
+          zsLib::String quote = "\"";
           zsLib::String ptr = "{ \
             \"result\": { \
             \"$domain\": \"unstable.hookflash.me\", \
-            \"$id\":" + navodnici + message->messageID() + navodnici + ", \
+            \"$id\":" + quote + message->messageID() + quote + ", \
             \"$handler\": \"peer-contact\", \
             \"$method\": \"peer-contact-login\", \
             \"$epoch\": 1362050609, \
@@ -186,17 +161,18 @@ namespace hookflash
             \"peerFilesRegenerate\": \"0\" \
             } \
             }";
-          query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
+          query->writeBody(ptr);
+          //query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
           
           onHTTPCompleted(query);
         }
         else if (!strcmp(serviceMethodName, "signed-salt-get"))
         {
-          zsLib::String navodnici = "\"";
+          zsLib::String quote = "\"";
           zsLib::String ptr = "{ \
             \"result\": { \
             \"$domain\": \"unstable.hookflash.me\", \
-            \"$id\":" + navodnici + message->messageID() + navodnici + ", \
+            \"$id\":" + quote + message->messageID() + quote + ", \
             \"$handler\": \"peer-salt\", \
             \"$method\": \"signed-salt-get\", \
             \"$epoch\": 1362131157, \
@@ -222,23 +198,24 @@ namespace hookflash
             } \
         }";
 
-          query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
+          query->writeBody(ptr);
           
           onHTTPCompleted(query);
         }
         else if (!strcmp(serviceMethodName, "private-peer-file-set"))
         {
-          zsLib::String navodnici = "\"";
+          zsLib::String quote = "\"";
           zsLib::String ptr = "{ \
             \"result\": { \
             \"$domain\": \"unstable.hookflash.me\", \
-            \"$id\":" + navodnici + message->messageID() + navodnici + ", \
+            \"$id\":" + quote + message->messageID() + quote + ", \
             \"$handler\": \"peer-contact\", \
             \"$method\": \"private-peer-file-set\", \
             \"$epoch\": 1362131170 \
             }  \
         }";
-          query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
+          
+          query->writeBody(ptr);
           
           onHTTPCompleted(query);
         /*
@@ -252,11 +229,11 @@ namespace hookflash
         }
         else if (!strcmp(serviceMethodName, "peer-contact-services-get"))
         {
-          zsLib::String navodnici = "\"";
+          zsLib::String quote = "\"";
           zsLib::String ptr = "{ \
             \"result\": { \
             \"$domain\": \"unstable.hookflash.me\", \
-            \"$id\":" + navodnici + message->messageID() + navodnici + ", \
+            \"$id\":" + quote + message->messageID() + quote + ", \
             \"$handler\": \"peer-contact\", \
             \"$method\": \"peer-contact-services-get\", \
             \"$epoch\": 1362392604, \
@@ -280,7 +257,7 @@ namespace hookflash
               } \
             } \
         }";
-          query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
+          query->writeBody(ptr);
           
           onHTTPCompleted(query);
           
@@ -316,11 +293,11 @@ namespace hookflash
         }
         else if (!strcmp(serviceMethodName, "peer-contact-identity-associate"))
         {
-          zsLib::String navodnici = "\"";
+          zsLib::String quote = "\"";
           zsLib::String ptr = "{ \
             \"result\": { \
             \"$domain\": \"unstable.hookflash.me\", \
-            \"$id\":" + navodnici + message->messageID() + navodnici + ", \
+            \"$id\":" + quote + message->messageID() + quote + ", \
             \"$handler\": \"peer-contact\", \
             \"$method\": \"peer-contact-identity-associate\", \
             \"$epoch\": 1362395414, \
@@ -333,7 +310,7 @@ namespace hookflash
               } \
             } \
         }";
-          query->mBody.Put((BYTE *)ptr.c_str(), ptr.size());
+          query->writeBody(ptr);
           
           onHTTPCompleted(query);
           
@@ -510,12 +487,10 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         mNetworkDone = true;
         
-        //++mCount;
-        
-        mIdentitySession = hookflash::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "nigde", "ne treba");
-        //create identity
-        //hookflash::stack::IServiceIdentityPtr mServiceIdentity = ;
+        mIdentitySession = hookflash::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
+
         mPeerContactSession = hookflash::stack::IServicePeerContactSession::login(mThisWeak.lock(), hookflash::stack::IServicePeerContact::createServicePeerContactFrom(mNetwork), mIdentitySession);
+
       }
       
       void TestCallback::onServiceIdentitySessionStateChanged(
@@ -523,13 +498,10 @@ namespace hookflash
                                                              IServiceIdentitySession::SessionStates state
                                                              )
       {
-
       }
       
       void TestCallback::onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session)
       {
-        int i = 0;
-        i++;
       }
       
       void TestCallback::onServicePeerContactSessionStateChanged(
@@ -539,15 +511,39 @@ namespace hookflash
       {
         if (state == IServicePeerContactSession::SessionState_Ready)
         {
+          ElementPtr element = mPeerContactSession->getPeerFiles()->saveToPrivatePeerElement();
+          zsLib::String text = element->getText();
           ++mCount;
         }
       }
       void TestCallback::onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session)
       {
-//        int i = 0;
-//        i++;
       }
-
+#pragma mark
+#pragma mark TestHTTPQuery
+#pragma mark
+      void TestHTTPQuery::writeBody(zsLib::String messageBody)
+      {
+        mBody.Put((BYTE *)messageBody.c_str(), messageBody.size());
+      }
+      
+      TestHTTPQueryPtr TestHTTPQuery::create(
+                              services::internal::HTTPPtr outer,
+                              services::IHTTPQueryDelegatePtr delegate,
+                              bool isPost,
+                              const char *userAgent,
+                              const char *url,
+                              const BYTE *postData,
+                              ULONG postDataLengthInBytes,
+                              const char *postDataMimeType,
+                              Duration timeout
+                              )
+      {
+        TestHTTPQueryPtr pThis(new TestHTTPQuery(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout));
+        pThis->mThisWeak = pThis;
+        pThis->init();
+        return pThis;
+      }
     }
   }
 }

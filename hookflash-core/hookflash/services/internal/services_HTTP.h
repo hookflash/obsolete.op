@@ -267,7 +267,6 @@ namespace hookflash
           CURLcode mResultCode;
 
           ByteQueue mHeader;
-        public:
           ByteQueue mBody;
         };
 
