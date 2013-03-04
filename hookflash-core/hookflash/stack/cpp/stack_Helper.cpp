@@ -518,8 +518,8 @@ namespace hookflash
           if (outKeyID) {
             *outKeyID = IMessageHelper::getAttributeID(keyEl);
           }
-          if (outService) {
-            *outService = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("service"));
+          if (outKeyDomain) {
+            *outKeyDomain = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("domain"));
           }
           if (outService) {
             *outService = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("service"));

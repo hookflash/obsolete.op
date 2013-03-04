@@ -90,10 +90,10 @@ static ProvisioningManager *sProvisioningManager = nil;
   zsLib::MessageQueueThreadPtr threadServices(zsLib::MessageQueueThread::createBasic());
   
   //prepare stack
-  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test App", "iOS 5.0.3", "iPad 2");
   
   //initialize bootstrapped network
-  mNetwork = IBootstrappedNetwork::prepare("provisioning-unstable-dev.hookflash.me", mBootstrappedNetworkDelegate);
+  mNetwork = IBootstrappedNetwork::prepare("unstable.hookflash.me", mBootstrappedNetworkDelegate);
   
 }
 

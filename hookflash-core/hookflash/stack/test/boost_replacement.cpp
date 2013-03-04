@@ -41,6 +41,7 @@
 typedef hookflash::services::IHelper IHelper;
 
 void doTestStack();
+void doTestPeerContactSession();
 
 
 namespace BoostReplacement
@@ -117,6 +118,7 @@ namespace BoostReplacement
   
   void runAllTests()
   {
-    doTestStack();
+    //doTestStack();
+    doTestPeerContactSession();
   }
 }

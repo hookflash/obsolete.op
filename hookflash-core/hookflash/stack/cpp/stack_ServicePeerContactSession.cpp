@@ -658,6 +658,9 @@ namespace hookflash
           return false;
         }
 
+        mServicesMonitor->cancel();
+        mServicesMonitor.reset();
+        
         mServicesByType = result->servicesByType();
         if (mServicesByType.size() < 1) {
           // make sure to add at least one bogus service so we know this request completed
@@ -1040,7 +1043,7 @@ namespace hookflash
             }
 
             ZS_LOG_DEBUG(log("cannot download peer information as peer contact information is not associated to account"))
-            mRegeneratePeerFiles = true;
+            //mRegeneratePeerFiles = true;
           }
         }
 
@@ -1100,8 +1103,8 @@ namespace hookflash
         request->contactAccessSecret(mContactAccessSecret);
         request->peerFiles(mPeerFiles);
 
-        mPeerFilesSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PrivatePeerFileGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "private-peer-file-get", request);
+        mPeerFilesSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PrivatePeerFileSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "private-peer-file-set", request);
 
         ZS_LOG_DEBUG(log("sending private peer file set request"))
         return false;
@@ -1152,7 +1155,7 @@ namespace hookflash
           request->contactAccessSecret(mContactAccessSecret);
           request->peerFiles(mPeerFiles);
 
-          mPeerFilesSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PrivatePeerFileGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
+          mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
           mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-identity-associate", request);
           ZS_LOG_DEBUG(log("sending original associate request to fetch current associations"))
           return false;

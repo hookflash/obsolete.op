@@ -20,6 +20,7 @@
 		0063D33416CB254E00E6DB4D /* libcryptopp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D31B16CB244F00E6DB4D /* libcryptopp.a */; };
 		0063D33516CB255600E6DB4D /* libhfservices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D32116CB247E00E6DB4D /* libhfservices.a */; };
 		0063D33616CB255C00E6DB4D /* libhfstack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D32716CB248A00E6DB4D /* libhfstack.a */; };
+		58E68C8316D7877F0098B4E3 /* TestServicePeerContactSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58E68C8216D7877F0098B4E3 /* TestServicePeerContactSession.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,8 @@
 		0063D31616CB244F00E6DB4D /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = "../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj"; sourceTree = "<group>"; };
 		0063D31C16CB247E00E6DB4D /* hfservices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfservices.xcodeproj; path = ../hfservices/hfservices.xcodeproj; sourceTree = "<group>"; };
 		0063D32216CB248A00E6DB4D /* hfstack.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfstack.xcodeproj; path = ../hfstack/hfstack.xcodeproj; sourceTree = "<group>"; };
+		58E68C8116D640CA0098B4E3 /* TestServicePeerContactSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestServicePeerContactSession.h; sourceTree = "<group>"; };
+		58E68C8216D7877F0098B4E3 /* TestServicePeerContactSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestServicePeerContactSession.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +196,8 @@
 				0063C97A16CAB85000E6DB4D /* main.cpp */,
 				0063C97B16CAB85000E6DB4D /* TestStack.cpp */,
 				0063C97C16CAB85000E6DB4D /* TestStack.h */,
+				58E68C8116D640CA0098B4E3 /* TestServicePeerContactSession.h */,
+				58E68C8216D7877F0098B4E3 /* TestServicePeerContactSession.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -387,6 +392,7 @@
 				0063CA3416CAB85000E6DB4D /* boost_replacement.cpp in Sources */,
 				0063CA3516CAB85000E6DB4D /* main.cpp in Sources */,
 				0063CA3616CAB85000E6DB4D /* TestStack.cpp in Sources */,
+				58E68C8316D7877F0098B4E3 /* TestServicePeerContactSession.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
