@@ -43,7 +43,6 @@
 
 #define HOOKFLASH_MEDIA_ENGINE_EXTERNAL_TRANSPORT
 //#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-//#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
 #define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
 //#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
 #define HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL (-1)
@@ -453,12 +452,6 @@ namespace hookflash
         ZS_LOG_ERROR(Detail, log("failed to set voice engine for video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
         return;
       }
-
-#ifndef HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-      IClient::setLogLevel("hookflash_webrtc", IClient::Log::Basic);
-#else
-      IClient::setLogLevel("hookflash_webrtc", IClient::Log::Debug);
-#endif
       
       Log::Level logLevel = ZS_GET_LOG_LEVEL();
 
