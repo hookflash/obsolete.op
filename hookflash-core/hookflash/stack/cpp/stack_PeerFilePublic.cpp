@@ -328,7 +328,7 @@ namespace hookflash
 
           SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
 
-          if (0 == IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
+          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
             ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
             return false;
           }
@@ -506,7 +506,7 @@ namespace hookflash
             ULONG length = 0;
             boost::shared_array<char> sectionAAsString = generator->write(sectionAEl, &length);
 
-            SecureByteBlockPtr sectionHash = IHelper::hash(sectionAAsString.get(), IHelper::HashAlgorthm_SHA1);
+            SecureByteBlockPtr sectionHash = IHelper::hash((const char *)(sectionAAsString.get()), IHelper::HashAlgorthm_SHA1);
             String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
             if (HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM != algorithm) {
               ZS_LOG_WARNING(Detail, log("signature algorithm was not understood, peer URI=") + mPeerURI + ", algorithm=" + algorithm + ", expecting=" + HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM)
@@ -515,13 +515,13 @@ namespace hookflash
 
             SecureByteBlockPtr digestValue = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded());
 
-            if (0 == IHelper::compare(*sectionHash, *digestValue)) {
+            if (0 != IHelper::compare(*sectionHash, *digestValue)) {
               ZS_LOG_ERROR(Detail, log("digest value does not match on section A signature on public peer file, peer URI=") + mPeerURI +  ", calculated digest=" + IHelper::convertToBase64(*sectionHash) + ", signature digest=" + IHelper::convertToBase64(*digestValue))
               return false;
             }
 
             SecureByteBlockPtr digestSigned =  IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
-            if (mPublicKey->verify(*sectionHash, *digestSigned)) {
+            if (!mPublicKey->verify(*sectionHash, *digestSigned)) {
               ZS_LOG_ERROR(Detail, log("signature on section A of public peer file failed to validate, peer URI=") + mPeerURI)
               return false;
             }

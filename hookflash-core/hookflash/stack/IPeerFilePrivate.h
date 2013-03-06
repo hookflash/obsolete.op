@@ -68,7 +68,8 @@ namespace hookflash
 
       virtual void signElement(
                                ElementPtr elementToSign,
-                               bool referenceKeyOnlyInSignature = true
+                               bool referenceKeyOnlyInSignature = true,
+                               IRSAPublicKeyPtr publicKey = IRSAPublicKeyPtr()
                                ) const = 0;
 
       virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const = 0;

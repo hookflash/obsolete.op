@@ -107,7 +107,7 @@ namespace hookflash
               root->adoptAsLastChild(privatePeerFileProofBundleEl);
 
               ElementPtr privatePeerFileProofEl = Element::create("privatePeerFileProof");
-              privatePeerFileProofBundleEl->adoptAsLastChild(privatePeerFileProofBundleEl);
+              privatePeerFileProofBundleEl->adoptAsLastChild(privatePeerFileProofEl);
 
               privatePeerFileProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
               privatePeerFileProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("contact", publicPeer->getPeerURI()));

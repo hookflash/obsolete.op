@@ -173,7 +173,7 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!peerFilePublic)
 
         String uri = peerFilePublic->getPeerURI();
-        if (IPeer::isValid(uri)) {
+        if (!IPeer::isValid(uri)) {
           ZS_LOG_WARNING(Detail, "ServicePeerContactSession [] peer file public contains invalid URI, URI=" + uri)
           return ServicePeerContactSessionPtr();
         }

@@ -35,11 +35,13 @@
 #include <hookflash/stack/IStack.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
-//#include <hookflash/services/internal/services_HTTP.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Proxy.h>
 #include <zsLib/XML.h>
+
+#include <iostream>
+#include <fstream>
 
 namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_stack_test) } } }
 
@@ -55,6 +57,80 @@ namespace hookflash
   {
     namespace test
     {
+#pragma mark
+#pragma mark XML helpers
+#pragma mark
+      //-----------------------------------------------------------------------
+      ElementPtr createFromString(const String &elementStr)
+      {
+        if (!elementStr) return ElementPtr();
+        
+        DocumentPtr doc = Document::createFromParsedJSON(elementStr);
+        
+        ElementPtr childEl = doc->getFirstChildElement();
+        if (!childEl) return ElementPtr();
+        
+        childEl->orphan();
+        return childEl;
+      }
+      
+      //-----------------------------------------------------------------------
+      String convertToString(const ElementPtr &element)
+      {
+        if (!element) return String();
+        
+        GeneratorPtr generator = Generator::createJSONGenerator();
+        boost::shared_array<char> output = generator->write(element);
+        
+        return output.get();
+      }
+      
+      bool writeToFile(zsLib::String text)
+      {
+        std::ofstream myfile ("/tmp/peerfile.txt");
+        if (myfile.is_open())
+        {
+          myfile << text;
+          myfile.close();
+          return true;
+        }
+        else
+        {
+          std::cout << "Unable to open file";
+          return false;
+        }
+      }
+      bool readFromFile(String &outPassword, String &outText)
+      {
+        zsLib::String line;
+        std::ifstream myfile ("/tmp/peerfile.txt");
+        if (myfile.is_open())
+        {
+          int i = 0;
+          while ( myfile.good() )
+          {
+            getline (myfile,line);
+            if (i == 0)
+            {
+              outPassword = line;
+              std::cout << line << std::endl;
+            }
+            else{
+              outText += line;
+              std::cout << line << std::endl;
+            }
+            ++i;
+          }
+          myfile.close();
+          return true;
+        }
+        
+        else
+        {
+          std::cout << "Unable to open file";
+          return false;
+        }
+      }
 #pragma mark
 #pragma mark TestServicePeerContactSession
 #pragma mark
@@ -479,6 +555,7 @@ namespace hookflash
       
       void TestCallback::init()
       {
+        mLoginScenario = LoginScenario_None;
         mNetwork = IBootstrappedNetwork::prepare("unstable.hookflash.me", mThisWeak.lock());
       }
       
@@ -488,8 +565,31 @@ namespace hookflash
         mNetworkDone = true;
         
         mIdentitySession = hookflash::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
+        
+        zsLib::String filePassword, fileText;
+        bool ret = readFromFile(filePassword, fileText);
+        
+        if (ret)
+        {
+          //relogin scenarion, file successfully loaded
+          mLoginScenario = LoginScenario_Relogin;
+          mPeerFilesElement = createFromString(fileText);
+          mPeerFilePassword = filePassword;
+          
+          mPeerFilesPtr = IPeerFiles::loadFromElement(mPeerFilePassword.c_str(), mPeerFilesElement);
+          
+          mPeerContactSession = hookflash::stack::IServicePeerContactSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
+        }
+        else
+        {
+          //peer file not found, do Login
+          mLoginScenario = LoginScenario_Login;
+          mPeerContactSession = hookflash::stack::IServicePeerContactSession::login(mThisWeak.lock(), hookflash::stack::IServicePeerContact::createServicePeerContactFrom(mNetwork), mIdentitySession);
+        }
+        
+        
 
-        mPeerContactSession = hookflash::stack::IServicePeerContactSession::login(mThisWeak.lock(), hookflash::stack::IServicePeerContact::createServicePeerContactFrom(mNetwork), mIdentitySession);
+        
 
       }
       
@@ -512,7 +612,18 @@ namespace hookflash
         if (state == IServicePeerContactSession::SessionState_Ready)
         {
           ElementPtr element = mPeerContactSession->getPeerFiles()->saveToPrivatePeerElement();
-          zsLib::String text = element->getText();
+          zsLib::String text = convertToString(element);
+          
+          SecureByteBlockPtr secPwd = mPeerContactSession->getPeerFiles()->getPeerFilePrivate()->getPassword();
+          zsLib::String password = IHelper::convertToString((SecureByteBlock)*secPwd.get());
+          text = password + "\n" + text;
+          
+          //first time login, save peer file
+          if (LoginScenario_Login == mLoginScenario)
+          {
+            writeToFile(text);
+          }
+          
           ++mCount;
         }
       }

@@ -119,6 +119,12 @@ namespace hookflash
                            public IServiceIdentitySessionDelegate,
                            public IServicePeerContactSessionDelegate
       {
+      public:
+        enum LoginScenarios{
+          LoginScenario_None,
+          LoginScenario_Login,
+          LoginScenario_Relogin
+        };
       private:
         TestCallback(IMessageQueuePtr queue);
         
@@ -157,6 +163,11 @@ namespace hookflash
         IServicePeerContactSessionPtr mPeerContactSession;
         IServiceIdentitySessionPtr mIdentitySession;
         bool mNetworkDone;
+        
+        ElementPtr mPeerFilesElement;
+        zsLib::String mPeerFilePassword;
+        IPeerFilesPtr mPeerFilesPtr;
+        LoginScenarios mLoginScenario;
       };
       
 #pragma mark
