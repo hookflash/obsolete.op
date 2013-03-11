@@ -59,6 +59,9 @@
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.41702044" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.linker.libraries.663996519" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.332550206" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.693295840" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

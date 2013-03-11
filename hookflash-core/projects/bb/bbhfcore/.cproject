@@ -34,15 +34,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.699131570" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.118546010" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -51,18 +51,21 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.394950711" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1447752273" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.544952699" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.380974963" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.674920255" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.1841445079" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.1316088646" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -75,6 +78,29 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.133450371" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.223811820" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.2011042466" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="c"/>
+									<listOptionValue builtIn="false" value="cpp"/>
+									<listOptionValue builtIn="false" value="stdc++"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbcryptopp/${ConfigName}/libbbcryptopp.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfservices/${ConfigName}/libbbhfservices.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/thread/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_thread.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/date_time/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_date_time.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1531778514" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -121,15 +147,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1257028834" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.8000448" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -138,17 +164,20 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.285306393" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1270511612" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.549679869" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1181314028" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.includePath.999177780" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.586536934" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -160,6 +189,20 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.556521096" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.2033604877" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1535038794" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.738274337" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -208,15 +251,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1638692411" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.178165928" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -225,18 +268,21 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1073995698" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.799704955" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1271939848" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.174272945" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.446226309" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.53165651" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.1049759748" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -250,6 +296,20 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.332688881" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.708840901" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1682816466" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1975116571" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -298,15 +358,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1602127802" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.979843572" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -315,18 +375,21 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1626735952" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.276786478" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2040076802" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.85356333" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1073390573" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.659068440" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.1974576626" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -340,6 +403,20 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.977041372" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.1006842819" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.850370758" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1729864631" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -386,14 +463,14 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1384781738" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.963836213" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -407,13 +484,13 @@
 							<tool id="com.qnx.qcc.tool.assembler.418335586" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1780242361" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.1709133108" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.2138332616" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -426,6 +503,29 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1143968553" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.1857139281" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1020936053" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="c"/>
+									<listOptionValue builtIn="false" value="cpp"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/thread/build/qcc/debug/architecture-x86/link-static/target-os-qnxnto/threading-multi/libboost_thread.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/date_time/build/qcc/debug/architecture-x86/link-static/target-os-qnxnto/threading-multi/libboost_date_time.a&quot;"/>
+									<listOptionValue builtIn="false" value="stdc++"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbcryptopp/${ConfigName}/libbbcryptopp.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfservices/${ConfigName}/libbbhfservices.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.616501806" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -473,15 +573,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.523417377" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.53482830" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -495,13 +595,13 @@
 							<tool id="com.qnx.qcc.tool.assembler.2019373216" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.893953451" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.219281539" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.2097850131" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -515,6 +615,20 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.711048428" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.882044230" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1731685014" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1928510244" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -562,15 +676,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-core"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1646307894" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.932989295" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -584,13 +698,13 @@
 							<tool id="com.qnx.qcc.tool.assembler.270646253" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.2097068668" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.1615239829" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/voice_engine/main/interface"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.270563039" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
@@ -604,6 +718,20 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1712033640" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.1950061896" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraries.1768280668" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="curl"/>
+									<listOptionValue builtIn="false" value="socket"/>
+									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.705074652" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
