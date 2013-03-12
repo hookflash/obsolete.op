@@ -97,9 +97,9 @@ namespace hookflash
       virtual int deregisterVoiceExternalTransport() = 0;
       virtual int receivedVoiceRTPPacket(const void *data, unsigned int length) = 0;
       virtual int receivedVoiceRTCPPacket(const void *data, unsigned int length) = 0;
-
-      virtual void startVideo() = 0;
-      virtual void stopVideo() = 0;
+      
+      virtual void startVideoChannel() = 0;
+      virtual void stopVideoChannel() = 0;
 
       virtual int registerVideoExternalTransport(Transport &transport) = 0;
       virtual int deregisterVideoExternalTransport() = 0;
@@ -126,7 +126,8 @@ namespace hookflash
       static void setup(IMediaEngineDelegatePtr delegate);
       
       virtual void setVideoOrientation() = 0;
-      
+      virtual void setDefaultVideoOrientation(IMediaEngine::VideoOrientations orientation) = 0;
+ 
       virtual void setCaptureRenderView(void *renderView) = 0;
       virtual void setChannelRenderView(void *renderView) = 0;
       
@@ -140,6 +141,9 @@ namespace hookflash
       virtual bool getMuteEnabled() = 0;
       virtual void setLoudspeakerEnabled(bool enabled) = 0;
       virtual bool getLoudspeakerEnabled() = 0;
+      
+      virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
+      virtual bool getContinuousVideoCapture() = 0;
 
       virtual void setReceiverAddress(String receiverAddress) = 0;
       virtual String getReceiverAddress() const = 0;
@@ -147,8 +151,10 @@ namespace hookflash
       virtual void startVoice() = 0;
       virtual void stopVoice() = 0;
       
-      virtual void startVideo() = 0;
-      virtual void stopVideo() = 0;
+      virtual void startVideoCapture() = 0;
+      virtual void stopVideoCapture() = 0;
+      virtual void startVideoChannel() = 0;
+      virtual void stopVideoChannel() = 0;
     };
     
     //-------------------------------------------------------------------------
@@ -239,8 +245,14 @@ namespace hookflash
       virtual bool getLoudspeakerEnabled();
       virtual OutputAudioRoutes getOutputAudioRoute();
       
+      virtual void setContinuousVideoCapture(bool continuousVideoCapture);
+      virtual bool getContinuousVideoCapture();
+
       virtual CameraTypes getCameraType() const;
       virtual void setCameraType(CameraTypes type);
+      
+      virtual void startVideoCapture();
+      virtual void stopVideoCapture();
 
       virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat);
       virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat);
@@ -259,9 +271,9 @@ namespace hookflash
 
       virtual void startVoice();
       virtual void stopVoice();
-
-      virtual void startVideo();
-      virtual void stopVideo();
+      
+      virtual void startVideoChannel();
+      virtual void stopVideoChannel();
 
       virtual int registerVoiceExternalTransport(Transport &transport);
       virtual int deregisterVoiceExternalTransport();
@@ -316,10 +328,14 @@ namespace hookflash
       virtual void internalStartVoice();
       virtual void internalStopVoice();
 
-      virtual void internalStartVideo(CameraTypes cameraType);
-      virtual void internalStopVideo();
+      virtual void internalStartVideoCapture();
+      virtual void internalStopVideoCapture();
+      virtual void internalStartVideoChannel();
+      virtual void internalStopVideoChannel();
 
     protected:
+      int getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height,
+                                    int& maxFramerate, int& maxBitrate);
       int setVideoCaptureRotationAndCodecParameters();
       EcModes getEcMode();
 
@@ -406,10 +422,12 @@ namespace hookflash
       VoiceHardware *mVoiceHardware;
       VoiceFile *mVoiceFile;
       bool mVoiceEngineReady;
+      bool mContinuousVideoCapture;
 
       int mVideoChannel;
       Transport *mVideoTransport;
       int mCaptureId;
+      char mDeviceUniqueId[512];
       CameraTypes mCameraType;
       VideoCaptureModule *mVcpm;
       VideoEngine *mVideoEngine;
@@ -430,10 +448,12 @@ namespace hookflash
       mutable RecursiveLock mLifetimeLock;
 
       bool mLifetimeWantAudio;
-      bool mLifetimeWantVideo;
+      bool mLifetimeWantVideoCapture;
+      bool mLifetimeWantVideoChannel;
 
       bool mLifetimeHasAudio;
-      bool mLifetimeHasVideo;
+      bool mLifetimeHasVideoCapture;
+      bool mLifetimeHasVideoChannel;
 
       bool mLifetimeInProgress;
       CameraTypes mLifetimeWantCameraType;

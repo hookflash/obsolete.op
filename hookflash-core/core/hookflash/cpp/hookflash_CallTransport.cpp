@@ -692,7 +692,7 @@ namespace hookflash
             mVideoThread.reset();
             ZS_LOG_WARNING(Detail, log("Video thread from preivous call is still alive when startVideo is called"))
           }
-          engine->startVideo();
+          engine->startVideoChannel();
         }
       }
     }
@@ -724,7 +724,7 @@ namespace hookflash
 
       if (hasVideo) {
         ZS_LOG_DETAIL(log("stopping media engine video"))
-        engine->stopVideo();
+        engine->stopVideoChannel();
       }
       if (hasAudio) {
         ZS_LOG_DETAIL(log("stopping media engine audio"))
