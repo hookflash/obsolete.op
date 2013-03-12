@@ -104,6 +104,9 @@ namespace hookflash
     
     virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
     virtual bool getContinuousVideoCapture() = 0;
+    
+    virtual void setFaceDetection(bool faceDetection) = 0;
+    virtual bool getFaceDetection() = 0;
 
     virtual CameraTypes getCameraType() const = 0;
     virtual void setCameraType(CameraTypes type) = 0;
@@ -120,10 +123,12 @@ namespace hookflash
     typedef IMediaEngine::OutputAudioRoutes OutputAudioRoutes;
 
     virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
+    virtual void onMediaEngineFaceDetected() = 0;
   };
 }
 
 ZS_DECLARE_PROXY_BEGIN(hookflash::IMediaEngineDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineFaceDetected)
 ZS_DECLARE_PROXY_END()

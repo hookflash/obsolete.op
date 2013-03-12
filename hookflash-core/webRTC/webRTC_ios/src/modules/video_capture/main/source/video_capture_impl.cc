@@ -99,6 +99,16 @@ WebRtc_Word32 VideoCaptureImpl::Process()
 
         }
     }
+  
+    // Handle Face detected
+    
+    if (_faceDetected)
+    {
+        if (_faceDetectionCallBack && _captureCallBack)
+        {
+            _captureCallBack->OnFaceDetected(_id);
+        }
+    }
 
     // Handle frame rate callback
     if ((now - _lastFrameRateCallbackTime).Milliseconds()
@@ -138,7 +148,8 @@ VideoCaptureImpl::VideoCaptureImpl(const WebRtc_Word32 id)
       _callBackCs(*CriticalSectionWrapper::CreateCriticalSection()),
       _lastProcessTime(TickTime::Now()),
       _lastFrameRateCallbackTime(TickTime::Now()), _frameRateCallBack(false),
-      _noPictureAlarmCallBack(false), _captureAlarm(Cleared), _setCaptureDelay(0),
+      _noPictureAlarmCallBack(false), _captureAlarm(Cleared),
+      _faceDetectionCallBack(false), _faceDetected(false), _setCaptureDelay(0),
       _dataCallBack(NULL), _captureCallBack(NULL),
       _startImage(), _startImageFrameIntervall(0),
       _lastSentStartImageTime(TickTime::Now()),
@@ -254,7 +265,8 @@ WebRtc_Word32 VideoCaptureImpl::IncomingFrame(
     WebRtc_UWord8* videoFrame,
     WebRtc_Word32 videoFrameLength,
     const VideoCaptureCapability& frameInfo,
-    WebRtc_Word64 captureTime/*=0*/)
+    WebRtc_Word64 captureTime/*=0*/,
+    bool faceDetected/*=false*/)
 {
     WEBRTC_TRACE(webrtc::kTraceStream, webrtc::kTraceVideoCapture, _id,
                "IncomingFrame width %d, height %d", (int) frameInfo.width,
@@ -281,6 +293,8 @@ WebRtc_Word32 VideoCaptureImpl::IncomingFrame(
         dstHeight  = width;
         dstStride  = height;
     }
+  
+    _faceDetected = faceDetected;
 
     if (frameInfo.codecType == kVideoCodecUnknown)
     {
@@ -353,7 +367,7 @@ WebRtc_Word32 VideoCaptureImpl::IncomingFrame(
 }
 
 WebRtc_Word32 VideoCaptureImpl::IncomingFrameI420(
-    const VideoFrameI420& video_frame, WebRtc_Word64 captureTime) {
+    const VideoFrameI420& video_frame, WebRtc_Word64 captureTime, bool faceDetected) {
 
   CriticalSectionScoped cs(&_callBackCs);
 
@@ -478,6 +492,14 @@ WebRtc_Word32 VideoCaptureImpl::EnableNoPictureAlarm(const bool enable)
     CriticalSectionScoped cs(&_apiCs);
     CriticalSectionScoped cs2(&_callBackCs);
     _noPictureAlarmCallBack = enable;
+    return 0;
+}
+  
+WebRtc_Word32 VideoCaptureImpl::EnableFaceDetection(const bool enable)
+{
+    CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
+    _faceDetectionCallBack = enable;
     return 0;
 }
 

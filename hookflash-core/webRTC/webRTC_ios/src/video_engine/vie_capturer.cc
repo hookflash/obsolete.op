@@ -226,6 +226,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = codec_.maxFramerate;
     capability.codecType = codec_.codecType;
     capability.rawType = kVideoI420;
+    capability.faceDetection = false;
 
   } else if (!CaptureCapabilityFixed()) {
     // Ask the observers for best size.
@@ -244,6 +245,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = frame_rate;
     capability.rawType = kVideoI420;
     capability.codecType = kVideoCodecUnknown;
+    capability.faceDetection = false;
   } else {
     // Width, height and type specified with call to Start, not set by
     // observers.
@@ -252,6 +254,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = requested_capability_.maxFPS;
     capability.rawType = requested_capability_.rawType;
     capability.interlaced = requested_capability_.interlaced;
+    capability.faceDetection = requested_capability_.faceDetection;
   }
   return capture_module_->StartCapture(capability);
 }
@@ -868,6 +871,7 @@ WebRtc_Word32 ViECapturer::RegisterObserver(ViECaptureObserver& observer) {
   }
   capture_module_->EnableFrameRateCallback(true);
   capture_module_->EnableNoPictureAlarm(true);
+  capture_module_->EnableFaceDetection(true);
   observer_ = &observer;
   return 0;
 }
@@ -881,6 +885,7 @@ WebRtc_Word32 ViECapturer::DeRegisterObserver() {
   }
   capture_module_->EnableFrameRateCallback(false);
   capture_module_->EnableNoPictureAlarm(false);
+  capture_module_->EnableFaceDetection(false);
   capture_module_->DeRegisterCaptureCallback();
   observer_ = NULL;
   return 0;
@@ -908,6 +913,14 @@ void ViECapturer::OnNoPictureAlarm(const WebRtc_Word32 id,
   CriticalSectionScoped cs(observer_cs_.get());
   CaptureAlarm vie_alarm = (alarm == Raised) ? AlarmRaised : AlarmCleared;
   observer_->NoPictureAlarm(id, vie_alarm);
+}
+  
+void ViECapturer::OnFaceDetected(const WebRtc_Word32 id) {
+  WEBRTC_TRACE(kTraceStream, kTraceVideo, ViEId(engine_id_, capture_id_),
+               "OnFaceDetected");
+  
+  CriticalSectionScoped cs(observer_cs_.get());
+  observer_->FaceDetected(id);
 }
 
 WebRtc_Word32 ViECapturer::SetCaptureDeviceImage(

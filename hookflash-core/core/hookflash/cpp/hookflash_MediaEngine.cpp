@@ -181,6 +181,7 @@ namespace hookflash
       mVideoCodec(NULL),
       mVideoEngineReady(false),
       mContinuousVideoCapture(false),
+      mFaceDetection(false),
       mIPhoneCaptureRenderView(NULL),
       mIPhoneChannelRenderView(NULL),
       mRedirectVoiceTransport("voice"),
@@ -753,6 +754,26 @@ namespace hookflash
       
       return mContinuousVideoCapture;
     }
+    
+    //-----------------------------------------------------------------------
+    void MediaEngine::setFaceDetection(bool faceDetection)
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("set face detection - value: ") + (faceDetection ? "true" : "false"))
+      
+      mFaceDetection = faceDetection;
+    }
+    
+    //-----------------------------------------------------------------------
+    bool MediaEngine::getFaceDetection()
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("get face detection"))
+      
+      return mFaceDetection;
+    }
 
     //-------------------------------------------------------------------------
     IMediaEngine::CameraTypes MediaEngine::getCameraType() const
@@ -1245,6 +1266,48 @@ namespace hookflash
 
       ZS_LOG_DEBUG(log("Audio output route changed") + ", route=" + IMediaEngine::toString(route))
     }
+    
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark MediaEngine => ViECaptureObserver
+    #pragma mark
+    //-------------------------------------------------------------------------
+    void MediaEngine::BrightnessAlarm(const int capture_id, const webrtc::Brightness brightness)
+    {
+      
+    }
+
+    //-------------------------------------------------------------------------
+    void MediaEngine::CapturedFrameRate(const int capture_id, const unsigned char frame_rate)
+    {
+      
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::NoPictureAlarm(const int capture_id, const webrtc::CaptureAlarm alarm)
+    {
+      
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::FaceDetected(const int capture_id)
+    {
+      if (!mDelegate) {
+        ZS_LOG_WARNING(Detail, log("face detection callback igored as delegate was not specified"))
+        return;
+      }
+      
+      try {
+        if (mDelegate)
+          mDelegate->onMediaEngineFaceDetected();
+      } catch (IMediaEngineDelegateProxy::Exceptions::DelegateGone &) {
+        ZS_LOG_WARNING(Detail, log("delegate gone"))
+      }
+    }
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -1667,6 +1730,12 @@ namespace hookflash
         mVcpm->AddRef();
         delete devInfo;
         
+        mError = mVideoCapture->RegisterObserver(mCaptureId, *this);
+        if (mError < 0) {
+          ZS_LOG_ERROR(Detail, log("failed to register video capture observer (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
@@ -1689,6 +1758,7 @@ namespace hookflash
         capability.height = height;
         capability.maxFPS = maxFramerate;
         capability.rawType = webrtc::kVideoI420;
+        capability.faceDetection = mFaceDetection;
         mError = mVideoCapture->StartCapture(mCaptureId, capability);
         if (mError != 0) {
           ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")

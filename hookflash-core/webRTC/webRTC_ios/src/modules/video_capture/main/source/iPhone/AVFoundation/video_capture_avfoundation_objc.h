@@ -46,6 +46,7 @@
     int                                    _frameHeight;
     int                                    _captureWidth;
     int                                    _captureHeight;
+    bool                                   _faceDetection;
     int                                    _framesDelivered;
     int                                    _framesRendered;
     bool                                   _OSSupported;
@@ -103,7 +104,7 @@
 - (NSInteger)getCaptureDeviceIndex;
 - (NSNumber*)setCaptureDeviceByIndex:(int)index;
 - (NSNumber*)setCaptureDeviceByName:(char*)name;
-- (NSNumber*)setCaptureHeight:(int)height AndWidth:(int)width AndFrameRate:(int)frameRate;
+- (NSNumber*)setCaptureHeight:(int)height AndWidth:(int)width AndFrameRate:(int)frameRate AndFaceDetection:(bool)faceDetection;
 - (NSNumber*)startCapture;
 - (NSNumber*)stopCapture;
 

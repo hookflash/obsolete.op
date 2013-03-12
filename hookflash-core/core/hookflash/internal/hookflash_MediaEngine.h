@@ -144,6 +144,9 @@ namespace hookflash
       
       virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
       virtual bool getContinuousVideoCapture() = 0;
+      
+      virtual void setFaceDetection(bool faceDetection) = 0;
+      virtual bool getFaceDetection() = 0;
 
       virtual void setReceiverAddress(String receiverAddress) = 0;
       virtual String getReceiverAddress() const = 0;
@@ -172,7 +175,8 @@ namespace hookflash
                         public IMediaEngineForTestApplication,
                         public zsLib::ITimerDelegate,
                         public webrtc::TraceCallback,
-                        public webrtc::VoiceEngineObserver
+                        public webrtc::VoiceEngineObserver,
+                        public webrtc::ViECaptureObserver
     {
     public:
       
@@ -247,6 +251,9 @@ namespace hookflash
       
       virtual void setContinuousVideoCapture(bool continuousVideoCapture);
       virtual bool getContinuousVideoCapture();
+      
+      virtual void setFaceDetection(bool faceDetection);
+      virtual bool getFaceDetection();
 
       virtual CameraTypes getCameraType() const;
       virtual void setCameraType(CameraTypes type);
@@ -316,6 +323,16 @@ namespace hookflash
       void CallbackOnError(const int errCode, const int channel);
       void CallbackOnOutputAudioRouteChange(const OutputAudioRoute route);
       
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaEngine => ViECaptureObserver
+      #pragma mark
+      
+      void BrightnessAlarm(const int capture_id, const webrtc::Brightness brightness);
+      void CapturedFrameRate(const int capture_id, const unsigned char frame_rate);
+      void NoPictureAlarm(const int capture_id, const webrtc::CaptureAlarm alarm);
+      void FaceDetected(const int capture_id);
+
       //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark MediaEngine => (internal)
@@ -423,6 +440,7 @@ namespace hookflash
       VoiceFile *mVoiceFile;
       bool mVoiceEngineReady;
       bool mContinuousVideoCapture;
+      bool mFaceDetection;
 
       int mVideoChannel;
       Transport *mVideoTransport;

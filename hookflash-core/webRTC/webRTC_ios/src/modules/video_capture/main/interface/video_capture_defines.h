@@ -52,6 +52,7 @@ struct VideoCaptureCapability
     RawVideoType rawType;
     VideoCodecType codecType;
     bool interlaced;
+    bool faceDetection;
 
     VideoCaptureCapability()
     {
@@ -62,6 +63,7 @@ struct VideoCaptureCapability
         rawType = kVideoUnknown;
         codecType = kVideoCodecUnknown;
         interlaced = false;
+        faceDetection = false;
     }
     ;
     bool operator!=(const VideoCaptureCapability &other) const
@@ -78,6 +80,8 @@ struct VideoCaptureCapability
             return true;
         if (interlaced != other.interlaced)
             return true;
+        if (faceDetection != other.faceDetection)
+          return true;
         return false;
     }
     bool operator==(const VideoCaptureCapability &other) const
@@ -128,9 +132,11 @@ public:
     virtual WebRtc_Word32 IncomingFrame(WebRtc_UWord8* videoFrame,
                                         WebRtc_Word32 videoFrameLength,
                                         const VideoCaptureCapability& frameInfo,
-                                        WebRtc_Word64 captureTime = 0) = 0;
+                                        WebRtc_Word64 captureTime = 0,
+                                        bool faceDetected = false) = 0;
     virtual WebRtc_Word32 IncomingFrameI420(const VideoFrameI420& video_frame,
-                                            WebRtc_Word64 captureTime = 0) = 0;
+                                            WebRtc_Word64 captureTime = 0,
+                                            bool faceDetected = false) = 0;
 protected:
     ~VideoCaptureExternal() {}
 };
@@ -155,6 +161,7 @@ public:
                                     const WebRtc_UWord32 frameRate) = 0;
     virtual void OnNoPictureAlarm(const WebRtc_Word32 id,
                                   const VideoCaptureAlarm alarm) = 0;
+    virtual void OnFaceDetected(const WebRtc_Word32 id) = 0;
 protected:
     virtual ~VideoCaptureFeedBack(){}
 };

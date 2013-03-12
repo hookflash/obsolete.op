@@ -38,6 +38,7 @@ VideoCaptureIPhoneAVFoundation::VideoCaptureIPhoneAVFoundation(const WebRtc_Word
     _captureWidth(AVFOUNDATION_DEFAULT_WIDTH),
     _captureHeight(AVFOUNDATION_DEFAULT_HEIGHT),
     _captureFrameRate(AVFOUNDATION_DEFAULT_FRAME_RATE),
+    _faceDetection(false),
     _frameCount(0)
 {
     WEBRTC_TRACE(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, id,
@@ -189,6 +190,7 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
     _captureWidth = capability.width;
     _captureHeight = capability.height;
     _captureFrameRate = capability.maxFPS;
+    _faceDetection = capability.faceDetection;
   
     VideoCaptureRotation rotation;
     NSInteger captureIndex = [_captureDevice getCaptureDeviceIndex];
@@ -268,7 +270,7 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
     if (capability.width > capability.height)
     {
         if(-1 == [[_captureDevice setCaptureHeight:_captureHeight
-                  AndWidth:_captureWidth AndFrameRate:_captureFrameRate]intValue])
+                  AndWidth:_captureWidth AndFrameRate:_captureFrameRate AndFaceDetection:_faceDetection]intValue])
         {
             WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
                          "Could not set width=%d height=%d frameRate=%d",
@@ -279,7 +281,7 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
     else 
     {
         if(-1 == [[_captureDevice setCaptureHeight:_captureWidth
-                  AndWidth:_captureHeight AndFrameRate:_captureFrameRate]intValue])
+                  AndWidth:_captureHeight AndFrameRate:_captureFrameRate AndFaceDetection:_faceDetection]intValue])
         {
             WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
                          "Could not set width=%d height=%d frameRate=%d",

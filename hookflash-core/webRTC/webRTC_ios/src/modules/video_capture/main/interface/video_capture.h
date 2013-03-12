@@ -159,6 +159,7 @@ class VideoCaptureModule: public RefCountedModule {
 
   virtual WebRtc_Word32 EnableFrameRateCallback(const bool enable) = 0;
   virtual WebRtc_Word32 EnableNoPictureAlarm(const bool enable) = 0;
+  virtual WebRtc_Word32 EnableFaceDetection(const bool enable) = 0;
 
 protected:
   virtual ~VideoCaptureModule() {};

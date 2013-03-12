@@ -70,6 +70,7 @@ public:
 
     virtual WebRtc_Word32 EnableFrameRateCallback(const bool enable);
     virtual WebRtc_Word32 EnableNoPictureAlarm(const bool enable);
+    virtual WebRtc_Word32 EnableFaceDetection(const bool enable);
 
     virtual const char* CurrentDeviceName() const;
 
@@ -81,10 +82,12 @@ public:
     virtual WebRtc_Word32 IncomingFrame(WebRtc_UWord8* videoFrame,
                                         WebRtc_Word32 videoFrameLength,
                                         const VideoCaptureCapability& frameInfo,
-                                        WebRtc_Word64 captureTime = 0);
+                                        WebRtc_Word64 captureTime = 0,
+                                        bool faceDetected = false);
     virtual WebRtc_Word32 IncomingFrameI420(
         const VideoFrameI420& video_frame,
-        WebRtc_Word64 captureTime = 0);
+        WebRtc_Word64 captureTime = 0,
+        bool faceDetected = false);
 
     // Platform dependent
     virtual WebRtc_Word32 StartCapture(const VideoCaptureCapability& capability)
@@ -123,6 +126,8 @@ private:
     bool _frameRateCallBack; // true if EnableFrameRateCallback
     bool _noPictureAlarmCallBack; //true if EnableNoPictureAlarm
     VideoCaptureAlarm _captureAlarm; // current value of the noPictureAlarm
+    bool _faceDetectionCallBack; //true if EnableFaceDetection
+    bool _faceDetected; // current value of the faceDetected
 
     WebRtc_Word32 _setCaptureDelay; // The currently used capture delay
     VideoCaptureDataCallback* _dataCallBack;

@@ -162,6 +162,7 @@ class ViECapturer
                                   const WebRtc_UWord32 frame_rate);
   virtual void OnNoPictureAlarm(const WebRtc_Word32 id,
                                 const VideoCaptureAlarm alarm);
+  virtual void OnFaceDetected(const WebRtc_Word32 id);
 
   // Thread functions for deliver captured frames to receivers.
   static bool ViECaptureThreadFunction(void* obj);
