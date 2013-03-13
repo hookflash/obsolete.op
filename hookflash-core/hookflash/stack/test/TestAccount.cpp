@@ -169,6 +169,21 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
 #pragma mark
+#pragma mark TestRUDPICESocketForAccount
+#pragma mark
+      TestRUDPICESocketForAccount::~TestRUDPICESocketForAccount()
+      {
+        mThisWeak.reset();
+      }
+      void TestRUDPICESocketForAccount::shutdown()
+      {
+        setState(RUDPICESocketState_Shutdown);
+      }
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+#pragma mark
 #pragma mark TestServiceIdentitySessionForAccount
 #pragma mark
       TestServiceIdentitySessionForAccount::~TestServiceIdentitySessionForAccount()
@@ -671,6 +686,42 @@ namespace hookflash
         pThis->setState(IAccount::AccountState_Ready);
         return pThis;
       }
+      
+      //RUDPICE Socket
+      RUDPICESocketPtr TestServicesFactoryForAccount::create(
+                              IMessageQueuePtr queue,
+                              IRUDPICESocketDelegatePtr delegate,
+                              const char *turnServer,
+                              const char *turnServerUsername,
+                              const char *turnServerPassword,
+                              const char *stunServer,
+                              WORD port
+                              )
+      {
+        TestRUDPICESocketForAccountPtr pThis(new TestRUDPICESocketForAccount());
+        pThis->mThisWeak = pThis;
+        //pThis->init(turnServer, turnServerUsername, turnServerPassword, stunServer, port);
+        pThis->setState(hookflash::services::IRUDPICESocket::RUDPICESocketState_Ready);
+        return pThis;
+      }
+      
+      RUDPICESocketPtr TestServicesFactoryForAccount::create(
+                              IMessageQueuePtr queue,
+                              IRUDPICESocketDelegatePtr delegate,
+                              IDNS::SRVResultPtr srvTURNUDP,
+                              IDNS::SRVResultPtr srvTURNTCP,
+                              const char *turnServerUsername,
+                              const char *turnServerPassword,
+                              IDNS::SRVResultPtr srvSTUN,
+                              WORD port
+                              )
+      {
+        TestRUDPICESocketForAccountPtr pThis(new TestRUDPICESocketForAccount());
+        pThis->mThisWeak = pThis;
+        //pThis->init(turnServer, turnServerUsername, turnServerPassword, stunServer, port);
+        pThis->setState(hookflash::services::IRUDPICESocket::RUDPICESocketState_Ready);
+        return pThis;
+      }
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -849,6 +900,10 @@ using hookflash::stack::test::TestCallbackForAccountPtr;
 using hookflash::stack::test::TestFactoryForAccount;
 using hookflash::stack::test::TestFactoryForAccountPtr;
 
+//services factory
+using hookflash::stack::test::TestServicesFactoryForAccount;
+using hookflash::stack::test::TestServicesFactoryForAccountPtr;
+
 
 void doTestAccount()
 {
@@ -865,6 +920,10 @@ void doTestAccount()
   //override factory
   TestFactoryForAccountPtr overrideFactory(new TestFactoryForAccount);
   hookflash::stack::internal::Factory::override(overrideFactory);
+  
+  //override services factory
+  TestServicesFactoryForAccountPtr overrideServicesFactory(new TestServicesFactoryForAccount);
+  hookflash::services::internal::Factory::override(overrideServicesFactory);
   
   //prepare stack
   hookflash::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");

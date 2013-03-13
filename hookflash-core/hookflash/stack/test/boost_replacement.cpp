@@ -119,7 +119,7 @@ namespace BoostReplacement
   
   void runAllTests()
   {
-    doTestStack();
+    //doTestStack();
     //doTestPeerContactSession();
     doTestAccount();
   }

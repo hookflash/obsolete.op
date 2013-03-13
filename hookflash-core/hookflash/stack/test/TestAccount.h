@@ -33,12 +33,16 @@
 
 #include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
 #include <hookflash/stack/internal/stack_Factory.h>
+#include <hookflash/services/internal/services_Factory.h>
 #include <hookflash/services/internal/services_HTTP.h>
+#include <hookflash/services/internal/services_RUDPICESocket.h>
 
 #include <zsLib/Timer.h>
 
 using namespace hookflash::stack::internal;
 using namespace hookflash::stack::message;
+using namespace hookflash::services::internal;
+using namespace hookflash::services;
 
 #define USE_FAKE_BOOTSTRAPPED_NETWORK 1
 #define USE_FAKE_IDENTITY_SESSION 1
@@ -72,9 +76,17 @@ namespace hookflash
       typedef boost::shared_ptr<TestAccountFinderForAccount> TestAccountFinderForAccountPtr;
       typedef boost::weak_ptr<TestAccountFinderForAccount> TestAccountFinderForAccountWeakPtr;
       
+      class TestRUDPICESocketForAccount;
+      typedef boost::shared_ptr<TestRUDPICESocketForAccount> TestRUDPICESocketForAccountPtr;
+      typedef boost::weak_ptr<TestRUDPICESocketForAccount> TestRUDPICESocketForAccountWeakPtr;
+      
       class TestFactoryForAccount;
       typedef boost::shared_ptr<TestFactoryForAccount> TestFactoryForAccountPtr;
       typedef boost::weak_ptr<TestFactoryForAccount> TestFactoryForAccountWeakPtr;
+      
+      class TestServicesFactoryForAccount;
+      typedef boost::shared_ptr<TestServicesFactoryForAccount> TestServicesFactoryForAccountPtr;
+      typedef boost::weak_ptr<TestServicesFactoryForAccount> TestServicesFactoryForAccountWeakPtr;
       
       class TestCallbackForAccount;
       typedef boost::shared_ptr<TestCallbackForAccount> TestCallbackForAccountPtr;
@@ -296,7 +308,25 @@ namespace hookflash
         //---------------------------------------------------------------------
         
       };
+#pragma mark
+#pragma mark TestRUDPICESocketForAccount
+#pragma mark
       
+      class TestRUDPICESocketForAccount : public services::internal::RUDPICESocket
+      {
+      public:
+        friend interaction TestServicesFactoryForAccount;
+        
+      protected:
+        TestRUDPICESocketForAccount() : RUDPICESocket(zsLib::Noop()) {}
+        
+      public:
+        ~TestRUDPICESocketForAccount();
+        //---------------------------------------------------------------------
+        
+        virtual void shutdown();
+        
+      };
 #pragma mark
 #pragma mark TestFactoryForAccount
 #pragma mark
@@ -363,6 +393,37 @@ namespace hookflash
         virtual AccountFinderPtr create(
                                         IAccountFinderDelegatePtr delegate,
                                         AccountPtr outer
+                                        );
+      };
+#pragma mark
+#pragma mark TestFactoryForAccount
+#pragma mark
+      
+      class TestServicesFactoryForAccount : public hookflash::services::internal::Factory
+      {
+      public:
+        TestServicesFactoryForAccount() {}
+      
+        ///////// RUDPICE SOCKET
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        const char *turnServer,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        const char *stunServer,
+                                        WORD port = 0
+                                        );
+        
+        virtual RUDPICESocketPtr create(
+                                        IMessageQueuePtr queue,
+                                        IRUDPICESocketDelegatePtr delegate,
+                                        IDNS::SRVResultPtr srvTURNUDP,
+                                        IDNS::SRVResultPtr srvTURNTCP,
+                                        const char *turnServerUsername,
+                                        const char *turnServerPassword,
+                                        IDNS::SRVResultPtr srvSTUN,
+                                        WORD port = 0
                                         );
       };
     }

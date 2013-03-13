@@ -469,6 +469,7 @@
 					../../../,
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-libs/udns",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -504,6 +505,7 @@
 					../../../,
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-libs/udns",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
