@@ -32,6 +32,7 @@
 #include "TestServicePeerContactSession.h"
 #include "config.h"
 #include "boost_replacement.h"
+#include "helpers.h"
 #include <hookflash/stack/IStack.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
@@ -43,9 +44,9 @@
 #include <iostream>
 #include <fstream>
 
-namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_stack_test) } } }
+namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_peer_contact_test) } } }
 
-namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_stack_test) } } }
+namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_peer_contact_test) } } }
 
 //#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
 //#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
@@ -57,80 +58,80 @@ namespace hookflash
   {
     namespace test
     {
-#pragma mark
-#pragma mark XML helpers
-#pragma mark
-      //-----------------------------------------------------------------------
-      ElementPtr createFromString(const String &elementStr)
-      {
-        if (!elementStr) return ElementPtr();
-        
-        DocumentPtr doc = Document::createFromParsedJSON(elementStr);
-        
-        ElementPtr childEl = doc->getFirstChildElement();
-        if (!childEl) return ElementPtr();
-        
-        childEl->orphan();
-        return childEl;
-      }
-      
-      //-----------------------------------------------------------------------
-      String convertToString(const ElementPtr &element)
-      {
-        if (!element) return String();
-        
-        GeneratorPtr generator = Generator::createJSONGenerator();
-        boost::shared_array<char> output = generator->write(element);
-        
-        return output.get();
-      }
-      
-      bool writeToFile(zsLib::String text)
-      {
-        std::ofstream myfile ("/tmp/peerfile.txt");
-        if (myfile.is_open())
-        {
-          myfile << text;
-          myfile.close();
-          return true;
-        }
-        else
-        {
-          std::cout << "Unable to open file";
-          return false;
-        }
-      }
-      bool readFromFile(String &outPassword, String &outText)
-      {
-        zsLib::String line;
-        std::ifstream myfile ("/tmp/peerfile.txt");
-        if (myfile.is_open())
-        {
-          int i = 0;
-          while ( myfile.good() )
-          {
-            getline (myfile,line);
-            if (i == 0)
-            {
-              outPassword = line;
-              std::cout << line << std::endl;
-            }
-            else{
-              outText += line;
-              std::cout << line << std::endl;
-            }
-            ++i;
-          }
-          myfile.close();
-          return true;
-        }
-        
-        else
-        {
-          std::cout << "Unable to open file";
-          return false;
-        }
-      }
+//#pragma mark
+//#pragma mark XML helpers
+//#pragma mark
+//      //-----------------------------------------------------------------------
+//      ElementPtr createFromString(const String &elementStr)
+//      {
+//        if (!elementStr) return ElementPtr();
+//        
+//        DocumentPtr doc = Document::createFromParsedJSON(elementStr);
+//        
+//        ElementPtr childEl = doc->getFirstChildElement();
+//        if (!childEl) return ElementPtr();
+//        
+//        childEl->orphan();
+//        return childEl;
+//      }
+//      
+//      //-----------------------------------------------------------------------
+//      String convertToString(const ElementPtr &element)
+//      {
+//        if (!element) return String();
+//        
+//        GeneratorPtr generator = Generator::createJSONGenerator();
+//        boost::shared_array<char> output = generator->write(element);
+//        
+//        return output.get();
+//      }
+//      
+//      bool writeToFile(zsLib::String text)
+//      {
+//        std::ofstream myfile ("/tmp/peerfile.txt");
+//        if (myfile.is_open())
+//        {
+//          myfile << text;
+//          myfile.close();
+//          return true;
+//        }
+//        else
+//        {
+//          std::cout << "Unable to open file";
+//          return false;
+//        }
+//      }
+//      bool readFromFile(String &outPassword, String &outText)
+//      {
+//        zsLib::String line;
+//        std::ifstream myfile ("/tmp/peerfile.txt");
+//        if (myfile.is_open())
+//        {
+//          int i = 0;
+//          while ( myfile.good() )
+//          {
+//            getline (myfile,line);
+//            if (i == 0)
+//            {
+//              outPassword = line;
+//              std::cout << line << std::endl;
+//            }
+//            else{
+//              outText += line;
+//              std::cout << line << std::endl;
+//            }
+//            ++i;
+//          }
+//          myfile.close();
+//          return true;
+//        }
+//        
+//        else
+//        {
+//          std::cout << "Unable to open file";
+//          return false;
+//        }
+//      }
 #pragma mark
 #pragma mark TestServicePeerContactSession
 #pragma mark
@@ -144,20 +145,20 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
 #pragma mark
-#pragma mark TestServiceIdentitySession
+#pragma mark TestServiceIdentitySessionForPeerContact
 #pragma mark
-      TestServiceIdentitySession::~TestServiceIdentitySession()
+      TestServiceIdentitySessionForPeerContact::~TestServiceIdentitySessionForPeerContact()
       {
         mThisWeak.reset();
       }
       //-----------------------------------------------------------------------
       
-      bool TestServiceIdentitySession::isLoginComplete() const
+      bool TestServiceIdentitySessionForPeerContact::isLoginComplete() const
       {
         return true;
       }
       
-      void TestServiceIdentitySession::associate(ServicePeerContactSessionPtr peerContact)
+      void TestServiceIdentitySessionForPeerContact::associate(ServicePeerContactSessionPtr peerContact)
       {
         
       }
@@ -167,16 +168,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
 #pragma mark
-#pragma mark TestBootstrappedNetwork
+#pragma mark TestBootstrappedNetworkForPeerContact
 #pragma mark
       
-      TestBootstrappedNetwork::~TestBootstrappedNetwork()
+      TestBootstrappedNetworkForPeerContact::~TestBootstrappedNetworkForPeerContact()
       {
         mThisWeak.reset();
       }
       //-----------------------------------------------------------------------
 
-      void TestBootstrappedNetwork::initialize(IBootstrappedNetworkDelegatePtr delegate)
+      void TestBootstrappedNetworkForPeerContact::initialize(IBootstrappedNetworkDelegatePtr delegate)
       {
         if(delegate)
         {
@@ -185,12 +186,12 @@ namespace hookflash
         mCompleted = true;
       }
       
-      bool TestBootstrappedNetwork::isPreparationComplete() const
+      bool TestBootstrappedNetworkForPeerContact::isPreparationComplete() const
       {
         return true;
       }
       
-      bool TestBootstrappedNetwork::wasSuccessful(
+      bool TestBootstrappedNetworkForPeerContact::wasSuccessful(
                                                   WORD *outErrorCode,
                                                   String *outErrorReason
                                                   ) const
@@ -198,12 +199,12 @@ namespace hookflash
         return true;
       }
       
-      bool TestBootstrappedNetwork::isValidSignature(ElementPtr signedElement) const
+      bool TestBootstrappedNetworkForPeerContact::isValidSignature(ElementPtr signedElement) const
       {
         return true;
       }
       
-      bool TestBootstrappedNetwork::sendServiceMessage(
+      bool TestBootstrappedNetworkForPeerContact::sendServiceMessage(
                                                        const char *serviceType,
                                                        const char *serviceMethodName,
                                                        message::MessagePtr message
@@ -216,7 +217,7 @@ namespace hookflash
         
         Duration timeout = Duration(Seconds(HOOKFLASH_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
         
-        TestHTTPQueryPtr query = TestHTTPQuery::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
+        TestHTTPQueryForPeerContactPtr query = TestHTTPQueryForPeerContact::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
         
         mPendingRequests[query] = message;
         
@@ -420,17 +421,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       
 #pragma mark
-#pragma mark TestFactory
+#pragma mark TestFactoryForPeerContact
 #pragma mark
       
 #ifdef USE_FAKE_BOOTSTRAPPED_NETWORK
       //bootstrapped network
-      BootstrappedNetworkPtr TestFactory::prepare(
+      BootstrappedNetworkPtr TestFactoryForPeerContact::prepare(
                                                  const char *domain,
                                                  IBootstrappedNetworkDelegatePtr delegate
                                                  )
       {
-        TestBootstrappedNetworkPtr pThis(new TestBootstrappedNetwork(IStackForInternal::queueStack()));
+        TestBootstrappedNetworkForPeerContactPtr pThis(new TestBootstrappedNetworkForPeerContact(IStackForInternal::queueStack()));
         
         BootstrappedNetworkManagerPtr manager = IBootstrappedNetworkManagerForBootstrappedNetwork::singleton();
         ZS_THROW_BAD_STATE_IF(!manager)
@@ -454,52 +455,52 @@ namespace hookflash
       //-----------------------------------------------------------------------
 #ifdef USE_FAKE_IDENTITY_SESSION
       //service identity session
-      ServiceIdentitySessionPtr TestFactory::loginWithIdentity(
+      ServiceIdentitySessionPtr TestFactoryForPeerContact::loginWithIdentity(
                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                           const char *redirectAfterLoginCompleteURL,
                                                           const char *identityURI,
                                                           IServiceIdentityPtr provider// required if identity URI does not have domain
                                                           )
       {
-        TestServiceIdentitySessionPtr pThis(new TestServiceIdentitySession());
+        TestServiceIdentitySessionForPeerContactPtr pThis(new TestServiceIdentitySessionForPeerContact());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
       }
       
-      ServiceIdentitySessionPtr TestFactory::loginWithIdentityTBD(
+      ServiceIdentitySessionPtr TestFactoryForPeerContact::loginWithIdentityTBD(
                                                              IServiceIdentitySessionDelegatePtr delegate,
                                                              const char *redirectAfterLoginCompleteURL,
                                                              IServiceIdentityPtr provider,
                                                              const char *legacyIdentityBaseURI
                                                              )
       {
-        TestServiceIdentitySessionPtr pThis(new TestServiceIdentitySession());
+        TestServiceIdentitySessionForPeerContactPtr pThis(new TestServiceIdentitySessionForPeerContact());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
       }
       
-      ServiceIdentitySessionPtr TestFactory::loginWithIdentityBundle(
+      ServiceIdentitySessionPtr TestFactoryForPeerContact::loginWithIdentityBundle(
                                                                 IServiceIdentitySessionDelegatePtr delegate,
                                                                 const char *redirectAfterLoginCompleteURL,
                                                                 ElementPtr signedIdentityBundle
                                                                 )
       {
-        TestServiceIdentitySessionPtr pThis(new TestServiceIdentitySession());
+        TestServiceIdentitySessionForPeerContactPtr pThis(new TestServiceIdentitySessionForPeerContact());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
       }
       
-      ServiceIdentitySessionPtr TestFactory::relogin(
+      ServiceIdentitySessionPtr TestFactoryForPeerContact::relogin(
                                                 IServiceIdentitySessionDelegatePtr delegate,
                                                 const char *redirectAfterLoginCompleteURL,
                                                 IServiceIdentityPtr provider,
                                                 const char *identityReloginAccessKey
                                                 )
       {
-        TestServiceIdentitySessionPtr pThis(new TestServiceIdentitySession());
+        TestServiceIdentitySessionForPeerContactPtr pThis(new TestServiceIdentitySessionForPeerContact());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
@@ -508,7 +509,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
 #ifdef USE_FAKE_PEER_CONTACT_SESSION
       //service peer contact session
-      ServicePeerContactSessionPtr TestFactory::login(IServicePeerContactSessionDelegatePtr delegate, IServicePeerContactPtr servicePeerContact, IServiceIdentitySessionPtr identitySession)
+      ServicePeerContactSessionPtr TestFactoryForPeerContact::login(IServicePeerContactSessionDelegatePtr delegate, IServicePeerContactPtr servicePeerContact, IServiceIdentitySessionPtr identitySession)
       {
         TestServicePeerContactSessionPtr pThis(new TestServicePeerContactSession());
         pThis->mThisWeak = pThis;
@@ -516,7 +517,7 @@ namespace hookflash
         return pThis;
       }
       
-      ServicePeerContactSessionPtr TestFactory::relogin(
+      ServicePeerContactSessionPtr TestFactoryForPeerContact::relogin(
                                                        IServicePeerContactSessionDelegatePtr delegate,
                                                        IPeerFilesPtr existingPeerFiles
                                                        )
@@ -531,35 +532,35 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------      
 #pragma mark
-#pragma mark TestCallback
+#pragma mark TestCallbackForPeerContact
 #pragma mark
-      TestCallback::TestCallback(zsLib::IMessageQueuePtr queue) :
+      TestCallbackForPeerContact::TestCallbackForPeerContact(zsLib::IMessageQueuePtr queue) :
       MessageQueueAssociator(queue),
       mNetworkDone(false),
       mCount(0)
       {
       }
       
-      TestCallback::~TestCallback()
+      TestCallbackForPeerContact::~TestCallbackForPeerContact()
       {
         mThisWeak.reset();
       }
       
-      TestCallbackPtr TestCallback::create(IMessageQueuePtr queue)
+      TestCallbackForPeerContactPtr TestCallbackForPeerContact::create(IMessageQueuePtr queue)
       {
-        TestCallbackPtr pThis(new TestCallback(queue));
+        TestCallbackForPeerContactPtr pThis(new TestCallbackForPeerContact(queue));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
       }
       
-      void TestCallback::init()
+      void TestCallbackForPeerContact::init()
       {
         mLoginScenario = LoginScenario_None;
         mNetwork = IBootstrappedNetwork::prepare("unstable.hookflash.me", mThisWeak.lock());
       }
       
-      void TestCallback::onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)
+      void TestCallbackForPeerContact::onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)
       {
         AutoRecursiveLock lock(mLock);
         mNetworkDone = true;
@@ -593,18 +594,18 @@ namespace hookflash
 
       }
       
-      void TestCallback::onServiceIdentitySessionStateChanged(
+      void TestCallbackForPeerContact::onServiceIdentitySessionStateChanged(
                                                              IServiceIdentitySessionPtr session,
                                                              IServiceIdentitySession::SessionStates state
                                                              )
       {
       }
       
-      void TestCallback::onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session)
+      void TestCallbackForPeerContact::onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session)
       {
       }
       
-      void TestCallback::onServicePeerContactSessionStateChanged(
+      void TestCallbackForPeerContact::onServicePeerContactSessionStateChanged(
                                                                 IServicePeerContactSessionPtr session,
                                                                 hookflash::stack::IServicePeerContactSession::SessionStates state
                                                                 )
@@ -627,18 +628,18 @@ namespace hookflash
           ++mCount;
         }
       }
-      void TestCallback::onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session)
+      void TestCallbackForPeerContact::onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session)
       {
       }
 #pragma mark
-#pragma mark TestHTTPQuery
+#pragma mark TestHTTPQueryForPeerContact
 #pragma mark
-      void TestHTTPQuery::writeBody(zsLib::String messageBody)
+      void TestHTTPQueryForPeerContact::writeBody(zsLib::String messageBody)
       {
         mBody.Put((BYTE *)messageBody.c_str(), messageBody.size());
       }
       
-      TestHTTPQueryPtr TestHTTPQuery::create(
+      TestHTTPQueryForPeerContactPtr TestHTTPQueryForPeerContact::create(
                               services::internal::HTTPPtr outer,
                               services::IHTTPQueryDelegatePtr delegate,
                               bool isPost,
@@ -650,7 +651,7 @@ namespace hookflash
                               Duration timeout
                               )
       {
-        TestHTTPQueryPtr pThis(new TestHTTPQuery(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout));
+        TestHTTPQueryForPeerContactPtr pThis(new TestHTTPQueryForPeerContact(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -664,20 +665,20 @@ using hookflash::stack::test::TestServicePeerContactSession;
 using hookflash::stack::test::TestServicePeerContactSessionPtr;
 
 //service identity session
-using hookflash::stack::test::TestServiceIdentitySession;
-using hookflash::stack::test::TestServiceIdentitySessionPtr;
+using hookflash::stack::test::TestServiceIdentitySessionForPeerContact;
+using hookflash::stack::test::TestServiceIdentitySessionForPeerContactPtr;
 
 //bootstrapped network
-using hookflash::stack::test::TestBootstrappedNetwork;
-using hookflash::stack::test::TestBootstrappedNetworkPtr;
+using hookflash::stack::test::TestBootstrappedNetworkForPeerContact;
+using hookflash::stack::test::TestBootstrappedNetworkForPeerContactPtr;
 
 //delegate callback
-using hookflash::stack::test::TestCallback;
-using hookflash::stack::test::TestCallbackPtr;
+using hookflash::stack::test::TestCallbackForPeerContact;
+using hookflash::stack::test::TestCallbackForPeerContactPtr;
 
 //factory
-using hookflash::stack::test::TestFactory;
-using hookflash::stack::test::TestFactoryPtr;
+using hookflash::stack::test::TestFactoryForPeerContact;
+using hookflash::stack::test::TestFactoryForPeerContactPtr;
 
 
 void doTestPeerContactSession()
@@ -693,14 +694,14 @@ void doTestPeerContactSession()
   zsLib::MessageQueueThreadPtr threadServices(zsLib::MessageQueueThread::createBasic());
   
   //override factory
-  TestFactoryPtr overrideFactory(new TestFactory);
+  TestFactoryForPeerContactPtr overrideFactory(new TestFactoryForPeerContact);
   hookflash::stack::internal::Factory::override(overrideFactory);
   
   //prepare stack
   hookflash::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");
   
   //start test
-  TestCallbackPtr testObject = TestCallback::create(thread);
+  TestCallbackForPeerContactPtr testObject = TestCallbackForPeerContact::create(thread);
   
 
   

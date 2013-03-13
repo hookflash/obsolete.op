@@ -1527,7 +1527,7 @@ namespace hookflash
                Helper::getDebugValue("turn username", username, firstTime) +
                Helper::getDebugValue("turn password", password, firstTime) +
                Helper::getDebugValue("stun", stun, firstTime) +
-               mSelfLocation->forAccount().getDebugValueString() +
+               //mSelfLocation->forAccount().getDebugValueString() +
                Helper::getDebugValue("finder", mFinder ? String("true") : String(), firstTime) +
                Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IMessageHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
                Helper::getDebugValue("peer infos", mPeers.size() > 0 ? Stringize<size_t>(mPeers.size()).string() : String(), firstTime) +

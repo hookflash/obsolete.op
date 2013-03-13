@@ -43,6 +43,7 @@ using namespace hookflash::stack::message;
 #define USE_FAKE_BOOTSTRAPPED_NETWORK 1
 #define USE_FAKE_IDENTITY_SESSION 1
 //#define USE_FAKE_PEER_CONTACT_SESSION 1
+//#define USE_FAKE_ACCOUNT 1
 
 namespace hookflash
 {
@@ -50,73 +51,83 @@ namespace hookflash
   {
     namespace test
     {
-      class TestServicePeerContactSession;
-      typedef boost::shared_ptr<TestServicePeerContactSession> TestServicePeerContactSessionPtr;
-      typedef boost::weak_ptr<TestServicePeerContactSession> TestServicePeerContactSessionWeakPtr;
       
-      class TestBootstrappedNetworkForPeerContact;
-      typedef boost::shared_ptr<TestBootstrappedNetworkForPeerContact> TestBootstrappedNetworkForPeerContactPtr;
-      typedef boost::weak_ptr<TestBootstrappedNetworkForPeerContact> TestBootstrappedNetworkForPeerContactWeakPtr;
+      class TestServicePeerContactSessionForAccount;
+      typedef boost::shared_ptr<TestServicePeerContactSessionForAccount> TestServicePeerContactSessionForAccountPtr;
+      typedef boost::weak_ptr<TestServicePeerContactSessionForAccount> TestServicePeerContactSessionForAccountWeakPtr;
       
-      class TestServiceIdentitySessionForPeerContact;
-      typedef boost::shared_ptr<TestServiceIdentitySessionForPeerContact> TestServiceIdentitySessionForPeerContactPtr;
-      typedef boost::weak_ptr<TestServiceIdentitySessionForPeerContact> TestServiceIdentitySessionForPeerContactWeakPtr;
+      class TestBootstrappedNetworkForAccount;
+      typedef boost::shared_ptr<TestBootstrappedNetworkForAccount> TestBootstrappedNetworkForAccountPtr;
+      typedef boost::weak_ptr<TestBootstrappedNetworkForAccount> TestBootstrappedNetworkForAccountWeakPtr;
       
-      class TestFactoryForPeerContact;
-      typedef boost::shared_ptr<TestFactoryForPeerContact> TestFactoryForPeerContactPtr;
-      typedef boost::weak_ptr<TestFactoryForPeerContact> TestFactoryForPeerContactWeakPtr;
+      class TestServiceIdentitySessionForAccount;
+      typedef boost::shared_ptr<TestServiceIdentitySessionForAccount> TestServiceIdentitySessionForAccountPtr;
+      typedef boost::weak_ptr<TestServiceIdentitySessionForAccount> TestServiceIdentitySessionForAccountWeakPtr;
       
-      class TestCallbackForPeerContact;
-      typedef boost::shared_ptr<TestCallbackForPeerContact> TestCallbackForPeerContactPtr;
-      typedef boost::weak_ptr<TestCallbackForPeerContact> TestCallbackForPeerContactWeakPtr;
+      class TestAccount;
+      typedef boost::shared_ptr<TestAccount> TestAccountPtr;
+      typedef boost::weak_ptr<TestAccount> TestAccountWeakPtr;
       
-      class TestHTTPQueryForPeerContact;
-      typedef boost::shared_ptr<TestHTTPQueryForPeerContact> TestHTTPQueryForPeerContactPtr;
-      typedef boost::weak_ptr<TestHTTPQueryForPeerContact> TestHTTPQueryForPeerContactWeakPtr;
+      class TestAccountFinderForAccount;
+      typedef boost::shared_ptr<TestAccountFinderForAccount> TestAccountFinderForAccountPtr;
+      typedef boost::weak_ptr<TestAccountFinderForAccount> TestAccountFinderForAccountWeakPtr;
+      
+      class TestFactoryForAccount;
+      typedef boost::shared_ptr<TestFactoryForAccount> TestFactoryForAccountPtr;
+      typedef boost::weak_ptr<TestFactoryForAccount> TestFactoryForAccountWeakPtr;
+      
+      class TestCallbackForAccount;
+      typedef boost::shared_ptr<TestCallbackForAccount> TestCallbackForAccountPtr;
+      typedef boost::weak_ptr<TestCallbackForAccount> TestCallbackForAccountWeakPtr;
+      
+      class TestHTTPQueryForAccount;
+      typedef boost::shared_ptr<TestHTTPQueryForAccount> TestHTTPQueryForAccountPtr;
+      typedef boost::weak_ptr<TestHTTPQueryForAccount> TestHTTPQueryForAccountWeakPtr;
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
 #pragma mark
-#pragma mark TestHTTPQueryForPeerContact
+#pragma mark TestHTTPQueryForAccount
 #pragma mark
-      class TestHTTPQueryForPeerContact :public hookflash::services::internal::HTTP::HTTPQuery
+      class TestHTTPQueryForAccount :public hookflash::services::internal::HTTP::HTTPQuery
       {
       protected:
-        TestHTTPQueryForPeerContact(
-                  services::internal::HTTPPtr outer,
-                  services::IHTTPQueryDelegatePtr delegate,
-                  bool isPost,
-                  const char *userAgent,
-                  const char *url,
-                  const BYTE *postData,
-                  ULONG postDataLengthInBytes,
-                  const char *postDataMimeType,
-                  Duration timeout
+        TestHTTPQueryForAccount(
+                      services::internal::HTTPPtr outer,
+                      services::IHTTPQueryDelegatePtr delegate,
+                      bool isPost,
+                      const char *userAgent,
+                      const char *url,
+                      const BYTE *postData,
+                      ULONG postDataLengthInBytes,
+                      const char *postDataMimeType,
+                      Duration timeout
                       ) : HTTPQuery(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout){}
       public:
         void writeBody(zsLib::String messageBody);
-        static TestHTTPQueryForPeerContactPtr create(
-                                 services::internal::HTTPPtr outer,
-                                 services::IHTTPQueryDelegatePtr delegate,
-                                 bool isPost,
-                                 const char *userAgent,
-                                 const char *url,
-                                 const BYTE *postData,
-                                 ULONG postDataLengthInBytes,
-                                 const char *postDataMimeType,
-                                 Duration timeout
-                                 );
-
+        static TestHTTPQueryForAccountPtr create(
+                                       services::internal::HTTPPtr outer,
+                                       services::IHTTPQueryDelegatePtr delegate,
+                                       bool isPost,
+                                       const char *userAgent,
+                                       const char *url,
+                                       const BYTE *postData,
+                                       ULONG postDataLengthInBytes,
+                                       const char *postDataMimeType,
+                                       Duration timeout
+                                       );
+        
       };
 #pragma mark
-#pragma mark TestCallbackForPeerContact
+#pragma mark TestCallbackForAccount
 #pragma mark
       
-      class TestCallbackForPeerContact : public MessageQueueAssociator,
-                           public IBootstrappedNetworkDelegate,
-                           public IServiceIdentitySessionDelegate,
-                           public IServicePeerContactSessionDelegate
+      class TestCallbackForAccount : public MessageQueueAssociator,
+      public IBootstrappedNetworkDelegate,
+      public IServiceIdentitySessionDelegate,
+      public IServicePeerContactSessionDelegate,
+      public IAccountDelegate
       {
       public:
         enum LoginScenarios{
@@ -125,14 +136,14 @@ namespace hookflash
           LoginScenario_Relogin
         };
       private:
-        TestCallbackForPeerContact(IMessageQueuePtr queue);
+        TestCallbackForAccount(IMessageQueuePtr queue);
         
         void init();
         
       public:
-        ~TestCallbackForPeerContact();
+        ~TestCallbackForAccount();
         
-        static TestCallbackForPeerContactPtr create(zsLib::IMessageQueuePtr queue);
+        static TestCallbackForAccountPtr create(zsLib::IMessageQueuePtr queue);
         
       protected:
         //IBootstrappedNetworkDelegate methods
@@ -146,21 +157,29 @@ namespace hookflash
         
         virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session);
         
+        //IServicePeerContactSessionDelegate methods
         virtual void onServicePeerContactSessionStateChanged(
                                                              IServicePeerContactSessionPtr session,
                                                              hookflash::stack::IServicePeerContactSession::SessionStates state
                                                              );
         virtual void onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session);
         
+        //IAccountDelegate methods
+        virtual void onAccountStateChanged(
+                                           IAccountPtr account,
+                                           hookflash::stack::internal::Account::AccountStates state
+                                           );
+        
       public:
         mutable RecursiveLock mLock;
-        TestCallbackForPeerContactWeakPtr mThisWeak;
+        TestCallbackForAccountWeakPtr mThisWeak;
         
         ULONG mCount;
         
         IBootstrappedNetworkPtr mNetwork;
         IServicePeerContactSessionPtr mPeerContactSession;
         IServiceIdentitySessionPtr mIdentitySession;
+        IAccountPtr mAccount;
         bool mNetworkDone;
         
         ElementPtr mPeerFilesElement;
@@ -170,18 +189,18 @@ namespace hookflash
       };
       
 #pragma mark
-#pragma mark TestBootstrappedNetworkForPeerContact
+#pragma mark TestBootstrappedNetworkForAccount
 #pragma mark
-      class TestBootstrappedNetworkForPeerContact : public MessageQueueAssociator,
-                                      public internal::BootstrappedNetwork
-//                                      public IBootstrappedNetworkAsyncDelegate
+      class TestBootstrappedNetworkForAccount : public MessageQueueAssociator,
+      public internal::BootstrappedNetwork
+      //                                      public IBootstrappedNetworkAsyncDelegate
       {
       public:
-        friend interaction TestFactoryForPeerContact;
+        friend interaction TestFactoryForAccount;
       protected:
-        TestBootstrappedNetworkForPeerContact(IMessageQueuePtr queue) : zsLib::MessageQueueAssociator(queue), BootstrappedNetwork(zsLib::Noop()) {}
+        TestBootstrappedNetworkForAccount(IMessageQueuePtr queue) : zsLib::MessageQueueAssociator(queue), BootstrappedNetwork(zsLib::Noop()) {}
       public:
-        ~TestBootstrappedNetworkForPeerContact();
+        ~TestBootstrappedNetworkForAccount();
         //---------------------------------------------------------------------
         //virtual void onHTTPCompleted(IHTTPQueryPtr query);
         void initialize(IBootstrappedNetworkDelegatePtr delegate);
@@ -192,32 +211,32 @@ namespace hookflash
                                    String *outErrorReason = NULL
                                    ) const;
         virtual bool sendServiceMessage(
-                                       const char *serviceType,
-                                       const char *serviceMethodName,
-                                       message::MessagePtr message
-                                       );
+                                        const char *serviceType,
+                                        const char *serviceMethodName,
+                                        message::MessagePtr message
+                                        );
         virtual bool isValidSignature(ElementPtr signedElement) const;
-//        virtual IHTTPQueryPtr post(
-//                                  const char *url,
-//                                  MessagePtr message
-//                                   );
-//        virtual void onStep();
+        //        virtual IHTTPQueryPtr post(
+        //                                  const char *url,
+        //                                  MessagePtr message
+        //                                   );
+        //        virtual void onStep();
       protected:
-        //TestBootstrappedNetworkForPeerContactWeakPtr mThisWeak;
+        //TestBootstrappedNetworkForAccountWeakPtr mThisWeak;
       };
       
 #pragma mark
-#pragma mark TestServiceIdentitySessionForPeerContact
+#pragma mark TestServiceIdentitySessionForAccount
 #pragma mark
-      class TestServiceIdentitySessionForPeerContact : public internal::ServiceIdentitySession
+      class TestServiceIdentitySessionForAccount : public internal::ServiceIdentitySession
       {
       public:
-        friend interaction TestFactoryForPeerContact;
+        friend interaction TestFactoryForAccount;
       protected:
-        TestServiceIdentitySessionForPeerContact() : ServiceIdentitySession(zsLib::Noop()) {}
+        TestServiceIdentitySessionForAccount() : ServiceIdentitySession(zsLib::Noop()) {}
         
       public:
-        ~TestServiceIdentitySessionForPeerContact();
+        ~TestServiceIdentitySessionForAccount();
         //---------------------------------------------------------------------
         virtual bool isLoginComplete() const;
         
@@ -225,30 +244,67 @@ namespace hookflash
       };
       
 #pragma mark
-#pragma mark TestServicePeerContactSession
+#pragma mark TestServicePeerContactSessionForAccount
 #pragma mark
       
-      class TestServicePeerContactSession : public internal::ServicePeerContactSession
+      class TestServicePeerContactSessionForAccount : public internal::ServicePeerContactSession
       {
       public:
-        friend interaction TestFactoryForPeerContact;
+        friend interaction TestFactoryForAccount;
         
       protected:
-        TestServicePeerContactSession() : ServicePeerContactSession(zsLib::Noop()) {}
+        TestServicePeerContactSessionForAccount() : ServicePeerContactSession(zsLib::Noop()) {}
         
       public:
-        ~TestServicePeerContactSession();
+        ~TestServicePeerContactSessionForAccount();
         //---------------------------------------------------------------------
         
       };
+      
 #pragma mark
-#pragma mark TestFactoryForPeerContact
+#pragma mark TestAccount
 #pragma mark
       
-      class TestFactoryForPeerContact : public internal::Factory
+      class TestAccount : public internal::Account
       {
       public:
-        TestFactoryForPeerContact() {}
+        friend interaction TestFactoryForAccount;
+        
+      protected:
+        TestAccount() : Account(zsLib::Noop()) {}
+        
+      public:
+        ~TestAccount();
+        //---------------------------------------------------------------------
+        
+      };
+      
+#pragma mark
+#pragma mark TestAccountFinderForAccount
+#pragma mark
+      
+      class TestAccountFinderForAccount : public internal::AccountFinder
+      {
+      public:
+        friend interaction TestFactoryForAccount;
+        
+      protected:
+        TestAccountFinderForAccount() : AccountFinder(zsLib::Noop()) {}
+        
+      public:
+        ~TestAccountFinderForAccount();
+        //---------------------------------------------------------------------
+        
+      };
+      
+#pragma mark
+#pragma mark TestFactoryForAccount
+#pragma mark
+      
+      class TestFactoryForAccount : public internal::Factory
+      {
+      public:
+        TestFactoryForAccount() {}
 #ifdef USE_FAKE_BOOTSTRAPPED_NETWORK
         //bootstrapped network
         virtual BootstrappedNetworkPtr prepare(
@@ -298,7 +354,17 @@ namespace hookflash
                                                      IPeerFilesPtr existingPeerFiles
                                                      );
 #endif //USE_FAKE_PEER_CONTACT_SESSION
+#ifdef USE_FAKE_ACCOUNT
+        virtual AccountPtr create(
+                                  IAccountDelegatePtr delegate,
+                                  IServicePeerContactSessionPtr peerContactSession
+                                  );
+#endif //USE_FAKE_ACCOUNT
+        virtual AccountFinderPtr create(
+                                        IAccountFinderDelegatePtr delegate,
+                                        AccountPtr outer
+                                        );
       };
-      }
     }
   }
+}

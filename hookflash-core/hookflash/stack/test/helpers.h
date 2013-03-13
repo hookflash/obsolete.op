@@ -31,22 +31,24 @@
 
 #pragma once
 
-#ifndef HOOKFLASH_STACK_TEST_CONFIG_H_85376d39b5c552d82bf605630d7be295db59875a
-#define HOOKFLASH_STACK_TEST_CONFIG_H_85376d39b5c552d82bf605630d7be295db59875a
+#include <zsLib/XML.h>
 
-#define HOOKFLASH_STACK_TEST_FIFO_LOGGING_FILE "/tmp/hookflash.fifo"
+#include <iostream>
+#include <fstream>
 
-#define HOOKFLASH_STACK_TEST_USE_STDOUT_LOGGING     (true)
-#define HOOKFLASH_STACK_TEST_USE_FIFO_LOGGING       (true)
-#define HOOKFLASH_STACK_TEST_USE_TELNET_LOGGING     (true)
+using namespace zsLib;
 
-#define HOOKFLASH_STACK_TEST_TELNET_LOGGING_PORT    (59999)
+namespace hookflash
+{
+  namespace stack
+  {
+    namespace test
+    {
 
-#define HOOKFLASH_STACK_TEST_DO_STACK_TEST    (true)
-
-#define HOOKFLASH_STACK_TEST_DO_PEER_CONTACT_SESSION_TEST    (true)
-
-#define HOOKFLASH_STACK_TEST_DO_ACCOUNT_TEST    (true)
-
-
-#endif //HOOKFLASH_STACK_TEST_CONFIG_H_85376d39b5c552d82bf605630d7be295db59875a
+      XML::ElementPtr createFromString(const String &elementStr);
+      String convertToString(const XML::ElementPtr &element);
+      bool writeToFile(zsLib::String text);
+      bool readFromFile(String &outPassword, String &outText);
+    } // namespace test
+  } // namespace stack
+} // namespace hookflash
