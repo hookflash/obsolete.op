@@ -33,7 +33,7 @@
 #include <zsLib/Exception.h>
 #include <zsLib/Stringize.h>
 
-#ifdef _LINUX
+#if (defined _LINUX || defined __QNX__)
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>

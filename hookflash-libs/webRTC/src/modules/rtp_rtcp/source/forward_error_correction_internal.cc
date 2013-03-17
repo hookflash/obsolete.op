@@ -14,6 +14,10 @@
 #include <cassert>
 #include <cstring>
 
+#ifdef WEBRTC_QNX
+using namespace std;
+#endif
+
 namespace {
 
 // Allow for different modes of protection for packets in UEP case.

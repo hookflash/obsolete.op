@@ -24,6 +24,11 @@
 #include "voe_errors.h"
 #include "voice_engine_impl.h"
 
+#ifdef __QNX__
+#define WEBRTC_SVNREVISION "undefined"
+#define BUILDINFO "undefined"
+#endif
+
 #if (defined(_WIN32) && defined(_DLL) && (_MSC_VER == 1400))
 // Fix for VS 2005 MD/MDd link problem
 #include <stdio.h>

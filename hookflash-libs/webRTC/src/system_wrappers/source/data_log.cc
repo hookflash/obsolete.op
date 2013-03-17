@@ -21,6 +21,10 @@
 #include "rw_lock_wrapper.h"
 #include "thread_wrapper.h"
 
+#ifdef __QNX__
+#include <string.h>
+#endif
+
 namespace webrtc {
 
 DataLogImpl::CritSectScopedPtr DataLogImpl::crit_sect_(
@@ -289,7 +293,11 @@ std::string DataLog::Combine(const std::string& table_name, int table_id) {
   ss >> number_suffix;
   combined_id += number_suffix;
   std::transform(combined_id.begin(), combined_id.end(), combined_id.begin(),
-                 ::tolower);
+#ifdef __QNX__
+      std::tolower);
+#else
+      ::tolower);
+#endif
   return combined_id;
 }
 

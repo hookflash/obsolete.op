@@ -32,6 +32,17 @@
 
 #define CRYPTOPP_INTEGER_SSE2 (CRYPTOPP_BOOL_SSE2_ASM_AVAILABLE && CRYPTOPP_BOOL_X86)
 
+// Deal with Blackberry issues in the simulator environment
+#ifdef __QNX__
+# ifdef __i386__
+#  define CRYPTOPP_BOOL_SSE2_ASM_AVAILABLE 0
+#  define CRYPTOPP_BOOL_SSSE3_ASM_AVAILABLE 0
+
+#  undef CRYPTOPP_X86_ASM_AVAILABLE
+#  undef CRYPTOPP_GENERATE_X64_MASM
+#endif // __i386__
+#endif // __QNX__
+
 NAMESPACE_BEGIN(CryptoPP)
 
 bool AssignIntToInteger(const std::type_info &valueType, void *pInteger, const void *pInt)

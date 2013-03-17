@@ -16,13 +16,11 @@
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.646986688" name="Device-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.646986688" name="Device-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.646986688." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.881490836" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.714041613" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -102,6 +100,7 @@
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.646986688.5491183" name="/" resourcePath="src/test">
 						<toolChain id="com.qnx.qcc.toolChain.1884424779" name="QNX QCC" superClass="com.qnx.qcc.toolChain" unusedChildren="">
 							<option id="com.qnx.qcc.option.cpu.714041613.166591724" name="Target CPU:" superClass="com.qnx.qcc.option.cpu.714041613"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
 							<tool id="com.qnx.qcc.tool.compiler.306499977" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1033174702">
 								<inputType id="com.qnx.qcc.inputType.compiler.1525397188" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -125,19 +124,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.326651311" name="Device-Release" parent="com.qnx.qcc.configuration.sharedLib.release">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.sharedLib.release.326651311" name="Device-Release" parent="com.qnx.qcc.configuration.sharedLib.release">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.release.326651311." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.release.820913949" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.482966" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -187,7 +186,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.114446799" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.1340476860" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.1340476860" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.229398066" superClass="com.qnx.qcc.inputType.linker">
@@ -211,19 +210,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build for Profiling" id="com.qnx.qcc.configuration.sharedLib.profile.2058168487" name="Device-Profile" parent="com.qnx.qcc.configuration.sharedLib.profile">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.sharedLib.profile.2058168487" name="Device-Profile" parent="com.qnx.qcc.configuration.sharedLib.profile">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.profile.2058168487." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.1930076150" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.1325600582" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -278,7 +277,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.1212627036" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.1925999956" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.1925999956" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.2059623050" superClass="com.qnx.qcc.inputType.linker">
@@ -302,19 +301,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.sharedLib.coverage.2016681706" name="Device-Coverage" parent="com.qnx.qcc.configuration.sharedLib.coverage">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.sharedLib.coverage.2016681706" name="Device-Coverage" parent="com.qnx.qcc.configuration.sharedLib.coverage">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.coverage.2016681706." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.1329011301" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<option id="com.qnx.qcc.option.cpu.502240671" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
@@ -369,7 +368,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.1278683135" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.285090393" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.285090393" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.925760785" superClass="com.qnx.qcc.inputType.linker">
@@ -393,19 +392,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.1226603867" name="Simulator-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.sharedLib.debug.1226603867" name="Simulator-Debug" parent="com.qnx.qcc.configuration.sharedLib.debug">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.debug.1226603867." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.debug.721814013" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1053536164" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
@@ -454,7 +453,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.978776586" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.1996922855" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.1996922855" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1476640523" superClass="com.qnx.qcc.inputType.linker">
@@ -478,19 +477,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build for Profiling" id="com.qnx.qcc.configuration.sharedLib.profile.12007121" name="Simulator-Profile" parent="com.qnx.qcc.configuration.sharedLib.profile">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.sharedLib.profile.12007121" name="Simulator-Profile" parent="com.qnx.qcc.configuration.sharedLib.profile">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.profile.12007121." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.profile.1436153169" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2134093772" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
@@ -541,7 +540,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.586691210" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.1365964047" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.1365964047" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.2047968354" superClass="com.qnx.qcc.inputType.linker">
@@ -565,19 +564,19 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbhfstack"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbhfstack/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbhfstack"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbhfstack"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
 					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
-					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
-					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.sharedLib.coverage.583778095" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.sharedLib.coverage">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.sharedLib.coverage.583778095" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.sharedLib.coverage">
 					<folderInfo id="com.qnx.qcc.configuration.sharedLib.coverage.583778095." name="/" resourcePath="">
 						<toolChain id="com.qnx.qcc.toolChain.sharedLib.coverage.721760814" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
 							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1366643375" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
@@ -628,7 +627,7 @@
 								<option id="com.qnx.qcc.option.linker.ldoptions.25402367" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-z,defs"/>
 								</option>
-								<option id="com.qnx.qcc.option.linker.libraries.2086456320" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+								<option id="com.qnx.qcc.option.linker.libraries.2086456320" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
 									<listOptionValue builtIn="false" value="m"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.173745463" superClass="com.qnx.qcc.inputType.linker">
@@ -675,4 +674,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

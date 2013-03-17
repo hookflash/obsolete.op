@@ -288,19 +288,21 @@ enum { kVoiceEngineMaxNumOfActiveChannels = 16 };
 
 // *** LINUX ***
 
-#ifdef WEBRTC_LINUX
+#if defined(WEBRTC_LINUX) || defined(__QNX__)
 
 #include <pthread.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#ifndef __QNX__
 #ifndef QNX
   #include <linux/net.h>
 #ifndef ANDROID
   #include <sys/soundcard.h>
 #endif // ANDROID
 #endif // QNX
+#endif // __QNX__
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

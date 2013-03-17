@@ -12,6 +12,8 @@
 
 #if defined(_WIN32)
 #include <Windows.h>
+#elif defined(__QNX__)
+#include <hw/sysinfo.h>
 #elif defined(WEBRTC_MAC)
 #include <sys/types.h>
 #include <sys/sysctl.h>

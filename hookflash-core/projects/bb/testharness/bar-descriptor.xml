@@ -45,6 +45,7 @@
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>
        <asset path="Device-Debug/TestHarness" entry="true" type="Qnx/Elf">TestHarness</asset>
+       <asset path="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so" type="Qnx/Elf">lib/libOpenPeer10.so</asset>
     </configuration>
     <configuration name="Device-Release">
        <platformArchitecture>armle-v7</platformArchitecture>

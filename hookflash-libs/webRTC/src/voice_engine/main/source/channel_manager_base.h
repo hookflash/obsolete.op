@@ -29,7 +29,7 @@ class Channel;
 class ChannelManagerBase
 {
 public:
-    enum {KMaxNumberOfItems = kVoiceEngineMaxNumOfChannels};
+    enum {KMaxNumberOfItems = webrtc::kVoiceEngineMaxNumOfChannels};
 
 protected:
     bool CreateItem(WebRtc_Word32& itemId);

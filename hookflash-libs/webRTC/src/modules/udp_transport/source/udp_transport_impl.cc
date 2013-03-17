@@ -20,7 +20,7 @@
     #include <ws2tcpip.h>
     // Disable warning for default initialized arrays on VS2005
     #pragma warning(disable:4351)
-#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
     #include <arpa/inet.h>
     #include <ctype.h>
     #include <fcntl.h>
@@ -53,7 +53,7 @@
 #include "typedefs.h"
 #include "udp_socket_manager_wrapper.h"
 
-#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 #define GetLastError() errno
 
 #define IFRSIZE ((int)(size * sizeof (struct ifreq)))
@@ -63,7 +63,7 @@
    (int)(nlh)->nlmsg_len >= (int)sizeof(struct nlmsghdr) &&             \
    (int)(nlh)->nlmsg_len <= (len))
 
-#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 
 namespace webrtc {
 
@@ -1057,7 +1057,7 @@ WebRtc_Word32 UdpTransportImpl::SetPCP(WebRtc_Word32 PCP)
         return -1;
     }
 #else
-    // Not supported on other platforms (WEBRTC_MAC)
+    // Not supported on other platforms (WEBRTC_MAC) (WEBRTC_QNX)
     _lastError = kPcpError;
     return -1;
 #endif
@@ -2373,7 +2373,7 @@ WebRtc_Word32 UdpTransport::InetPresentationToNumeric(WebRtc_Word32 af,
                                                       const char* src,
                                                       void* dst)
 {
-#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
     const WebRtc_Word32 result = inet_pton(af, src, dst);
     return result > 0 ? 0 : -1;
 
@@ -2522,7 +2522,7 @@ WebRtc_Word32 UdpTransport::LocalHostAddressIPV6(char n_localIP[16])
     }
     freeifaddrs(ptrIfAddrsStart);
     return -1;
-#elif defined(WEBRTC_ANDROID)
+#elif defined(WEBRTC_ANDROID) || defined(WEBRTC_QNX)
     return -1;
 #else // WEBRTC_LINUX
     struct

@@ -24,6 +24,7 @@
 #include <zsLib/internal/zsLib_MessageQueueThreadBasic.h>
 #include <zsLib/internal/zsLib_MessageQueueThreadUsingCurrentGUIMessageQueueForWindows.h>
 #include <zsLib/internal/zsLib_MessageQueueThreadUsingMainThreadMessageQueueForApple.h>
+#include <zsLib/internal/zsLib_MessageQueueThreadUsingBlackberryChannels.h>
 #include <zsLib/Log.h>
 
 namespace zsLib { ZS_DECLARE_SUBSYSTEM(zsLib) }
@@ -39,9 +40,10 @@ namespace zsLib
   {
 #ifdef _WIN32
     return internal::MessageQueueThreadUsingCurrentGUIMessageQueueForWindows::singleton();
-#else
-#if __APPLE__
+#elif defined(__APPLE__)
       return internal::MessageQueueThreadUsingMainThreadMessageQueueForApple::singleton();
+#elif defined(__QNX__)
+      return internal::MessageQueueThreadUsingBlackberryChannels::singleton();
 #else
 #define __STR2__(x) #x
 #define __STR1__(x) __STR2__(x)
@@ -49,7 +51,6 @@ namespace zsLib
 #pragma message(__LOC__"Need to implement this method on current target platform...")
 
     return internal::MessageQueueThreadBasic::create();
-#endif //_APPLE
 #endif //_WIN32
   }
 }

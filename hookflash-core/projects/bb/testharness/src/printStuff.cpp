@@ -17,7 +17,7 @@ namespace hookflash {
 
   		  void DoPrint(const std::string& text)
   		  {
-  			::HFCorePrint(text.c_str());
+  	  		::HFCorePrint(text.c_str());
   		  }
   	  };
   }

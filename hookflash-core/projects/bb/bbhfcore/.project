@@ -3,6 +3,12 @@
 	<name>bbhfcore</name>
 	<comment></comment>
 	<projects>
+		<project>bbcryptopp</project>
+		<project>bbhfservices</project>
+		<project>bbhfstack</project>
+		<project>bbudns</project>
+		<project>bbWebRTC</project>
+		<project>bbzsLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

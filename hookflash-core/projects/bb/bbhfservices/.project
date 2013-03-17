@@ -3,6 +3,10 @@
 	<name>bbhfservices</name>
 	<comment></comment>
 	<projects>
+		<project>bbcryptopp</project>
+		<project>bbudns</project>
+		<project>bbWebRTC</project>
+		<project>bbzsLib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

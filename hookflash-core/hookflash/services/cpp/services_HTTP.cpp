@@ -433,9 +433,13 @@ namespace hookflash
       void HTTP::operator()()
       {
 #ifndef _LINUX
+#ifdef __QNX__
+#else
+        pthread_setname_np(pthread_self(), "com.hookflash.services.http");
 #ifndef _ANDROID
         pthread_setname_np("com.hookflash.services.http");
 #endif //_ANDROID
+#endif // __QNX__
 #endif //_LINUX
         ZS_LOG_BASIC(log("http thread started"))
 

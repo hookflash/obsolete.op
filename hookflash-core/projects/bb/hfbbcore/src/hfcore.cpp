@@ -13,7 +13,7 @@ extern "C" void HFCorePrint(const char* text)
 	std::string fullText = "Hi from the LIBRARY: ";
 	fullText += text;
 	fullText += "\n";
-	Log::WriteToLog(fullText.c_str());
+//	Log::WriteToLog(fullText.c_str());
 }
 
 

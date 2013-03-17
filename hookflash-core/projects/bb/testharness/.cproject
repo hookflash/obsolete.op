@@ -39,7 +39,6 @@
 							<tool id="com.qnx.qcc.tool.assembler.1234867213" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.551402801" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.assembler.includePath.1471122946" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/OpenPeer10/public}&quot;"/>
 									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.1333838982" superClass="com.qnx.qcc.inputType.assembler"/>
@@ -59,6 +58,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.710058094" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.1727280129" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.149559238" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -132,6 +134,7 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="OpenPeer10"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.38184509" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${workspace_loc:/OpenPeer10/Device-Release}"/>
@@ -214,6 +217,7 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="OpenPeer10"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1633925074" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${workspace_loc:/OpenPeer10/Device-Profile}"/>
@@ -295,6 +299,7 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="OpenPeer10"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.694860353" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${workspace_loc:/OpenPeer10/Device-Coverage}"/>
@@ -380,6 +385,9 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1966808595" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.1301937555" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-z,defs"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1758412586" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -476,6 +484,7 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="OpenPeer10"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1028074793" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${workspace_loc:/OpenPeer10/Simulator-Profile}"/>
@@ -556,6 +565,7 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="OpenPeer10"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/hfbbcore/Device-Debug/libOpenPeer10.so"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1375500388" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="${workspace_loc:/OpenPeer10/Simulator-Coverage}"/>

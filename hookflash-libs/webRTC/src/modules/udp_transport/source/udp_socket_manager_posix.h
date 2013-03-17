@@ -21,6 +21,10 @@
 #include "udp_socket_manager_wrapper.h"
 #include "udp_socket_wrapper.h"
 
+#ifdef WEBRTC_QNX
+#include <sys/select.h>
+#endif
+
 #define MAX_NUMBER_OF_SOCKET_MANAGERS_LINUX 8
 
 namespace webrtc {

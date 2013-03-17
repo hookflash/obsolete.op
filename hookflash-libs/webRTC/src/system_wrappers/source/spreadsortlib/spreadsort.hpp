@@ -21,6 +21,8 @@ Scott McMurray
 #include "constants.hpp"
 #include <cstring>
 
+using namespace std;
+
 namespace boost {
   namespace detail {
   	//This only works on unsigned data types
