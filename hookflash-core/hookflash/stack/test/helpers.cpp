@@ -67,9 +67,9 @@ namespace hookflash
         return output.get();
       }
       
-      bool writeToFile(zsLib::String text)
+      bool writeToFile(zsLib::String text, zsLib::String filename)
       {
-        std::ofstream myfile ("/tmp/peerfile.txt");
+        std::ofstream myfile (filename.c_str());
         if (myfile.is_open())
         {
           myfile << text;

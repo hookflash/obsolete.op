@@ -47,7 +47,7 @@ namespace hookflash
 
       XML::ElementPtr createFromString(const String &elementStr);
       String convertToString(const XML::ElementPtr &element);
-      bool writeToFile(zsLib::String text);
+      bool writeToFile(zsLib::String text, zsLib::String filename);
       bool readFromFile(String &outPassword, String &outText);
     } // namespace test
   } // namespace stack

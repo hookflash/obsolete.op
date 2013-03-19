@@ -619,10 +619,18 @@ namespace hookflash
           zsLib::String password = IHelper::convertToString((SecureByteBlock)*secPwd.get());
           text = password + "\n" + text;
           
+          ElementPtr publicPeerElement = mPeerContactSession->getPeerFiles()->getPeerFilePublic()->saveToElement();
+          zsLib::String publicPeerText = convertToString(publicPeerElement);
+          writeToFile(publicPeerText, "/tmp/publicPeerFile.txt");
+          
+          ElementPtr privatePeerElement = mPeerContactSession->getPeerFiles()->getPeerFilePrivate()->saveToElement();
+          zsLib::String privatePeerText = convertToString(privatePeerElement);
+          writeToFile(privatePeerText, "/tmp/privatePeerFile.txt");
+          
           //first time login, save peer file
           if (LoginScenario_Login == mLoginScenario)
           {
-            writeToFile(text);
+            writeToFile(text, "/tmp/peerfile.txt");
           }
           
           ++mCount;

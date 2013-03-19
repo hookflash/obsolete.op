@@ -830,7 +830,7 @@ namespace hookflash
           //first time login, save peer file
           if (LoginScenario_Login == mLoginScenario)
           {
-            writeToFile(text);
+            writeToFile(text, "/tmp/peerfile.txt");
           }
           //prerequisites for account creation DONE
           mAccount = IAccount::create(mThisWeak.lock(), mPeerContactSession);

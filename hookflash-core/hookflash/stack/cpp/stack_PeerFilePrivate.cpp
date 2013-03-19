@@ -502,7 +502,6 @@ namespace hookflash
             sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
 
             GeneratorPtr generator = Generator::createJSONGenerator();
-            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl);
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
@@ -512,13 +511,13 @@ namespace hookflash
             // calculate the contact ID/domain
 
             ULONG length = 0;
-            boost::shared_array<char> bundleAsJSON = generator->write(sectionBundleEl, &length);
+            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl, &length);
 
             SHA256 sha256;
             SecureByteBlock bundleHash(sha256.DigestSize());
 
             sha256.Update((const BYTE *)"contact:", strlen("contact:"));
-            sha256.Update((const BYTE *)bundleAsJSON.get(), length);
+            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
             sha256.Final(bundleHash);
 
             contactID = IHelper::convertToHex(bundleHash);

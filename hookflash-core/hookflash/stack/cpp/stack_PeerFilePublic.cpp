@@ -453,13 +453,13 @@ namespace hookflash
           String contactID;
           {
             ULONG length = 0;
-            boost::shared_array<char> sectionABundleAsString = generator->write(sectionAEl->getParentChecked(), &length);
+            boost::shared_array<char> sectionAsString = generator->write(sectionAEl, &length);
 
             SHA256 sha256;
             SecureByteBlock bundleHash(sha256.DigestSize());
 
             sha256.Update((const BYTE *)"contact:", strlen("contact:"));
-            sha256.Update((const BYTE *)(sectionABundleAsString.get()), length);
+            sha256.Update((const BYTE *)(sectionAsString.get()), length);
             sha256.Final(bundleHash);
 
             contactID = IHelper::convertToHex(bundleHash);
