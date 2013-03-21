@@ -152,9 +152,11 @@ namespace hookflash
       mEcEnabled(false),
       mAgcEnabled(false),
       mNsEnabled(false),
-      mRecordFile(""),
+      mVoiceRecordFile(""),
+      mVideoRecordFile(""),
       mReceiverAddress(""),
       mDefaultVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
+      mRecordVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
       mVoiceChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
       mVoiceTransport(&mRedirectVoiceTransport),
       mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
@@ -179,8 +181,8 @@ namespace hookflash
       mVideoCapture(NULL),
       mVideoRtpRtcp(NULL),
       mVideoCodec(NULL),
+      mVideoFile(NULL),
       mVideoEngineReady(false),
-      mContinuousVideoCapture(false),
       mFaceDetection(false),
       mIPhoneCaptureRenderView(NULL),
       mIPhoneChannelRenderView(NULL),
@@ -189,11 +191,14 @@ namespace hookflash
       mLifetimeWantAudio(false),
       mLifetimeWantVideoCapture(false),
       mLifetimeWantVideoChannel(false),
+      mLifetimeWantRecordVideoCapture(false),
       mLifetimeHasAudio(false),
       mLifetimeHasVideoCapture(false),
       mLifetimeHasVideoChannel(false),
+      mLifetimeHasRecordVideoCapture(false),
       mLifetimeInProgress(false),
-      mLifetimeWantCameraType(CameraType_Front)
+      mLifetimeWantCameraType(CameraType_Front),
+      mLifetimeContinuousVideoCapture(false)
     {
       int name[] = {CTL_HW, HW_MACHINE};
       size_t size;
@@ -333,6 +338,14 @@ namespace hookflash
             return;
           }
         }
+        
+        if (mVideoFile) {
+          mError = mVideoFile->Release();
+          if (mError < 0) {
+            ZS_LOG_ERROR(Detail, log("failed to release video file (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            return;
+          }
+        }
 
         if (!VideoEngine::Delete(mVideoEngine)) {
           ZS_LOG_ERROR(Detail, log("failed to delete video engine"))
@@ -442,6 +455,11 @@ namespace hookflash
         ZS_LOG_ERROR(Detail, log("failed to get interface for video codec"))
         return;
       }
+      mVideoFile = webrtc::ViEFile::GetInterface(mVideoEngine);
+      if (mVideoFile == NULL) {
+        ZS_LOG_ERROR(Detail, log("failed to get interface for video file"))
+        return;
+      }
 
       mError = mVideoBase->Init();
       if (mError < 0) {
@@ -538,6 +556,36 @@ namespace hookflash
       
       mDefaultVideoOrientation = orientation;
     }
+    
+    //-------------------------------------------------------------------------
+    MediaEngine::VideoOrientations MediaEngine::getDefaultVideoOrientation()
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("get default video orientation"))
+      
+      return mDefaultVideoOrientation;
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::setRecordVideoOrientation(VideoOrientations orientation)
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("set record video orientation - ") + IMediaEngine::toString(orientation))
+      
+      mRecordVideoOrientation = orientation;
+    }
+    
+    //-------------------------------------------------------------------------
+    MediaEngine::VideoOrientations MediaEngine::getRecordVideoOrientation()
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("get record video orientation"))
+      
+      return mRecordVideoOrientation;
+    }
 
     //-------------------------------------------------------------------------
     void MediaEngine::setVideoOrientation()
@@ -546,7 +594,11 @@ namespace hookflash
       
       ZS_LOG_DEBUG(log("set video orientation and codec parameters"))
       
-      mError = setVideoCaptureRotationAndCodecParameters();
+      if (mVideoChannel == HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL) {
+        mError = setVideoCaptureRotation();
+      } else {
+        mError = setVideoCodecParameters();
+      }
     }
 
     //-------------------------------------------------------------------------
@@ -628,23 +680,23 @@ namespace hookflash
     }
     
     //-------------------------------------------------------------------------
-    void MediaEngine::setRecordFile(String fileName)
+    void MediaEngine::setVoiceRecordFile(String fileName)
     {
       AutoRecursiveLock lock(mLock);
       
-      ZS_LOG_DEBUG(log("set record file - value: ") + fileName)
+      ZS_LOG_DEBUG(log("set voice record file - value: ") + fileName)
       
-      mRecordFile = fileName;
+      mVoiceRecordFile = fileName;
     }
     
     //-------------------------------------------------------------------------
-    String MediaEngine::getRecordFile() const
+    String MediaEngine::getVoiceRecordFile() const
     {
       AutoRecursiveLock lock(mLock);
       
-      ZS_LOG_DEBUG(log("get record file - value: ") + mRecordFile)
+      ZS_LOG_DEBUG(log("get voice record file - value: ") + mVoiceRecordFile)
       
-      return mRecordFile;
+      return mVoiceRecordFile;
     }
 
     //-------------------------------------------------------------------------
@@ -738,21 +790,21 @@ namespace hookflash
     //-----------------------------------------------------------------------
     void MediaEngine::setContinuousVideoCapture(bool continuousVideoCapture)
     {
-      AutoRecursiveLock lock(mLock);
+      AutoRecursiveLock lock(mLifetimeLock);
       
       ZS_LOG_DEBUG(log("set continuous video capture - value: ") + (continuousVideoCapture ? "true" : "false"))
       
-      mContinuousVideoCapture = continuousVideoCapture;
+      mLifetimeContinuousVideoCapture = continuousVideoCapture;
     }
     
     //-----------------------------------------------------------------------
     bool MediaEngine::getContinuousVideoCapture()
     {
-      AutoRecursiveLock lock(mLock);
+      AutoRecursiveLock lock(mLifetimeLock);
       
       ZS_LOG_DEBUG(log("get continuous video capture"))
       
-      return mContinuousVideoCapture;
+      return mLifetimeContinuousVideoCapture;
     }
     
     //-----------------------------------------------------------------------
@@ -792,7 +844,7 @@ namespace hookflash
 
       ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
     }
-    
+
     //-----------------------------------------------------------------------
     void MediaEngine::startVideoCapture()
     {
@@ -810,6 +862,33 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLifetimeLock);
         mLifetimeWantVideoCapture = false;
+      }
+      
+      ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::startRecordVideoCapture(String fileName)
+    {
+      {
+        AutoRecursiveLock lock(mLock);
+        mVideoRecordFile = fileName;
+      }
+      
+      {
+        AutoRecursiveLock lock(mLifetimeLock);
+        mLifetimeWantRecordVideoCapture = true;
+      }
+      
+      ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
+    }
+    
+    //-------------------------------------------------------------------------
+    void MediaEngine::stopRecordVideoCapture()
+    {
+      {
+        AutoRecursiveLock lock(mLifetimeLock);
+        mLifetimeWantRecordVideoCapture = false;
       }
       
       ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
@@ -1120,7 +1199,6 @@ namespace hookflash
       return 0;
     }
     
-    
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -1192,8 +1270,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     void MediaEngine::Print(const webrtc::TraceLevel level, const char *traceString, const int length)
     {
-//      printf("%s\n", traceString);
-      
       switch (level) {
         case webrtc::kTraceApiCall:
         case webrtc::kTraceStateInfo:
@@ -1222,6 +1298,7 @@ namespace hookflash
           ZS_LOG_TRACE(log(traceString))
           break;
       }
+//      printf("%s\n", traceString);
     }
     
     //-----------------------------------------------------------------------
@@ -1332,14 +1409,16 @@ namespace hookflash
       bool wantAudio = false;
       bool wantVideoCapture = false;
       bool wantVideoChannel = false;
+      bool wantRecordVideoCapture = false;
       bool hasAudio = false;
       bool hasVideoCapture = false;
       bool hasVideoChannel = false;
+      bool hasRecordVideoCapture = false;
       CameraTypes wantCameraType = IMediaEngine::CameraType_None;
 
       // attempt to get the lifetime lock
-      while (true)
-      {
+      while (true) {
+        
         if (!firstAttempt) {
           boost::thread::yield();       // do not hammer CPU
         }
@@ -1355,14 +1434,18 @@ namespace hookflash
 
         if (mLifetimeWantVideoChannel)
           mLifetimeWantVideoCapture = true;
-        else if (!mContinuousVideoCapture)
+        else if (!mLifetimeContinuousVideoCapture)
           mLifetimeWantVideoCapture = false;
+        if (!mLifetimeWantVideoCapture)
+          mLifetimeWantRecordVideoCapture = false;
         wantAudio = mLifetimeWantAudio;
         wantVideoCapture = mLifetimeWantVideoCapture;
         wantVideoChannel = mLifetimeWantVideoChannel;
+        wantRecordVideoCapture = mLifetimeWantRecordVideoCapture;
         hasAudio = mLifetimeHasAudio;
         hasVideoCapture = mLifetimeHasVideoCapture;
         hasVideoChannel = mLifetimeHasVideoChannel;
+        hasRecordVideoCapture = mLifetimeHasRecordVideoCapture;
         wantCameraType = mLifetimeWantCameraType;
         break;
       }
@@ -1389,6 +1472,16 @@ namespace hookflash
         if (wantVideoCapture) {
           if (!hasVideoCapture) {
             internalStartVideoCapture();
+          }
+        }
+        
+        if (wantRecordVideoCapture) {
+          if (!hasRecordVideoCapture) {
+            internalStartRecordVideoCapture();
+          }
+        } else {
+          if (hasRecordVideoCapture) {
+            internalStopRecordVideoCapture();
           }
         }
 
@@ -1425,6 +1518,7 @@ namespace hookflash
         mLifetimeHasAudio = wantAudio;
         mLifetimeHasVideoCapture = wantVideoCapture;
         mLifetimeHasVideoChannel = wantVideoChannel;
+        mLifetimeHasRecordVideoCapture = wantRecordVideoCapture;
 
         mLifetimeInProgress = false;
       }
@@ -1589,8 +1683,8 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("failed to start playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
           return;
         }
-        if (!mRecordFile.empty()) {
-          mError = mVoiceFile->StartRecordingCall(mRecordFile, &cfinst);
+        if (!mVoiceRecordFile.empty()) {
+          mError = mVoiceFile->StartRecordingCall(mVoiceRecordFile, &cfinst);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
           }
@@ -1638,12 +1732,12 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("failed to stop receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
           return;
         }
-        if (!mRecordFile.empty()) {
+        if (!mVoiceRecordFile.empty()) {
           mError = mVoiceFile->StopRecordingCall();
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
           }
-          mRecordFile.erase();
+          mVoiceRecordFile.erase();
         }
         mError = mVoiceNetwork->DeRegisterExternalTransport(mVoiceChannel);
         if (mError != 0) {
@@ -1736,15 +1830,36 @@ namespace hookflash
           return;
         }
         
+        webrtc::CapturedFrameOrientation defaultOrientation;
+        switch (mDefaultVideoOrientation) {
+          case IMediaEngine::VideoOrientation_LandscapeLeft:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+            break;
+          case IMediaEngine::VideoOrientation_PortraitUpsideDown:
+            defaultOrientation = webrtc::CapturedFrameOrientation_PortraitUpsideDown;
+            break;
+          case IMediaEngine::VideoOrientation_LandscapeRight:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeRight;
+            break;
+          case IMediaEngine::VideoOrientation_Portrait:
+            defaultOrientation = webrtc::CapturedFrameOrientation_Portrait;
+            break;
+          default:
+            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+            break;
+        }
+        mError = mVideoCapture->SetDefaultCapturedFrameOrientation(mCaptureId, defaultOrientation);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to set default orientation on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        
+        setVideoCaptureRotation();
+        
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
           ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
-        mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return;
         }
 
@@ -1905,30 +2020,6 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("failed to add renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return;
         }
-        
-        webrtc::CapturedFrameOrientation defaultOrientation;
-        switch (mDefaultVideoOrientation) {
-          case IMediaEngine::VideoOrientation_LandscapeLeft:
-            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
-            break;
-          case IMediaEngine::VideoOrientation_PortraitUpsideDown:
-            defaultOrientation = webrtc::CapturedFrameOrientation_PortraitUpsideDown;
-            break;
-          case IMediaEngine::VideoOrientation_LandscapeRight:
-            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeRight;
-            break;
-          case IMediaEngine::VideoOrientation_Portrait:
-            defaultOrientation = webrtc::CapturedFrameOrientation_Portrait;
-            break;
-          default:
-            defaultOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
-            break;
-        }
-        mError = mVideoCapture->SetDefaultCapturedFrameOrientation(mCaptureId, defaultOrientation);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set default orientation onvideo capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return;
-        }
 
         webrtc::VideoCodec videoCodec;
         memset(&videoCodec, 0, sizeof(VideoCodec));
@@ -1948,7 +2039,7 @@ namespace hookflash
           }
         }
         
-        mError = setVideoCaptureRotationAndCodecParameters();
+        mError = setVideoCodecParameters();
         if (mError != 0) {
           return;
         }
@@ -1995,6 +2086,16 @@ namespace hookflash
         
         ZS_LOG_DEBUG(log("stop video channel"))
         
+        mError = mVideoRender->StopRender(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to stop rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
+        mError = mVideoRender->RemoveRenderer(mVideoChannel);
+        if (mError != 0) {
+          ZS_LOG_ERROR(Detail, log("failed to remove renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          return;
+        }
         mError = mVideoBase->StopSend(mVideoChannel);
         if (mError != 0) {
           ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -2026,6 +2127,101 @@ namespace hookflash
       }
     }
     
+    //-----------------------------------------------------------------------
+    void MediaEngine::internalStartRecordVideoCapture()
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("start video capture recording"))
+      
+      webrtc::CapturedFrameOrientation recordOrientation;
+      switch (mRecordVideoOrientation) {
+        case IMediaEngine::VideoOrientation_LandscapeLeft:
+          recordOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+          break;
+        case IMediaEngine::VideoOrientation_PortraitUpsideDown:
+          recordOrientation = webrtc::CapturedFrameOrientation_PortraitUpsideDown;
+          break;
+        case IMediaEngine::VideoOrientation_LandscapeRight:
+          recordOrientation = webrtc::CapturedFrameOrientation_LandscapeRight;
+          break;
+        case IMediaEngine::VideoOrientation_Portrait:
+          recordOrientation = webrtc::CapturedFrameOrientation_Portrait;
+          break;
+        default:
+          recordOrientation = webrtc::CapturedFrameOrientation_LandscapeLeft;
+          break;
+      }
+      mError = mVideoCapture->SetCapturedFrameLockedOrientation(mCaptureId, recordOrientation);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to set record orientation on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return;
+      }
+      mError = mVideoCapture->EnableCapturedFrameOrientationLock(mCaptureId, true);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to enable orientation lock on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return;
+      }
+      
+      webrtc::RotateCapturedFrame orientation;
+      mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return;
+      }
+    
+      if (mVideoChannel == HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL)
+        setVideoCaptureRotation();
+      else
+        setVideoCodecParameters();
+      
+      int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
+      mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
+      if (mError != 0)
+        return;
+      
+      webrtc::CodecInst audioCodec;
+      memset(&audioCodec, 0, sizeof(webrtc::CodecInst));
+      strcpy(audioCodec.plname, "AAC");
+      audioCodec.rate = 32000;
+      audioCodec.plfreq = 16000;
+      audioCodec.channels = 1;
+      
+      webrtc::VideoCodec videoCodec;
+      memset(&videoCodec, 0, sizeof(VideoCodec));
+      videoCodec.codecType = webrtc::kVideoCodecH264;
+      videoCodec.width = width;
+      videoCodec.height = height;
+      videoCodec.maxFramerate = maxFramerate;
+      videoCodec.maxBitrate = maxBitrate;
+      
+      mError = mVideoFile->StartRecordCaptureVideo(mCaptureId, mVideoRecordFile, webrtc::MICROPHONE, audioCodec, videoCodec, webrtc::kFileFormatMP4File);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to start video capture recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        return;
+      }
+    }
+    
+    //-----------------------------------------------------------------------
+    void MediaEngine::internalStopRecordVideoCapture()
+    {
+      AutoRecursiveLock lock(mLock);
+      
+      ZS_LOG_DEBUG(log("stop video capture recording"))
+      
+      mError = mVideoFile->StopRecordCaptureVideo(mCaptureId);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to stop video capture recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+        return;
+      }
+      
+      mError = mVideoCapture->EnableCapturedFrameOrientationLock(mCaptureId, false);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to disable orientation lock on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return;
+      }
+    }
+
     //-----------------------------------------------------------------------
     int MediaEngine::getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height, int& maxFramerate, int& maxBitrate)
     {
@@ -2199,7 +2395,7 @@ namespace hookflash
     }
     
     //-----------------------------------------------------------------------
-    int MediaEngine::setVideoCaptureRotationAndCodecParameters()
+    int MediaEngine::setVideoCaptureRotation()
     {
       webrtc::RotateCapturedFrame orientation;
       mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
@@ -2211,30 +2407,6 @@ namespace hookflash
       if (mError != 0) {
         ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
         return mError;
-      }
-      
-      int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
-      mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
-      if (mError != 0)
-        return mError;
-      
-      if (mVideoChannel != HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL) {
-        webrtc::VideoCodec videoCodec;
-        memset(&videoCodec, 0, sizeof(VideoCodec));
-        mError = mVideoCodec->GetSendCodec(mVideoChannel, videoCodec);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return mError;
-        }
-        videoCodec.width = width;
-        videoCodec.height = height;
-        videoCodec.maxFramerate = maxFramerate;
-        videoCodec.maxBitrate = maxBitrate;
-        mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
-        if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
-          return mError;
-        }
       }
       
       const char *rotationString = NULL;
@@ -2256,8 +2428,45 @@ namespace hookflash
       }
       
       if (rotationString) {
-        ZS_LOG_DEBUG(log("video capture rotation and codec size set - rotation: ") + rotationString + ", width: " + Stringize<INT>(width).string() + ", height: " + Stringize<INT>(height).string())
+        ZS_LOG_DEBUG(log("video capture rotation set - rotation: ") + rotationString)
       }
+      
+      return 0;
+    }
+    
+    //-----------------------------------------------------------------------
+    int MediaEngine::setVideoCodecParameters()
+    {
+      webrtc::RotateCapturedFrame orientation;
+      mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return mError;
+      }
+      
+      int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
+      mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
+      if (mError != 0)
+        return mError;
+      
+      webrtc::VideoCodec videoCodec;
+      memset(&videoCodec, 0, sizeof(VideoCodec));
+      mError = mVideoCodec->GetSendCodec(mVideoChannel, videoCodec);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return mError;
+      }
+      videoCodec.width = width;
+      videoCodec.height = height;
+      videoCodec.maxFramerate = maxFramerate;
+      videoCodec.maxBitrate = maxBitrate;
+      mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
+      if (mError != 0) {
+        ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+        return mError;
+      }
+      
+      ZS_LOG_DEBUG(log("video codec size - width: ") + Stringize<INT>(width).string() + ", height: " + Stringize<INT>(height).string())
       
       return 0;
     }

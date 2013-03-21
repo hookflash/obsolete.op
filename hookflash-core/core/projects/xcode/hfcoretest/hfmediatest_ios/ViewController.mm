@@ -19,8 +19,13 @@
   
     mediaEngine->setCaptureRenderView(_imgView1);
     mediaEngine->setChannelRenderView(_imgView2);
+    
+    NSString* documents = [NSHomeDirectory() stringByAppendingString:@"/Documents/test.mp4"];
+    
+    const char* buffer = [documents UTF8String];
 
     mediaEngine->startVideoCapture();
+    mediaEngine->startRecordVideoCapture(buffer);
 }
 
 -(IBAction)startTest2
@@ -48,6 +53,7 @@
     hookflash::internal::IMediaEngineForTestApplicationPtr mediaEngine =
         hookflash::internal::IMediaEngineForTestApplication::singleton();
   
+    mediaEngine->stopRecordVideoCapture();
     mediaEngine->stopVideoCapture();
 }
 
@@ -83,7 +89,8 @@
     mediaEngine->setLoudspeakerEnabled(false);
     mediaEngine->setContinuousVideoCapture(true);
     mediaEngine->setDefaultVideoOrientation(hookflash::IMediaEngine::VideoOrientation_Portrait);
-    mediaEngine->setFaceDetection(true);
+    mediaEngine->setRecordVideoOrientation(hookflash::IMediaEngine::VideoOrientation_LandscapeRight);
+    mediaEngine->setFaceDetection(false);
   
     return self;
 }

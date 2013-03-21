@@ -132,6 +132,15 @@ public:
     virtual WebRtc_Word32 IncomingAudioData(
         const WebRtc_Word8*  audioBuffer,
         const WebRtc_UWord32 bufferLength) = 0;
+    
+    // Write one audio frame, i.e. the bufferLength first bytes of audioBuffer,
+    // to file. The audio frame size is determined by the codecInst.pacsize
+    // parameter of the last sucessfull StartRecordingAudioFile(..) call.
+    // Note: bufferLength must be exactly one frame.
+    virtual WebRtc_Word32 IncomingMP4AudioData(
+                                            const WebRtc_Word8*  audioBuffer,
+                                            const WebRtc_UWord32 bufferLength,
+                                            const WebRtc_UWord32 timeStamp) = 0;
 
     // Write one video frame, i.e. the bufferLength first bytes of videoBuffer,
     // to file.
@@ -142,6 +151,17 @@ public:
     virtual WebRtc_Word32 IncomingAVIVideoData(
         const WebRtc_Word8*  videoBuffer,
         const WebRtc_UWord32 bufferLength) = 0;
+  
+  // Write one video frame, i.e. the bufferLength first bytes of videoBuffer,
+  // to file.
+  // Note: videoBuffer can contain encoded data. The codec used must be the
+  // same as what was specified by videoCodecInst for the last successfull
+  // StartRecordingVideoFile(..) call. The videoBuffer must contain exactly
+  // one video frame.
+  virtual WebRtc_Word32 IncomingMP4VideoData(
+                                             const WebRtc_Word8*  videoBuffer,
+                                             const WebRtc_UWord32 bufferLength,
+                                             const WebRtc_UWord32 timeStamp) = 0;
 
     // Open/creates file specified by fileName for writing (relative path is
     // allowed). FileCallback::RecordNotification(..) will be called after

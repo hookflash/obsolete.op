@@ -54,6 +54,7 @@
 #include <vie_rtp_rtcp.h>
 #include <video_capture.h>
 #include <video_capture_factory.h>
+#include <vie_file.h>
 
 namespace hookflash
 {
@@ -125,8 +126,11 @@ namespace hookflash
       
       static void setup(IMediaEngineDelegatePtr delegate);
       
-      virtual void setVideoOrientation() = 0;
       virtual void setDefaultVideoOrientation(IMediaEngine::VideoOrientations orientation) = 0;
+      virtual IMediaEngine::VideoOrientations getDefaultVideoOrientation() = 0;
+      virtual void setRecordVideoOrientation(IMediaEngine::VideoOrientations orientation) = 0;
+      virtual IMediaEngine::VideoOrientations getRecordVideoOrientation() = 0;
+      virtual void setVideoOrientation() = 0;
  
       virtual void setCaptureRenderView(void *renderView) = 0;
       virtual void setChannelRenderView(void *renderView) = 0;
@@ -134,8 +138,8 @@ namespace hookflash
       virtual void setEcEnabled(bool enabled) = 0;
       virtual void setAgcEnabled(bool enabled) = 0;
       virtual void setNsEnabled(bool enabled) = 0;
-      virtual void setRecordFile(String fileName) = 0;
-      virtual String getRecordFile() const = 0;
+      virtual void setVoiceRecordFile(String fileName) = 0;
+      virtual String getVoiceRecordFile() const = 0;
       
       virtual void setMuteEnabled(bool enabled) = 0;
       virtual bool getMuteEnabled() = 0;
@@ -153,11 +157,14 @@ namespace hookflash
 
       virtual void startVoice() = 0;
       virtual void stopVoice() = 0;
-      
+
       virtual void startVideoCapture() = 0;
       virtual void stopVideoCapture() = 0;
       virtual void startVideoChannel() = 0;
       virtual void stopVideoChannel() = 0;
+      
+      virtual void startRecordVideoCapture(String fileName) = 0;
+      virtual void stopRecordVideoCapture() = 0;
     };
     
     //-------------------------------------------------------------------------
@@ -208,6 +215,7 @@ namespace hookflash
       typedef webrtc::ViECapture VideoCapture;
       typedef webrtc::ViERTP_RTCP VideoRtpRtcp;
       typedef webrtc::ViECodec VideoCodec;
+      typedef webrtc::ViEFile VideoFile;
       
     protected:
       
@@ -232,6 +240,9 @@ namespace hookflash
       static MediaEnginePtr singleton(IMediaEngineDelegatePtr delegate = IMediaEngineDelegatePtr());
 
       virtual void setDefaultVideoOrientation(VideoOrientations orientation);
+      virtual VideoOrientations getDefaultVideoOrientation();
+      virtual void setRecordVideoOrientation(VideoOrientations orientation);
+      virtual VideoOrientations getRecordVideoOrientation();
       virtual void setVideoOrientation();
 
       virtual void setCaptureRenderView(void *renderView);
@@ -240,8 +251,8 @@ namespace hookflash
       virtual void setEcEnabled(bool enabled);
       virtual void setAgcEnabled(bool enabled);
       virtual void setNsEnabled(bool enabled);
-      virtual void setRecordFile(String fileName);
-      virtual String getRecordFile() const;
+      virtual void setVoiceRecordFile(String fileName);
+      virtual String getVoiceRecordFile() const;
       
       virtual void setMuteEnabled(bool enabled);
       virtual bool getMuteEnabled();
@@ -257,9 +268,12 @@ namespace hookflash
 
       virtual CameraTypes getCameraType() const;
       virtual void setCameraType(CameraTypes type);
-      
+
       virtual void startVideoCapture();
       virtual void stopVideoCapture();
+      
+      virtual void startRecordVideoCapture(String fileName);
+      virtual void stopRecordVideoCapture();
 
       virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat);
       virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat);
@@ -349,11 +363,15 @@ namespace hookflash
       virtual void internalStopVideoCapture();
       virtual void internalStartVideoChannel();
       virtual void internalStopVideoChannel();
+      
+      virtual void internalStartRecordVideoCapture();
+      virtual void internalStopRecordVideoCapture();
 
     protected:
       int getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height,
                                     int& maxFramerate, int& maxBitrate);
-      int setVideoCaptureRotationAndCodecParameters();
+      int setVideoCodecParameters();
+      int setVideoCaptureRotation();
       EcModes getEcMode();
 
     private:
@@ -423,9 +441,11 @@ namespace hookflash
       bool mEcEnabled;
       bool mAgcEnabled;
       bool mNsEnabled;
-      String mRecordFile;
+      String mVoiceRecordFile;
+      String mVideoRecordFile;
       String mReceiverAddress;
       VideoOrientations mDefaultVideoOrientation;
+      VideoOrientations mRecordVideoOrientation;
 
       int mVoiceChannel;
       Transport *mVoiceTransport;
@@ -439,7 +459,6 @@ namespace hookflash
       VoiceHardware *mVoiceHardware;
       VoiceFile *mVoiceFile;
       bool mVoiceEngineReady;
-      bool mContinuousVideoCapture;
       bool mFaceDetection;
 
       int mVideoChannel;
@@ -455,6 +474,7 @@ namespace hookflash
       VideoCapture *mVideoCapture;
       VideoRtpRtcp *mVideoRtpRtcp;
       VideoCodec *mVideoCodec;
+      VideoFile *mVideoFile;
       void *mIPhoneCaptureRenderView;
       void *mIPhoneChannelRenderView;
       bool mVideoEngineReady;
@@ -468,13 +488,16 @@ namespace hookflash
       bool mLifetimeWantAudio;
       bool mLifetimeWantVideoCapture;
       bool mLifetimeWantVideoChannel;
+      bool mLifetimeWantRecordVideoCapture;
 
       bool mLifetimeHasAudio;
       bool mLifetimeHasVideoCapture;
       bool mLifetimeHasVideoChannel;
+      bool mLifetimeHasRecordVideoCapture;
 
       bool mLifetimeInProgress;
       CameraTypes mLifetimeWantCameraType;
+      bool mLifetimeContinuousVideoCapture;
 
       mutable RecursiveLock mMediaEngineReadyLock;
 

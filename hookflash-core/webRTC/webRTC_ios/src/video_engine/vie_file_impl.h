@@ -71,6 +71,13 @@ class ViEFileImpl
   virtual int StartPlayAudioLocally(const int file_id, const int audio_channel,
                                     float volume_scaling = 1);
   virtual int StopPlayAudioLocally(const int file_id, const int audio_channel);
+  virtual int StartRecordCaptureVideo(
+      const int capture_id,
+      const char* file_nameUTF8,
+      AudioSource audio_source,
+      const CodecInst& audio_codec,
+      const VideoCodec& video_codec,
+      const FileFormats file_format = kFileFormatAviFile);
   virtual int StartRecordOutgoingVideo(
       const int video_channel,
       const char* file_nameUTF8,
@@ -85,6 +92,7 @@ class ViEFileImpl
       const CodecInst& audio_codec,
       const VideoCodec& video_codec,
       const FileFormats file_format = kFileFormatAviFile);
+  virtual int StopRecordCaptureVideo(const int capture_id);
   virtual int StopRecordOutgoingVideo(const int video_channel);
   virtual int StopRecordIncomingVideo(const int video_channel);
   virtual int GetFileInformation(

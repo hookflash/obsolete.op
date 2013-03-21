@@ -23,7 +23,8 @@ namespace videocapturemodule
 {
 DeviceInfoImpl::DeviceInfoImpl(const WebRtc_Word32 id)
     : _id(id), _apiLock(*RWLockWrapper::CreateRWLock()), _lastUsedDeviceName(NULL),
-      _lastUsedDeviceNameLength(0), _defaultOrientation(kOrientationLandscapeLeft)
+      _lastUsedDeviceNameLength(0), _defaultOrientation(kOrientationLandscapeLeft),
+      _lockedOrientation(kOrientationLandscapeLeft), _orientationLock(false)
 {
 }
 
@@ -401,6 +402,21 @@ WebRtc_Word32 DeviceInfoImpl::SetDefaultOrientation(const char* deviceUniqueIdUT
     _defaultOrientation = orientation;
     return 0;
 }
+  
+WebRtc_Word32 DeviceInfoImpl::SetLockedOrientation(const char* deviceUniqueIdUTF8,
+                                                   VideoCaptureOrientation orientation)
+{
+    _lockedOrientation = orientation;
+    return 0;
+}
+  
+WebRtc_Word32 DeviceInfoImpl::EnableOrientationLock(const char* deviceUniqueIdUTF8,
+                                                    const bool enable)
+{
+    _orientationLock = enable;
+    return 0;
+}
+
 } //namespace videocapturemodule
 } // namespace webrtc
 

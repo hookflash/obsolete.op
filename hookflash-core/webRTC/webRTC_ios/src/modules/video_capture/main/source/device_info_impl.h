@@ -42,6 +42,12 @@ public:
     virtual WebRtc_Word32 SetDefaultOrientation(
         const char* deviceUniqueIdUTF8,
         VideoCaptureOrientation orientation);
+    virtual WebRtc_Word32 SetLockedOrientation(
+        const char* deviceUniqueIdUTF8,
+        VideoCaptureOrientation orientation);
+    virtual WebRtc_Word32 EnableOrientationLock(
+        const char* deviceUniqueIdUTF8,
+        const bool enable);
 
 protected:
     /* Initialize this object*/
@@ -66,6 +72,8 @@ protected:
     char* _lastUsedDeviceName;
     WebRtc_UWord32 _lastUsedDeviceNameLength;
     VideoCaptureOrientation _defaultOrientation;
+    VideoCaptureOrientation _lockedOrientation;
+    bool _orientationLock;
 };
 } //namespace videocapturemodule
 } // namespace webrtc

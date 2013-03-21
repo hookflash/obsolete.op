@@ -145,6 +145,8 @@ VideoCaptureImpl::VideoCaptureImpl(const WebRtc_Word32 id)
     : _id(id), _deviceUniqueId(NULL), _apiCs(*CriticalSectionWrapper::CreateCriticalSection()),
       _captureDelay(0), _requestedCapability(),
       _defaultFrameOrientation(kOrientationLandscapeLeft),
+      _lockedFrameOrientation(kOrientationLandscapeLeft),
+      _captureOrientationLock(false),
       _callBackCs(*CriticalSectionWrapper::CreateCriticalSection()),
       _lastProcessTime(TickTime::Now()),
       _lastFrameRateCallbackTime(TickTime::Now()), _frameRateCallBack(false),
@@ -213,12 +215,14 @@ WebRtc_Word32 VideoCaptureImpl::DeRegisterCaptureCallback()
 WebRtc_Word32 VideoCaptureImpl::SetCaptureDelay(WebRtc_Word32 delayMS)
 {
     CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
     _captureDelay = delayMS;
     return 0;
 }
 WebRtc_Word32 VideoCaptureImpl::CaptureDelay()
 {
     CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
     return _setCaptureDelay;
 }
 
@@ -447,6 +451,22 @@ WebRtc_Word32 VideoCaptureImpl::SetDefaultCaptureOrientation(VideoCaptureOrienta
     CriticalSectionScoped cs(&_apiCs);
     CriticalSectionScoped cs2(&_callBackCs);
     _defaultFrameOrientation = orientation;
+    return 0;
+}
+  
+WebRtc_Word32 VideoCaptureImpl::SetLockedCaptureOrientation(VideoCaptureOrientation orientation)
+{
+    CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
+    _lockedFrameOrientation = orientation;
+    return 0;
+}
+  
+WebRtc_Word32 VideoCaptureImpl::EnableCaptureOrientationLock(const bool enable)
+{
+    CriticalSectionScoped cs(&_apiCs);
+    CriticalSectionScoped cs2(&_callBackCs);
+    _captureOrientationLock = enable;
     return 0;
 }
 

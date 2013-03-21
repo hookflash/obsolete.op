@@ -160,6 +160,62 @@ private:
     WebRtc_Word64 _writtenAudioMS;
     WebRtc_Word64 _writtenVideoMS;
 };
+  
+class MP4Recorder : public FileRecorderImpl
+{
+public:
+    MP4Recorder(WebRtc_UWord32 instanceID, FileFormats fileFormat);
+    virtual ~MP4Recorder();
+    
+    // FileRecorder functions.
+    virtual WebRtc_Word32 StartRecordingVideoFile(
+                                                  const char* fileName,
+                                                  const CodecInst& audioCodecInst,
+                                                  const VideoCodec& videoCodecInst,
+                                                  ACMAMRPackingFormat amrFormat = AMRFileStorage,
+                                                  bool videoOnly = false);
+    virtual WebRtc_Word32 StopRecording();
+    virtual WebRtc_Word32 RecordVideoToFile(const VideoFrame& videoFrame);
+    
+  protected:
+    virtual WebRtc_Word32 WriteEncodedAudioData(
+                                                const WebRtc_Word8*  audioBuffer,
+                                                WebRtc_UWord16 bufferLength,
+                                                WebRtc_UWord16 millisecondsOfData,
+                                                const TickTime* playoutTS);
+  private:
+    static bool Run(ThreadObj threadObj);
+    bool Process();
+    
+    bool StartThread();
+    bool StopThread();
+    
+    WebRtc_Word32 EncodeAndWriteVideoToFile(VideoFrame& videoFrame);
+    WebRtc_Word32 ProcessAudio();
+    
+    WebRtc_Word32 CalcI420FrameSize() const;
+    WebRtc_Word32 SetUpVideoEncoder();
+    
+    VideoCodec _videoCodecInst;
+    bool _videoOnly;
+    
+    ListWrapper _audioFramesToWrite;
+    bool _firstAudioFrameReceived;
+    
+    VideoFramesQueue* _videoFramesQueue;
+    
+    FrameScaler* _frameScaler;
+    VideoCoder* _videoEncoder;
+    WebRtc_Word32 _videoMaxPayloadSize;
+    EncodedVideoData _videoEncodedData;
+    
+    ThreadWrapper* _thread;
+    EventWrapper& _timeEvent;
+    CriticalSectionWrapper* _critSec;
+    WebRtc_Word64 _writtenVideoFramesCounter;
+    WebRtc_Word64 _writtenAudioMS;
+    WebRtc_Word64 _writtenVideoMS;
+};
 #endif // WEBRTC_MODULE_UTILITY_VIDEO
 } // namespace webrtc
 #endif // WEBRTC_MODULES_UTILITY_SOURCE_FILE_RECORDER_IMPL_H_

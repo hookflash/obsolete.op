@@ -393,7 +393,7 @@ int ViECaptureImpl::SetDefaultCapturedFrameOrientation(
     const int capture_id,
     const CapturedFrameOrientation orientation) {
   WEBRTC_TRACE(kTraceApiCall, kTraceVideo, ViEId(shared_data_->instance_id()),
-               "%s(rotation: %d)", __FUNCTION__, orientation);
+               "%s(orientation: %d)", __FUNCTION__, orientation);
   
   ViEInputManagerScoped is(*(shared_data_->input_manager()));
   ViECapturer* vie_capture = is.Capture(capture_id);
@@ -417,6 +417,63 @@ int ViECaptureImpl::SetDefaultCapturedFrameOrientation(
   return 0;
 }
 
+int ViECaptureImpl::SetCapturedFrameLockedOrientation(
+    const int capture_id,
+    const CapturedFrameOrientation orientation)
+{
+  WEBRTC_TRACE(kTraceApiCall, kTraceVideo, ViEId(shared_data_->instance_id()),
+               "%s(orientation: %d)", __FUNCTION__, orientation);
+  
+  ViEInputManagerScoped is(*(shared_data_->input_manager()));
+  ViECapturer* vie_capture = is.Capture(capture_id);
+  if (!vie_capture) {
+    WEBRTC_TRACE(kTraceError, kTraceVideo,
+                 ViEId(shared_data_->instance_id(), capture_id),
+                 "%s: Capture device %d doesn't exist", __FUNCTION__,
+                 capture_id);
+    shared_data_->SetLastError(kViECaptureDeviceDoesNotExist);
+    return -1;
+  }
+  if (vie_capture->SetCapturedFramesLockOrientation(orientation) != 0) {
+    shared_data_->SetLastError(kViECaptureDeviceUnknownError);
+    return -1;
+  }
+  if (shared_data_->input_manager()->SetLockedOrientation(
+        vie_capture->CurrentDeviceName(), orientation) != 0) {
+    shared_data_->SetLastError(kViECaptureDeviceUnknownError);
+    return -1;
+  }
+  return 0;
+}
+
+int ViECaptureImpl::EnableCapturedFrameOrientationLock(
+    const int capture_id,
+    const bool enable)
+{
+  WEBRTC_TRACE(kTraceApiCall, kTraceVideo, ViEId(shared_data_->instance_id()),
+               "%s(enabled: %s)", __FUNCTION__, enable ? "true" : "false");
+  
+  ViEInputManagerScoped is(*(shared_data_->input_manager()));
+  ViECapturer* vie_capture = is.Capture(capture_id);
+  if (!vie_capture) {
+    WEBRTC_TRACE(kTraceError, kTraceVideo,
+                 ViEId(shared_data_->instance_id(), capture_id),
+                 "%s: Capture device %d doesn't exist", __FUNCTION__,
+                 capture_id);
+    shared_data_->SetLastError(kViECaptureDeviceDoesNotExist);
+    return -1;
+  }
+  if (vie_capture->EnableCapturedFrameOrientationLock(enable) != 0) {
+    shared_data_->SetLastError(kViECaptureDeviceUnknownError);
+    return -1;
+  }
+  if (shared_data_->input_manager()->EnableOrientationLock(
+        vie_capture->CurrentDeviceName(), enable) != 0) {
+    shared_data_->SetLastError(kViECaptureDeviceUnknownError);
+    return -1;
+  }
+  return 0;
+}
 
 int ViECaptureImpl::SetCaptureDelay(const int capture_id,
                                     const unsigned int capture_delay_ms) {

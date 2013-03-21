@@ -22,6 +22,7 @@
 #include "video_engine/include/vie_capture.h"
 #include "video_engine/vie_defines.h"
 #include "video_engine/vie_frame_provider_base.h"
+#include "vie_file_recorder.h"
 
 namespace webrtc {
 
@@ -90,6 +91,12 @@ class ViECapturer
         
   // Sets default orientation for incoming captured frames.
   WebRtc_Word32 SetDefaultCapturedFramesOrientation(const CapturedFrameOrientation orientation);
+        
+  // Sets orientation for incoming captured frames when frame lock is enabled.
+  WebRtc_Word32 SetCapturedFramesLockOrientation(const CapturedFrameOrientation orientation);
+      
+  // Enables/disables video orientation lock.
+  WebRtc_Word32 EnableCapturedFrameOrientationLock(bool enable);
 
   // Effect filter.
   WebRtc_Word32 RegisterEffectFilter(ViEEffectFilter* effect_filter);
@@ -107,6 +114,9 @@ class ViECapturer
 
   // Set device image.
   WebRtc_Word32 SetCaptureDeviceImage(const VideoFrame& capture_device_image);
+  
+  // Recording.
+  ViEFileRecorder& GetCaptureFileRecorder();
 
  protected:
   ViECapturer(int capture_id,
@@ -217,6 +227,8 @@ class ViECapturer
   EncodedVideoData decode_buffer_;
   bool decoder_initialized_;
   CaptureCapability requested_capability_;
+        
+  ViEFileRecorder file_recorder_;
 
   VideoFrame capture_device_image_;
 };

@@ -220,6 +220,16 @@ class WEBRTC_DLLEXPORT ViECapture {
   // Used on mobile devices with rotates cameras.
   virtual int SetDefaultCapturedFrameOrientation(const int capture_id,
                                                  const CapturedFrameOrientation orientation) = 0;
+  
+  // Sets value for video frame orientation when video rotation is locked.
+  // Used on mobile devices with rotates cameras.
+  virtual int SetCapturedFrameLockedOrientation(const int capture_id,
+                                                const CapturedFrameOrientation orientation) = 0;
+  
+  // Enables captured frame orientation locking.
+  // Used on mobile devices with rotates cameras.
+  virtual int EnableCapturedFrameOrientationLock(const int capture_id,
+                                                 const bool enable) = 0;
 
   // This function sets the expected delay from when a video frame is captured
   // to when that frame is delivered to VideoEngine.

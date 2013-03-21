@@ -177,6 +177,22 @@ VCMCodecDataBase::Codec(WebRtc_UWord8 listId, VideoCodec *settings)
             break;
         }
 #endif
+#ifdef VIDEOCODEC_H264
+        case VCM_H264_IDX:
+        {
+            strncpy(settings->plName, "H264", 5);
+            settings->codecType = kVideoCodecH264;
+            // 96 to 127 dynamic payload types for video codecs
+            settings->plType = VCM_H264_PAYLOAD_TYPE;
+            settings->startBitrate = 100;
+            settings->minBitrate = VCM_MIN_BITRATE;
+            settings->maxBitrate = 0;
+            settings->maxFramerate = VCM_DEFAULT_FRAME_RATE;
+            settings->width = VCM_DEFAULT_CODEC_WIDTH;
+            settings->height = VCM_DEFAULT_CODEC_HEIGHT;
+            break;
+        }
+#endif
 #ifdef VIDEOCODEC_I420
     case VCM_I420_IDX:
         {

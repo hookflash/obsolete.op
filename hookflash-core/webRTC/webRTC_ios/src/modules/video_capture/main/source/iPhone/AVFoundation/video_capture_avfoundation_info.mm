@@ -120,76 +120,114 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundationInfo::GetOrientation(const char* dev
                  "%s:%d", __FUNCTION__, __LINE__);
   
 
-    NSNumber* deviceIndex = [_captureInfo getCaptureDeviceIndex:deviceUniqueIdUTF8];
-    UIDeviceOrientation deviceOrientation = [_captureInfo getDeviceOrientation];
-    if ([deviceIndex intValue] == FRONT_CAMERA_INDEX)
+    if (!_orientationLock)
     {
-        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+        NSNumber* deviceIndex = [_captureInfo getCaptureDeviceIndex:deviceUniqueIdUTF8];
+        UIDeviceOrientation deviceOrientation = [_captureInfo getDeviceOrientation];
+        if ([deviceIndex intValue] == FRONT_CAMERA_INDEX)
         {
-            orientation = kCameraRotate180;
+            if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+            {
+                orientation = kCameraRotate180;
+            }
+            else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+            {
+                orientation = kCameraRotate270;
+            }
+            else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+            {
+                orientation = kCameraRotate0;
+            }
+            else if (deviceOrientation == UIDeviceOrientationPortrait)
+            {
+                orientation = kCameraRotate90;
+            }
+            else
+            {
+                if (_defaultOrientation == kOrientationLandscapeLeft)
+                    orientation = kCameraRotate180;
+                else if (_defaultOrientation == kOrientationPortraitUpsideDown)
+                    orientation = kCameraRotate270;
+                else if (_defaultOrientation == kOrientationLandscapeRight)
+                    orientation = kCameraRotate0;
+                else if (_defaultOrientation == kOrientationPortrait)
+                    orientation = kCameraRotate90;
+                else
+                    orientation = kCameraRotate180;
+            }
         }
-        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+        else if ([deviceIndex intValue] == BACK_CAMERA_INDEX)
         {
-            orientation = kCameraRotate270;
-        }
-        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
-        {
-            orientation = kCameraRotate0;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortrait)
-        {
-            orientation = kCameraRotate90;
+            if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+            {
+                orientation = kCameraRotate0;
+            }
+            else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+            {
+                orientation = kCameraRotate270;
+            }
+            else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+            {
+                orientation = kCameraRotate180;
+            }
+            else if (deviceOrientation == UIDeviceOrientationPortrait)
+            {
+                orientation = kCameraRotate90;
+            }
+            else
+            {
+                if (_defaultOrientation == kOrientationLandscapeLeft)
+                    orientation = kCameraRotate0;
+                else if (_defaultOrientation == kOrientationPortraitUpsideDown)
+                    orientation = kCameraRotate270;
+                else if (_defaultOrientation == kOrientationLandscapeRight)
+                    orientation = kCameraRotate180;
+                else if (_defaultOrientation == kOrientationPortrait)
+                    orientation = kCameraRotate90;
+                else
+                    orientation = kCameraRotate0;
+            }
         }
         else
         {
-            if (_defaultOrientation == kOrientationLandscapeLeft)
-                orientation = kCameraRotate180;
-            else if (_defaultOrientation == kOrientationPortraitUpsideDown)
-                orientation = kCameraRotate270;
-            else if (_defaultOrientation == kOrientationLandscapeRight)
-                orientation = kCameraRotate0;
-            else if (_defaultOrientation == kOrientationPortrait)
-                orientation = kCameraRotate90;
-            else
-                orientation = kCameraRotate180;
-        }
-    }
-    else if ([deviceIndex intValue] == BACK_CAMERA_INDEX)
-    {
-        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
-        {
             orientation = kCameraRotate0;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
-        {
-            orientation = kCameraRotate270;
-        }
-        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
-        {
-            orientation = kCameraRotate180;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortrait)
-        {
-            orientation = kCameraRotate90;
-        }
-        else
-        {
-            if (_defaultOrientation == kOrientationLandscapeLeft)
-                orientation = kCameraRotate0;
-            else if (_defaultOrientation == kOrientationPortraitUpsideDown)
-                orientation = kCameraRotate270;
-            else if (_defaultOrientation == kOrientationLandscapeRight)
-                orientation = kCameraRotate180;
-            else if (_defaultOrientation == kOrientationPortrait)
-                orientation = kCameraRotate90;
-            else
-                orientation = kCameraRotate0;
         }
     }
     else
     {
-        orientation = kCameraRotate0;
+        NSNumber* deviceIndex = [_captureInfo getCaptureDeviceIndex:deviceUniqueIdUTF8];
+        if ([deviceIndex intValue] == FRONT_CAMERA_INDEX)
+        {
+            if (_lockedOrientation == kOrientationLandscapeLeft)
+                orientation = kCameraRotate180;
+            else if (_lockedOrientation == kOrientationPortraitUpsideDown)
+                orientation = kCameraRotate270;
+            else if (_lockedOrientation == kOrientationLandscapeRight)
+                orientation = kCameraRotate0;
+            else if (_lockedOrientation == kOrientationPortrait)
+                orientation = kCameraRotate90;
+            else
+                orientation = kCameraRotate180;
+        }
+        else if ([deviceIndex intValue] == BACK_CAMERA_INDEX)
+        {
+            if (_lockedOrientation == kOrientationLandscapeLeft)
+                orientation = kCameraRotate0;
+            else if (_lockedOrientation == kOrientationPortraitUpsideDown)
+                orientation = kCameraRotate270;
+            else if (_lockedOrientation == kOrientationLandscapeRight)
+                orientation = kCameraRotate180;
+            else if (_lockedOrientation == kOrientationPortrait)
+                orientation = kCameraRotate90;
+            else
+                orientation = kCameraRotate0;
+        }
+        else
+        {
+            orientation = kCameraRotate0;
+        }
     }
+
     return 0;
 }
 

@@ -183,7 +183,7 @@ void ViEFileRecorder::RecordVideoFrame(const VideoFrame& video_frame) {
   CriticalSectionScoped lock(*recorder_cs_);
 
   if (file_recorder_ && file_recorder_->IsRecording()) {
-    if (!IsRecordingFileFormat(kFileFormatAviFile))
+    if (!IsRecordingFileFormat(kFileFormatAviFile) && !IsRecordingFileFormat(kFileFormatMP4File))
       return;
 
     // Compensate for frame delay in order to get audio/video sync when

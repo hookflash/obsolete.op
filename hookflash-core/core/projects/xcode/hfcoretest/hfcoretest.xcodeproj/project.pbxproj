@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E2085BB216F0E8720094D0A4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2085BB116F0E8720094D0A4 /* MobileCoreServices.framework */; };
 		E263906416144BF700B97476 /* MediaEngineDelegateWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = E263906316144BF700B97476 /* MediaEngineDelegateWrapper.mm */; };
 		E293ABF51600CF95001212DB /* libaec_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBC5591600AFDC00E6BE31 /* libaec_ios.a */; };
 		E293ABF61600CF95001212DB /* libaecm_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E2CBC55B1600AFDC00E6BE31 /* libaecm_ios.a */; };
@@ -1628,6 +1629,7 @@
 		E20825FB15627B1000858F36 /* modules.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules.xcodeproj; path = ../../../../webRTC/webRTC_ios/src/modules/modules.xcodeproj; sourceTree = "<group>"; };
 		E208271815627B1A00858F36 /* common_video.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video.xcodeproj; path = ../../../../webRTC/webRTC_ios/src/common_video/common_video.xcodeproj; sourceTree = "<group>"; };
 		E208272B15627B2500858F36 /* common_audio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio.xcodeproj; path = ../../../../webRTC/webRTC_ios/src/common_audio/common_audio.xcodeproj; sourceTree = "<group>"; };
+		E2085BB116F0E8720094D0A4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/MobileCoreServices.framework; sourceTree = DEVELOPER_DIR; };
 		E209BDCF14A018B000550A26 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS5.0.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		E209BDD414A018E100550A26 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E209BDD614A0197B00550A26 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = SDKs/MacOSX10.6.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -1729,6 +1731,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2085BB216F0E8720094D0A4 /* MobileCoreServices.framework in Frameworks */,
 				E2CD7A3A16DE6D5E00C53A61 /* CoreImage.framework in Frameworks */,
 				E2A3065116700D52008D0E2B /* libcryptopp_ios.a in Frameworks */,
 				E2A3065216700D52008D0E2B /* libudns_ios.a in Frameworks */,
@@ -2335,6 +2338,7 @@
 		E2DD7B77141A26AE006D89BE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2085BB116F0E8720094D0A4 /* MobileCoreServices.framework */,
 				E2CD7A3916DE6D5E00C53A61 /* CoreImage.framework */,
 				E293AC3F1600E79C001212DB /* CoreMedia.framework */,
 				E293AC3D1600E76D001212DB /* CoreVideo.framework */,

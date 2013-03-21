@@ -38,6 +38,7 @@ namespace webrtc {
 #define VCM_RED_PAYLOAD_TYPE        96
 #define VCM_ULPFEC_PAYLOAD_TYPE     97
 #define VCM_VP8_PAYLOAD_TYPE       120
+#define VCM_H264_PAYLOAD_TYPE      122
 #define VCM_I420_PAYLOAD_TYPE      124
 
 enum VCMNackProperties {

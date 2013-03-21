@@ -61,8 +61,14 @@ public:
     WebRtc_Word32 PlayoutPositionMs(WebRtc_UWord32& positionMs) const;
     WebRtc_Word32 IncomingAudioData(const WebRtc_Word8*  audioBuffer,
                                     const WebRtc_UWord32 bufferLength);
+    WebRtc_Word32 IncomingMP4AudioData(const WebRtc_Word8*  audioBuffer,
+                                       const WebRtc_UWord32 bufferLength,
+                                       const WebRtc_UWord32 timeStamp);
     WebRtc_Word32 IncomingAVIVideoData(const WebRtc_Word8*  audioBuffer,
                                        const WebRtc_UWord32 bufferLength);
+    WebRtc_Word32 IncomingMP4VideoData(const WebRtc_Word8*  audioBuffer,
+                                       const WebRtc_UWord32 bufferLength,
+                                       const WebRtc_UWord32 timeStamp);
     WebRtc_Word32 StartRecordingAudioFile(
         const char*  fileName,
         const FileFormats    format,
@@ -166,6 +172,7 @@ private:
     // audio frame.
     WebRtc_Word32 IncomingAudioVideoData(const WebRtc_Word8*  buffer,
                                          const WebRtc_UWord32 bufferLength,
+                                         const WebRtc_UWord32 timeStamp,
                                          const bool video);
 
     // Open/creates file specified by fileName for writing (relative path is

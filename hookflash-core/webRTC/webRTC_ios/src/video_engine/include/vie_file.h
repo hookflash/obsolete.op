@@ -123,6 +123,15 @@ class WEBRTC_DLLEXPORT ViEFile {
   // Stops the audio from a file from being played locally.
   virtual int StopPlayAudioLocally(const int file_id,
                                    const int audio_channel) = 0;
+  
+  // This function starts recording the video captured from camera.
+  virtual int StartRecordCaptureVideo(
+       const int capture_id,
+       const char* file_name_utf8,
+       AudioSource audio_source,
+       const CodecInst& audio_codec,
+       const VideoCodec& video_codec,
+       const FileFormats file_format = kFileFormatAviFile) = 0;
 
   // This function starts recording the video transmitted to another endpoint.
   virtual int StartRecordOutgoingVideo(
@@ -141,6 +150,9 @@ class WEBRTC_DLLEXPORT ViEFile {
       const CodecInst& audio_codec,
       const VideoCodec& video_codec,
       const FileFormats file_format = kFileFormatAviFile) = 0;
+  
+  // Stops the file recording of the capture stream.
+  virtual int StopRecordCaptureVideo(const int capture_id) = 0;
 
   // Stops the file recording of the outgoing stream.
   virtual int StopRecordOutgoingVideo(const int video_channel) = 0;

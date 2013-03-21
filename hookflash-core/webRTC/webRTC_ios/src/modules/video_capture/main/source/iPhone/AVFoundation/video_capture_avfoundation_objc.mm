@@ -219,7 +219,7 @@
         AVCaptureConnection* connection = [_captureDecompressedVideoOutput connectionWithMediaType:AVMediaTypeVideo];
         [connection setVideoMinFrameDuration:CMTimeMake(1, _frameRate)];
         //[connection setVideoMaxFrameDuration:CMTimeMake(1, _frameRate)];
-                [connection setVideoMaxFrameDuration:CMTimeMake(1, 1)];
+        [connection setVideoMaxFrameDuration:CMTimeMake(1, 1)];
     }
     else 
     {

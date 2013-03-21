@@ -51,6 +51,10 @@ class ViECaptureImpl
                                       const RotateCapturedFrame rotation);
   virtual int SetDefaultCapturedFrameOrientation(const int capture_id,
                                                  const CapturedFrameOrientation orientation);
+  virtual int SetCapturedFrameLockedOrientation(const int capture_id,
+                                                const CapturedFrameOrientation orientation);
+  virtual int EnableCapturedFrameOrientationLock(const int capture_id,
+                                                 const bool enable);
   virtual int SetCaptureDelay(const int capture_id,
                               const unsigned int capture_delay_ms);
   virtual int NumberOfCapabilities(const char* unique_idUTF8,

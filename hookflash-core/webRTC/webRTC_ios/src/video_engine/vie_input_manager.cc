@@ -31,7 +31,8 @@ ViEInputManager::ViEInputManager(const int engine_id)
       map_cs_(CriticalSectionWrapper::CreateCriticalSection()),
       vie_frame_provider_map_(),
       capture_device_info_(NULL),
-      module_process_thread_(NULL) {
+      module_process_thread_(NULL),
+      voice_engine_(NULL) {
   WEBRTC_TRACE(webrtc::kTraceMemory, webrtc::kTraceVideo, ViEId(engine_id_),
                "%s", __FUNCTION__);
 
@@ -175,6 +176,45 @@ int ViEInputManager::SetDefaultOrientation(const char* device_unique_idUTF8,
   }
   return capture_device_info_->SetDefaultOrientation(device_unique_idUTF8,
                                                      module_orientation);
+}
+  
+int ViEInputManager::SetLockedOrientation(const char* device_unique_idUTF8,
+                                          CapturedFrameOrientation orientation) {
+  WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
+               "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
+               device_unique_idUTF8);
+  assert(capture_device_info_);
+  VideoCaptureOrientation module_orientation;
+  
+  // Copy from module type to public type.
+  switch (orientation) {
+    case CapturedFrameOrientation_LandscapeLeft:
+      module_orientation = kOrientationLandscapeLeft;
+      break;
+    case CapturedFrameOrientation_PortraitUpsideDown:
+      module_orientation = kOrientationPortraitUpsideDown;
+      break;
+    case CapturedFrameOrientation_LandscapeRight:
+      module_orientation = kOrientationLandscapeRight;
+      break;
+    case CapturedFrameOrientation_Portrait:
+      module_orientation = kOrientationPortrait;
+      break;
+  }
+  
+  return capture_device_info_->SetLockedOrientation(device_unique_idUTF8,
+                                                    module_orientation);
+}
+  
+int ViEInputManager::EnableOrientationLock(const char* device_unique_idUTF8,
+                                           const bool enable) {
+  WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
+               "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
+               device_unique_idUTF8);
+  assert(capture_device_info_);
+  
+  return capture_device_info_->EnableOrientationLock(device_unique_idUTF8,
+                                                     enable);
 }
 
 int ViEInputManager::DisplayCaptureSettingsDialogBox(
@@ -482,6 +522,19 @@ bool ViEInputManager::GetFreeCaptureId(int& freecapture_id) {
     }
   }
   return false;
+}
+  
+int ViEInputManager::SetVoiceEngine(VoiceEngine* voice_engine) {
+  
+  // Write lock to make sure no one is using input manager.
+  ViEManagerWriteScoped wl(*this);
+
+  voice_engine_ = voice_engine;
+  return 0;
+}
+
+VoiceEngine* ViEInputManager::GetVoiceEngine() {
+  return voice_engine_;
 }
 
 void ViEInputManager::ReturnCaptureId(int capture_id) {

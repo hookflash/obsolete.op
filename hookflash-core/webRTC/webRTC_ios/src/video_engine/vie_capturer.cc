@@ -58,7 +58,8 @@ ViECapturer::ViECapturer(int capture_id,
       encode_complete_callback_(NULL),
       vie_encoder_(NULL),
       vcm_(NULL),
-      decoder_initialized_(false) {
+      decoder_initialized_(false),
+      file_recorder_(capture_id) {
   WEBRTC_TRACE(kTraceMemory, kTraceVideo, ViEId(engine_id, capture_id),
                "ViECapturer::ViECapturer(capture_id: %d, engine_id: %d)",
                capture_id, engine_id);
@@ -318,6 +319,31 @@ WebRtc_Word32 ViECapturer::SetDefaultCapturedFramesOrientation(
       break;
   }
   return capture_module_->SetDefaultCaptureOrientation(converted_orientation);
+}
+  
+WebRtc_Word32 ViECapturer::SetCapturedFramesLockOrientation(
+    const CapturedFrameOrientation rotation) {
+    VideoCaptureOrientation converted_orientation = kOrientationLandscapeLeft;
+    switch (rotation) {
+      case CapturedFrameOrientation_LandscapeLeft:
+        converted_orientation = kOrientationLandscapeLeft;
+        break;
+      case CapturedFrameOrientation_PortraitUpsideDown:
+        converted_orientation = kOrientationPortraitUpsideDown;
+        break;
+      case CapturedFrameOrientation_LandscapeRight:
+        converted_orientation = kOrientationLandscapeRight;
+        break;
+      case CapturedFrameOrientation_Portrait:
+        converted_orientation = kOrientationPortrait;
+        break;
+    }
+    return capture_module_->SetLockedCaptureOrientation(converted_orientation);
+}
+  
+WebRtc_Word32 ViECapturer::EnableCapturedFrameOrientationLock(bool enable)
+{
+    return capture_module_->EnableCaptureOrientationLock(enable);
 }
 
 int ViECapturer::IncomingFrame(unsigned char* video_frame,
@@ -626,6 +652,10 @@ void ViECapturer::DeliverI420Frame(VideoFrame& video_frame) {
                               video_frame.TimeStamp(), video_frame.Width(),
                               video_frame.Height());
   }
+    
+  // Record raw frame.
+  file_recorder_.RecordVideoFrame(video_frame);
+
   // Deliver the captured frame to all observers (channels, renderer or file).
   ViEFrameProviderBase::DeliverFrame(video_frame);
 }
@@ -926,6 +956,10 @@ void ViECapturer::OnFaceDetected(const WebRtc_Word32 id) {
 WebRtc_Word32 ViECapturer::SetCaptureDeviceImage(
     const VideoFrame& capture_device_image) {
   return capture_module_->StartSendImage(capture_device_image, 10);
+}
+  
+ViEFileRecorder& ViECapturer::GetCaptureFileRecorder() {
+  return file_recorder_;
 }
 
 }  // namespace webrtc

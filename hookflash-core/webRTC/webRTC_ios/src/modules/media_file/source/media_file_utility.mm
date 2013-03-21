@@ -21,6 +21,7 @@
 
 #ifdef WEBRTC_MODULE_UTILITY_VIDEO
     #include "avi_file.h"
+    #include "mp4_file.h"
 #endif
 
 #if (defined(WIN32) || defined(WINCE))
@@ -78,7 +79,8 @@ ModuleFileUtility::ModuleFileUtility(const WebRtc_Word32 id)
       ,
       _aviAudioInFile(0),
       _aviVideoInFile(0),
-      _aviOutFile(0)
+      _aviOutFile(0),
+      _mp4OutFile(0)
 #endif
 {
     WEBRTC_TRACE(kTraceMemory, kTraceFile, _id,
@@ -423,7 +425,84 @@ WebRtc_Word32 ModuleFileUtility::ReadAviVideoData(
         return length;
     }
 }
+    
+WebRtc_Word32 ModuleFileUtility::InitMP4Writing(
+    const char* filename,
+    const CodecInst& audioCodecInst,
+    const VideoCodec& videoCodecInst,
+    const bool videoOnly /*= false*/)
+{
+    _writing = false;
+    
+    delete _mp4OutFile;
+    _mp4OutFile = new MP4File( );
+    
+    if (_mp4OutFile->CreateVideoStream(videoCodecInst.width, videoCodecInst.height, videoCodecInst.maxBitrate) != 0)
+    {
+        return -1;
+    }
+    
+    if(!videoOnly)
+    {
+        if(_mp4OutFile->CreateAudioStream(audioCodecInst.plfreq, audioCodecInst.rate) != 0)
+        {
+            return -1;
+        }
+    }
+    _mp4OutFile->Create(filename);
+    _writing = true;
+    return 0;
+}
 
+WebRtc_Word32 ModuleFileUtility::WriteMP4AudioData(
+   const WebRtc_Word8* buffer,
+   WebRtc_UWord32 bufferLengthInBytes,
+   WebRtc_UWord32 timeStamp)
+{
+    if( _mp4OutFile != 0)
+    {
+        return _mp4OutFile->WriteAudio(
+           reinterpret_cast<const WebRtc_UWord8*>(buffer),
+           bufferLengthInBytes,
+           timeStamp);
+    }
+    else
+    {
+        WEBRTC_TRACE(kTraceError, kTraceFile, _id, "MP4 file not initialized");
+        return -1;
+    }
+}
+
+WebRtc_Word32 ModuleFileUtility::WriteMP4VideoData(
+   const WebRtc_Word8* buffer,
+   WebRtc_UWord32 bufferLengthInBytes,
+   WebRtc_UWord32 timeStamp)
+{
+    if( _mp4OutFile != 0)
+    {
+        return _mp4OutFile->WriteVideo(
+           reinterpret_cast<const WebRtc_UWord8*>(buffer),
+           bufferLengthInBytes,
+           timeStamp);
+    }
+    else
+    {
+        WEBRTC_TRACE(kTraceError, kTraceFile, _id, "MP4 file not initialized");
+        return -1;
+    }
+}
+
+
+WebRtc_Word32 ModuleFileUtility::CloseMP4File( )
+{
+    if( _writing && _mp4OutFile)
+    {
+        delete _mp4OutFile;
+        _mp4OutFile = 0;
+    }
+    return 0;
+}
+    
 WebRtc_Word32 ModuleFileUtility::VideoCodecInst(VideoCodec& codecInst)
 {
     WEBRTC_TRACE(kTraceStream, kTraceFile, _id,
