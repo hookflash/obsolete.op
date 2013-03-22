@@ -77,7 +77,8 @@ class ViEFileImpl
       AudioSource audio_source,
       const CodecInst& audio_codec,
       const VideoCodec& video_codec,
-      const FileFormats file_format = kFileFormatAviFile);
+      const FileFormats file_format = kFileFormatAviFile,
+      bool saveVideoToLibrary = false);
   virtual int StartRecordOutgoingVideo(
       const int video_channel,
       const char* file_nameUTF8,

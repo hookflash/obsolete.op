@@ -32,9 +32,13 @@ void MediaEngineDelegateWrapper::onMediaEngineAudioRouteChanged(IMediaEngine::Ou
   }
 }
 
-
 void MediaEngineDelegateWrapper::onMediaEngineFaceDetected()
 {
     printf("******************* FACE DETECTED *******************\n");
+}
+
+void MediaEngineDelegateWrapper::onMediaEngineVideoCaptureRecordStopped()
+{
+    printf("******************* VIDEO RECORDING STOPPED *******************\n");
 }
 

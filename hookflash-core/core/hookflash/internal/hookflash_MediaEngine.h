@@ -163,7 +163,7 @@ namespace hookflash
       virtual void startVideoChannel() = 0;
       virtual void stopVideoChannel() = 0;
       
-      virtual void startRecordVideoCapture(String fileName) = 0;
+      virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false) = 0;
       virtual void stopRecordVideoCapture() = 0;
     };
     
@@ -272,7 +272,7 @@ namespace hookflash
       virtual void startVideoCapture();
       virtual void stopVideoCapture();
       
-      virtual void startRecordVideoCapture(String fileName);
+      virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false);
       virtual void stopRecordVideoCapture();
 
       virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat);
@@ -364,7 +364,7 @@ namespace hookflash
       virtual void internalStartVideoChannel();
       virtual void internalStopVideoChannel();
       
-      virtual void internalStartRecordVideoCapture();
+      virtual void internalStartRecordVideoCapture(String videoRecordFile, bool saveVideoToLibrary);
       virtual void internalStopRecordVideoCapture();
 
     protected:
@@ -442,7 +442,6 @@ namespace hookflash
       bool mAgcEnabled;
       bool mNsEnabled;
       String mVoiceRecordFile;
-      String mVideoRecordFile;
       String mReceiverAddress;
       VideoOrientations mDefaultVideoOrientation;
       VideoOrientations mRecordVideoOrientation;
@@ -498,6 +497,9 @@ namespace hookflash
       bool mLifetimeInProgress;
       CameraTypes mLifetimeWantCameraType;
       bool mLifetimeContinuousVideoCapture;
+      
+      String mLifetimeVideoRecordFile;
+      bool mLifetimeSaveVideoToLibrary;
 
       mutable RecursiveLock mMediaEngineReadyLock;
 

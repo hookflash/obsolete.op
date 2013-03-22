@@ -38,21 +38,24 @@
 
 @interface MP4FileObjC : NSObject
 {
-	AVAssetWriter* assetWriter;
-	AVAssetWriterInput* assetWriterAudioIn;
-	AVAssetWriterInput* assetWriterVideoIn;
+    AVAssetWriter* assetWriter;
+    AVAssetWriterInput* assetWriterAudioIn;
+    AVAssetWriterInput* assetWriterVideoIn;
     AVAssetWriterInputPixelBufferAdaptor* assetWriterVideoInPixelBufferAdaptor;
     dispatch_queue_t movieWritingQueue;
     dispatch_semaphore_t movieWritingSemaphore;
     
     BOOL readyToRecord;
-	BOOL recordingWillBeStopped;
+    BOOL recordingWillBeStopped;
     
     CMTime lastAudioTimeStamp;
     
     NSLock* assetWriterVideoInPixelBufferAdaptorLock;
+  
+    NSURL* movieURL;
+    BOOL saveVideoToLibrary;
     
-	BOOL recording;
+    BOOL recording;
     
     WebRtc_UWord16 videoWidth;
     WebRtc_UWord16 videoHeight;
@@ -61,7 +64,7 @@
     WebRtc_UWord32 audioBitrate;
 }
 
-- (void) createMovie:(NSURL*)movieURL;
+- (void) createMovie:(NSURL*)url andSaveVideoToLibrary:(BOOL)saveToLibrary;
 - (void) setVideoWidth:(WebRtc_UWord16)width andHeight:(WebRtc_UWord16)height andBitrate:(WebRtc_UWord32)bitrate;
 - (void) setAudioSamplerate:(WebRtc_UWord32)samplerate andBitrate:(WebRtc_UWord32)bitrate;
 - (void) close;

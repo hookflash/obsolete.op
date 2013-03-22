@@ -71,7 +71,8 @@ public:
         const CodecInst& audioCodecInst,
         const VideoCodec& videoCodecInst,
         ACMAMRPackingFormat amrFormat = AMRFileStorage,
-        bool videoOnly = false)
+        bool videoOnly = false,
+        bool saveVideoToLibrary = false)
     {
         return -1;
     }
@@ -117,7 +118,8 @@ public:
         const CodecInst& audioCodecInst,
         const VideoCodec& videoCodecInst,
         ACMAMRPackingFormat amrFormat = AMRFileStorage,
-        bool videoOnly = false);
+        bool videoOnly = false,
+        bool saveVideoToLibrary = false);
     virtual WebRtc_Word32 StopRecording();
     virtual WebRtc_Word32 RecordVideoToFile(const VideoFrame& videoFrame);
 
@@ -169,20 +171,21 @@ public:
     
     // FileRecorder functions.
     virtual WebRtc_Word32 StartRecordingVideoFile(
-                                                  const char* fileName,
-                                                  const CodecInst& audioCodecInst,
-                                                  const VideoCodec& videoCodecInst,
-                                                  ACMAMRPackingFormat amrFormat = AMRFileStorage,
-                                                  bool videoOnly = false);
+        const char* fileName,
+        const CodecInst& audioCodecInst,
+        const VideoCodec& videoCodecInst,
+        ACMAMRPackingFormat amrFormat = AMRFileStorage,
+        bool videoOnly = false,
+        bool saveVideoToLibrary =false);
     virtual WebRtc_Word32 StopRecording();
     virtual WebRtc_Word32 RecordVideoToFile(const VideoFrame& videoFrame);
     
   protected:
     virtual WebRtc_Word32 WriteEncodedAudioData(
-                                                const WebRtc_Word8*  audioBuffer,
-                                                WebRtc_UWord16 bufferLength,
-                                                WebRtc_UWord16 millisecondsOfData,
-                                                const TickTime* playoutTS);
+        const WebRtc_Word8*  audioBuffer,
+        WebRtc_UWord16 bufferLength,
+        WebRtc_UWord16 millisecondsOfData,
+        const TickTime* playoutTS);
   private:
     static bool Run(ThreadObj threadObj);
     bool Process();

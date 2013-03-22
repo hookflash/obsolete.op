@@ -131,7 +131,8 @@ class WEBRTC_DLLEXPORT ViEFile {
        AudioSource audio_source,
        const CodecInst& audio_codec,
        const VideoCodec& video_codec,
-       const FileFormats file_format = kFileFormatAviFile) = 0;
+       const FileFormats file_format = kFileFormatAviFile,
+       bool saveVideoToLibrary = false) = 0;
 
   // This function starts recording the video transmitted to another endpoint.
   virtual int StartRecordOutgoingVideo(

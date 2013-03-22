@@ -441,7 +441,8 @@ WebRtc_Word32 AviRecorder::StartRecordingVideoFile(
     const CodecInst& audioCodecInst,
     const VideoCodec& videoCodecInst,
     ACMAMRPackingFormat amrFormat,
-    bool videoOnly)
+    bool videoOnly,
+    bool saveVideoToLibrary)
 {
     _firstAudioFrameReceived = false;
     _videoCodecInst = videoCodecInst;
@@ -449,7 +450,8 @@ WebRtc_Word32 AviRecorder::StartRecordingVideoFile(
 
     if(_moduleFile->StartRecordingVideoFile(fileName, _fileFormat,
                                             audioCodecInst, videoCodecInst,
-                                            videoOnly) != 0)
+                                            videoOnly,
+                                            saveVideoToLibrary) != 0)
     {
         return -1;
     }
@@ -857,7 +859,8 @@ WebRtc_Word32 MP4Recorder::StartRecordingVideoFile(
                                                    const CodecInst& audioCodecInst,
                                                    const VideoCodec& videoCodecInst,
                                                    ACMAMRPackingFormat amrFormat,
-                                                   bool videoOnly)
+                                                   bool videoOnly,
+                                                   bool saveVideoToLibrary)
 {
     _firstAudioFrameReceived = false;
     _videoCodecInst = videoCodecInst;
@@ -865,7 +868,7 @@ WebRtc_Word32 MP4Recorder::StartRecordingVideoFile(
     
     if(_moduleFile->StartRecordingVideoFile(fileName, _fileFormat,
                                             audioCodecInst, videoCodecInst,
-                                            videoOnly) != 0)
+                                            videoOnly, saveVideoToLibrary) != 0)
     {
         return -1;
     }

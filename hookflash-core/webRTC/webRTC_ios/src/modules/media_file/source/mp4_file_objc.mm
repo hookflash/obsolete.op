@@ -250,29 +250,75 @@
     return YES;
 }
 
-- (void)createMovie:(NSURL*)movieURL
+- (void)removeMovieFile
 {
+    NSError *error;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+  
+    BOOL fileExists = [fileManager fileExistsAtPath:[movieURL path]];
+    if (fileExists)
+    {
+        if (![fileManager removeItemAtURL:movieURL error:&error])
+        {
+            char errorString[1024] = "";
+            [[error localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
+            webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
+                         "Failed to delete movie file - %s", errorString);
+        }
+    }
+}
+
+- (void)saveMovieToPhotoAlbum
+{
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    [library writeVideoAtPathToSavedPhotosAlbum:movieURL
+                                completionBlock:^(NSURL *assetURL, NSError *error) {
+                                    if (error)
+                                    {
+                                        char errorString[1024] = "";
+                                        [[error localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
+                                        webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
+                                                         "Failed to init Asset Writer - %s", errorString);
+                                    }
+                                    else
+                                    {
+                                        [self removeMovieFile];
+                                    }
+                                
+                                    dispatch_async(movieWritingQueue, ^{
+                                        [movieURL release];
+                                        readyToRecord = NO;
+                                        recordingWillBeStopped = NO;
+                                        lastAudioTimeStamp = CMTimeMake(0, audioSamplerate);
+                                        self.recording = NO;
+                                        dispatch_semaphore_signal(movieWritingSemaphore);
+                                    });
+                                }];
+    [library release];
+}
+
+- (void)createMovie:(NSURL*)url andSaveVideoToLibrary:(BOOL)saveToLibrary
+{
+    if (saveToLibrary)
+    {
+        movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [url path]]];
+    }
+    else
+    {
+        movieURL = url;
+        [movieURL retain];
+    }
+    saveVideoToLibrary = saveToLibrary;
+  
     dispatch_async(movieWritingQueue, ^{
         
         if (self.recording)
             return;
-        
+      
+        [self removeMovieFile];
+      
         NSError *error;
-        
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        
-        BOOL fileExists = [fileManager fileExistsAtPath:[movieURL path]];
-        if (fileExists)
-        {
-            if (![fileManager removeItemAtURL:movieURL error:&error]) 
-            {
-                char errorString[1024] = "";
-                [[error localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
-                webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
-                                   "Failed to delete movie file - %s", errorString);
-            }
-        }
-        
+      
         assetWriter = [[AVAssetWriter alloc] initWithURL:movieURL fileType:(NSString*)kUTTypeMPEG4 error:&error];
         if (error)
         {
@@ -336,11 +382,22 @@
                         [assetWriterVideoIn release];
                         [assetWriter release];
                         assetWriter = nil;
-                        
-                        readyToRecord = NO;
-                        recordingWillBeStopped = NO;
-                        lastAudioTimeStamp = CMTimeMake(0, audioSamplerate);
-                        self.recording = NO;
+                      
+                        if (saveVideoToLibrary)
+                        {
+                            // sempahore signal is dispached from this function call
+                            [self saveMovieToPhotoAlbum];
+                        }
+                        else
+                        {
+                            [movieURL release];
+                            readyToRecord = NO;
+                            recordingWillBeStopped = NO;
+                            lastAudioTimeStamp = CMTimeMake(0, audioSamplerate);
+                            self.recording = NO;
+                          
+                            dispatch_semaphore_signal(movieWritingSemaphore);
+                        }
                     }
                     else
                     {
@@ -348,9 +405,9 @@
                         [[[assetWriter error] localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
                         webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
                                            "Failed to finish Asset Writer writing - %s", errorString);
+                      
+                        dispatch_semaphore_signal(movieWritingSemaphore);
                     }
-                    
-                    dispatch_semaphore_signal(movieWritingSemaphore);
                 });
             }];
         }
@@ -371,11 +428,22 @@
                 [assetWriterVideoIn release];
                 [assetWriter release];
                 assetWriter = nil;
+              
+                if (saveVideoToLibrary)
+                {
+                    // sempahore signal is dispached from this function call
+                    [self saveMovieToPhotoAlbum];
+                }
+                else
+                {
+                    [movieURL release];
+                    readyToRecord = NO;
+                    recordingWillBeStopped = NO;
+                    lastAudioTimeStamp = CMTimeMake(0, audioSamplerate);
+                    self.recording = NO;
                 
-                readyToRecord = NO;
-                recordingWillBeStopped = NO;
-                lastAudioTimeStamp = CMTimeMake(0, audioSamplerate);
-                self.recording = NO;
+                    dispatch_semaphore_signal(movieWritingSemaphore);
+                }
             }
             else
             {
@@ -383,10 +451,11 @@
                 [[[assetWriter error] localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
                 webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
                                    "Failed to finish Asset Writer writing - %s", errorString);
+              
+                dispatch_semaphore_signal(movieWritingSemaphore);
             }
         }
     });
-    
     
     // timeout is 10 s
     if (dispatch_semaphore_wait(movieWritingSemaphore, dispatch_time(DISPATCH_TIME_NOW, 10LL * NSEC_PER_SEC)) != 0)

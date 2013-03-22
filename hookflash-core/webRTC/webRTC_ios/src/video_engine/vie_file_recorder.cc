@@ -42,7 +42,8 @@ int ViEFileRecorder::StartRecording(const char* file_nameUTF8,
                                     int audio_channel,
                                     const CodecInst& audio_codec_inst,
                                     VoiceEngine* voe_ptr,
-                                    const FileFormats file_format) {
+                                    const FileFormats file_format,
+                                    bool saveVideoToLibrary) {
   CriticalSectionScoped lock(*recorder_cs_);
 
   if (file_recorder_) {
@@ -61,7 +62,8 @@ int ViEFileRecorder::StartRecording(const char* file_nameUTF8,
                                                       audio_codec_inst,
                                                       codec_inst,
                                                       AMRFileStorage,
-                                                      audio_source == NO_AUDIO);
+                                                      audio_source == NO_AUDIO,
+                                                      saveVideoToLibrary);
   if (error) {
     WEBRTC_TRACE(kTraceError, kTraceVideo, instance_id_,
                  "ViEFileRecorder::StartRecording() failed to "

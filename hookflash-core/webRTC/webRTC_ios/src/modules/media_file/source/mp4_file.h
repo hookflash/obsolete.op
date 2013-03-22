@@ -50,7 +50,7 @@ public:
     
     WebRtc_Word32 CreateVideoStream(WebRtc_UWord16 width, WebRtc_UWord16 height, WebRtc_UWord32 bitrate);
     WebRtc_Word32 CreateAudioStream(WebRtc_Word32 samplerate, WebRtc_UWord16 bitrate);
-    WebRtc_Word32 Create(const char* fileName);
+    WebRtc_Word32 Create(const char* fileName, bool saveVideoToLibrary);
     
     WebRtc_Word32 WriteAudio(const WebRtc_UWord8* data, WebRtc_Word32 length,
                              WebRtc_UWord32 timeStamp);

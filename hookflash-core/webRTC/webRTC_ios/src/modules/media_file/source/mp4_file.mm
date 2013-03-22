@@ -153,7 +153,7 @@ WebRtc_Word32 MP4File::WriteVideo(const WebRtc_UWord8* data,
     return static_cast<WebRtc_Word32>(newBytesWritten);
 }
 
-WebRtc_Word32 MP4File::Create(const char* fileName)
+WebRtc_Word32 MP4File::Create(const char* fileName, bool saveVideoToLibrary)
 {
     _crit->Enter();
     if (_mp4Mode != Write)
@@ -176,7 +176,7 @@ WebRtc_Word32 MP4File::Create(const char* fileName)
     NSURL* movieURL = [NSURL fileURLWithPath:[NSString stringWithUTF8String:fileName]];
     [movieURL retain];
     
-    [_mp4File createMovie:movieURL];
+    [_mp4File createMovie:movieURL andSaveVideoToLibrary:saveVideoToLibrary];
         
     _created = true;
     

@@ -19,13 +19,28 @@
   
     mediaEngine->setCaptureRenderView(_imgView1);
     mediaEngine->setChannelRenderView(_imgView2);
-    
-    NSString* documents = [NSHomeDirectory() stringByAppendingString:@"/Documents/test.mp4"];
-    
-    const char* buffer = [documents UTF8String];
+  
+    bool saveToLibrary = true;
+    NSDateFormatter *formatter;
+    NSString *fileName;
+    NSString *dateString;
+
+    formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd-MM-yyyy-HH-mm"];
+  
+    dateString = [formatter stringFromDate:[NSDate date]];
+  
+    [formatter release];
+  
+    if (saveToLibrary)
+        fileName = [NSString stringWithFormat:@"test-%@.mp4", dateString];
+    else
+        fileName = [NSString stringWithFormat:@"%@/Documents/test-%@.mp4", NSHomeDirectory(), dateString];
+  
+    const char* fileNameString = [fileName UTF8String];
 
     mediaEngine->startVideoCapture();
-    mediaEngine->startRecordVideoCapture(buffer);
+    mediaEngine->startRecordVideoCapture(fileNameString, saveToLibrary);
 }
 
 -(IBAction)startTest2

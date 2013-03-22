@@ -153,7 +153,6 @@ namespace hookflash
       mAgcEnabled(false),
       mNsEnabled(false),
       mVoiceRecordFile(""),
-      mVideoRecordFile(""),
       mReceiverAddress(""),
       mDefaultVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
       mRecordVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
@@ -198,7 +197,9 @@ namespace hookflash
       mLifetimeHasRecordVideoCapture(false),
       mLifetimeInProgress(false),
       mLifetimeWantCameraType(CameraType_Front),
-      mLifetimeContinuousVideoCapture(false)
+      mLifetimeContinuousVideoCapture(false),
+      mLifetimeVideoRecordFile(""),
+      mLifetimeSaveVideoToLibrary(false)
     {
       int name[] = {CTL_HW, HW_MACHINE};
       size_t size;
@@ -868,16 +869,13 @@ namespace hookflash
     }
     
     //-------------------------------------------------------------------------
-    void MediaEngine::startRecordVideoCapture(String fileName)
+    void MediaEngine::startRecordVideoCapture(String fileName, bool saveToLibrary)
     {
-      {
-        AutoRecursiveLock lock(mLock);
-        mVideoRecordFile = fileName;
-      }
-      
       {
         AutoRecursiveLock lock(mLifetimeLock);
         mLifetimeWantRecordVideoCapture = true;
+        mLifetimeVideoRecordFile = fileName;
+        mLifetimeSaveVideoToLibrary = saveToLibrary;
       }
       
       ThreadPtr(new boost::thread(boost::ref(*((mThisWeak.lock()).get()))));
@@ -1317,11 +1315,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     void MediaEngine::CallbackOnOutputAudioRouteChange(const webrtc::OutputAudioRoute inRoute)
     {
-      if (!mDelegate) {
-        ZS_LOG_WARNING(Detail, log("audio route change callback igored as delegate was not specified"))
-        return;
-      }
-
       OutputAudioRoutes route = IMediaEngine::OutputAudioRoute_Headphone;
 
       switch (inRoute) {
@@ -1373,11 +1366,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     void MediaEngine::FaceDetected(const int capture_id)
     {
-      if (!mDelegate) {
-        ZS_LOG_WARNING(Detail, log("face detection callback igored as delegate was not specified"))
-        return;
-      }
-      
       try {
         if (mDelegate)
           mDelegate->onMediaEngineFaceDetected();
@@ -1415,6 +1403,8 @@ namespace hookflash
       bool hasVideoChannel = false;
       bool hasRecordVideoCapture = false;
       CameraTypes wantCameraType = IMediaEngine::CameraType_None;
+      String videoRecordFile;
+      bool saveVideoToLibrary;
 
       // attempt to get the lifetime lock
       while (true) {
@@ -1447,6 +1437,8 @@ namespace hookflash
         hasVideoChannel = mLifetimeHasVideoChannel;
         hasRecordVideoCapture = mLifetimeHasRecordVideoCapture;
         wantCameraType = mLifetimeWantCameraType;
+        videoRecordFile = mLifetimeVideoRecordFile;
+        saveVideoToLibrary = mLifetimeSaveVideoToLibrary;
         break;
       }
 
@@ -1477,7 +1469,7 @@ namespace hookflash
         
         if (wantRecordVideoCapture) {
           if (!hasRecordVideoCapture) {
-            internalStartRecordVideoCapture();
+            internalStartRecordVideoCapture(videoRecordFile, saveVideoToLibrary);
           }
         } else {
           if (hasRecordVideoCapture) {
@@ -2128,7 +2120,7 @@ namespace hookflash
     }
     
     //-----------------------------------------------------------------------
-    void MediaEngine::internalStartRecordVideoCapture()
+    void MediaEngine::internalStartRecordVideoCapture(String videoRecordFile, bool saveVideoToLibrary)
     {
       AutoRecursiveLock lock(mLock);
       
@@ -2195,7 +2187,7 @@ namespace hookflash
       videoCodec.maxFramerate = maxFramerate;
       videoCodec.maxBitrate = maxBitrate;
       
-      mError = mVideoFile->StartRecordCaptureVideo(mCaptureId, mVideoRecordFile, webrtc::MICROPHONE, audioCodec, videoCodec, webrtc::kFileFormatMP4File);
+      mError = mVideoFile->StartRecordCaptureVideo(mCaptureId, videoRecordFile, webrtc::MICROPHONE, audioCodec, videoCodec, webrtc::kFileFormatMP4File, saveVideoToLibrary);
       if (mError != 0) {
         ZS_LOG_ERROR(Detail, log("failed to start video capture recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
         return;
@@ -2219,6 +2211,13 @@ namespace hookflash
       if (mError != 0) {
         ZS_LOG_ERROR(Detail, log("failed to disable orientation lock on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
         return;
+      }
+
+      try {
+        if (mDelegate)
+          mDelegate->onMediaEngineVideoCaptureRecordStopped();
+      } catch (IMediaEngineDelegateProxy::Exceptions::DelegateGone &) {
+        ZS_LOG_WARNING(Detail, log("delegate gone"))
       }
     }
 

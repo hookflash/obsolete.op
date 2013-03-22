@@ -117,7 +117,7 @@ namespace hookflash
     virtual void startVideoCapture() = 0;
     virtual void stopVideoCapture() = 0;
     
-    virtual void startRecordVideoCapture(String fileName) = 0;
+    virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false) = 0;
     virtual void stopRecordVideoCapture() = 0;
 
     virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat) = 0;
@@ -130,6 +130,7 @@ namespace hookflash
 
     virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
     virtual void onMediaEngineFaceDetected() = 0;
+    virtual void onMediaEngineVideoCaptureRecordStopped() = 0;
   };
 }
 
@@ -137,4 +138,5 @@ ZS_DECLARE_PROXY_BEGIN(hookflash::IMediaEngineDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_0(onMediaEngineFaceDetected)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineVideoCaptureRecordStopped)
 ZS_DECLARE_PROXY_END()

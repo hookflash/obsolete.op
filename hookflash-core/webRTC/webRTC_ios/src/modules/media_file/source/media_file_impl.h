@@ -80,7 +80,8 @@ public:
         const FileFormats   format,
         const CodecInst&    codecInst,
         const VideoCodec&   videoCodecInst,
-        bool                videoOnly = false);
+        bool                videoOnly = false,
+        bool                saveVideoToLibrary = false);
     WebRtc_Word32 StartRecordingAudioStream(
         OutStream&           stream,
         const FileFormats    format,
@@ -195,7 +196,8 @@ private:
         const VideoCodec&    videoCodecInst,
         const WebRtc_UWord32 notificationTimeMs = 0,
         const WebRtc_UWord32 maxSizeBytes = 0,
-        bool                 videoOnly = false);
+        bool                 videoOnly = false,
+        bool                 saveVideoToLibrary = false);
 
     // Open/creates file specified by fileName for writing (relative path is
     // allowed). FileCallback::RecordNotification(..) will be called after
@@ -217,7 +219,8 @@ private:
         const CodecInst&     codecInst,
         const VideoCodec&    videoCodecInst,
         const WebRtc_UWord32 notificationTimeMs = 0,
-        const bool           videoOnly = false);
+        const bool           videoOnly = false,
+        const bool           saveVideoToLibrary = false);
 
     // Returns true if frequencyInHz is a supported frequency.
     static bool ValidFrequency(const WebRtc_UWord32 frequencyInHz);

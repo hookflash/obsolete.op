@@ -190,7 +190,8 @@ public:
         const FileFormats   format,
         const CodecInst&    codecInst,
         const VideoCodec&   videoCodecInst,
-        bool videoOnly = false) = 0;
+        bool videoOnly = false,
+        bool saveVideoToLibrary = false) = 0;
 
     // Prepare for recording audio to stream.
     // FileCallback::RecordNotification(..) will be called after

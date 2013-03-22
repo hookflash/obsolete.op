@@ -348,7 +348,8 @@ int ViEFileImpl::StartRecordCaptureVideo(const int capture_id,
                                          AudioSource audio_source,
                                          const CodecInst& audio_codec,
                                          const VideoCodec& video_codec,
-                                         const FileFormats file_format) {
+                                         const FileFormats file_format,
+                                         bool saveVideoToLibrary) {
   WEBRTC_TRACE(kTraceApiCall, kTraceVideo,
                ViEId(shared_data_->instance_id(), capture_id),
                "%s capture_id: %d)", __FUNCTION__, capture_id);
@@ -386,7 +387,7 @@ int ViEFileImpl::StartRecordCaptureVideo(const int capture_id,
   }
   if (file_recorder.StartRecording(file_nameUTF8, video_codec, audio_source,
                                    -1, audio_codec, ve_ptr,
-                                   file_format) != 0) {
+                                   file_format, saveVideoToLibrary) != 0) {
     WEBRTC_TRACE(kTraceError, kTraceVideo,
                  ViEId(shared_data_->instance_id(), capture_id),
                  "%s: Failed to start recording. Check arguments.",

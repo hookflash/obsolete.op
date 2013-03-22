@@ -90,7 +90,8 @@ public:
     WebRtc_Word32 InitMP4Writing(const char* filename,
                                  const CodecInst& codecInst,
                                  const VideoCodec& videoCodecInst,
-                                 const bool videoOnly);
+                                 const bool videoOnly,
+                                 const bool saveVideoToLibrary = false);
     
     // Write one audio frame, i.e. the bufferLengthinBytes first bytes of
     // audioBuffer, to file. The audio frame size is determined by the

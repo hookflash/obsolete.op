@@ -430,7 +430,8 @@ WebRtc_Word32 ModuleFileUtility::InitMP4Writing(
     const char* filename,
     const CodecInst& audioCodecInst,
     const VideoCodec& videoCodecInst,
-    const bool videoOnly /*= false*/)
+    const bool videoOnly /*= false*/,
+    const bool saveVideoToLibrary /*false*/)
 {
     _writing = false;
     
@@ -449,7 +450,7 @@ WebRtc_Word32 ModuleFileUtility::InitMP4Writing(
             return -1;
         }
     }
-    _mp4OutFile->Create(filename);
+    _mp4OutFile->Create(filename, saveVideoToLibrary);
     _writing = true;
     return 0;
 }

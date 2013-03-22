@@ -924,13 +924,14 @@ WebRtc_Word32 MediaFileImpl::StartRecordingVideoFile(
     const FileFormats format,
     const CodecInst& codecInst,
     const VideoCodec& videoCodecInst,
-    bool videoOnly)
+    bool videoOnly,
+    bool saveVideoToLibrary)
 {
     const WebRtc_UWord32 notificationTimeMs = 0;
     const WebRtc_UWord32 maxSizeBytes       = 0;
 
     return StartRecordingFile(fileName, format, codecInst, videoCodecInst,
-                              notificationTimeMs, maxSizeBytes, videoOnly);
+                              notificationTimeMs, maxSizeBytes, videoOnly, saveVideoToLibrary);
 }
 
 WebRtc_Word32 MediaFileImpl::StartRecordingFile(
@@ -940,7 +941,8 @@ WebRtc_Word32 MediaFileImpl::StartRecordingFile(
     const VideoCodec& videoCodecInst,
     const WebRtc_UWord32 notificationTimeMs,
     const WebRtc_UWord32 maxSizeBytes,
-    bool videoOnly)
+    bool videoOnly,
+    bool saveVideoToLibrary)
 {
 
     if(!ValidFileName(fileName))
@@ -980,7 +982,7 @@ WebRtc_Word32 MediaFileImpl::StartRecordingFile(
 
     if(StartRecordingStream(*outputStream, fileName, format, codecInst,
                             videoCodecInst, notificationTimeMs,
-                            videoOnly) == -1)
+                            videoOnly, saveVideoToLibrary) == -1)
     {
         if( useStream)
         {
@@ -1015,7 +1017,8 @@ WebRtc_Word32 MediaFileImpl::StartRecordingStream(
     const CodecInst& codecInst,
     const VideoCodec& videoCodecInst,
     const WebRtc_UWord32 notificationTimeMs,
-    bool videoOnly)
+    bool videoOnly,
+    bool saveVideoToLibrary)
 {
 
     // Check codec info
@@ -1141,7 +1144,7 @@ WebRtc_Word32 MediaFileImpl::StartRecordingStream(
             if( (_ptrFileUtilityObj->InitMP4Writing(
                                                     fileName,
                                                     codecInst,
-                                                    videoCodecInst,videoOnly) == -1) ||
+                                                    videoCodecInst,videoOnly,saveVideoToLibrary) == -1) ||
                (_ptrFileUtilityObj->codec_info(tmpAudioCodec) != 0))
             {
                 WEBRTC_TRACE(kTraceError, kTraceFile, _id,
