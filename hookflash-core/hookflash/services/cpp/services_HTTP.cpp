@@ -434,8 +434,8 @@ namespace hookflash
       {
 #ifndef _LINUX
 #ifdef __QNX__
+          pthread_setname_np(pthread_self(), "com.hookflash.services.http");
 #else
-        pthread_setname_np(pthread_self(), "com.hookflash.services.http");
 #ifndef _ANDROID
         pthread_setname_np("com.hookflash.services.http");
 #endif //_ANDROID

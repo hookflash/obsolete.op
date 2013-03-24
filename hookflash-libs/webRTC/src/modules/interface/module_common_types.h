@@ -18,7 +18,9 @@
 #include "common_types.h"
 
 // Blackberry wants functions like memcpy to be std::memcpy, so...
+#ifdef __QNX__
 using namespace std;
+#endif
 
 #ifdef _WIN32
     #pragma warning(disable:4351)       // remove warning "new behavior: elements of array
