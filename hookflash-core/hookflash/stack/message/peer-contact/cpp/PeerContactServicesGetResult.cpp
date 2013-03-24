@@ -67,7 +67,7 @@ namespace hookflash
           IMessageHelper::fill(*ret, root, messageSource);
 
           ElementPtr servicesEl = root->findFirstChildElement("services");
-          if (servicesEl) return ret;
+          if (!servicesEl) return ret;
 
           ElementPtr serviceEl = servicesEl->findFirstChildElement("service");
           while (serviceEl) {

@@ -65,7 +65,7 @@ namespace hookflash
           IMessageHelper::fill(*ret, root, messageSource);
 
           ElementPtr findersEl = root->findFirstChildElement("finders");
-          if (findersEl) return ret;
+          if (!findersEl) return ret;
 
           ElementPtr finderBundleEl = findersEl->findFirstChildElement("finderBundle");
           while (finderBundleEl) {

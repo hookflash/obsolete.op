@@ -95,7 +95,7 @@ using hookflash::stack::test::TestStackCallbackPtr;
 
 void doTestStack()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_STACK_TEST) return;
+  if (!HOOKFLASH_STACK_TEST_DO_STACK_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 

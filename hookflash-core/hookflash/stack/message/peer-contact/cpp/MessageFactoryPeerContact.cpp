@@ -117,7 +117,7 @@ namespace hookflash
             case Method_PeerContactLogin:                 return "peer-contact-login";
             case Method_PrivatePeerFileGet:               return "private-peer-file-get";
             case Method_PrivatePeerFileSet:               return "private-peer-file-set";
-            case Method_PeerContactIdentityAssociate:     return "peer-contact-identity-assoicate";
+            case Method_PeerContactIdentityAssociate:     return "peer-contact-identity-associate";
             case Method_PeerContactServicesGet:           return "peer-contact-services-get";
           }
           return "";

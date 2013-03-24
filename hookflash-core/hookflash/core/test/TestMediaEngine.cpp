@@ -317,7 +317,6 @@ using hookflash::core::test::TestMediaEngineFactoryPtr;
 using hookflash::core::test::TestMediaEngine;
 using hookflash::core::test::TestMediaEnginePtr;
 
-
 void doMediaEngineTest()
 {
   if (!HOOKFLASH_CORE_TEST_DO_MEDIA_ENGINE_TEST) return;
@@ -328,5 +327,7 @@ void doMediaEngineTest()
   
   hookflash::core::internal::Factory::override(overrideFactory);
   
-
+  BOOST_UNINSTALL_LOGGER()
+  zsLib::proxyDump();
+  BOOST_EQUAL(zsLib::proxyGetTotalConstructed(), 0);
 }

@@ -35,6 +35,7 @@
 #include <hookflash/stack/IPeer.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IRSAPrivateKey.h>
+#include <hookflash/stack/IRSAPublicKey.h>
 #include <hookflash/stack/message/IMessageHelper.h>
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -213,7 +214,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void PeerFilePrivate::signElement(
                                         ElementPtr elementToSign,
-                                        bool referenceKeyOnlyInSignature
+                                        bool referenceKeyOnlyInSignature,
+                                        IRSAPublicKeyPtr publicKey
                                         ) const
       {
         ZS_THROW_BAD_STATE_IF(!mPrivateKey)
@@ -267,7 +269,7 @@ namespace hookflash
           signatureEl = Element::create("signature");
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("reference", referenceID));
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM));
-        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestValue", IHelper::convertToHex(*elementHash)));
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestValue", IHelper::convertToBase64(*elementHash)));
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestSigned", IHelper::convertToBase64(*mPrivateKey->sign(*elementHash))));
 
         ElementPtr keyEl = Element::create("key");
@@ -276,7 +278,7 @@ namespace hookflash
           ElementPtr uriEl = message::IMessageHelper::createElementWithText("uri", mPeerURI);
           keyEl->adoptAsLastChild(uriEl);
         } else {
-          ElementPtr x509DataEl = message::IMessageHelper::createElementWithText("x509Data", IHelper::convertToBase64(*mPrivateKey->save()));
+          ElementPtr x509DataEl = message::IMessageHelper::createElementWithText("x509Data", IHelper::convertToBase64(*publicKey->save()));
           keyEl->adoptAsLastChild(x509DataEl);
         }
 
@@ -404,7 +406,7 @@ namespace hookflash
                                                  const char *saltInBase64
                                                  )
       {
-        return IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
+        return IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
       }
 
       //-----------------------------------------------------------------------
@@ -500,23 +502,22 @@ namespace hookflash
             sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
 
             GeneratorPtr generator = Generator::createJSONGenerator();
-            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl);
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
 
-            signElement(sectionEl, false);
+            signElement(sectionEl, false, publicKey);
 
             // calculate the contact ID/domain
 
             ULONG length = 0;
-            boost::shared_array<char> bundleAsJSON = generator->write(sectionBundleEl, &length);
+            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl, &length);
 
             SHA256 sha256;
             SecureByteBlock bundleHash(sha256.DigestSize());
 
             sha256.Update((const BYTE *)"contact:", strlen("contact:"));
-            sha256.Update((const BYTE *)bundleAsJSON.get(), length);
+            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
             sha256.Final(bundleHash);
 
             contactID = IHelper::convertToHex(bundleHash);
@@ -571,7 +572,7 @@ namespace hookflash
 
             signElement(sectionEl);
           }
-
+          document->adoptAsLastChild(peerEl);
           outPublicPeerDocument = document;
         }
 
@@ -594,7 +595,8 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            contactID.toLower();
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
@@ -633,7 +635,8 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPeer", encryptedPublicPeer));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateData", encryptedPrivateData));
 
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            contactID.toLower();
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
@@ -696,7 +699,7 @@ namespace hookflash
             return false;
           }
 
-          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)(*(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
 
           if (calculatedSecretProof != secretProof) {
             ZS_LOG_ERROR(Detail, log("private peer file password appears to be incorrect, secret proof calculated=") + calculatedSecretProof + ", expecting=" + secretProof)
