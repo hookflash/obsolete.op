@@ -3326,6 +3326,11 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/interface/video_render_defines.h</location>
 		</link>
 		<link>
+			<name>src/video_render/main/source/blackberry</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
 			<name>src/video_render/main/source/external</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -3416,24 +3421,14 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include/pcm16b.h</location>
 		</link>
 		<link>
-			<name>src/audio_device/main/source/blackberry/alsasymboltable_bb.cc</name>
+			<name>src/audio_device/main/source/blackberry/audio_device_bb.cc</name>
 			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/alsasymboltable_bb.cc</location>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_device_bb.cc</location>
 		</link>
 		<link>
-			<name>src/audio_device/main/source/blackberry/alsasymboltable_bb.h</name>
+			<name>src/audio_device/main/source/blackberry/audio_device_bb.h</name>
 			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/alsasymboltable_bb.h</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/audio_device_alsa_bb.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_device_alsa_bb.cc</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/audio_device_alsa_bb.h</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_device_alsa_bb.h</location>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_device_bb.h</location>
 		</link>
 		<link>
 			<name>src/audio_device/main/source/blackberry/audio_device_utility_bb.cc</name>
@@ -3444,26 +3439,6 @@
 			<name>src/audio_device/main/source/blackberry/audio_device_utility_bb.h</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_device_utility_bb.h</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/audio_mixer_manager_alsa_bb.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_mixer_manager_alsa_bb.cc</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/audio_mixer_manager_alsa_bb.h</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/audio_mixer_manager_alsa_bb.h</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/latebindingsymboltable_bb.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/latebindingsymboltable_bb.cc</location>
-		</link>
-		<link>
-			<name>src/audio_device/main/source/blackberry/latebindingsymboltable_bb.h</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/audio_device/main/source/blackberry/latebindingsymboltable_bb.h</location>
 		</link>
 		<link>
 			<name>src/video_capture/main/source/External/device_info_external.cc</name>
@@ -3504,6 +3479,26 @@
 			<name>src/video_coding/main/source/mock/fake_tick_time.h</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_coding/main/source/mock/fake_tick_time.h</location>
+		</link>
+		<link>
+			<name>src/video_render/main/source/blackberry/video_render_bb_impl.cc</name>
+			<type>1</type>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_bb_impl.cc</location>
+		</link>
+		<link>
+			<name>src/video_render/main/source/blackberry/video_render_bb_impl.h</name>
+			<type>1</type>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_bb_impl.h</location>
+		</link>
+		<link>
+			<name>src/video_render/main/source/blackberry/video_render_opengles20.cc</name>
+			<type>1</type>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_opengles20.cc</location>
+		</link>
+		<link>
+			<name>src/video_render/main/source/blackberry/video_render_opengles20.h</name>
+			<type>1</type>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_opengles20.h</location>
 		</link>
 		<link>
 			<name>src/video_render/main/source/external/video_render_external_impl.cc</name>

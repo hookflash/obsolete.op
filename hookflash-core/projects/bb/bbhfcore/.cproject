@@ -196,7 +196,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
 									<listOptionValue builtIn="false" value="curl"/>
 									<listOptionValue builtIn="false" value="socket"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -303,7 +303,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
 									<listOptionValue builtIn="false" value="curl"/>
 									<listOptionValue builtIn="false" value="socket"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -410,7 +410,7 @@
 									<listOptionValue builtIn="false" value="curl"/>
 									<listOptionValue builtIn="false" value="socket"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -519,7 +519,7 @@
 									<listOptionValue builtIn="false" value="stdc++"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbcryptopp/${ConfigName}/libbbcryptopp.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfservices/${ConfigName}/libbbhfservices.so&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -622,7 +622,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
 									<listOptionValue builtIn="false" value="curl"/>
 									<listOptionValue builtIn="false" value="socket"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -725,7 +725,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-core/projects/bb/bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
 									<listOptionValue builtIn="false" value="curl"/>
 									<listOptionValue builtIn="false" value="socket"/>
-									<listOptionValue builtIn="false" value="&quot;/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
@@ -752,12 +752,15 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="bbhfcore.null.851965681" name="bbhfcore"/>
 	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/bbhfcore"/>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.2087042915">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.469012609">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.469012609">
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.debug.2087042915">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.sharedLib.coverage.1470393528">
@@ -776,5 +779,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
