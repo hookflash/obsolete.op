@@ -12,13 +12,16 @@
 #define WEBRTC_MODULES_VIDEO_RENDER_MAIN_SOURCE_BB_VIDEO_RENDER_BB_IMPL_H_
 
 #include "i_video_render.h"
-
+#include "map_wrapper.h"
 
 namespace webrtc {
 
 class CriticalSectionWrapper;
 class EventWrapper;
 class ThreadWrapper;
+
+class BlackberryRenderCallback;
+class screen_window_t;
 
 // The object a module user uses to send new frames to the Blackberry OpenGL ES window
 
@@ -35,12 +38,12 @@ class VideoRenderBlackBerry: IVideoRender {
  public:
   static WebRtc_Word32 SetAndroidEnvVariables(void* javaVM);
 
-  VideoRenderAndroid(const WebRtc_Word32 id,
+  VideoRenderBlackBerry(const WebRtc_Word32 id,
                      const VideoRenderType videoRenderType,
                      void* window,
                      const bool fullscreen);
 
-  virtual ~VideoRenderAndroid();
+  virtual ~VideoRenderBlackBerry();
 
   virtual WebRtc_Word32 Init()=0;
 
@@ -115,35 +118,26 @@ class VideoRenderBlackBerry: IVideoRender {
                                   const float bottom);
 
  protected:
-  virtual AndroidStream* CreateAndroidRenderChannel(
+
+  virtual BlackberryRenderCallback* CreateRenderChannel(
       WebRtc_Word32 streamId,
       WebRtc_Word32 zOrder,
       const float left,
       const float top,
       const float right,
       const float bottom,
-      VideoRenderAndroid& renderer) = 0;
+      VideoRenderBlackBerry& renderer);
 
   WebRtc_Word32 _id;
   CriticalSectionWrapper& _critSect;
   VideoRenderType _renderType;
-  jobject _ptrWindow;
+  screen_window_t* _ptrWindow;
 
-  static JavaVM* g_jvm;
 
  private:
-  static bool JavaRenderThreadFun(void* obj);
-  bool JavaRenderThreadProcess();
 
   // Map with streams to render.
   MapWrapper _streamsMap;
-  // True if the _javaRenderThread thread shall be detached from the JVM.
-  bool _javaShutDownFlag;
-  EventWrapper& _javaShutdownEvent;
-  EventWrapper& _javaRenderEvent;
-  WebRtc_Word64 _lastJavaRenderEvent;
-  JNIEnv* _javaRenderJniEnv; // JNIEnv for the java render thread.
-  ThreadWrapper* _javaRenderThread;
 };
 
 } //namespace webrtc

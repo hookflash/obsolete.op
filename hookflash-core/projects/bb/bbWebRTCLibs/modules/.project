@@ -3491,14 +3491,14 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_bb_impl.h</location>
 		</link>
 		<link>
-			<name>src/video_render/main/source/blackberry/video_render_opengles20.cc</name>
+			<name>src/video_render/main/source/blackberry/video_render_bb_opengles20.cc</name>
 			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_opengles20.cc</location>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_bb_opengles20.cc</location>
 		</link>
 		<link>
-			<name>src/video_render/main/source/blackberry/video_render_opengles20.h</name>
+			<name>src/video_render/main/source/blackberry/video_render_bb_opengles20.h</name>
 			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_opengles20.h</location>
+			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/modules/video_render/main/source/blackberry/video_render_bb_opengles20.h</location>
 		</link>
 		<link>
 			<name>src/video_render/main/source/external/video_render_external_impl.cc</name>

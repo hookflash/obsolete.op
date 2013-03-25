@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "video_render_opengles20.h"
+#include "video_render_bb_opengles20.h"
 
 //#define ANDROID_LOG
 
