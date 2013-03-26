@@ -1271,6 +1271,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = cryptopp;
 			};
@@ -1346,6 +1347,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				INSTALL_PATH = /usr/local/lib;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-fdiagnostics-show-option";
 				PRODUCT_NAME = cryptopp_ios;
 				SDKROOT = iphoneos;
