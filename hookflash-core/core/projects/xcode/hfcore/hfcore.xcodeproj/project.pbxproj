@@ -1125,6 +1125,7 @@
 					../../../../webRTC/webRTC_ios/src,
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "../../.. ../../../../../hookflash-libs/zsLib ../../../../../hookflash-libs/udns ../../../../../hookflash-libs/cryptopp ../../../../../hookflash-staging/include ~/Library/Frameworks/include ../../../../webRTC/webRTC_ios/src ../../../../webRTC/webRTC_ios/src/modules/video_render/main/source/iPhone ../../../../webRTC/webRTC_ios/src/video_engine/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_coding/codecs/interface/ ../../../../webRTC/webRTC_ios/src/common_video/interface/ ../../../../webRTC/webRTC_ios/src/system_wrappers/interface ../../../../webRTC/webRTC_ios/src/modules/video_render/main/interface ../../../../webRTC/webRTC_ios/src/modules/interface ../../../../webRTC/webRTC_ios/src/modules/video_capture/main/interface ../../../../webRTC/webRTC_ios/src/modules/video_processing/main/interface ../../../../webRTC/webRTC_ios/src/voice_engine/main/interface ~/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include ../../../../webRTC/webRTC_ios/src";
 			};
@@ -1210,6 +1211,7 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-x",
