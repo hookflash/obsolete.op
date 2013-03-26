@@ -20,7 +20,7 @@
     mediaEngine->setCaptureRenderView(_imgView1);
     mediaEngine->setChannelRenderView(_imgView2);
   
-    bool saveToLibrary = true;
+    bool saveToLibrary = false;
     NSDateFormatter *formatter;
     NSString *fileName;
     NSString *dateString;
@@ -104,7 +104,7 @@
     mediaEngine->setLoudspeakerEnabled(false);
     mediaEngine->setContinuousVideoCapture(true);
     mediaEngine->setDefaultVideoOrientation(hookflash::IMediaEngine::VideoOrientation_Portrait);
-    mediaEngine->setRecordVideoOrientation(hookflash::IMediaEngine::VideoOrientation_LandscapeRight);
+    mediaEngine->setRecordVideoOrientation(hookflash::IMediaEngine::VideoOrientation_Portrait);
     mediaEngine->setFaceDetection(false);
   
     return self;
