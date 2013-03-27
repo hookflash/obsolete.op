@@ -503,6 +503,7 @@
 					"../../../../../hookflash-libs/curl/curl-7.22.0/include",
 				);
 				LIBRARY_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = hfservices;
 			};
 			name = Debug;
@@ -610,6 +611,7 @@
 					"~/Library/Frameworks/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DHAVE_CONFIG_H";
 				PRODUCT_NAME = hfservices_ios;
 				SDKROOT = iphoneos;
