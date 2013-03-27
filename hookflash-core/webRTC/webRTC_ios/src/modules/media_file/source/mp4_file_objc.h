@@ -50,6 +50,8 @@
     
     CMTime lastAudioTimeStamp;
   
+    NSLock* assetWriterVideoInPixelBufferAdaptorLock;
+  
     NSURL* movieURL;
     BOOL saveVideoToLibrary;
     

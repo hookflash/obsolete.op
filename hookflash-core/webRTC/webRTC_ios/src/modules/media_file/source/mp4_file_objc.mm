@@ -53,11 +53,14 @@
         movieWritingSemaphore = dispatch_semaphore_create(0);
         
         assetWriter = nil;
+        assetWriterVideoInPixelBufferAdaptor = nil;
 
         readyToRecord = NO;
         recordingWillBeStopped = NO;
         lastAudioTimeStamp = CMTimeMake(0, 0);
         self.recording = NO;
+      
+        assetWriterVideoInPixelBufferAdaptorLock = [[NSLock alloc] init];
     }
     return self;
 }
@@ -74,6 +77,7 @@
         dispatch_release(movieWritingSemaphore);
         movieWritingSemaphore = NULL;
     }
+    [assetWriterVideoInPixelBufferAdaptorLock release];
 
     [super dealloc];
 }
@@ -139,15 +143,20 @@
 //        printf("Write - Video sample buffer - TS: %lld\t%d\n",
 //               timeStamp.value, timeStamp.timescale);
         
+        [assetWriterVideoInPixelBufferAdaptorLock lock];
+      
         if (![assetWriterVideoInPixelBufferAdaptor appendPixelBuffer:pixelBuffer withPresentationTime:timeStamp])
         {
             char errorString[1024] = "";
             [[[assetWriter error] localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
             webrtc::Trace::Add(webrtc::kTraceError, webrtc::kTraceUtility, -1,
                                "Failed to append video sample buffer - %s", errorString);
+            [assetWriterVideoInPixelBufferAdaptorLock unlock];
             return NO;
         }
 
+        [assetWriterVideoInPixelBufferAdaptorLock unlock];
+      
         return YES;
     }
     return NO;
@@ -212,9 +221,13 @@
                                           [NSNumber numberWithInt:videoHeight], kCVPixelBufferHeightKey,
                                           nil];
 
+        [assetWriterVideoInPixelBufferAdaptorLock lock];
+      
         assetWriterVideoInPixelBufferAdaptor =
             [[AVAssetWriterInputPixelBufferAdaptor alloc] initWithAssetWriterInput:assetWriterVideoIn sourcePixelBufferAttributes:bufferAttributes];
 
+        [assetWriterVideoInPixelBufferAdaptorLock unlock];
+      
         if ([assetWriter canAddInput:assetWriterVideoIn])
         {
             [assetWriter addInput:assetWriterVideoIn];
@@ -286,14 +299,10 @@
 - (void)createMovie:(NSURL*)url andSaveVideoToLibrary:(BOOL)saveToLibrary
 {
     if (saveToLibrary)
-    {
-        movieURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [url path]]];
-    }
+        movieURL = [[NSURL alloc] initFileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [url path]]];
     else
-    {
-        movieURL = url;
-        [movieURL retain];
-    }
+        movieURL = [url retain];
+  
     saveVideoToLibrary = saveToLibrary;
   
     dispatch_async(movieWritingQueue, ^{
@@ -360,7 +369,10 @@
                     
                     if (assetWriter.status != AVAssetWriterStatusFailed)
                     {
+                        [assetWriterVideoInPixelBufferAdaptorLock lock];
                         [assetWriterVideoInPixelBufferAdaptor release];
+                        assetWriterVideoInPixelBufferAdaptor = nil;
+                        [assetWriterVideoInPixelBufferAdaptorLock unlock];
                         [assetWriterAudioIn release];
                         [assetWriterVideoIn release];
                         [assetWriter release];
@@ -403,7 +415,10 @@
             
             if (assetWriter.status != AVAssetWriterStatusFailed)
             {
+                [assetWriterVideoInPixelBufferAdaptorLock lock];
                 [assetWriterVideoInPixelBufferAdaptor release];
+                assetWriterVideoInPixelBufferAdaptor = nil;
+                [assetWriterVideoInPixelBufferAdaptorLock unlock];
                 [assetWriterAudioIn release];
                 [assetWriterVideoIn release];
                 [assetWriter release];
@@ -537,41 +552,62 @@
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn status;
     
-    status = CVPixelBufferCreate(NULL, videoWidth, videoHeight,
-                                 kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-                                 NULL, &pixelBuffer);
-
-    if (status != kCVReturnSuccess)
+    [assetWriterVideoInPixelBufferAdaptorLock lock];
+  
+    if (assetWriterVideoInPixelBufferAdaptor)
     {
-        char errorString[1024] = "";
-        [[[assetWriter error] localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
-        webrtc::Trace::Add(webrtc::kTraceWarning, webrtc::kTraceUtility, -1,
-                         "Couldn't create Pixel Buffer - %s", errorString);
+        status = CVPixelBufferPoolCreatePixelBuffer(NULL, assetWriterVideoInPixelBufferAdaptor.pixelBufferPool, &pixelBuffer);
+    
+        if (status != kCVReturnSuccess)
+        {
+            char errorString[1024] = "";
+            [[[assetWriter error] localizedDescription] getCString:errorString maxLength:1024 encoding:NSUTF8StringEncoding];
+            webrtc::Trace::Add(webrtc::kTraceWarning, webrtc::kTraceUtility, -1,
+                               "Couldn't create Pixel Buffer from pool - %s", errorString);
+            [assetWriterVideoInPixelBufferAdaptorLock unlock];
+            return;
+        }
+    }
+    else
+    {
+        [assetWriterVideoInPixelBufferAdaptorLock unlock];
         return;
     }
+
+    [assetWriterVideoInPixelBufferAdaptorLock unlock];
   
     CVPixelBufferLockBaseAddress(pixelBuffer, 0);
   
     void* baseAddressY = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
     void* baseAddressUV = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
-    int planeHeightY = CVPixelBufferGetHeightOfPlane(pixelBuffer, 0);
     int bytesPerRowY = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
+    int bytesPerRowUV = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
   
-    memcpy(baseAddressY, data, bytesPerRowY * planeHeightY);
-    
+    WebRtc_UWord8* destinationDataY = (WebRtc_UWord8*)baseAddressY;
+    WebRtc_UWord8* sourceDataY = (WebRtc_UWord8*)data;
+    for (int i = 0; i < videoHeight; i++)
+    {
+        memcpy(destinationDataY, sourceDataY, videoWidth);
+        destinationDataY += bytesPerRowY;
+        sourceDataY += videoWidth;
+    }
+  
     // i420 -> NV12 conversion
     WebRtc_UWord8* destinationDataUV = (WebRtc_UWord8*)baseAddressUV;
     WebRtc_UWord8* sourceDataU = (WebRtc_UWord8*)(data + videoWidth * videoHeight);
     WebRtc_UWord8* sourceDataV = (WebRtc_UWord8*)(data + videoWidth * videoHeight + (videoWidth >> 1) * (videoHeight >> 1));
-    for (int i = 0; i < (videoWidth >> 1) * (videoHeight >> 1); i++)
+    for (int j = 0; j < (videoHeight >> 1); j++)
     {
-        destinationDataUV[0] = *sourceDataU;
-        destinationDataUV[1] = *sourceDataV;
-        destinationDataUV += 2;
-        sourceDataU++;
-        sourceDataV++;
+        for (int i = 0; i < (videoWidth >> 1); i++)
+        {
+            destinationDataUV[2*i] = sourceDataU[i];
+            destinationDataUV[2*i+1] = sourceDataV[i];
+        }
+        destinationDataUV += bytesPerRowUV;
+        sourceDataU += videoWidth >> 1;
+        sourceDataV += videoWidth >> 1;
     }
-    
+  
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
 
     dispatch_async(movieWritingQueue, ^{

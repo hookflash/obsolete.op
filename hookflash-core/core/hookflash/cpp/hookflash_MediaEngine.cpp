@@ -2248,7 +2248,7 @@ namespace hookflash
             width = 480;
             height = 270;
             maxFramerate = 15;
-            maxBitrate = 250;
+            maxBitrate = 300;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 320;
             height = 180;
@@ -2263,7 +2263,7 @@ namespace hookflash
             width = 480;
             height = 270;
             maxFramerate = 15;
-            maxBitrate = 250;
+            maxBitrate = 300;
           } else if (mMachineName.compare(0, iPad2String.size(), iPad2String) >= 0) {
             width = 320;
             height = 180;
@@ -2288,7 +2288,7 @@ namespace hookflash
             width = 270;
             height = 480;
             maxFramerate = 15;
-            maxBitrate = 250;
+            maxBitrate = 300;
           } else if (mMachineName.compare(0, iPhone4SString.size(), iPhone4SString) >= 0) {
             width = 180;
             height = 320;
@@ -2303,7 +2303,7 @@ namespace hookflash
             width = 270;
             height = 480;
             maxFramerate = 15;
-            maxBitrate = 250;
+            maxBitrate = 300;
           } else if (mMachineName.compare(0, iPad2String.size(), iPad2String) >= 0) {
             width = 180;
             height = 320;
