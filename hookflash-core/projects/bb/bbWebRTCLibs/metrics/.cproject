@@ -40,6 +40,9 @@
 								<option id="com.qnx.qcc.option.compiler.defines.761133957" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1888871562" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2098497576" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1304174613" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
@@ -106,6 +109,9 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1217890182" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1286653400" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.328228272" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1157209246" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
@@ -168,6 +174,9 @@
 								<option id="com.qnx.qcc.option.compiler.security.191655784" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.603299247" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1837623944" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.364891431" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -233,6 +242,9 @@
 								<option id="com.qnx.qcc.option.compiler.security.788244720" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.839246675" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2112337695" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.903600510" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>

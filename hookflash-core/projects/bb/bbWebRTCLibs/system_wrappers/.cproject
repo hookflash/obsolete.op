@@ -33,9 +33,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1629462562" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1527717069" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -99,9 +99,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.683395551" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.183515717" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -170,9 +170,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1294155890" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1216544111" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -239,9 +239,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1884017725" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1906461415" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -306,9 +306,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.169027959" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.390662661" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -370,9 +370,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1097733117" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1743179127" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -435,9 +435,9 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.880464623" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1994887571" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">

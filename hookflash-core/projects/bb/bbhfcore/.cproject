@@ -91,17 +91,21 @@
 									<listOptionValue builtIn="false" value="c"/>
 									<listOptionValue builtIn="false" value="cpp"/>
 									<listOptionValue builtIn="false" value="stdc++"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbcryptopp/${ConfigName}/libbbcryptopp.a&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfservices/${ConfigName}/libbbhfservices.so&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/thread/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_thread.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/date_time/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_date_time.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/thread/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_thread.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/bbBoost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbzsLib/${ConfigName}/libbbzsLib.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbudns/${ConfigName}/libbbudns.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbcryptopp/${ConfigName}/libbbcryptopp.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.so&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_video/${ConfigName}/libcommon_video.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfservices/${ConfigName}/libbbhfservices.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbhfstack/${ConfigName}/libbbhfstack.a&quot;"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1531778514" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -206,6 +210,10 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/common_audio/${ConfigName}/libcommon_audio.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.738274337" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -315,6 +323,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1975116571" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -424,6 +435,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1729864631" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -535,6 +549,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.616501806" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -640,6 +657,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.1928510244" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -745,6 +765,9 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/video_engine/${ConfigName}/libvideo_engine.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/system_wrappers/${ConfigName}/libsystem_wrappers.a&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/voice_engine/${ConfigName}/libvoice_engine.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/modules/${ConfigName}/libmodules.a&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../bbWebRTCLibs/metrics/${ConfigName}/libmetrics.a&quot;"/>
+									<listOptionValue builtIn="false" value="/Users/lawrence.gunn/Documents/opbb10/hookflash-libs/boost/bin.v2/libs/regex/build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi/libboost_regex.a"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.linker.705074652" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

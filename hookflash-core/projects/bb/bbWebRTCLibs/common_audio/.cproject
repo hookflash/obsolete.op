@@ -33,14 +33,17 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1448827101" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1171498065" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.171176214" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.937146025" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -60,11 +63,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.1714984970" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.debug.714149385.1707884617" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.855449930.1617681793">
-						<tool id="com.qnx.qcc.tool.compiler.855449930.1617681793" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.855449930">
-							<inputType id="com.qnx.qcc.inputType.compiler.318455891" superClass="com.qnx.qcc.inputType.compiler"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -102,10 +100,10 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.948505805" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.163013034" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -114,6 +112,9 @@
 								<option id="com.qnx.qcc.option.compiler.pie.1014278696" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.qccoptions.561969909" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1483030566" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.187718404" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -132,9 +133,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.1853869115" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.release.1251328227.404021349" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.1978785913.267377989">
-						<tool id="com.qnx.qcc.tool.compiler.1978785913.267377989" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1978785913"/>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -174,14 +172,17 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.437973302" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.945576520" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.64364934" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2139268719" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -202,9 +203,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.992833167" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.profile.257490810.2004888904" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.1578488514.710086127">
-						<tool id="com.qnx.qcc.tool.compiler.1578488514.710086127" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1578488514"/>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -244,14 +242,17 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.842972886" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.311021610" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.750495835" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.302940907" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -272,11 +273,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.530043111" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.coverage.1894420579.294069807" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.906331888.1166729083">
-						<tool id="com.qnx.qcc.tool.compiler.906331888.1166729083" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.906331888">
-							<inputType id="com.qnx.qcc.inputType.compiler.1085830496" superClass="com.qnx.qcc.inputType.compiler"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -314,10 +310,10 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1407307620" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.614503511" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -341,9 +337,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.434618703" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.debug.32896092.1406994928" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.858718415.789946409">
-						<tool id="com.qnx.qcc.tool.compiler.858718415.789946409" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.858718415"/>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -382,10 +375,10 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1253855401" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1962687527" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -410,9 +403,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.771231900" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.profile.1850485153.541017531" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.161154916.275437854">
-						<tool id="com.qnx.qcc.tool.compiler.161154916.275437854" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.161154916"/>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
@@ -451,10 +441,10 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.319027575" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.776211987" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -479,9 +469,6 @@
 							<tool id="com.qnx.qcc.tool.archiver.802566834" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="com.qnx.qcc.configuration.staticLib.coverage.1539882516.2135747619" name="signal_processing_unittest.cc" rcbsApplicability="disable" resourcePath="src/signal_processing/signal_processing_unittest.cc" toolsToInvoke="com.qnx.qcc.tool.compiler.741394182.520627003">
-						<tool id="com.qnx.qcc.tool.compiler.741394182.520627003" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.741394182"/>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
 						<entry excluding="signal_processing/signal_processing_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>

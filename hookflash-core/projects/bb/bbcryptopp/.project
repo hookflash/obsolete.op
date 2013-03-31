@@ -86,11 +86,6 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/3way.h</location>
 		</link>
 		<link>
-			<name>src/adhoc.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/adhoc.cpp</location>
-		</link>
-		<link>
 			<name>src/adler32.cpp</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/adler32.cpp</location>
@@ -189,21 +184,6 @@
 			<name>src/basecode.h</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/basecode.h</location>
-		</link>
-		<link>
-			<name>src/bench.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/bench.cpp</location>
-		</link>
-		<link>
-			<name>src/bench.h</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/bench.h</location>
-		</link>
-		<link>
-			<name>src/bench2.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/bench2.cpp</location>
 		</link>
 		<link>
 			<name>src/bfinit.cpp</name>
@@ -334,11 +314,6 @@
 			<name>src/cryptlib_bds.cpp</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/cryptlib_bds.cpp</location>
-		</link>
-		<link>
-			<name>src/datatest.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/datatest.cpp</location>
 		</link>
 		<link>
 			<name>src/default.cpp</name>
@@ -1226,11 +1201,6 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/tea.h</location>
 		</link>
 		<link>
-			<name>src/test.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/test.cpp</location>
-		</link>
-		<link>
 			<name>src/tftables.cpp</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/tftables.cpp</location>
@@ -1284,26 +1254,6 @@
 			<name>src/twofish.h</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/twofish.h</location>
-		</link>
-		<link>
-			<name>src/validat1.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/validat1.cpp</location>
-		</link>
-		<link>
-			<name>src/validat2.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/validat2.cpp</location>
-		</link>
-		<link>
-			<name>src/validat3.cpp</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/validat3.cpp</location>
-		</link>
-		<link>
-			<name>src/validate.h</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/cryptopp/cryptopp/validate.h</location>
 		</link>
 		<link>
 			<name>src/vmac.cpp</name>

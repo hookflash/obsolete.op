@@ -81,11 +81,6 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/udns/udns/config.h</location>
 		</link>
 		<link>
-			<name>src/dnsget.c</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/udns/udns/dnsget.c</location>
-		</link>
-		<link>
 			<name>src/ex-rdns.c</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/udns/udns/ex-rdns.c</location>
@@ -99,11 +94,6 @@
 			<name>src/inet_XtoX.c</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/udns/udns/inet_XtoX.c</location>
-		</link>
-		<link>
-			<name>src/rblcheck.c</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/udns/udns/rblcheck.c</location>
 		</link>
 		<link>
 			<name>src/udns.h</name>

@@ -9,6 +9,13 @@
 		<project>bbudns</project>
 		<project>bbWebRTC</project>
 		<project>bbzsLib</project>
+		<project>common_audio</project>
+		<project>common_video</project>
+		<project>metrics</project>
+		<project>modules</project>
+		<project>system_wrappers</project>
+		<project>video_engine</project>
+		<project>voice_engine</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
