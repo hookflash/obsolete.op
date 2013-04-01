@@ -31,7 +31,7 @@ CpuWrapper* CpuWrapper::CreateCpu()
    return new CpuWindows();
 #elif (defined(WEBRTC_MAC) || defined(WEBRTC_MAC_INTEL) || defined(MAC_IPHONE))
     return new CpuWrapperMac();
-#elif defined(WEBRTC_ANDROID)
+#elif (defined(WEBRTC_ANDROID) || defined(__QNX__))
     return 0;
 #else
     return new CpuLinux();

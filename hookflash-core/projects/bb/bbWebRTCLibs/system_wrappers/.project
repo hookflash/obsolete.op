@@ -251,11 +251,6 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_features.cc</location>
 		</link>
 		<link>
-			<name>src/source/cpu_features_arm.c</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_features_arm.c</location>
-		</link>
-		<link>
 			<name>src/source/cpu_info.cc</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_info.cc</location>
