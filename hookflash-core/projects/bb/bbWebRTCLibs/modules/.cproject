@@ -88,7 +88,7 @@
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.282724710" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.282724710" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1512566090" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -111,7 +111,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -148,7 +148,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>	
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
@@ -205,7 +205,7 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.642233020" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1290767401" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1290767401" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.481261226" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -227,7 +227,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -319,7 +319,7 @@
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.2122186702" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2122186702" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.507536256" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -343,7 +343,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -435,7 +435,7 @@
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.78852800" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.78852800" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1707352902" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -459,7 +459,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -569,7 +569,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -681,7 +681,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -793,7 +793,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -826,5 +826,8 @@
 		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.1403339553">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/modules"/>
 	</storageModule>
 </cproject>
