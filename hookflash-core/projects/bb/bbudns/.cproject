@@ -8,8 +8,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Device-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -39,7 +41,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.760977925" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.837608765" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.837608765" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2080315700" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -60,9 +62,14 @@
 							<tool id="com.qnx.qcc.tool.archiver.1697428725" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.debug.260780834.1738234862" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.211214924.1223372511">
+						<tool id="com.qnx.qcc.tool.compiler.211214924.1223372511" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.211214924">
+							<inputType id="com.qnx.qcc.inputType.compiler.1952701734" superClass="com.qnx.qcc.inputType.compiler"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -73,8 +80,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -107,7 +116,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.1573037486" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.320493254" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.320493254" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.795849870" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -127,9 +136,12 @@
 							<tool id="com.qnx.qcc.tool.archiver.1798401149" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.release.226270573.878082559" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.1788619760.1936884327">
+						<tool id="com.qnx.qcc.tool.compiler.1788619760.1936884327" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1788619760"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -140,8 +152,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -172,7 +186,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.305600320" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1274659230" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1274659230" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.407964058" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -194,9 +208,12 @@
 							<tool id="com.qnx.qcc.tool.archiver.198385256" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.profile.2054552199.1565064675" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.1650290977.306011020">
+						<tool id="com.qnx.qcc.tool.compiler.1650290977.306011020" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1650290977"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -207,8 +224,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -239,7 +258,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.47085242" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1265861473" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1265861473" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.878571897" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -261,9 +280,14 @@
 							<tool id="com.qnx.qcc.tool.archiver.512457160" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.coverage.1244039270.826831858" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.1705978174.692297664">
+						<tool id="com.qnx.qcc.tool.compiler.1705978174.692297664" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.1705978174">
+							<inputType id="com.qnx.qcc.inputType.compiler.533040053" superClass="com.qnx.qcc.inputType.compiler"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -274,8 +298,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -322,9 +348,12 @@
 							<tool id="com.qnx.qcc.tool.archiver.523357643" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.debug.475891931.1149801228" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.933568253.1888187939">
+						<tool id="com.qnx.qcc.tool.compiler.933568253.1888187939" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.933568253"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -335,8 +364,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -385,9 +416,12 @@
 							<tool id="com.qnx.qcc.tool.archiver.409382290" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.profile.1529247258.54845888" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.195804776.1657429008">
+						<tool id="com.qnx.qcc.tool.compiler.195804776.1657429008" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.195804776"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -398,8 +432,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -448,9 +484,12 @@
 							<tool id="com.qnx.qcc.tool.archiver.1227047158" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="com.qnx.qcc.configuration.staticLib.coverage.463393546.1985911862" name="getopt.c" rcbsApplicability="disable" resourcePath="src/udns/getopt.c" toolsToInvoke="com.qnx.qcc.tool.compiler.66260311.957891361">
+						<tool id="com.qnx.qcc.tool.compiler.66260311.957891361" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler.66260311"/>
+					</fileInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="udns/getopt.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -484,4 +523,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>
