@@ -271,11 +271,6 @@
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_measurement_harness.h</location>
 		</link>
 		<link>
-			<name>src/source/cpu_no_op.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_no_op.cc</location>
-		</link>
-		<link>
 			<name>src/source/cpu_wrapper_unittest.cc</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/cpu_wrapper_unittest.cc</location>
@@ -304,11 +299,6 @@
 			<name>src/source/data_log_c.cc</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/data_log_c.cc</location>
-		</link>
-		<link>
-			<name>src/source/data_log_no_op.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/data_log_no_op.cc</location>
 		</link>
 		<link>
 			<name>src/source/event.cc</name>
@@ -434,11 +424,6 @@
 			<name>src/source/trace_impl.h</name>
 			<type>1</type>
 			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/trace_impl.h</location>
-		</link>
-		<link>
-			<name>src/source/trace_impl_no_op.cc</name>
-			<type>1</type>
-			<location>/Users/lawrence.gunn/Documents/op/hookflash-libs/webRTC/src/system_wrappers/source/trace_impl_no_op.cc</location>
 		</link>
 		<link>
 			<name>src/source/trace_posix.cc</name>

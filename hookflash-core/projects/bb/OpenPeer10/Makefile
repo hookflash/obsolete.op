@@ -6,9 +6,11 @@ HOOKFLASH_BB_LIBS = $(HOOKFLASH_ROOT)/hookflash-core/projects/bb
 BOOST_LIB_TYPE = build/qcc/debug/architecture-arm/link-static/target-os-qnxnto/threading-multi
 BB_PLATFORM = Device-Debug
 
+#			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/common_video/$(BB_PLATFORM)/libcommon_video.a \
+
 DeviceDebug:
 	qcc -o Device-Debug/libOpenPeer10.so Device-Debug/public/opVersion.o \
-		-lcurl -lsocket -lbps -lm -lc -lcpp -lstdc++ \
+		-lcurl -lsocket -lbps -lm -lc -lcpp -lstdc++ -ljpeg \
 		-Wl,--whole-archive \
 			-l$(HOOKFLASH_BOOST)/date_time/$(BOOST_LIB_TYPE)/libboost_date_time.a \
 			-l$(HOOKFLASH_BOOST)/thread/$(BOOST_LIB_TYPE)/libboost_thread.a \
@@ -17,6 +19,11 @@ DeviceDebug:
 			-l$(HOOKFLASH_BB_LIBS)/bbzsLib/$(BB_PLATFORM)/libbbzsLib.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbcryptopp/$(BB_PLATFORM)/libbbcryptopp.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbudns/$(BB_PLATFORM)/libbbudns.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/system_wrappers/$(BB_PLATFORM)/libsystem_wrappers.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/common_audio/$(BB_PLATFORM)/libcommon_audio.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/jpeg/$(BB_PLATFORM)/libjpeg.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/yuv/$(BB_PLATFORM)/libyuv.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/common_video/$(BB_PLATFORM)/libcommon_video.a \
 		-Wl,--no-whole-archive \
 		-V4.6.3,gcc_ntoarmv7le_cpp -w1 -lang-c++ -shared -Wl,-E -g -Wl,-z,relro -Wl,-z,now -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/armle-v7/lib -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/armle-v7/usr/lib -Wl,-z,defs
 
