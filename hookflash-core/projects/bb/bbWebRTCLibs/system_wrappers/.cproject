@@ -41,7 +41,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1527717069" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.853680518" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.853680518" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.289304003" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -64,7 +64,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -111,7 +111,7 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.489266086" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.510977664" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.510977664" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1530389542" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -133,7 +133,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -178,7 +178,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1216544111" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.168428582" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.168428582" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.586275131" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -202,7 +202,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -247,7 +247,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1906461415" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.681089129" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.681089129" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1460818717" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -271,7 +271,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -334,7 +334,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -399,7 +399,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -464,7 +464,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -498,4 +498,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

@@ -52,7 +52,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1159604779" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.2114122533" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2114122533" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1278918622" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -75,7 +75,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -133,7 +133,7 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.464836119" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.629090696" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.629090696" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1018614433" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -155,7 +155,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -211,7 +211,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.254665017" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1822329126" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1822329126" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.7563530" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -235,7 +235,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -291,7 +291,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1233330314" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1207413073" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1207413073" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1817752742" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -315,7 +315,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -389,7 +389,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -465,7 +465,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -541,7 +541,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="voice_engine/main/source/channel_unittest.cc|voice_engine/main/source/audio_frame_operations_unittest.cc|voice_engine/main/test|source/channel_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -575,4 +575,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="refreshScope"/>
 </cproject>

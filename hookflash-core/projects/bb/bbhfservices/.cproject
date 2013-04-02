@@ -33,6 +33,7 @@
 								<option id="com.qnx.qcc.option.compiler.includePath.1706388031" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbzsLib/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp/public}&quot;"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
@@ -60,6 +61,7 @@
 								<option id="com.qnx.qcc.option.assembler.includePath.565710416" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbzsLib/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp/public}&quot;"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.assembler.1002401898" superClass="com.qnx.qcc.inputType.assembler"/>
@@ -121,8 +123,10 @@
 				<externalSettings containerId="bbudns;com.qnx.qcc.configuration.staticLib.debug.260780834" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Device-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<externalSettings containerId="bbzsLib;com.qnx.qcc.configuration.staticLib.debug.1292814065" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
@@ -404,6 +408,7 @@
 								<option id="com.qnx.qcc.option.compiler.includePath.2128666336" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbzsLib/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp}&quot;"/>
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
@@ -428,6 +433,7 @@
 								<option id="com.qnx.qcc.option.assembler.includePath.502776466" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbzsLib/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbudns}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp/public}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/bbcryptopp}&quot;"/>
 								</option>
@@ -492,8 +498,10 @@
 				<externalSettings containerId="bbudns;com.qnx.qcc.configuration.staticLib.debug.475891931" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbudns"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbudns/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbudns"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbudns"/>
 					</externalSetting>
 				</externalSettings>
 				<externalSettings containerId="bbzsLib;com.qnx.qcc.configuration.staticLib.debug.1327340201" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">

@@ -8,8 +8,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Debug"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -40,7 +42,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.2072906735" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.568927131" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.568927131" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.814002632" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -62,8 +64,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -74,8 +76,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -109,7 +113,7 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.616504288" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1998326734" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1998326734" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1095122030" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -130,8 +134,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -142,8 +146,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -175,7 +181,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.559766596" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.782337361" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.782337361" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1854477511" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -198,8 +204,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -210,8 +216,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -243,7 +251,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.1217378001" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1270501141" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1270501141" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1760902633" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -266,8 +274,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -278,8 +286,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -328,8 +338,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -340,8 +350,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -392,8 +404,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -404,8 +416,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -456,8 +470,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="common_video/libyuv/scaler_unittest.cc|common_video/libyuv/libyuv_unittest.cc|common_video/jpeg/jpeg_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

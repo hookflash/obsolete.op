@@ -78,7 +78,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -139,7 +139,7 @@
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1229790226" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.935859673" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.935859673" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.179085804" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -161,7 +161,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -220,7 +220,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.337130174" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.438388777" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.438388777" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.245999352" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -244,7 +244,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -303,7 +303,7 @@
 								<option id="com.qnx.qcc.option.compiler.defines.674733834" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.2719740" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2719740" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2025264068" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -327,7 +327,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -404,7 +404,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -483,7 +483,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -562,7 +562,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

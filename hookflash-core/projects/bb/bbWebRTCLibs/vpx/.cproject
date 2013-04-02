@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.87266685">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.87266685" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.87266685" name="Device-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.87266685." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.1280777850" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.988512273" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.608970555" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Device-Debug}" id="com.qnx.nto.912243237" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.259097308" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1009142296" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1992359554" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.533391639" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.2091079226" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.2140465021" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1352554839" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.832871544" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.2064049282" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.773385550" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.471500779" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1590270074" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1634927152" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.117588008" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1420961813" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.944412236" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.670337973" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.release.151587352">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.release.151587352" moduleId="org.eclipse.cdt.core.settings" name="Device-Release">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.release.151587352" name="Device-Release" parent="com.qnx.qcc.configuration.staticLib.release">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.release.151587352." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.release.1263197434" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1439807263" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.117356324" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Device-Release}" id="com.qnx.nto.937852174" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.512755757" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1851063536" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.362052713" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1561270592" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1974342059" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.pie.1333343122" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.qccoptions.1408648080" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1972931624" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.403945831" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.2107733066" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<inputType id="com.qnx.qcc.inputType.assembler.888285452" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1236100309" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.langcpp.1477186613" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2087818883" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.759886184" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.pie.1360608964" name="Position Independent Executable (-pie)" superClass="com.qnx.qcc.option.linker.pie" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.41428251" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.1691808634">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.1691808634" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.1691808634" name="Device-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.1691808634." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.631111984" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1370508173" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.243909167" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Device-Profile}" id="com.qnx.nto.872152392" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1317804874" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1425090794" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1207491757" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.1624405225" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1366707398" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.2043015542" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1711368267" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.217676272" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.2127001619" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1591915847" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1151340654" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1575204885" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1756555345" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1050527727" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1744836043" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.824766071" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1399264309" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.551482840" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1888677112" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.781639277">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.781639277" moduleId="org.eclipse.cdt.core.settings" name="Device-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.781639277" name="Device-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.781639277." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.2049937613" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.581957851" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.842338005" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Device-Coverage}" id="com.qnx.nto.397622282" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1900880177" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.725236098" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.272922142" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.633401576" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.800792960" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.113167532" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1638549410" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1351230597" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1935905448" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.407528982" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.2112096440" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.332394285" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.862638393" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.2015448505" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.1924596002" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1771540828" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2087369266" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.2077519107" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.248967908" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.1485049732">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.1485049732" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.1485049732" name="Simulator-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.1485049732." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.133372954" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1757141908" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Simulator-Debug}" id="com.qnx.nto.1433053358" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.777715477" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1326493039" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.2009760906" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.586208182" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.284439369" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.230049565" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1544845452" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1368564946" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1089124067" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.852839888" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1065875490" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.519396470" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.195015284" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.172958667" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.393536177" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1633723273" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.1141032740">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.1141032740" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.1141032740" name="Simulator-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.1141032740." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.1037443143" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2239956" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Simulator-Profile}" id="com.qnx.nto.1497557002" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1889422954" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.373197391" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.185614138" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.1605638517" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1596716658" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1506826615" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.142603315" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1677905250" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1870382695" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.2142048728" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.294427523" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.102590347" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.352328066" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1491298244" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.691472894" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1689832569" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1565304598" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1017995649" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.4820776">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.4820776" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/vpx"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/vpx/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="vpx"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="vpx"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.4820776" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.4820776." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.262421338" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1155970702" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/vpx/Simulator-Coverage}" id="com.qnx.nto.1667042859" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.2057152794" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.466583965" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1905461795" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.1798265146" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1258438861" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/config/blackberry&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_mem/memory_manager/include&quot;"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1537914101" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.895769832" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.128258799" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1255953446" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1873318645" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.672022036" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.868639951" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1634521423" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.1384896840" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1558893512" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1059396549" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.335212714" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.279137630" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="source/libvpx/vp8/common/arm/bilinearfilter_arm.c|source/libvpx/args.c|source/libvpx/vpx_scale/generic/bicubic_scaler.c|source/libvpx/vp8/encoder/arm|source/libvpx/build/make/obj_int_extract.c|source/libvpx/example_xma.c|source/libvpx/vp8_multi_resolution_encoder.c|source/libvpx/vp8_scalable_patterns.c|source/libvpx/vpxdec.c|source/libvpx/vp8/common/arm/neon|source/libvpx/vp8/common/arm/armv6|source/libvpx/vp8/encoder/arm/armv6|source/libvpx/vp8/encoder/arm/armv5te|source/libvpx/vp8/encoder/arm/neon|source/libvpx/vpx_ports/emms.asm|source/libvpx/vpx_scale/arm/neon|source/libvpx/vpxenc.c|source/libvpx/tools|source/libvpx/third_party|source/libvpx/nestegg|source/libvpx/libmkv|source/libvpx/vp8/common/idctllm_test.cc|source/libvpx/vp8/encoder/denoising.c|source/libvpx/vp8/encoder/mr_dissim.c|source/libvpx/vp8/common/asm_com_offsets.c.S|source/libvpx/vp8/encoder/x86|source/libvpx/vp8/encoder/ppc|source/libvpx/nestegg/test|source/libvpx/libmkv/testlibmkv.c|source/libvpx/examples|source/libvpx/vp8/encoder/asm_enc_offsets.c.S|source/libvpx/vp8/common/x86|source/libvpx/vp8/common/ppc|source/libvpx/vpx_scale/win32|source/libvpx/vpx_ports/x86_cpuid.c|source/libvpx/vpx_ports/x86_abi_support.asm|source/libvpx/third_party/googletest|source/config/win|source/config/mac|source/config/linux|source/config/iphone|source/config/android" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="vpx.null.745480891" name="vpx"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.4820776">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.1691808634">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.release.151587352">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.781639277">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.1485049732">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.87266685">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.1141032740">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/vpx"/>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
+</cproject>
