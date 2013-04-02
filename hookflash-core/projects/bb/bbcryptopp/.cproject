@@ -8,8 +8,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Device-Debug"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -40,7 +42,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.70417942" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.9708016" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.9708016" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1226814609" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -62,8 +64,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -74,8 +76,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -109,7 +113,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.1522342803" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.661768043" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.661768043" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.272986974" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -130,8 +134,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -142,8 +146,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -175,7 +181,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.1312724857" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.761645313" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.761645313" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.14110541" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -198,8 +204,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -210,8 +216,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -243,7 +251,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.34709844" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1210259430" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1210259430" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.770091986" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -266,8 +274,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -341,8 +349,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="panama.cpp|sosemanuk.cpp|whrlpool.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData|panama.cpp|sosemanuk.cpp|whrlpool.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -353,8 +361,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -405,8 +415,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -417,8 +427,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/bbcryptopp"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/bbcryptopp/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="bbcryptopp"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="bbcryptopp"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -469,8 +481,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="cryptopp/bench2.cpp|cryptopp/bench.cpp|cryptopp/datatest.cpp|cryptopp/adhoc.cpp|cryptopp/test.cpp|cryptopp/validat3.cpp|cryptopp/validat2.cpp|cryptopp/validat1.cpp|cryptopp/x64masm.asm|cryptopp/x64dll.asm|cryptopp/TestVectors|cryptopp/TestData" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -223,4 +223,15 @@ WebRtc_Word32 VideoRenderBlackBerry::SetBitmap(const void* bitMap,
   return -1;
 }
 
+BlackberryRenderCallback* VideoRenderBlackBerry::CreateRenderChannel(
+    WebRtc_Word32 streamId,
+    WebRtc_Word32 zOrder,
+    const float left,
+    const float top,
+    const float right,
+    const float bottom,
+    VideoRenderBlackBerry& renderer) {
+  return NULL;
+}
+
 }  // namespace webrtc

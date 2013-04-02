@@ -128,7 +128,7 @@ class VideoRenderBlackBerry: IVideoRender {
       const float bottom,
       VideoRenderBlackBerry& renderer);
 
-  screen_window_t
+//  screen_window_t
 
   WebRtc_Word32 _id;
   CriticalSectionWrapper& _critSect;

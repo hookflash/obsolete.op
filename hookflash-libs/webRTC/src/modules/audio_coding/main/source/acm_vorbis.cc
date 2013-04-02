@@ -51,6 +51,14 @@ ACMVORBIS::InternalInitDecoder(
 }
   
 WebRtc_Word32
+ACMVORBIS::EncodeVorbisEndOfStream(
+                                   WebRtc_Word8* /* encodedData */,
+                                   WebRtc_UWord32& /* encodedLengthInBytes */)
+{
+  return -1;
+}
+
+WebRtc_Word32
 ACMVORBIS::CodecDef(
                     WebRtcNetEQ_CodecDef& /* codecDef  */,
                     const CodecInst&      /* codecInst */)
