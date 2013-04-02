@@ -24,9 +24,14 @@ DeviceDebug:
 			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/jpeg/$(BB_PLATFORM)/libjpeg.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/yuv/$(BB_PLATFORM)/libyuv.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/common_video/$(BB_PLATFORM)/libcommon_video.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/voice_engine/$(BB_PLATFORM)/libvoice_engine.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/video_engine/$(BB_PLATFORM)/libvideo_engine.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/vpx/$(BB_PLATFORM)/libvpx.a \
-			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/ogg/$(BB_PLATFORM)/libogg.a \
 			-l$(HOOKFLASH_BB_LIBS)/bbWebRTCLibs/modules/$(BB_PLATFORM)/libmodules.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbhfservices/$(BB_PLATFORM)/libbbhfservices.a \
+			-l$(HOOKFLASH_BB_LIBS)/bbhfstack/$(BB_PLATFORM)/libbbhfstack.a \
+ 			-l$(HOOKFLASH_BB_LIBS)/bbhfcore/$(BB_PLATFORM)/libbbhfcore.a \
 		-Wl,--no-whole-archive \
 		-V4.6.3,gcc_ntoarmv7le_cpp -w1 -lang-c++ -shared -Wl,-E -g -Wl,-z,relro -Wl,-z,now -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/armle-v7/lib -L/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/armle-v7/usr/lib -Wl,-z,defs
 
+	
