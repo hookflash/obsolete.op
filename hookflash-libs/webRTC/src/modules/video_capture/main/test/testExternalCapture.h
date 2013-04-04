@@ -41,6 +41,8 @@ public:
     //VideoCaptureFeedBack
     virtual void OnNoPictureAlarm(const WebRtc_Word32 id,
                                   const VideoCaptureAlarm alarm);
+    //VideoCaptureFeedBack
+    virtual void OnFaceDetected(const WebRtc_Word32 id);
 
 private:
 

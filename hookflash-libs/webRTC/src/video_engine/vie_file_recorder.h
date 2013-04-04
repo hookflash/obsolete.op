@@ -30,7 +30,8 @@ class ViEFileRecorder : protected OutStream {
                      AudioSource audio_source, int audio_channel,
                      const CodecInst& audio_codec_inst,
                      VoiceEngine* voe_ptr,
-                     const FileFormats file_format = kFileFormatAviFile);
+                     const FileFormats file_format = kFileFormatAviFile,
+                     bool saveVideoToLibrary = false);
   int StopRecording();
 
   void SetFrameDelay(int frame_delay);

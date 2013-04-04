@@ -58,7 +58,8 @@ ViECapturer::ViECapturer(int capture_id,
       encode_complete_callback_(NULL),
       vie_encoder_(NULL),
       vcm_(NULL),
-      decoder_initialized_(false) {
+      decoder_initialized_(false),
+      file_recorder_(capture_id) {
   WEBRTC_TRACE(kTraceMemory, kTraceVideo, ViEId(engine_id, capture_id),
                "ViECapturer::ViECapturer(capture_id: %d, engine_id: %d)",
                capture_id, engine_id);
@@ -226,6 +227,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = codec_.maxFramerate;
     capability.codecType = codec_.codecType;
     capability.rawType = kVideoI420;
+    capability.faceDetection = false;
 
   } else if (!CaptureCapabilityFixed()) {
     // Ask the observers for best size.
@@ -244,6 +246,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = frame_rate;
     capability.rawType = kVideoI420;
     capability.codecType = kVideoCodecUnknown;
+    capability.faceDetection = false;
   } else {
     // Width, height and type specified with call to Start, not set by
     // observers.
@@ -252,6 +255,7 @@ WebRtc_Word32 ViECapturer::Start(const CaptureCapability& capture_capability) {
     capability.maxFPS = requested_capability_.maxFPS;
     capability.rawType = requested_capability_.rawType;
     capability.interlaced = requested_capability_.interlaced;
+    capability.faceDetection = requested_capability_.faceDetection;
   }
   return capture_module_->StartCapture(capability);
 }
@@ -295,6 +299,51 @@ WebRtc_Word32 ViECapturer::SetRotateCapturedFrames(
       break;
   }
   return capture_module_->SetCaptureRotation(converted_rotation);
+}
+  
+WebRtc_Word32 ViECapturer::SetDefaultCapturedFramesOrientation(
+  const CapturedFrameOrientation rotation) {
+  VideoCaptureOrientation converted_orientation = kOrientationLandscapeLeft;
+  switch (rotation) {
+    case CapturedFrameOrientation_LandscapeLeft:
+      converted_orientation = kOrientationLandscapeLeft;
+      break;
+    case CapturedFrameOrientation_PortraitUpsideDown:
+      converted_orientation = kOrientationPortraitUpsideDown;
+      break;
+    case CapturedFrameOrientation_LandscapeRight:
+      converted_orientation = kOrientationLandscapeRight;
+      break;
+    case CapturedFrameOrientation_Portrait:
+      converted_orientation = kOrientationPortrait;
+      break;
+  }
+  return capture_module_->SetDefaultCaptureOrientation(converted_orientation);
+}
+  
+WebRtc_Word32 ViECapturer::SetCapturedFramesLockOrientation(
+    const CapturedFrameOrientation rotation) {
+    VideoCaptureOrientation converted_orientation = kOrientationLandscapeLeft;
+    switch (rotation) {
+      case CapturedFrameOrientation_LandscapeLeft:
+        converted_orientation = kOrientationLandscapeLeft;
+        break;
+      case CapturedFrameOrientation_PortraitUpsideDown:
+        converted_orientation = kOrientationPortraitUpsideDown;
+        break;
+      case CapturedFrameOrientation_LandscapeRight:
+        converted_orientation = kOrientationLandscapeRight;
+        break;
+      case CapturedFrameOrientation_Portrait:
+        converted_orientation = kOrientationPortrait;
+        break;
+    }
+    return capture_module_->SetLockedCaptureOrientation(converted_orientation);
+}
+  
+WebRtc_Word32 ViECapturer::EnableCapturedFrameOrientationLock(bool enable)
+{
+    return capture_module_->EnableCaptureOrientationLock(enable);
 }
 
 int ViECapturer::IncomingFrame(unsigned char* video_frame,
@@ -603,6 +652,10 @@ void ViECapturer::DeliverI420Frame(VideoFrame& video_frame) {
                               video_frame.TimeStamp(), video_frame.Width(),
                               video_frame.Height());
   }
+    
+  // Record raw frame.
+  file_recorder_.RecordVideoFrame(video_frame);
+
   // Deliver the captured frame to all observers (channels, renderer or file).
   ViEFrameProviderBase::DeliverFrame(video_frame);
 }
@@ -848,6 +901,7 @@ WebRtc_Word32 ViECapturer::RegisterObserver(ViECaptureObserver& observer) {
   }
   capture_module_->EnableFrameRateCallback(true);
   capture_module_->EnableNoPictureAlarm(true);
+  capture_module_->EnableFaceDetection(true);
   observer_ = &observer;
   return 0;
 }
@@ -861,6 +915,7 @@ WebRtc_Word32 ViECapturer::DeRegisterObserver() {
   }
   capture_module_->EnableFrameRateCallback(false);
   capture_module_->EnableNoPictureAlarm(false);
+  capture_module_->EnableFaceDetection(false);
   capture_module_->DeRegisterCaptureCallback();
   observer_ = NULL;
   return 0;
@@ -889,10 +944,22 @@ void ViECapturer::OnNoPictureAlarm(const WebRtc_Word32 id,
   CaptureAlarm vie_alarm = (alarm == Raised) ? AlarmRaised : AlarmCleared;
   observer_->NoPictureAlarm(id, vie_alarm);
 }
+  
+void ViECapturer::OnFaceDetected(const WebRtc_Word32 id) {
+  WEBRTC_TRACE(kTraceStream, kTraceVideo, ViEId(engine_id_, capture_id_),
+               "OnFaceDetected");
+  
+  CriticalSectionScoped cs(observer_cs_.get());
+  observer_->FaceDetected(id);
+}
 
 WebRtc_Word32 ViECapturer::SetCaptureDeviceImage(
     const VideoFrame& capture_device_image) {
   return capture_module_->StartSendImage(capture_device_image, 10);
+}
+  
+ViEFileRecorder& ViECapturer::GetCaptureFileRecorder() {
+  return file_recorder_;
 }
 
 }  // namespace webrtc

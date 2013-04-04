@@ -22,6 +22,13 @@
 #include "video_capture_avfoundation_utility.h"
 #include "video_capture_avfoundation_info.h"
 
+#ifndef BACK_CAMERA_INDEX
+#define BACK_CAMERA_INDEX               0
+#endif
+#ifndef FRONT_CAMERA_INDEX
+#define FRONT_CAMERA_INDEX              1
+#endif
+
 @interface VideoCaptureIPhoneAVFoundationInfoObjC : NSObject{
     bool                                _OSSupportedInfo;
     NSArray*                            _captureDevicesInfo;
@@ -64,6 +71,9 @@
     AndY:(WebRtc_UWord32) positionY;
 
 - (UIDeviceOrientation)getDeviceOrientation;
+
+- (NSNumber*)getCaptureDeviceIndex:(const char*)deviceUniqueIdUTF8;
+
 @end
 
 #endif  // WEBRTC_MODULES_VIDEO_CAPTURE_MAIN_SOURCE_IPHONE_AVFOUNDATION_VIDEO_CAPTURE_AVFOUNDATION_INFO_OBJC_H_

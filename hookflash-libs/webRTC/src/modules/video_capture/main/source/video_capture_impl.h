@@ -66,9 +66,14 @@ public:
     virtual WebRtc_Word32 SetCaptureDelay(WebRtc_Word32 delayMS);
     virtual WebRtc_Word32 CaptureDelay();
     virtual WebRtc_Word32 SetCaptureRotation(VideoCaptureRotation rotation);
+    virtual WebRtc_Word32 SetDefaultCaptureOrientation(VideoCaptureOrientation orientation);
+    virtual WebRtc_Word32 SetLockedCaptureOrientation(VideoCaptureOrientation orientation);
+
+    virtual WebRtc_Word32 EnableCaptureOrientationLock(const bool enable);
 
     virtual WebRtc_Word32 EnableFrameRateCallback(const bool enable);
     virtual WebRtc_Word32 EnableNoPictureAlarm(const bool enable);
+    virtual WebRtc_Word32 EnableFaceDetection(const bool enable);
 
     virtual const char* CurrentDeviceName() const;
 
@@ -80,10 +85,12 @@ public:
     virtual WebRtc_Word32 IncomingFrame(WebRtc_UWord8* videoFrame,
                                         WebRtc_Word32 videoFrameLength,
                                         const VideoCaptureCapability& frameInfo,
-                                        WebRtc_Word64 captureTime = 0);
+                                        WebRtc_Word64 captureTime = 0,
+                                        bool faceDetected = false);
     virtual WebRtc_Word32 IncomingFrameI420(
         const VideoFrameI420& video_frame,
-        WebRtc_Word64 captureTime = 0);
+        WebRtc_Word64 captureTime = 0,
+        bool faceDetected = false);
 
     // Platform dependent
     virtual WebRtc_Word32 StartCapture(const VideoCaptureCapability& capability)
@@ -110,6 +117,9 @@ protected:
     CriticalSectionWrapper& _apiCs;
     WebRtc_Word32 _captureDelay; // Current capture delay. May be changed of platform dependent parts.
     VideoCaptureCapability _requestedCapability; // Should be set by platform dependent code in StartCapture.
+    VideoCaptureOrientation _defaultFrameOrientation;
+    VideoCaptureOrientation _lockedFrameOrientation;
+    bool _captureOrientationLock;
 private:
     void UpdateFrameCount();
     WebRtc_UWord32 CalculateFrameRate(const TickTime& now);
@@ -121,6 +131,8 @@ private:
     bool _frameRateCallBack; // true if EnableFrameRateCallback
     bool _noPictureAlarmCallBack; //true if EnableNoPictureAlarm
     VideoCaptureAlarm _captureAlarm; // current value of the noPictureAlarm
+    bool _faceDetectionCallBack; //true if EnableFaceDetection
+    bool _faceDetected; // current value of the faceDetected
 
     WebRtc_Word32 _setCaptureDelay; // The currently used capture delay
     VideoCaptureDataCallback* _dataCallBack;

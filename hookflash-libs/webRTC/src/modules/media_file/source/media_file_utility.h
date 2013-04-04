@@ -19,6 +19,7 @@
 
 namespace webrtc {
 class AviFile;
+class MP4File;
 class InStream;
 class OutStream;
 
@@ -78,9 +79,42 @@ public:
     // one video frame.
     WebRtc_Word32 WriteAviVideoData(const WebRtc_Word8* videoBuffer,
                                     WebRtc_UWord32 bufferLengthInBytes);
-
+    
     // Stop recording to file or stream.
     WebRtc_Word32 CloseAviFile();
+
+    // Open/create the file specified by fileName for writing audio/video data
+    // (relative path is allowed). codecInst specifies the encoding of the audio
+    // data. videoCodecInst specifies the encoding of the video data. Only video
+    // data will be recorded if videoOnly is true.
+    WebRtc_Word32 InitMP4Writing(const char* filename,
+                                 const CodecInst& codecInst,
+                                 const VideoCodec& videoCodecInst,
+                                 const bool videoOnly,
+                                 const bool saveVideoToLibrary = false);
+    
+    // Write one audio frame, i.e. the bufferLengthinBytes first bytes of
+    // audioBuffer, to file. The audio frame size is determined by the
+    // codecInst.pacsize parameter of the last sucessfull
+    // InitMP4Writing(..) call.
+    // Note: bufferLength must be exactly one frame.
+    WebRtc_Word32 WriteMP4AudioData(const WebRtc_Word8* audioBuffer,
+                                    WebRtc_UWord32 bufferLengthInBytes,
+                                    WebRtc_UWord32 timeStamp);
+    
+    
+    // Write one video frame, i.e. the bufferLength first bytes of videoBuffer,
+    // to file.
+    // Note: videoBuffer can contain encoded data. The codec used must be the
+    // same as what was specified by videoCodecInst for the last successfull
+    // InitMP4Writing(..) call. The videoBuffer must contain exactly
+    // one video frame.
+    WebRtc_Word32 WriteMP4VideoData(const WebRtc_Word8* videoBuffer,
+                                    WebRtc_UWord32 bufferLengthInBytes,
+                                    WebRtc_UWord32 timeStamp);
+
+    // Stop recording to file or stream.
+    WebRtc_Word32 CloseMP4File();
 
     WebRtc_Word32 VideoCodecInst(VideoCodec& codecInst);
 #endif // #ifdef WEBRTC_MODULE_UTILITY_VIDEO
@@ -343,6 +377,7 @@ private:
     AviFile* _aviAudioInFile;
     AviFile* _aviVideoInFile;
     AviFile* _aviOutFile;
+    MP4File* _mp4OutFile;
     VideoCodec _videoCodec;
 #endif
 };

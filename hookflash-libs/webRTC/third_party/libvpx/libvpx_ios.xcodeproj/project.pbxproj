@@ -1420,7 +1420,7 @@
 					source/libvpx/vp8/decoder,
 					source/libvpx/vp8/encoder,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -1490,7 +1490,7 @@
 					source/libvpx/vp8/decoder,
 					source/libvpx/vp8/encoder,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = vpx_ios;

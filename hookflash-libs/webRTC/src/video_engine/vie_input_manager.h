@@ -64,6 +64,12 @@ class ViEInputManager : private ViEManagerBase {
                                       WebRtc_UWord32 positionY);
   int GetOrientation(const char* device_unique_idUTF8,
                      RotateCapturedFrame& orientation);
+  int SetDefaultOrientation(const char* device_unique_idUTF8,
+                            CapturedFrameOrientation orientation);
+  int SetLockedOrientation(const char* device_unique_idUTF8,
+                           CapturedFrameOrientation orientation);
+  int EnableOrientationLock(const char* device_unique_idUTF8,
+                            const bool enable);
 
   // Creates a capture module for the specified capture device and assigns
   // a capture device id for the device.
@@ -82,6 +88,11 @@ class ViEInputManager : private ViEManagerBase {
                        VoiceEngine* voe_ptr,
                        int& file_id);
   int DestroyFilePlayer(int file_id);
+  
+  // Set the voice engine instance to be used by all video channels.
+  int SetVoiceEngine(VoiceEngine* voice_engine);
+  
+  VoiceEngine* GetVoiceEngine();
 
  private:
   // Gets and allocates a free capture device id. Assumed protected by caller.
@@ -124,6 +135,8 @@ class ViEInputManager : private ViEManagerBase {
   int free_file_id_[kViEMaxFilePlayers];
 
   ProcessThread* module_process_thread_;
+  
+  VoiceEngine* voice_engine_;
 };
 
 // Provides protected access to ViEInputManater.

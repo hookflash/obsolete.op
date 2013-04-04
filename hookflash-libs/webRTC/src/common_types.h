@@ -114,6 +114,7 @@ enum FileFormats
     kFileFormatCompressedFile = 2,
     kFileFormatAviFile        = 3,
     kFileFormatPreencodedFile = 4,
+    kFileFormatMP4File        = 5,
     kFileFormatPcm16kHzFile   = 7,
     kFileFormatPcm8kHzFile    = 8,
     kFileFormatPcm32kHzFile   = 9
@@ -522,6 +523,11 @@ struct VideoCodecVP8
     unsigned char        numberOfTemporalLayers;
     bool                 denoisingOn;
 };
+    
+// H264 specific
+struct VideoCodecH264
+{
+};
 
 // Unknown specific
 struct VideoCodecGeneric
@@ -532,6 +538,7 @@ struct VideoCodecGeneric
 enum VideoCodecType
 {
     kVideoCodecVP8,
+    kVideoCodecH264,
     kVideoCodecI420,
     kVideoCodecRED,
     kVideoCodecULPFEC,
@@ -541,6 +548,7 @@ enum VideoCodecType
 union VideoCodecUnion
 {
     VideoCodecVP8       VP8;
+    VideoCodecH264      H264;
     VideoCodecGeneric   Generic;
 };
 

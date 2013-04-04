@@ -606,7 +606,6 @@
 		0C8F07D30960328DF9C2EBF7 /* rtcp_format_remb_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 74496D37B78C006389B45CED /* rtcp_format_remb_unittest.cc */; };
 		0CF43FC55D1CE3F47C8AC88E /* TimedTrace.cc in Sources */ = {isa = PBXBuildFile; fileRef = BE5A7D9E029D59E4FAF071E2 /* TimedTrace.cc */; };
 		0D0D0DC1158960612DD4FE41 /* arith_routines.c in Sources */ = {isa = PBXBuildFile; fileRef = 322FA55002337916DD59438D /* arith_routines.c */; };
-		0D2339C2A55D08903C59A7AE /* media_file_utility.cc in Sources */ = {isa = PBXBuildFile; fileRef = C849F5E51F4B5B019439E33F /* media_file_utility.cc */; };
 		0D3218DD78BB330B7B81EAB6 /* benchmark.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0A5012C71B5713B27440B840 /* benchmark.cc */; };
 		0D624FEB3B992009431E39D2 /* libG711.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F40E44A7ECC94405BE1FE16A /* libG711.a */; };
 		0D6C1BA821259E592FBAAA09 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9D99D842F7FB769DDD6174C /* libG722.a */; };
@@ -1489,6 +1488,9 @@
 		E2808C9220998E666C553547 /* encode.c in Sources */ = {isa = PBXBuildFile; fileRef = C22B588EC35431D30D3FDFD2 /* encode.c */; };
 		E28E35FABAAD9BFCFCC11D83 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F678E0C281449BD0FCA6F5B3 /* ApplicationServices.framework */; };
 		E29E95B3EAFE1372FF27837A /* normal_test.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2DB0F9905BD08A79DFE29F41 /* normal_test.cc */; };
+		E2EABDE516FA8B96001CDBC0 /* media_file_utility.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2EABDE016FA8B96001CDBC0 /* media_file_utility.mm */; };
+		E2EABDE616FA8B96001CDBC0 /* mp4_file_objc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2EABDE216FA8B96001CDBC0 /* mp4_file_objc.mm */; };
+		E2EABDE716FA8B96001CDBC0 /* mp4_file.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2EABDE416FA8B96001CDBC0 /* mp4_file.mm */; };
 		E32CF369F6BF6CBD2960CF6C /* libsignal_processing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E5D5B5277B6AADB73190EB4A /* libsignal_processing.a */; };
 		E3735F49B9FE494E98380FE8 /* libmetrics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADEEEE3D24C5F2674061553E /* libmetrics.a */; };
 		E38FA053B4FF426ED4138335 /* kenny.c in Sources */ = {isa = PBXBuildFile; fileRef = BEA91BB5E7DB21A415A2FA83 /* kenny.c */; };
@@ -7582,7 +7584,6 @@
 		C75E920286ECF064F9BBC8AF /* video_source.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = video_source.h; sourceTree = "<group>"; };
 		C77B407BD558C6CBFA88A812 /* video_capture_factory.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = video_capture_factory.cc; sourceTree = "<group>"; };
 		C8392E1172BBBF6394EC2B0D /* acm_g729.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = acm_g729.cc; sourceTree = "<group>"; };
-		C849F5E51F4B5B019439E33F /* media_file_utility.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = media_file_utility.cc; sourceTree = "<group>"; };
 		C8FB13339E4C4BDAD24AFC5B /* audio_device_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio_device_buffer.h; sourceTree = "<group>"; };
 		C9AED7D8AC59794E6BC57A02 /* cng_internal.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cng_internal.c; sourceTree = "<group>"; };
 		C9E251FE7A215F84151B8EAD /* audio_device_alsa_linux.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio_device_alsa_linux.h; sourceTree = "<group>"; };
@@ -7683,6 +7684,11 @@
 		E1E026036728936563869030 /* packet_buffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = packet_buffer.h; sourceTree = "<group>"; };
 		E1FFFB60CA73CDE9E8F08E58 /* fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fft.c; sourceTree = "<group>"; };
 		E23F1F91B4374279F4A8A8C7 /* APITest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = APITest.cc; sourceTree = "<group>"; };
+		E2EABDE016FA8B96001CDBC0 /* media_file_utility.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = media_file_utility.mm; sourceTree = "<group>"; };
+		E2EABDE116FA8B96001CDBC0 /* mp4_file_objc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mp4_file_objc.h; sourceTree = "<group>"; };
+		E2EABDE216FA8B96001CDBC0 /* mp4_file_objc.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = mp4_file_objc.mm; sourceTree = "<group>"; };
+		E2EABDE316FA8B96001CDBC0 /* mp4_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mp4_file.h; sourceTree = "<group>"; };
+		E2EABDE416FA8B96001CDBC0 /* mp4_file.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = mp4_file.mm; sourceTree = "<group>"; };
 		E3D81450579634DD125B665F /* iSACTest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = iSACTest.cc; sourceTree = "<group>"; };
 		E42048C2924AC9D4373070B4 /* video_quality_measurement.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = video_quality_measurement.cc; sourceTree = "<group>"; };
 		E442539C24BD6EA28A94A91E /* refiner.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = refiner.c; sourceTree = "<group>"; };
@@ -10255,10 +10261,14 @@
 			children = (
 				97EAA36A2D99AB227A136198 /* avi_file.cc */,
 				8CCE70E8A4657768C1E6090B /* avi_file.h */,
+				E2EABDE116FA8B96001CDBC0 /* mp4_file_objc.h */,
+				E2EABDE216FA8B96001CDBC0 /* mp4_file_objc.mm */,
+				E2EABDE316FA8B96001CDBC0 /* mp4_file.h */,
+				E2EABDE416FA8B96001CDBC0 /* mp4_file.mm */,
 				D6301C226BA39593F85FAA46 /* media_file_impl.cc */,
 				55387818D7A555928D05F76D /* media_file_impl.h */,
 				93AEB0B0952C1DC1A2253B40 /* media_file_unittest.cc */,
-				C849F5E51F4B5B019439E33F /* media_file_utility.cc */,
+				E2EABDE016FA8B96001CDBC0 /* media_file_utility.mm */,
 				A3FF444488B43627539DE8C0 /* media_file_utility.h */,
 			);
 			path = source;
@@ -16329,7 +16339,9 @@
 			files = (
 				63AC3CF80F3BF253D95B127C /* avi_file.cc in Sources */,
 				E098FA12A073CE88D8C9E522 /* media_file_impl.cc in Sources */,
-				0D2339C2A55D08903C59A7AE /* media_file_utility.cc in Sources */,
+				E2EABDE516FA8B96001CDBC0 /* media_file_utility.mm in Sources */,
+				E2EABDE616FA8B96001CDBC0 /* mp4_file_objc.mm in Sources */,
+				E2EABDE716FA8B96001CDBC0 /* mp4_file.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -29157,7 +29169,7 @@
 					../common_audio/signal_processing/include,
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -30523,7 +30535,7 @@
 					../common_audio/signal_processing/include,
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				PRODUCT_NAME = apm_util;
 				SDKROOT = macosx;

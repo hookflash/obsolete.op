@@ -420,6 +420,7 @@
 				);
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -485,6 +486,7 @@
 				);
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				GCC_WARN_UNUSED_VARIABLE = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = jpeg_ios;

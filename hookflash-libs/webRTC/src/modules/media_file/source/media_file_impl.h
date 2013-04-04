@@ -61,8 +61,14 @@ public:
     WebRtc_Word32 PlayoutPositionMs(WebRtc_UWord32& positionMs) const;
     WebRtc_Word32 IncomingAudioData(const WebRtc_Word8*  audioBuffer,
                                     const WebRtc_UWord32 bufferLength);
+    WebRtc_Word32 IncomingMP4AudioData(const WebRtc_Word8*  audioBuffer,
+                                       const WebRtc_UWord32 bufferLength,
+                                       const WebRtc_UWord32 timeStamp);
     WebRtc_Word32 IncomingAVIVideoData(const WebRtc_Word8*  audioBuffer,
                                        const WebRtc_UWord32 bufferLength);
+    WebRtc_Word32 IncomingMP4VideoData(const WebRtc_Word8*  audioBuffer,
+                                       const WebRtc_UWord32 bufferLength,
+                                       const WebRtc_UWord32 timeStamp);
     WebRtc_Word32 StartRecordingAudioFile(
         const char*  fileName,
         const FileFormats    format,
@@ -74,7 +80,8 @@ public:
         const FileFormats   format,
         const CodecInst&    codecInst,
         const VideoCodec&   videoCodecInst,
-        bool                videoOnly = false);
+        bool                videoOnly = false,
+        bool                saveVideoToLibrary = false);
     WebRtc_Word32 StartRecordingAudioStream(
         OutStream&           stream,
         const FileFormats    format,
@@ -166,6 +173,7 @@ private:
     // audio frame.
     WebRtc_Word32 IncomingAudioVideoData(const WebRtc_Word8*  buffer,
                                          const WebRtc_UWord32 bufferLength,
+                                         const WebRtc_UWord32 timeStamp,
                                          const bool video);
 
     // Open/creates file specified by fileName for writing (relative path is
@@ -188,7 +196,8 @@ private:
         const VideoCodec&    videoCodecInst,
         const WebRtc_UWord32 notificationTimeMs = 0,
         const WebRtc_UWord32 maxSizeBytes = 0,
-        bool                 videoOnly = false);
+        bool                 videoOnly = false,
+        bool                 saveVideoToLibrary = false);
 
     // Open/creates file specified by fileName for writing (relative path is
     // allowed). FileCallback::RecordNotification(..) will be called after
@@ -210,7 +219,8 @@ private:
         const CodecInst&     codecInst,
         const VideoCodec&    videoCodecInst,
         const WebRtc_UWord32 notificationTimeMs = 0,
-        const bool           videoOnly = false);
+        const bool           videoOnly = false,
+        const bool           saveVideoToLibrary = false);
 
     // Returns true if frequencyInHz is a supported frequency.
     static bool ValidFrequency(const WebRtc_UWord32 frequencyInHz);

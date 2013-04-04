@@ -73,6 +73,7 @@ private:
     WebRtc_Word32            _captureWidth;
     WebRtc_Word32            _captureHeight;
     WebRtc_Word32            _captureFrameRate;
+    bool                     _faceDetection;
     WebRtc_UWord8            _currentDeviceNameUTF8[MAX_NAME_LENGTH];
     WebRtc_UWord8            _currentDeviceUniqueIdUTF8[MAX_NAME_LENGTH];
     WebRtc_UWord8            _currentDeviceProductUniqueIDUTF8[MAX_NAME_LENGTH];

@@ -313,6 +313,7 @@
 					../../src/common_video/interface,
 					../../third_party/libjpeg_turbo,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -394,6 +395,7 @@
 					../../src/common_video/interface,
 					../../third_party/libjpeg_turbo,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CPLUSPLUSFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

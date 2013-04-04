@@ -200,4 +200,35 @@
     return [[UIDevice currentDevice] orientation];
 }
 
+- (NSNumber*)getCaptureDeviceIndex:(const char*)deviceUniqueIdUTF8
+{
+    if(NO == _OSSupportedInfo)
+    {
+        return [NSNumber numberWithInt:-1];
+    }
+  
+    if(_captureDevicesInfo)
+    {
+        [_captureDevicesInfo release];
+    }
+    _captureDevicesInfo = [[NSArray alloc]
+                         initWithArray:[AVCaptureDevice
+                                        devicesWithMediaType:AVMediaTypeVideo]];
+    AVCaptureDevice* tempCaptureDevice;
+    for(int index = 0; index < (int)_captureDevicesInfo.count; index++)
+    {
+        tempCaptureDevice = (AVCaptureDevice*)[_captureDevicesInfo
+                                               objectAtIndex:index];
+        char tempCaptureDeviceUniqueID[1024] = "";
+        [[tempCaptureDevice uniqueID]
+        getCString:tempCaptureDeviceUniqueID maxLength:1024
+        encoding:NSUTF8StringEncoding];
+        if(0 == strcmp(deviceUniqueIdUTF8, tempCaptureDeviceUniqueID))
+        {
+            return [NSNumber numberWithInt:index];
+        }
+    }
+    return [NSNumber numberWithInt:-1];
+}
+
 @end

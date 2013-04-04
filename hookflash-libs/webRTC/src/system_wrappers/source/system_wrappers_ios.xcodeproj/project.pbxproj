@@ -565,6 +565,7 @@
 					spreadsortlib,
 					../interface,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -573,6 +574,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -648,11 +650,13 @@
 					spreadsortlib,
 					../interface,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SHARED_PRECOMPS_DIR = "$(CACHE_ROOT)/SharedPrecompiledHeaders";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",

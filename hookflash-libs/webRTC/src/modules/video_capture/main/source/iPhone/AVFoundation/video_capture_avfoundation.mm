@@ -38,6 +38,7 @@ VideoCaptureIPhoneAVFoundation::VideoCaptureIPhoneAVFoundation(const WebRtc_Word
     _captureWidth(AVFOUNDATION_DEFAULT_WIDTH),
     _captureHeight(AVFOUNDATION_DEFAULT_HEIGHT),
     _captureFrameRate(AVFOUNDATION_DEFAULT_FRAME_RATE),
+    _faceDetection(false),
     _frameCount(0)
 {
     WEBRTC_TRACE(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, id,
@@ -186,100 +187,168 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StartCapture(
     WEBRTC_TRACE(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, 0,
                  "%s:%d", __FUNCTION__, __LINE__);
   
-    _captureWidth = capability.width;
-    _captureHeight = capability.height;
-    _captureFrameRate = capability.maxFPS;
-  
     VideoCaptureRotation rotation;
-    NSInteger captureIndex = [_captureDevice getCaptureDeviceIndex];
-    UIDeviceOrientation deviceOrientation = [_captureInfo getDeviceOrientation];
-    if (captureIndex == FRONT_CAMERA_INDEX)
+  
     {
-        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+        CriticalSectionScoped cs(&_apiCs);
+      
+        _captureWidth = capability.width;
+        _captureHeight = capability.height;
+        _captureFrameRate = capability.maxFPS;
+        _faceDetection = capability.faceDetection;
+      
+        if (!_captureOrientationLock)
         {
-            rotation = kCameraRotate180;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
-        {
-            rotation = kCameraRotate270;
-        }
-        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
-        {
-            rotation = kCameraRotate0;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortrait)
-        {
-            rotation = kCameraRotate90;
+            NSInteger captureIndex = [_captureDevice getCaptureDeviceIndex];
+            UIDeviceOrientation deviceOrientation = [_captureInfo getDeviceOrientation];
+            if (captureIndex == FRONT_CAMERA_INDEX)
+            {
+                if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+                {
+                    rotation = kCameraRotate180;
+                }
+                else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+                {
+                    rotation = kCameraRotate270;
+                }
+                else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+                {
+                    rotation = kCameraRotate0;
+                }
+                else if (deviceOrientation == UIDeviceOrientationPortrait)
+                {
+                    rotation = kCameraRotate90;
+                }
+                else
+                {
+                    if (_defaultFrameOrientation == kOrientationLandscapeLeft)
+                        rotation = kCameraRotate180;
+                    else if (_defaultFrameOrientation == kOrientationPortraitUpsideDown)
+                        rotation = kCameraRotate270;
+                    else if (_defaultFrameOrientation == kOrientationLandscapeRight)
+                        rotation = kCameraRotate0;
+                    else if (_defaultFrameOrientation == kOrientationPortrait)
+                        rotation = kCameraRotate90;
+                    else
+                        rotation = kCameraRotate180;
+                }
+            }
+            else if (captureIndex == BACK_CAMERA_INDEX)
+            {
+                if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
+                {
+                    rotation = kCameraRotate0;
+                }
+                else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
+                {
+                    rotation = kCameraRotate270;
+                }
+                else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
+                {
+                    rotation = kCameraRotate180;
+                }
+                else if (deviceOrientation == UIDeviceOrientationPortrait)
+                {
+                    rotation = kCameraRotate90;
+                }
+                else
+                {
+                    if (_defaultFrameOrientation == kOrientationLandscapeLeft)
+                        rotation = kCameraRotate0;
+                    else if (_defaultFrameOrientation == kOrientationPortraitUpsideDown)
+                        rotation = kCameraRotate270;
+                    else if (_defaultFrameOrientation == kOrientationLandscapeRight)
+                        rotation = kCameraRotate180;
+                    else if (_defaultFrameOrientation == kOrientationPortrait)
+                        rotation = kCameraRotate90;
+                    else
+                        rotation = kCameraRotate0;
+                }
+            }
+            else
+            {
+                rotation = kCameraRotate0;
+            }
         }
         else
         {
-            rotation = kCameraRotate180;
+            NSInteger captureIndex = [_captureDevice getCaptureDeviceIndex];
+            if (captureIndex == FRONT_CAMERA_INDEX)
+            {
+                if (_lockedFrameOrientation == kOrientationLandscapeLeft)
+                    rotation = kCameraRotate180;
+                else if (_lockedFrameOrientation == kOrientationPortraitUpsideDown)
+                    rotation = kCameraRotate270;
+                else if (_lockedFrameOrientation == kOrientationLandscapeRight)
+                    rotation = kCameraRotate0;
+                else if (_lockedFrameOrientation == kOrientationPortrait)
+                    rotation = kCameraRotate90;
+                else
+                    rotation = kCameraRotate180;
+            }
+            else if (captureIndex == BACK_CAMERA_INDEX)
+            {
+                if (_lockedFrameOrientation == kOrientationLandscapeLeft)
+                    rotation = kCameraRotate0;
+                else if (_lockedFrameOrientation == kOrientationPortraitUpsideDown)
+                    rotation = kCameraRotate270;
+                else if (_lockedFrameOrientation == kOrientationLandscapeRight)
+                    rotation = kCameraRotate180;
+                else if (_lockedFrameOrientation == kOrientationPortrait)
+                    rotation = kCameraRotate90;
+                else
+                    rotation = kCameraRotate0;
+            }
+            else
+            {
+                rotation = kCameraRotate0;
+            }
         }
     }
-    else if (captureIndex == BACK_CAMERA_INDEX)
-    {
-        if (deviceOrientation == UIDeviceOrientationLandscapeLeft)
-        {
-            rotation = kCameraRotate0;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
-        {
-            rotation = kCameraRotate270;
-        }
-        else if (deviceOrientation == UIDeviceOrientationLandscapeRight)
-        {
-            rotation = kCameraRotate180;
-        }
-        else if (deviceOrientation == UIDeviceOrientationPortrait)
-        {
-            rotation = kCameraRotate90;
-        }
-        else
-        {
-            rotation = kCameraRotate0;
-        }
-    }
-    else 
-    {
-        rotation = kCameraRotate0;
-    }
-
+  
     SetCaptureRotation(rotation);
 
-    // Capture format is always landscape
-    if (capability.width > capability.height)
     {
-        if(-1 == [[_captureDevice setCaptureHeight:_captureHeight
-                  AndWidth:_captureWidth AndFrameRate:_captureFrameRate]intValue])
+        CriticalSectionScoped cs(&_apiCs);
+      
+        // Capture format is always landscape
+        if (capability.width > capability.height)
         {
-            WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
-                         "Could not set width=%d height=%d frameRate=%d",
-                         _captureWidth, _captureHeight, _captureFrameRate);
-            return -1;
+            if(-1 == [[_captureDevice setCaptureHeight:_captureHeight
+                      AndWidth:_captureWidth AndFrameRate:_captureFrameRate AndFaceDetection:_faceDetection]intValue])
+            {
+                WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
+                             "Could not set width=%d height=%d frameRate=%d",
+                             _captureWidth, _captureHeight, _captureFrameRate);
+                return -1;
+            }
         }
-    }
-    else 
-    {
-        if(-1 == [[_captureDevice setCaptureHeight:_captureWidth
-                  AndWidth:_captureHeight AndFrameRate:_captureFrameRate]intValue])
+        else 
         {
-            WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
-                         "Could not set width=%d height=%d frameRate=%d",
-                         _captureWidth, _captureHeight, _captureFrameRate);
-            return -1;
+            if(-1 == [[_captureDevice setCaptureHeight:_captureWidth
+                      AndWidth:_captureHeight AndFrameRate:_captureFrameRate AndFaceDetection:_faceDetection]intValue])
+            {
+                WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
+                             "Could not set width=%d height=%d frameRate=%d",
+                             _captureWidth, _captureHeight, _captureFrameRate);
+                return -1;
+            }
         }
-    }
 
-    if(-1 == [[_captureDevice startCapture]intValue])
-    {
-        return -1;
+        if(-1 == [[_captureDevice startCapture]intValue])
+        {
+            return -1;
+        }
+        _isCapturing = true;
     }
-    _isCapturing = true;
+  
     return 0;
 }
 
 WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StopCapture()
 {
+    CriticalSectionScoped cs(&_apiCs);
+  
     [_captureDevice stopCapture];
 
     _isCapturing = false;
@@ -288,11 +357,15 @@ WebRtc_Word32 VideoCaptureIPhoneAVFoundation::StopCapture()
 
 bool VideoCaptureIPhoneAVFoundation::CaptureStarted()
 {
+    CriticalSectionScoped cs(&_apiCs);
+  
     return _isCapturing;
 }
 
 WebRtc_Word32 VideoCaptureIPhoneAVFoundation::CaptureSettings(VideoCaptureCapability& settings)
 {
+    CriticalSectionScoped cs(&_apiCs);
+  
     settings.width = _captureWidth;
     settings.height = _captureHeight;
     settings.maxFPS = _captureFrameRate;

@@ -338,6 +338,7 @@
 					.,
 					../libjpeg_turbo,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
@@ -393,6 +394,7 @@
 					.,
 					../libjpeg_turbo,
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = yuv_ios;

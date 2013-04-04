@@ -35,6 +35,7 @@ struct CaptureCapability {
   VideoCodecType codecType;
   unsigned int expectedCaptureDelay;
   bool interlaced;
+  bool faceDetection;
   CaptureCapability() {
     width = 0;
     height = 0;
@@ -43,6 +44,7 @@ struct CaptureCapability {
     codecType = kVideoCodecUnknown;
     expectedCaptureDelay = 0;
     interlaced = false;
+    faceDetection = false;
   }
 };
 
@@ -64,6 +66,14 @@ enum RotateCapturedFrame {
   RotateCapturedFrame_90 = 90,
   RotateCapturedFrame_180 = 180,
   RotateCapturedFrame_270 = 270
+};
+  
+enum CapturedFrameOrientation
+{
+  CapturedFrameOrientation_LandscapeLeft,
+  CapturedFrameOrientation_PortraitUpsideDown,
+  CapturedFrameOrientation_LandscapeRight,
+  CapturedFrameOrientation_Portrait
 };
 
 struct ViEVideoFrameI420 {
@@ -135,6 +145,10 @@ class WEBRTC_DLLEXPORT ViECaptureObserver {
   // VideoEngine.
   virtual void NoPictureAlarm(const int capture_id,
                               const CaptureAlarm alarm) = 0;
+  
+  // This method is called when face is detected on capture device
+  // VideoEngine.
+  virtual void FaceDetected(const int capture_id) = 0;
 
  protected:
   virtual ~ViECaptureObserver() {}
@@ -200,6 +214,22 @@ class WEBRTC_DLLEXPORT ViECapture {
   // Used on mobile devices with rotates cameras.
   virtual int SetRotateCapturedFrames(const int capture_id,
                                       const RotateCapturedFrame rotation) = 0;
+  
+  // Sets default value for video frame orientation. This value is used when a device is in
+  // face up / face down position.
+  // Used on mobile devices with rotates cameras.
+  virtual int SetDefaultCapturedFrameOrientation(const int capture_id,
+                                                 const CapturedFrameOrientation orientation) = 0;
+  
+  // Sets value for video frame orientation when video rotation is locked.
+  // Used on mobile devices with rotates cameras.
+  virtual int SetCapturedFrameLockedOrientation(const int capture_id,
+                                                const CapturedFrameOrientation orientation) = 0;
+  
+  // Enables captured frame orientation locking.
+  // Used on mobile devices with rotates cameras.
+  virtual int EnableCapturedFrameOrientationLock(const int capture_id,
+                                                 const bool enable) = 0;
 
   // This function sets the expected delay from when a video frame is captured
   // to when that frame is delivered to VideoEngine.
