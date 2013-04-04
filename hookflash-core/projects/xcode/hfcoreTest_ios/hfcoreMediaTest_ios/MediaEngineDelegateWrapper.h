@@ -19,6 +19,8 @@ public:
   static MediaEngineDelegateWrapperPtr create();
   
   virtual void onMediaEngineAudioRouteChanged(IMediaEngine::OutputAudioRoutes audioRoute);
+  virtual void onMediaEngineFaceDetected();
+  virtual void onMediaEngineVideoCaptureRecordStopped();
   
 };
 

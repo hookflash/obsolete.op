@@ -71,7 +71,9 @@ namespace hookflash
         #pragma mark
         
       protected:
-        TestMediaEngine() : MediaEngine(zsLib::Noop()) {}
+        TestMediaEngine() :
+          MediaEngine(zsLib::Noop()),
+          mReceiverAddress("") {}
         
       public:
         ~TestMediaEngine();
@@ -140,6 +142,7 @@ namespace hookflash
         virtual int setVideoTransportParameters();
         
       private:
+        String mReceiverAddress;
         zsLib::TimerPtr mVoiceStatisticsTimer;
       };
       

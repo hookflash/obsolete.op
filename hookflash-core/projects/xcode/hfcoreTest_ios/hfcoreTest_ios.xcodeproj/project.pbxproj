@@ -162,6 +162,9 @@
 		E243807016CBD95400441ABD /* hfcoreMediaTest_ios-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E243806D16CBD95400441ABD /* hfcoreMediaTest_ios-Info.plist */; };
 		E243807116CBD95400441ABD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E243806F16CBD95400441ABD /* main.m */; };
 		E243807416CBD96A00441ABD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E243807216CBD96A00441ABD /* InfoPlist.strings */; };
+		E2506E4D170DA49F005A43D2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2506E4C170DA49E005A43D2 /* MobileCoreServices.framework */; };
+		E2506E54170DA55C005A43D2 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2506E53170DA55C005A43D2 /* CoreImage.framework */; };
+		E2506E56170DA584005A43D2 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2506E55170DA584005A43D2 /* AssetsLibrary.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1292,6 +1295,9 @@
 		E243806E16CBD95400441ABD /* hfcoreMediaTest_ios-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "hfcoreMediaTest_ios-Prefix.pch"; path = "hfcoreMediaTest_ios/hfcoreMediaTest_ios-Prefix.pch"; sourceTree = "<group>"; };
 		E243806F16CBD95400441ABD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = hfcoreMediaTest_ios/main.m; sourceTree = "<group>"; };
 		E243807316CBD96A00441ABD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = hfcoreMediaTest_ios/en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E2506E4C170DA49E005A43D2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		E2506E53170DA55C005A43D2 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		E2506E55170DA584005A43D2 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1368,6 +1374,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E2506E56170DA584005A43D2 /* AssetsLibrary.framework in Frameworks */,
+				E2506E54170DA55C005A43D2 /* CoreImage.framework in Frameworks */,
+				E2506E4D170DA49F005A43D2 /* MobileCoreServices.framework in Frameworks */,
 				E2437EFB16CBD62200441ABD /* libaec_ios.a in Frameworks */,
 				E2437EFC16CBD62200441ABD /* libaecm_ios.a in Frameworks */,
 				E2437EFD16CBD62200441ABD /* libagc_ios.a in Frameworks */,
@@ -1461,6 +1470,9 @@
 		0063D5D416CB35D700E6DB4D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E2506E55170DA584005A43D2 /* AssetsLibrary.framework */,
+				E2506E53170DA55C005A43D2 /* CoreImage.framework */,
+				E2506E4C170DA49E005A43D2 /* MobileCoreServices.framework */,
 				0063DA1016CB488D00E6DB4D /* AudioToolbox.framework */,
 				0063DA1616CB4A0F00E6DB4D /* AVFoundation.framework */,
 				0063DA0C16CB487400E6DB4D /* CoreAudio.framework */,

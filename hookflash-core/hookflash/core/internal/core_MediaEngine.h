@@ -52,6 +52,7 @@
 #include <vie_codec.h>
 #include <vie_rtp_rtcp.h>
 #include <video_capture.h>
+#include <vie_file.h>
 
 namespace hookflash
 {
@@ -123,7 +124,8 @@ namespace hookflash
                           public IMediaEngineForStack,
                           public IMediaEngineForCallTransport,
                           public webrtc::TraceCallback,
-                          public webrtc::VoiceEngineObserver
+                          public webrtc::VoiceEngineObserver,
+                          public webrtc::ViECaptureObserver
       {
       public:
         friend interaction IMediaEngineFactory;
@@ -152,6 +154,7 @@ namespace hookflash
         typedef webrtc::ViECapture VideoCapture;
         typedef webrtc::ViERTP_RTCP VideoRtpRtcp;
         typedef webrtc::ViECodec VideoCodec;
+        typedef webrtc::ViEFile VideoFile;
 
       protected:
 
@@ -180,6 +183,10 @@ namespace hookflash
 
         static MediaEnginePtr singleton(IMediaEngineDelegatePtr delegate = IMediaEngineDelegatePtr());
 
+        virtual void setDefaultVideoOrientation(VideoOrientations orientation);
+        virtual VideoOrientations getDefaultVideoOrientation();
+        virtual void setRecordVideoOrientation(VideoOrientations orientation);
+        virtual VideoOrientations getRecordVideoOrientation();
         virtual void setVideoOrientation();
 
         virtual void setCaptureRenderView(void *renderView);
@@ -188,8 +195,8 @@ namespace hookflash
         virtual void setEcEnabled(bool enabled);
         virtual void setAgcEnabled(bool enabled);
         virtual void setNsEnabled(bool enabled);
-        virtual void setRecordFile(String fileName);
-        virtual String getRecordFile() const;
+        virtual void setVoiceRecordFile(String fileName);
+        virtual String getVoiceRecordFile() const;
 
         virtual void setMuteEnabled(bool enabled);
         virtual bool getMuteEnabled();
@@ -199,12 +206,18 @@ namespace hookflash
         
         virtual void setContinuousVideoCapture(bool continuousVideoCapture);
         virtual bool getContinuousVideoCapture();
+        
+        virtual void setFaceDetection(bool faceDetection);
+        virtual bool getFaceDetection();
 
         virtual CameraTypes getCameraType() const;
         virtual void setCameraType(CameraTypes type);
         
         virtual void startVideoCapture();
         virtual void stopVideoCapture();
+        
+        virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false);
+        virtual void stopRecordVideoCapture();
 
         virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat);
         virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat);
@@ -251,6 +264,16 @@ namespace hookflash
 
         void CallbackOnError(const int errCode, const int channel);
         void CallbackOnOutputAudioRouteChange(const OutputAudioRoute route);
+        
+        //-----------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaEngine => ViECaptureObserver
+        #pragma mark
+        
+        void BrightnessAlarm(const int capture_id, const webrtc::Brightness brightness);
+        void CapturedFrameRate(const int capture_id, const unsigned char frame_rate);
+        void NoPictureAlarm(const int capture_id, const webrtc::CaptureAlarm alarm);
+        void FaceDetected(const int capture_id);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -271,7 +294,9 @@ namespace hookflash
         virtual void internalStopVideoCapture();
         virtual void internalStartVideoChannel();
         virtual void internalStopVideoChannel();
-        
+        virtual void internalStartRecordVideoCapture(String videoRecordFile, bool saveVideoToLibrary);
+        virtual void internalStopRecordVideoCapture();
+
         virtual int registerVideoTransport();
         virtual int deregisterVideoTransport();
         virtual int setVideoTransportParameters();
@@ -279,7 +304,8 @@ namespace hookflash
       protected:
         int getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height,
                                       int& maxFramerate, int& maxBitrate);
-        int setVideoCaptureRotationAndCodecParameters();
+        int setVideoCodecParameters();
+        int setVideoCaptureRotation();
         EcModes getEcMode();
 
       private:
@@ -349,8 +375,9 @@ namespace hookflash
         bool mEcEnabled;
         bool mAgcEnabled;
         bool mNsEnabled;
-        String mRecordFile;
-        String mReceiverAddress;
+        String mVoiceRecordFile;
+        VideoOrientations mDefaultVideoOrientation;
+        VideoOrientations mRecordVideoOrientation;
 
         int mVoiceChannel;
         Transport *mVoiceTransport;
@@ -364,10 +391,12 @@ namespace hookflash
         VoiceHardware *mVoiceHardware;
         VoiceFile *mVoiceFile;
         bool mVoiceEngineReady;
+        bool mFaceDetection;
 
         int mVideoChannel;
         Transport *mVideoTransport;
         int mCaptureId;
+        char mDeviceUniqueId[512];
         CameraTypes mCameraType;
         VideoCaptureModule *mVcpm;
         VideoEngine *mVideoEngine;
@@ -377,10 +406,10 @@ namespace hookflash
         VideoCapture *mVideoCapture;
         VideoRtpRtcp *mVideoRtpRtcp;
         VideoCodec *mVideoCodec;
+        VideoFile *mVideoFile;
         void *mIPhoneCaptureRenderView;
         void *mIPhoneChannelRenderView;
         bool mVideoEngineReady;
-        bool mContinuousVideoCapture;
 
         RedirectTransport mRedirectVoiceTransport;
         RedirectTransport mRedirectVideoTransport;
@@ -391,13 +420,19 @@ namespace hookflash
         bool mLifetimeWantAudio;
         bool mLifetimeWantVideoCapture;
         bool mLifetimeWantVideoChannel;
+        bool mLifetimeWantRecordVideoCapture;
 
         bool mLifetimeHasAudio;
         bool mLifetimeHasVideoCapture;
         bool mLifetimeHasVideoChannel;
+        bool mLifetimeHasRecordVideoCapture;
 
         bool mLifetimeInProgress;
         CameraTypes mLifetimeWantCameraType;
+        bool mLifetimeContinuousVideoCapture;
+        
+        String mLifetimeVideoRecordFile;
+        bool mLifetimeSaveVideoToLibrary;
 
         mutable RecursiveLock mMediaEngineReadyLock;
       };

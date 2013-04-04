@@ -47,6 +47,16 @@ namespace hookflash
       };
 
       static const char *toString(CameraTypes type);
+      
+      enum VideoOrientations
+      {
+        VideoOrientation_LandscapeLeft,
+        VideoOrientation_PortraitUpsideDown,
+        VideoOrientation_LandscapeRight,
+        VideoOrientation_Portrait
+      };
+      
+      static const char *toString(VideoOrientations orientation);
 
       enum OutputAudioRoutes
       {
@@ -72,6 +82,10 @@ namespace hookflash
 
       static IMediaEnginePtr singleton();
 
+      virtual void setDefaultVideoOrientation(VideoOrientations orientation) = 0;
+      virtual VideoOrientations getDefaultVideoOrientation() = 0;
+      virtual void setRecordVideoOrientation(VideoOrientations orientation) = 0;
+      virtual VideoOrientations getRecordVideoOrientation() = 0;
       virtual void setVideoOrientation() = 0;
 
       virtual void setCaptureRenderView(void *renderView) = 0;
@@ -80,8 +94,8 @@ namespace hookflash
       virtual void setEcEnabled(bool enabled) = 0;
       virtual void setAgcEnabled(bool enabled) = 0;
       virtual void setNsEnabled(bool enabled) = 0;
-      virtual void setRecordFile(String fileName) = 0;
-      virtual String getRecordFile() const = 0;
+      virtual void setVoiceRecordFile(String fileName) = 0;
+      virtual String getVoiceRecordFile() const = 0;
 
       virtual void setMuteEnabled(bool enabled) = 0;
       virtual bool getMuteEnabled() = 0;
@@ -91,12 +105,18 @@ namespace hookflash
       
       virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
       virtual bool getContinuousVideoCapture() = 0;
+      
+      virtual void setFaceDetection(bool faceDetection) = 0;
+      virtual bool getFaceDetection() = 0;
 
       virtual CameraTypes getCameraType() const = 0;
       virtual void setCameraType(CameraTypes type) = 0;
       
       virtual void startVideoCapture() = 0;
       virtual void stopVideoCapture() = 0;
+      
+      virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false) = 0;
+      virtual void stopRecordVideoCapture() = 0;
 
       virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat) = 0;
       virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat) = 0;
@@ -107,6 +127,8 @@ namespace hookflash
       typedef IMediaEngine::OutputAudioRoutes OutputAudioRoutes;
 
       virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
+      virtual void onMediaEngineFaceDetected() = 0;
+      virtual void onMediaEngineVideoCaptureRecordStopped() = 0;
     };
   }
 }
@@ -114,4 +136,6 @@ namespace hookflash
 ZS_DECLARE_PROXY_BEGIN(hookflash::core::IMediaEngineDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineFaceDetected)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineVideoCaptureRecordStopped)
 ZS_DECLARE_PROXY_END()
