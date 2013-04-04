@@ -19,6 +19,11 @@
 #include <climits>
 #include <cstring>
 
+// Blackberry requires std for memcpy.
+#ifdef __QNX__
+using namespace std;
+#endif
+
 #ifdef WIN32
 // jpeglib defines INT32 with a definition that conflicts with the one
 // in the Vista platforms SDK. By defining XMD_H, it skips its definition of

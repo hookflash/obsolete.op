@@ -14,7 +14,12 @@
 #include <stddef.h>
 #include "vpx/vpx_integer.h"
 
+#ifdef __QNX__
+struct EbmlGlobal;
+#else
 typedef struct EbmlGlobal EbmlGlobal;
+#endif
+
 void  Ebml_Serialize(EbmlGlobal *glob, const void *, int, unsigned long);
 void  Ebml_Write(EbmlGlobal *glob, const void *, unsigned long);
 /////

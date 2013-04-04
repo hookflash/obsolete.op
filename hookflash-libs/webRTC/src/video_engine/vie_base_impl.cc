@@ -30,6 +30,12 @@
 
 namespace webrtc {
 
+#ifdef __QNX__
+#define WEBRTC_SVNREVISION "undefined"
+#define BUILDINFO "undefined"
+#endif
+
+
 ViEBase* ViEBase::GetInterface(VideoEngine* video_engine) {
   if (!video_engine) {
     return NULL;

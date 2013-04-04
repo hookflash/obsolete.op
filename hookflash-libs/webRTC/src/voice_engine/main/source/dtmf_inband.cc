@@ -13,6 +13,9 @@
 #include "critical_section_wrapper.h"
 #include "trace.h"
 #include <cassert>
+#ifdef __QNX__
+#include <string.h>
+#endif
 
 namespace webrtc {
 

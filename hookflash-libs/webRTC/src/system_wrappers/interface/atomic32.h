@@ -21,6 +21,10 @@
 #include "common_types.h"
 #include "constructor_magic.h"
 
+#ifdef __QNX__
+#include <stddef.h>
+#endif
+
 namespace webrtc {
 
 // 32 bit atomic variable.  Note that this class relies on the compiler to

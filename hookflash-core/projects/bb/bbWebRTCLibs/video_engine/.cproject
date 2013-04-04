@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.843310673">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.843310673" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.843310673" name="Device-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.843310673." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.1618241604" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.50815390" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.310105716" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Device-Debug}" id="com.qnx.nto.1211456709" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1362775087" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.552672759" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.737765324" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1714077575" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1447243585" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1646562142" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2056372940" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.346977915" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.761545037" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.616434366" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.352145999" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1202936578" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.2132368059" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.577332376" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1845809611" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.396389581" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1860825056" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.release.680655936">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.release.680655936" moduleId="org.eclipse.cdt.core.settings" name="Device-Release">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.release.680655936" name="Device-Release" parent="com.qnx.qcc.configuration.staticLib.release">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.release.680655936." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.release.783029051" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1744961694" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.312284816" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Device-Release}" id="com.qnx.nto.2086818740" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.486335974" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1246594062" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1429319893" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1814749519" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1312624931" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.pie.115755604" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.qccoptions.1229790226" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.935859673" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.179085804" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.2016073695" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<inputType id="com.qnx.qcc.inputType.assembler.1238912034" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1884997124" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.langcpp.651027810" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.850347572" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.2022612096" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.pie.654235766" name="Position Independent Executable (-pie)" superClass="com.qnx.qcc.option.linker.pie" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1003206082" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.845042197">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.845042197" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.845042197" name="Device-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.845042197." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.2052591858" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.180475626" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1673985924" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Device-Profile}" id="com.qnx.nto.1144918712" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.184431353" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.2056202487" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1140651771" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.470432029" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1066653330" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.71448674" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.337130174" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.438388777" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.245999352" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.62422010" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1584009309" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1875781201" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.212545654" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.306400520" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1109530059" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.912322180" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1501085188" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.133451532" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.2075356528" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.227196840">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.227196840" moduleId="org.eclipse.cdt.core.settings" name="Device-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.227196840" name="Device-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.227196840." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.793385434" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.594769606" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.425457075" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Device-Coverage}" id="com.qnx.nto.1456112983" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1715859541" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1534382474" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1166038761" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.903053801" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.744959762" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.532672556" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.674733834" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2719740" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.2025264068" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1182874468" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1942052752" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.846358453" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1462005272" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.571636686" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.304313777" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.735308036" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.29658552" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1496988053" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1849148746" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.1249809483">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.1249809483" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.1249809483" name="Simulator-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.1249809483." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.1959671453" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1210927042" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Simulator-Debug}" id="com.qnx.nto.1270682173" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.559144025" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1439876101" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.222529263" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1289657765" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1041069752" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.27678348" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.431336938" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1831308741" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.292499734" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1212423557" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.455253192" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1415244202" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1004286263" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.2007185679" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.521321970" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1528918156" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.456503855">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.456503855" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.456503855" name="Simulator-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.456503855." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.1673099620" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1960599186" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Simulator-Profile}" id="com.qnx.nto.1779452980" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1393554259" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.650479550" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1634553136" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.318733161" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.801211990" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.664250412" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1094343258" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.532200530" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1968100176" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1863042068" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1897795181" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1033685401" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.221053957" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1347624210" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1636277031" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.211444345" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.939971530" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1843103165" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.757926077">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.757926077" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/video_engine"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/video_engine/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="video_engine"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="video_engine"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.757926077" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.757926077." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.154940641" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1315072364" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_engine/Simulator-Coverage}" id="com.qnx.nto.1235802838" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.578933020" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.474157372" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.218670220" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.394440619" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1715885213" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.2136994178" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1102383574" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.224866699" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1533199839" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1438278656" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1834489228" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1224139895" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.356051512" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.56816218" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.2128990127" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.771616101" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.387704795" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1925445689" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="video_engine.null.696635792" name="video_engine"/>
+	</storageModule>
+	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.456503855">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.843310673">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.1249809483">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.release.680655936">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.227196840">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.845042197">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.757926077">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+</cproject>

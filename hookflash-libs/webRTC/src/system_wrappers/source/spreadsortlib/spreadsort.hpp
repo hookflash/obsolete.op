@@ -21,6 +21,11 @@ Scott McMurray
 #include "constants.hpp"
 #include <cstring>
 
+// Blackberry wants some functions to be std::... 
+#ifdef __QNX__
+using namespace std;
+#endif
+
 namespace boost {
   namespace detail {
   	//This only works on unsigned data types

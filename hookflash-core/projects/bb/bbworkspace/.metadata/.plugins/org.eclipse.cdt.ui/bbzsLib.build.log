@@ -1,9 +1,0 @@
-Rebuilding selected file(s)
-
-**** Internal Builder is used for build               ****
-qcc -o src/cpp/zsLib_MessageQueueThreadUsingBlackberryChannels.o ../../../../../hookflash-libs/zsLib/zsLib/cpp/zsLib_MessageQueueThreadUsingBlackberryChannels.cpp -V4.6.3,gcc_ntox86_cpp -w1 -I/Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbzsLib/public -I/Applications/bbndk/target_10_1_0_338/qnx6/usr/include/freetype2 -I/Applications/bbndk/target_10_1_0_338/qnx6/../target-override/usr/include -I/Users/lawrence.gunn/Documents/op/hookflash-libs/zsLib -I/Users/lawrence.gunn/Documents/op/hookflash-libs/bbBoost -D_FORTIFY_SOURCE=2 -c -O0 -g -fstack-protector-strong -Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare
-../../../../../hookflash-libs/zsLib/zsLib/cpp/zsLib_MessageQueueThreadUsingBlackberryChannels.cpp:25:70: fatal error: zsLib/internal/MessageQueueThreadUsingBlackberryChannels.h: No such file or directory
-compilation terminated.
-cc: /Applications/bbndk/host_10_1_0_1/darwin/x86/usr/lib/gcc/i486-pc-nto-qnx8.0.0/4.6.3/cc1plus error 1
-
-Build failed: Internal builder error occurred

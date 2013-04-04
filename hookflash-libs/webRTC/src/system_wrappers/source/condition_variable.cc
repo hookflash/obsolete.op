@@ -12,7 +12,7 @@
    #include <windows.h>
    #include "condition_variable_wrapper.h"
    #include "condition_variable_win.h"
-#elif defined(WEBRTC_LINUX)
+#elif defined(WEBRTC_LINUX) || defined(__QNX__)
    #include <pthread.h>
    #include "condition_variable_wrapper.h"
    #include "condition_variable_posix.h"

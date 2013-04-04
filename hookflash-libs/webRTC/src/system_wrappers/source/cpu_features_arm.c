@@ -19,6 +19,9 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __QNX__
+#include <string.h>
+#endif
 
 // Define CPU family.
 typedef enum {

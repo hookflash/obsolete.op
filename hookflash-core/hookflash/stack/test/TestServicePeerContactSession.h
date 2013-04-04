@@ -50,41 +50,40 @@ namespace hookflash
   {
     namespace test
     {
-      
       class TestServicePeerContactSession;
       typedef boost::shared_ptr<TestServicePeerContactSession> TestServicePeerContactSessionPtr;
       typedef boost::weak_ptr<TestServicePeerContactSession> TestServicePeerContactSessionWeakPtr;
       
-      class TestBootstrappedNetwork;
-      typedef boost::shared_ptr<TestBootstrappedNetwork> TestBootstrappedNetworkPtr;
-      typedef boost::weak_ptr<TestBootstrappedNetwork> TestBootstrappedNetworkWeakPtr;
+      class TestBootstrappedNetworkForPeerContact;
+      typedef boost::shared_ptr<TestBootstrappedNetworkForPeerContact> TestBootstrappedNetworkForPeerContactPtr;
+      typedef boost::weak_ptr<TestBootstrappedNetworkForPeerContact> TestBootstrappedNetworkForPeerContactWeakPtr;
       
-      class TestServiceIdentitySession;
-      typedef boost::shared_ptr<TestServiceIdentitySession> TestServiceIdentitySessionPtr;
-      typedef boost::weak_ptr<TestServiceIdentitySession> TestServiceIdentitySessionWeakPtr;
+      class TestServiceIdentitySessionForPeerContact;
+      typedef boost::shared_ptr<TestServiceIdentitySessionForPeerContact> TestServiceIdentitySessionForPeerContactPtr;
+      typedef boost::weak_ptr<TestServiceIdentitySessionForPeerContact> TestServiceIdentitySessionForPeerContactWeakPtr;
       
-      class TestFactory;
-      typedef boost::shared_ptr<TestFactory> TestFactoryPtr;
-      typedef boost::weak_ptr<TestFactory> TestFactoryWeakPtr;
+      class TestFactoryForPeerContact;
+      typedef boost::shared_ptr<TestFactoryForPeerContact> TestFactoryForPeerContactPtr;
+      typedef boost::weak_ptr<TestFactoryForPeerContact> TestFactoryForPeerContactWeakPtr;
       
-      class TestCallback;
-      typedef boost::shared_ptr<TestCallback> TestCallbackPtr;
-      typedef boost::weak_ptr<TestCallback> TestCallbackWeakPtr;
+      class TestCallbackForPeerContact;
+      typedef boost::shared_ptr<TestCallbackForPeerContact> TestCallbackForPeerContactPtr;
+      typedef boost::weak_ptr<TestCallbackForPeerContact> TestCallbackForPeerContactWeakPtr;
       
-      class TestHTTPQuery;
-      typedef boost::shared_ptr<TestHTTPQuery> TestHTTPQueryPtr;
-      typedef boost::weak_ptr<TestHTTPQuery> TestHTTPQueryWeakPtr;
+      class TestHTTPQueryForPeerContact;
+      typedef boost::shared_ptr<TestHTTPQueryForPeerContact> TestHTTPQueryForPeerContactPtr;
+      typedef boost::weak_ptr<TestHTTPQueryForPeerContact> TestHTTPQueryForPeerContactWeakPtr;
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
 #pragma mark
-#pragma mark TestHTTPQuery
+#pragma mark TestHTTPQueryForPeerContact
 #pragma mark
-      class TestHTTPQuery :public hookflash::services::internal::HTTP::HTTPQuery
+      class TestHTTPQueryForPeerContact :public hookflash::services::internal::HTTP::HTTPQuery
       {
       protected:
-        TestHTTPQuery(
+        TestHTTPQueryForPeerContact(
                   services::internal::HTTPPtr outer,
                   services::IHTTPQueryDelegatePtr delegate,
                   bool isPost,
@@ -97,7 +96,7 @@ namespace hookflash
                       ) : HTTPQuery(outer, delegate, isPost, userAgent, url, postData, postDataLengthInBytes, postDataMimeType, timeout){}
       public:
         void writeBody(zsLib::String messageBody);
-        static TestHTTPQueryPtr create(
+        static TestHTTPQueryForPeerContactPtr create(
                                  services::internal::HTTPPtr outer,
                                  services::IHTTPQueryDelegatePtr delegate,
                                  bool isPost,
@@ -111,10 +110,10 @@ namespace hookflash
 
       };
 #pragma mark
-#pragma mark TestCallback
+#pragma mark TestCallbackForPeerContact
 #pragma mark
       
-      class TestCallback : public MessageQueueAssociator,
+      class TestCallbackForPeerContact : public MessageQueueAssociator,
                            public IBootstrappedNetworkDelegate,
                            public IServiceIdentitySessionDelegate,
                            public IServicePeerContactSessionDelegate
@@ -126,14 +125,14 @@ namespace hookflash
           LoginScenario_Relogin
         };
       private:
-        TestCallback(IMessageQueuePtr queue);
+        TestCallbackForPeerContact(IMessageQueuePtr queue);
         
         void init();
         
       public:
-        ~TestCallback();
+        ~TestCallbackForPeerContact();
         
-        static TestCallbackPtr create(zsLib::IMessageQueuePtr queue);
+        static TestCallbackForPeerContactPtr create(zsLib::IMessageQueuePtr queue);
         
       protected:
         //IBootstrappedNetworkDelegate methods
@@ -155,7 +154,7 @@ namespace hookflash
         
       public:
         mutable RecursiveLock mLock;
-        TestCallbackWeakPtr mThisWeak;
+        TestCallbackForPeerContactWeakPtr mThisWeak;
         
         ULONG mCount;
         
@@ -171,18 +170,18 @@ namespace hookflash
       };
       
 #pragma mark
-#pragma mark TestBootstrappedNetwork
+#pragma mark TestBootstrappedNetworkForPeerContact
 #pragma mark
-      class TestBootstrappedNetwork : public MessageQueueAssociator,
+      class TestBootstrappedNetworkForPeerContact : public MessageQueueAssociator,
                                       public internal::BootstrappedNetwork
 //                                      public IBootstrappedNetworkAsyncDelegate
       {
       public:
-        friend interaction TestFactory;
+        friend interaction TestFactoryForPeerContact;
       protected:
-        TestBootstrappedNetwork(IMessageQueuePtr queue) : zsLib::MessageQueueAssociator(queue), BootstrappedNetwork(zsLib::Noop()) {}
+        TestBootstrappedNetworkForPeerContact(IMessageQueuePtr queue) : zsLib::MessageQueueAssociator(queue), BootstrappedNetwork(zsLib::Noop()) {}
       public:
-        ~TestBootstrappedNetwork();
+        ~TestBootstrappedNetworkForPeerContact();
         //---------------------------------------------------------------------
         //virtual void onHTTPCompleted(IHTTPQueryPtr query);
         void initialize(IBootstrappedNetworkDelegatePtr delegate);
@@ -204,21 +203,21 @@ namespace hookflash
 //                                   );
 //        virtual void onStep();
       protected:
-        //TestBootstrappedNetworkWeakPtr mThisWeak;
+        //TestBootstrappedNetworkForPeerContactWeakPtr mThisWeak;
       };
       
 #pragma mark
-#pragma mark TestServiceIdentitySession
+#pragma mark TestServiceIdentitySessionForPeerContact
 #pragma mark
-      class TestServiceIdentitySession : public internal::ServiceIdentitySession
+      class TestServiceIdentitySessionForPeerContact : public internal::ServiceIdentitySession
       {
       public:
-        friend interaction TestFactory;
+        friend interaction TestFactoryForPeerContact;
       protected:
-        TestServiceIdentitySession() : ServiceIdentitySession(zsLib::Noop()) {}
+        TestServiceIdentitySessionForPeerContact() : ServiceIdentitySession(zsLib::Noop()) {}
         
       public:
-        ~TestServiceIdentitySession();
+        ~TestServiceIdentitySessionForPeerContact();
         //---------------------------------------------------------------------
         virtual bool isLoginComplete() const;
         
@@ -232,7 +231,7 @@ namespace hookflash
       class TestServicePeerContactSession : public internal::ServicePeerContactSession
       {
       public:
-        friend interaction TestFactory;
+        friend interaction TestFactoryForPeerContact;
         
       protected:
         TestServicePeerContactSession() : ServicePeerContactSession(zsLib::Noop()) {}
@@ -243,13 +242,13 @@ namespace hookflash
         
       };
 #pragma mark
-#pragma mark TestFactory
+#pragma mark TestFactoryForPeerContact
 #pragma mark
       
-      class TestFactory : public internal::Factory
+      class TestFactoryForPeerContact : public internal::Factory
       {
       public:
-        TestFactory() {}
+        TestFactoryForPeerContact() {}
 #ifdef USE_FAKE_BOOTSTRAPPED_NETWORK
         //bootstrapped network
         virtual BootstrappedNetworkPtr prepare(
@@ -300,7 +299,6 @@ namespace hookflash
                                                      );
 #endif //USE_FAKE_PEER_CONTACT_SESSION
       };
-
       }
     }
   }

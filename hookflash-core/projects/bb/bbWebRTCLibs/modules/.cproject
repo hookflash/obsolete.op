@@ -1,0 +1,833 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.648782461">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.648782461" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.648782461" name="Device-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.648782461." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.891437444" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1243548194" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.120389099" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Device-Debug}" id="com.qnx.nto.943209227" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.743226195" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.653453297" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.2020302169" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1224851408" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1675131319" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1131338617" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.282724710" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1512566090" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.417562871" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.2023841634" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.2135871316" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1131038864" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.433156661" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1574654695" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.928963144" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.496686124" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1645719986" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.release.676161583">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.release.676161583" moduleId="org.eclipse.cdt.core.settings" name="Device-Release">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.release.676161583" name="Device-Release" parent="com.qnx.qcc.configuration.staticLib.release">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.release.676161583." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.release.1928018569" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.2127839565" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1771078584" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Device-Release}" id="com.qnx.nto.1603889381" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1443989221" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1702628522" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.132918349" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.221320834" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1100711308" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.pie.523912194" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.qccoptions.642233020" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1290767401" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.481261226" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.775905765" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<inputType id="com.qnx.qcc.inputType.assembler.1976041796" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.468719848" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.langcpp.340578805" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.732760143" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1211874234" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.pie.262111472" name="Position Independent Executable (-pie)" superClass="com.qnx.qcc.option.linker.pie" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.128535578" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.337801849">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.337801849" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.337801849" name="Device-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.337801849." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.1942906113" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1738732931" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.802688300" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Device-Profile}" id="com.qnx.nto.684666135" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.840563113" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1096504627" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1763966096" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.23165031" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1482444426" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.14343285" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1570570682" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.2122186702" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.507536256" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1095346203" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.2147290337" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.553848269" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.879842541" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.272321623" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.161185829" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1485465592" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.566409981" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1159554840" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.197848711" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.1918581692">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.1918581692" moduleId="org.eclipse.cdt.core.settings" name="Device-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.1918581692" name="Device-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.1918581692." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.1904077671" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1560837456" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.2038175168" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Device-Coverage}" id="com.qnx.nto.1259728572" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.709726095" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1955888853" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.168156952" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.378806975" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1137785727" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.189438971" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.401354133" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.78852800" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-fPIC"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1707352902" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.965348258" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.274050127" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.1234862814" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1744946067" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.933721380" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.894850120" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1237376176" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.223366177" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.105460587" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.114839141" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.debug.747426487">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.debug.747426487" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Debug">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="" id="com.qnx.qcc.configuration.staticLib.debug.747426487" name="Simulator-Debug" parent="com.qnx.qcc.configuration.staticLib.debug">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.debug.747426487." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.debug.1979006501" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.917816485" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Simulator-Debug}" id="com.qnx.nto.1385463417" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.2134173267" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1858124822" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.218825737" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1697760430" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.928348883" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.2120643175" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1053770896" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1318941839" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1100231763" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.363608790" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.325148813" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1798981279" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.663769543" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.17431594" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.623850874" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.878896765" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.profile.1403339553">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.profile.1403339553" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Profile">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build for Profiling" id="com.qnx.qcc.configuration.staticLib.profile.1403339553" name="Simulator-Profile" parent="com.qnx.qcc.configuration.staticLib.profile">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.profile.1403339553." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.profile.260903452" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1208134552" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Simulator-Profile}" id="com.qnx.nto.1798763917" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.253814533" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.1683025176" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.528936300" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.137852950" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.743585977" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1914212049" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1610497633" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1375927846" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.817389546" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.603055601" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.480590090" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1016170167" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1724457116" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.518033198" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1040426235" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.613240100" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.507819523" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1140637164" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.staticLib.coverage.794638580">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.staticLib.coverage.794638580" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Coverage">
+				<externalSettings>
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactExtension="a" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.staticLib" description="Build with Code Coverage" id="com.qnx.qcc.configuration.staticLib.coverage.794638580" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.staticLib.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.staticLib.coverage.794638580." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.staticLib.coverage.2111274892" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.594099099" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/modules/Simulator-Coverage}" id="com.qnx.nto.746573316" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.307721706" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.2074078599" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1798252250" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.1320466439" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.883478575" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/llvm-build/Release+Asserts/lib/clang/3.1/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libogg/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/silk"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../.."/>
+									<listOptionValue builtIn="false" value="../../.."/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/signal_processing/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/cng/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/neteq/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g711/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_conference_mixer/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/vad/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../interface"/>
+									<listOptionValue builtIn="false" value="../../interface"/>
+									<listOptionValue builtIn="false" value="../../../third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/iSAC/fix/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/utility"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aecm/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/pcm16b/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/agc/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libvpx/source/libvpx"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/g722/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source/dummy"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_audio/resampler/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/ns/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/vp8/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_processing/aec/include"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_device/main/source"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/ilbc/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/i420/main/interface"/>
+									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/vorbis/include"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1304691275" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1357470904" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1304691822" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1341008538" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.698389843" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.assembler.949171657" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1597203133" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1976044164" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.679805791" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.2070210239" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.351757262" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1026239871" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1610623807" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="modules/audio_coding/codecs/iSAC/fix/source/lattice_armv7.S|modules/audio_coding/codecs/cng/test|modules/media_file/source/media_file_unittest.cc|modules/video_processing/main/source/content_analysis_sse2.cc|modules/audio_processing/aecm/aecm_core_neon.c|modules/audio_coding/codecs/pcm16b/pcm16b_unittest.cc|modules/audio_coding/main/source/acm_neteq_unittest.cc|modules/audio_coding/codecs/cng/cng_unittest.cc|modules/audio_coding/codecs/iSAC/fix/source/filters_neon.c|modules/audio_coding/codecs/iSAC/main/test|modules/utility/source/file_player_unittest.cc|modules/audio_processing/utility/delay_estimator_unittest.cc|modules/audio_coding/codecs/ilbc/test|modules/audio_conference_mixer/test|modules/rtp_rtcp/source/rtp_format_vp8_test_helper.cc|modules/audio_coding/codecs/iSAC/fix/test|modules/audio_coding/codecs/iSAC/fix/source/lattice_neon.S|modules/audio_coding/codecs/g711/g711_unittest.cc|modules/audio_coding/codecs/g711/test|modules/audio_processing/ns/nsx_core_neon.c|modules/audio_processing/aec/system_delay_unittest.cc|modules/audio_processing/aec/aec_rdft_sse2.c|modules/audio_processing/aec/aec_core_sse2.c|modules/video_capture/main/source/Windows|modules/video_capture/main/source/Mac|modules/video_capture/main/source/Linux|modules/video_capture/main/source/iPhone|modules/video_capture/main/source/External|modules/video_capture/main/source/android|modules/video_coding/codecs/vp8/main/test|modules/video_coding/codecs/vp8/main/source/temporal_layers_unittest.cc|modules/video_coding/codecs/vp8/main/source/reference_picture_selection_unittest.cc|modules/video_coding/codecs/tools|modules/udp_transport/source/udp_transport_unittest.cc|modules/udp_transport/source/udp_socket2_windows.cc|modules/udp_transport/source/udp_socket2_manager_windows.cc|modules/udp_transport/source/udp_socket_windows.cc|modules/udp_transport/source/udp_socket_manager_windows.cc|modules/udp_transport/source/udp_socket_manager_unittest.cc|modules/udp_transport/source/traffic_control_windows.cc|modules/video_coding/main/source/video_coding_robustness_unittest.cc|modules/video_coding/main/source/session_info_unittest.cc|modules/video_coding/main/source/qm_select_unittest.cc|modules/video_coding/main/source/jitter_buffer_unittest.cc|modules/video_coding/main/source/decoding_state_unittest.cc|modules/video_coding/main/source/mock|modules/audio_conference_mixer/source/audio_conference_mixer_unittest.cc|modules/rtp_rtcp/source/vp8_partition_aggregator_unittest.cc|modules/rtp_rtcp/source/transmission_bucket_test.cc|modules/rtp_rtcp/source/rtp_utility_test.cc|modules/rtp_rtcp/source/rtp_sender_test.cc|modules/rtp_rtcp/source/rtp_packet_history_test.cc|modules/rtp_rtcp/source/rtp_header_extension_test.cc|modules/rtp_rtcp/source/rtp_format_vp8_unittest.cc|modules/rtp_rtcp/source/rtp_fec_unittest.cc|modules/rtp_rtcp/source/rtcp_sender_test.cc|modules/rtp_rtcp/source/rtcp_format_remb_unittest.cc|modules/rtp_rtcp/source/receiver_fec_unittest.cc|modules/rtp_rtcp/source/producer_fec_unittest.cc|modules/rtp_rtcp/mocks|modules/rtp_rtcp/source/mock|modules/rtp_rtcp/source/H264|modules/audio_coding/neteq/webrtc_neteq_unittest.cc|modules/audio_coding/neteq/test|modules/audio_coding/codecs/g722/g722_unittest.cc|modules/audio_coding/codecs/g722/test|modules/video_coding/codecs/test_framework|modules/video_coding/codecs/test|modules/audio_coding/codecs/vorbis|modules/audio_coding/codecs/opus|modules/audio_device/main/source/win|modules/audio_device/main/source/mac|modules/audio_device/main/source/linux|modules/audio_device/main/source/iphone|modules/audio_device/main/source/ios|modules/audio_device/main/source/dummy|modules/audio_device/main/source/android|modules/video_render/main/source/windows|modules/video_render/main/source/mac|modules/video_render/main/source/linux|modules/video_render/main/source/iPhone|modules/video_render/main/source/android|modules/video_capture/main/test|modules/utility/test|modules/udp_transport/test|modules/rtp_rtcp/test|modules/bitrate_controller/test|modules/audio_processing/test|modules/audio_coding/main/test|modules/audio_device/main/test|modules/video_coding/main/test|modules/video_render/main/test|modules/video_processing/main/test|audio_processing/ns/nsx_core_neon.c|video_coding/codecs/tools/video_quality_measurement.cc|audio_processing/aec/aec_rdft_sse2.c|audio_processing/aec/aec_core_sse2.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="modules.null.147083632" name="modules"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.648782461">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.794638580">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.337801849">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.release.676161583">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.debug.747426487">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.coverage.1918581692">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.staticLib.profile.1403339553">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/modules"/>
+	</storageModule>
+</cproject>

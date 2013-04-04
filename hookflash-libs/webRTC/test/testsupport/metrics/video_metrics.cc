@@ -16,6 +16,10 @@
 
 #include "common_video/libyuv/include/libyuv.h"
 
+#ifdef __QNX__
+using namespace std;
+#endif
+
 namespace webrtc {
 namespace test {
 

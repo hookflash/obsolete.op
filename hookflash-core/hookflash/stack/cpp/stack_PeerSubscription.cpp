@@ -114,7 +114,7 @@ namespace hookflash
                                                          IPeerSubscriptionDelegatePtr delegate
                                                          )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(account)
+        ZS_THROW_INVALID_ARGUMENT_IF(!account)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
 
         PeerSubscriptionPtr pThis(new PeerSubscription(Account::convert(account), delegate));

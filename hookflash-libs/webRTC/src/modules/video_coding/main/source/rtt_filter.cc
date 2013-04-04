@@ -16,6 +16,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __QNX__
+using namespace std;
+#endif
+
 namespace webrtc {
 
 VCMRttFilter::VCMRttFilter(WebRtc_Word32 vcmId, WebRtc_Word32 receiverId)
