@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?fileVersion 4.0.0?>
+
+<cproject storage_type_id="org.eclipse.cdt.core.XmlProjectDescriptionStorage">
+	<storageModule moduleId="org.eclipse.cdt.core.settings">
+		<cconfiguration id="com.qnx.qcc.configuration.exe.debug.1843403234">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.debug.1843403234" moduleId="org.eclipse.cdt.core.settings" name="Device-Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="com.qnx.qcc.configuration.exe.debug.1843403234" name="Device-Debug" parent="com.qnx.qcc.configuration.exe.debug">
+					<folderInfo id="com.qnx.qcc.configuration.exe.debug.1843403234." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.debug.2030600165" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1580047066" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1022759990" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Device-Debug}" id="com.qnx.nto.1880880493" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1392960104" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.292520461" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.460222158" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1022247045" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.584426646" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.925014024" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1080604244" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.351609270" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.2038580512" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.997430422" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.1803068496" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1093377886" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.2070742950" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1611856457" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.96750955" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1088829621" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Device-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Device-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Device-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1303146497" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.297126190" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList"/>
+								<inputType id="com.qnx.qcc.inputType.linker.602959428" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.2015481020" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.debug.1288900163" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.debug.648782461" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.debug.1124623142" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.debug.883801516" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Debug"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.release.1430532522">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.release.1430532522" moduleId="org.eclipse.cdt.core.settings" name="Device-Release">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="com.qnx.qcc.configuration.exe.release.1430532522" name="Device-Release" parent="com.qnx.qcc.configuration.exe.release">
+					<folderInfo id="com.qnx.qcc.configuration.exe.release.1430532522." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.release.793040143" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1835058680" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.118034424" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Device-Release}" id="com.qnx.nto.805903703" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.609499962" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.2069043846" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.2" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1330521312" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1142831129" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.2014039747" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.pie.993835224" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.qccoptions.2024418049" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-frecord-gcc-switches"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.748203326" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.876407239" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.includePath.1255669536" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.1511526538" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.2120891611" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.langcpp.1281167642" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.110296367" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1787362062" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Release}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Device-Release}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Device-Release}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Device-Release}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.pie.1414046123" name="Position Independent Executable (-pie)" superClass="com.qnx.qcc.option.linker.pie" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.security.427248330" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.687809312" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1220143374" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.release.1276131563" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.release.676161583" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.release.86334150" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.release.805353225" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Release"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.profile.427044227">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.profile.427044227" moduleId="org.eclipse.cdt.core.settings" name="Device-Profile">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="Build for Profiling" id="com.qnx.qcc.configuration.exe.profile.427044227" name="Device-Profile" parent="com.qnx.qcc.configuration.exe.profile">
+					<folderInfo id="com.qnx.qcc.configuration.exe.profile.427044227." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.profile.1861494622" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1840682362" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1095299437" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Device-Profile}" id="com.qnx.nto.710717329" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1305066783" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.2127560527" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.879699802" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.671102798" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.517250757" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1565910077" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.755333514" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.884999347" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1053201069" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.800076877" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.252117875" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.987485211" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1690934428" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1828337146" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1713973197" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.6169992" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1348122861" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.94342882" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Device-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Device-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Device-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1260605991" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.1368370412" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1876968335" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.profile.847529990" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.profile.337801849" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.profile.1915708605" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.profile.710225257" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Profile"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.profile.coverage.75780447">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.profile.coverage.75780447" moduleId="org.eclipse.cdt.core.settings" name="Device-Coverage">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="Build for Code Coverage" id="com.qnx.qcc.configuration.exe.profile.coverage.75780447" name="Device-Coverage" parent="com.qnx.qcc.configuration.exe.profile.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.exe.profile.coverage.75780447." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.coverage.115013836" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<option id="com.qnx.qcc.option.cpu.1446559552" name="Target CPU:" superClass="com.qnx.qcc.option.cpu" value="com.qnx.qcc.option.gen.cpu.armle-v7" valueType="enumerated"/>
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.838516555" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Device-Coverage}" id="com.qnx.nto.856885108" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.818558020" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.607556432" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1559194705" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.446923702" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.892301674" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1291243578" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.1841056743" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.765597740" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.159094643" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.873637775" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.1877906669" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.541509152" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.415682675" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.1123244284" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.205886175" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.1717733238" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1115666421" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1502655147" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Device-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Device-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Device-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1265018728" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.2093412116" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.679942979" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.coverage.1075659507" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.coverage.1918581692" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.coverage.1187729556" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.coverage.1377427747" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Device-Coverage"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.debug.388341706">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.debug.388341706" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Debug">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="" id="com.qnx.qcc.configuration.exe.debug.388341706" name="Simulator-Debug" parent="com.qnx.qcc.configuration.exe.debug">
+					<folderInfo id="com.qnx.qcc.configuration.exe.debug.388341706." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.debug.676183799" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1917084720" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Simulator-Debug}" id="com.qnx.nto.1881293581" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.175455337" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.703680563" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1831515219" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1782479840" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.2022800639" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.318873448" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.1123041637" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.37221352" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.1888645860" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.2057782220" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.388672845" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.130433968" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.962658" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.142678152" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.296246893" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.281053564" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Simulator-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Simulator-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Simulator-Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.250506671" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.1084253142" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.1609279300" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.debug.709392739" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.debug.747426487" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.debug.135776760" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.debug.809636918" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Debug"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.profile.417151575">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.profile.417151575" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Profile">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.profile,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="Build for Profiling" id="com.qnx.qcc.configuration.exe.profile.417151575" name="Simulator-Profile" parent="com.qnx.qcc.configuration.exe.profile">
+					<folderInfo id="com.qnx.qcc.configuration.exe.profile.417151575." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.profile.680739269" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1399656968" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Simulator-Profile}" id="com.qnx.nto.1542875994" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1455077725" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.236133621" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.1333904219" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.profile2.1305115660" name="Build for Profiling (Function Instrumentation) (-finstrument-functions)" superClass="com.qnx.qcc.option.compiler.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.677827960" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.59830825" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.636461625" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.125169560" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1824539677" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.679558925" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.106782206" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.1374515488" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.2106239056" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.716422630" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.profile2.1199752141" name="Build for Profiling (Function Instrumentation) (-lprofiling)" superClass="com.qnx.qcc.option.linker.profile2" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.455585447" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1334394053" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1727337270" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Simulator-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Simulator-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Simulator-Profile}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.1920434908" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.42369012" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.501774607" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.profile.96261130" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.profile.1403339553" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.profile.513444730" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.profile.1185860225" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Profile"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+		<cconfiguration id="com.qnx.qcc.configuration.exe.profile.coverage.1713484865">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="com.qnx.qcc.configuration.exe.profile.coverage.1713484865" moduleId="org.eclipse.cdt.core.settings" name="Simulator-Coverage">
+				<externalSettings/>
+				<extensions>
+					<extension id="com.qnx.tools.ide.qde.core.QDEBynaryParser" point="org.eclipse.cdt.core.BinaryParser"/>
+					<extension id="com.qnx.tools.ide.qde.core.QDELinkerErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GCCErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+					<extension id="org.eclipse.cdt.core.GLDErrorParser" point="org.eclipse.cdt.core.ErrorParser"/>
+				</extensions>
+			</storageModule>
+			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildType=com.qnx.buildType.coverage,org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe" description="Build for Code Coverage" id="com.qnx.qcc.configuration.exe.profile.coverage.1713484865" name="Simulator-Coverage" parent="com.qnx.qcc.configuration.exe.profile.coverage">
+					<folderInfo id="com.qnx.qcc.configuration.exe.profile.coverage.1713484865." name="/" resourcePath="">
+						<toolChain id="com.qnx.qcc.toolChain.exe.coverage.810543970" name="QNX QCC" superClass="com.qnx.qcc.toolChain">
+							<targetPlatform archList="all" binaryParser="com.qnx.tools.ide.qde.core.QDEBynaryParser" id="com.qnx.qcc.targetPlatform.1271706797" osList="all" superClass="com.qnx.qcc.targetPlatform"/>
+							<builder buildPath="${workspace_loc:/video_capture_test/Simulator-Coverage}" id="com.qnx.nto.1287088407" keepEnvironmentInBuildfile="false" name="CDT Internal Builder" superClass="com.qnx.nto"/>
+							<tool id="com.qnx.qcc.tool.compiler.1860129937" name="QCC Compiler" superClass="com.qnx.qcc.tool.compiler">
+								<option id="com.qnx.qcc.option.compiler.optlevel.966541535" name="Optimization Level" superClass="com.qnx.qcc.option.compiler.optlevel" value="com.qnx.qcc.option.compiler.optlevel.0" valueType="enumerated"/>
+								<option id="com.qnx.qcc.option.compile.debug.860371210" name="Debug (-g)" superClass="com.qnx.qcc.option.compile.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.coverage.606504835" name="Build for Code Coverage (-Wc,-ftest-coverage -Wc,-fprofile-arcs)" superClass="com.qnx.qcc.option.compiler.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.includePath.1429268827" name="Include Directories (-I)" superClass="com.qnx.qcc.option.compiler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+								</option>
+								<option id="com.qnx.qcc.option.compiler.security.1469452202" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.compiler.defines.147928849" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.compiler.635670345" superClass="com.qnx.qcc.inputType.compiler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.assembler.1141180803" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
+								<option id="com.qnx.qcc.option.assembler.debug.356177794" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.1527751806" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers}&quot;"/>
+								</option>
+								<inputType id="com.qnx.qcc.inputType.assembler.1008723483" superClass="com.qnx.qcc.inputType.assembler"/>
+							</tool>
+							<tool id="com.qnx.qcc.tool.linker.1456412384" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
+								<option id="com.qnx.qcc.option.linker.debug.644986653" name="Debug (-g)" superClass="com.qnx.qcc.option.linker.debug" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.coverage.2030112399" name="Build for Code Coverage (-ftest-coverage -fprofile-arcs)" superClass="com.qnx.qcc.option.linker.coverage" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.langcpp.145808847" name="C++ (-lang-c++)" superClass="com.qnx.qcc.option.linker.langcpp" value="true" valueType="boolean"/>
+								<option id="com.qnx.qcc.option.linker.libraries.1335669728" name="Libraries (-l)" superClass="com.qnx.qcc.option.linker.libraries" valueType="libs">
+									<listOptionValue builtIn="false" value="common_video"/>
+									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="modules"/>
+									<listOptionValue builtIn="false" value="system_wrappers"/>
+									<listOptionValue builtIn="false" value="bps"/>
+									<listOptionValue builtIn="false" value="screen"/>
+									<listOptionValue builtIn="false" value="m"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.libraryPaths.1321784709" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/yuv/Simulator-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/modules/Simulator-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/system_wrappers/Simulator-Coverage}&quot;"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/lib"/>
+									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
+								</option>
+								<option id="com.qnx.qcc.option.linker.security.444014667" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
+								<inputType id="com.qnx.qcc.inputType.linker.749560294" superClass="com.qnx.qcc.inputType.linker">
+									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
+									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
+								</inputType>
+							</tool>
+							<tool id="com.qnx.qcc.tool.archiver.122330773" name="QCC Archiver" superClass="com.qnx.qcc.tool.archiver"/>
+						</toolChain>
+					</folderInfo>
+					<sourceEntries>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+					</sourceEntries>
+				</configuration>
+			</storageModule>
+			<storageModule moduleId="org.eclipse.cdt.core.externalSettings">
+				<externalSettings containerId="system_wrappers;com.qnx.qcc.configuration.staticLib.coverage.1011467705" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/system_wrappers"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/system_wrappers/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="system_wrappers"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="system_wrappers"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="modules;com.qnx.qcc.configuration.staticLib.coverage.794638580" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/modules"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/modules/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="modules"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="modules"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="yuv;com.qnx.qcc.configuration.staticLib.coverage.878409893" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="yuv"/>
+					</externalSetting>
+				</externalSettings>
+				<externalSettings containerId="common_video;com.qnx.qcc.configuration.staticLib.coverage.1925440537" factoryId="org.eclipse.cdt.core.cfg.export.settings.sipplier">
+					<externalSetting>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/common_video"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/common_video/Simulator-Coverage"/>
+						<entry flags="" kind="libraryFile" name="common_video"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="common_video"/>
+					</externalSetting>
+				</externalSettings>
+			</storageModule>
+		</cconfiguration>
+	</storageModule>
+	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
+		<project id="video_capture_test.null.162437124" name="video_capture_test"/>
+	</storageModule>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.release.1430532522">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.profile.coverage.75780447">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.profile.coverage.1713484865">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.debug.1843403234">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.debug.388341706">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.profile.427044227">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="com.qnx.qcc.configuration.exe.profile.417151575">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.qnx.tools.ide.qde.managedbuilder.core.qccScannerInfo"/>
+		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="refreshScope" versionNumber="1">
+		<resource resourceType="PROJECT" workspacePath="/video_capture_test"/>
+	</storageModule>
+</cproject>
