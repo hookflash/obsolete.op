@@ -165,7 +165,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      BootstrappedNetworkPtr BootstrappedNetwork::convert(IServicePeerContactPtr network)
+      BootstrappedNetworkPtr BootstrappedNetwork::convert(IServiceLockboxPtr network)
       {
         return boost::dynamic_pointer_cast<BootstrappedNetwork>(network);
       }
@@ -419,11 +419,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark BootstrappedNetwork => IServicePeerContact
+      #pragma mark BootstrappedNetwork => IServiceLockbox
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServicePeerContactPtr BootstrappedNetwork::createServicePeerContactFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
+      IServiceLockboxPtr BootstrappedNetwork::createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
       {
         return BootstrappedNetwork::convert(bootstrappedNetwork);
       }
@@ -1124,12 +1124,12 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContact
+    #pragma mark IServiceLockbox
     #pragma mark
 
-    IServicePeerContactPtr IServicePeerContact::createServicePeerContactFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
+    IServiceLockboxPtr IServiceLockbox::createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
     {
-      return internal::BootstrappedNetwork::createServicePeerContactFrom(bootstrappedNetwork);
+      return internal::BootstrappedNetwork::createServiceLockboxFrom(bootstrappedNetwork);
     }
 
     //-------------------------------------------------------------------------

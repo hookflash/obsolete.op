@@ -102,7 +102,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       AccountPtr IAccountFactory::create(
                                          IAccountDelegatePtr delegate,
-                                         IServicePeerContactSessionPtr peerContactSession
+                                         IServiceLockboxSessionPtr peerContactSession
                                          )
       {
         return Account::create(delegate, peerContactSession);
@@ -760,32 +760,32 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServicePeerContactSessionFactory
+      #pragma mark IServiceLockboxSessionFactory
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServicePeerContactSessionFactory &IServicePeerContactSessionFactory::singleton()
+      IServiceLockboxSessionFactory &IServiceLockboxSessionFactory::singleton()
       {
         return *(Factory::singleton().get());
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSessionPtr IServicePeerContactSessionFactory::login(
-                                                                            IServicePeerContactSessionDelegatePtr delegate,
-                                                                            IServicePeerContactPtr servicePeerContact,
+      ServiceLockboxSessionPtr IServiceLockboxSessionFactory::login(
+                                                                            IServiceLockboxSessionDelegatePtr delegate,
+                                                                            IServiceLockboxPtr ServiceLockbox,
                                                                             IServiceIdentitySessionPtr identitySession
                                                                             )
       {
-        return ServicePeerContactSession::login(delegate, servicePeerContact, identitySession);
+        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession);
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSessionPtr IServicePeerContactSessionFactory::relogin(
-                                                                              IServicePeerContactSessionDelegatePtr delegate,
+      ServiceLockboxSessionPtr IServiceLockboxSessionFactory::relogin(
+                                                                              IServiceLockboxSessionDelegatePtr delegate,
                                                                               IPeerFilesPtr existingPeerFiles
                                                                               )
       {
-        return ServicePeerContactSession::relogin(delegate, existingPeerFiles);
+        return ServiceLockboxSession::relogin(delegate, existingPeerFiles);
       }
 
       //-----------------------------------------------------------------------

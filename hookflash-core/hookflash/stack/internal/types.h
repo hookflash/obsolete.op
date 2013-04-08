@@ -210,14 +210,14 @@ namespace hookflash
       typedef boost::weak_ptr<IServiceIdentitySessionAsyncDelegate> IServiceIdentitySessionAsyncDelegateWeakPtr;
       typedef zsLib::Proxy<IServiceIdentitySessionAsyncDelegate> IServiceIdentitySessionAsyncDelegateProxy;
 
-      class ServicePeerContactSession;
-      typedef boost::shared_ptr<ServicePeerContactSession> ServicePeerContactSessionPtr;
-      typedef boost::weak_ptr<ServicePeerContactSession> ServicePeerContactSessionWeakPtr;
+      class ServiceLockboxSession;
+      typedef boost::shared_ptr<ServiceLockboxSession> ServiceLockboxSessionPtr;
+      typedef boost::weak_ptr<ServiceLockboxSession> ServiceLockboxSessionWeakPtr;
 
-      class IServicePeerContactSessionAsync;
-      typedef boost::shared_ptr<IServicePeerContactSessionAsync> IServicePeerContactSessionAsyncPtr;
-      typedef boost::weak_ptr<IServicePeerContactSessionAsync> IServicePeerContactSessionAsyncWeakPtr;
-      typedef zsLib::Proxy<IServicePeerContactSessionAsync> IServicePeerContactSessionAsyncProxy;
+      class IServiceLockboxSessionAsync;
+      typedef boost::shared_ptr<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncPtr;
+      typedef boost::weak_ptr<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncWeakPtr;
+      typedef zsLib::Proxy<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncProxy;
 
       class ServiceSaltFetchSignedSaltQuery;
       typedef boost::shared_ptr<ServiceSaltFetchSignedSaltQuery> ServiceSaltFetchSignedSaltQueryPtr;

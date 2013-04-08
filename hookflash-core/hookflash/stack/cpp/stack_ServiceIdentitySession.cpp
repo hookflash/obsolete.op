@@ -30,7 +30,7 @@
  */
 
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/message/identity/IdentityLoginStartRequest.h>
 #include <hookflash/stack/message/identity/IdentityLoginNotify.h>
 #include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
@@ -88,11 +88,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceIdentitySessionForServicePeerContact
+      #pragma mark IServiceIdentitySessionForServiceLockbox
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionForServicePeerContact::relogin(
+      ServiceIdentitySessionPtr IServiceIdentitySessionForServiceLockbox::relogin(
                                                                                       BootstrappedNetworkPtr network,
                                                                                       const char *identityReloginAccessKey
                                                                                       )
@@ -541,11 +541,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IServiceIdentitySessionForServicePeerContact
+      #pragma mark ServiceIdentitySession => IServiceIdentitySessionForServiceLockbox
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::associate(ServicePeerContactSessionPtr peerContact)
+      void ServiceIdentitySession::associate(ServiceLockboxSessionPtr peerContact)
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
@@ -554,7 +554,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::killAssociation(ServicePeerContactSessionPtr peerContact)
+      void ServiceIdentitySession::killAssociation(ServiceLockboxSessionPtr peerContact)
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
@@ -1159,21 +1159,21 @@ namespace hookflash
           return false;
         }
 
-        ServicePeerContactSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
+        ServiceLockboxSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
         if (!associatedPeerContact) {
           setState(SessionState_WaitingAssociation);
           ZS_LOG_DEBUG(log("waiting for identity to become associated to a peer contact"))
           return false;
         }
 
-        if (IServicePeerContactSession::SessionState_Shutdown == associatedPeerContact->forServiceIdentity().getState()) {
+        if (IServiceLockboxSession::SessionState_Shutdown == associatedPeerContact->forServiceIdentity().getState()) {
           ZS_LOG_WARNING(Detail, log("service peer contact session is shutdown thus identity must shutdown"))
           setError(IHTTP::HTTPStatusCode_ResetContent, "Peer contact assoicated with identity is already shutdown");
           cancel();
           return false;
         }
 
-        if (IServicePeerContactSession::SessionState_Ready != associatedPeerContact->forServiceIdentity().getState()) {
+        if (IServiceLockboxSession::SessionState_Ready != associatedPeerContact->forServiceIdentity().getState()) {
           setState(SessionState_Pending);
           ZS_LOG_DEBUG(log("waiting for service peer contact session state to be ready"))
           return false;
@@ -1195,7 +1195,7 @@ namespace hookflash
         if (mIdentityInfo.mContactUserID.hasData()) {
           // check to see if it matches what we believe
           if (mIdentityInfo.mContactUserID != associatedPeerContact->forServiceIdentity().getContactUserID()) {
-            ZS_LOG_WARNING(Detail, log("contact user ID changed") + IServicePeerContactSession::toDebugString(associatedPeerContact) + mIdentityInfo.getDebugValueString())
+            ZS_LOG_WARNING(Detail, log("contact user ID changed") + IServiceLockboxSession::toDebugString(associatedPeerContact) + mIdentityInfo.getDebugValueString())
             goto not_same_contact;
           }
 
@@ -1333,7 +1333,7 @@ namespace hookflash
           ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
           mCurrentState = state;
 
-          ServicePeerContactSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
+          ServiceLockboxSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
           if (associatedPeerContact) {
             associatedPeerContact->forServiceIdentity().notifyStateChanged();
           }

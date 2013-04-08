@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_Factory.h>
 #include <hookflash/services/internal/services_Factory.h>
 #include <hookflash/services/internal/services_HTTP.h>
@@ -56,9 +56,9 @@ namespace hookflash
     namespace test
     {
       
-      class TestServicePeerContactSessionForAccount;
-      typedef boost::shared_ptr<TestServicePeerContactSessionForAccount> TestServicePeerContactSessionForAccountPtr;
-      typedef boost::weak_ptr<TestServicePeerContactSessionForAccount> TestServicePeerContactSessionForAccountWeakPtr;
+      class TestServiceLockboxSessionForAccount;
+      typedef boost::shared_ptr<TestServiceLockboxSessionForAccount> TestServiceLockboxSessionForAccountPtr;
+      typedef boost::weak_ptr<TestServiceLockboxSessionForAccount> TestServiceLockboxSessionForAccountWeakPtr;
       
       class TestBootstrappedNetworkForAccount;
       typedef boost::shared_ptr<TestBootstrappedNetworkForAccount> TestBootstrappedNetworkForAccountPtr;
@@ -138,7 +138,7 @@ namespace hookflash
       class TestCallbackForAccount : public MessageQueueAssociator,
       public IBootstrappedNetworkDelegate,
       public IServiceIdentitySessionDelegate,
-      public IServicePeerContactSessionDelegate,
+      public IServiceLockboxSessionDelegate,
       public IAccountDelegate
       {
       public:
@@ -169,12 +169,12 @@ namespace hookflash
         
         virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session);
         
-        //IServicePeerContactSessionDelegate methods
-        virtual void onServicePeerContactSessionStateChanged(
-                                                             IServicePeerContactSessionPtr session,
-                                                             hookflash::stack::IServicePeerContactSession::SessionStates state
+        //IServiceLockboxSessionDelegate methods
+        virtual void onServiceLockboxSessionStateChanged(
+                                                             IServiceLockboxSessionPtr session,
+                                                             hookflash::stack::IServiceLockboxSession::SessionStates state
                                                              );
-        virtual void onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session);
+        virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
         
         //IAccountDelegate methods
         virtual void onAccountStateChanged(
@@ -189,7 +189,7 @@ namespace hookflash
         ULONG mCount;
         
         IBootstrappedNetworkPtr mNetwork;
-        IServicePeerContactSessionPtr mPeerContactSession;
+        IServiceLockboxSessionPtr mPeerContactSession;
         IServiceIdentitySessionPtr mIdentitySession;
         IAccountPtr mAccount;
         bool mNetworkDone;
@@ -252,23 +252,23 @@ namespace hookflash
         //---------------------------------------------------------------------
         virtual bool isLoginComplete() const;
         
-        virtual void associate(ServicePeerContactSessionPtr peerContact);
+        virtual void associate(ServiceLockboxSessionPtr peerContact);
       };
       
 #pragma mark
-#pragma mark TestServicePeerContactSessionForAccount
+#pragma mark TestServiceLockboxSessionForAccount
 #pragma mark
       
-      class TestServicePeerContactSessionForAccount : public internal::ServicePeerContactSession
+      class TestServiceLockboxSessionForAccount : public internal::ServiceLockboxSession
       {
       public:
         friend interaction TestFactoryForAccount;
         
       protected:
-        TestServicePeerContactSessionForAccount() : ServicePeerContactSession(zsLib::Noop()) {}
+        TestServiceLockboxSessionForAccount() : ServiceLockboxSession(zsLib::Noop()) {}
         
       public:
-        ~TestServicePeerContactSessionForAccount();
+        ~TestServiceLockboxSessionForAccount();
         //---------------------------------------------------------------------
         
       };
@@ -373,21 +373,21 @@ namespace hookflash
 #endif //USE_FAKE_IDENTITY_SESSION
 #ifdef USE_FAKE_PEER_CONTACT_SESSION
         //service peer contact
-        virtual ServicePeerContactSessionPtr login(
-                                                   IServicePeerContactSessionDelegatePtr delegate,
-                                                   IServicePeerContactPtr servicePeerContact,
+        virtual ServiceLockboxSessionPtr login(
+                                                   IServiceLockboxSessionDelegatePtr delegate,
+                                                   IServiceLockboxPtr ServiceLockbox,
                                                    IServiceIdentitySessionPtr identitySession
                                                    );
         
-        virtual ServicePeerContactSessionPtr relogin(
-                                                     IServicePeerContactSessionDelegatePtr delegate,
+        virtual ServiceLockboxSessionPtr relogin(
+                                                     IServiceLockboxSessionDelegatePtr delegate,
                                                      IPeerFilesPtr existingPeerFiles
                                                      );
 #endif //USE_FAKE_PEER_CONTACT_SESSION
 #ifdef USE_FAKE_ACCOUNT
         virtual AccountPtr create(
                                   IAccountDelegatePtr delegate,
-                                  IServicePeerContactSessionPtr peerContactSession
+                                  IServiceLockboxSessionPtr peerContactSession
                                   );
 #endif //USE_FAKE_ACCOUNT
         virtual AccountFinderPtr create(

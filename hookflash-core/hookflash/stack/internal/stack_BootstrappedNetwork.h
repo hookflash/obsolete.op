@@ -33,7 +33,7 @@
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IServiceCertificates.h>
-#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/IServiceIdentity.h>
 #include <hookflash/stack/IServiceSalt.h>
 #include <hookflash/stack/internal/types.h>
@@ -176,7 +176,7 @@ namespace hookflash
                                   public IBootstrappedNetwork,
                                   public IServiceCertificates,
                                   public IServiceIdentity,
-                                  public IServicePeerContact,
+                                  public IServiceLockbox,
                                   public IServiceSalt,
                                   public IBootstrappedNetworkForAccount,
                                   public IBootstrappedNetworkForAccountFinder,
@@ -192,7 +192,7 @@ namespace hookflash
         friend interaction IBootstrappedNetwork;
         friend interaction IServiceCertificates;
         friend interaction IServiceIdentity;
-        friend interaction IServicePeerContact;
+        friend interaction IServiceLockbox;
         friend interaction IServiceSalt;
 
         typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
@@ -229,7 +229,7 @@ namespace hookflash
         static BootstrappedNetworkPtr convert(IBootstrappedNetworkPtr network);
         static BootstrappedNetworkPtr convert(IServiceCertificatesPtr network);
         static BootstrappedNetworkPtr convert(IServiceIdentityPtr network);
-        static BootstrappedNetworkPtr convert(IServicePeerContactPtr network);
+        static BootstrappedNetworkPtr convert(IServiceLockboxPtr network);
         static BootstrappedNetworkPtr convert(IServiceSaltPtr network);
 
         typedef std::map<IHTTPQueryPtr, message::MessagePtr> PendingRequestMap;
@@ -294,10 +294,10 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark BootstrappedNetwork => IServicePeerContact
+        #pragma mark BootstrappedNetwork => IServiceLockbox
         #pragma mark
 
-        static IServicePeerContactPtr createServicePeerContactFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+        static IServiceLockboxPtr createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
 
         // (duplicate) virtual PUID getID() const;
 

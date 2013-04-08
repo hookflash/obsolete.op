@@ -40,7 +40,7 @@
 #include <hookflash/stack/internal/stack_Peer.h>
 #include <hookflash/stack/internal/stack_PeerSubscription.h>
 #include <hookflash/stack/internal/stack_PublicationRepository.h>
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/message/MessageResult.h>
 #include <hookflash/stack/message/IMessageHelper.h>
@@ -132,7 +132,7 @@ namespace hookflash
       Account::Account(
                        IMessageQueuePtr queue,
                        IAccountDelegatePtr delegate,
-                       ServicePeerContactSessionPtr peerContactSession
+                       ServiceLockboxSessionPtr peerContactSession
                        ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
@@ -193,13 +193,13 @@ namespace hookflash
       //-----------------------------------------------------------------------
       AccountPtr Account::create(
                                  IAccountDelegatePtr delegate,
-                                 IServicePeerContactSessionPtr peerContactSession
+                                 IServiceLockboxSessionPtr peerContactSession
                                  )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate);
         ZS_THROW_INVALID_ARGUMENT_IF(!peerContactSession);
 
-        AccountPtr pThis(new Account(IStackForInternal::queueStack(), delegate, ServicePeerContactSession::convert(peerContactSession)));
+        AccountPtr pThis(new Account(IStackForInternal::queueStack(), delegate, ServiceLockboxSession::convert(peerContactSession)));
         pThis->mThisWeak = pThis;
         pThis->mDelegate = IAccountDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate);
         pThis->init();
@@ -220,7 +220,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IServicePeerContactSessionPtr Account::getPeerContactSession() const
+      IServiceLockboxSessionPtr Account::getPeerContactSession() const
       {
         AutoRecursiveLock lock(getLock());
         return mPeerContactSession;
@@ -1161,11 +1161,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account => IAccountForServicePeerContactSession
+      #pragma mark Account => IAccountForServiceLockboxSession
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::notifyServicePeerContactSessionStateChanged()
+      void Account::notifyServiceLockboxSessionStateChanged()
       {
         AutoRecursiveLock lock(getLock());
         IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
@@ -1752,14 +1752,14 @@ namespace hookflash
           return true;
         }
 
-        IServicePeerContactSession::SessionStates state = mPeerContactSession->forAccount().getState();
+        IServiceLockboxSession::SessionStates state = mPeerContactSession->forAccount().getState();
         switch (state) {
-          case IServicePeerContactSession::SessionState_Pending:
+          case IServiceLockboxSession::SessionState_Pending:
           {
             ZS_LOG_DEBUG(log("contact session pending"))
             return false;
           }
-          case IServicePeerContactSession::SessionState_Shutdown:
+          case IServiceLockboxSession::SessionState_Shutdown:
           {
             ZS_LOG_ERROR(Detail, log("peer contact session is shutdown thus account must shutdown"))
             WORD errorCode = 0;
@@ -1768,7 +1768,7 @@ namespace hookflash
             setError(errorCode, reason);
             return false;
           }
-          case IServicePeerContactSession::SessionState_Ready:  break;
+          case IServiceLockboxSession::SessionState_Ready:  break;
         }
 
         if (!mTURN) {
@@ -2440,7 +2440,7 @@ namespace hookflash
     //-------------------------------------------------------------------------
     IAccountPtr IAccount::create(
                                  IAccountDelegatePtr delegate,
-                                 IServicePeerContactSessionPtr peerContactSession
+                                 IServiceLockboxSessionPtr peerContactSession
                                  )
     {
       return internal::IAccountFactory::singleton().create(delegate, peerContactSession);

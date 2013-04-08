@@ -66,7 +66,7 @@ namespace hookflash
 
       static IAccountPtr create(
                                 IAccountDelegatePtr delegate,
-                                IServicePeerContactSessionPtr peerContactSession
+                                IServiceLockboxSessionPtr peerContactSession
                                 );
 
       virtual PUID getID() const = 0;
@@ -76,7 +76,7 @@ namespace hookflash
                                      String *outLastErrorReason = NULL
                                      ) const = 0;
 
-      virtual IServicePeerContactSessionPtr getPeerContactSession() const = 0;
+      virtual IServiceLockboxSessionPtr getPeerContactSession() const = 0;
 
       virtual void getNATServers(
                                  String &outTURNServer,

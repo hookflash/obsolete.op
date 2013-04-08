@@ -115,11 +115,11 @@ namespace hookflash
       using stack::IServiceIdentitySessionDelegate;
       using stack::ServiceIdentitySessionList;
       using stack::ServiceIdentitySessionListPtr;
-      using stack::IServicePeerContact;
-      using stack::IServicePeerContactPtr;
-      using stack::IServicePeerContactSession;
-      using stack::IServicePeerContactSessionPtr;
-      using stack::IServicePeerContactSessionDelegate;
+      using stack::IServiceLockbox;
+      using stack::IServiceLockboxPtr;
+      using stack::IServiceLockboxSession;
+      using stack::IServiceLockboxSessionPtr;
+      using stack::IServiceLockboxSessionDelegate;
 
       using services::IICESocket;
       using services::IICESocketPtr;

@@ -52,6 +52,6 @@
 #include <hookflash/stack/IRSAPublicKey.h>
 #include <hookflash/stack/IServiceCertificates.h>
 #include <hookflash/stack/IServiceIdentity.h>
-#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/IServiceSalt.h>
 #include <hookflash/stack/IStack.h>

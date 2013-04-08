@@ -53,5 +53,5 @@
 #include <hookflash/stack/internal/stack_RSAPublicKey.h>
 #include <hookflash/stack/internal/stack_ServiceCertificatesValidateQuery.h>
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_ServiceSaltFetchSignedSaltQuery.h>

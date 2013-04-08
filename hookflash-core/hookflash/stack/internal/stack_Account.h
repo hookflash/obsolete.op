@@ -37,7 +37,7 @@
 #include <hookflash/stack/IPeerSubscription.h>
 #include <hookflash/stack/internal/stack_AccountFinder.h>
 #include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/services/IRUDPICESocket.h>
 
@@ -238,15 +238,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountForServicePeerContactSession
+      #pragma mark IAccountForServiceLockboxSession
       #pragma mark
 
-      interaction IAccountForServicePeerContactSession
+      interaction IAccountForServiceLockboxSession
       {
-        IAccountForServicePeerContactSession &forServicePeerContactSession() {return *this;}
-        const IAccountForServicePeerContactSession &forServicePeerContactSession() const {return *this;}
+        IAccountForServiceLockboxSession &forServiceLockboxSession() {return *this;}
+        const IAccountForServiceLockboxSession &forServiceLockboxSession() const {return *this;}
 
-        virtual void notifyServicePeerContactSessionStateChanged() = 0;
+        virtual void notifyServiceLockboxSessionStateChanged() = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -281,7 +281,7 @@ namespace hookflash
                       public IAccountForPeer,
                       public IAccountForPeerSubscription,
                       public IAccountForPublicationRepository,
-                      public IAccountForServicePeerContactSession,
+                      public IAccountForServiceLockboxSession,
                       public IAccountAsyncDelegate,
                       public IAccountFinderDelegate,
                       public IAccountPeerLocationDelegate,
@@ -317,7 +317,7 @@ namespace hookflash
         Account(
                 IMessageQueuePtr queue,
                 IAccountDelegatePtr delegate,
-                ServicePeerContactSessionPtr peerContactSession
+                ServiceLockboxSessionPtr peerContactSession
                 );
         
         Account(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -339,7 +339,7 @@ namespace hookflash
 
         static AccountPtr create(
                                  IAccountDelegatePtr delegate,
-                                 IServicePeerContactSessionPtr peerContactSession
+                                 IServiceLockboxSessionPtr peerContactSession
                                  );
 
         virtual PUID getID() const {return mID;}
@@ -349,7 +349,7 @@ namespace hookflash
                                        String *outLastErrorReason = NULL
                                        ) const;
 
-        virtual IServicePeerContactSessionPtr getPeerContactSession() const;
+        virtual IServiceLockboxSessionPtr getPeerContactSession() const;
 
         virtual void getNATServers(
                                    String &outTURNServer,
@@ -471,10 +471,10 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IAccountForServicePeerContactSession
+        #pragma mark Account => IAccountForServiceLockboxSession
         #pragma mark
 
-        virtual void notifyServicePeerContactSessionStateChanged();
+        virtual void notifyServiceLockboxSessionStateChanged();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -692,7 +692,7 @@ namespace hookflash
         Time mLastTimerFired;
         Time mBlockLocationShutdownsUntil;
 
-        ServicePeerContactSessionPtr mPeerContactSession;
+        ServiceLockboxSessionPtr mPeerContactSession;
         Service::MethodPtr mTURN;
         Service::MethodPtr mSTUN;
 
@@ -737,7 +737,7 @@ namespace hookflash
 
         virtual AccountPtr create(
                                   IAccountDelegatePtr delegate,
-                                  IServicePeerContactSessionPtr peerContactSession
+                                  IServiceLockboxSessionPtr peerContactSession
                                   );
       };
 

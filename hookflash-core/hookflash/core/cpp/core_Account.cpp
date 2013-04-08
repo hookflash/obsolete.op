@@ -38,7 +38,7 @@
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IPeer.h>
 #include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/IPeerFilePrivate.h>
 #include <hookflash/stack/IPublication.h>
 #include <hookflash/stack/IPublicationRepository.h>
@@ -171,13 +171,13 @@ namespace hookflash
           return AccountPtr();
         }
 
-        IServicePeerContactPtr servicePeerContact = IServicePeerContact::createServicePeerContactFrom(network);
-        ZS_THROW_BAD_STATE_IF(!servicePeerContact)
+        IServiceLockboxPtr ServiceLockbox = IServiceLockbox::createServiceLockboxFrom(network);
+        ZS_THROW_BAD_STATE_IF(!ServiceLockbox)
 
         IdentityPtr identity = Identity::convert(inIdentity);
 
         pThis->mIdentities[identity->forAccount().getSession()->getID()] = identity;
-        pThis->mPeerContactSession = IServicePeerContactSession::login(pThis, servicePeerContact, identity->forAccount().getSession());
+        pThis->mPeerContactSession = IServiceLockboxSession::login(pThis, ServiceLockbox, identity->forAccount().getSession());
 
         pThis->init();
         return pThis;
@@ -201,7 +201,7 @@ namespace hookflash
           return AccountPtr();
         }
 
-        pThis->mPeerContactSession = IServicePeerContactSession::relogin(pThis, peerFiles);
+        pThis->mPeerContactSession = IServiceLockboxSession::relogin(pThis, peerFiles);
 
         pThis->init();
         return pThis;
@@ -549,7 +549,7 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServicePeerContactSessionPtr Account::getPeerContactSession() const
+      IServiceLockboxSessionPtr Account::getPeerContactSession() const
       {
         AutoRecursiveLock lock(mLock);
         return mPeerContactSession;
@@ -705,12 +705,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account => IServicePeerContactSessionDelegate
+      #pragma mark Account => IServiceLockboxSessionDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::onServicePeerContactSessionStateChanged(
-                                                            IServicePeerContactSessionPtr session,
+      void Account::onServiceLockboxSessionStateChanged(
+                                                            IServiceLockboxSessionPtr session,
                                                             SessionStates state
                                                             )
       {
@@ -719,7 +719,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Account::onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session)
+      void Account::onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session)
       {
         AutoRecursiveLock lock(mLock);
 
@@ -972,14 +972,14 @@ namespace hookflash
         WORD errorCode = 0;
         String reason;
 
-        IServicePeerContactSession::SessionStates state = mPeerContactSession->getState(&errorCode, &reason);
+        IServiceLockboxSession::SessionStates state = mPeerContactSession->getState(&errorCode, &reason);
 
-        if (IServicePeerContactSession::SessionState_Ready == state) {
+        if (IServiceLockboxSession::SessionState_Ready == state) {
           ZS_LOG_DEBUG(log("step peer contact completed"))
           return true;
         }
 
-        if (IServicePeerContactSession::SessionState_Shutdown == state) {
+        if (IServiceLockboxSession::SessionState_Shutdown == state) {
           ZS_LOG_ERROR(Detail, log("peer contact session shutdown"))
           setError(errorCode, reason);
           cancel();

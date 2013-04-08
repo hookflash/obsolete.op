@@ -276,18 +276,18 @@ namespace hookflash
     typedef boost::weak_ptr<IServiceSaltFetchSignedSaltQueryDelegate> IServiceSaltFetchSignedSaltQueryDelegateWeakPtr;
     typedef zsLib::Proxy<IServiceSaltFetchSignedSaltQueryDelegate> IServiceSaltFetchSignedSaltQueryDelegateProxy;
 
-    interaction IServicePeerContact;
-    typedef boost::shared_ptr<IServicePeerContact> IServicePeerContactPtr;
-    typedef boost::weak_ptr<IServicePeerContact> IServicePeerContactWeakPtr;
+    interaction IServiceLockbox;
+    typedef boost::shared_ptr<IServiceLockbox> IServiceLockboxPtr;
+    typedef boost::weak_ptr<IServiceLockbox> IServiceLockboxWeakPtr;
 
-    interaction IServicePeerContactSession;
-    typedef boost::shared_ptr<IServicePeerContactSession> IServicePeerContactSessionPtr;
-    typedef boost::weak_ptr<IServicePeerContactSession> IServicePeerContactSessionWeakPtr;
+    interaction IServiceLockboxSession;
+    typedef boost::shared_ptr<IServiceLockboxSession> IServiceLockboxSessionPtr;
+    typedef boost::weak_ptr<IServiceLockboxSession> IServiceLockboxSessionWeakPtr;
 
-    interaction IServicePeerContactSessionDelegate;
-    typedef boost::shared_ptr<IServicePeerContactSessionDelegate> IServicePeerContactSessionDelegatePtr;
-    typedef boost::weak_ptr<IServicePeerContactSessionDelegate> IServicePeerContactSessionDelegateWeakPtr;
-    typedef zsLib::Proxy<IServicePeerContactSessionDelegate> IServicePeerContactSessionDelegateProxy;
+    interaction IServiceLockboxSessionDelegate;
+    typedef boost::shared_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegatePtr;
+    typedef boost::weak_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateWeakPtr;
+    typedef zsLib::Proxy<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateProxy;
 
     interaction IServiceIdentity;
     typedef boost::shared_ptr<IServiceIdentity> IServiceIdentityPtr;

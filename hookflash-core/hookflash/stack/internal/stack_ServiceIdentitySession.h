@@ -65,13 +65,13 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceIdentitySessionForServicePeerContact
+      #pragma mark IServiceIdentitySessionForServiceLockbox
       #pragma mark
 
-      interaction IServiceIdentitySessionForServicePeerContact
+      interaction IServiceIdentitySessionForServiceLockbox
       {
-        IServiceIdentitySessionForServicePeerContact &forPeerContact() {return *this;}
-        const IServiceIdentitySessionForServicePeerContact &forPeerContact() const {return *this;}
+        IServiceIdentitySessionForServiceLockbox &forPeerContact() {return *this;}
+        const IServiceIdentitySessionForServiceLockbox &forPeerContact() const {return *this;}
 
         static ServiceIdentitySessionPtr relogin(
                                                  BootstrappedNetworkPtr network,
@@ -80,8 +80,8 @@ namespace hookflash
 
         virtual PUID getID() const = 0;
 
-        virtual void associate(ServicePeerContactSessionPtr peerContact) = 0;
-        virtual void killAssociation(ServicePeerContactSessionPtr peerContact) = 0;
+        virtual void associate(ServiceLockboxSessionPtr peerContact) = 0;
+        virtual void killAssociation(ServiceLockboxSessionPtr peerContact) = 0;
 
         virtual void notifyStateChanged() = 0;
 
@@ -117,7 +117,7 @@ namespace hookflash
                                      public zsLib::MessageQueueAssociator,
                                      public IServiceIdentitySession,
                                      public IMessageSource,
-                                     public IServiceIdentitySessionForServicePeerContact,
+                                     public IServiceIdentitySessionForServiceLockbox,
                                      public IServiceIdentitySessionAsyncDelegate,
                                      public IBootstrappedNetworkDelegate,
                                      public IMessageMonitorResultDelegate<IdentityLoginStartResult>,
@@ -158,30 +158,23 @@ namespace hookflash
 
         static ServiceIdentitySessionPtr loginWithIdentity(
                                                            IServiceIdentitySessionDelegatePtr delegate,
-                                                           const char *redirectAfterLoginCompleteURL,
+                                                           const char *outerFrameURLUponReload,
                                                            const char *identityURI,
                                                            IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
                                                            );
 
-        static ServiceIdentitySessionPtr loginWithIdentityTBD(
-                                                              IServiceIdentitySessionDelegatePtr delegate,
-                                                              const char *redirectAfterLoginCompleteURL,
-                                                              IServiceIdentityPtr provider,
-                                                              const char *legacyIdentityBaseURI = NULL
-                                                              );
+        static ServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                   IServiceIdentitySessionDelegatePtr delegate,
+                                                                   const char *outerFrameURLUponReload,
+                                                                   IServiceIdentityPtr provider,
+                                                                   const char *legacyIdentityBaseURI = NULL
+                                                                   );
 
         static ServiceIdentitySessionPtr loginWithIdentityBundle(
                                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                                 const char *redirectAfterLoginCompleteURL,
+                                                                 const char *outerFrameURLUponReload,
                                                                  ElementPtr signedIdentityBundle
                                                                  );
-
-        static ServiceIdentitySessionPtr relogin(
-                                                 IServiceIdentitySessionDelegatePtr delegate,
-                                                 const char *redirectAfterLoginCompleteURL,
-                                                 IServiceIdentityPtr provider,
-                                                 const char *identityReloginAccessKey
-                                                 );
 
         virtual PUID getID() const {return mID;}
 
@@ -194,20 +187,18 @@ namespace hookflash
 
         virtual bool isAttached() const;
         virtual void attach(
-                            const char *redirectAfterLoginCompleteURL,
+                            const char *outerFrameURLUponReload,
                             IServiceIdentitySessionDelegatePtr delegate
                             );
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
-        virtual String getIdentityReloginAccessKey() const;
         virtual ElementPtr getSignedIdentityBundle() const;
 
-        virtual String getIdentityLoginURL() const;
-        virtual Time getLoginExpires() const;
+        virtual String getInnerBrowserWindowFrameURL() const;
 
         virtual void notifyBrowserWindowVisible();
-        virtual void notifyLoginCompleteBrowserWindowRedirection();
+        virtual void notifyBrowserWindowClosed();
 
         virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
@@ -223,13 +214,13 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IServiceIdentitySessionForServicePeerContact
+        #pragma mark ServiceIdentitySession => IServiceIdentitySessionForServiceLockbox
         #pragma mark
 
         // (duplicate) virtual PUID getID() const;
 
-        virtual void associate(ServicePeerContactSessionPtr peerContact);
-        virtual void killAssociation(ServicePeerContactSessionPtr peerContact);
+        virtual void associate(ServiceLockboxSessionPtr peerContact);
+        virtual void killAssociation(ServiceLockboxSessionPtr peerContact);
 
         virtual void notifyStateChanged();
 
@@ -351,7 +342,7 @@ namespace hookflash
         ServiceIdentitySessionWeakPtr mThisWeak;
 
         IServiceIdentitySessionDelegatePtr mDelegate;
-        ServicePeerContactSessionWeakPtr mAssociatedPeerContact;
+        ServiceLockboxSessionWeakPtr mAssociatedPeerContact;
         bool mKillAssociation;
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
@@ -408,30 +399,23 @@ namespace hookflash
 
         virtual ServiceIdentitySessionPtr loginWithIdentity(
                                                             IServiceIdentitySessionDelegatePtr delegate,
-                                                            const char *redirectAfterLoginCompleteURL,
+                                                            const char *outerFrameURLUponReload,
                                                             const char *identityURI,
                                                             IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
                                                             );
 
-        virtual ServiceIdentitySessionPtr loginWithIdentityTBD(
-                                                               IServiceIdentitySessionDelegatePtr delegate,
-                                                               const char *redirectAfterLoginCompleteURL,
-                                                               IServiceIdentityPtr provider,
-                                                               const char *legacyIdentityBaseURI = NULL
-                                                               );
+        virtual ServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                    IServiceIdentitySessionDelegatePtr delegate,
+                                                                    const char *outerFrameURLUponReload,
+                                                                    IServiceIdentityPtr provider,
+                                                                    const char *legacyIdentityBaseURI = NULL
+                                                                    );
 
         virtual ServiceIdentitySessionPtr loginWithIdentityBundle(
                                                                   IServiceIdentitySessionDelegatePtr delegate,
-                                                                  const char *redirectAfterLoginCompleteURL,
+                                                                  const char *outerFrameURLUponReload,
                                                                   ElementPtr signedIdentityBundle
                                                                   );
-
-        virtual ServiceIdentitySessionPtr relogin(
-                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                  const char *redirectAfterLoginCompleteURL,
-                                                  IServiceIdentityPtr provider,
-                                                  const char *identityReloginAccessKey
-                                                  );
       };
     }
   }

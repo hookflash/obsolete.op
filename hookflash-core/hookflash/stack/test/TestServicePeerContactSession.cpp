@@ -29,13 +29,13 @@
  
  */
 
-#include "TestServicePeerContactSession.h"
+#include "TestServiceLockboxSession.h"
 #include "config.h"
 #include "boost_replacement.h"
 #include "helpers.h"
 #include <hookflash/stack/IStack.h>
 #include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Proxy.h>
@@ -133,9 +133,9 @@ namespace hookflash
 //        }
 //      }
 #pragma mark
-#pragma mark TestServicePeerContactSession
+#pragma mark TestServiceLockboxSession
 #pragma mark
-      TestServicePeerContactSession::~TestServicePeerContactSession()
+      TestServiceLockboxSession::~TestServiceLockboxSession()
       {
         mThisWeak.reset();
       }
@@ -158,7 +158,7 @@ namespace hookflash
         return true;
       }
       
-      void TestServiceIdentitySessionForPeerContact::associate(ServicePeerContactSessionPtr peerContact)
+      void TestServiceIdentitySessionForPeerContact::associate(ServiceLockboxSessionPtr peerContact)
       {
         
       }
@@ -509,20 +509,20 @@ namespace hookflash
       //-----------------------------------------------------------------------
 #ifdef USE_FAKE_PEER_CONTACT_SESSION
       //service peer contact session
-      ServicePeerContactSessionPtr TestFactoryForPeerContact::login(IServicePeerContactSessionDelegatePtr delegate, IServicePeerContactPtr servicePeerContact, IServiceIdentitySessionPtr identitySession)
+      ServiceLockboxSessionPtr TestFactoryForPeerContact::login(IServiceLockboxSessionDelegatePtr delegate, IServiceLockboxPtr ServiceLockbox, IServiceIdentitySessionPtr identitySession)
       {
-        TestServicePeerContactSessionPtr pThis(new TestServicePeerContactSession());
+        TestServiceLockboxSessionPtr pThis(new TestServiceLockboxSession());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
       }
       
-      ServicePeerContactSessionPtr TestFactoryForPeerContact::relogin(
-                                                       IServicePeerContactSessionDelegatePtr delegate,
+      ServiceLockboxSessionPtr TestFactoryForPeerContact::relogin(
+                                                       IServiceLockboxSessionDelegatePtr delegate,
                                                        IPeerFilesPtr existingPeerFiles
                                                        )
       {
-        TestServicePeerContactSessionPtr pThis(new TestServicePeerContactSession());
+        TestServiceLockboxSessionPtr pThis(new TestServiceLockboxSession());
         pThis->mThisWeak = pThis;
         //pThis->init();
         return pThis;
@@ -579,13 +579,13 @@ namespace hookflash
           
           mPeerFilesPtr = IPeerFiles::loadFromElement(mPeerFilePassword.c_str(), mPeerFilesElement);
           
-          mPeerContactSession = hookflash::stack::IServicePeerContactSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
+          mPeerContactSession = hookflash::stack::IServiceLockboxSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
         }
         else
         {
           //peer file not found, do Login
           mLoginScenario = LoginScenario_Login;
-          mPeerContactSession = hookflash::stack::IServicePeerContactSession::login(mThisWeak.lock(), hookflash::stack::IServicePeerContact::createServicePeerContactFrom(mNetwork), mIdentitySession);
+          mPeerContactSession = hookflash::stack::IServiceLockboxSession::login(mThisWeak.lock(), hookflash::stack::IServiceLockbox::createServiceLockboxFrom(mNetwork), mIdentitySession);
         }
         
         
@@ -605,12 +605,12 @@ namespace hookflash
       {
       }
       
-      void TestCallbackForPeerContact::onServicePeerContactSessionStateChanged(
-                                                                IServicePeerContactSessionPtr session,
-                                                                hookflash::stack::IServicePeerContactSession::SessionStates state
+      void TestCallbackForPeerContact::onServiceLockboxSessionStateChanged(
+                                                                IServiceLockboxSessionPtr session,
+                                                                hookflash::stack::IServiceLockboxSession::SessionStates state
                                                                 )
       {
-        if (state == IServicePeerContactSession::SessionState_Ready)
+        if (state == IServiceLockboxSession::SessionState_Ready)
         {
           ElementPtr element = mPeerContactSession->getPeerFiles()->saveToPrivatePeerElement();
           zsLib::String text = convertToString(element);
@@ -636,7 +636,7 @@ namespace hookflash
           ++mCount;
         }
       }
-      void TestCallbackForPeerContact::onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session)
+      void TestCallbackForPeerContact::onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session)
       {
       }
 #pragma mark
@@ -669,8 +669,8 @@ namespace hookflash
 }
 
 //service peer contact session
-using hookflash::stack::test::TestServicePeerContactSession;
-using hookflash::stack::test::TestServicePeerContactSessionPtr;
+using hookflash::stack::test::TestServiceLockboxSession;
+using hookflash::stack::test::TestServiceLockboxSessionPtr;
 
 //service identity session
 using hookflash::stack::test::TestServiceIdentitySessionForPeerContact;

@@ -69,7 +69,7 @@ namespace hookflash
                       public IRSAPublicKeyFactory,
                       public IServiceCertificatesValidateQueryFactory,
                       public IServiceIdentitySessionFactory,
-                      public IServicePeerContactSessionFactory,
+                      public IServiceLockboxSessionFactory,
                       public IServiceSaltFetchSignedSaltQueryFactory
       {
       public:

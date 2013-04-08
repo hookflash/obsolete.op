@@ -88,10 +88,10 @@ namespace hookflash
       {
         SessionState_Pending,
         SessionState_WaitingAttachment,
-        SessionState_WaitingToLoadBrowserWindow,
-        SessionState_WaitingToMakeBrowserWindowVisible,
-        SessionState_WaitingLoginCompleteBrowserRedirection,
-        SessionState_WaitingAssociation,
+        SessionState_WaitingForBrowserWindowToBeLoaded,
+        SessionState_WaitingForBrowserWindowToBeMadeVisible,
+        SessionState_WaitingForBrowserWindowToClose,
+        SessionState_WaitingAssociationToLockbox,
         SessionState_Ready,
         SessionState_Shutdown,
       };
@@ -103,33 +103,25 @@ namespace hookflash
       // use when the identity URI is known (or partially known), provider is required if type is legacy
       static IServiceIdentitySessionPtr loginWithIdentity(
                                                           IServiceIdentitySessionDelegatePtr delegate,
-                                                          const char *redirectAfterLoginCompleteURL,
+                                                          const char *outerFrameURLUponReload,
                                                           const char *identityURI,
                                                           IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
                                                           );
 
       // use when provider is known but nothing more
-      static IServiceIdentitySessionPtr loginWithIdentityTBD(
-                                                             IServiceIdentitySessionDelegatePtr delegate,
-                                                             const char *redirectAfterLoginCompleteURL,
-                                                             IServiceIdentityPtr provider,
-                                                             const char *legacyIdentityBaseURI = NULL
-                                                             );
+      static IServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                                  const char *outerFrameURLUponReload,
+                                                                  IServiceIdentityPtr provider,
+                                                                  const char *legacyIdentityBaseURI = NULL
+                                                                  );
 
       // use when a signed identity bundle is available
       static IServiceIdentitySessionPtr loginWithIdentityBundle(
                                                                 IServiceIdentitySessionDelegatePtr delegate,
-                                                                const char *redirectAfterLoginCompleteURL,
+                                                                const char *outerFrameURLUponReload,
                                                                 ElementPtr signedIdentityBundle
                                                                 );
-
-      // use when automatically relogining into an existing identity
-      static IServiceIdentitySessionPtr relogin(
-                                                IServiceIdentitySessionDelegatePtr delegate,
-                                                const char *redirectAfterLoginCompleteURL,
-                                                IServiceIdentityPtr provider,
-                                                const char *identityReloginAccessKey
-                                                );
 
       virtual PUID getID() const = 0;
 
@@ -142,20 +134,18 @@ namespace hookflash
 
       virtual bool isAttached() const = 0;
       virtual void attach(
-                          const char *redirectAfterLoginCompleteURL,
+                          const char *outerFrameURLUponReload,
                           IServiceIdentitySessionDelegatePtr delegate
                           ) = 0;
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
-      virtual String getIdentityReloginAccessKey() const = 0;
       virtual ElementPtr getSignedIdentityBundle() const = 0;   // must clone if you intend to adopt
 
-      virtual String getIdentityLoginURL() const = 0;
-      virtual Time getLoginExpires() const = 0;
+      virtual String getInnerBrowserWindowFrameURL() const = 0;
 
       virtual void notifyBrowserWindowVisible() = 0;
-      virtual void notifyLoginCompleteBrowserWindowRedirection() = 0;
+      virtual void notifyBrowserWindowClosed() = 0;
 
       virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame() = 0;
       virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;

@@ -40,7 +40,7 @@
 #include <hookflash/stack/IPeerSubscription.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IPublicationRepository.h>
-#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceLockbox.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -155,7 +155,7 @@ namespace hookflash
 
         virtual ContactPtr findContact(const char *peerURI) const = 0;
 
-        virtual IServicePeerContactSessionPtr getPeerContactSession() const = 0;
+        virtual IServiceLockboxSessionPtr getPeerContactSession() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -189,7 +189,7 @@ namespace hookflash
                       public ICallTransportDelegate,
                       public stack::IAccountDelegate,
                       public IPeerSubscriptionDelegate,
-                      public IServicePeerContactSessionDelegate,
+                      public IServiceLockboxSessionDelegate,
                       public IAccountAsyncDelegate
       {
       public:
@@ -351,7 +351,7 @@ namespace hookflash
 
         // (duplicate) virtual ContactPtr findContact(const char *peerURI) const;
 
-        virtual IServicePeerContactSessionPtr getPeerContactSession() const;
+        virtual IServiceLockboxSessionPtr getPeerContactSession() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -399,14 +399,14 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IServicePeerContactSessionDelegate
+        #pragma mark Account => IServiceLockboxSessionDelegate
         #pragma mark
 
-        virtual void onServicePeerContactSessionStateChanged(
-                                                             IServicePeerContactSessionPtr session,
+        virtual void onServiceLockboxSessionStateChanged(
+                                                             IServiceLockboxSessionPtr session,
                                                              SessionStates state
                                                              );
-        virtual void onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session);
+        virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -798,7 +798,7 @@ namespace hookflash
         ICallDelegatePtr mCallDelegate;
 
         stack::IAccountPtr mStackAccount;
-        IServicePeerContactSessionPtr mPeerContactSession;
+        IServiceLockboxSessionPtr mPeerContactSession;
 
         mutable IdentityMap mIdentities;
 

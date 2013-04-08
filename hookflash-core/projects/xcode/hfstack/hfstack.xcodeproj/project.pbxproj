@@ -32,7 +32,7 @@
 		0063B86016CA8E8B00E6DB4D /* stack_RSAPublicKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B516CA8E8A00E6DB4D /* stack_RSAPublicKey.cpp */; };
 		0063B86116CA8E8B00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B616CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp */; };
 		0063B86216CA8E8B00E6DB4D /* stack_ServiceIdentitySession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B716CA8E8A00E6DB4D /* stack_ServiceIdentitySession.cpp */; };
-		0063B86316CA8E8B00E6DB4D /* stack_ServicePeerContactSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B816CA8E8A00E6DB4D /* stack_ServicePeerContactSession.cpp */; };
+		0063B86316CA8E8B00E6DB4D /* stack_ServiceLockboxSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B816CA8E8A00E6DB4D /* stack_ServiceLockboxSession.cpp */; };
 		0063B86416CA8E8B00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6B916CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp */; };
 		0063B86516CA8E8B00E6DB4D /* stack_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6BA16CA8E8A00E6DB4D /* stack_Stack.cpp */; };
 		0063B86616CA8E8B00E6DB4D /* IAccount.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6BB16CA8E8A00E6DB4D /* IAccount.h */; };
@@ -68,7 +68,7 @@
 		0063B88416CA8E8B00E6DB4D /* stack_RSAPublicKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DA16CA8E8A00E6DB4D /* stack_RSAPublicKey.h */; };
 		0063B88516CA8E8B00E6DB4D /* stack_ServiceCertificatesValidateQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DB16CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */; };
 		0063B88616CA8E8B00E6DB4D /* stack_ServiceIdentitySession.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DC16CA8E8A00E6DB4D /* stack_ServiceIdentitySession.h */; };
-		0063B88716CA8E8B00E6DB4D /* stack_ServicePeerContactSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DD16CA8E8A00E6DB4D /* stack_ServicePeerContactSession.h */; };
+		0063B88716CA8E8B00E6DB4D /* stack_ServiceLockboxSession.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DD16CA8E8A00E6DB4D /* stack_ServiceLockboxSession.h */; };
 		0063B88816CA8E8B00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DE16CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */; };
 		0063B88916CA8E8B00E6DB4D /* stack_Stack.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6DF16CA8E8A00E6DB4D /* stack_Stack.h */; };
 		0063B88A16CA8E8B00E6DB4D /* types.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6E016CA8E8A00E6DB4D /* types.h */; };
@@ -84,7 +84,7 @@
 		0063B89416CA8E8B00E6DB4D /* IRSAPublicKey.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6EA16CA8E8A00E6DB4D /* IRSAPublicKey.h */; };
 		0063B89516CA8E8B00E6DB4D /* IServiceCertificates.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6EB16CA8E8A00E6DB4D /* IServiceCertificates.h */; };
 		0063B89616CA8E8B00E6DB4D /* IServiceIdentity.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6EC16CA8E8A00E6DB4D /* IServiceIdentity.h */; };
-		0063B89716CA8E8B00E6DB4D /* IServicePeerContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6ED16CA8E8A00E6DB4D /* IServicePeerContact.h */; };
+		0063B89716CA8E8B00E6DB4D /* IServiceLockbox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6ED16CA8E8A00E6DB4D /* IServiceLockbox.h */; };
 		0063B89816CA8E8B00E6DB4D /* IServiceSalt.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6EE16CA8E8A00E6DB4D /* IServiceSalt.h */; };
 		0063B89916CA8E8B00E6DB4D /* IStack.h in Headers */ = {isa = PBXBuildFile; fileRef = 0063B6EF16CA8E8A00E6DB4D /* IStack.h */; };
 		0063B89A16CA8E8B00E6DB4D /* FindersGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6F316CA8E8A00E6DB4D /* FindersGetRequest.cpp */; };
@@ -275,7 +275,7 @@
 		0063B6B516CA8E8A00E6DB4D /* stack_RSAPublicKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_RSAPublicKey.cpp; sourceTree = "<group>"; };
 		0063B6B616CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceCertificatesValidateQuery.cpp; sourceTree = "<group>"; };
 		0063B6B716CA8E8A00E6DB4D /* stack_ServiceIdentitySession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceIdentitySession.cpp; sourceTree = "<group>"; };
-		0063B6B816CA8E8A00E6DB4D /* stack_ServicePeerContactSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServicePeerContactSession.cpp; sourceTree = "<group>"; };
+		0063B6B816CA8E8A00E6DB4D /* stack_ServiceLockboxSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceLockboxSession.cpp; sourceTree = "<group>"; };
 		0063B6B916CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceSaltFetchSignedSaltQuery.cpp; sourceTree = "<group>"; };
 		0063B6BA16CA8E8A00E6DB4D /* stack_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Stack.cpp; sourceTree = "<group>"; };
 		0063B6BB16CA8E8A00E6DB4D /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAccount.h; sourceTree = "<group>"; };
@@ -311,7 +311,7 @@
 		0063B6DA16CA8E8A00E6DB4D /* stack_RSAPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_RSAPublicKey.h; sourceTree = "<group>"; };
 		0063B6DB16CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceCertificatesValidateQuery.h; sourceTree = "<group>"; };
 		0063B6DC16CA8E8A00E6DB4D /* stack_ServiceIdentitySession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceIdentitySession.h; sourceTree = "<group>"; };
-		0063B6DD16CA8E8A00E6DB4D /* stack_ServicePeerContactSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServicePeerContactSession.h; sourceTree = "<group>"; };
+		0063B6DD16CA8E8A00E6DB4D /* stack_ServiceLockboxSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceLockboxSession.h; sourceTree = "<group>"; };
 		0063B6DE16CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceSaltFetchSignedSaltQuery.h; sourceTree = "<group>"; };
 		0063B6DF16CA8E8A00E6DB4D /* stack_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_Stack.h; sourceTree = "<group>"; };
 		0063B6E016CA8E8A00E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
@@ -327,7 +327,7 @@
 		0063B6EA16CA8E8A00E6DB4D /* IRSAPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRSAPublicKey.h; sourceTree = "<group>"; };
 		0063B6EB16CA8E8A00E6DB4D /* IServiceCertificates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceCertificates.h; sourceTree = "<group>"; };
 		0063B6EC16CA8E8A00E6DB4D /* IServiceIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceIdentity.h; sourceTree = "<group>"; };
-		0063B6ED16CA8E8A00E6DB4D /* IServicePeerContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServicePeerContact.h; sourceTree = "<group>"; };
+		0063B6ED16CA8E8A00E6DB4D /* IServiceLockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceLockbox.h; sourceTree = "<group>"; };
 		0063B6EE16CA8E8A00E6DB4D /* IServiceSalt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceSalt.h; sourceTree = "<group>"; };
 		0063B6EF16CA8E8A00E6DB4D /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStack.h; sourceTree = "<group>"; };
 		0063B6F316CA8E8A00E6DB4D /* FindersGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindersGetRequest.cpp; sourceTree = "<group>"; };
@@ -541,7 +541,7 @@
 				0063B6EA16CA8E8A00E6DB4D /* IRSAPublicKey.h */,
 				0063B6EB16CA8E8A00E6DB4D /* IServiceCertificates.h */,
 				0063B6EC16CA8E8A00E6DB4D /* IServiceIdentity.h */,
-				0063B6ED16CA8E8A00E6DB4D /* IServicePeerContact.h */,
+				0063B6ED16CA8E8A00E6DB4D /* IServiceLockbox.h */,
 				0063B6EE16CA8E8A00E6DB4D /* IServiceSalt.h */,
 				0063B6EF16CA8E8A00E6DB4D /* IStack.h */,
 			);
@@ -576,7 +576,7 @@
 				0063B6B516CA8E8A00E6DB4D /* stack_RSAPublicKey.cpp */,
 				0063B6B616CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp */,
 				0063B6B716CA8E8A00E6DB4D /* stack_ServiceIdentitySession.cpp */,
-				0063B6B816CA8E8A00E6DB4D /* stack_ServicePeerContactSession.cpp */,
+				0063B6B816CA8E8A00E6DB4D /* stack_ServiceLockboxSession.cpp */,
 				0063B6B916CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp */,
 				0063B6BA16CA8E8A00E6DB4D /* stack_Stack.cpp */,
 			);
@@ -612,7 +612,7 @@
 				0063B6DA16CA8E8A00E6DB4D /* stack_RSAPublicKey.h */,
 				0063B6DB16CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */,
 				0063B6DC16CA8E8A00E6DB4D /* stack_ServiceIdentitySession.h */,
-				0063B6DD16CA8E8A00E6DB4D /* stack_ServicePeerContactSession.h */,
+				0063B6DD16CA8E8A00E6DB4D /* stack_ServiceLockboxSession.h */,
 				0063B6DE16CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */,
 				0063B6DF16CA8E8A00E6DB4D /* stack_Stack.h */,
 			);
@@ -1016,7 +1016,7 @@
 				0063B88416CA8E8B00E6DB4D /* stack_RSAPublicKey.h in Headers */,
 				0063B88516CA8E8B00E6DB4D /* stack_ServiceCertificatesValidateQuery.h in Headers */,
 				0063B88616CA8E8B00E6DB4D /* stack_ServiceIdentitySession.h in Headers */,
-				0063B88716CA8E8B00E6DB4D /* stack_ServicePeerContactSession.h in Headers */,
+				0063B88716CA8E8B00E6DB4D /* stack_ServiceLockboxSession.h in Headers */,
 				0063B88816CA8E8B00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h in Headers */,
 				0063B88916CA8E8B00E6DB4D /* stack_Stack.h in Headers */,
 				0063B88A16CA8E8B00E6DB4D /* types.h in Headers */,
@@ -1032,7 +1032,7 @@
 				0063B89416CA8E8B00E6DB4D /* IRSAPublicKey.h in Headers */,
 				0063B89516CA8E8B00E6DB4D /* IServiceCertificates.h in Headers */,
 				0063B89616CA8E8B00E6DB4D /* IServiceIdentity.h in Headers */,
-				0063B89716CA8E8B00E6DB4D /* IServicePeerContact.h in Headers */,
+				0063B89716CA8E8B00E6DB4D /* IServiceLockbox.h in Headers */,
 				0063B89816CA8E8B00E6DB4D /* IServiceSalt.h in Headers */,
 				0063B89916CA8E8B00E6DB4D /* IStack.h in Headers */,
 				0063B89D16CA8E8B00E6DB4D /* FindersGetRequest.h in Headers */,
@@ -1198,7 +1198,7 @@
 				0063B86016CA8E8B00E6DB4D /* stack_RSAPublicKey.cpp in Sources */,
 				0063B86116CA8E8B00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp in Sources */,
 				0063B86216CA8E8B00E6DB4D /* stack_ServiceIdentitySession.cpp in Sources */,
-				0063B86316CA8E8B00E6DB4D /* stack_ServicePeerContactSession.cpp in Sources */,
+				0063B86316CA8E8B00E6DB4D /* stack_ServiceLockboxSession.cpp in Sources */,
 				0063B86416CA8E8B00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp in Sources */,
 				0063B86516CA8E8B00E6DB4D /* stack_Stack.cpp in Sources */,
 				0063B89A16CA8E8B00E6DB4D /* FindersGetRequest.cpp in Sources */,

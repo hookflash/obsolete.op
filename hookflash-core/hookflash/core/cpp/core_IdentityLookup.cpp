@@ -132,7 +132,7 @@ namespace hookflash
           }
 
           if (IServiceIdentity::isLegacy(identityURI)) {
-            IServicePeerContactSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
+            IServiceLockboxSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
             ZS_THROW_BAD_STATE_IF(!peerContact)
 
             IBootstrappedNetworkPtr network = peerContact->getService()->getBootstrappedNetwork();
