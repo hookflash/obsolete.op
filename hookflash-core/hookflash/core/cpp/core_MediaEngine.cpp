@@ -42,7 +42,9 @@
 
 #include <video_capture_factory.h>
 
+#ifdef __APPLE__
 #include <TargetConditionals.h>
+#endif
 
 #define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
 //#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
@@ -140,8 +142,8 @@ namespace hookflash
         mVideoFile(NULL),
         mVideoEngineReady(false),
         mFaceDetection(false),
-        mIPhoneCaptureRenderView(NULL),
-        mIPhoneChannelRenderView(NULL),
+        mCaptureRenderView(NULL),
+        mChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
@@ -206,8 +208,8 @@ namespace hookflash
         mVideoFile(NULL),
         mVideoEngineReady(false),
         mFaceDetection(false),
-        mIPhoneCaptureRenderView(NULL),
-        mIPhoneChannelRenderView(NULL),
+        mCaptureRenderView(NULL),
+        mChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
@@ -224,6 +226,7 @@ namespace hookflash
         mLifetimeVideoRecordFile(""),
         mLifetimeSaveVideoToLibrary(false)
       {
+#ifdef TARGET_OS_IPHONE
         int name[] = {CTL_HW, HW_MACHINE};
         size_t size;
         sysctl(name, 2, NULL, &size, NULL, 0);
@@ -231,6 +234,7 @@ namespace hookflash
         sysctl(name, 2, machine, &size, NULL, 0);
         mMachineName = machine;
         free(machine);
+#endif
       }
 
       //-----------------------------------------------------------------------
@@ -648,7 +652,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("set capture render view"))
 
-        mIPhoneCaptureRenderView = renderView;
+        mCaptureRenderView = renderView;
       }
 
       //-----------------------------------------------------------------------
@@ -658,7 +662,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("set channel render view"))
 
-        mIPhoneChannelRenderView = renderView;
+        mChannelRenderView = renderView;
       }
 
       //-----------------------------------------------------------------------
@@ -1738,7 +1742,7 @@ namespace hookflash
           }
           
 #ifdef TARGET_OS_IPHONE
-          void *captureView = mIPhoneCaptureRenderView;
+          void *captureView = mCaptureRenderView;
 #else
           void *captureView = NULL;
 #endif
@@ -1892,7 +1896,7 @@ namespace hookflash
           ZS_LOG_DEBUG(log("start video channel"))
           
 #ifdef TARGET_OS_IPHONE
-          void *channelView = mIPhoneChannelRenderView;
+          void *channelView = mChannelRenderView;
 #else
           void *channelView = NULL;
 #endif
@@ -2206,6 +2210,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height, int& maxFramerate, int& maxBitrate)
       {
+#ifdef TARGET_OS_IPHONE
         String iPadString("iPad");
         String iPad2String("iPad2");
         String iPad3String("iPad3");
@@ -2372,6 +2377,12 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("camera type is not set"))
           return -1;
         }
+#else
+        width = 240;
+        height = 320;
+        maxFramerate = 15;
+        maxBitrate = 250;
+#endif
         return 0;
       }
       
@@ -2455,6 +2466,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       webrtc::EcModes MediaEngine::getEcMode()
       {
+#ifdef TARGET_OS_IPHONE
         String iPadString("iPad");
         String iPad2String("iPad2");
         String iPad3String("iPad3");
@@ -2484,6 +2496,9 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("machine name is not supported"))
           return webrtc::kEcUnchanged;
         }
+#else
+        return webrtc::kEcUnchanged;
+#endif
       }
 
       //-----------------------------------------------------------------------

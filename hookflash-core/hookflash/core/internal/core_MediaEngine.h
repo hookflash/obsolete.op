@@ -407,8 +407,8 @@ namespace hookflash
         VideoRtpRtcp *mVideoRtpRtcp;
         VideoCodec *mVideoCodec;
         VideoFile *mVideoFile;
-        void *mIPhoneCaptureRenderView;
-        void *mIPhoneChannelRenderView;
+        void *mCaptureRenderView;
+        void *mChannelRenderView;
         bool mVideoEngineReady;
 
         RedirectTransport mRedirectVoiceTransport;
