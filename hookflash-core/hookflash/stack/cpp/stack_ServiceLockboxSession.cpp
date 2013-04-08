@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/internal/stack_ServicePeerContactSession.h>
+#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
 #include <hookflash/stack/message/peer-contact/PeerContactLoginRequest.h>
 #include <hookflash/stack/message/peer-contact/PrivatePeerFileGetRequest.h>
@@ -89,18 +89,18 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession
+      #pragma mark ServiceLockboxSession
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSession::ServicePeerContactSession(
+      ServiceLockboxSession::ServiceLockboxSession(
                                                            IMessageQueuePtr queue,
                                                            BootstrappedNetworkPtr network,
-                                                           IServicePeerContactSessionDelegatePtr delegate
+                                                           IServiceLockboxSessionDelegatePtr delegate
                                                            ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mDelegate(delegate ? IServicePeerContactSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServicePeerContactSessionDelegatePtr()),
+        mDelegate(delegate ? IServiceLockboxSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceLockboxSessionDelegatePtr()),
         mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
         mLastError(0),
@@ -110,7 +110,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSession::~ServicePeerContactSession()
+      ServiceLockboxSession::~ServiceLockboxSession()
       {
         if(isNoop()) return;
         
@@ -120,15 +120,15 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::init()
+      void ServiceLockboxSession::init()
       {
         IBootstrappedNetworkForServices::prepare(mBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSessionPtr ServicePeerContactSession::convert(IServicePeerContactSessionPtr query)
+      ServiceLockboxSessionPtr ServiceLockboxSession::convert(IServiceLockboxSessionPtr query)
       {
-        return boost::dynamic_pointer_cast<ServicePeerContactSession>(query);
+        return boost::dynamic_pointer_cast<ServiceLockboxSession>(query);
       }
 
       //-----------------------------------------------------------------------
@@ -136,24 +136,24 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IServicePeerContactSession
+      #pragma mark ServiceLockboxSession => IServiceLockboxSession
       #pragma mark
 
       //-----------------------------------------------------------------------
-      String ServicePeerContactSession::toDebugString(IServicePeerContactSessionPtr session, bool includeCommaPrefix)
+      String ServiceLockboxSession::toDebugString(IServiceLockboxSessionPtr session, bool includeCommaPrefix)
       {
         if (!session) return includeCommaPrefix ? String(", peer contact session=(null)") : String("peer contact session=");
-        return ServicePeerContactSession::convert(session)->getDebugValueString(includeCommaPrefix);
+        return ServiceLockboxSession::convert(session)->getDebugValueString(includeCommaPrefix);
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSessionPtr ServicePeerContactSession::login(
-                                                                    IServicePeerContactSessionDelegatePtr delegate,
-                                                                    IServicePeerContactPtr servicePeerContact,
+      ServiceLockboxSessionPtr ServiceLockboxSession::login(
+                                                                    IServiceLockboxSessionDelegatePtr delegate,
+                                                                    IServiceLockboxPtr ServiceLockbox,
                                                                     IServiceIdentitySessionPtr identitySession
                                                                     )
       {
-        ServicePeerContactSessionPtr pThis(new ServicePeerContactSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(servicePeerContact), delegate));
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(ServiceLockbox), delegate));
         pThis->mThisWeak = pThis;
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->init();
@@ -161,8 +161,8 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      ServicePeerContactSessionPtr ServicePeerContactSession::relogin(
-                                                                      IServicePeerContactSessionDelegatePtr delegate,
+      ServiceLockboxSessionPtr ServiceLockboxSession::relogin(
+                                                                      IServiceLockboxSessionDelegatePtr delegate,
                                                                       IPeerFilesPtr existingPeerFiles
                                                                       )
       {
@@ -174,8 +174,8 @@ namespace hookflash
 
         String uri = peerFilePublic->getPeerURI();
         if (!IPeer::isValid(uri)) {
-          ZS_LOG_WARNING(Detail, "ServicePeerContactSession [] peer file public contains invalid URI, URI=" + uri)
-          return ServicePeerContactSessionPtr();
+          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] peer file public contains invalid URI, URI=" + uri)
+          return ServiceLockboxSessionPtr();
         }
 
         String domain;
@@ -183,13 +183,13 @@ namespace hookflash
         IPeer::splitURI(uri, domain, contactID);
 
         if (!IHelper::isValidDomain(domain)) {
-          ZS_LOG_WARNING(Detail, "ServicePeerContactSession [] domain is not valid, domain=" + domain)
-          return ServicePeerContactSessionPtr();
+          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] domain is not valid, domain=" + domain)
+          return ServiceLockboxSessionPtr();
         }
 
         BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
 
-        ServicePeerContactSessionPtr pThis(new ServicePeerContactSession(IStackForInternal::queueStack(), network, delegate));
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), network, delegate));
         pThis->mThisWeak = pThis;
         pThis->mPeerFiles = existingPeerFiles;
         pThis->init();
@@ -197,14 +197,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IServicePeerContactPtr ServicePeerContactSession::getService() const
+      IServiceLockboxPtr ServiceLockboxSession::getService() const
       {
         AutoRecursiveLock lock(getLock());
         return mBootstrappedNetwork;
       }
 
       //-----------------------------------------------------------------------
-      IServicePeerContactSession::SessionStates ServicePeerContactSession::getState(
+      IServiceLockboxSession::SessionStates ServiceLockboxSession::getState(
                                                                                     WORD *outLastErrorCode,
                                                                                     String *outLastErrorReason
                                                                                     ) const
@@ -216,21 +216,21 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IPeerFilesPtr ServicePeerContactSession::getPeerFiles() const
+      IPeerFilesPtr ServiceLockboxSession::getPeerFiles() const
       {
         AutoRecursiveLock lock(getLock());
         return mPeerFiles;
       }
 
       //-----------------------------------------------------------------------
-      String ServicePeerContactSession::getContactUserID() const
+      String ServiceLockboxSession::getContactUserID() const
       {
         AutoRecursiveLock lock(getLock());
         return mContactUserID;
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionListPtr ServicePeerContactSession::getAssociatedIdentities() const
+      ServiceIdentitySessionListPtr ServiceLockboxSession::getAssociatedIdentities() const
       {
         AutoRecursiveLock lock(getLock());
         ServiceIdentitySessionListPtr result(new ServiceIdentitySessionList);
@@ -242,7 +242,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::associateIdentities(
+      void ServiceLockboxSession::associateIdentities(
                                                           const ServiceIdentitySessionList &identitiesToAssociate,
                                                           const ServiceIdentitySessionList &identitiesToRemove
                                                           )
@@ -266,11 +266,11 @@ namespace hookflash
           mPendingRemoveIdentities[session->forPeerContact().getID()] = session;
         }
         // handle the association now (but do it asynchronously)
-        IServicePeerContactSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::cancel()
+      void ServiceLockboxSession::cancel()
       {
         AutoRecursiveLock lock(getLock());
 
@@ -344,7 +344,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageSource
+      #pragma mark ServiceLockboxSession => IMessageSource
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -352,18 +352,18 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IServicePeerContactSessionForAccount
+      #pragma mark ServiceLockboxSession => IServiceLockboxSessionForAccount
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::attach(AccountPtr account)
+      void ServiceLockboxSession::attach(AccountPtr account)
       {
         AutoRecursiveLock lock(getLock());
         mAccount = account;
       }
 
       //-----------------------------------------------------------------------
-      Service::MethodPtr ServicePeerContactSession::findServiceMethod(
+      Service::MethodPtr ServiceLockboxSession::findServiceMethod(
                                                                       const char *serviceType,
                                                                       const char *method
                                                                       ) const
@@ -386,7 +386,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      BootstrappedNetworkPtr ServicePeerContactSession::getBootstrappedNetwork() const
+      BootstrappedNetworkPtr ServiceLockboxSession::getBootstrappedNetwork() const
       {
         AutoRecursiveLock lock(getLock());
         return mBootstrappedNetwork;
@@ -397,15 +397,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IServicePeerContactSessionForServiceIdentity
+      #pragma mark ServiceLockboxSession => IServiceLockboxSessionForServiceIdentity
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::notifyStateChanged()
+      void ServiceLockboxSession::notifyStateChanged()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServicePeerContactSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -413,15 +413,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IServicePeerContactSessionAsync
+      #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsync
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::onStep()
+      void ServiceLockboxSession::onStep()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))
-        IServicePeerContactSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -429,11 +429,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IBootstrappedNetworkDelegate
+      #pragma mark ServiceLockboxSession => IBootstrappedNetworkDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)
+      void ServiceLockboxSession::onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)
       {
         ZS_LOG_DEBUG(log("bootstrapper reported complete"))
 
@@ -446,11 +446,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IServiceSaltFetchSignedSaltQueryDelegate
+      #pragma mark ServiceLockboxSession => IServiceSaltFetchSignedSaltQueryDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::onServiceSaltFetchSignedSaltCompleted(IServiceSaltFetchSignedSaltQueryPtr query)
+      void ServiceLockboxSession::onServiceSaltFetchSignedSaltCompleted(IServiceSaltFetchSignedSaltQueryPtr query)
       {
         ZS_LOG_DEBUG(log("salt service reported complete"))
 
@@ -463,11 +463,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<IdentityLoginStartResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<IdentityLoginStartResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
                                                                          IMessageMonitorPtr monitor,
                                                                          PeerContactLoginResultPtr result
                                                                          )
@@ -503,7 +503,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorErrorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
                                                                               IMessageMonitorPtr monitor,
                                                                               PeerContactLoginResultPtr ignore, // will always be NULL
                                                                               message::MessageResultPtr result
@@ -528,11 +528,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
                                                                          IMessageMonitorPtr monitor,
                                                                          PrivatePeerFileGetResultPtr result
                                                                          )
@@ -568,7 +568,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorErrorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
                                                                               IMessageMonitorPtr monitor,
                                                                               PrivatePeerFileGetResultPtr ignore, // will always be NULL
                                                                               message::MessageResultPtr result
@@ -597,11 +597,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
                                                                          IMessageMonitorPtr monitor,
                                                                          PrivatePeerFileSetResultPtr result
                                                                          )
@@ -618,7 +618,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorErrorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
                                                                               IMessageMonitorPtr monitor,
                                                                               PrivatePeerFileSetResultPtr ignore, // will always be NULL
                                                                               message::MessageResultPtr result
@@ -643,11 +643,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
                                                                          IMessageMonitorPtr monitor,
                                                                          PeerContactServicesGetResultPtr result
                                                                          )
@@ -676,7 +676,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorErrorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
                                                                               IMessageMonitorPtr monitor,
                                                                               PeerContactServicesGetResultPtr ignore, // will always be NULL
                                                                               message::MessageResultPtr result
@@ -701,11 +701,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
                                                                          IMessageMonitorPtr monitor,
                                                                          PeerContactIdentityAssociateResultPtr result
                                                                          )
@@ -827,7 +827,7 @@ namespace hookflash
 
                 ZS_LOG_DEBUG(log("creating new identity session") + ", relogin access key=" + reloginAccessKey + info.getDebugValueString())
 
-                ServiceIdentitySessionPtr session = IServiceIdentitySessionForServicePeerContact::relogin(network, reloginAccessKey);
+                ServiceIdentitySessionPtr session = IServiceIdentitySessionForServiceLockbox::relogin(network, reloginAccessKey);
                 mAssociatedIdentities[session->forPeerContact().getID()] = session;
                 session->forPeerContact().associate(mThisWeak.lock());
               } else {
@@ -860,7 +860,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::handleMessageMonitorErrorResultReceived(
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
                                                                               IMessageMonitorPtr monitor,
                                                                               PeerContactIdentityAssociateResultPtr ignore, // will always be NULL
                                                                               message::MessageResultPtr result
@@ -885,23 +885,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession => (internal)
+      #pragma mark ServiceLockboxSession => (internal)
       #pragma mark
 
       //-----------------------------------------------------------------------
-      RecursiveLock &ServicePeerContactSession::getLock() const
+      RecursiveLock &ServiceLockboxSession::getLock() const
       {
         return mLock;
       }
 
       //-----------------------------------------------------------------------
-      String ServicePeerContactSession::log(const char *message) const
+      String ServiceLockboxSession::log(const char *message) const
       {
-        return String("ServicePeerContactSession [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("ServiceLockboxSession [") + Stringize<PUID>(mID).string() + "] " + message;
       }
 
       //-----------------------------------------------------------------------
-      String ServicePeerContactSession::getDebugValueString(bool includeCommaPrefix) const
+      String ServiceLockboxSession::getDebugValueString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
@@ -925,7 +925,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::step()
+      void ServiceLockboxSession::step()
       {
         if (isShutdown()) {
           ZS_LOG_DEBUG(log("step - already shutdown"))
@@ -945,7 +945,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::stepLogin()
+      bool ServiceLockboxSession::stepLogin()
       {
         if (mLoginMonitor) {
           ZS_LOG_DEBUG(log("waiting for login monitor"))
@@ -1008,7 +1008,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::stepPeerFiles()
+      bool ServiceLockboxSession::stepPeerFiles()
       {
         if ((mPeerFilesGetMonitor) ||
             (mPeerFilesSetMonitor)) {
@@ -1111,7 +1111,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::stepServices()
+      bool ServiceLockboxSession::stepServices()
       {
         if (mServicesMonitor) {
           ZS_LOG_DEBUG(log("waiting for services monitor to complete"))
@@ -1136,7 +1136,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServicePeerContactSession::stepAssociate()
+      bool ServiceLockboxSession::stepAssociate()
       {
         if (mAssociateMonitor) {
           ZS_LOG_DEBUG(log("waiting for associate monitor to complete"))
@@ -1228,7 +1228,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::postStep()
+      void ServiceLockboxSession::postStep()
       {
         MD5 hasher;
         SecureByteBlockPtr output(new SecureByteBlock(hasher.DigestSize()));
@@ -1251,15 +1251,15 @@ namespace hookflash
 
         if (mDelegate) {
           try {
-            mDelegate->onServicePeerContactSessionAssociatedIdentitiesChanged(mThisWeak.lock());
-          } catch(IServicePeerContactSessionDelegateProxy::Exceptions::DelegateGone &) {
+            mDelegate->onServiceLockboxSessionAssociatedIdentitiesChanged(mThisWeak.lock());
+          } catch(IServiceLockboxSessionDelegateProxy::Exceptions::DelegateGone &) {
             ZS_LOG_WARNING(Detail, log("delegate gone"))
           }
         }
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::clearShutdown(ServiceIdentitySessionMap &identities) const
+      void ServiceLockboxSession::clearShutdown(ServiceIdentitySessionMap &identities) const
       {
         // clear out any identities that are shutdown...
         for (ServiceIdentitySessionMap::iterator iter = identities.begin(); iter != identities.end(); )
@@ -1275,7 +1275,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::handleRemoveDisposition(
+      void ServiceLockboxSession::handleRemoveDisposition(
                                                               const IdentityInfo &info,
                                                               ServiceIdentitySessionMap &sessions
                                                               ) const
@@ -1298,7 +1298,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::setState(SessionStates state)
+      void ServiceLockboxSession::setState(SessionStates state)
       {
         if (state == mCurrentState) return;
 
@@ -1311,23 +1311,23 @@ namespace hookflash
 
         AccountPtr account = mAccount.lock();
         if (account) {
-          account->forServicePeerContactSession().notifyServicePeerContactSessionStateChanged();
+          account->forServiceLockboxSession().notifyServiceLockboxSessionStateChanged();
         }
 
-        ServicePeerContactSessionPtr pThis = mThisWeak.lock();
+        ServiceLockboxSessionPtr pThis = mThisWeak.lock();
         if ((pThis) &&
             (mDelegate)) {
           try {
             ZS_LOG_DEBUG(log("attempting to report state to delegate") + getDebugValueString())
-            mDelegate->onServicePeerContactSessionStateChanged(pThis, mCurrentState);
-          } catch (IServicePeerContactSessionDelegateProxy::Exceptions::DelegateGone &) {
+            mDelegate->onServiceLockboxSessionStateChanged(pThis, mCurrentState);
+          } catch (IServiceLockboxSessionDelegateProxy::Exceptions::DelegateGone &) {
             ZS_LOG_WARNING(Detail, log("delegate gone"))
           }
         }
       }
 
       //-----------------------------------------------------------------------
-      void ServicePeerContactSession::setError(WORD errorCode, const char *inReason)
+      void ServiceLockboxSession::setError(WORD errorCode, const char *inReason)
       {
         String reason(inReason ? String(inReason) : String());
 
@@ -1355,7 +1355,7 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContactSession
+    #pragma mark IServiceLockboxSession
     #pragma mark
 
 
@@ -1364,11 +1364,11 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContactSession
+    #pragma mark IServiceLockboxSession
     #pragma mark
 
     //-------------------------------------------------------------------------
-    const char *IServicePeerContactSession::toString(SessionStates state)
+    const char *IServiceLockboxSession::toString(SessionStates state)
     {
       switch (state)
       {
@@ -1380,28 +1380,28 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
-    String IServicePeerContactSession::toDebugString(IServicePeerContactSessionPtr session, bool includeCommaPrefix)
+    String IServiceLockboxSession::toDebugString(IServiceLockboxSessionPtr session, bool includeCommaPrefix)
     {
-      return internal::ServicePeerContactSession::toDebugString(session, includeCommaPrefix);
+      return internal::ServiceLockboxSession::toDebugString(session, includeCommaPrefix);
     }
 
     //-------------------------------------------------------------------------
-    IServicePeerContactSessionPtr IServicePeerContactSession::login(
-                                                                    IServicePeerContactSessionDelegatePtr delegate,
-                                                                    IServicePeerContactPtr servicePeerContact,
+    IServiceLockboxSessionPtr IServiceLockboxSession::login(
+                                                                    IServiceLockboxSessionDelegatePtr delegate,
+                                                                    IServiceLockboxPtr ServiceLockbox,
                                                                     IServiceIdentitySessionPtr identitySession
                                                                     )
     {
-      return internal::IServicePeerContactSessionFactory::singleton().login(delegate, servicePeerContact, identitySession);
+      return internal::IServiceLockboxSessionFactory::singleton().login(delegate, ServiceLockbox, identitySession);
     }
 
     //-------------------------------------------------------------------------
-    IServicePeerContactSessionPtr IServicePeerContactSession::relogin(
-                                                                      IServicePeerContactSessionDelegatePtr delegate,
+    IServiceLockboxSessionPtr IServiceLockboxSession::relogin(
+                                                                      IServiceLockboxSessionDelegatePtr delegate,
                                                                       IPeerFilesPtr existingPeerFiles
                                                                       )
     {
-      return internal::IServicePeerContactSessionFactory::singleton().relogin(delegate, existingPeerFiles);
+      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, existingPeerFiles);
     }
 
   }

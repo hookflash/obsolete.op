@@ -35,7 +35,7 @@
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/stack/IMessageSource.h>
-#include <hookflash/stack/IServicePeerContact.h>
+#include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/message/peer-contact/PeerContactLoginResult.h>
 #include <hookflash/stack/message/peer-contact/PrivatePeerFileGetResult.h>
 #include <hookflash/stack/message/peer-contact/PrivatePeerFileSetResult.h>
@@ -69,15 +69,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServicePeerContactSessionForAccount
+      #pragma mark IServiceLockboxSessionForAccount
       #pragma mark
 
-      interaction IServicePeerContactSessionForAccount
+      interaction IServiceLockboxSessionForAccount
       {
-        IServicePeerContactSessionForAccount &forAccount() {return *this;}
-        const IServicePeerContactSessionForAccount &forAccount() const {return *this;}
+        IServiceLockboxSessionForAccount &forAccount() {return *this;}
+        const IServiceLockboxSessionForAccount &forAccount() const {return *this;}
 
-        virtual IServicePeerContactSession::SessionStates getState(
+        virtual IServiceLockboxSession::SessionStates getState(
                                                                    WORD *lastErrorCode = NULL,
                                                                    String *lastErrorReason = NULL
                                                                    ) const = 0;
@@ -99,15 +99,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServicePeerContactSessionForServiceIdentity
+      #pragma mark IServiceLockboxSessionForServiceIdentity
       #pragma mark
 
-      interaction IServicePeerContactSessionForServiceIdentity
+      interaction IServiceLockboxSessionForServiceIdentity
       {
-        IServicePeerContactSessionForServiceIdentity &forServiceIdentity() {return *this;}
-        const IServicePeerContactSessionForServiceIdentity &forServiceIdentity() const {return *this;}
+        IServiceLockboxSessionForServiceIdentity &forServiceIdentity() {return *this;}
+        const IServiceLockboxSessionForServiceIdentity &forServiceIdentity() const {return *this;}
 
-        virtual IServicePeerContactSession::SessionStates getState(
+        virtual IServiceLockboxSession::SessionStates getState(
                                                                    WORD *lastErrorCode = NULL,
                                                                    String *lastErrorReason = NULL
                                                                    ) const = 0;
@@ -123,10 +123,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServicePeerContactSessionAsync
+      #pragma mark IServiceLockboxSessionAsync
       #pragma mark
 
-      interaction IServicePeerContactSessionAsync
+      interaction IServiceLockboxSessionAsync
       {
         virtual void onStep() = 0;
       };
@@ -136,16 +136,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServicePeerContactSession
+      #pragma mark ServiceLockboxSession
       #pragma mark
 
-      class ServicePeerContactSession : public Noop,
+      class ServiceLockboxSession : public Noop,
                                         public zsLib::MessageQueueAssociator,
-                                        public IServicePeerContactSession,
+                                        public IServiceLockboxSession,
                                         public IMessageSource,
-                                        public IServicePeerContactSessionForAccount,
-                                        public IServicePeerContactSessionForServiceIdentity,
-                                        public IServicePeerContactSessionAsync,
+                                        public IServiceLockboxSessionForAccount,
+                                        public IServiceLockboxSessionForServiceIdentity,
+                                        public IServiceLockboxSessionAsync,
                                         public IBootstrappedNetworkDelegate,
                                         public IServiceSaltFetchSignedSaltQueryDelegate,
                                         public IMessageMonitorResultDelegate<PeerContactLoginResult>,
@@ -155,50 +155,52 @@ namespace hookflash
                                         public IMessageMonitorResultDelegate<PeerContactServicesGetResult>
       {
       public:
-        friend interaction IServicePeerContactSessionFactory;
-        friend interaction IServicePeerContactSession;
+        friend interaction IServiceLockboxSessionFactory;
+        friend interaction IServiceLockboxSession;
 
         typedef PUID ServiceIdentitySessionID;
         typedef std::map<ServiceIdentitySessionID, ServiceIdentitySessionPtr> ServiceIdentitySessionMap;
 
       protected:
-        ServicePeerContactSession(
+        ServiceLockboxSession(
                                   IMessageQueuePtr queue,
                                   BootstrappedNetworkPtr network,
-                                  IServicePeerContactSessionDelegatePtr delegate
+                                  IServiceLockboxSessionDelegatePtr delegate
                                   );
         
-        ServicePeerContactSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
+        ServiceLockboxSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
 
       public:
-        ~ServicePeerContactSession();
+        ~ServiceLockboxSession();
 
-        static ServicePeerContactSessionPtr convert(IServicePeerContactSessionPtr query);
+        static ServiceLockboxSessionPtr convert(IServiceLockboxSessionPtr query);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IServicePeerContactSession
+        #pragma mark ServiceLockboxSession => IServiceLockboxSession
         #pragma mark
 
-        static String toDebugString(IServicePeerContactSessionPtr session, bool includeCommaPrefix = true);
+        static String toDebugString(IServiceLockboxSessionPtr session, bool includeCommaPrefix = true);
 
-        static ServicePeerContactSessionPtr login(
-                                                  IServicePeerContactSessionDelegatePtr delegate,
-                                                  IServicePeerContactPtr servicePeerContact,
-                                                  IServiceIdentitySessionPtr identitySession
-                                                  );
+        static ServiceLockboxSessionPtr login(
+                                              IServiceLockboxSessionDelegatePtr delegate,
+                                              IServiceLockboxPtr serviceLockbox,
+                                              IServiceIdentitySessionPtr identitySession
+                                              );
 
-        static ServicePeerContactSessionPtr relogin(
-                                                    IServicePeerContactSessionDelegatePtr delegate,
-                                                    IPeerFilesPtr existingPeerFiles
-                                                    );
+        static ServiceLockboxSessionPtr relogin(
+                                                IServiceLockboxSessionDelegatePtr delegate,
+                                                const char *lockboxAccountID,
+                                                const char *identityHalfLockboxKey,
+                                                const char *lockboxHalfLockboxKey
+                                                );
 
         virtual PUID getID() const {return mID;}
 
-        virtual IServicePeerContactPtr getService() const;
+        virtual IServiceLockboxPtr getService() const;
 
         virtual SessionStates getState(
                                        WORD *lastErrorCode,
@@ -206,7 +208,13 @@ namespace hookflash
                                        ) const;
 
         virtual IPeerFilesPtr getPeerFiles() const;
-        virtual String getContactUserID() const;
+
+        virtual String getLockboxAccountID() const = 0;
+        virtual void getLockboxKey(
+                                   SecureByteBlockPtr &outIdentityHalf,
+                                   SecureByteBlockPtr &outLockboxHalf
+                                   ) = 0;
+        
 
         virtual ServiceIdentitySessionListPtr getAssociatedIdentities() const;
         virtual void associateIdentities(
@@ -214,18 +222,26 @@ namespace hookflash
                                          const ServiceIdentitySessionList &identitiesToRemove
                                          );
 
+        virtual String getInnerBrowserWindowFrameURL() const;
+
+        virtual void notifyBrowserWindowVisible();
+        virtual void notifyBrowserWindowClosed();
+
+        virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
+        virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
+
         virtual void cancel();
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageSource
+        #pragma mark ServiceLockboxSession => IMessageSource
         #pragma mark
 
         // (duplicate) virtual PUID getID() const;
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IServicePeerContactSessionForAccount
+        #pragma mark ServiceLockboxSession => IServiceLockboxSessionForAccount
         #pragma mark
 
         // (duplicate) virtual SessionStates getState(
@@ -246,7 +262,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IServicePeerContactSessionForServiceIdentity
+        #pragma mark ServiceLockboxSession => IServiceLockboxSessionForServiceIdentity
         #pragma mark
 
         // (duplicate) virtual SessionStates getState(
@@ -261,28 +277,28 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IServicePeerContactSessionAsync
+        #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsync
         #pragma mark
 
         virtual void onStep();
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IBootstrappedNetworkDelegate
+        #pragma mark ServiceLockboxSession => IBootstrappedNetworkDelegate
         #pragma mark
 
         virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IServiceSaltFetchSignedSaltQueryDelegate
+        #pragma mark ServiceLockboxSession => IServiceSaltFetchSignedSaltQueryDelegate
         #pragma mark
 
         virtual void onServiceSaltFetchSignedSaltCompleted(IServiceSaltFetchSignedSaltQueryPtr query);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PeerContactLoginResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactLoginResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -298,7 +314,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -314,7 +330,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -330,7 +346,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -346,7 +362,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -363,7 +379,7 @@ namespace hookflash
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => (internal)
+        #pragma mark ServiceLockboxSession => (internal)
         #pragma mark
 
         RecursiveLock &getLock() const;
@@ -392,14 +408,14 @@ namespace hookflash
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServicePeerContactSession => (data)
+        #pragma mark ServiceLockboxSession => (data)
         #pragma mark
 
         PUID mID;
         mutable RecursiveLock mLock;
-        ServicePeerContactSessionWeakPtr mThisWeak;
+        ServiceLockboxSessionWeakPtr mThisWeak;
 
-        IServicePeerContactSessionDelegatePtr mDelegate;
+        IServiceLockboxSessionDelegatePtr mDelegate;
         AccountWeakPtr mAccount;
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
@@ -441,21 +457,21 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServicePeerContactSessionFactory
+      #pragma mark IServiceLockboxSessionFactory
       #pragma mark
 
-      interaction IServicePeerContactSessionFactory
+      interaction IServiceLockboxSessionFactory
       {
-        static IServicePeerContactSessionFactory &singleton();
+        static IServiceLockboxSessionFactory &singleton();
 
-        virtual ServicePeerContactSessionPtr login(
-                                                   IServicePeerContactSessionDelegatePtr delegate,
-                                                   IServicePeerContactPtr servicePeerContact,
+        virtual ServiceLockboxSessionPtr login(
+                                                   IServiceLockboxSessionDelegatePtr delegate,
+                                                   IServiceLockboxPtr ServiceLockbox,
                                                    IServiceIdentitySessionPtr identitySession
                                                    );
 
-        virtual ServicePeerContactSessionPtr relogin(
-                                                     IServicePeerContactSessionDelegatePtr delegate,
+        virtual ServiceLockboxSessionPtr relogin(
+                                                     IServiceLockboxSessionDelegatePtr delegate,
                                                      IPeerFilesPtr existingPeerFiles
                                                      );
       };
@@ -464,6 +480,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServicePeerContactSessionAsync)
+ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceLockboxSessionAsync)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

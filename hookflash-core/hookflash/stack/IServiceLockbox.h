@@ -43,12 +43,12 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContact
+    #pragma mark IServiceLockbox
     #pragma mark
 
-    interaction IServicePeerContact
+    interaction IServiceLockbox
     {
-      static IServicePeerContactPtr createServicePeerContactFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+      static IServiceLockboxPtr createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
 
       virtual PUID getID() const = 0;
 
@@ -60,34 +60,41 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContactSession
+    #pragma mark IServiceLockboxSession
     #pragma mark
 
-    interaction IServicePeerContactSession
+    interaction IServiceLockboxSession
     {
       enum SessionStates
       {
         SessionState_Pending,
+        SessionState_WaitingForBrowserWindowToBeLoaded,
+        SessionState_WaitingForBrowserWindowToBeMadeVisible,
+        SessionState_WaitingForBrowserWindowToClose,
         SessionState_Ready,
         SessionState_Shutdown,
       };
       static const char *toString(SessionStates state);
 
-      static String toDebugString(IServicePeerContactSessionPtr session, bool includeCommaPrefix = true);
+      static String toDebugString(IServiceLockboxSessionPtr session, bool includeCommaPrefix = true);
 
-      static IServicePeerContactSessionPtr login(
-                                                 IServicePeerContactSessionDelegatePtr delegate,
-                                                 IServicePeerContactPtr servicePeerContact,
-                                                 IServiceIdentitySessionPtr identitySession
-                                                 );
-      static IServicePeerContactSessionPtr relogin(
-                                                   IServicePeerContactSessionDelegatePtr delegate,
-                                                   IPeerFilesPtr existingPeerFiles
-                                                   );
+      static IServiceLockboxSessionPtr login(
+                                             IServiceLockboxSessionDelegatePtr delegate,
+                                             IServiceLockboxPtr ServiceLockbox,
+                                             IServiceIdentitySessionPtr identitySession
+                                             );
+
+      static IServiceLockboxSessionPtr relogin(
+                                               IServiceLockboxSessionDelegatePtr delegate,
+                                               IServiceLockboxPtr serviceLockbox,
+                                               const char *lockboxAccountID,
+                                               const char *identityHalfLockboxKey,
+                                               const char *lockboxHalfLockboxKey
+                                               );
 
       virtual PUID getID() const = 0;
 
-      virtual IServicePeerContactPtr getService() const = 0;
+      virtual IServiceLockboxPtr getService() const = 0;
 
       virtual SessionStates getState(
                                      WORD *lastErrorCode,
@@ -95,13 +102,26 @@ namespace hookflash
                                      ) const = 0;
 
       virtual IPeerFilesPtr getPeerFiles() const = 0;
-      virtual String getContactUserID() const = 0;
+
+      virtual String getLockboxAccountID() const = 0;
+      virtual void getLockboxKey(
+                                 SecureByteBlockPtr &outIdentityHalf,
+                                 SecureByteBlockPtr &outLockboxHalf
+                                 ) = 0;
 
       virtual ServiceIdentitySessionListPtr getAssociatedIdentities() const = 0;
       virtual void associateIdentities(
                                        const ServiceIdentitySessionList &identitiesToAssociate,
                                        const ServiceIdentitySessionList &identitiesToRemove
                                        ) = 0;
+
+      virtual String getInnerBrowserWindowFrameURL() const = 0;
+      
+      virtual void notifyBrowserWindowVisible() = 0;
+      virtual void notifyBrowserWindowClosed() = 0;
+
+      virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame() = 0;
+      virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;
 
       virtual void cancel() = 0;
     };
@@ -111,25 +131,28 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServicePeerContactSessionDelegate
+    #pragma mark IServiceLockboxSessionDelegate
     #pragma mark
 
-    interaction IServicePeerContactSessionDelegate
+    interaction IServiceLockboxSessionDelegate
     {
-      typedef IServicePeerContactSession::SessionStates SessionStates;
+      typedef IServiceLockboxSession::SessionStates SessionStates;
 
-      virtual void onServicePeerContactSessionStateChanged(
-                                                           IServicePeerContactSessionPtr session,
+      virtual void onServiceLockboxSessionStateChanged(
+                                                           IServiceLockboxSessionPtr session,
                                                            SessionStates state
                                                            ) = 0;
-      virtual void onServicePeerContactSessionAssociatedIdentitiesChanged(IServicePeerContactSessionPtr session) = 0;
+      virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session) = 0;
+
+      virtual void onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session) = 0;
     };
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IServicePeerContactSessionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServicePeerContactSessionPtr, IServicePeerContactSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServicePeerContactSessionDelegate::SessionStates, SessionStates)
-ZS_DECLARE_PROXY_METHOD_2(onServicePeerContactSessionStateChanged, IServicePeerContactSessionPtr, SessionStates)
-ZS_DECLARE_PROXY_METHOD_1(onServicePeerContactSessionAssociatedIdentitiesChanged, IServicePeerContactSessionPtr)
+ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IServiceLockboxSessionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionPtr, IServiceLockboxSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionDelegate::SessionStates, SessionStates)
+ZS_DECLARE_PROXY_METHOD_2(onServiceLockboxSessionStateChanged, IServiceLockboxSessionPtr, SessionStates)
+ZS_DECLARE_PROXY_METHOD_1(onServiceLockboxSessionAssociatedIdentitiesChanged, IServiceLockboxSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame, IServiceLockboxSessionPtr)
 ZS_DECLARE_PROXY_END()
