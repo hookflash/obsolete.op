@@ -55,9 +55,6 @@
 		E2097C99155C044400F122A5 /* audio_device_utility_dummy.h in Headers */ = {isa = PBXBuildFile; fileRef = E2097C95155C044400F122A5 /* audio_device_utility_dummy.h */; };
 		E2097CD9155C0ABB00F122A5 /* audio_device_hookflash_test_api.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD2155C0ABB00F122A5 /* audio_device_hookflash_test_api.cc */; };
 		E2097CDA155C0ABB00F122A5 /* audio_device_hookflash_test_func.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD3155C0ABB00F122A5 /* audio_device_hookflash_test_func.cc */; };
-		E2097CDB155C0ABB00F122A5 /* audio_device_test_api.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD4155C0ABB00F122A5 /* audio_device_test_api.cc */; };
-		E2097CDC155C0ABB00F122A5 /* audio_device_test_func.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD6155C0ABB00F122A5 /* audio_device_test_func.cc */; };
-		E2097CDD155C0ABB00F122A5 /* func_test_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD7155C0ABB00F122A5 /* func_test_manager.cc */; };
 		E2097CF3155C0F0E00F122A5 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2097CF1155C0F0E00F122A5 /* AudioToolbox.framework */; };
 		E2097CF4155C0F0E00F122A5 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2097CF2155C0F0E00F122A5 /* CoreAudio.framework */; };
 		E2097CF5155C0F5D00F122A5 /* libaudio_device_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E285400B154C91D800902B40 /* libaudio_device_ios.a */; };
@@ -590,6 +587,7 @@
 		E285709915CFE19100BF8E84 /* lattice_c.c in Sources */ = {isa = PBXBuildFile; fileRef = E2853D5D154C209D00902B40 /* lattice_c.c */; };
 		E28570A315D0397F00BF8E84 /* aecm_core_neon.c in Sources */ = {isa = PBXBuildFile; fileRef = E2854076154C948D00902B40 /* aecm_core_neon.c */; };
 		E285712B15D286F800BF8E84 /* nsx_core_neon.c in Sources */ = {isa = PBXBuildFile; fileRef = E28540A9154C95CD00902B40 /* nsx_core_neon.c */; };
+		E29F69121712EA0A00FBFC35 /* func_test_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = E2097CD7155C0ABB00F122A5 /* func_test_manager.cc */; };
 		E2A1A54D16E7A44B00783939 /* mp4_file.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A1A54C16E7A44B00783939 /* mp4_file.mm */; };
 		E2A1A55016E8A00700783939 /* mp4_file_objc.h in Headers */ = {isa = PBXBuildFile; fileRef = E2A1A54E16E8A00700783939 /* mp4_file_objc.h */; };
 		E2A1A55116E8A00700783939 /* mp4_file_objc.mm in Sources */ = {isa = PBXBuildFile; fileRef = E2A1A54F16E8A00700783939 /* mp4_file_objc.mm */; };
@@ -5432,14 +5430,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E29F69121712EA0A00FBFC35 /* func_test_manager.cc in Sources */,
 				E232B30B154D893600A2BAA7 /* hookflashAppDelegate.mm in Sources */,
 				E232B30C154D893600A2BAA7 /* hookflashViewController.mm in Sources */,
 				E232B311154D894E00A2BAA7 /* main.mm in Sources */,
 				E2097CD9155C0ABB00F122A5 /* audio_device_hookflash_test_api.cc in Sources */,
 				E2097CDA155C0ABB00F122A5 /* audio_device_hookflash_test_func.cc in Sources */,
-				E2097CDB155C0ABB00F122A5 /* audio_device_test_api.cc in Sources */,
-				E2097CDC155C0ABB00F122A5 /* audio_device_test_func.cc in Sources */,
-				E2097CDD155C0ABB00F122A5 /* func_test_manager.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6462,7 +6458,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "audio_device/main/hookflash/hookflash-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6496,7 +6492,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "audio_device/main/hookflash/hookflash-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -6836,7 +6832,7 @@
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -6914,7 +6910,7 @@
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
-				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_CPP_RTTI = YES;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;

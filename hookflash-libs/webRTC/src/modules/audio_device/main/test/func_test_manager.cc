@@ -625,7 +625,7 @@ WebRtc_Word32 FuncTestManager::Init()
     _processThread->RegisterModule(_audioDevice);
 
     // register event observer
-    _audioEventObserver = new AudioEventObserver(_audioDevice);
+    //_audioEventObserver = new AudioEventObserver(_audioDevice);
     EXPECT_EQ(0, _audioDevice->RegisterEventObserver(_audioEventObserver));
 
     // register audio transport
@@ -880,7 +880,7 @@ WebRtc_Word32 FuncTestManager::TestAudioLayerSelection()
         _processThread->RegisterModule(_audioDevice);
 
         // register event observer
-        _audioEventObserver = new AudioEventObserver(_audioDevice);
+        //_audioEventObserver = new AudioEventObserver(_audioDevice);
         EXPECT_EQ(0, _audioDevice->RegisterEventObserver(_audioEventObserver));
 
         // register audio transport
