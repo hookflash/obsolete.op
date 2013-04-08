@@ -67,9 +67,11 @@
 									<listOptionValue builtIn="false" value="common_video"/>
 									<listOptionValue builtIn="false" value="system_wrappers"/>
 									<listOptionValue builtIn="false" value="yuv"/>
+									<listOptionValue builtIn="false" value="camapi"/>
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="slog2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1088829621" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Debug}&quot;"/>
@@ -80,7 +82,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/${CPUVARDIR}/usr/lib"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.security.1303146497" name="Enhanced Security (-Wl,-z,relro -Wl,-z,now)" superClass="com.qnx.qcc.option.linker.security" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.linker.ldoptions.297126190" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.linker.ldoptions.297126190" name="Linker Options (-Wl,)" superClass="com.qnx.qcc.option.linker.ldoptions"/>
 								<inputType id="com.qnx.qcc.inputType.linker.602959428" superClass="com.qnx.qcc.inputType.linker">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

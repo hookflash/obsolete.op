@@ -18,11 +18,11 @@ namespace webrtc
 {
 namespace videocapturemodule
 {
-class DeviceInfoLinux: public DeviceInfoImpl
+class DeviceInfoBB: public DeviceInfoImpl
 {
 public:
-    DeviceInfoLinux(const WebRtc_Word32 id);
-    virtual ~DeviceInfoLinux();
+	DeviceInfoBB(const WebRtc_Word32 id);
+    virtual ~DeviceInfoBB();
     virtual WebRtc_UWord32 NumberOfDevices();
     virtual WebRtc_Word32 GetDeviceName(
         WebRtc_UWord32 deviceNumber,

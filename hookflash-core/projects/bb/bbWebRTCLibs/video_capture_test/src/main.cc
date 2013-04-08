@@ -20,6 +20,7 @@
 #include <bps/screen.h>
 #include <fcntl.h>
 #include <screen/screen.h>
+#include <slog2.h>
 
 #include "trace.h"
 #include "thread_wrapper.h"
@@ -29,28 +30,47 @@
 using namespace std;
 using namespace webrtc;
 
+extern char *__progname;
+
 static bool shutdown;
+static screen_context_t screen_ctx;
+static screen_window_t vf_win = NULL;
+static const char vf_group[] = "viewfinder_window_group";
+const char* trace_file_name;
 
 bool test_thread(ThreadObj obj);
-const char* g_fileName;
-int g_testID;
 
-int hookflash_test(const char* fileName, int testID)
+int hookflash_test(const char* file_name)
 {
-    g_fileName = fileName;
+	trace_file_name = file_name;
 
-    ThreadWrapper* _messageThread = ThreadWrapper::CreateThread(test_thread, NULL,
-                                                 	 	 	 	kLowPriority, "TestThread");
+    ThreadWrapper* _testThread = ThreadWrapper::CreateThread(test_thread, NULL,
+    		kLowPriority, "TestThread");
     unsigned int threadId;
-    _messageThread->Start(threadId);
+    _testThread->Start(threadId);
 
     return 0;
 }
 
 bool test_thread(ThreadObj obj)
 {
+	slog2_buffer_set_config_t buffer_config;
+	slog2_buffer_t buffer_handle;
+	buffer_config.buffer_set_name = __progname;
+	buffer_config.num_buffers = 1;
+	buffer_config.verbosity_level = SLOG2_INFO;
+	buffer_config.buffer_config[0].buffer_name = "test_logger";
+	buffer_config.buffer_config[0].num_pages = 7;
+	if (-1 == slog2_register(&buffer_config, &buffer_handle, 0)) {
+	    fprintf(stderr, "Error registering slogger2 buffer!\n");
+	    return false;
+	}
+
+	slog2f(buffer_handle, 0, SLOG2_INFO,
+	        "Writing a formatted string into the buffer: %s", "test" );
+
     Trace::CreateTrace();
-    Trace::SetTraceFile(g_fileName);
+    Trace::SetTraceFile(trace_file_name);
     Trace::SetLevelFilter(kTraceAll);
 
     VideoCaptureModule* capture_module;
@@ -60,6 +80,7 @@ bool test_thread(ThreadObj obj)
     char unique_id[256];
     char product_id[256];
     memset(product_id, 0, sizeof(product_id));
+    capture_info = videocapturemodule::VideoCaptureImpl::CreateDeviceInfo(5);
     capture_info->GetDeviceName(0, name, 256, unique_id, 256, product_id, 256);
 
     VideoCaptureCapability capability;
@@ -74,7 +95,7 @@ bool test_thread(ThreadObj obj)
 
     capture_module->StartCapture(capability);
 
-    usleep(1000000);
+    usleep(10000000);
 
     capture_module->StopCapture();
 
@@ -93,18 +114,31 @@ handle_screen_event(bps_event_t *event)
 
     switch (screen_val) {
     case SCREEN_EVENT_MTOUCH_TOUCH:
-        fprintf(stderr,"Touch event");
+        fprintf(stderr,"Touch event\n");
         break;
     case SCREEN_EVENT_MTOUCH_MOVE:
-        fprintf(stderr,"Move event");
+        fprintf(stderr,"Move event\n");
         break;
     case SCREEN_EVENT_MTOUCH_RELEASE:
-        fprintf(stderr,"Release event");
+        fprintf(stderr,"Release event\n");
+        break;
+    case SCREEN_EVENT_CREATE:
+        if (screen_get_event_property_pv(screen_event, SCREEN_PROPERTY_WINDOW, (void **)&vf_win) == -1) {
+            perror("screen_get_event_property_pv(SCREEN_PROPERTY_WINDOW)");
+        } else {
+            fprintf(stderr,"viewfinder window found!\n");
+            // mirror viewfinder if this is the front-facing camera
+            int i = 1;
+            screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_ZORDER, &i);
+            // make viewfinder window visible
+            i = 1;
+            screen_set_window_property_iv(vf_win, SCREEN_PROPERTY_VISIBLE, &i);
+            screen_flush_context(screen_ctx, 0);
+        }
         break;
     default:
         break;
     }
-    fprintf(stderr,"\n");
 }
 
 static void
@@ -148,7 +182,6 @@ main(int argc, char **argv)
 {
     const int usage = SCREEN_USAGE_NATIVE;
 
-    screen_context_t screen_ctx;
     screen_window_t screen_win;
     screen_buffer_t screen_buf = NULL;
     int rect[4] = { 0, 0, 0, 0 };
@@ -156,6 +189,7 @@ main(int argc, char **argv)
     /* Setup the window */
     screen_create_context(&screen_ctx, 0);
     screen_create_window(&screen_win, screen_ctx);
+    screen_create_window_group(screen_win, vf_group);
     screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
     screen_create_window_buffers(screen_win, 1);
 
@@ -171,6 +205,8 @@ main(int argc, char **argv)
     bps_initialize();
     screen_request_events(screen_ctx);
     navigator_request_events(0);
+
+    hookflash_test(NULL);
 
     while (!shutdown) {
         /* Handle user input */

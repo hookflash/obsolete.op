@@ -7,8 +7,8 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#if 0
-#include "device_info_linux.h"
+
+#include "device_info_bb.h"
 
 #include <errno.h>
 #include <unistd.h>
@@ -18,8 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//v4l includes
-#include <linux/videodev2.h>
 
 #include "ref_count.h"
 #include "trace.h"
@@ -32,8 +30,8 @@ namespace videocapturemodule
 VideoCaptureModule::DeviceInfo*
 VideoCaptureImpl::CreateDeviceInfo(const WebRtc_Word32 id)
 {
-    videocapturemodule::DeviceInfoLinux *deviceInfo =
-                    new videocapturemodule::DeviceInfoLinux(id);
+    videocapturemodule::DeviceInfoBB *deviceInfo =
+                    new videocapturemodule::DeviceInfoBB(id);
     if (!deviceInfo)
     {
         deviceInfo = NULL;
@@ -42,29 +40,29 @@ VideoCaptureImpl::CreateDeviceInfo(const WebRtc_Word32 id)
     return deviceInfo;
 }
 
-DeviceInfoLinux::DeviceInfoLinux(const WebRtc_Word32 id)
+DeviceInfoBB::DeviceInfoBB(const WebRtc_Word32 id)
     : DeviceInfoImpl(id)
 {
 }
 
-WebRtc_Word32 DeviceInfoLinux::Init()
+WebRtc_Word32 DeviceInfoBB::Init()
 {
     return 0;
 }
 
-DeviceInfoLinux::~DeviceInfoLinux()
+DeviceInfoBB::~DeviceInfoBB()
 {
 }
 
-WebRtc_UWord32 DeviceInfoLinux::NumberOfDevices()
+WebRtc_UWord32 DeviceInfoBB::NumberOfDevices()
 {
     WEBRTC_TRACE(webrtc::kTraceApiCall, webrtc::kTraceVideoCapture, _id, "%s", __FUNCTION__);
 
     WebRtc_UWord32 count = 0;
     char device[20];
+/*
     int fd = -1;
 
-    /* detect /dev/video [0-63]VideoCaptureModule entries */
     for (int n = 0; n < 64; n++)
     {
         sprintf(device, "/dev/video%d", n);
@@ -74,11 +72,11 @@ WebRtc_UWord32 DeviceInfoLinux::NumberOfDevices()
             count++;
         }
     }
-
+*/
     return count;
 }
 
-WebRtc_Word32 DeviceInfoLinux::GetDeviceName(
+WebRtc_Word32 DeviceInfoBB::GetDeviceName(
                                          WebRtc_UWord32 deviceNumber,
                                          char* deviceNameUTF8,
                                          WebRtc_UWord32 deviceNameLength,
@@ -88,7 +86,7 @@ WebRtc_Word32 DeviceInfoLinux::GetDeviceName(
                                          WebRtc_UWord32 /*productUniqueIdUTF8Length*/)
 {
     WEBRTC_TRACE(webrtc::kTraceApiCall, webrtc::kTraceVideoCapture, _id, "%s", __FUNCTION__);
-
+/*
     // Travel through /dev/video [0-63]
     WebRtc_UWord32 count = 0;
     char device[20];
@@ -156,13 +154,14 @@ WebRtc_Word32 DeviceInfoLinux::GetDeviceName(
             return -1;
         }
     }
-
+*/
     return 0;
 }
 
-WebRtc_Word32 DeviceInfoLinux::CreateCapabilityMap(
+WebRtc_Word32 DeviceInfoBB::CreateCapabilityMap(
                                         const char* deviceUniqueIdUTF8)
 {
+/*
     int fd;
     char device[32];
     bool found = false;
@@ -177,7 +176,6 @@ WebRtc_Word32 DeviceInfoLinux::CreateCapabilityMap(
     WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id,
                "CreateCapabilityMap called for device %s", deviceUniqueIdUTF8);
 
-    /* detect /dev/video [0-63] entries */
     for (int n = 0; n < 64; ++n)
     {
         sprintf(device, "/dev/video%d", n);
@@ -240,9 +238,11 @@ WebRtc_Word32 DeviceInfoLinux::CreateCapabilityMap(
                _captureCapabilities.Size());
 
     return size;
+*/
+    return 0;
 }
 
-bool DeviceInfoLinux::IsDeviceNameMatches(const char* name,
+bool DeviceInfoBB::IsDeviceNameMatches(const char* name,
                                           const char* deviceUniqueIdUTF8)
 {
     if (strncmp(deviceUniqueIdUTF8, name, strlen(name)) == 0)
@@ -250,9 +250,9 @@ bool DeviceInfoLinux::IsDeviceNameMatches(const char* name,
     return false;
 }
 
-WebRtc_Word32 DeviceInfoLinux::FillCapabilityMap(int fd)
+WebRtc_Word32 DeviceInfoBB::FillCapabilityMap(int fd)
 {
-
+/*
     // set image format
     struct v4l2_format video_fmt;
     memset(&video_fmt, 0, sizeof(struct v4l2_format));
@@ -324,8 +324,10 @@ WebRtc_Word32 DeviceInfoLinux::FillCapabilityMap(int fd)
     WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, _id, "CreateCapabilityMap %d",
                _captureCapabilities.Size());
     return _captureCapabilities.Size();
+*/
+    return 0;
 }
 
 } // namespace videocapturemodule
 } // namespace webrtc
-#endif
+
