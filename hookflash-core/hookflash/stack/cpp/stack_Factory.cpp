@@ -715,44 +715,33 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentity(
                                                                                   IServiceIdentitySessionDelegatePtr delegate,
-                                                                                  const char *redirectAfterLoginCompleteURL,
+                                                                                  const char *outerFrameURLUponReload,
                                                                                   const char *identityURI,
                                                                                   IServiceIdentityPtr provider
                                                                                   )
       {
-        return ServiceIdentitySession::loginWithIdentity(delegate, redirectAfterLoginCompleteURL, identityURI, provider);
+        return ServiceIdentitySession::loginWithIdentity(delegate, outerFrameURLUponReload, identityURI, provider);
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityTBD(
-                                                                                     IServiceIdentitySessionDelegatePtr delegate,
-                                                                                     const char *redirectAfterLoginCompleteURL,
-                                                                                     IServiceIdentityPtr provider,
-                                                                                     const char *legacyIdentityBaseURI
-                                                                                     )
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityProvider(
+                                                                                          IServiceIdentitySessionDelegatePtr delegate,
+                                                                                          const char *outerFrameURLUponReload,
+                                                                                          IServiceIdentityPtr provider,
+                                                                                          const char *legacyIdentityBaseURI
+                                                                                          )
       {
-        return ServiceIdentitySession::loginWithIdentityTBD(delegate, redirectAfterLoginCompleteURL, provider, legacyIdentityBaseURI);
+        return ServiceIdentitySession::loginWithIdentityProvider(delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityBundle(
                                                                                         IServiceIdentitySessionDelegatePtr delegate,
-                                                                                        const char *redirectAfterLoginCompleteURL,
+                                                                                        const char *outerFrameURLUponReload,
                                                                                         ElementPtr signedIdentityBundle
                                                                                         )
       {
-        return ServiceIdentitySession::loginWithIdentityBundle(delegate, redirectAfterLoginCompleteURL, signedIdentityBundle);
-      }
-
-      //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::relogin(
-                                                                        IServiceIdentitySessionDelegatePtr delegate,
-                                                                        const char *redirectAfterLoginCompleteURL,
-                                                                        IServiceIdentityPtr provider,
-                                                                        const char *identityReloginAccessKey
-                                                                        )
-      {
-        return ServiceIdentitySession::relogin(delegate, redirectAfterLoginCompleteURL, provider, identityReloginAccessKey);
+        return ServiceIdentitySession::loginWithIdentityBundle(delegate, outerFrameURLUponReload, signedIdentityBundle);
       }
 
       //-----------------------------------------------------------------------
@@ -781,11 +770,14 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::relogin(
-                                                                              IServiceLockboxSessionDelegatePtr delegate,
-                                                                              IPeerFilesPtr existingPeerFiles
-                                                                              )
+                                                                      IServiceLockboxSessionDelegatePtr delegate,
+                                                                      IServiceLockboxPtr serviceLockbox,
+                                                                      const char *lockboxAccountID,
+                                                                      const char *identityHalfLockboxKey,
+                                                                      const char *lockboxHalfLockboxKey
+                                                                      )
       {
-        return ServiceLockboxSession::relogin(delegate, existingPeerFiles);
+        return ServiceLockboxSession::relogin(delegate, serviceLockbox, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
       }
 
       //-----------------------------------------------------------------------

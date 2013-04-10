@@ -173,7 +173,7 @@ namespace hookflash
         static ServiceIdentitySessionPtr loginWithIdentityBundle(
                                                                  IServiceIdentitySessionDelegatePtr delegate,
                                                                  const char *outerFrameURLUponReload,
-                                                                 ElementPtr signedIdentityBundle
+                                                                 ElementPtr signedIdentityBundleEl
                                                                  );
 
         virtual PUID getID() const {return mID;}
@@ -202,6 +202,8 @@ namespace hookflash
 
         virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
+
+        virtual void forceLoginToContinue();
 
         virtual void cancel();
 

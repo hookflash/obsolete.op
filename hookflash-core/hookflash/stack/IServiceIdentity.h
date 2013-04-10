@@ -92,6 +92,7 @@ namespace hookflash
         SessionState_WaitingForBrowserWindowToBeMadeVisible,
         SessionState_WaitingForBrowserWindowToClose,
         SessionState_WaitingAssociationToLockbox,
+        SessionState_ReadyAsLoginNotNeeded,
         SessionState_Ready,
         SessionState_Shutdown,
       };
@@ -149,6 +150,8 @@ namespace hookflash
 
       virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame() = 0;
       virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;
+
+      virtual void forceLoginToContinue() = 0;                  // if in the SessionState_ReadyAsLoginNotNeeded state, use this to force the login process to continue
 
       virtual void cancel() = 0;
     };

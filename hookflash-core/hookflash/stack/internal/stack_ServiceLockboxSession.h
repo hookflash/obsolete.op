@@ -113,7 +113,6 @@ namespace hookflash
                                                                    ) const = 0;
 
         virtual IPeerFilesPtr getPeerFiles() const = 0;
-        virtual String getContactUserID() const = 0;
 
         virtual void notifyStateChanged() = 0;
       };
@@ -163,10 +162,10 @@ namespace hookflash
 
       protected:
         ServiceLockboxSession(
-                                  IMessageQueuePtr queue,
-                                  BootstrappedNetworkPtr network,
-                                  IServiceLockboxSessionDelegatePtr delegate
-                                  );
+                              IMessageQueuePtr queue,
+                              BootstrappedNetworkPtr network,
+                              IServiceLockboxSessionDelegatePtr delegate
+                              );
         
         ServiceLockboxSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
@@ -193,6 +192,7 @@ namespace hookflash
 
         static ServiceLockboxSessionPtr relogin(
                                                 IServiceLockboxSessionDelegatePtr delegate,
+                                                IServiceLockboxPtr serviceLockbox,
                                                 const char *lockboxAccountID,
                                                 const char *identityHalfLockboxKey,
                                                 const char *lockboxHalfLockboxKey
@@ -209,11 +209,11 @@ namespace hookflash
 
         virtual IPeerFilesPtr getPeerFiles() const;
 
-        virtual String getLockboxAccountID() const = 0;
+        virtual String getLockboxAccountID() const;
         virtual void getLockboxKey(
                                    SecureByteBlockPtr &outIdentityHalf,
                                    SecureByteBlockPtr &outLockboxHalf
-                                   ) = 0;
+                                   );
         
 
         virtual ServiceIdentitySessionListPtr getAssociatedIdentities() const;
@@ -271,7 +271,6 @@ namespace hookflash
         //                                            ) const;
 
         // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
-        // (duplicate) virtual String getContactUserID() const;
 
         virtual void notifyStateChanged();
 
@@ -465,15 +464,18 @@ namespace hookflash
         static IServiceLockboxSessionFactory &singleton();
 
         virtual ServiceLockboxSessionPtr login(
-                                                   IServiceLockboxSessionDelegatePtr delegate,
-                                                   IServiceLockboxPtr ServiceLockbox,
-                                                   IServiceIdentitySessionPtr identitySession
-                                                   );
-
+                                               IServiceLockboxSessionDelegatePtr delegate,
+                                               IServiceLockboxPtr ServiceLockbox,
+                                               IServiceIdentitySessionPtr identitySession
+                                               );
+        
         virtual ServiceLockboxSessionPtr relogin(
-                                                     IServiceLockboxSessionDelegatePtr delegate,
-                                                     IPeerFilesPtr existingPeerFiles
-                                                     );
+                                                 IServiceLockboxSessionDelegatePtr delegate,
+                                                 IServiceLockboxPtr serviceLockbox,
+                                                 const char *lockboxAccountID,
+                                                 const char *identityHalfLockboxKey,
+                                                 const char *lockboxHalfLockboxKey
+                                                 );
       };
       
     }

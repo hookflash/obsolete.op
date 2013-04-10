@@ -148,12 +148,12 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr ServiceLockboxSession::login(
-                                                                    IServiceLockboxSessionDelegatePtr delegate,
-                                                                    IServiceLockboxPtr ServiceLockbox,
-                                                                    IServiceIdentitySessionPtr identitySession
-                                                                    )
+                                                            IServiceLockboxSessionDelegatePtr delegate,
+                                                            IServiceLockboxPtr serviceLockbox,
+                                                            IServiceIdentitySessionPtr identitySession
+                                                            )
       {
-        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(ServiceLockbox), delegate));
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
         pThis->mThisWeak = pThis;
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->init();
@@ -162,38 +162,44 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr ServiceLockboxSession::relogin(
-                                                                      IServiceLockboxSessionDelegatePtr delegate,
-                                                                      IPeerFilesPtr existingPeerFiles
-                                                                      )
+                                                              IServiceLockboxSessionDelegatePtr delegate,
+                                                              IServiceLockboxPtr serviceLockbox,
+                                                              const char *lockboxAccountID,
+                                                              const char *identityHalfLockboxKey,
+                                                              const char *lockboxHalfLockboxKey
+                                                              )
       {
         ZS_THROW_BAD_STATE_IF(!delegate)
-        ZS_THROW_BAD_STATE_IF(!existingPeerFiles)
+        ZS_THROW_BAD_STATE_IF(!lockboxAccountID)
+        ZS_THROW_BAD_STATE_IF(!identityHalfLockboxKey)
+        ZS_THROW_BAD_STATE_IF(!lockboxHalfLockboxKey)
 
-        IPeerFilePublicPtr peerFilePublic = existingPeerFiles->getPeerFilePublic();
-        ZS_THROW_BAD_STATE_IF(!peerFilePublic)
-
-        String uri = peerFilePublic->getPeerURI();
-        if (!IPeer::isValid(uri)) {
-          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] peer file public contains invalid URI, URI=" + uri)
-          return ServiceLockboxSessionPtr();
-        }
-
-        String domain;
-        String contactID;
-        IPeer::splitURI(uri, domain, contactID);
-
-        if (!IHelper::isValidDomain(domain)) {
-          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] domain is not valid, domain=" + domain)
-          return ServiceLockboxSessionPtr();
-        }
-
-        BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
-
-        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), network, delegate));
-        pThis->mThisWeak = pThis;
-        pThis->mPeerFiles = existingPeerFiles;
-        pThis->init();
-        return pThis;
+//        IPeerFilePublicPtr peerFilePublic = existingPeerFiles->getPeerFilePublic();
+//        ZS_THROW_BAD_STATE_IF(!peerFilePublic)
+//
+//        String uri = peerFilePublic->getPeerURI();
+//        if (!IPeer::isValid(uri)) {
+//          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] peer file public contains invalid URI, URI=" + uri)
+//          return ServiceLockboxSessionPtr();
+//        }
+//
+//        String domain;
+//        String contactID;
+//        IPeer::splitURI(uri, domain, contactID);
+//
+//        if (!IHelper::isValidDomain(domain)) {
+//          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] domain is not valid, domain=" + domain)
+//          return ServiceLockboxSessionPtr();
+//        }
+//
+//        BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
+//
+//        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), network, delegate));
+//        pThis->mThisWeak = pThis;
+//        pThis->mPeerFiles = existingPeerFiles;
+//        pThis->init();
+//        return pThis;
+        return ServiceLockboxSessionPtr();
       }
 
       //-----------------------------------------------------------------------
@@ -223,10 +229,18 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String ServiceLockboxSession::getContactUserID() const
+      String ServiceLockboxSession::getLockboxAccountID() const
       {
         AutoRecursiveLock lock(getLock());
-        return mContactUserID;
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::getLockboxKey(
+                                                SecureByteBlockPtr &outIdentityHalf,
+                                                SecureByteBlockPtr &outLockboxHalf
+                                                )
+      {
+        AutoRecursiveLock lock(getLock());
       }
 
       //-----------------------------------------------------------------------
@@ -243,9 +257,9 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::associateIdentities(
-                                                          const ServiceIdentitySessionList &identitiesToAssociate,
-                                                          const ServiceIdentitySessionList &identitiesToRemove
-                                                          )
+                                                      const ServiceIdentitySessionList &identitiesToAssociate,
+                                                      const ServiceIdentitySessionList &identitiesToRemove
+                                                      )
       {
         AutoRecursiveLock lock(getLock());
 
@@ -267,6 +281,31 @@ namespace hookflash
         }
         // handle the association now (but do it asynchronously)
         IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      String ServiceLockboxSession::getInnerBrowserWindowFrameURL() const
+      {
+      }
+      
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::notifyBrowserWindowVisible()
+      {
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::notifyBrowserWindowClosed()
+      {
+      }
+      
+      //-----------------------------------------------------------------------
+      DocumentPtr ServiceLockboxSession::getNextMessageForInnerBrowerWindowFrame()
+      {
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
+      {
       }
 
       //-----------------------------------------------------------------------
@@ -364,9 +403,9 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       Service::MethodPtr ServiceLockboxSession::findServiceMethod(
-                                                                      const char *serviceType,
-                                                                      const char *method
-                                                                      ) const
+                                                                  const char *serviceType,
+                                                                  const char *method
+                                                                  ) const
       {
         if (NULL == serviceType) return Service::MethodPtr();
         if (NULL == method) return Service::MethodPtr();
@@ -1372,9 +1411,12 @@ namespace hookflash
     {
       switch (state)
       {
-        case SessionState_Pending:  return "Pending";
-        case SessionState_Ready:    return "Ready";
-        case SessionState_Shutdown: return "Shutdown";
+        case SessionState_Pending:                                return "Pending";
+        case SessionState_WaitingForBrowserWindowToBeLoaded:      return "Waiting for Browser Window to be Loaded";
+        case SessionState_WaitingForBrowserWindowToBeMadeVisible: return "Waiting for Browser Window to be Made Visible";
+        case SessionState_WaitingForBrowserWindowToClose:         return "Waiting for Browser Window to Close";
+        case SessionState_Ready:                                  return "Ready";
+        case SessionState_Shutdown:                               return "Shutdown";
       }
       return "UNDEFINED";
     }
@@ -1397,11 +1439,14 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IServiceLockboxSessionPtr IServiceLockboxSession::relogin(
-                                                                      IServiceLockboxSessionDelegatePtr delegate,
-                                                                      IPeerFilesPtr existingPeerFiles
-                                                                      )
+                                                              IServiceLockboxSessionDelegatePtr delegate,
+                                                              IServiceLockboxPtr serviceLockbox,
+                                                              const char *lockboxAccountID,
+                                                              const char *identityHalfLockboxKey,
+                                                              const char *lockboxHalfLockboxKey
+                                                              )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, existingPeerFiles);
+      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
     }
 
   }

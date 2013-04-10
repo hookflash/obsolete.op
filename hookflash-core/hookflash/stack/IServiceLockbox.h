@@ -116,7 +116,7 @@ namespace hookflash
                                        ) = 0;
 
       virtual String getInnerBrowserWindowFrameURL() const = 0;
-      
+
       virtual void notifyBrowserWindowVisible() = 0;
       virtual void notifyBrowserWindowClosed() = 0;
 
@@ -139,9 +139,9 @@ namespace hookflash
       typedef IServiceLockboxSession::SessionStates SessionStates;
 
       virtual void onServiceLockboxSessionStateChanged(
-                                                           IServiceLockboxSessionPtr session,
-                                                           SessionStates state
-                                                           ) = 0;
+                                                       IServiceLockboxSessionPtr session,
+                                                       SessionStates state
+                                                       ) = 0;
       virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session) = 0;
 
       virtual void onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session) = 0;
