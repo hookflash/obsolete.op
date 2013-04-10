@@ -8,32 +8,26 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
-#define WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
+#ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
+#define WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
+
+#include <stdio.h>
 
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
-#include "audio_mixer_manager_alsa_linux.h"
 
-#include <sys/soundcard.h>
-#include <sys/ioctl.h>
-
-#include <alsa/asoundlib.h>
-
-namespace webrtc
-{
+namespace webrtc {
 class EventWrapper;
 class ThreadWrapper;
 
-class AudioDeviceBB : public AudioDeviceGeneric
+class AudioDeviceDummy : public AudioDeviceGeneric
 {
 public:
-	AudioDeviceBB(const WebRtc_Word32 id);
-    ~AudioDeviceBB();
+    AudioDeviceDummy(const WebRtc_Word32 id);
+    ~AudioDeviceDummy();
 
     // Retrieve the currently utilized audio layer
-    virtual WebRtc_Word32 ActiveAudioLayer(
-        AudioDeviceModule::AudioLayer& audioLayer) const;
+    virtual WebRtc_Word32 ActiveAudioLayer(AudioDeviceModule::AudioLayer& audioLayer) const;
 
     // Main initializaton and termination
     virtual WebRtc_Word32 Init();
@@ -81,10 +75,10 @@ public:
     virtual bool AGC() const;
 
     // Volume control based on the Windows Wave API (Windows only)
-    virtual WebRtc_Word32 SetWaveOutVolume(WebRtc_UWord16 volumeLeft,
-                                           WebRtc_UWord16 volumeRight);
-    virtual WebRtc_Word32 WaveOutVolume(WebRtc_UWord16& volumeLeft,
-                                        WebRtc_UWord16& volumeRight) const;
+    virtual WebRtc_Word32 SetWaveOutVolume(
+        WebRtc_UWord16 volumeLeft, WebRtc_UWord16 volumeRight);
+    virtual WebRtc_Word32 WaveOutVolume(
+        WebRtc_UWord16& volumeLeft, WebRtc_UWord16& volumeRight) const;
 
     // Audio mixer initialization
     virtual WebRtc_Word32 SpeakerIsAvailable(bool& available);
@@ -115,7 +109,7 @@ public:
     virtual WebRtc_Word32 SpeakerMuteIsAvailable(bool& available);
     virtual WebRtc_Word32 SetSpeakerMute(bool enable);
     virtual WebRtc_Word32 SpeakerMute(bool& enabled) const;
-    
+
     // Microphone mute control
     virtual WebRtc_Word32 MicrophoneMuteIsAvailable(bool& available);
     virtual WebRtc_Word32 SetMicrophoneMute(bool enable);
@@ -133,21 +127,18 @@ public:
     virtual WebRtc_Word32 StereoRecordingIsAvailable(bool& available);
     virtual WebRtc_Word32 SetStereoRecording(bool enable);
     virtual WebRtc_Word32 StereoRecording(bool& enabled) const;
-   
+
     // Delay information and control
     virtual WebRtc_Word32 SetPlayoutBuffer(
-        const AudioDeviceModule::BufferType type,
-        WebRtc_UWord16 sizeMS);
+        const AudioDeviceModule::BufferType type, WebRtc_UWord16 sizeMS);
     virtual WebRtc_Word32 PlayoutBuffer(
-        AudioDeviceModule::BufferType& type,
-        WebRtc_UWord16& sizeMS) const;
+        AudioDeviceModule::BufferType& type, WebRtc_UWord16& sizeMS) const;
     virtual WebRtc_Word32 PlayoutDelay(WebRtc_UWord16& delayMS) const;
     virtual WebRtc_Word32 RecordingDelay(WebRtc_UWord16& delayMS) const;
 
     // CPU load
     virtual WebRtc_Word32 CPULoad(WebRtc_UWord16& load) const;
 
-public:
     virtual bool PlayoutWarning() const;
     virtual bool PlayoutError() const;
     virtual bool RecordingWarning() const;
@@ -157,97 +148,44 @@ public:
     virtual void ClearRecordingWarning();
     virtual void ClearRecordingError();
 
-public:
     virtual void AttachAudioBuffer(AudioDeviceBuffer* audioBuffer);
-
-private:
-    WebRtc_Word32 GetDevicesInfo(const WebRtc_Word32 function,
-                                 const bool playback,
-                                 const WebRtc_Word32 enumDeviceNo = 0,
-                                 char* enumDeviceName = NULL,
-                                 const WebRtc_Word32 ednLen = 0) const;
-    WebRtc_Word32 ErrorRecovery(WebRtc_Word32 error, snd_pcm_t* deviceHandle);
 
 private:
     void Lock() { _critSect.Enter(); };
     void UnLock() { _critSect.Leave(); };
-private:
-    inline WebRtc_Word32 InputSanityCheckAfterUnlockedPeriod() const;
-    inline WebRtc_Word32 OutputSanityCheckAfterUnlockedPeriod() const;
 
-private:
     static bool RecThreadFunc(void*);
     static bool PlayThreadFunc(void*);
     bool RecThreadProcess();
     bool PlayThreadProcess();
 
-private:
     AudioDeviceBuffer* _ptrAudioBuffer;
-    
-    CriticalSectionWrapper& _critSect;
+    CriticalSectionWrapper&	_critSect;
+    WebRtc_Word32 _id;
+
+    EventWrapper& _timeEventRec;
+    EventWrapper& _timeEventPlay;
+    EventWrapper& _recStartEvent;
+    EventWrapper& _playStartEvent;
 
     ThreadWrapper* _ptrThreadRec;
     ThreadWrapper* _ptrThreadPlay;
     WebRtc_UWord32 _recThreadID;
     WebRtc_UWord32 _playThreadID;
 
-    WebRtc_Word32 _id;
-
-    AudioMixerManagerLinuxALSA _mixerManager;
-
-    WebRtc_UWord16 _inputDeviceIndex;
-    WebRtc_UWord16 _outputDeviceIndex;
-    bool _inputDeviceIsSpecified;
-    bool _outputDeviceIsSpecified;
-
-    snd_pcm_t* _handleRecord;
-    snd_pcm_t* _handlePlayout;
-
-    snd_pcm_uframes_t _recordingBuffersizeInFrame;
-    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
-    snd_pcm_uframes_t _playoutBufferSizeInFrame;
-    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
-
-    ssize_t _recordingBufferSizeIn10MS;
-    ssize_t _playoutBufferSizeIn10MS;
-    WebRtc_UWord32 _recordingFramesIn10MS;
-    WebRtc_UWord32 _playoutFramesIn10MS;
-
-    WebRtc_UWord32 _recordingFreq;
-    WebRtc_UWord32 _playoutFreq;
-    WebRtc_UWord8 _recChannels;
-    WebRtc_UWord8 _playChannels;
-
-    WebRtc_Word8* _recordingBuffer; // in byte
-    WebRtc_Word8* _playoutBuffer; // in byte
-    WebRtc_UWord32 _recordingFramesLeft;
-    WebRtc_UWord32 _playoutFramesLeft;
-
-    WebRtc_UWord32 _playbackBufferSize;
-
-    AudioDeviceModule::BufferType _playBufType;
-
-private:
     bool _initialized;
     bool _recording;
     bool _playing;
     bool _recIsInitialized;
     bool _playIsInitialized;
-    bool _AGC;
+    bool _speakerIsInitialized;
+    bool _microphoneIsInitialized;
 
-    snd_pcm_sframes_t _recordingDelay;
-    snd_pcm_sframes_t _playoutDelay;
+    WebRtc_Word8 _recBuffer[2*160];
 
-    WebRtc_Word32 _writeErrors;
-    WebRtc_UWord16 _playWarning;
-    WebRtc_UWord16 _playError;
-    WebRtc_UWord16 _recWarning;
-    WebRtc_UWord16 _recError;
-
-    WebRtc_UWord16 _playBufDelay;                 // playback delay
-    WebRtc_UWord16 _playBufDelayFixed;            // fixed playback delay
+    FILE* _playDataFile;
 };
 
-}
+}  // namespace webrtc
 
-#endif  // WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
+#endif  // WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
