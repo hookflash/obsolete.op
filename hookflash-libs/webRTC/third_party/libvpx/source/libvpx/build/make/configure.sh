@@ -166,6 +166,17 @@ is_in(){
 
 add_cflags() {
     CFLAGS="${CFLAGS} $@"
+    CXXFLAGS="${CXXFLAGS} $@"
+}
+
+
+add_cflags_only() {
+    CFLAGS="${CFLAGS} $@"
+}
+
+
+add_cxxflags_only() {
+    CXXFLAGS="${CXXFLAGS} $@"
 }
 
 
@@ -266,6 +277,7 @@ clean_temp_files() {
 # Toolchain Check Functions
 #
 check_cmd() {
+    enabled external_build && return
     log "$@"
     "$@" >>${logfile} 2>&1
 }
@@ -275,6 +287,13 @@ check_cc() {
     cat >${TMP_C}
     log_file ${TMP_C}
     check_cmd ${CC} ${CFLAGS} "$@" -c -o ${TMP_O} ${TMP_C}
+}
+
+check_cxx() {
+    log check_cxx "$@"
+    cat >${TMP_C}
+    log_file ${TMP_C}
+    check_cmd ${CXX} ${CXXFLAGS} "$@" -c -o ${TMP_O} ${TMP_C}
 }
 
 check_cpp() {
@@ -310,8 +329,25 @@ int x;
 EOF
 }
 
+check_cxxflags() {
+    log check_cxxflags "$@"
+
+    # Catch CFLAGS that trigger CXX warnings
+    case "$CXX" in
+      *g++*) check_cxx -Werror "$@" <<EOF
+int x;
+EOF
+      ;;
+      *) check_cxx "$@" <<EOF
+int x;
+EOF
+      ;;
+    esac
+}
+
 check_add_cflags() {
-    check_cflags "$@" && add_cflags "$@"
+    check_cxxflags "$@" && add_cxxflags_only "$@"
+    check_cflags "$@" && add_cflags_only "$@"
 }
 
 check_add_asflags() {
@@ -367,7 +403,9 @@ true
 
 write_common_target_config_mk() {
     local CC=${CC}
+    local CXX=${CXX}
     enabled ccache && CC="ccache ${CC}"
+    enabled ccache && CXX="ccache ${CXX}"
     print_webm_license $1 "##" ""
 
     cat >> $1 << EOF
@@ -379,6 +417,7 @@ TOOLCHAIN=${toolchain}
 ASM_CONVERSION=${asm_conversion_cmd:-${source_path}/build/make/ads2gas.pl}
 
 CC=${CC}
+CXX=${CXX}
 AR=${AR}
 LD=${LD}
 AS=${AS}
@@ -386,6 +425,7 @@ STRIP=${STRIP}
 NM=${NM}
 
 CFLAGS  = ${CFLAGS}
+CXXFLAGS  = ${CXXFLAGS}
 ARFLAGS = -rus\$(if \$(quiet),c,v)
 LDFLAGS = ${LDFLAGS}
 ASFLAGS = ${ASFLAGS}
@@ -396,10 +436,10 @@ RTCD_OPTIONS = ${RTCD_OPTIONS}
 EOF
 
     if enabled rvct; then cat >> $1 << EOF
-fmt_deps = sed -e 's;^__image.axf;\$(dir \$@)\$(notdir \$<).o \$@;' #hide
+fmt_deps = sed -e 's;^__image.axf;\${@:.d=.o} \$@;' #hide
 EOF
     else cat >> $1 << EOF
-fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o;\$(dir \$@)\1\$(suffix \$<).o \$@;'
+fmt_deps = sed -e 's;^\([a-zA-Z0-9_]*\)\.o;\${@:.d=.o} \$@;'
 EOF
     fi
 
@@ -538,6 +578,7 @@ post_process_cmdline() {
 
 setup_gnu_toolchain() {
         CC=${CC:-${CROSS}gcc}
+        CXX=${CXX:-${CROSS}g++}
         AR=${AR:-${CROSS}ar}
         LD=${LD:-${CROSS}${link_with_cc:-ld}}
         AS=${AS:-${CROSS}as}
@@ -549,10 +590,24 @@ setup_gnu_toolchain() {
 
 process_common_toolchain() {
     if [ -z "$toolchain" ]; then
-        gcctarget="$(gcc -dumpmachine 2> /dev/null)"
+        gcctarget="${CHOST:-$(gcc -dumpmachine 2> /dev/null)}"
 
         # detect tgt_isa
         case "$gcctarget" in
+            armv6*)
+                tgt_isa=armv6
+                ;;
+            armv7*-hardfloat*)
+                tgt_isa=armv7
+                float_abi=hard
+                ;;
+            armv7*)
+                tgt_isa=armv7
+                float_abi=softfp
+                ;;
+            armv5te*)
+                tgt_isa=armv5te
+                ;;
             *x86_64*|*amd64*)
                 tgt_isa=x86_64
                 ;;
@@ -587,6 +642,13 @@ process_common_toolchain() {
             *darwin11*)
                 tgt_isa=x86_64
                 tgt_os=darwin11
+                ;;
+            *darwin12*)
+                tgt_isa=x86_64
+                tgt_os=darwin12
+                ;;
+            x86_64*mingw32*)
+                tgt_os=win64
                 ;;
             *mingw32*|*cygwin*)
                 [ -z "$tgt_isa" ] && tgt_isa=x86
@@ -679,6 +741,10 @@ process_common_toolchain() {
             add_cflags  "-mmacosx-version-min=10.7"
             add_ldflags "-mmacosx-version-min=10.7"
             ;;
+        *-darwin12-*)
+            add_cflags  "-mmacosx-version-min=10.8"
+            add_ldflags "-mmacosx-version-min=10.8"
+            ;;
     esac
 
     # Handle Solaris variants. Solaris 10 needs -lposix4
@@ -710,6 +776,7 @@ process_common_toolchain() {
             ;;
         armv5te)
             soft_enable edsp
+            disable fast_unaligned
             ;;
         esac
 
@@ -725,17 +792,24 @@ process_common_toolchain() {
             check_add_asflags --defsym ARCHITECTURE=${arch_int}
             tune_cflags="-mtune="
             if [ ${tgt_isa} == "armv7" ]; then
+                [ -z "${float_abi}" ] && float_abi=softfp
+                check_add_cflags  -march=armv7-a -mfloat-abi=${float_abi}
+                check_add_asflags -march=armv7-a -mfloat-abi=${float_abi}
+
                 if enabled neon
                 then
                     check_add_cflags -mfpu=neon #-ftree-vectorize
                     check_add_asflags -mfpu=neon
                 fi
-                check_add_cflags -march=armv7-a -mcpu=cortex-a8 -mfloat-abi=softfp
-                check_add_asflags -mcpu=cortex-a8 -mfloat-abi=softfp  #-march=armv7-a
+
+                if [ -z "${tune_cpu}" ]; then
+                    tune_cpu=cortex-a8
+                fi
             else
                 check_add_cflags -march=${tgt_isa}
                 check_add_asflags -march=${tgt_isa}
             fi
+
             enabled debug && add_asflags -g
             asm_conversion_cmd="${source_path}/build/make/ads2gas.pl"
             ;;
@@ -784,6 +858,7 @@ process_common_toolchain() {
                                -name "arm-linux-androideabi-gcc*" -print -quit`
             TOOLCHAIN_PATH=${COMPILER_LOCATION%/*}/arm-linux-androideabi-
             CC=${TOOLCHAIN_PATH}gcc
+            CXX=${TOOLCHAIN_PATH}g++
             AR=${TOOLCHAIN_PATH}ar
             LD=${TOOLCHAIN_PATH}gcc
             AS=${TOOLCHAIN_PATH}as
@@ -802,12 +877,17 @@ process_common_toolchain() {
             add_cflags "--sysroot=${alt_libc}"
             add_ldflags "--sysroot=${alt_libc}"
 
-            add_cflags "-I${SDK_PATH}/sources/android/cpufeatures/"
+            # linker flag that routes around a CPU bug in some
+            # Cortex-A8 implementations (NDK Dev Guide)
+            add_ldflags "-Wl,--fix-cortex-a8"
 
             enable pic
             soft_enable realtime_only
             if [ ${tgt_isa} == "armv7" ]; then
-                enable runtime_cpu_detect
+                soft_enable runtime_cpu_detect
+            fi
+            if enabled runtime_cpu_detect; then
+                add_cflags "-I${SDK_PATH}/sources/android/cpufeatures"
             fi
           ;;
 
@@ -819,6 +899,7 @@ process_common_toolchain() {
                 SDK_PATH=${sdk_path}
             fi
             TOOLCHAIN_PATH=${SDK_PATH}/usr/bin
+            CXX=${TOOLCHAIN_PATH}/g++
             CC=${TOOLCHAIN_PATH}/gcc
             AR=${TOOLCHAIN_PATH}/ar
             LD=${TOOLCHAIN_PATH}/arm-apple-darwin10-llvm-gcc-4.2
@@ -882,13 +963,16 @@ process_common_toolchain() {
         esac
     ;;
     mips*)
-        CROSS=${CROSS:-mipsel-linux-uclibc-}
         link_with_cc=gcc
         setup_gnu_toolchain
         tune_cflags="-mtune="
+        if enabled dspr2; then
+            check_add_cflags -mips32r2 -mdspr2
+            disable fast_unaligned
+        fi
         check_add_cflags -march=${tgt_isa}
-    check_add_asflags -march=${tgt_isa}
-    check_add_asflags -KPIC
+        check_add_asflags -march=${tgt_isa}
+        check_add_asflags -KPIC
     ;;
     ppc*)
         enable ppc
@@ -916,13 +1000,17 @@ process_common_toolchain() {
     x86*)
         bits=32
         enabled x86_64 && bits=64
+        check_cpp <<EOF && bits=x32
+#ifndef __ILP32__
+#error "not x32"
+#endif
+EOF
         soft_enable runtime_cpu_detect
         soft_enable mmx
         soft_enable sse
         soft_enable sse2
         soft_enable sse3
         soft_enable ssse3
-        soft_enable sse4_1
 
         case  ${tgt_os} in
             win*)
@@ -930,6 +1018,7 @@ process_common_toolchain() {
                 ;;
             solaris*)
                 CC=${CC:-${CROSS}gcc}
+                CXX=${CXX:-${CROSS}g++}
                 LD=${LD:-${CROSS}gcc}
                 CROSS=${CROSS:-g}
                 ;;
@@ -957,17 +1046,31 @@ process_common_toolchain() {
                         tune_cflags="-march="
                     ;;
                 esac
-                ;;
+            ;;
             gcc*)
-                add_cflags  -m${bits}
+                add_cflags -m${bits}
                 add_ldflags -m${bits}
                 link_with_cc=gcc
                 tune_cflags="-march="
-            setup_gnu_toolchain
+                setup_gnu_toolchain
                 #for 32 bit x86 builds, -O3 did not turn on this flag
                 enabled optimizations && check_add_cflags -fomit-frame-pointer
-                ;;
+            ;;
+            vs*)
+                # When building with Microsoft Visual Studio the assembler is
+                # invoked directly. Checking at configure time is unnecessary.
+                # Skip the check by setting AS arbitrarily
+                AS=msvs
+            ;;
         esac
+
+        # We can't use 'check_cflags' until the compiler is configured and CC is
+        # populated.
+        if enabled gcc && ! disabled sse4_1 && ! check_cflags -msse4.1; then
+            RTCD_OPTIONS="${RTCD_OPTIONS}--disable-sse4_1 "
+        else
+            soft_enable sse4_1
+        fi
 
         case "${AS}" in
             auto|"")
@@ -975,7 +1078,7 @@ process_common_toolchain() {
                 which yasm >/dev/null 2>&1 && AS=yasm
                 [ "${AS}" = auto -o -z "${AS}" ] \
                     && die "Neither yasm nor nasm have been found"
-                ;;
+            ;;
         esac
         log_echo "  using $AS"
         [ "${AS##*/}" = nasm ] && add_asflags -Ox
@@ -989,7 +1092,7 @@ process_common_toolchain() {
                 add_asflags -f x64
                 enabled debug && add_asflags -g cv8
             ;;
-            linux*|solaris*)
+            linux*|solaris*|android*)
                 add_asflags -f elf${bits}
                 enabled debug && [ "${AS}" = yasm ] && add_asflags -g dwarf2
                 enabled debug && [ "${AS}" = nasm ] && add_asflags -g
@@ -1057,7 +1160,7 @@ process_common_toolchain() {
 
     # Work around longjmp interception on glibc >= 2.11, to improve binary
     # compatibility. See http://code.google.com/p/webm/issues/detail?id=166
-    enabled linux && check_add_cflags -D_FORTIFY_SOURCE=0
+    enabled linux && check_add_cflags -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0
 
     # Check for strip utility variant
     ${STRIP} -V 2>/dev/null | grep GNU >/dev/null && enable gnu_strip
@@ -1072,14 +1175,23 @@ EOF
     # Almost every platform uses pthreads.
     if enabled multithread; then
         case ${toolchain} in
-            *-win*);;
+            *-win*-vs*);;
             *-android-gcc);;
             *) check_header pthread.h && add_extralibs -lpthread
         esac
     fi
 
-    # for sysconf(3) and friends.
-    check_header unistd.h
+    # only for MIPS platforms
+    case ${toolchain} in
+        mips*)
+            if enabled dspr2; then
+                if enabled big_endian; then
+                    echo "dspr2 optimizations are available only for little endian platforms"
+                    disable dspr2
+                fi
+            fi
+        ;;
+    esac
 
     # glibc needs these
     if enabled linux; then

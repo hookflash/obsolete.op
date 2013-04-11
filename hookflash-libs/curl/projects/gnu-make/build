@@ -104,7 +104,8 @@ clean_darwin(){
 
 build_ios(){
 	LIPO="xcrun -sdk iphoneos lipo"
-	export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 iOS: | grep -v iOS: | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
+        export SDK=`system_profiler SPDeveloperToolsDataType | grep -A 1 -E "i.*OS:" | grep -v -E "i.*OS:" | grep -v -- -- | awk 'END {print $1}' | awk -F: '{print $1}'`
+
 	#export ARCH_1="armv6"
 	export ARCH_2="armv7"
 	export ARCH_3="armv7s"

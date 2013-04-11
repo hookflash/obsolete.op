@@ -5,5 +5,5 @@
 /* tree. An additional intellectual property rights grant can be found */
 /* in the file PATENTS.  All contributing project authors may */
 /* be found in the AUTHORS file in the root of the source tree. */
-static const char* const cfg = "--sdk-path=android-ndk-r7c --target=armv5te-android-gcc --enable-pic --enable-error-concealment --disable-install-docs --disable-install-srcs --disable-examples --disable-internal-stats --disable-install-libs --disable-install-bins --enable-realtime-only --enable-postproc";
+static const char* const cfg = "--target=armv6-linux-gcc --enable-pic --enable-realtime-only --disable-install-bins --disable-install-libs --enable-external-build --enable-postproc --disable-install-srcs --enable-multi-res-encoding --enable-temporal-denoising --disable-vp9-encoder --disable-unit-tests --disable-install-docs --disable-examples";
 const char *vpx_codec_build_config(void) {return cfg;}

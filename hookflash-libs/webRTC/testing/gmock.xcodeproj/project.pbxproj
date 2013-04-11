@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 45;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -22,12 +22,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0406055B5B760F8897484751 /* gmock-cardinalities.cc in Sources */ = {isa = PBXBuildFile; fileRef = AD0ECB558DA9CA073A2D8926 /* gmock-cardinalities.cc */; };
-		54EFAE4C3497A86E93A3C8C0 /* gmock_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = AE263AA947112C457F82F967 /* gmock_main.cc */; };
-		6FEB096611E9CFDD728B258F /* gmock-spec-builders.cc in Sources */ = {isa = PBXBuildFile; fileRef = 92E898739E23A74108DEDA84 /* gmock-spec-builders.cc */; };
-		83FA6DE386C472FC58CFB9DB /* gmock-matchers.cc in Sources */ = {isa = PBXBuildFile; fileRef = 12EF32D3D244C69E1BAADEE2 /* gmock-matchers.cc */; };
-		C0805A4041606B4F3E0D962F /* gmock-internal-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3E96377B4BA0CD5F05CF82B2 /* gmock-internal-utils.cc */; };
-		EE094A250AE4F845CE7558E6 /* gmock.cc in Sources */ = {isa = PBXBuildFile; fileRef = E8ABA32B89B7A3C19EF5E53E /* gmock.cc */; };
+		06AA578900B1C538EE1A2A7B /* gmock.cc in Sources */ = {isa = PBXBuildFile; fileRef = E8ABA32B89B7A3C19EF5E53E /* gmock.cc */; };
+		185BC642B8A5C865846E5FAF /* gmock-matchers.cc in Sources */ = {isa = PBXBuildFile; fileRef = 12EF32D3D244C69E1BAADEE2 /* gmock-matchers.cc */; };
+		3C0FD23B2B552A71E711E016 /* gmock-cardinalities.cc in Sources */ = {isa = PBXBuildFile; fileRef = AD0ECB558DA9CA073A2D8926 /* gmock-cardinalities.cc */; };
+		4200F64002CABACF9B5A6499 /* gmock-spec-builders.cc in Sources */ = {isa = PBXBuildFile; fileRef = 92E898739E23A74108DEDA84 /* gmock-spec-builders.cc */; };
+		E004794C9059B5C8D7BCBB4C /* gmock_main.cc in Sources */ = {isa = PBXBuildFile; fileRef = AE263AA947112C457F82F967 /* gmock_main.cc */; };
+		F630D2ECDAA56613360F7D79 /* gmock-internal-utils.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3E96377B4BA0CD5F05CF82B2 /* gmock-internal-utils.cc */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +67,7 @@
 		88A7D8501C6CCAE6EB8142C6 /* gmock-generated-nice-strict.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gmock-generated-nice-strict.h"; sourceTree = "<group>"; };
 		8E138600206A3FA7D8BBF1B5 /* gmock-internal-utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gmock-internal-utils.h"; sourceTree = "<group>"; };
 		92E898739E23A74108DEDA84 /* gmock-spec-builders.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-spec-builders.cc"; sourceTree = "<group>"; };
+		933C558830D4148BF16D6483 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../webrtc/supplement.gypi; sourceTree = "<group>"; };
 		AD0ECB558DA9CA073A2D8926 /* gmock-cardinalities.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "gmock-cardinalities.cc"; sourceTree = "<group>"; };
 		AE263AA947112C457F82F967 /* gmock_main.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gmock_main.cc; sourceTree = "<group>"; };
 		B1481B3A42FEC8A5CFEF08F3 /* gmock-spec-builders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "gmock-spec-builders.h"; sourceTree = "<group>"; };
@@ -74,7 +75,6 @@
 		BECF4BDCB2037997276191A4 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
 		CC7E5BB71B924B4E3B733651 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../build/release.gypi; sourceTree = "<group>"; };
 		CCAC1D500579CCE4A4B3DF89 /* libgmock.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libgmock.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D54B01ABF2D5A490869922A1 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../src/supplement.gypi; sourceTree = "<group>"; };
 		E7FBB86EA609B18AF2ED6416 /* gmock.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = gmock.gyp; sourceTree = "<group>"; };
 		E8ABA32B89B7A3C19EF5E53E /* gmock.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gmock.cc; sourceTree = "<group>"; };
 		EB8F65656EA13285852FEB4B /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../build/internal/release_impl.gypi; sourceTree = "<group>"; };
@@ -98,49 +98,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		341754CBA36AD0ABD2E1DF55 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CCAC1D500579CCE4A4B3DF89 /* libgmock.a */,
-				047880FF10396F6860BD2A6C /* libgmock_main.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		4E2669F83C555066718DADBC /* src */ = {
-			isa = PBXGroup;
-			children = (
-				495B57C650EE6FA2B542EB4C /* gmock-all.cc */,
-				AD0ECB558DA9CA073A2D8926 /* gmock-cardinalities.cc */,
-				3E96377B4BA0CD5F05CF82B2 /* gmock-internal-utils.cc */,
-				12EF32D3D244C69E1BAADEE2 /* gmock-matchers.cc */,
-				92E898739E23A74108DEDA84 /* gmock-spec-builders.cc */,
-				E8ABA32B89B7A3C19EF5E53E /* gmock.cc */,
-				AE263AA947112C457F82F967 /* gmock_main.cc */,
-			);
-			path = src;
-			sourceTree = "<group>";
-		};
-		5B02049D71FE687EE9A80AB7 = {
-			isa = PBXGroup;
-			children = (
-				F2999AC7E0C2539F7CC3F69E /* Source */,
-				341754CBA36AD0ABD2E1DF55 /* Products */,
-				987288E587F36DB113AE76C4 /* Build */,
-			);
-			sourceTree = "<group>";
-		};
-		8C259D5BEE41BBC498B53243 /* internal */ = {
-			isa = PBXGroup;
-			children = (
-				557A6D487A4A0EDBD0D25B77 /* gmock-generated-internal-utils.h */,
-				8E138600206A3FA7D8BBF1B5 /* gmock-internal-utils.h */,
-				7FD827B259ED981023F2C750 /* gmock-port.h */,
-			);
-			path = internal;
-			sourceTree = "<group>";
-		};
-		987288E587F36DB113AE76C4 /* Build */ = {
+		41C8F2E781C71AB096D67965 /* Build */ = {
 			isa = PBXGroup;
 			children = (
 				28D05E0B8B20A4F4CDDA7F1C /* common.gypi */,
@@ -150,15 +108,25 @@
 				694028A6228ABAB11A02BC78 /* release_defaults.gypi */,
 				EB8F65656EA13285852FEB4B /* release_impl.gypi */,
 				BECF4BDCB2037997276191A4 /* release_impl_official.gypi */,
-				D54B01ABF2D5A490869922A1 /* supplement.gypi */,
+				933C558830D4148BF16D6483 /* supplement.gypi */,
 			);
 			name = Build;
 			sourceTree = "<group>";
 		};
-		A26383710B9ED5254E9A1C30 /* include/gmock */ = {
+		4EAC4CDBB1586FC4D35071DB /* internal */ = {
 			isa = PBXGroup;
 			children = (
-				8C259D5BEE41BBC498B53243 /* internal */,
+				557A6D487A4A0EDBD0D25B77 /* gmock-generated-internal-utils.h */,
+				8E138600206A3FA7D8BBF1B5 /* gmock-internal-utils.h */,
+				7FD827B259ED981023F2C750 /* gmock-port.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+		58F2F1E6DFA7F262A5CE3E2A /* include/gmock */ = {
+			isa = PBXGroup;
+			children = (
+				4EAC4CDBB1586FC4D35071DB /* internal */,
 				17943482D2D4295704F21314 /* gmock-actions.h */,
 				0DE0C056510AE1DAA4FB33A8 /* gmock-cardinalities.h */,
 				1A312C157C41A48110FB8407 /* gmock-generated-actions.h */,
@@ -172,22 +140,54 @@
 			path = include/gmock;
 			sourceTree = "<group>";
 		};
-		BA059673A2E91A82A0CF1C0C /* gmock */ = {
+		5FE4D3F1062330AADAD63B85 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A26383710B9ED5254E9A1C30 /* include/gmock */,
-				4E2669F83C555066718DADBC /* src */,
+				CCAC1D500579CCE4A4B3DF89 /* libgmock.a */,
+				047880FF10396F6860BD2A6C /* libgmock_main.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92A1E4C54675972522679D84 = {
+			isa = PBXGroup;
+			children = (
+				D3F0E74A7684149AF26A31FF /* Source */,
+				5FE4D3F1062330AADAD63B85 /* Products */,
+				41C8F2E781C71AB096D67965 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		D3F0E74A7684149AF26A31FF /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				E418F801EB9924F84BE8CC74 /* gmock */,
+				0BC3D8E2E19A36BD20C83DDB /* gmock_mutant.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		E418F801EB9924F84BE8CC74 /* gmock */ = {
+			isa = PBXGroup;
+			children = (
+				58F2F1E6DFA7F262A5CE3E2A /* include/gmock */,
+				F5367F454B191867758CDCA6 /* src */,
 			);
 			path = gmock;
 			sourceTree = "<group>";
 		};
-		F2999AC7E0C2539F7CC3F69E /* Source */ = {
+		F5367F454B191867758CDCA6 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				BA059673A2E91A82A0CF1C0C /* gmock */,
-				0BC3D8E2E19A36BD20C83DDB /* gmock_mutant.h */,
+				495B57C650EE6FA2B542EB4C /* gmock-all.cc */,
+				AD0ECB558DA9CA073A2D8926 /* gmock-cardinalities.cc */,
+				3E96377B4BA0CD5F05CF82B2 /* gmock-internal-utils.cc */,
+				12EF32D3D244C69E1BAADEE2 /* gmock-matchers.cc */,
+				92E898739E23A74108DEDA84 /* gmock-spec-builders.cc */,
+				E8ABA32B89B7A3C19EF5E53E /* gmock.cc */,
+				AE263AA947112C457F82F967 /* gmock_main.cc */,
 			);
-			name = Source;
+			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,12 +235,8 @@
 			};
 			buildConfigurationList = 51773DF26A35EC538EF3B52E /* Build configuration list for PBXProject "gmock" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
-			knownRegions = (
-				en,
-			);
-			mainGroup = 5B02049D71FE687EE9A80AB7;
+			mainGroup = 92A1E4C54675972522679D84;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -256,11 +252,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0406055B5B760F8897484751 /* gmock-cardinalities.cc in Sources */,
-				C0805A4041606B4F3E0D962F /* gmock-internal-utils.cc in Sources */,
-				83FA6DE386C472FC58CFB9DB /* gmock-matchers.cc in Sources */,
-				6FEB096611E9CFDD728B258F /* gmock-spec-builders.cc in Sources */,
-				EE094A250AE4F845CE7558E6 /* gmock.cc in Sources */,
+				3C0FD23B2B552A71E711E016 /* gmock-cardinalities.cc in Sources */,
+				F630D2ECDAA56613360F7D79 /* gmock-internal-utils.cc in Sources */,
+				185BC642B8A5C865846E5FAF /* gmock-matchers.cc in Sources */,
+				4200F64002CABACF9B5A6499 /* gmock-spec-builders.cc in Sources */,
+				06AA578900B1C538EE1A2A7B /* gmock.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,7 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				54EFAE4C3497A86E93A3C8C0 /* gmock_main.cc in Sources */,
+				E004794C9059B5C8D7BCBB4C /* gmock_main.cc in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +296,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -315,36 +313,41 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"UNIT_TEST\"",
 					"\"GTEST_HAS_RTTI=0\"",
-					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -353,7 +356,25 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CFLAGS = (
+					"-Xclang",
+					"-load",
+					"-Xclang",
+					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
+					"-Xclang",
+					"-add-plugin",
+					"-Xclang",
+					"find-bad-constructs",
+					"-Xclang",
+					"-plugin-arg-find-bad-constructs",
+					"-Xclang",
+					"skip-virtuals-in-implementations",
+					"-fno-strict-aliasing",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = gmock_main;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
@@ -362,14 +383,17 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+				WARNING_CFLAGS_excluded = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};
@@ -378,7 +402,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -393,35 +419,40 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"UNIT_TEST\"",
 					"\"GTEST_HAS_RTTI=0\"",
-					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -432,8 +463,24 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
+					"-Xclang",
+					"-load",
+					"-Xclang",
+					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
+					"-Xclang",
+					"-add-plugin",
+					"-Xclang",
+					"find-bad-constructs",
+					"-Xclang",
+					"-plugin-arg-find-bad-constructs",
+					"-Xclang",
+					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
 				);
 				PRODUCT_NAME = gmock;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
@@ -443,14 +490,17 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+				WARNING_CFLAGS_excluded = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
@@ -465,7 +515,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx10.6;
+				SDKROOT = iphoneos;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
 				SYMROOT = ../xcodebuild;
 			};
@@ -475,7 +525,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx10.6;
+				SDKROOT = iphoneos;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
 				SYMROOT = ../xcodebuild;
 			};
@@ -486,7 +536,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -501,35 +553,40 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"UNIT_TEST\"",
 					"\"GTEST_HAS_RTTI=0\"",
-					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -539,8 +596,24 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
+					"-Xclang",
+					"-load",
+					"-Xclang",
+					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
+					"-Xclang",
+					"-add-plugin",
+					"-Xclang",
+					"find-bad-constructs",
+					"-Xclang",
+					"-plugin-arg-find-bad-constructs",
+					"-Xclang",
+					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
 				);
 				PRODUCT_NAME = gmock_main;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
@@ -550,14 +623,17 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+				WARNING_CFLAGS_excluded = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
@@ -566,7 +642,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -581,36 +659,41 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"UNIT_TEST\"",
 					"\"GTEST_HAS_RTTI=0\"",
-					"\"GTEST_USE_OWN_TR1_TUPLE=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -620,7 +703,25 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CFLAGS = (
+					"-Xclang",
+					"-load",
+					"-Xclang",
+					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
+					"-Xclang",
+					"-add-plugin",
+					"-Xclang",
+					"find-bad-constructs",
+					"-Xclang",
+					"-plugin-arg-find-bad-constructs",
+					"-Xclang",
+					"skip-virtuals-in-implementations",
+					"-fno-strict-aliasing",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = gmock;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
@@ -629,14 +730,17 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+				WARNING_CFLAGS_excluded = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};

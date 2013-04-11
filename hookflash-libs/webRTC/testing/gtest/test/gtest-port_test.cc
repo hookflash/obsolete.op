@@ -61,6 +61,43 @@ using std::pair;
 namespace testing {
 namespace internal {
 
+TEST(IsXDigitTest, WorksForNarrowAscii) {
+  EXPECT_TRUE(IsXDigit('0'));
+  EXPECT_TRUE(IsXDigit('9'));
+  EXPECT_TRUE(IsXDigit('A'));
+  EXPECT_TRUE(IsXDigit('F'));
+  EXPECT_TRUE(IsXDigit('a'));
+  EXPECT_TRUE(IsXDigit('f'));
+
+  EXPECT_FALSE(IsXDigit('-'));
+  EXPECT_FALSE(IsXDigit('g'));
+  EXPECT_FALSE(IsXDigit('G'));
+}
+
+TEST(IsXDigitTest, ReturnsFalseForNarrowNonAscii) {
+  EXPECT_FALSE(IsXDigit(static_cast<char>(0x80)));
+  EXPECT_FALSE(IsXDigit(static_cast<char>('0' | 0x80)));
+}
+
+TEST(IsXDigitTest, WorksForWideAscii) {
+  EXPECT_TRUE(IsXDigit(L'0'));
+  EXPECT_TRUE(IsXDigit(L'9'));
+  EXPECT_TRUE(IsXDigit(L'A'));
+  EXPECT_TRUE(IsXDigit(L'F'));
+  EXPECT_TRUE(IsXDigit(L'a'));
+  EXPECT_TRUE(IsXDigit(L'f'));
+
+  EXPECT_FALSE(IsXDigit(L'-'));
+  EXPECT_FALSE(IsXDigit(L'g'));
+  EXPECT_FALSE(IsXDigit(L'G'));
+}
+
+TEST(IsXDigitTest, ReturnsFalseForWideNonAscii) {
+  EXPECT_FALSE(IsXDigit(static_cast<wchar_t>(0x80)));
+  EXPECT_FALSE(IsXDigit(static_cast<wchar_t>(L'0' | 0x80)));
+  EXPECT_FALSE(IsXDigit(static_cast<wchar_t>(L'0' | 0x100)));
+}
+
 class Base {
  public:
   // Copy constructor and assignment operator do exactly what we need, so we
@@ -968,7 +1005,7 @@ TEST(ThreadLocalTest, ValueDefaultContructorIsNotRequiredForParamVersion) {
 }
 
 TEST(ThreadLocalTest, GetAndPointerReturnSameValue) {
-  ThreadLocal<String> thread_local_string;
+  ThreadLocal<std::string> thread_local_string;
 
   EXPECT_EQ(thread_local_string.pointer(), &(thread_local_string.get()));
 
@@ -978,8 +1015,9 @@ TEST(ThreadLocalTest, GetAndPointerReturnSameValue) {
 }
 
 TEST(ThreadLocalTest, PointerAndConstPointerReturnSameValue) {
-  ThreadLocal<String> thread_local_string;
-  const ThreadLocal<String>& const_thread_local_string = thread_local_string;
+  ThreadLocal<std::string> thread_local_string;
+  const ThreadLocal<std::string>& const_thread_local_string =
+      thread_local_string;
 
   EXPECT_EQ(thread_local_string.pointer(), const_thread_local_string.pointer());
 
@@ -1089,18 +1127,19 @@ void RunFromThread(void (func)(T), T param) {
   thread.Join();
 }
 
-void RetrieveThreadLocalValue(pair<ThreadLocal<String>*, String*> param) {
+void RetrieveThreadLocalValue(
+    pair<ThreadLocal<std::string>*, std::string*> param) {
   *param.second = param.first->get();
 }
 
 TEST(ThreadLocalTest, ParameterizedConstructorSetsDefault) {
-  ThreadLocal<String> thread_local_string("foo");
+  ThreadLocal<std::string> thread_local_string("foo");
   EXPECT_STREQ("foo", thread_local_string.get().c_str());
 
   thread_local_string.set("bar");
   EXPECT_STREQ("bar", thread_local_string.get().c_str());
 
-  String result;
+  std::string result;
   RunFromThread(&RetrieveThreadLocalValue,
                 make_pair(&thread_local_string, &result));
   EXPECT_STREQ("foo", result.c_str());
@@ -1198,14 +1237,14 @@ TEST(ThreadLocalTest, DestroysManagedObjectAtThreadExit) {
 }
 
 TEST(ThreadLocalTest, ThreadLocalMutationsAffectOnlyCurrentThread) {
-  ThreadLocal<String> thread_local_string;
+  ThreadLocal<std::string> thread_local_string;
   thread_local_string.set("Foo");
   EXPECT_STREQ("Foo", thread_local_string.get().c_str());
 
-  String result;
+  std::string result;
   RunFromThread(&RetrieveThreadLocalValue,
                 make_pair(&thread_local_string, &result));
-  EXPECT_TRUE(result.c_str() == NULL);
+  EXPECT_TRUE(result.empty());
 }
 
 #endif  // GTEST_IS_THREADSAFE

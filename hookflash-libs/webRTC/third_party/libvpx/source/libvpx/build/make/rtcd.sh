@@ -211,6 +211,8 @@ common_top() {
 $(process_forward_decls)
 
 $(declare_function_pointers c $ALL_ARCHS)
+
+void ${symbol:-rtcd}(void);
 EOF
 }
 
@@ -231,11 +233,10 @@ x86() {
 
   cat <<EOF
 $(common_top)
-void ${symbol:-rtcd}(void);
 
 #ifdef RTCD_C
 #include "vpx_ports/x86.h"
-void ${symbol:-rtcd}(void)
+static void setup_rtcd_internal(void)
 {
     int flags = x86_simd_caps();
 
@@ -261,11 +262,9 @@ arm() {
 $(common_top)
 #include "vpx_config.h"
 
-void ${symbol:-rtcd}(void);
-
 #ifdef RTCD_C
 #include "vpx_ports/arm.h"
-void ${symbol:-rtcd}(void)
+static void setup_rtcd_internal(void)
 {
     int flags = arm_cpu_caps();
 
@@ -279,16 +278,34 @@ EOF
 }
 
 
+mips() {
+  determine_indirection c $ALL_ARCHS
+  cat <<EOF
+$(common_top)
+#include "vpx_config.h"
+
+#ifdef RTCD_C
+static void setup_rtcd_internal(void)
+{
+$(set_function_pointers c $ALL_ARCHS)
+#if HAVE_DSPR2
+void dsputil_static_init();
+dsputil_static_init();
+#endif
+}
+#endif
+$(common_bottom)
+EOF
+}
+
 unoptimized() {
   determine_indirection c
   cat <<EOF
 $(common_top)
 #include "vpx_config.h"
 
-void ${symbol:-rtcd}(void);
-
 #ifdef RTCD_C
-void ${symbol:-rtcd}(void)
+static void setup_rtcd_internal(void)
 {
 $(set_function_pointers c)
 }
@@ -311,6 +328,15 @@ case $arch in
     REQUIRES=${REQUIRES:-mmx sse sse2}
     require $(filter $REQUIRES)
     x86
+    ;;
+  mips32)
+    ALL_ARCHS=$(filter mips32)
+    dspr2=$([ -f "$config_file" ] && eval echo $(grep HAVE_DSPR2 "$config_file"))
+    HAVE_DSPR2="${dspr2#*=}"
+    if [ "$HAVE_DSPR2" = "yes" ]; then
+        ALL_ARCHS=$(filter mips32 dspr2)
+    fi
+    mips
     ;;
   armv5te)
     ALL_ARCHS=$(filter edsp)

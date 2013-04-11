@@ -1269,12 +1269,12 @@
 		0063D8CE16CB3C6A00E6DB4D /* libyuv_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libyuv_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libyuv/libyuv_ios.xcodeproj"; sourceTree = "<group>"; };
 		0063D8D416CB3C7C00E6DB4D /* libvpx_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvpx_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libvpx/libvpx_ios.xcodeproj"; sourceTree = "<group>"; };
 		0063D8DA16CB3C9700E6DB4D /* libjpeg_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libjpeg/libjpeg_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D8E016CB3D4B00E6DB4D /* video_engine_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = video_engine_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/video_engine/video_engine_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D90216CB3D6400E6DB4D /* voice_engine_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = voice_engine_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/voice_engine/voice_engine_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D90B16CB3D7B00E6DB4D /* system_wrappers_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/system_wrappers/source/system_wrappers_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D91116CB3D8700E6DB4D /* common_video_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/common_video/common_video_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D91A16CB3D8F00E6DB4D /* common_audio_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/common_audio/common_audio_ios.xcodeproj"; sourceTree = "<group>"; };
-		0063D92616CB3DC600E6DB4D /* modules_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/modules/modules_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D8E016CB3D4B00E6DB4D /* video_engine_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = video_engine_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/video_engine/video_engine_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D90216CB3D6400E6DB4D /* voice_engine_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = voice_engine_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/voice_engine/voice_engine_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D90B16CB3D7B00E6DB4D /* system_wrappers_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/system_wrappers_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D91116CB3D8700E6DB4D /* common_video_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/common_video/common_video_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D91A16CB3D8F00E6DB4D /* common_audio_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/common_audio/common_audio_ios.xcodeproj"; sourceTree = "<group>"; };
+		0063D92616CB3DC600E6DB4D /* modules_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules_ios.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/modules/modules_ios.xcodeproj"; sourceTree = "<group>"; };
 		0063DA0C16CB487400E6DB4D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0063DA0E16CB488200E6DB4D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		0063DA1016CB488D00E6DB4D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -3032,19 +3032,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/video_engine/include",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3079,19 +3079,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/video_engine/include",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";

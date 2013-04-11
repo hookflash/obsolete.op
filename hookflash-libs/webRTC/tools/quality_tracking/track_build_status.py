@@ -12,13 +12,34 @@
    it to the dashboard. It is adapted to build bot version 0.7.12.
 """
 
-__author__ = 'phoglund@webrtc.org (Patrik Höglund)'
-
 import httplib
 
 import constants
 import dashboard_connection
 import tgrid_parser
+
+# Bots that must be green in order to increment the LKGR revision.
+BOTS = ['Win32 Debug',
+        'Win32 Release',
+        'Mac32 Debug',
+        'Mac32 Release',
+        'Mac64 Debug',
+        'Mac64 Release',
+        'Linux32 Debug',
+        'Linux32 Release',
+        'Linux64 Debug',
+        'Linux64 Release',
+        'Linux Clang',
+        'Linux Memcheck',
+        'Linux Tsan',
+        'Linux Asan',
+        'Win Large Tests',
+        'Mac Large Tests',
+        'Linux Large Tests',
+        'CrOS',
+        'Android',
+        'Android NDK',
+       ]
 
 
 class FailedToGetStatusFromMaster(Exception):
@@ -44,19 +65,29 @@ def _download_and_parse_build_status():
 def _is_chrome_only_build(revision_to_bot_name):
   """Figures out if a revision-to-bot-name mapping represents a Chrome build.
 
-     We assume here that Chrome revisions are always > 100000, whereas WebRTC
-     revisions will not reach that number in the foreseeable future."""
+  We assume here that Chrome revisions are always > 100000, whereas WebRTC
+  revisions will not reach that number in the foreseeable future.
+  """
   revision = int(revision_to_bot_name.split('--')[0])
   bot_name = revision_to_bot_name.split('--')[1]
-  return bot_name == 'Chrome' and revision > 100000
+  return 'Chrome' in bot_name and revision > 100000
 
 
-def _filter_chrome_only_builds(bot_to_status_mapping):
-  """Filters chrome-only builds from the system so LKGR doesn't get confused."""
-  return dict((revision_to_bot_name, status)
-              for revision_to_bot_name, status
-              in bot_to_status_mapping.iteritems()
-              if not _is_chrome_only_build(revision_to_bot_name))
+def _filter_undesired_bots(bot_to_status_mapping, desired_bot_names):
+  """Returns the desired bots for the builds status from the dictionary.
+
+  Args:
+    bot_to_status_mapping: Dictionary mapping bot name with revision to status.
+    desired_bot_names: List of bot names that will be the only bots returned in
+      the resulting dictionary.
+  Returns: A dictionary only containing the desired bots.
+  """
+  result = {}
+  for revision_to_bot_name, status in bot_to_status_mapping.iteritems():
+    bot_name = revision_to_bot_name.split('--')[1]
+    if bot_name in desired_bot_names:
+      result[revision_to_bot_name] = status
+  return result
 
 
 def _main():
@@ -65,7 +96,7 @@ def _main():
                                 constants.ACCESS_TOKEN_FILE)
 
   bot_to_status_mapping = _download_and_parse_build_status()
-  bot_to_status_mapping = _filter_chrome_only_builds(bot_to_status_mapping)
+  bot_to_status_mapping = _filter_undesired_bots(bot_to_status_mapping, BOTS)
 
   dashboard.send_post_request(constants.ADD_BUILD_STATUS_DATA_URL,
                               bot_to_status_mapping)

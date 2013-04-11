@@ -1,22 +1,4 @@
 ############################
-# Chromium
-
-{
-  Benign race durung InitializeClock
-  ThreadSanitizer:Race
-  ...
-  fun:*InitializeClock*
-}
-
-{
-  bug_62560
-  ThreadSanitizer:Race
-  ...
-  fun:_initterm
-  fun:doexit
-}
-
-############################
 # Reports on the guts of Windows
 {
   UuidCreate
@@ -45,11 +27,52 @@
   ThreadSanitizer:InvalidLock
   fun:unnamedImageEntryPoint
 }
+
 {
   accessing an invalid lock in CoFreeAllLibraries
   ThreadSanitizer:InvalidLock
   fun:CoFreeAllLibraries
 }
+
+{
+  bug_146724_benign_a
+  ThreadSanitizer:Race
+  fun:_lock_file
+  fun:vprintf_helper
+  fun:vprintf
+}
+{
+  bug_146724_benign_b
+  ThreadSanitizer:Race
+  fun:_getstream
+  fun:_wfsopen
+}
+
+{
+  bug_158099_mmdevice_endpoint_shutdown_too_fast
+  ThreadSanitizer:Race
+  fun:GetLocalIdFromEndpointId
+  ...
+}
+
+############################
+# Chromium
+
+{
+  Benign race durung InitializeClock
+  ThreadSanitizer:Race
+  ...
+  fun:*InitializeClock*
+}
+
+{
+  bug_62560
+  ThreadSanitizer:Race
+  ...
+  fun:_initterm
+  fun:doexit
+}
+
 {
   accessing an invalid lock under exit/doexit
   ThreadSanitizer:InvalidLock
@@ -81,7 +104,6 @@
   bug_93932b
   ThreadSanitizer:Race
   ...
-  fun:ff_mpeg4video_split
   fun:avcodec_close
   fun:media::FFmpegVideoDecoder::ReleaseFFmpegResources
 }
@@ -131,34 +153,65 @@
   fun:BaseThreadInitThunk
 }
 {
-  bug_110514_a
+  bug_144928_a
   ThreadSanitizer:Race
-  fun:memset
-  fun:_malloc_dbg
-  ...
-  fun:??2@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z
-  fun:??0?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAE@XZ
+  fun:google_breakpad::CrashGenerationServer::Handle*
+  fun:google_breakpad::CrashGenerationServer::OnPipeConnected
+  fun:RtlSetTimer
+  fun:RtlSetTimer
+  fun:TpReleaseTimer
+  fun:TpReleaseTimer
+  fun:RtlMultiByteToUnicodeSize
+  fun:TpCallbackMayRunLong
+  fun:TpCallbackMayRunLong
+  fun:BaseThreadInitThunk
 }
 {
-  bug_110514_b
+  bug_144928_b
   ThreadSanitizer:Race
-  fun:memset
-  fun:_malloc_dbg
-  ...
-  fun:??2@YAPAXIABU_DebugHeapTag_t@std@@PADH@Z
-  fun:?_Init@ios_base@std@@IAEXXZ
-}
-{
-  bug_110514_c
-  ThreadSanitizer:Race
-  fun:memset
-  fun:_free_dbg
-  ...
-  fun:??3@YAXPAX@Z
-  fun:??_V@YAXPAX@Z
-  fun:scoped_array::reset
-  fun:media::DataBuffer::DataBuffer
-  ...
-  fun:media::FFmpegAudioDecoder::DoDecodeBuffer
+  fun:google_breakpad::CrashGenerationServer::~CrashGenerationServer
+  fun:google_breakpad::CrashGenerationServer::`scalar deleting destructor'
+  fun:base::DefaultDeleter*
+  fun:base::internal::scoped_ptr_impl::~scoped_ptr_impl
+  fun:remoting::BreakpadWinDeathTest::~BreakpadWinDeathTest
+  fun:remoting::BreakpadWinDeathTest_TestAccessViolation_Test::`scalar deleting destructor'
+  fun:testing::Test::DeleteSelf_
+  fun:testing::internal::HandleExceptionsInMethodIfSupported
 }
 
+{
+  bug_146119
+  ThreadSanitizer:Race
+  ...
+  fun:GetAdaptersAddresses
+  ...
+  fun:base::internal::RunnableAdapter::Run
+}
+
+{
+  bug_157076_a
+  ThreadSanitizer:Race
+  fun:win32thread_worker
+  fun:_callthreadstartex
+  fun:_threadstartex
+  fun:BaseThreadInitThunk
+}
+
+{
+  bug_157076_b
+  ThreadSanitizer:Race
+  fun:memset
+  fun:_free_dbg_nolock
+  fun:_free_dbg
+  fun:_aligned_free_dbg
+  fun:_aligned_free
+  fun:media::ReleaseData
+  fun:base::internal::RunnableAdapter::Run
+}
+
+{
+   bug_170334
+   ThreadSanitizer:Race
+   ...
+   fun:net::NetworkChangeNotifierWinTest::~NetworkChangeNotifierWinTest
+}

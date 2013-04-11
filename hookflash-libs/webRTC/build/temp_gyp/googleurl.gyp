@@ -68,6 +68,8 @@
           },
         }],
       ],
+      # TODO(jschuh): crbug.com/167187 fix size_t to int truncations.
+      'msvs_disabled_warnings': [4267, ],
     },
     {
       'target_name': 'googleurl_unittests',
@@ -90,7 +92,7 @@
         'FULL_FILESYSTEM_URL_SUPPORT=1',
       ],
       'conditions': [
-        ['os_posix==1 and OS!="mac"', {
+        ['os_posix==1 and OS!="mac" and OS!="ios"', {
           'conditions': [
             ['linux_use_tcmalloc==1', {
               'dependencies': [
@@ -100,6 +102,8 @@
           ],
         }],
       ],
+      # TODO(jschuh): crbug.com/167187 fix size_t to int truncations.
+      'msvs_disabled_warnings': [4267, ],
     },
   ],
 }

@@ -47,6 +47,11 @@ fun:*_M_is_shared*
 fun:*_M_set_leaked*
 fun:*_M_set_sharable*
 
+# Comparison of std::strings sometimes takes a lot of time but we don't really
+# need precise stack traces there.
+fun_hist:_ZStltIcSt11char_traitsIcESaIcEEbRKSbIT_T0_T1_ES8_
+fun_hist:_ZNKSs7compareERKSs
+
 # Don't instrument intercepts
 src:*ts_valgrind_intercepts.c
 
@@ -64,6 +69,11 @@ fun:*base*subtle*NoBarrier_CompareAndSwap*
 fun:*base*subtle*NoBarrier_Load*
 # Keep some mangling so we don't match NoBarrier_AtomicIncrement
 fun:*base*subtle23Barrier_AtomicIncrement*
+
+# MD5 computations are very slow due since sums are computed by
+# repeatedly calling tiny functions and is unlikely to race with
+# anything.
+src:*base/md5*
 
 # Don't instrument tcmalloc
 src:*/tcmalloc/*
@@ -83,6 +93,10 @@ fun_hist:*unibrow*
 
 # Histogram has tiny functions that can be called frequently
 fun_hist:*Histogram*
+# Recursively ignore Histrogram::Add and friends, see http://crbug.com/62694.
+fun_r:*4base*9Histogram*3Add*
+fun_r:*4base*16HistogramSamples*3Add*
+fun_r:*4base*13HistogramBase*7AddTime*
 
 # TODO(timurrrr): SKIA - needs separate testing?
 # SKIA unittest is single-threaded...
@@ -152,6 +166,11 @@ fun:g_slice_alloc
 # A benign race in glibc on "random_time_bits".
 fun:__gen_tempname
 
+# A probably-benign race on '__have_o_cloexec' in opendir/__alloc_dir,
+# see http://crbug.com/125928.
+fun_r:__alloc_dir
+fun_r:opendir
+
 # The sqlite cache is racing against a few different stacktraces,
 # so let's ignore it recursively. See http://crbug.com/84094
 fun_r:pcache1Fetch
@@ -160,3 +179,7 @@ fun_r:pcache1Fetch
 # fun:MessageLoop::RunTask at the top of the "current" stack which we don't want
 # to suppress. See http://crbug.com/98926
 fun:*base*debug*TraceLog*GetCategoryInternal*
+
+# libc threading on GCC 4.6 
+fun:arena_thread_freeres
+

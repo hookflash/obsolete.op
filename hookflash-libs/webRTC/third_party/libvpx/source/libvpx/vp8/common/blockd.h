@@ -161,22 +161,32 @@ typedef struct
     uint8_t segment_id;                  /* Which set of segmentation parameters should be used for this MB */
 } MB_MODE_INFO;
 
-typedef struct
+typedef struct modeinfo
 {
     MB_MODE_INFO mbmi;
     union b_mode_info bmi[16];
 } MODE_INFO;
 
 #if CONFIG_MULTI_RES_ENCODING
-/* The information needed to be stored for higher-resolution encoder */
+/* The mb-level information needed to be stored for higher-resolution encoder */
 typedef struct
 {
     MB_PREDICTION_MODE mode;
     MV_REFERENCE_FRAME ref_frame;
     int_mv mv;
-    //union b_mode_info bmi[16];
-    int dissim;    // dissimilarity level of the macroblock
-} LOWER_RES_INFO;
+    int dissim;    /* dissimilarity level of the macroblock */
+} LOWER_RES_MB_INFO;
+
+/* The frame-level information needed to be stored for higher-resolution
+ *  encoder */
+typedef struct
+{
+    FRAME_TYPE frame_type;
+    int is_frame_dropped;
+    /* The frame number of each reference frames */
+    unsigned int low_res_ref_frames[MAX_REF_FRAMES];
+    LOWER_RES_MB_INFO *mb_info;
+} LOWER_RES_FRAME_INFO;
 #endif
 
 typedef struct blockd
@@ -215,12 +225,6 @@ typedef struct macroblockd
 
     MODE_INFO *mode_info_context;
     int mode_info_stride;
-
-#if CONFIG_TEMPORAL_DENOISING
-    MB_PREDICTION_MODE best_sse_inter_mode;
-    int_mv best_sse_mv;
-    unsigned char need_to_clamp_best_mvs;
-#endif
 
     FRAME_TYPE frame_type;
 

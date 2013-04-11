@@ -1,5 +1,9 @@
-common_forward_decls() {
+vp8_common_forward_decls() {
 cat <<EOF
+/*
+ * VP8
+ */
+
 struct blockd;
 struct macroblockd;
 struct loop_filter_info;
@@ -12,7 +16,7 @@ union int_mv;
 struct yv12_buffer_config;
 EOF
 }
-forward_decls common_forward_decls
+forward_decls vp8_common_forward_decls
 
 #
 # Dequant
@@ -22,35 +26,42 @@ specialize vp8_dequantize_b mmx media neon
 vp8_dequantize_b_media=vp8_dequantize_b_v6
 
 prototype void vp8_dequant_idct_add "short *input, short *dq, unsigned char *output, int stride"
-specialize vp8_dequant_idct_add mmx media neon
+specialize vp8_dequant_idct_add mmx media neon dspr2
 vp8_dequant_idct_add_media=vp8_dequant_idct_add_v6
+vp8_dequant_idct_add_dspr2=vp8_dequant_idct_add_dspr2
 
 prototype void vp8_dequant_idct_add_y_block "short *q, short *dq, unsigned char *dst, int stride, char *eobs"
-specialize vp8_dequant_idct_add_y_block mmx sse2 media neon
+specialize vp8_dequant_idct_add_y_block mmx sse2 media neon dspr2
 vp8_dequant_idct_add_y_block_media=vp8_dequant_idct_add_y_block_v6
+vp8_dequant_idct_add_y_block_dspr2=vp8_dequant_idct_add_y_block_dspr2
 
 prototype void vp8_dequant_idct_add_uv_block "short *q, short *dq, unsigned char *dst_u, unsigned char *dst_v, int stride, char *eobs"
-specialize vp8_dequant_idct_add_uv_block mmx sse2 media neon
+specialize vp8_dequant_idct_add_uv_block mmx sse2 media neon dspr2
 vp8_dequant_idct_add_uv_block_media=vp8_dequant_idct_add_uv_block_v6
+vp8_dequant_idct_add_y_block_dspr2=vp8_dequant_idct_add_y_block_dspr2
 
 #
 # Loopfilter
 #
 prototype void vp8_loop_filter_mbv "unsigned char *y, unsigned char *u, unsigned char *v, int ystride, int uv_stride, struct loop_filter_info *lfi"
-specialize vp8_loop_filter_mbv mmx sse2 media neon
+specialize vp8_loop_filter_mbv mmx sse2 media neon dspr2
 vp8_loop_filter_mbv_media=vp8_loop_filter_mbv_armv6
+vp8_loop_filter_mbv_dspr2=vp8_loop_filter_mbv_dspr2
 
 prototype void vp8_loop_filter_bv "unsigned char *y, unsigned char *u, unsigned char *v, int ystride, int uv_stride, struct loop_filter_info *lfi"
-specialize vp8_loop_filter_bv mmx sse2 media neon
+specialize vp8_loop_filter_bv mmx sse2 media neon dspr2
 vp8_loop_filter_bv_media=vp8_loop_filter_bv_armv6
+vp8_loop_filter_bv_dspr2=vp8_loop_filter_bv_dspr2
 
 prototype void vp8_loop_filter_mbh "unsigned char *y, unsigned char *u, unsigned char *v, int ystride, int uv_stride, struct loop_filter_info *lfi"
-specialize vp8_loop_filter_mbh mmx sse2 media neon
+specialize vp8_loop_filter_mbh mmx sse2 media neon dspr2
 vp8_loop_filter_mbh_media=vp8_loop_filter_mbh_armv6
+vp8_loop_filter_mbh_dspr2=vp8_loop_filter_mbh_dspr2
 
 prototype void vp8_loop_filter_bh "unsigned char *y, unsigned char *u, unsigned char *v, int ystride, int uv_stride, struct loop_filter_info *lfi"
-specialize vp8_loop_filter_bh mmx sse2 media neon
+specialize vp8_loop_filter_bh mmx sse2 media neon dspr2
 vp8_loop_filter_bh_media=vp8_loop_filter_bh_armv6
+vp8_loop_filter_bh_dspr2=vp8_loop_filter_bh_dspr2
 
 
 prototype void vp8_loop_filter_simple_mbv "unsigned char *y, int ystride, const unsigned char *blimit"
@@ -90,37 +101,45 @@ vp8_loop_filter_simple_bh_neon=vp8_loop_filter_bhs_neon
 #
 #idct16
 prototype void vp8_short_idct4x4llm "short *input, unsigned char *pred, int pitch, unsigned char *dst, int dst_stride"
-specialize vp8_short_idct4x4llm mmx media neon
+specialize vp8_short_idct4x4llm mmx media neon dspr2
 vp8_short_idct4x4llm_media=vp8_short_idct4x4llm_v6_dual
+vp8_short_idct4x4llm_dspr2=vp8_short_idct4x4llm_dspr2
 
 #iwalsh1
 prototype void vp8_short_inv_walsh4x4_1 "short *input, short *output"
+specialize vp8_short_inv_walsh4x4_1 dspr2
+vp8_short_inv_walsh4x4_1_dspr2=vp8_short_inv_walsh4x4_1_dspr2
 # no asm yet
 
 #iwalsh16
 prototype void vp8_short_inv_walsh4x4 "short *input, short *output"
-specialize vp8_short_inv_walsh4x4 mmx sse2 media neon
+specialize vp8_short_inv_walsh4x4 mmx sse2 media neon dspr2
 vp8_short_inv_walsh4x4_media=vp8_short_inv_walsh4x4_v6
+vp8_short_inv_walsh4x4_dspr2=vp8_short_inv_walsh4x4_dspr2
 
 #idct1_scalar_add
 prototype void vp8_dc_only_idct_add "short input, unsigned char *pred, int pred_stride, unsigned char *dst, int dst_stride"
-specialize vp8_dc_only_idct_add	mmx media neon
+specialize vp8_dc_only_idct_add	mmx media neon dspr2
 vp8_dc_only_idct_add_media=vp8_dc_only_idct_add_v6
+vp8_dc_only_idct_add_dspr2=vp8_dc_only_idct_add_dspr2
 
 #
 # RECON
 #
 prototype void vp8_copy_mem16x16 "unsigned char *src, int src_pitch, unsigned char *dst, int dst_pitch"
-specialize vp8_copy_mem16x16 mmx sse2 media neon
+specialize vp8_copy_mem16x16 mmx sse2 media neon dspr2
 vp8_copy_mem16x16_media=vp8_copy_mem16x16_v6
+vp8_copy_mem16x16_dspr2=vp8_copy_mem16x16_dspr2
 
 prototype void vp8_copy_mem8x8 "unsigned char *src, int src_pitch, unsigned char *dst, int dst_pitch"
-specialize vp8_copy_mem8x8 mmx media neon
+specialize vp8_copy_mem8x8 mmx media neon dspr2
 vp8_copy_mem8x8_media=vp8_copy_mem8x8_v6
+vp8_copy_mem8x8_dspr2=vp8_copy_mem8x8_dspr2
 
 prototype void vp8_copy_mem8x4 "unsigned char *src, int src_pitch, unsigned char *dst, int dst_pitch"
-specialize vp8_copy_mem8x4 mmx media neon
+specialize vp8_copy_mem8x4 mmx media neon dspr2
 vp8_copy_mem8x4_media=vp8_copy_mem8x4_v6
+vp8_copy_mem8x4_dspr2=vp8_copy_mem8x4_dspr2
 
 prototype void vp8_build_intra_predictors_mby_s "struct macroblockd *x, unsigned char * yabove_row, unsigned char * yleft, int left_stride, unsigned char * ypred_ptr, int y_stride"
 specialize vp8_build_intra_predictors_mby_s sse2 ssse3
@@ -129,7 +148,7 @@ specialize vp8_build_intra_predictors_mby_s sse2 ssse3
 prototype void vp8_build_intra_predictors_mbuv_s "struct macroblockd *x, unsigned char * uabove_row, unsigned char * vabove_row,  unsigned char *uleft, unsigned char *vleft, int left_stride, unsigned char * upred_ptr, unsigned char * vpred_ptr, int pred_stride"
 specialize vp8_build_intra_predictors_mbuv_s sse2 ssse3
 
-prototype void vp8_intra4x4_predict "unsigned char *src, int src_stride, int b_mode, unsigned char *dst, int dst_stride"
+prototype void vp8_intra4x4_predict "unsigned char *Above, unsigned char *yleft, int left_stride, int b_mode, unsigned char *dst, int dst_stride, unsigned char top_left"
 specialize vp8_intra4x4_predict media
 vp8_intra4x4_predict_media=vp8_intra4x4_predict_armv6
 
@@ -145,9 +164,8 @@ if [ "$CONFIG_POSTPROC" = "yes" ]; then
     specialize vp8_mbpost_proc_across_ip sse2
     vp8_mbpost_proc_across_ip_sse2=vp8_mbpost_proc_across_ip_xmm
 
-    prototype void vp8_post_proc_down_and_across "unsigned char *src, unsigned char *dst, int src_pitch, int dst_pitch, int rows, int cols, int flimit"
-    specialize vp8_post_proc_down_and_across mmx sse2
-    vp8_post_proc_down_and_across_sse2=vp8_post_proc_down_and_across_xmm
+    prototype void vp8_post_proc_down_and_across_mb_row "unsigned char *src, unsigned char *dst, int src_pitch, int dst_pitch, int cols, unsigned char *flimits, int size"
+    specialize vp8_post_proc_down_and_across_mb_row sse2
 
     prototype void vp8_plane_add_noise "unsigned char *s, char *noise, char blackclamp[16], char whiteclamp[16], char bothclamp[16], unsigned int w, unsigned int h, int pitch"
     specialize vp8_plane_add_noise mmx sse2
@@ -176,20 +194,24 @@ fi
 # Subpixel
 #
 prototype void vp8_sixtap_predict16x16 "unsigned char *src, int src_pitch, int xofst, int yofst, unsigned char *dst, int dst_pitch"
-specialize vp8_sixtap_predict16x16 mmx sse2 ssse3 media neon
+specialize vp8_sixtap_predict16x16 mmx sse2 ssse3 media neon dspr2
 vp8_sixtap_predict16x16_media=vp8_sixtap_predict16x16_armv6
+vp8_sixtap_predict16x16_dspr2=vp8_sixtap_predict16x16_dspr2
 
 prototype void vp8_sixtap_predict8x8 "unsigned char *src, int src_pitch, int xofst, int yofst, unsigned char *dst, int dst_pitch"
-specialize vp8_sixtap_predict8x8 mmx sse2 ssse3 media neon
+specialize vp8_sixtap_predict8x8 mmx sse2 ssse3 media neon dspr2
 vp8_sixtap_predict8x8_media=vp8_sixtap_predict8x8_armv6
+vp8_sixtap_predict8x8_dspr2=vp8_sixtap_predict8x8_dspr2
 
 prototype void vp8_sixtap_predict8x4 "unsigned char *src, int src_pitch, int xofst, int yofst, unsigned char *dst, int dst_pitch"
-specialize vp8_sixtap_predict8x4 mmx sse2 ssse3 media neon
+specialize vp8_sixtap_predict8x4 mmx sse2 ssse3 media neon dspr2
 vp8_sixtap_predict8x4_media=vp8_sixtap_predict8x4_armv6
+vp8_sixtap_predict8x4_dspr2=vp8_sixtap_predict8x4_dspr2
 
 prototype void vp8_sixtap_predict4x4 "unsigned char *src, int src_pitch, int xofst, int yofst, unsigned char *dst, int dst_pitch"
-specialize vp8_sixtap_predict4x4 mmx ssse3 media neon
+specialize vp8_sixtap_predict4x4 mmx ssse3 media neon dspr2
 vp8_sixtap_predict4x4_media=vp8_sixtap_predict4x4_armv6
+vp8_sixtap_predict4x4_dspr2=vp8_sixtap_predict4x4_dspr2
 
 prototype void vp8_bilinear_predict16x16 "unsigned char *src, int src_pitch, int xofst, int yofst, unsigned char *dst, int dst_pitch"
 specialize vp8_bilinear_predict16x16 mmx sse2 ssse3 media neon
@@ -275,23 +297,23 @@ vp8_variance_halfpixvar16x16_hv_media=vp8_variance_halfpixvar16x16_hv_armv6
 #
 # Single block SAD
 #
-prototype unsigned int vp8_sad4x4 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad"
+prototype unsigned int vp8_sad4x4 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad"
 specialize vp8_sad4x4 mmx sse2 neon
 vp8_sad4x4_sse2=vp8_sad4x4_wmt
 
-prototype unsigned int vp8_sad8x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad"
+prototype unsigned int vp8_sad8x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad"
 specialize vp8_sad8x8 mmx sse2 neon
 vp8_sad8x8_sse2=vp8_sad8x8_wmt
 
-prototype unsigned int vp8_sad8x16 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad"
+prototype unsigned int vp8_sad8x16 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad"
 specialize vp8_sad8x16 mmx sse2 neon
 vp8_sad8x16_sse2=vp8_sad8x16_wmt
 
-prototype unsigned int vp8_sad16x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad"
+prototype unsigned int vp8_sad16x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad"
 specialize vp8_sad16x8 mmx sse2 neon
 vp8_sad16x8_sse2=vp8_sad16x8_wmt
 
-prototype unsigned int vp8_sad16x16 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad"
+prototype unsigned int vp8_sad16x16 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad"
 specialize vp8_sad16x16 mmx sse2 sse3 media neon
 vp8_sad16x16_sse2=vp8_sad16x16_wmt
 vp8_sad16x16_media=vp8_sad16x16_armv6
@@ -299,59 +321,59 @@ vp8_sad16x16_media=vp8_sad16x16_armv6
 #
 # Multi-block SAD, comparing a reference to N blocks 1 pixel apart horizontally
 #
-prototype void vp8_sad4x4x3 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad4x4x3 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad4x4x3 sse3
 
-prototype void vp8_sad8x8x3 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad8x8x3 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad8x8x3 sse3
 
-prototype void vp8_sad8x16x3 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad8x16x3 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad8x16x3 sse3
 
-prototype void vp8_sad16x8x3 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad16x8x3 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad16x8x3 sse3 ssse3
 
-prototype void vp8_sad16x16x3 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad16x16x3 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad16x16x3 sse3 ssse3
 
 # Note the only difference in the following prototypes is that they return into
 # an array of short
-prototype void vp8_sad4x4x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
+prototype void vp8_sad4x4x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
 specialize vp8_sad4x4x8 sse4_1
 vp8_sad4x4x8_sse4_1=vp8_sad4x4x8_sse4
 
-prototype void vp8_sad8x8x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
+prototype void vp8_sad8x8x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
 specialize vp8_sad8x8x8 sse4_1
 vp8_sad8x8x8_sse4_1=vp8_sad8x8x8_sse4
 
-prototype void vp8_sad8x16x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
+prototype void vp8_sad8x16x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
 specialize vp8_sad8x16x8 sse4_1
 vp8_sad8x16x8_sse4_1=vp8_sad8x16x8_sse4
 
-prototype void vp8_sad16x8x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
+prototype void vp8_sad16x8x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
 specialize vp8_sad16x8x8 sse4_1
 vp8_sad16x8x8_sse4_1=vp8_sad16x8x8_sse4
 
-prototype void vp8_sad16x16x8 "const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
+prototype void vp8_sad16x16x8 "const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array"
 specialize vp8_sad16x16x8 sse4_1
 vp8_sad16x16x8_sse4_1=vp8_sad16x16x8_sse4
 
 #
 # Multi-block SAD, comparing a reference to N independent blocks
 #
-prototype void vp8_sad4x4x4d "const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad4x4x4d "const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad4x4x4d sse3
 
-prototype void vp8_sad8x8x4d "const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad8x8x4d "const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad8x8x4d sse3
 
-prototype void vp8_sad8x16x4d "const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad8x16x4d "const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad8x16x4d sse3
 
-prototype void vp8_sad16x8x4d "const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad16x8x4d "const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad16x8x4d sse3
 
-prototype void vp8_sad16x16x4d "const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array"
+prototype void vp8_sad16x16x4d "const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array"
 specialize vp8_sad16x16x4d sse3
 
 #
@@ -499,6 +521,14 @@ fi
 #
 prototype void vp8_yv12_copy_partial_frame "struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc"
 specialize vp8_yv12_copy_partial_frame neon
+
+#
+# Denoiser filter
+#
+if [ "$CONFIG_TEMPORAL_DENOISING" = "yes" ]; then
+    prototype int vp8_denoiser_filter "struct yv12_buffer_config* mc_running_avg, struct yv12_buffer_config* running_avg, struct macroblock* signal, unsigned int motion_magnitude2, int y_offset, int uv_offset"
+    specialize vp8_denoiser_filter sse2
+fi
 
 # End of encoder only functions
 fi

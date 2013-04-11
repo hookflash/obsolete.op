@@ -5,5 +5,5 @@
 /* tree. An additional intellectual property rights grant can be found */
 /* in the file PATENTS.  All contributing project authors may */
 /* be found in the AUTHORS file in the root of the source tree. */
-static const char* const cfg = "--target=x86-win32-vs9 --enable-pic --enable-error-concealment --disable-install-docs --disable-install-srcs --disable-examples --disable-internal-stats --disable-install-libs --disable-install-bins --enable-realtime-only --enable-static-msvcrt --as=yasm";
+static const char* const cfg = "--target=x86-win32-vs7 --enable-realtime-only --enable-external-build --enable-postproc --disable-install-srcs --enable-multi-res-encoding --enable-temporal-denoising --disable-vp9-encoder --disable-unit-tests --disable-install-docs --disable-examples";
 const char *vpx_codec_build_config(void) {return cfg;}

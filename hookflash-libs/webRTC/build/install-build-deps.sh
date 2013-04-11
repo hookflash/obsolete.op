@@ -13,6 +13,8 @@ usage() {
   echo "Options:"
   echo "--[no-]syms: enable or disable installation of debugging symbols"
   echo "--[no-]lib32: enable or disable installation of 32 bit libraries"
+  echo "--[no-]arm: enable or disable installation of arm cross toolchain"
+  echo "--no-prompt: silently select standard options/defaults"
   echo "Script will prompt interactively if options not given."
   exit 1
 }
@@ -24,22 +26,36 @@ do
   --no-syms)                do_inst_syms=0;;
   --lib32)                  do_inst_lib32=1;;
   --no-lib32)               do_inst_lib32=0;;
+  --arm)                    do_inst_arm=1;;
+  --no-arm)                 do_inst_arm=0;;
+  --no-prompt)              do_default=1
+                            do_quietly="-qq --assume-yes"
+    ;;
+  --unsupported)            do_unsupported=1;;
   *) usage;;
   esac
   shift
 done
 
-if ! egrep -q \
-    'Ubuntu (10\.04|10\.10|11\.04|11\.10|12\.04|lucid|maverick|natty|oneiric|precise)' \
-    /etc/issue; then
-  echo "Only Ubuntu 10.04 (lucid) through 12.04 (precise) are currently" \
-      "supported" >&2
-  exit 1
-fi
+ubuntu_versions="10\.04|10\.10|11\.04|11\.10|12\.04|12\.10"
+ubuntu_codenames="lucid|maverick|natty|oneiric|precise|quantal"
+ubuntu_issue="Ubuntu ($ubuntu_versions|$ubuntu_codenames)"
+# GCEL is an Ubuntu-derived VM image used on Google Compute Engine; /etc/issue
+# doesn't contain a version number so just trust that the user knows what
+# they're doing.
+gcel_issue="^GCEL"
 
-if ! uname -m | egrep -q "i686|x86_64"; then
-  echo "Only x86 architectures are currently supported" >&2
-  exit
+if [ 0 -eq "${do_unsupported-0}" ] ; then
+  if ! egrep -q "($ubuntu_issue|$gcel_issue)" /etc/issue; then
+    echo "ERROR: Only Ubuntu 10.04 (lucid) through 12.10 (quantal) are"\
+        "currently supported" >&2
+    exit 1
+  fi
+
+  if ! uname -m | egrep -q "i686|x86_64"; then
+    echo "Only x86 architectures are currently supported" >&2
+    exit
+  fi
 fi
 
 if [ "x$(id -u)" != x0 ]; then
@@ -49,43 +65,56 @@ if [ "x$(id -u)" != x0 ]; then
 fi
 
 # Packages needed for chromeos only
-chromeos_dev_list="libpulse-dev"
+chromeos_dev_list="libbluetooth-dev libpulse-dev"
 
 # Packages need for development
 dev_list="apache2.2-bin bison curl elfutils fakeroot flex g++ gperf
           language-pack-fr libapache2-mod-php5 libasound2-dev libbz2-dev
-          libcairo2-dev libcups2-dev libcurl4-gnutls-dev libdbus-glib-1-dev
-          libelf-dev libgconf2-dev libgl1-mesa-dev libglib2.0-dev
-          libglu1-mesa-dev libgnome-keyring-dev libgtk2.0-dev
-          libkrb5-dev libnspr4-dev libnss3-dev libpam0g-dev libsctp-dev
+          libcairo2-dev libcups2-dev libcurl4-gnutls-dev libelf-dev
+          libgconf2-dev libgl1-mesa-dev libglib2.0-dev libglu1-mesa-dev
+          libgnome-keyring-dev libgtk2.0-dev libkrb5-dev libnspr4-dev
+          libnss3-dev libpam0g-dev libpci-dev libsctp-dev libspeechd-dev
           libsqlite3-dev libssl-dev libudev-dev libwww-perl libxslt1-dev
-          libxss-dev libxt-dev libxtst-dev mesa-common-dev patch
-          perl php5-cgi pkg-config python python-cherrypy3 python-dev
-          python-psutil rpm ruby subversion ttf-dejavu-core ttf-indic-fonts
-          ttf-kochi-gothic ttf-kochi-mincho ttf-thai-tlwg wdiff git-core
+          libxss-dev libxt-dev libxtst-dev mesa-common-dev metacity patch perl
+          php5-cgi pkg-config python python-cherrypy3 python-dev python-psutil
+          rpm ruby subversion ttf-dejavu-core ttf-indic-fonts ttf-kochi-gothic
+          ttf-kochi-mincho ttf-thai-tlwg wdiff git-core
           $chromeos_dev_list"
+
+# 64-bit systems need a minimum set of 32-bit compat packages for the pre-built
+# NaCl binaries. These are always needed, regardless of whether or not we want
+# the full 32-bit "cross-compile" support (--lib32).
+if [ "$(uname -m)" = "x86_64" ]; then
+  dev_list="${dev_list} libc6-i386 lib32gcc1 lib32stdc++6"
+fi
 
 # Run-time libraries required by chromeos only
 chromeos_lib_list="libpulse0 libbz2-1.0 libcurl4-gnutls-dev"
 
 # Full list of required run-time libraries
-lib_list="libatk1.0-0 libc6 libasound2 libcairo2 libcups2 libdbus-glib-1-2
-          libexpat1 libfontconfig1 libfreetype6 libglib2.0-0 libgnome-keyring0
-          libgtk2.0-0 libpam0g libpango1.0-0 libpcre3 libpixman-1-0
-          libpng12-0 libstdc++6 libsqlite3-0 libudev0 libx11-6 libxau6 libxcb1
-          libxcomposite1 libxcursor1 libxdamage1 libxdmcp6 libxext6 libxfixes3
-          libxi6 libxinerama1 libxrandr2 libxrender1 libxtst6 zlib1g
-          $chromeos_lib_list"
+lib_list="libatk1.0-0 libc6 libasound2 libcairo2 libcups2 libexpat1
+          libfontconfig1 libfreetype6 libglib2.0-0 libgnome-keyring0
+          libgtk2.0-0 libpam0g libpango1.0-0 libpci3 libpcre3 libpixman-1-0
+          libpng12-0 libspeechd2 libstdc++6 libsqlite3-0 libudev0 libx11-6
+          libxau6 libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxdmcp6
+          libxext6 libxfixes3 libxi6 libxinerama1 libxrandr2 libxrender1
+          libxtst6 zlib1g $chromeos_lib_list"
 
 # Debugging symbols for all of the run-time libraries
-dbg_list="libatk1.0-dbg libc6-dbg libcairo2-dbg libdbus-glib-1-2-dbg
-          libfontconfig1-dbg libglib2.0-0-dbg libgtk2.0-0-dbg
-          libpango1.0-0-dbg libpcre3-dbg libpixman-1-0-dbg
-          libsqlite3-0-dbg
-          libx11-6-dbg libxau6-dbg libxcb1-dbg libxcomposite1-dbg
-          libxcursor1-dbg libxdamage1-dbg libxdmcp6-dbg libxext6-dbg
-          libxfixes3-dbg libxi6-dbg libxinerama1-dbg libxrandr2-dbg
-          libxrender1-dbg libxtst6-dbg zlib1g-dbg"
+dbg_list="libatk1.0-dbg libc6-dbg libcairo2-dbg libfontconfig1-dbg
+          libglib2.0-0-dbg libgtk2.0-0-dbg libpango1.0-0-dbg libpcre3-dbg
+          libpixman-1-0-dbg libsqlite3-0-dbg libx11-6-dbg libxau6-dbg
+          libxcb1-dbg libxcomposite1-dbg libxcursor1-dbg libxdamage1-dbg
+          libxdmcp6-dbg libxext6-dbg libxfixes3-dbg libxi6-dbg libxinerama1-dbg
+          libxrandr2-dbg libxrender1-dbg libxtst6-dbg zlib1g-dbg"
+
+# arm cross toolchain packages needed to build chrome on arm
+arm_list="libc6-armel-cross libc6-dev-armel-cross libgcc1-armel-cross
+          libgomp1-armel-cross linux-libc-dev-armel-cross
+          libgcc1-dbg-armel-cross libgomp1-dbg-armel-cross
+          binutils-arm-linux-gnueabi cpp-arm-linux-gnueabi
+          gcc-arm-linux-gnueabi g++-arm-linux-gnueabi
+          libmudflap0-dbg-armel-cross"
 
 # Plugin lists needed for tests.
 plugin_list="flashplugin-installer"
@@ -122,6 +151,9 @@ fi
 # The function will echo the user's selection followed by a newline character.
 # Users can abort the function by pressing CTRL-C. This will call "exit 1".
 yes_no() {
+  if [ 0 -ne "${do_default-0}" ] ; then
+    return $1
+  fi
   local c
   while :; do
     c="$(trap 'stty echo -iuclc icanon 2>/dev/null' EXIT INT TERM QUIT
@@ -169,6 +201,26 @@ else
   dbg_list=
 fi
 
+# When cross building for arm on 64-bit systems the host binaries
+# that are part of v8 need to be compiled with -m32 which means
+# that basic multilib support is needed.
+if [ "$(uname -m)" = "x86_64" ]; then
+  arm_list="$arm_list g++-multilib"
+fi
+
+if test "$do_inst_arm" = "1"; then
+  . /etc/lsb-release
+  if test "$DISTRIB_CODENAME" != "precise"; then
+    echo "ERROR: Installing the ARM cross toolchain is only available on" \
+         "Ubuntu precise." >&2
+    exit 1
+  fi
+  echo "Installing ARM cross toolchain."
+else
+  echo "Skipping installation of ARM cross toolchain."
+  arm_list=
+fi
+
 sudo apt-get update
 
 # We initially run "apt-get" with the --reinstall option and parse its output.
@@ -176,7 +228,7 @@ sudo apt-get update
 # without accidentally promoting any packages from "auto" to "manual".
 # We then re-run "apt-get" with just the list of missing packages.
 echo "Finding missing packages..."
-packages="${dev_list} ${lib_list} ${dbg_list} ${plugin_list}"
+packages="${dev_list} ${lib_list} ${dbg_list} ${plugin_list} ${arm_list}"
 # Intentionally leaving $packages unquoted so it's more readable.
 echo "Packages required: " $packages
 echo
@@ -194,7 +246,7 @@ elif [ $? -eq 1 ]; then
     echo "No missing packages, and the packages are up-to-date."
   else
     echo "Installing missing packages: $new_list."
-    sudo apt-get install ${new_list}
+    sudo apt-get install ${do_quietly-} ${new_list}
   fi
   echo
 else
@@ -214,27 +266,34 @@ fi
 
 # Install 32bit backwards compatibility support for 64bit systems
 if [ "$(uname -m)" = "x86_64" ]; then
-  if test "$do_inst_lib32" = ""
-  then
-    echo "We no longer recommend that you use this script to install"
-    echo "32bit libraries on a 64bit system. Instead, consider using"
-    echo "the install-chroot.sh script to help you set up a 32bit"
-    echo "environment for building and testing 32bit versions of Chrome."
-    echo
-    echo "If you nonetheless want to try installing 32bit libraries"
-    echo "directly, you can do so by explicitly passing the --lib32"
-    echo "option to install-build-deps.sh."
-  fi
   if test "$do_inst_lib32" != "1"
   then
-    echo "Exiting without installing any 32bit libraries."
+    echo "NOTE: If you were expecting the option to install 32bit libs,"
+    echo "please run with the --lib32 flag."
+    echo
+    echo "Installation complete."
     exit 0
   fi
 
-  echo "N.B. the code for installing 32bit libraries on a 64bit"
-  echo "     system is no longer actively maintained and might"
-  echo "     not work with modern versions of Ubuntu or Debian."
+  echo "WARNING"
   echo
+  echo "We no longer recommend that you use this script to install"
+  echo "32bit libraries on a 64bit system. Instead, consider using the"
+  echo "install-chroot.sh script to help you set up a 32bit environment"
+  echo "for building and testing 32bit versions of Chrome."
+  echo
+  echo "The code for installing 32bit libraries on a 64bit system is"
+  echo "unmaintained and might not work with modern versions of Ubuntu"
+  echo "or Debian."
+  echo
+  echo -n "Are you sure you want to proceed (y/N) "
+  if yes_no 1; then
+    do_inst_lib32=1
+  fi
+  if test "$do_inst_lib32" != "1"
+  then
+    exit 0
+  fi
 
   # Standard 32bit compatibility libraries
   echo "First, installing the limited existing 32-bit support..."
@@ -245,7 +304,7 @@ if [ "$(uname -m)" = "x86_64" ]; then
   else
     cmp_list="${cmp_list} lib32readline5-dev"
   fi
-  sudo apt-get install $cmp_list
+  sudo apt-get install ${do_quietly-} $cmp_list
 
   tmp=/tmp/install-32bit.$$
   trap 'rm -rf "${tmp}"' EXIT INT TERM QUIT

@@ -9,17 +9,19 @@
 MY_WEBRTC_ROOT_PATH := $(call my-dir)
 
 # voice
-include $(MY_WEBRTC_ROOT_PATH)/src/common_audio/resampler/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/common_audio/signal_processing/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/common_audio/vad/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/aec/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/aecm/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/agc/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/ns/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/audio_processing/utility/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/modules/utility/source/Android.mk
-include $(MY_WEBRTC_ROOT_PATH)/src/system_wrappers/source/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/common_audio/signal_processing/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/common_audio/vad/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/aec/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/aecm/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/agc/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/ns/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/audio_processing/utility/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/modules/utility/source/Android.mk
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/system_wrappers/source/Android.mk
+
+# test support
+include $(MY_WEBRTC_ROOT_PATH)/webrtc/test/Android.mk
 
 # build .so
 LOCAL_PATH := $(call my-dir)
@@ -33,7 +35,6 @@ LOCAL_MODULE_TAGS := optional
 
 LOCAL_WHOLE_STATIC_LIBRARIES := \
     libwebrtc_spl \
-    libwebrtc_resampler \
     libwebrtc_apm \
     libwebrtc_apm_utility \
     libwebrtc_vad \
@@ -47,7 +48,8 @@ LOCAL_WHOLE_STATIC_LIBRARIES := \
 ifeq ($(WEBRTC_BUILD_NEON_LIBS),true)
 LOCAL_WHOLE_STATIC_LIBRARIES += \
     libwebrtc_aecm_neon \
-    libwebrtc_ns_neon
+    libwebrtc_ns_neon \
+    libwebrtc_spl_neon
 endif
 
 LOCAL_STATIC_LIBRARIES := \

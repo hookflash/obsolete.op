@@ -1,12 +1,13 @@
 Name: libjpeg-turbo
 URL: http://sourceforge.net/projects/libjpeg-turbo/
-Version: 1.2
+Version: 1.2.80
+License: Custom license
 License File: LICENSE.txt
 Security Critical: yes
 
 Description:
 This consists of three components:
-* A partial copy of libjpeg-turbo 1.2 (r733);
+* A partial copy of libjpeg-turbo 1.2.80 (r856);
 * A build file (libjpeg.gyp), and;
 * Patched header files used by Chromium.
 

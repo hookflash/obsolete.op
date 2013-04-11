@@ -20,7 +20,7 @@
 #include "postproc.h"
 #include "variance.h"
 #include "vpx_mem/vpx_mem.h"
-#include "vpx_rtcd.h"
+#include "vp8_rtcd.h"
 #include "vpx_scale/yv12config.h"
 
 #include <limits.h>
@@ -118,7 +118,7 @@ static unsigned int int_sqrt(unsigned int x)
 #define USE_SSD
 static void multiframe_quality_enhance_block
 (
-    int blksize, /* Currently only values supported are 16, 8, 4 */
+    int blksize, /* Currently only values supported are 16, 8 */
     int qcurr,
     int qprev,
     unsigned char *y,
@@ -140,9 +140,7 @@ static void multiframe_quality_enhance_block
     int uvblksize = blksize >> 1;
     int qdiff = qcurr - qprev;
 
-    int i, j;
-    unsigned char *yp;
-    unsigned char *ydp;
+    int i;
     unsigned char *up;
     unsigned char *udp;
     unsigned char *vp;
@@ -162,12 +160,12 @@ static void multiframe_quality_enhance_block
         vsad = (vp8_variance8x8(v, uv_stride, vd, uvd_stride, &sse));
         vsad = (sse + 32)>>6;
 #else
-        sad = (vp8_sad16x16(y, y_stride, yd, yd_stride, INT_MAX)+128)>>8;
-        usad = (vp8_sad8x8(u, uv_stride, ud, uvd_stride, INT_MAX)+32)>>6;
-        vsad = (vp8_sad8x8(v, uv_stride, vd, uvd_stride, INT_MAX)+32)>>6;
+        sad = (vp8_sad16x16(y, y_stride, yd, yd_stride, UINT_MAX) + 128) >> 8;
+        usad = (vp8_sad8x8(u, uv_stride, ud, uvd_stride, UINT_MAX) + 32) >> 6;
+        vsad = (vp8_sad8x8(v, uv_stride, vd, uvd_stride, UINT_MAX)+ 32) >> 6;
 #endif
     }
-    else if (blksize == 8)
+    else /* if (blksize == 8) */
     {
         actd = (vp8_variance8x8(yd, yd_stride, VP8_ZEROS, 0, &sse)+32)>>6;
         act = (vp8_variance8x8(y, y_stride, VP8_ZEROS, 0, &sse)+32)>>6;
@@ -179,16 +177,16 @@ static void multiframe_quality_enhance_block
         vsad = (vp8_variance4x4(v, uv_stride, vd, uvd_stride, &sse));
         vsad = (sse + 8)>>4;
 #else
-        sad = (vp8_sad8x8(y, y_stride, yd, yd_stride, INT_MAX)+32)>>6;
-        usad = (vp8_sad4x4(u, uv_stride, ud, uvd_stride, INT_MAX)+8)>>4;
-        vsad = (vp8_sad4x4(v, uv_stride, vd, uvd_stride, INT_MAX)+8)>>4;
+        sad = (vp8_sad8x8(y, y_stride, yd, yd_stride, UINT_MAX) + 32) >> 6;
+        usad = (vp8_sad4x4(u, uv_stride, ud, uvd_stride, UINT_MAX) + 8) >> 4;
+        vsad = (vp8_sad4x4(v, uv_stride, vd, uvd_stride, UINT_MAX) + 8) >> 4;
 #endif
     }
 
     actrisk = (actd > act * 5);
 
-    /* thr = qdiff/8 + log2(act) + log4(qprev) */
-    thr = (qdiff >> 3);
+    /* thr = qdiff/16 + log2(act) + log4(qprev) */
+    thr = (qdiff >> 4);
     while (actd >>= 1) thr++;
     while (qprev >>= 2) thr++;
 
@@ -282,7 +280,7 @@ void vp8_multiframe_quality_enhance
 
     FRAME_TYPE frame_type = cm->frame_type;
     /* Point at base of Mb MODE_INFO list has motion vectors etc */
-    const MODE_INFO *mode_info_context = cm->mi;
+    const MODE_INFO *mode_info_context = cm->show_frame_mi;
     int mb_row;
     int mb_col;
     int totmap, map[4];

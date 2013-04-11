@@ -1215,12 +1215,12 @@
 		0063D37616CB2BE900E6DB4D /* libyuv.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libyuv.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libyuv/libyuv.xcodeproj"; sourceTree = "<group>"; };
 		0063D37C16CB2C0000E6DB4D /* libvpx.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvpx.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libvpx/libvpx.xcodeproj"; sourceTree = "<group>"; };
 		0063D38416CB2C0900E6DB4D /* libjpeg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg.xcodeproj; path = "../../../../hookflash-libs/webRTC/third_party/libjpeg_turbo/libjpeg.xcodeproj"; sourceTree = "<group>"; };
-		0063D38C16CB2C1200E6DB4D /* video_engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = video_engine.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/video_engine/video_engine.xcodeproj"; sourceTree = "<group>"; };
-		0063D3D816CB2C2F00E6DB4D /* voice_engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = voice_engine.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/voice_engine/voice_engine.xcodeproj"; sourceTree = "<group>"; };
-		0063D3EC16CB2C4E00E6DB4D /* system_wrappers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/system_wrappers/source/system_wrappers.xcodeproj"; sourceTree = "<group>"; };
-		0063D3F716CB2D4500E6DB4D /* common_video.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/common_video/common_video.xcodeproj"; sourceTree = "<group>"; };
-		0063D40A16CB2D4D00E6DB4D /* common_audio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/common_audio/common_audio.xcodeproj"; sourceTree = "<group>"; };
-		0063D42416CB2D5500E6DB4D /* modules.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules.xcodeproj; path = "../../../../hookflash-libs/webRTC/src/modules/modules.xcodeproj"; sourceTree = "<group>"; };
+		0063D38C16CB2C1200E6DB4D /* video_engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = video_engine.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/video_engine/video_engine.xcodeproj"; sourceTree = "<group>"; };
+		0063D3D816CB2C2F00E6DB4D /* voice_engine.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = voice_engine.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/voice_engine/voice_engine.xcodeproj"; sourceTree = "<group>"; };
+		0063D3EC16CB2C4E00E6DB4D /* system_wrappers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = system_wrappers.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/system_wrappers.xcodeproj"; sourceTree = "<group>"; };
+		0063D3F716CB2D4500E6DB4D /* common_video.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/common_video/common_video.xcodeproj"; sourceTree = "<group>"; };
+		0063D40A16CB2D4D00E6DB4D /* common_audio.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_audio.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/common_audio/common_audio.xcodeproj"; sourceTree = "<group>"; };
+		0063D42416CB2D5500E6DB4D /* modules.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = modules.xcodeproj; path = "../../../../hookflash-libs/webRTC/webrtc/modules/modules.xcodeproj"; sourceTree = "<group>"; };
 		0063D5B716CB328900E6DB4D /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		0063D5B916CB329000E6DB4D /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		0063D5BB16CB329E00E6DB4D /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
@@ -2842,19 +2842,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/video_engine/include",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2891,19 +2891,19 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/src/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/src/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/src/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/interface",
-					"../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface",
-					"../../../../hookflash-libs/webRTC/src/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/src/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/src",
-					"../../../../hookflash-libs/webRTC/src/video_engine/include",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
