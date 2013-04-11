@@ -1,9 +1,0 @@
-#include <iostream>
-#define BOOST_DISABLE_ASSERTS 1
-#include "boost/smart_ptr.hpp"
-
-using namespace std;
-
-void printStuff(const std::wstring& str) {
-	cout << "STUFF = " << str << endl;
-}
