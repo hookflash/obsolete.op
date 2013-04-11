@@ -314,6 +314,9 @@
 								<option id="com.qnx.qcc.option.compiler.defines.390662661" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
+								<option id="com.qnx.qcc.option.compiler.ccoptions.819073916" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+									<listOptionValue builtIn="false" value="-march=i686"/>
+								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.800881411" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1553780641" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">

@@ -28,6 +28,7 @@
 #include "video_capture_impl.h"
 #include "video_render_bb_impl.h"
 #include "bb_window_wrapper.h"
+#include "video_render.h"
 
 using namespace std;
 using namespace webrtc;
@@ -38,7 +39,7 @@ static bool shutdown;
 static screen_context_t screen_ctx;
 static screen_window_t vf_win = NULL;
 static const char vf_group[] = "viewfinder_window_group";
-const char* trace_file_name;
+const char* trace_file_name = "";
 
 
 //----------------------------------------------
@@ -82,6 +83,7 @@ bool test_thread(ThreadObj obj)
 
     VideoCaptureModule* capture_module;
     VideoCaptureModule::DeviceInfo* capture_info;
+    VideoRender* render_module;
 
     char name[256];
     char unique_id[256];
@@ -98,12 +100,19 @@ bool test_thread(ThreadObj obj)
 
     capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
 
+    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
+    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
+
     usleep(1000000);
 
     capture_module->StartCapture(capability);
+    render_module->StartRender(0);
 
     usleep(10000000);
 
+    render_module->StopRender(0);
+    render_module->DeleteIncomingRenderStream(0);
+    VideoRender::DestroyVideoRender(render_module);
     capture_module->StopCapture();
 
     Trace::ReturnTrace();

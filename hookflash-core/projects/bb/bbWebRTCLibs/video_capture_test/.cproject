@@ -38,7 +38,6 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
 								</option>
@@ -75,9 +74,6 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1088829621" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Debug}&quot;"/>
@@ -174,9 +170,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1142831129" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.2014039747" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -210,9 +205,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1787362062" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Release}&quot;"/>
@@ -309,9 +301,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1565910077" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.755333514" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -344,9 +335,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.94342882" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Profile}&quot;"/>
@@ -442,9 +430,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1291243578" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1841056743" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -477,9 +464,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1502655147" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Coverage}&quot;"/>
@@ -573,9 +557,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.2022800639" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.318873448" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -607,9 +590,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.281053564" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Debug}&quot;"/>
@@ -704,9 +684,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.59830825" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.636461625" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -739,9 +718,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1727337270" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Profile}&quot;"/>
@@ -836,9 +812,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/source"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1469452202" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.147928849" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -871,9 +846,6 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
-									<listOptionValue builtIn="false" value="GLESv2"/>
-									<listOptionValue builtIn="false" value="GLview"/>
-									<listOptionValue builtIn="false" value="EGL"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1321784709" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Coverage}&quot;"/>
