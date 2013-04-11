@@ -26,6 +26,9 @@
 #include "thread_wrapper.h"
 #include "video_capture.h"
 #include "video_capture_impl.h"
+#include "video_render_bb_impl.h"
+#include "bb_window_wrapper.h"
+#include "video_render.h"
 
 using namespace std;
 using namespace webrtc;
@@ -36,7 +39,12 @@ static bool shutdown;
 static screen_context_t screen_ctx;
 static screen_window_t vf_win = NULL;
 static const char vf_group[] = "viewfinder_window_group";
-const char* trace_file_name;
+const char* trace_file_name = "";
+
+
+//----------------------------------------------
+VideoRenderBlackBerry* blackberryRenderer;
+webrtc::BlackberryWindowWrapper* wrapper;
 
 bool test_thread(ThreadObj obj);
 
@@ -75,6 +83,7 @@ bool test_thread(ThreadObj obj)
 
     VideoCaptureModule* capture_module;
     VideoCaptureModule::DeviceInfo* capture_info;
+    VideoRender* render_module;
 
     char name[256];
     char unique_id[256];
@@ -91,12 +100,19 @@ bool test_thread(ThreadObj obj)
 
     capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
 
+    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
+    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
+
     usleep(1000000);
 
     capture_module->StartCapture(capability);
+    render_module->StartRender(0);
 
     usleep(10000000);
 
+    render_module->StopRender(0);
+    render_module->DeleteIncomingRenderStream(0);
+    VideoRender::DestroyVideoRender(render_module);
     capture_module->StopCapture();
 
     Trace::ReturnTrace();
@@ -157,13 +173,18 @@ handle_navigator_event(bps_event_t *event) {
     fprintf(stderr,"\n");
 }
 
+void render()
+{
+  wrapper->Render();
+}
+
 static void
 handle_event()
 {
     int domain;
 
     bps_event_t *event = NULL;
-    if (BPS_SUCCESS != bps_get_event(&event, -1)) {
+    if (BPS_SUCCESS != bps_get_event(&event, 0)) {
         fprintf(stderr, "bps_get_event() failed\n");
         return;
     }
@@ -174,6 +195,9 @@ handle_event()
         } else if (domain == screen_get_domain()) {
             handle_screen_event(event);
         }
+    }
+    else {
+      render();
     }
 }
 
@@ -196,6 +220,45 @@ main(int argc, char **argv)
     screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
     screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
 
+
+    //---------------------------------------------------------------------------------------------------
+    // The video window.
+    screen_window_t video_display_win;
+    int status = screen_create_window_type(&video_display_win, screen_ctx, SCREEN_EMBEDDED_WINDOW);
+    status = screen_join_window_group(video_display_win, vf_group);
+    status = screen_set_window_property_iv(video_display_win, SCREEN_PROPERTY_USAGE, &usage);
+    status = screen_create_window_buffers(video_display_win, 1);
+
+    int vid_pos[2] = { 0, 0 };
+    status = screen_set_window_property_iv(video_display_win, SCREEN_PROPERTY_POSITION, vid_pos);
+    int vid_size[2] = { 640, 480 };
+    status = screen_set_window_property_iv(video_display_win, SCREEN_PROPERTY_SIZE, vid_size);
+    int vid_z[1] = { 10 };
+    status = screen_set_window_property_iv(video_display_win, SCREEN_PROPERTY_ZORDER, vid_z);
+
+    screen_buffer_t video_buf = NULL;
+    int video_rect[4] = { 0, 0, 0, 0 };
+    status = screen_get_window_property_pv(video_display_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&video_buf);
+    status = screen_get_window_property_iv(video_display_win, SCREEN_PROPERTY_BUFFER_SIZE, video_rect+2);
+
+//    int video_attribs[] = { SCREEN_BLIT_COLOR, 0x0000ffff, SCREEN_BLIT_END };
+//    status = screen_fill(screen_ctx, video_buf, video_attribs);
+//    status = screen_post_window(video_display_win, video_buf, 1, video_rect, 0);
+
+    //---------------------------------------------------------------------------------------------------
+    wrapper = new webrtc::BlackberryWindowWrapper(screen_win, screen_ctx, vf_group);
+    blackberryRenderer = new VideoRenderBlackBerry(
+      42,                         // ID - anything
+      kRenderDefault,             // Does this even matter?
+      (void*) wrapper,
+      true);                      // Full screen
+
+    VideoRenderCallback* mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
+
+
+
+
+    //---------------------------------------------------------------------------------------------------
     /* Fill the screen buffer with blue */
     int attribs[] = { SCREEN_BLIT_COLOR, 0xff0000ff, SCREEN_BLIT_END };
     screen_fill(screen_ctx, screen_buf, attribs);
