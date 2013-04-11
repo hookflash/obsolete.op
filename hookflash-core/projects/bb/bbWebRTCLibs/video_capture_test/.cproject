@@ -38,6 +38,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.584426646" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.925014024" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -168,6 +170,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1142831129" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.2014039747" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -297,6 +301,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1565910077" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.755333514" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -424,6 +430,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1291243578" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1841056743" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -549,6 +557,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.2022800639" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.318873448" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -674,6 +684,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.59830825" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.636461625" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -800,6 +812,8 @@
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/interface"/>
 									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/main/source"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
+									<listOptionValue builtIn="false" value="../../../../../../hookflash-libs/webRTC/src/modules/video_capture/interface"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1469452202" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.147928849" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
