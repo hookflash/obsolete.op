@@ -7,38 +7,17 @@
  *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
-#if 0
+
 #include <cassert>
+#include <string.h>
 
 #include "audio_device_utility.h"
-#include "audio_device_alsa_linux.h"
+#include "audio_device_bb.h"
 #include "audio_device_config.h"
 
 #include "event_wrapper.h"
 #include "trace.h"
 #include "thread_wrapper.h"
-
-
-webrtc_adm_linux_alsa::AlsaSymbolTable AlsaSymbolTable;
-
-// Accesses ALSA functions through our late-binding symbol table instead of
-// directly. This way we don't have to link to libasound, which means our binary
-// will work on systems that don't have it.
-#define LATE(sym) \
-  LATESYM_GET(webrtc_adm_linux_alsa::AlsaSymbolTable, &AlsaSymbolTable, sym)
-
-// Redefine these here to be able to do late-binding
-#undef snd_ctl_card_info_alloca
-#define snd_ctl_card_info_alloca(ptr) \
-        do { *ptr = (snd_ctl_card_info_t *) \
-            __builtin_alloca (LATE(snd_ctl_card_info_sizeof)()); \
-            memset(*ptr, 0, LATE(snd_ctl_card_info_sizeof)()); } while (0)
-
-#undef snd_pcm_info_alloca
-#define snd_pcm_info_alloca(pInfo) \
-       do { *pInfo = (snd_pcm_info_t *) \
-       __builtin_alloca (LATE(snd_pcm_info_sizeof)()); \
-       memset(*pInfo, 0, LATE(snd_pcm_info_sizeof)()); } while (0)
 
 // snd_lib_error_handler_t
 void WebrtcAlsaErrorHandler(const char *file,
@@ -50,7 +29,7 @@ void WebrtcAlsaErrorHandler(const char *file,
 namespace webrtc
 {
 static const unsigned int ALSA_PLAYOUT_FREQ = 48000;
-static const unsigned int ALSA_PLAYOUT_CH = 2;
+static const unsigned int ALSA_PLAYOUT_CH = 1;
 static const unsigned int ALSA_PLAYOUT_LATENCY = 40*1000; // in us
 static const unsigned int ALSA_CAPTURE_FREQ = 48000;
 static const unsigned int ALSA_CAPTURE_CH = 2;
@@ -62,7 +41,7 @@ static const unsigned int ALSA_CAPTURE_WAIT_TIMEOUT = 5; // in ms
 #define FUNC_GET_DEVICE_NAME 1
 #define FUNC_GET_DEVICE_NAME_FOR_AN_ENUM 2
 
-AudioDeviceLinuxALSA::AudioDeviceLinuxALSA(const WebRtc_Word32 id) :
+AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _ptrAudioBuffer(NULL),
     _critSect(*CriticalSectionWrapper::CreateCriticalSection()),
     _ptrThreadRec(NULL),
@@ -70,19 +49,18 @@ AudioDeviceLinuxALSA::AudioDeviceLinuxALSA(const WebRtc_Word32 id) :
     _recThreadID(0),
     _playThreadID(0),
     _id(id),
-    _mixerManager(id),
     _inputDeviceIndex(0),
     _outputDeviceIndex(0),
     _inputDeviceIsSpecified(false),
     _outputDeviceIsSpecified(false),
-    _handleRecord(NULL),
-    _handlePlayout(NULL),
-    _recordingBuffersizeInFrame(0),
-    _recordingPeriodSizeInFrame(0),
-    _playoutBufferSizeInFrame(0),
-    _playoutPeriodSizeInFrame(0),
-    _recordingBufferSizeIn10MS(0),
-    _playoutBufferSizeIn10MS(0),
+//    _handleRecord(NULL),
+//    _handlePlayout(NULL),
+//    _recordingBuffersizeInFrame(0),
+//    _recordingPeriodSizeInFrame(0),
+//    _playoutBufferSizeInFrame(0),
+//    _playoutPeriodSizeInFrame(0),
+//    _recordingBufferSizeIn10MS(0),
+//    _playoutBufferSizeIn10MS(0),
     _recordingFramesIn10MS(0),
     _playoutFramesIn10MS(0),
     _recordingFreq(ALSA_CAPTURE_FREQ),
@@ -100,9 +78,13 @@ AudioDeviceLinuxALSA::AudioDeviceLinuxALSA(const WebRtc_Word32 id) :
     _playing(false),
     _recIsInitialized(false),
     _playIsInitialized(false),
+    _recordingDeviceIsSpecified(false),
+    _playoutDeviceIsSpecified(false),
+    _micIsInitialized(false),
+    _speakerIsInitialized(false),
     _AGC(false),
-    _recordingDelay(0),
-    _playoutDelay(0),
+//    _recordingDelay(0),
+//    _playoutDelay(0),
     _writeErrors(0),
     _playWarning(0),
     _playError(0),
@@ -116,10 +98,10 @@ AudioDeviceLinuxALSA::AudioDeviceLinuxALSA(const WebRtc_Word32 id) :
 }
 
 // ----------------------------------------------------------------------------
-//  AudioDeviceLinuxALSA - dtor
+//  AudioDeviceBB - dtor
 // ----------------------------------------------------------------------------
 
-AudioDeviceLinuxALSA::~AudioDeviceLinuxALSA()
+AudioDeviceBB::~AudioDeviceBB()
 {
     WEBRTC_TRACE(kTraceMemory, kTraceAudioDevice, _id,
                  "%s destroyed", __FUNCTION__);
@@ -140,7 +122,7 @@ AudioDeviceLinuxALSA::~AudioDeviceLinuxALSA()
     delete &_critSect;
 }
 
-void AudioDeviceLinuxALSA::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer)
+void AudioDeviceBB::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer)
 {
 
     CriticalSectionScoped lock(&_critSect);
@@ -156,27 +138,17 @@ void AudioDeviceLinuxALSA::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer)
     _ptrAudioBuffer->SetPlayoutChannels(0);
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::ActiveAudioLayer(
+WebRtc_Word32 AudioDeviceBB::ActiveAudioLayer(
     AudioDeviceModule::AudioLayer& audioLayer) const
 {
-    audioLayer = AudioDeviceModule::kLinuxAlsaAudio;
+    audioLayer = AudioDeviceModule::kPlatformDefaultAudio;
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::Init()
+WebRtc_Word32 AudioDeviceBB::Init()
 {
 
     CriticalSectionScoped lock(&_critSect);
-
-    // Load libasound
-    if (!AlsaSymbolTable.Load())
-    {
-        // Alsa is not installed on
-        // this system
-        WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
-                   "  failed to load symbol table");
-        return -1;
-    }
 
     if (_initialized)
     {
@@ -193,7 +165,7 @@ WebRtc_Word32 AudioDeviceLinuxALSA::Init()
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::Terminate()
+WebRtc_Word32 AudioDeviceBB::Terminate()
 {
 
     if (!_initialized)
@@ -202,8 +174,6 @@ WebRtc_Word32 AudioDeviceLinuxALSA::Terminate()
     }
 
     CriticalSectionScoped lock(&_critSect);
-
-    _mixerManager.Close();
 
     // RECORDING
     if (_ptrThreadRec)
@@ -256,158 +226,119 @@ WebRtc_Word32 AudioDeviceLinuxALSA::Terminate()
     return 0;
 }
 
-bool AudioDeviceLinuxALSA::Initialized() const
+bool AudioDeviceBB::Initialized() const
 {
     return (_initialized);
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::SpeakerIsAvailable(bool& available)
 {
 
-    bool wasInitialized = _mixerManager.SpeakerIsInitialized();
-
-    // Make an attempt to open up the
-    // output mixer corresponding to the currently selected output device.
-    //
-    if (!wasInitialized && InitSpeaker() == -1)
-    {
-        available = false;
-        return 0;
-    }
-
-    // Given that InitSpeaker was successful, we know that a valid speaker
-    // exists
     available = true;
-
-    // Close the initialized output mixer
-    //
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseSpeaker();
-    }
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::InitSpeaker()
+WebRtc_Word32 AudioDeviceBB::InitSpeaker()
 {
 
     CriticalSectionScoped lock(&_critSect);
 
-    if (_playing)
-    {
+    if (!_initialized) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Not initialized");
         return -1;
     }
 
-    char devName[kAdmMaxDeviceNameSize] = {0};
-    GetDevicesInfo(2, true, _outputDeviceIndex, devName, kAdmMaxDeviceNameSize);
-    return _mixerManager.OpenSpeaker(devName);
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneIsAvailable(bool& available)
-{
-
-    bool wasInitialized = _mixerManager.MicrophoneIsInitialized();
-
-    // Make an attempt to open up the
-    // input mixer corresponding to the currently selected output device.
-    //
-    if (!wasInitialized && InitMicrophone() == -1)
-    {
-        available = false;
-        return 0;
+    if (_playing) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Cannot init speaker when playing");
+        return -1;
     }
 
-    // Given that InitMicrophone was successful, we know that a valid
-    // microphone exists
+    if (!_playoutDeviceIsSpecified) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Playout device is not specified");
+        return -1;
+    }
+
+    _speakerIsInitialized = true;
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::MicrophoneIsAvailable(bool& available)
+{
+
     available = true;
 
-    // Close the initialized input mixer
-    //
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseMicrophone();
-    }
-
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::InitMicrophone()
+WebRtc_Word32 AudioDeviceBB::InitMicrophone()
 {
 
-    CriticalSectionScoped lock(&_critSect);
+    CriticalSectionScoped lock(_critSect);
 
-    if (_recording)
-    {
+    if (!_initialized) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Not initialized");
         return -1;
     }
 
-    char devName[kAdmMaxDeviceNameSize] = {0};
-    GetDevicesInfo(2, false, _inputDeviceIndex, devName, kAdmMaxDeviceNameSize);
-    return _mixerManager.OpenMicrophone(devName);
-}
-
-bool AudioDeviceLinuxALSA::SpeakerIsInitialized() const
-{
-    return (_mixerManager.SpeakerIsInitialized());
-}
-
-bool AudioDeviceLinuxALSA::MicrophoneIsInitialized() const
-{
-    return (_mixerManager.MicrophoneIsInitialized());
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerVolumeIsAvailable(bool& available)
-{
-
-    bool wasInitialized = _mixerManager.SpeakerIsInitialized();
-
-    // Make an attempt to open up the
-    // output mixer corresponding to the currently selected output device.
-    if (!wasInitialized && InitSpeaker() == -1)
-    {
-        // If we end up here it means that the selected speaker has no volume
-        // control.
-        available = false;
-        return 0;
-    }
-
-    // Given that InitSpeaker was successful, we know that a volume control
-    // exists
-    available = true;
-
-    // Close the initialized output mixer
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseSpeaker();
-    }
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SetSpeakerVolume(WebRtc_UWord32 volume)
-{
-
-    return (_mixerManager.SetSpeakerVolume(volume));
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerVolume(WebRtc_UWord32& volume) const
-{
-
-    WebRtc_UWord32 level(0);
-
-    if (_mixerManager.SpeakerVolume(level) == -1)
-    {
+    if (_recording) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Cannot init mic when recording");
         return -1;
     }
 
-    volume = level;
-    
+    if (!_recordingDeviceIsSpecified) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
+                     _id, "  Recording device is not specified");
+        return -1;
+    }
+
+    _micIsInitialized = true;
+
     return 0;
 }
 
+bool AudioDeviceBB::SpeakerIsInitialized() const
+{
+    return _speakerIsInitialized;
+}
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetWaveOutVolume(WebRtc_UWord16 volumeLeft,
+bool AudioDeviceBB::MicrophoneIsInitialized() const
+{
+    return _micIsInitialized;
+}
+
+WebRtc_Word32 AudioDeviceBB::SpeakerVolumeIsAvailable(bool& available)
+{
+
+    available = false;
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::SetSpeakerVolume(WebRtc_UWord32 volume)
+{
+
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
+
+WebRtc_Word32 AudioDeviceBB::SpeakerVolume(WebRtc_UWord32& volume) const
+{
+
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
+
+
+WebRtc_Word32 AudioDeviceBB::SetWaveOutVolume(WebRtc_UWord16 volumeLeft,
                                                      WebRtc_UWord16 volumeRight)
 {
 
@@ -416,7 +347,7 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetWaveOutVolume(WebRtc_UWord16 volumeLeft,
     return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::WaveOutVolume(
+WebRtc_Word32 AudioDeviceBB::WaveOutVolume(
     WebRtc_UWord16& /*volumeLeft*/,
     WebRtc_UWord16& /*volumeRight*/) const
 {
@@ -426,357 +357,179 @@ WebRtc_Word32 AudioDeviceLinuxALSA::WaveOutVolume(
     return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MaxSpeakerVolume(
+WebRtc_Word32 AudioDeviceBB::MaxSpeakerVolume(
     WebRtc_UWord32& maxVolume) const
 {
 
-    WebRtc_UWord32 maxVol(0);
-
-    if (_mixerManager.MaxSpeakerVolume(maxVol) == -1)
-    {
-        return -1;
-    }
-
-    maxVolume = maxVol;
-    
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MinSpeakerVolume(
+WebRtc_Word32 AudioDeviceBB::MinSpeakerVolume(
     WebRtc_UWord32& minVolume) const
 {
 
-    WebRtc_UWord32 minVol(0);
-
-    if (_mixerManager.MinSpeakerVolume(minVol) == -1)
-    {
-        return -1;
-    }
-
-    minVolume = minVol;
-    
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerVolumeStepSize(
+WebRtc_Word32 AudioDeviceBB::SpeakerVolumeStepSize(
     WebRtc_UWord16& stepSize) const
 {
 
-    WebRtc_UWord16 delta(0); 
-     
-    if (_mixerManager.SpeakerVolumeStepSize(delta) == -1)
-    {
-        return -1;
-    }
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
 
-    stepSize = delta;
+WebRtc_Word32 AudioDeviceBB::SpeakerMuteIsAvailable(bool& available)
+{
+
+    available = false;
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerMuteIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::SetSpeakerMute(bool enable)
 {
 
-    bool isAvailable(false);
-    bool wasInitialized = _mixerManager.SpeakerIsInitialized();
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
 
-    // Make an attempt to open up the
-    // output mixer corresponding to the currently selected output device.
-    //
-    if (!wasInitialized && InitSpeaker() == -1)
-    {
-        // If we end up here it means that the selected speaker has no volume
-        // control, hence it is safe to state that there is no mute control
-        // already at this stage.
-        available = false;
-        return 0;
-    }
+WebRtc_Word32 AudioDeviceBB::SpeakerMute(bool& enabled) const
+{
 
-    // Check if the selected speaker has a mute control
-    _mixerManager.SpeakerMuteIsAvailable(isAvailable);
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
 
-    available = isAvailable;
+WebRtc_Word32 AudioDeviceBB::MicrophoneMuteIsAvailable(bool& available)
+{
 
-    // Close the initialized output mixer
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseSpeaker();
-    }
+    available = false;
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetSpeakerMute(bool enable)
-{
-    return (_mixerManager.SetSpeakerMute(enable));
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SpeakerMute(bool& enabled) const
+WebRtc_Word32 AudioDeviceBB::SetMicrophoneMute(bool enable)
 {
 
-    bool muted(0); 
-        
-    if (_mixerManager.SpeakerMute(muted) == -1)
-    {
-        return -1;
-    }
-
-    enabled = muted;
-    
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneMuteIsAvailable(bool& available)
-{
-
-    bool isAvailable(false);
-    bool wasInitialized = _mixerManager.MicrophoneIsInitialized();
-
-    // Make an attempt to open up the
-    // input mixer corresponding to the currently selected input device.
-    //
-    if (!wasInitialized && InitMicrophone() == -1)
-    {
-        // If we end up here it means that the selected microphone has no volume
-        // control, hence it is safe to state that there is no mute control
-        // already at this stage.
-        available = false;
-        return 0;
-    }
-
-    // Check if the selected microphone has a mute control
-    //
-    _mixerManager.MicrophoneMuteIsAvailable(isAvailable);
-    available = isAvailable;
-
-    // Close the initialized input mixer
-    //
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseMicrophone();
-    }
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SetMicrophoneMute(bool enable)
-{
-    return (_mixerManager.SetMicrophoneMute(enable));
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
 // ----------------------------------------------------------------------------
 //  MicrophoneMute
 // ----------------------------------------------------------------------------
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneMute(bool& enabled) const
+WebRtc_Word32 AudioDeviceBB::MicrophoneMute(bool& enabled) const
 {
 
-    bool muted(0); 
-        
-    if (_mixerManager.MicrophoneMute(muted) == -1)
-    {
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
+}
+
+WebRtc_Word32 AudioDeviceBB::MicrophoneBoostIsAvailable(bool& available)
+{
+
+    available = false;
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::SetMicrophoneBoost(bool enable)
+{
+
+    if (!_micIsInitialized) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+                     "  Microphone not initialized");
         return -1;
     }
 
-    enabled = muted;
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneBoostIsAvailable(bool& available)
-{
-    
-    bool isAvailable(false);
-    bool wasInitialized = _mixerManager.MicrophoneIsInitialized();
-
-    // Enumerate all avaliable microphone and make an attempt to open up the
-    // input mixer corresponding to the currently selected input device.
-    //
-    if (!wasInitialized && InitMicrophone() == -1)
-    {
-        // If we end up here it means that the selected microphone has no volume
-        // control, hence it is safe to state that there is no boost control
-        // already at this stage.
-        available = false;
-        return 0;
-    }
-
-    // Check if the selected microphone has a boost control
-    _mixerManager.MicrophoneBoostIsAvailable(isAvailable);
-    available = isAvailable;
-
-    // Close the initialized input mixer
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseMicrophone();
-    }
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::SetMicrophoneBoost(bool enable)
-{
-
-    return (_mixerManager.SetMicrophoneBoost(enable));
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneBoost(bool& enabled) const
-{
-
-    bool onOff(0); 
-        
-    if (_mixerManager.MicrophoneBoost(onOff) == -1)
-    {
+    if (enable) {
+        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                     "  SetMicrophoneBoost cannot be enabled on this platform");
         return -1;
     }
 
-    enabled = onOff;
-    
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StereoRecordingIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::MicrophoneBoost(bool& enabled) const
 {
-
-    CriticalSectionScoped lock(&_critSect);
-
-    // If we already have initialized in stereo it's obviously available
-    if (_recIsInitialized && (2 == _recChannels))
-    {
-        available = true;
-        return 0;
+    if (!_micIsInitialized) {
+        WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+                     "  Microphone not initialized");
+        return -1;
     }
 
-    // Save rec states and the number of rec channels
-    bool recIsInitialized = _recIsInitialized;
-    bool recording = _recording;
-    int recChannels = _recChannels;
+    enabled = false;
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::StereoRecordingIsAvailable(bool& available)
+{
 
     available = false;
-    
-    // Stop/uninitialize recording if initialized (and possibly started)
-    if (_recIsInitialized)
-    {
-        StopRecording();
-    }
-
-    // Try init in stereo;
-    _recChannels = 2;
-    if (InitRecording() == 0)
-    {
-        available = true;
-    }
-
-    // Stop/uninitialize recording
-    StopRecording();
-
-    // Recover previous states
-    _recChannels = recChannels;
-    if (recIsInitialized)
-    {
-        InitRecording();
-    }
-    if (recording)
-    {
-        StartRecording();
-    }
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetStereoRecording(bool enable)
+WebRtc_Word32 AudioDeviceBB::SetStereoRecording(bool enable)
 {
 
-    if (enable)
-        _recChannels = 2;
-    else
-        _recChannels = 1;
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::StereoRecording(bool& enabled) const
-{
-
-    if (_recChannels == 2)
-        enabled = true;
-    else
-        enabled = false;
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceLinuxALSA::StereoPlayoutIsAvailable(bool& available)
-{
-
-    CriticalSectionScoped lock(&_critSect);
-
-    // If we already have initialized in stereo it's obviously available
-    if (_playIsInitialized && (2 == _playChannels))
-    {
-        available = true;
-        return 0;
+    if (enable) {
+        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                     " Stereo recording is not supported on this platform");
+        return -1;
     }
+    return 0;
+}
 
-    // Save rec states and the number of rec channels
-    bool playIsInitialized = _playIsInitialized;
-    bool playing = _playing;
-    int playChannels = _playChannels;
+WebRtc_Word32 AudioDeviceBB::StereoRecording(bool& enabled) const
+{
+
+    enabled = false;
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::StereoPlayoutIsAvailable(bool& available)
+{
 
     available = false;
-    
-    // Stop/uninitialize recording if initialized (and possibly started)
-    if (_playIsInitialized)
-    {
-        StopPlayout();
-    }
-
-    // Try init in stereo;
-    _playChannels = 2;
-    if (InitPlayout() == 0)
-    {
-        available = true;
-    }
-
-    // Stop/uninitialize recording
-    StopPlayout();
-
-    // Recover previous states
-    _playChannels = playChannels;
-    if (playIsInitialized)
-    {
-        InitPlayout();
-    }
-    if (playing)
-    {
-        StartPlayout();
-    }
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetStereoPlayout(bool enable)
+WebRtc_Word32 AudioDeviceBB::SetStereoPlayout(bool enable)
 {
 
-    if (enable)
-        _playChannels = 2;
-    else
-        _playChannels = 1;
-
+    if (enable) {
+        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                     " Stereo playout is not supported on this platform");
+        return -1;
+    }
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StereoPlayout(bool& enabled) const
+WebRtc_Word32 AudioDeviceBB::StereoPlayout(bool& enabled) const
 {
 
-    if (_playChannels == 2)
-        enabled = true;
-    else
-        enabled = false;
+    enabled = false;
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetAGC(bool enable)
+WebRtc_Word32 AudioDeviceBB::SetAGC(bool enable)
 {
 
     _AGC = enable;
@@ -784,145 +537,88 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetAGC(bool enable)
     return 0;
 }
 
-bool AudioDeviceLinuxALSA::AGC() const
+bool AudioDeviceBB::AGC() const
 {
 
     return _AGC;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneVolumeIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::MicrophoneVolumeIsAvailable(bool& available)
 {
 
-    bool wasInitialized = _mixerManager.MicrophoneIsInitialized();
-
-    // Make an attempt to open up the
-    // input mixer corresponding to the currently selected output device.
-    if (!wasInitialized && InitMicrophone() == -1)
-    {
-        // If we end up here it means that the selected microphone has no volume
-        // control.
-        available = false;
-        return 0;
-    }
-
-    // Given that InitMicrophone was successful, we know that a volume control
-    // exists
-    available = true;
-
-    // Close the initialized input mixer
-    if (!wasInitialized)
-    {
-        _mixerManager.CloseMicrophone();
-    }
+    available = false;
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetMicrophoneVolume(WebRtc_UWord32 volume)
+WebRtc_Word32 AudioDeviceBB::SetMicrophoneVolume(WebRtc_UWord32 volume)
 {
 
-    return (_mixerManager.SetMicrophoneVolume(volume));
- 
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneVolume(WebRtc_UWord32& volume) const
+WebRtc_Word32 AudioDeviceBB::MicrophoneVolume(WebRtc_UWord32& volume) const
 {
 
-    WebRtc_UWord32 level(0);
-
-    if (_mixerManager.MicrophoneVolume(level) == -1)
-    {
-        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
-                     "  failed to retrive current microphone level");
-        return -1;
-    }
-
-    volume = level;
-    
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MaxMicrophoneVolume(
+WebRtc_Word32 AudioDeviceBB::MaxMicrophoneVolume(
     WebRtc_UWord32& maxVolume) const
 {
 
-    WebRtc_UWord32 maxVol(0);
-
-    if (_mixerManager.MaxMicrophoneVolume(maxVol) == -1)
-    {
-        return -1;
-    }
-
-    maxVolume = maxVol;
-
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MinMicrophoneVolume(
+WebRtc_Word32 AudioDeviceBB::MinMicrophoneVolume(
     WebRtc_UWord32& minVolume) const
 {
 
-    WebRtc_UWord32 minVol(0);
-
-    if (_mixerManager.MinMicrophoneVolume(minVol) == -1)
-    {
-        return -1;
-    }
-
-    minVolume = minVol;
-
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::MicrophoneVolumeStepSize(
+WebRtc_Word32 AudioDeviceBB::MicrophoneVolumeStepSize(
     WebRtc_UWord16& stepSize) const
 {
 
-    WebRtc_UWord16 delta(0); 
-        
-    if (_mixerManager.MicrophoneVolumeStepSize(delta) == -1)
-    {
-        return -1;
-    }
-
-    stepSize = delta;
-
-    return 0;
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                 "  API call not supported on this platform");
+    return -1;
 }
 
-WebRtc_Word16 AudioDeviceLinuxALSA::PlayoutDevices()
+WebRtc_Word16 AudioDeviceBB::PlayoutDevices()
 {
-
-    return (WebRtc_Word16)GetDevicesInfo(0, true);
+    return (WebRtc_Word16)1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetPlayoutDevice(WebRtc_UWord16 index)
+WebRtc_Word32 AudioDeviceBB::SetPlayoutDevice(WebRtc_UWord16 index)
 {
 
-    if (_playIsInitialized)
-    {
-        return -1;
-    }
-
-    WebRtc_UWord32 nDevices = GetDevicesInfo(0, true);
-    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
-                 "  number of availiable audio output devices is %u", nDevices);
-
-    if (index > (nDevices-1))
-    {
+    if (_playIsInitialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
-                     "  device index is out of range [0,%u]", (nDevices-1));
+                     "  Playout already initialized");
         return -1;
     }
 
-    _outputDeviceIndex = index;
-    _outputDeviceIsSpecified = true;
+    if (index !=0) {
+        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                     "  SetPlayoutDevice invalid index");
+        return -1;
+    }
+    _playoutDeviceIsSpecified = true;
 
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetPlayoutDevice(
+WebRtc_Word32 AudioDeviceBB::SetPlayoutDevice(
     AudioDeviceModule::WindowsDeviceType /*device*/)
 {
     WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
@@ -930,79 +626,63 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetPlayoutDevice(
     return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::PlayoutDeviceName(
+WebRtc_Word32 AudioDeviceBB::PlayoutDeviceName(
     WebRtc_UWord16 index,
     char name[kAdmMaxDeviceNameSize],
     char guid[kAdmMaxGuidSize])
 {
 
-    const WebRtc_UWord16 nDevices(PlayoutDevices());
-
-    if ((index > (nDevices-1)) || (name == NULL))
-    {
+    if (index != 0) {
         return -1;
     }
-
+    // return empty strings
     memset(name, 0, kAdmMaxDeviceNameSize);
-
-    if (guid != NULL)
-    {
+    if (guid != NULL) {
         memset(guid, 0, kAdmMaxGuidSize);
     }
 
-    return GetDevicesInfo(1, true, index, name, kAdmMaxDeviceNameSize);
+    return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::RecordingDeviceName(
+WebRtc_Word32 AudioDeviceBB::RecordingDeviceName(
     WebRtc_UWord16 index,
     char name[kAdmMaxDeviceNameSize],
     char guid[kAdmMaxGuidSize])
 {
 
-    const WebRtc_UWord16 nDevices(RecordingDevices());
-
-    if ((index > (nDevices-1)) || (name == NULL))
-    {
+    if (index != 0) {
         return -1;
     }
-
+    // return empty strings
     memset(name, 0, kAdmMaxDeviceNameSize);
-
-    if (guid != NULL)
-    {
+    if (guid != NULL) {
         memset(guid, 0, kAdmMaxGuidSize);
     }
-    
-    return GetDevicesInfo(1, false, index, name, kAdmMaxDeviceNameSize);
+
+    return 0;
 }
 
-WebRtc_Word16 AudioDeviceLinuxALSA::RecordingDevices()
+WebRtc_Word16 AudioDeviceBB::RecordingDevices()
 {
-
-    return (WebRtc_Word16)GetDevicesInfo(0, false);
+    return (WebRtc_Word16)1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetRecordingDevice(WebRtc_UWord16 index)
+WebRtc_Word32 AudioDeviceBB::SetRecordingDevice(WebRtc_UWord16 index)
 {
 
-    if (_recIsInitialized)
-    {
-        return -1;
-    }
-
-    WebRtc_UWord32 nDevices = GetDevicesInfo(0, false);
-    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
-                 "  number of availiable audio input devices is %u", nDevices);
-
-    if (index > (nDevices-1))
-    {
+    if (_recIsInitialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
-                     "  device index is out of range [0,%u]", (nDevices-1));
+                     "  Recording already initialized");
         return -1;
     }
 
-    _inputDeviceIndex = index;
-    _inputDeviceIsSpecified = true;
+    if (index !=0) {
+        WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+                     "  SetRecordingDevice invalid index");
+        return -1;
+    }
+
+    _recordingDeviceIsSpecified = true;
 
     return 0;
 }
@@ -1011,7 +691,7 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetRecordingDevice(WebRtc_UWord16 index)
 //  SetRecordingDevice II (II)
 // ----------------------------------------------------------------------------
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetRecordingDevice(
+WebRtc_Word32 AudioDeviceBB::SetRecordingDevice(
     AudioDeviceModule::WindowsDeviceType /*device*/)
 {
     WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
@@ -1019,71 +699,45 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetRecordingDevice(
     return -1;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::PlayoutIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::PlayoutIsAvailable(bool& available)
 {
-    
+
     available = false;
 
-    // Try to initialize the playout side with mono
-    // Assumes that user set num channels after calling this function
-    _playChannels = 1;
+    // Try to initialize the playout side
     WebRtc_Word32 res = InitPlayout();
 
     // Cancel effect of initialization
     StopPlayout();
 
-    if (res != -1)
-    {
+    if (res != -1) {
         available = true;
     }
-    else
-    {
-        // It may be possible to play out in stereo
-        res = StereoPlayoutIsAvailable(available);
-        if (available)
-        {
-            // Then set channels to 2 so InitPlayout doesn't fail
-            _playChannels = 2;
-        }
-    }
-    
-    return res;
+
+    return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::RecordingIsAvailable(bool& available)
+WebRtc_Word32 AudioDeviceBB::RecordingIsAvailable(bool& available)
 {
-    
+
     available = false;
 
-    // Try to initialize the recording side with mono
-    // Assumes that user set num channels after calling this function
-    _recChannels = 1;
+    // Try to initialize the recording side
     WebRtc_Word32 res = InitRecording();
 
     // Cancel effect of initialization
     StopRecording();
 
-    if (res != -1)
-    {
+    if (res != -1) {
         available = true;
     }
-    else
-    {
-        // It may be possible to record in stereo
-        res = StereoRecordingIsAvailable(available);
-        if (available)
-        {
-            // Then set channels to 2 so InitPlayout doesn't fail
-            _recChannels = 2;
-        }
-    }
-    
-    return res;
+
+    return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::InitPlayout()
+WebRtc_Word32 AudioDeviceBB::InitPlayout()
 {
-
+#if 0
     int errVal = 0;
 
     CriticalSectionScoped lock(&_critSect);
@@ -1230,13 +884,13 @@ WebRtc_Word32 AudioDeviceLinuxALSA::InitPlayout()
     {
         return -1;
     }
-
+#endif
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::InitRecording()
+WebRtc_Word32 AudioDeviceBB::InitRecording()
 {
-
+#if 0
     int errVal = 0;
 
     CriticalSectionScoped lock(&_critSect);
@@ -1401,13 +1055,13 @@ WebRtc_Word32 AudioDeviceLinuxALSA::InitRecording()
     {
         return -1;
     }
-
+#endif
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StartRecording()
+WebRtc_Word32 AudioDeviceBB::StartRecording()
 {
-
+#if 0
     if (!_recIsInitialized)
     {
         return -1;
@@ -1489,13 +1143,13 @@ WebRtc_Word32 AudioDeviceLinuxALSA::StartRecording()
             return -1;
         }
     }
-
+#endif
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StopRecording()
+WebRtc_Word32 AudioDeviceBB::StopRecording()
 {
-
+#if 0
     {
       CriticalSectionScoped lock(&_critSect);
 
@@ -1562,26 +1216,28 @@ WebRtc_Word32 AudioDeviceLinuxALSA::StopRecording()
 
     // set the pcm input handle to NULL
     _handleRecord = NULL;
+#endif
     return 0;
 }
 
-bool AudioDeviceLinuxALSA::RecordingIsInitialized() const
+bool AudioDeviceBB::RecordingIsInitialized() const
 {
     return (_recIsInitialized);
 }
 
-bool AudioDeviceLinuxALSA::Recording() const
+bool AudioDeviceBB::Recording() const
 {
     return (_recording);
 }
 
-bool AudioDeviceLinuxALSA::PlayoutIsInitialized() const
+bool AudioDeviceBB::PlayoutIsInitialized() const
 {
     return (_playIsInitialized);
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StartPlayout()
+WebRtc_Word32 AudioDeviceBB::StartPlayout()
 {
+#if 0
     if (!_playIsInitialized)
     {
         return -1;
@@ -1644,13 +1300,13 @@ WebRtc_Word32 AudioDeviceLinuxALSA::StartPlayout()
         // just log error
         // if snd_pcm_open fails will return -1
     }
-
+#endif
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::StopPlayout()
+WebRtc_Word32 AudioDeviceBB::StopPlayout()
 {
-
+#if 0
     {
         CriticalSectionScoped lock(&_critSect);
 
@@ -1705,24 +1361,24 @@ WebRtc_Word32 AudioDeviceLinuxALSA::StopPlayout()
      _handlePlayout = NULL;
      WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
                   "  handle_playout is now set to NULL");
-
+#endif
      return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::PlayoutDelay(WebRtc_UWord16& delayMS) const
+WebRtc_Word32 AudioDeviceBB::PlayoutDelay(WebRtc_UWord16& delayMS) const
 {
-    delayMS = (WebRtc_UWord16)_playoutDelay * 1000 / _playoutFreq;
+    delayMS = 0; /*(WebRtc_UWord16)_playoutDelay * 1000 / _playoutFreq;*/
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::RecordingDelay(WebRtc_UWord16& delayMS) const
+WebRtc_Word32 AudioDeviceBB::RecordingDelay(WebRtc_UWord16& delayMS) const
 {
     // Adding 10ms adjusted value to the record delay due to 10ms buffering.
-    delayMS = (WebRtc_UWord16)(10 + _recordingDelay * 1000 / _recordingFreq);
+    delayMS = 0; /*(WebRtc_UWord16)(10 + _recordingDelay * 1000 / _recordingFreq);*/
     return 0;
 }
 
-bool AudioDeviceLinuxALSA::Playing() const
+bool AudioDeviceBB::Playing() const
 {
     return (_playing);
 }
@@ -1730,7 +1386,7 @@ bool AudioDeviceLinuxALSA::Playing() const
 //  SetPlayoutBuffer
 // ----------------------------------------------------------------------------
 
-WebRtc_Word32 AudioDeviceLinuxALSA::SetPlayoutBuffer(
+WebRtc_Word32 AudioDeviceBB::SetPlayoutBuffer(
     const AudioDeviceModule::BufferType type,
     WebRtc_UWord16 sizeMS)
 {
@@ -1742,7 +1398,7 @@ WebRtc_Word32 AudioDeviceLinuxALSA::SetPlayoutBuffer(
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::PlayoutBuffer(
+WebRtc_Word32 AudioDeviceBB::PlayoutBuffer(
     AudioDeviceModule::BufferType& type,
     WebRtc_UWord16& sizeMS) const
 {
@@ -1759,7 +1415,7 @@ WebRtc_Word32 AudioDeviceLinuxALSA::PlayoutBuffer(
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceLinuxALSA::CPULoad(WebRtc_UWord16& load) const
+WebRtc_Word32 AudioDeviceBB::CPULoad(WebRtc_UWord16& load) const
 {
 
     WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
@@ -1767,42 +1423,42 @@ WebRtc_Word32 AudioDeviceLinuxALSA::CPULoad(WebRtc_UWord16& load) const
     return -1;
 }
 
-bool AudioDeviceLinuxALSA::PlayoutWarning() const
+bool AudioDeviceBB::PlayoutWarning() const
 {
     return (_playWarning > 0);
 }
 
-bool AudioDeviceLinuxALSA::PlayoutError() const
+bool AudioDeviceBB::PlayoutError() const
 {
     return (_playError > 0);
 }
 
-bool AudioDeviceLinuxALSA::RecordingWarning() const
+bool AudioDeviceBB::RecordingWarning() const
 {
     return (_recWarning > 0);
 }
 
-bool AudioDeviceLinuxALSA::RecordingError() const
+bool AudioDeviceBB::RecordingError() const
 {
     return (_recError > 0);
 }
 
-void AudioDeviceLinuxALSA::ClearPlayoutWarning()
+void AudioDeviceBB::ClearPlayoutWarning()
 {
     _playWarning = 0;
 }
 
-void AudioDeviceLinuxALSA::ClearPlayoutError()
+void AudioDeviceBB::ClearPlayoutError()
 {
     _playError = 0;
 }
 
-void AudioDeviceLinuxALSA::ClearRecordingWarning()
+void AudioDeviceBB::ClearRecordingWarning()
 {
     _recWarning = 0;
 }
 
-void AudioDeviceLinuxALSA::ClearRecordingError()
+void AudioDeviceBB::ClearRecordingError()
 {
     _recError = 0;
 }
@@ -1810,8 +1466,8 @@ void AudioDeviceLinuxALSA::ClearRecordingError()
 // ============================================================================
 //                                 Private Methods
 // ============================================================================
-
-WebRtc_Word32 AudioDeviceLinuxALSA::GetDevicesInfo(
+#if 0
+WebRtc_Word32 AudioDeviceBB::GetDevicesInfo(
     const WebRtc_Word32 function,
     const bool playback,
     const WebRtc_Word32 enumDeviceNo,
@@ -1969,8 +1625,9 @@ WebRtc_Word32 AudioDeviceLinuxALSA::GetDevicesInfo(
 
     return 0;
 }
-
-WebRtc_Word32 AudioDeviceLinuxALSA::InputSanityCheckAfterUnlockedPeriod() const
+#endif
+#if 0
+WebRtc_Word32 AudioDeviceBB::InputSanityCheckAfterUnlockedPeriod() const
 {
     if (_handleRecord == NULL)
     {
@@ -1980,8 +1637,9 @@ WebRtc_Word32 AudioDeviceLinuxALSA::InputSanityCheckAfterUnlockedPeriod() const
     }
     return 0;
 }
-
-WebRtc_Word32 AudioDeviceLinuxALSA::OutputSanityCheckAfterUnlockedPeriod() const
+#endif
+#if 0
+WebRtc_Word32 AudioDeviceBB::OutputSanityCheckAfterUnlockedPeriod() const
 {
     if (_handlePlayout == NULL)
     {
@@ -1991,8 +1649,9 @@ WebRtc_Word32 AudioDeviceLinuxALSA::OutputSanityCheckAfterUnlockedPeriod() const
     }
     return 0;
 }
-
-WebRtc_Word32 AudioDeviceLinuxALSA::ErrorRecovery(WebRtc_Word32 error,
+#endif
+#if 0
+WebRtc_Word32 AudioDeviceBB::ErrorRecovery(WebRtc_Word32 error,
                                                   snd_pcm_t* deviceHandle)
 {
     int st = LATE(snd_pcm_state)(deviceHandle);
@@ -2077,23 +1736,24 @@ WebRtc_Word32 AudioDeviceLinuxALSA::ErrorRecovery(WebRtc_Word32 error,
 
     return res;
 }
-
+#endif
 // ============================================================================
 //                                  Thread Methods
 // ============================================================================
 
-bool AudioDeviceLinuxALSA::PlayThreadFunc(void* pThis)
+bool AudioDeviceBB::PlayThreadFunc(void* pThis)
 {
-    return (static_cast<AudioDeviceLinuxALSA*>(pThis)->PlayThreadProcess());
+    return (static_cast<AudioDeviceBB*>(pThis)->PlayThreadProcess());
 }
 
-bool AudioDeviceLinuxALSA::RecThreadFunc(void* pThis)
+bool AudioDeviceBB::RecThreadFunc(void* pThis)
 {
-    return (static_cast<AudioDeviceLinuxALSA*>(pThis)->RecThreadProcess());
+    return (static_cast<AudioDeviceBB*>(pThis)->RecThreadProcess());
 }
 
-bool AudioDeviceLinuxALSA::PlayThreadProcess()
+bool AudioDeviceBB::PlayThreadProcess()
 {
+#if 0
     if(!_playing)
         return false;
 
@@ -2164,11 +1824,13 @@ bool AudioDeviceLinuxALSA::PlayThreadProcess()
     }
 
     UnLock();
+#endif
     return true;
 }
 
-bool AudioDeviceLinuxALSA::RecThreadProcess()
+bool AudioDeviceBB::RecThreadProcess()
 {
+#if 0
     if (!_recording)
         return false;
 
@@ -2311,9 +1973,9 @@ bool AudioDeviceLinuxALSA::RecThreadProcess()
     }
 
     UnLock();
+#endif
     return true;
 }
 
 }  // namespace webrtc
-#endif
 

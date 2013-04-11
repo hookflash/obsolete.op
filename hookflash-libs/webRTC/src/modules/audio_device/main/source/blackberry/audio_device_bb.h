@@ -13,12 +13,11 @@
 
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
-#include "audio_mixer_manager_alsa_linux.h"
 
-#include <sys/soundcard.h>
-#include <sys/ioctl.h>
+//#include <sys/soundcard.h>
+//#include <sys/ioctl.h>
 
-#include <alsa/asoundlib.h>
+//#include <alsa/asoundlib.h>
 
 namespace webrtc
 {
@@ -161,12 +160,12 @@ public:
     virtual void AttachAudioBuffer(AudioDeviceBuffer* audioBuffer);
 
 private:
-    WebRtc_Word32 GetDevicesInfo(const WebRtc_Word32 function,
-                                 const bool playback,
-                                 const WebRtc_Word32 enumDeviceNo = 0,
-                                 char* enumDeviceName = NULL,
-                                 const WebRtc_Word32 ednLen = 0) const;
-    WebRtc_Word32 ErrorRecovery(WebRtc_Word32 error, snd_pcm_t* deviceHandle);
+//    WebRtc_Word32 GetDevicesInfo(const WebRtc_Word32 function,
+//                                 const bool playback,
+//                                 const WebRtc_Word32 enumDeviceNo = 0,
+//                                 char* enumDeviceName = NULL,
+//                                 const WebRtc_Word32 ednLen = 0) const;
+//    WebRtc_Word32 ErrorRecovery(WebRtc_Word32 error, snd_pcm_t* deviceHandle);
 
 private:
     void Lock() { _critSect.Enter(); };
@@ -193,23 +192,21 @@ private:
 
     WebRtc_Word32 _id;
 
-    AudioMixerManagerLinuxALSA _mixerManager;
-
     WebRtc_UWord16 _inputDeviceIndex;
     WebRtc_UWord16 _outputDeviceIndex;
     bool _inputDeviceIsSpecified;
     bool _outputDeviceIsSpecified;
 
-    snd_pcm_t* _handleRecord;
-    snd_pcm_t* _handlePlayout;
+//    snd_pcm_t* _handleRecord;
+//    snd_pcm_t* _handlePlayout;
 
-    snd_pcm_uframes_t _recordingBuffersizeInFrame;
-    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
-    snd_pcm_uframes_t _playoutBufferSizeInFrame;
-    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
+//    snd_pcm_uframes_t _recordingBuffersizeInFrame;
+//    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
+//    snd_pcm_uframes_t _playoutBufferSizeInFrame;
+//    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
 
-    ssize_t _recordingBufferSizeIn10MS;
-    ssize_t _playoutBufferSizeIn10MS;
+//    ssize_t _recordingBufferSizeIn10MS;
+//    ssize_t _playoutBufferSizeIn10MS;
     WebRtc_UWord32 _recordingFramesIn10MS;
     WebRtc_UWord32 _playoutFramesIn10MS;
 
@@ -233,10 +230,16 @@ private:
     bool _playing;
     bool _recIsInitialized;
     bool _playIsInitialized;
+
+    bool _recordingDeviceIsSpecified;
+    bool _playoutDeviceIsSpecified;
+    bool _micIsInitialized;
+    bool _speakerIsInitialized;
+
     bool _AGC;
 
-    snd_pcm_sframes_t _recordingDelay;
-    snd_pcm_sframes_t _playoutDelay;
+//    snd_pcm_sframes_t _recordingDelay;
+//    snd_pcm_sframes_t _playoutDelay;
 
     WebRtc_Word32 _writeErrors;
     WebRtc_UWord16 _playWarning;
