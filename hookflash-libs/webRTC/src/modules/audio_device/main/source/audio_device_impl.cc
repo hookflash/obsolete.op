@@ -43,6 +43,9 @@
 #elif (defined(WEBRTC_MAC_INTEL) || defined(WEBRTC_MAC))
     #include "audio_device_utility_mac.h"
     #include "audio_device_mac.h"
+#elif defined(WEBRTC_QNX)
+    #include "audio_device_utility_bb.h"
+    #include "audio_device_bb.h"
 #endif
 #include "audio_device_dummy.h"
 #include "audio_device_utility_dummy.h"
@@ -162,6 +165,9 @@ WebRtc_Word32 AudioDeviceModuleImpl::CheckPlatform()
 #elif (defined(WEBRTC_MAC_INTEL) || defined(MAC_IPHONE) || defined(WEBRTC_MAC))
     platform = kPlatformMac;
     WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "current platform is MAC");
+#elif defined(WEBRTC_QNX)
+    platform = kPlatformBlackberry;
+    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "current platform is QNX");
 #endif
 
     if (platform == kPlatformNotSupported)
@@ -369,6 +375,22 @@ WebRtc_Word32 AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
     }
 #endif  // #if defined(WEBRTC_MAC_INTEL) || defined(WEBRTC_MAC)
 
+    // Create the *BlackBerry* implementation of the Audio Device
+    //
+#if defined(WEBRTC_QNX)
+    if (audioLayer == kPlatformDefaultAudio)
+    {
+        // Create *iPhone Audio* implementation
+        ptrAudioDevice = new AudioDeviceBB(Id());
+        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "BlackBerry Audio APIs will be utilized");
+    }
+
+    if (ptrAudioDevice != NULL)
+    {
+        // Create the BlackBerry implementation of the Device Utility.
+        ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());//AudioDeviceUtilityBB(Id());
+    }
+#endif   // #if defined(WEBRTC_QNX)
     // Create the *Dummy* implementation of the Audio Device
     // Available for all platforms
     //
@@ -376,13 +398,13 @@ WebRtc_Word32 AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
     {
         // Create *Dummy Audio* implementation
         assert(!ptrAudioDevice);
-        ptrAudioDevice = new AudioDeviceDummy(Id());
-        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "Dummy Audio APIs will be utilized");
-
-        if (ptrAudioDevice != NULL)
-        {
-            ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());
-        }
+//        ptrAudioDevice = new AudioDeviceDummy(Id());
+//        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "Dummy Audio APIs will be utilized");
+//
+//        if (ptrAudioDevice != NULL)
+//        {
+//            ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());
+//        }
     }
 #endif  // if defined(WEBRTC_DUMMY_AUDIO_BUILD)
 
