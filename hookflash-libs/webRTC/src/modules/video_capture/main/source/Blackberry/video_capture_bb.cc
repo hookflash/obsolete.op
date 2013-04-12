@@ -197,8 +197,8 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
         CAMERA_IMGPROP_FRAMERATE, (double)15.0);
         */
     error = camera_set_video_property(cameraHandle,
-        CAMERA_IMGPROP_WIDTH, 480,
-        CAMERA_IMGPROP_HEIGHT, 640,
+        CAMERA_IMGPROP_WIDTH, 240,
+        CAMERA_IMGPROP_HEIGHT, 320,
         CAMERA_IMGPROP_ROTATION, 90,
         CAMERA_IMGPROP_FRAMERATE, (double)15.0);
 //    error = camera_set_video_property(cameraHandle,

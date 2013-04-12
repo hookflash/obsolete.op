@@ -12,29 +12,49 @@
 #define WEBRTC_MODULES_VIDEO_RENDER_MAIN_SOURCE_BB_VIDEO_RENDER_BB_IMPL_H_
 
 #include "i_video_render.h"
+#include "common_types.h"
 #include "map_wrapper.h"
+
+struct _screen_context;
+struct _screen_window;
+struct _screen_display;
+typedef void *EGLDisplay;
+typedef void *EGLConfig;
+typedef void *EGLContext;
+typedef void *EGLSurface;
 
 namespace webrtc {
 
 class CriticalSectionWrapper;
 class EventWrapper;
 class ThreadWrapper;
-
-class BlackberryRenderCallback;
-class screen_window_t;
+class BlackberryWindowWrapper;
+class VideoRenderBlackBerry;
+class VideoRenderOpenGles20;
 
 // The object a module user uses to send new frames to the Blackberry OpenGL ES window
 
 class BlackberryRenderCallback : public VideoRenderCallback {
  public:
+  BlackberryRenderCallback(VideoRenderBlackBerry* parentRenderer) : _ptrParentRenderer(parentRenderer), _hasFrame(false), _frameIsRendered(false) { }
 
   virtual WebRtc_Word32 RenderFrame(const WebRtc_UWord32 streamId,
-                                    VideoFrame& videoFrame) = 0;
+                                    VideoFrame& videoFrame);
 
   virtual ~BlackberryRenderCallback() {};
+
+  void RenderToGL();
+
+ private:
+  VideoRenderBlackBerry* _ptrParentRenderer;
+  VideoFrame _videoFrame;
+  bool _hasFrame;
+  bool _frameIsRendered;
+  VideoRenderOpenGles20* _ptrOpenGLRenderer;
 };
 
-class VideoRenderBlackBerry: IVideoRender {
+class VideoRenderBlackBerry : IVideoRender
+{
  public:
   static WebRtc_Word32 SetAndroidEnvVariables(void* javaVM);
 
@@ -45,7 +65,7 @@ class VideoRenderBlackBerry: IVideoRender {
 
   virtual ~VideoRenderBlackBerry();
 
-  virtual WebRtc_Word32 Init()=0;
+  virtual WebRtc_Word32 Init() { return 1; }
 
   virtual WebRtc_Word32 ChangeUniqueId(const WebRtc_Word32 id);
 
@@ -71,6 +91,8 @@ class VideoRenderBlackBerry: IVideoRender {
   virtual WebRtc_Word32 StopRender();
 
   virtual void ReDraw();
+
+  virtual void OnBBRenderEvent();
 
   // Properties
 
@@ -119,6 +141,8 @@ class VideoRenderBlackBerry: IVideoRender {
 
  protected:
 
+  bool CreateGLWindow();
+
   virtual BlackberryRenderCallback* CreateRenderChannel(
       WebRtc_Word32 streamId,
       WebRtc_Word32 zOrder,
@@ -133,7 +157,17 @@ class VideoRenderBlackBerry: IVideoRender {
   WebRtc_Word32 _id;
   CriticalSectionWrapper& _critSect;
   VideoRenderType _renderType;
-  screen_window_t* _ptrWindow;
+  BlackberryWindowWrapper* _ptrWindowWrapper;
+  _screen_window* _ptrGLWindow;
+  _screen_display* _ptrDisplay;
+  EGLDisplay _eglDisplay;
+  EGLConfig _eglConfig;
+  EGLContext _eglContext;
+  EGLSurface _eglSurface;
+
+  int _windowWidth;
+  int _windowHeight;
+  bool _glInitialized;
 
 
  private:
