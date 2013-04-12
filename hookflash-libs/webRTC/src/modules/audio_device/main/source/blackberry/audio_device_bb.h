@@ -172,15 +172,15 @@ private:
     CriticalSectionWrapper&	_critSect;
     WebRtc_Word32 _id;
 
-    EventWrapper& _timeEventRec;
-    EventWrapper& _timeEventPlay;
-    EventWrapper& _recStartEvent;
-    EventWrapper& _playStartEvent;
-
     ThreadWrapper* _ptrThreadRec;
     ThreadWrapper* _ptrThreadPlay;
     WebRtc_UWord32 _recThreadID;
     WebRtc_UWord32 _playThreadID;
+
+    EventWrapper& _timeEventRec;
+    EventWrapper& _timeEventPlay;
+    EventWrapper& _recStartEvent;
+    EventWrapper& _playStartEvent;
 
     WebRtc_UWord16 _inputDeviceIndex;
     WebRtc_UWord16 _outputDeviceIndex;

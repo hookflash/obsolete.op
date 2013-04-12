@@ -30,7 +30,7 @@ void WebrtcAlsaErrorHandler(const char *file,
 
 namespace webrtc
 {
-static const unsigned int ALSA_PLAYOUT_FREQ = 48000;
+static const unsigned int ALSA_PLAYOUT_FREQ = 16000;
 static const unsigned int ALSA_PLAYOUT_CH = 1;
 static const unsigned int ALSA_PLAYOUT_LATENCY = 40*1000; // in us
 static const unsigned int ALSA_CAPTURE_FREQ = 48000;
@@ -57,11 +57,11 @@ static const unsigned int VOIP_SAMPLE_RATE = 16000;
 AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _ptrAudioBuffer(NULL),
     _critSect(*CriticalSectionWrapper::CreateCriticalSection()),
+    _id(id),
     _ptrThreadRec(NULL),
     _ptrThreadPlay(NULL),
     _recThreadID(0),
     _playThreadID(0),
-    _id(id),
     _timeEventRec(*EventWrapper::Create()),
     _timeEventPlay(*EventWrapper::Create()),
     _recStartEvent(*EventWrapper::Create()),
@@ -101,16 +101,16 @@ AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _playIsInitialized(false),
     _micIsInitialized(false),
     _speakerIsInitialized(false),
+    _playBufDelay(80),
+    _playBufDelayFixed(80),
     _AGC(false),
 //    _recordingDelay(0),
 //    _playoutDelay(0),
-    _writeErrors(0),
     _playWarning(0),
     _playError(0),
     _recWarning(0),
     _recError(0),
-    _playBufDelay(80),
-    _playBufDelayFixed(80),
+    _writeErrors(0),
 
 	g_pcm_handle_c(NULL),
 	g_pcm_handle_p(NULL),
@@ -933,8 +933,8 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 		return -1;
 	}
 
-#if 0
     _playoutFramesIn10MS = _playoutFreq/100;
+#if 0
     if ((errVal = snd_pcm_set_params( _handlePlayout,
 #if defined(WEBRTC_BIG_ENDIAN)
 //        SND_PCM_FORMAT_S16_BE,
@@ -990,6 +990,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     // Set play buffer size
 //    _playoutBufferSizeIn10MS = snd_pcm_frames_to_bytes(
 //        _handlePlayout, _playoutFramesIn10MS);
+    _playoutBufferSizeIn10MS = _playoutFramesIn10MS << 1;
 
     // Init varaibles used for play
     _playWarning = 0;
@@ -2229,15 +2230,15 @@ bool AudioDeviceBB::PlayThreadProcess()
         assert(_playoutFramesLeft == _playoutFramesIn10MS);
     }
 
-    int size = _playoutFramesLeft << 1;
-    int frames = snd_pcm_plugin_write(_handlePlayout,
-    		&_playoutBuffer[_playoutBufferSizeIn10MS - size],
-    		320);
-    if (frames < 0)
+    int playoutFramesLeftSize = _playoutFramesLeft << 1;
+    int bytesWritten = snd_pcm_plugin_write(_handlePlayout,
+    		&_playoutBuffer[_playoutBufferSizeIn10MS - playoutFramesLeftSize],
+    		playoutFramesLeftSize);
+    if (bytesWritten < 0)
     {
         WEBRTC_TRACE(kTraceStream, kTraceAudioDevice, _id,
                      "       snd_pcm_plugin_write error: %s",
-                     snd_strerror(frames));
+                     snd_strerror(bytesWritten));
         _playoutFramesLeft = 0;
 //        ErrorRecovery(frames, _handlePlayout);
         UnLock();
@@ -2245,7 +2246,7 @@ bool AudioDeviceBB::PlayThreadProcess()
     }
     else
     {
-        _playoutFramesLeft -= frames;
+        _playoutFramesLeft -= bytesWritten >> 1;
     }
 
 /*
