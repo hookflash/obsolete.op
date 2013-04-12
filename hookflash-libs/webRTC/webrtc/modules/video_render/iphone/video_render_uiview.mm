@@ -103,7 +103,7 @@ WebRtc_Word32 VideoChannelUIView::RenderFrame(const WebRtc_UWord32 /*streamId*/,
         }
     }
 
-    int ret = DeliverFrame(videoFrame.buffer(), videoFrame.Length(), videoFrame.timeStamp());
+    int ret = DeliverFrame(videoFrame);
     
     _owner->UnlockAGLCntx();
     return ret;
@@ -161,16 +161,18 @@ int VideoChannelUIView::FrameSizeChange(int width, int height, int numberOfStrea
     return 0;
 }
 
-int VideoChannelUIView::DeliverFrame(unsigned char* buffer, int bufferSize, unsigned int /*timeStamp90kHz*/)
+int VideoChannelUIView::DeliverFrame(I420VideoFrame &src_frame)
 {
 
     _owner->LockAGLCntx();
-
+    
+/*JAT bufferSize
     if (bufferSize != _incommingBufferSize)
     {
         _owner->UnlockAGLCntx();
         return -1;
     }
+*/
     
     // Allocate ARGB buffer
     VideoFrame captureFrame;
@@ -185,8 +187,8 @@ int VideoChannelUIView::DeliverFrame(unsigned char* buffer, int bufferSize, unsi
   
     _framesDelivered++;
 
-    ConvertI420ToABGR(buffer, captureFrame.Buffer(), _width, _height, 0);
-  
+    webrtc::ConvertFromI420(src_frame, kABGR, captureFrame.Size(), captureFrame.Buffer());
+    
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
