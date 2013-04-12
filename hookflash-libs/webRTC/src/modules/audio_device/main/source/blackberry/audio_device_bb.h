@@ -187,9 +187,9 @@ private:
     bool _inputDeviceIsSpecified;
     bool _outputDeviceIsSpecified;
 
-//    snd_pcm_t* _handleRecord;
+    snd_pcm_t* _handleRecord;
     snd_pcm_t* _handlePlayout;
-//    unsigned int _handleAudioManagerRecord;
+    unsigned int _handleAudioManagerRecord;
     unsigned int _handleAudioManagerPlayout;
 
 //    snd_pcm_uframes_t _recordingBuffersizeInFrame;
@@ -197,7 +197,7 @@ private:
 //    snd_pcm_uframes_t _playoutBufferSizeInFrame;
 //    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
 
-//    ssize_t _recordingBufferSizeIn10MS;
+    ssize_t _recordingBufferSizeIn10MS;
     ssize_t _playoutBufferSizeIn10MS;
     WebRtc_UWord32 _recordingFramesIn10MS;
     WebRtc_UWord32 _playoutFramesIn10MS;

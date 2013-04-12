@@ -76,8 +76,8 @@ bool test_thread(ThreadObj obj)
 
     audioDevice->Init();
 
-    audioDevice->SetRecordingDevice(AudioDeviceModule::kDefaultDevice);
-    audioDevice->SetPlayoutDevice(AudioDeviceModule::kDefaultDevice);
+    audioDevice->SetRecordingDevice(0);
+    audioDevice->SetPlayoutDevice(0);
 
     audioDevice->InitRecording();
     audioDevice->InitPlayout();
