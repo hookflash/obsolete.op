@@ -133,10 +133,10 @@
 ;    const char    *limit,
 ;    const char    *thresh
 ;)
-global sym(vp8_loop_filter_bh_y_sse2) PRIVATE
+global sym(vp8_loop_filter_bh_y_sse2)
 sym(vp8_loop_filter_bh_y_sse2):
 
-%if LIBVPX_YASM_WIN64
+%ifidn __OUTPUT_FORMAT__,x64
     %define src      rcx ; src_ptr
     %define stride   rdx ; src_pixel_step
     %define blimit   r8
@@ -150,7 +150,6 @@ sym(vp8_loop_filter_bh_y_sse2):
 
     push    rbp
     mov     rbp, rsp
-    SAVE_XMM 11
     push    r12
     push    r13
     mov     thresh, arg(4)
@@ -256,10 +255,9 @@ LF_FILTER xmm0, xmm1, xmm3, xmm8, xmm4, xmm2
         movdqa       i12, xmm3
         movdqa       i13, xmm8
 
-%if LIBVPX_YASM_WIN64
+%ifidn __OUTPUT_FORMAT__,x64
     pop    r13
     pop    r12
-    RESTORE_XMM
     pop    rbp
 %endif
 
@@ -275,10 +273,10 @@ LF_FILTER xmm0, xmm1, xmm3, xmm8, xmm4, xmm2
 ;    const char    *thresh
 ;)
 
-global sym(vp8_loop_filter_bv_y_sse2) PRIVATE
+global sym(vp8_loop_filter_bv_y_sse2)
 sym(vp8_loop_filter_bv_y_sse2):
 
-%if LIBVPX_YASM_WIN64
+%ifidn __OUTPUT_FORMAT__,x64
     %define src      rcx ; src_ptr
     %define stride   rdx ; src_pixel_step
     %define blimit   r8
@@ -779,7 +777,7 @@ LF_FILTER xmm0, xmm1, xmm4, xmm8, xmm3, xmm2
     ; un-ALIGN_STACK
     pop          rsp
 
-%if LIBVPX_YASM_WIN64
+%ifidn __OUTPUT_FORMAT__,x64
     pop    r13
     pop    r12
     RESTORE_XMM

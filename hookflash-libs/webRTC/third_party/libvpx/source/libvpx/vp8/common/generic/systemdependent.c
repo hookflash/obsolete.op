@@ -10,7 +10,7 @@
 
 
 #include "vpx_config.h"
-#include "vp8_rtcd.h"
+#include "vpx_rtcd.h"
 #if ARCH_ARM
 #include "vpx_ports/arm.h"
 #elif ARCH_X86 || ARCH_X86_64
@@ -83,6 +83,57 @@ static int get_cpu_count()
 #endif
 
 
+#if HAVE_PTHREAD_H
+#include <pthread.h>
+static void once(void (*func)(void))
+{
+    static pthread_once_t lock = PTHREAD_ONCE_INIT;
+    pthread_once(&lock, func);
+}
+
+
+#elif defined(_WIN32)
+static void once(void (*func)(void))
+{
+    /* Using a static initializer here rather than InitializeCriticalSection()
+     * since there's no race-free context in which to execute it. Protecting
+     * it with an atomic op like InterlockedCompareExchangePointer introduces
+     * an x86 dependency, and InitOnceExecuteOnce requires Vista.
+     */
+    static CRITICAL_SECTION lock = {(void *)-1, -1, 0, 0, 0, 0};
+    static int done;
+
+    EnterCriticalSection(&lock);
+
+    if (!done)
+    {
+        func();
+        done = 1;
+    }
+
+    LeaveCriticalSection(&lock);
+}
+
+
+#else
+/* No-op version that performs no synchronization. vpx_rtcd() is idempotent,
+ * so as long as your platform provides atomic loads/stores of pointers
+ * no synchronization is strictly necessary.
+ */
+
+static void once(void (*func)(void))
+{
+    static int done;
+
+    if(!done)
+    {
+        func();
+        done = 1;
+    }
+}
+#endif
+
+
 void vp8_machine_specific_config(VP8_COMMON *ctx)
 {
 #if CONFIG_MULTITHREAD
@@ -94,4 +145,6 @@ void vp8_machine_specific_config(VP8_COMMON *ctx)
 #elif ARCH_X86 || ARCH_X86_64
     ctx->cpu_caps = x86_simd_caps();
 #endif
+
+    once(vpx_rtcd);
 }

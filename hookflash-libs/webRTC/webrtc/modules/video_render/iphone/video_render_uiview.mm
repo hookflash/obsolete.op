@@ -15,7 +15,7 @@
 #include "event_wrapper.h"
 #include "trace.h"
 #include "thread_wrapper.h"
-#include "libyuv.h"
+#include "webrtc_libyuv.h"
 
 namespace webrtc {
 
@@ -87,22 +87,23 @@ WebRtc_Word32 VideoChannelUIView::GetChannelProperties(float& left,
     return 0;
 }
 
-WebRtc_Word32 VideoChannelUIView::RenderFrame(const WebRtc_UWord32 /*streamId*/, VideoFrame& videoFrame)
+WebRtc_Word32 VideoChannelUIView::RenderFrame(const WebRtc_UWord32 /*streamId*/,
+                                              I420VideoFrame& videoFrame)
 {
 
     _owner->LockAGLCntx();
 
-    if(_width != (int)videoFrame.Width() ||
-            _height != (int)videoFrame.Height())
+    if(_width != (int)videoFrame.width() ||
+            _height != (int)videoFrame.height())
     {
-        if(FrameSizeChange(videoFrame.Width(), videoFrame.Height(), 1) == -1)
+        if(FrameSizeChange(videoFrame.width(), videoFrame.height(), 1) == -1)
         {
             _owner->UnlockAGLCntx();
             return -1;
         }
     }
 
-    int ret = DeliverFrame(videoFrame.Buffer(), videoFrame.Length(), videoFrame.TimeStamp());    
+    int ret = DeliverFrame(videoFrame.buffer(), videoFrame.Length(), videoFrame.timeStamp());
     
     _owner->UnlockAGLCntx();
     return ret;
@@ -537,7 +538,7 @@ int VideoRenderUIView::Init()
 
 VideoChannelUIView* VideoRenderUIView::CreateNSGLChannel(int channel, int zOrder, float startWidth, float startHeight, float stopWidth, float stopHeight)
 {
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     if (HasChannel(channel))
     {
@@ -572,7 +573,7 @@ VideoChannelUIView* VideoRenderUIView::CreateNSGLChannel(int channel, int zOrder
 int VideoRenderUIView::DeleteAllNSGLChannels()
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     std::map<int, VideoChannelUIView*>::iterator it;
     it = _nsglChannels.begin();
@@ -591,7 +592,7 @@ int VideoRenderUIView::DeleteAllNSGLChannels()
 WebRtc_Word32 VideoRenderUIView::DeleteNSGLChannel(const WebRtc_UWord32 channel)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     std::map<int, VideoChannelUIView*>::iterator it;
     it = _nsglChannels.find(channel);
@@ -627,7 +628,7 @@ WebRtc_Word32 VideoRenderUIView::GetChannelProperties(const WebRtc_UWord16 strea
         float& bottom)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     bool channelFound = false;
 
@@ -689,7 +690,7 @@ int VideoRenderUIView::StopThread()
 
 bool VideoRenderUIView::HasChannels()
 {
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     if (_nsglChannels.begin() != _nsglChannels.end())
     {
@@ -701,7 +702,7 @@ bool VideoRenderUIView::HasChannels()
 bool VideoRenderUIView::HasChannel(int channel)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     std::map<int, VideoChannelUIView*>::iterator it = _nsglChannels.find(channel);
 
@@ -715,7 +716,7 @@ bool VideoRenderUIView::HasChannel(int channel)
 int VideoRenderUIView::GetChannels(std::list<int>& channelList)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     std::map<int, VideoChannelUIView*>::iterator it = _nsglChannels.begin();
 
@@ -731,7 +732,7 @@ int VideoRenderUIView::GetChannels(std::list<int>& channelList)
 VideoChannelUIView* VideoRenderUIView::ConfigureNSGLChannel(int channel, int zOrder, float startWidth, float startHeight, float stopWidth, float stopHeight)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     std::map<int, VideoChannelUIView*>::iterator it = _nsglChannels.find(channel);
 
@@ -844,7 +845,7 @@ bool VideoRenderUIView::ScreenUpdateProcess()
 int VideoRenderUIView::CreateMixingContext()
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     if(-1 == setRenderTargetWindow())
     {
@@ -916,7 +917,7 @@ int VideoRenderUIView::DisplayBuffers()
 int VideoRenderUIView::GetWindowRect(Rect& rect)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
 
     if (_windowRef)
     {
@@ -931,7 +932,7 @@ int VideoRenderUIView::GetWindowRect(Rect& rect)
 WebRtc_Word32 VideoRenderUIView::ChangeUniqueID(WebRtc_Word32 id)
 {
 
-    CriticalSectionScoped cs(_nsglContextCritSec);
+    CriticalSectionScoped cs(&_nsglContextCritSec);
     _id = id;
     return 0;
 }

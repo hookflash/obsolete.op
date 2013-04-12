@@ -31,47 +31,30 @@ typedef struct
 typedef struct
 {
     MACROBLOCKD  mbd;
+    int mb_row;
 } MB_ROW_DEC;
-
 
 typedef struct
 {
-    int enabled;
-    unsigned int count;
-    const unsigned char *ptrs[MAX_PARTITIONS];
-    unsigned int sizes[MAX_PARTITIONS];
-} FRAGMENT_DATA;
+    int64_t time_stamp;
+    int size;
+} DATARATE;
 
-#define MAX_FB_MT_DEC 32
-
-struct frame_buffers
-{
-    /*
-     * this struct will be populated with frame buffer management
-     * info in future commits. */
-
-    /* enable/disable frame-based threading */
-    int     use_frame_threads;
-
-    /* decoder instances */
-    struct VP8D_COMP *pbi[MAX_FB_MT_DEC];
-
-};
 
 typedef struct VP8D_COMP
 {
     DECLARE_ALIGNED(16, MACROBLOCKD, mb);
 
-    YV12_BUFFER_CONFIG *dec_fb_ref[NUM_YV12_BUFFERS];
-
     DECLARE_ALIGNED(16, VP8_COMMON, common);
 
-    /* the last partition will be used for the modes/mvs */
-    vp8_reader mbc[MAX_PARTITIONS];
+    vp8_reader bc, bc2;
 
     VP8D_CONFIG oxcf;
 
-    FRAGMENT_DATA fragments;
+
+    const unsigned char *fragments[MAX_PARTITIONS];
+    unsigned int   fragment_sizes[MAX_PARTITIONS];
+    unsigned int   num_fragments;
 
 #if CONFIG_MULTITHREAD
     /* variable for threading */
@@ -79,7 +62,7 @@ typedef struct VP8D_COMP
     volatile int b_multithreaded_rd;
     int max_threads;
     int current_mb_col_main;
-    unsigned int decoding_thread_count;
+    int decoding_thread_count;
     int allocated_decoding_thread_count;
 
     int mt_baseline_filter_level[MAX_MB_SEGMENTS];
@@ -102,8 +85,11 @@ typedef struct VP8D_COMP
     /* end of threading data */
 #endif
 
+    vp8_reader *mbc;
     int64_t last_time_stamp;
     int   ready_for_new_data;
+
+    DATARATE dr[16];
 
     vp8_prob prob_intra;
     vp8_prob prob_last;
@@ -117,6 +103,7 @@ typedef struct VP8D_COMP
 #endif
     int ec_enabled;
     int ec_active;
+    int input_fragments;
     int decoded_key_frame;
     int independent_partitions;
     int frame_corrupt_residual;
@@ -124,9 +111,6 @@ typedef struct VP8D_COMP
 } VP8D_COMP;
 
 int vp8_decode_frame(VP8D_COMP *cpi);
-
-int vp8_create_decoder_instances(struct frame_buffers *fb, VP8D_CONFIG *oxcf);
-int vp8_remove_decoder_instances(struct frame_buffers *fb);
 
 #if CONFIG_DEBUG
 #define CHECK_MEM_ERROR(lval,expr) do {\

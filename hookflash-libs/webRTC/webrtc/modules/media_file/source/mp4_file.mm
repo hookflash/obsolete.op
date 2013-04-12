@@ -83,8 +83,8 @@ WebRtc_Word32 MP4File::Close()
     return 0;
 }
 
-WebRtc_Word32 MP4File::WriteAudio(const uint8_t* data,
-                                  int32_t length,
+WebRtc_Word32 MP4File::WriteAudio(const WebRtc_UWord8* data,
+                                  WebRtc_Word32 length,
                                   WebRtc_UWord32 timeStamp)
 {
     _crit->Enter();
@@ -119,8 +119,8 @@ WebRtc_Word32 MP4File::WriteAudio(const uint8_t* data,
     return static_cast<WebRtc_Word32>(newBytesWritten);
 }
 
-WebRtc_Word32 MP4File::WriteVideo(const uint8_t* data,
-                                  int32_t length,
+WebRtc_Word32 MP4File::WriteVideo(const WebRtc_UWord8* data,
+                                  WebRtc_Word32 length,
                                   WebRtc_UWord32 timeStamp)
 {
     _crit->Enter();

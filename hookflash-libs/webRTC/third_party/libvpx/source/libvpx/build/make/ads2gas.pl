@@ -26,21 +26,11 @@ print "\t.equ DO1STROUNDING, 0\n";
 
 while (<STDIN>)
 {
-    undef $comment;
-    undef $line;
-    $comment_char = ";";
-    $comment_sub = "@";
-
-    # Handle comments.
-    if (/$comment_char/)
-    {
-      $comment = "";
-      ($line, $comment) = /(.*?)$comment_char(.*)/;
-      $_ = $line;
-    }
-
     # Load and store alignment
     s/@/,:/g;
+
+    # Comment character
+    s/;/@/g;
 
     # Hexadecimal constants prefaced by 0x
     s/#&/#0x/g;
@@ -61,27 +51,16 @@ while (<STDIN>)
     s/:SHR:/ >> /g;
 
     # Convert ELSE to .else
-    s/\bELSE\b/.else/g;
+    s/ELSE/.else/g;
 
     # Convert ENDIF to .endif
-    s/\bENDIF\b/.endif/g;
+    s/ENDIF/.endif/g;
 
     # Convert ELSEIF to .elseif
-    s/\bELSEIF\b/.elseif/g;
+    s/ELSEIF/.elseif/g;
 
     # Convert LTORG to .ltorg
-    s/\bLTORG\b/.ltorg/g;
-
-    # Convert endfunc to nothing.
-    s/\bendfunc\b//ig;
-
-    # Convert FUNCTION to nothing.
-    s/\bFUNCTION\b//g;
-    s/\bfunction\b//g;
-
-    s/\bENTRY\b//g;
-    s/\bMSARMASM\b/0/g;
-    s/^\s+end\s+$//g;
+    s/LTORG/.ltorg/g;
 
     # Convert IF :DEF:to .if
     # gcc doesn't have the ability to do a conditional
@@ -127,7 +106,6 @@ while (<STDIN>)
     if (s/RN\s+([Rr]\d+|lr)/.req $1/)
     {
         print;
-        print "$comment_sub$comment\n" if defined $comment;
         next;
     }
 
@@ -135,9 +113,6 @@ while (<STDIN>)
     # prepended underscore
     s/EXPORT\s+\|([\$\w]*)\|/.global $1 \n\t.type $1, function/;
     s/IMPORT\s+\|([\$\w]*)\|/.global $1/;
-
-    s/EXPORT\s+([\$\w]*)/.global $1/;
-    s/export\s+([\$\w]*)/.global $1/;
 
     # No vertical bars required; make additional symbol with prepended
     # underscore
@@ -149,18 +124,10 @@ while (<STDIN>)
     s/^([a-zA-Z_0-9\$]+)/$1:/ if !/EQU/;
 
     # ALIGN directive
-    s/\bALIGN\b/.balign/g;
+    s/ALIGN/.balign/g;
 
     # ARM code
     s/\sARM/.arm/g;
-
-    # push/pop
-    s/(push\s+)(r\d+)/stmdb sp\!, \{$2\}/g;
-    s/(pop\s+)(r\d+)/ldmia sp\!, \{$2\}/g;
-
-    # NEON code
-    s/(vld1.\d+\s+)(q\d+)/$1\{$2\}/g;
-    s/(vtbl.\d+\s+[^,]+),([^,]+)/$1,\{$2\}/g;
 
     # eabi_attributes numerical equivalents can be found in the
     # "ARM IHI 0045C" document.
@@ -190,10 +157,10 @@ while (<STDIN>)
     }
 
     # EQU directive
-    s/(\S+\s+)EQU(\s+\S+)/.equ $1, $2/;
+    s/(.*)EQU(.*)/.equ $1, $2/;
 
     # Begin macro definition
-    if (/\bMACRO\b/) {
+    if (/MACRO/) {
         $_ = <STDIN>;
         s/^/.macro/;
         s/\$//g;                # remove formal param reference
@@ -202,10 +169,9 @@ while (<STDIN>)
 
     # For macros, use \ to reference formal params
     s/\$/\\/g;                  # End macro definition
-    s/\bMEND\b/.endm/;              # No need to tell it where to stop assembling
+    s/MEND/.endm/;              # No need to tell it where to stop assembling
     next if /^\s*END\s*$/;
     print;
-    print "$comment_sub$comment\n" if defined $comment;
 }
 
 # Mark that this object doesn't need an executable stack.

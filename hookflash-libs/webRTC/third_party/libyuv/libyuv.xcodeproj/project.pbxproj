@@ -383,7 +383,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					.,
-					../libjpeg_turbo,
+					"../libturbojpeg-ios/libturbojpeg",
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
@@ -487,7 +487,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					.,
-					../libjpeg_turbo,
+					"../libturbojpeg-ios/libturbojpeg",
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;

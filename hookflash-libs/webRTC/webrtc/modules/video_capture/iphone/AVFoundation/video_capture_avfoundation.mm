@@ -69,7 +69,7 @@ VideoCaptureIPhoneAVFoundation::~VideoCaptureIPhoneAVFoundation()
 WebRtc_Word32 VideoCaptureIPhoneAVFoundation::Init(
     const WebRtc_Word32 id, const char* iDeviceUniqueIdUTF8)
 {
-    CriticalSectionScoped cs(_apiCs);
+    CriticalSectionScoped cs(&_apiCs);
 
     WEBRTC_TRACE(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, id,
                  "VideoCaptureIPhoneAVFoundation::Init() called with id %d and unique "

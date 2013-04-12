@@ -17,7 +17,7 @@
 #import "video_capture_avfoundation_objc.h"
 #include "video_capture_avfoundation_utility.h"
 #include "trace.h"
-#include "libyuv.h"
+#include "webrtc_libyuv.h"
 #include <sys/sysctl.h>
 
 @interface VideoCaptureIPhoneAVFoundationObjC()

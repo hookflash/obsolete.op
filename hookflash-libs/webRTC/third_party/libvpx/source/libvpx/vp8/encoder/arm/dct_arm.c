@@ -9,7 +9,7 @@
  */
 
 #include "vpx_config.h"
-#include "vp8_rtcd.h"
+#include "vpx_rtcd.h"
 
 #if HAVE_MEDIA
 

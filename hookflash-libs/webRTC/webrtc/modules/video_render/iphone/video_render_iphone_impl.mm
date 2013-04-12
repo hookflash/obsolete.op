@@ -45,7 +45,7 @@ WebRtc_Word32
 VideoRenderIPhoneImpl::Init()
 {
 
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     WEBRTC_TRACE(kTraceInfo, kTraceVideoRenderer, _id, "%s:%d", __FUNCTION__, __LINE__);
 
     // cast ptrWindow from void* to CocoaRenderer. Void* was once NSOpenGLView, and CocoaRenderer is NSOpenGLView.
@@ -68,7 +68,7 @@ VideoRenderIPhoneImpl::Init()
 WebRtc_Word32
 VideoRenderIPhoneImpl::ChangeUniqueId(const WebRtc_Word32 id)
 {
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     WEBRTC_TRACE(kTraceInfo, kTraceVideoRenderer, _id, "%s", __FUNCTION__);
     _id = id;
 
@@ -84,7 +84,7 @@ WebRtc_Word32
 VideoRenderIPhoneImpl::ChangeWindow(void* window)
 {
 
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     WEBRTC_TRACE(kTraceInfo, kTraceVideoRenderer, _id, "%s changing ID to ", __FUNCTION__, window);
 
     if (window == NULL)
@@ -109,7 +109,7 @@ VideoRenderIPhoneImpl::AddIncomingRenderStream(const WebRtc_UWord32 streamId,
         const float right,
         const float bottom)
 {
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     WEBRTC_TRACE(kTraceDebug, kTraceVideoRenderer, _id, "%s", __FUNCTION__);
     VideoChannelUIView* nsUIViewChannel = NULL;
 
@@ -131,7 +131,7 @@ WebRtc_Word32
 VideoRenderIPhoneImpl::DeleteIncomingRenderStream(const WebRtc_UWord32 streamId)
 {
     WEBRTC_TRACE(kTraceDebug, kTraceVideoRenderer, _id, "Constructor %s:%d", __FUNCTION__, __LINE__);
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     _ptrUIViewRender->DeleteNSGLChannel(streamId);
 
     return 0;
@@ -191,7 +191,7 @@ WebRtc_Word32
 VideoRenderIPhoneImpl::GetScreenResolution(WebRtc_UWord32& screenWidth,
         WebRtc_UWord32& screenHeight) const
 {
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
 
     return 0;
 }
@@ -199,7 +199,7 @@ VideoRenderIPhoneImpl::GetScreenResolution(WebRtc_UWord32& screenWidth,
 WebRtc_UWord32
 VideoRenderIPhoneImpl::RenderFrameRate(const WebRtc_UWord32 streamId)
 {
-    CriticalSectionScoped cs(_renderUIViewCritsect);
+    CriticalSectionScoped cs(&_renderUIViewCritsect);
     return 0;
 }
 

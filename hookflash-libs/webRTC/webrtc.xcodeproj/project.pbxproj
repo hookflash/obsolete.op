@@ -13,8 +13,11 @@
 			buildPhases = (
 			);
 			dependencies = (
+				B21C5FA8171867C0000DE24B /* PBXTargetDependency */,
+				B21C5F2A171851D5000DE24B /* PBXTargetDependency */,
+				B21C5F2C171851D5000DE24B /* PBXTargetDependency */,
+				B21C5F2E171851D5000DE24B /* PBXTargetDependency */,
 				B2F7046E1717654B0077E273 /* PBXTargetDependency */,
-				B2F704701717654B0077E273 /* PBXTargetDependency */,
 				B2F704721717654B0077E273 /* PBXTargetDependency */,
 				A0F7EDA4BA10CD811397AF78 /* PBXTargetDependency */,
 				243C4B67D0D709595AFFB3A7 /* PBXTargetDependency */,
@@ -399,12 +402,68 @@
 			remoteGlobalIDString = DFFB84325BE5BC43CF2EF26D;
 			remoteInfo = webrtc_opus;
 		};
-		B2F703FE17175EC60077E273 /* PBXContainerItemProxy */ = {
+		B21C5F141718519B000DE24B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = B2F703F817175EC30077E273 /* libjpeg.xcodeproj */;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 5C93544605CE3CDDF76F4A1E;
-			remoteInfo = libjpeg;
+			remoteGlobalIDString = 427BF63C1645BD8C00BC3809;
+			remoteInfo = jpeg;
+		};
+		B21C5F161718519B000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 427BF6811645BF1200BC3809;
+			remoteInfo = turbojpeg;
+		};
+		B21C5F181718519B000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 427BF6B11645C08600BC3809;
+			remoteInfo = "simd-arm";
+		};
+		B21C5F29171851D5000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 427BF63B1645BD8C00BC3809;
+			remoteInfo = jpeg;
+		};
+		B21C5F2B171851D5000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 427BF6801645BF1200BC3809;
+			remoteInfo = turbojpeg;
+		};
+		B21C5F2D171851D5000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 427BF6B01645C08600BC3809;
+			remoteInfo = "simd-arm";
+		};
+		B21C5FA51718672D000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5FA117186728000DE24B /* libvpx_ios.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E2854ADD154CB80300902B40;
+			remoteInfo = libvpx_ios;
+		};
+		B21C5FA7171867C0000DE24B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B21C5FA117186728000DE24B /* libvpx_ios.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = E2854ADC154CB80300902B40;
+			remoteInfo = libvpx_ios;
+		};
+		B22AB96817186C74002F31E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B22AB96117186C72002F31E0 /* video_coding_utility.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 187AC5D2E1791D7913C8F00D;
+			remoteInfo = video_coding_utility;
 		};
 		B2F7046D1717654B0077E273 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -412,13 +471,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 87FEE7BA56569457CC835153;
 			remoteInfo = opus;
-		};
-		B2F7046F1717654B0077E273 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = B2F703F817175EC30077E273 /* libjpeg.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 601B21A7E1158587BDCD494D;
-			remoteInfo = libjpeg;
 		};
 		B2F704711717654B0077E273 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -577,7 +629,9 @@
 		A858A06636FBEDD6C29033EF /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = build/internal/release_defaults.gypi; sourceTree = "<group>"; };
 		B20083631717096500E5D0E0 /* libyuv.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libyuv.xcodeproj; path = third_party/libyuv/libyuv.xcodeproj; sourceTree = "<group>"; };
 		B200837417170A4500E5D0E0 /* opus.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = opus.xcodeproj; path = third_party/opus/opus.xcodeproj; sourceTree = "<group>"; };
-		B2F703F817175EC30077E273 /* libjpeg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libjpeg.xcodeproj; path = third_party/libjpeg_turbo/libjpeg.xcodeproj; sourceTree = "<group>"; };
+		B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "libjpeg-turbo-ios.xcodeproj"; path = "third_party/libturbojpeg-ios/libjpeg-turbo-ios.xcodeproj"; sourceTree = "<group>"; };
+		B21C5FA117186728000DE24B /* libvpx_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libvpx_ios.xcodeproj; path = third_party/libvpx/libvpx_ios.xcodeproj; sourceTree = "<group>"; };
+		B22AB96117186C72002F31E0 /* video_coding_utility.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = video_coding_utility.xcodeproj; path = webrtc/modules/video_coding/utility/video_coding_utility.xcodeproj; sourceTree = "<group>"; };
 		B6C406D3687A054343EE09A0 /* common_video.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = common_video.xcodeproj; path = webrtc/common_video/common_video.xcodeproj; sourceTree = SOURCE_ROOT; };
 		BC5D68BBCD37697ED24A5F5B /* webrtc.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = webrtc.gyp; sourceTree = "<group>"; };
 		EE07DCE595C32C9C759C89AE /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = build/common.gypi; sourceTree = "<group>"; };
@@ -683,10 +737,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B2F703F917175EC30077E273 /* Products */ = {
+		B21C5F0C17185198000DE24B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B2F703FF17175EC60077E273 /* libjpeg_turbo.a */,
+				B21C5F151718519B000DE24B /* libjpeg.a */,
+				B21C5F171718519B000DE24B /* libturbojpeg.a */,
+				B21C5F191718519B000DE24B /* libsimd-arm.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B21C5FA217186728000DE24B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B21C5FA61718672D000DE24B /* libvpx_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B22AB96217186C72002F31E0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B22AB96917186C74002F31E0 /* libvideo_coding_utility.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -694,7 +766,9 @@
 		D5664B6BE44EE6B39237196B /* Projects */ = {
 			isa = PBXGroup;
 			children = (
-				B2F703F817175EC30077E273 /* libjpeg.xcodeproj */,
+				B22AB96117186C72002F31E0 /* video_coding_utility.xcodeproj */,
+				B21C5FA117186728000DE24B /* libvpx_ios.xcodeproj */,
+				B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */,
 				B200837417170A4500E5D0E0 /* opus.xcodeproj */,
 				B20083631717096500E5D0E0 /* libyuv.xcodeproj */,
 				F138F14D79C0D3898BC67AF8 /* common_audio.xcodeproj */,
@@ -759,8 +833,12 @@
 					ProjectRef = B6C406D3687A054343EE09A0 /* common_video.xcodeproj */;
 				},
 				{
-					ProductGroup = B2F703F917175EC30077E273 /* Products */;
-					ProjectRef = B2F703F817175EC30077E273 /* libjpeg.xcodeproj */;
+					ProductGroup = B21C5F0C17185198000DE24B /* Products */;
+					ProjectRef = B21C5F0B17185198000DE24B /* libjpeg-turbo-ios.xcodeproj */;
+				},
+				{
+					ProductGroup = B21C5FA217186728000DE24B /* Products */;
+					ProjectRef = B21C5FA117186728000DE24B /* libvpx_ios.xcodeproj */;
 				},
 				{
 					ProductGroup = B20083641717096500E5D0E0 /* Products */;
@@ -777,6 +855,10 @@
 				{
 					ProductGroup = E9522F6BA3D03493E30CB3FC /* Products */;
 					ProjectRef = 5628D86D957328BFD87DB990 /* system_wrappers.xcodeproj */;
+				},
+				{
+					ProductGroup = B22AB96217186C72002F31E0 /* Products */;
+					ProjectRef = B22AB96117186C72002F31E0 /* video_coding_utility.xcodeproj */;
 				},
 				{
 					ProductGroup = 3AFD6E9F7F060664827E85D4 /* Products */;
@@ -974,11 +1056,39 @@
 			remoteRef = B200837A17170A4800E5D0E0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		B2F703FF17175EC60077E273 /* libjpeg_turbo.a */ = {
+		B21C5F151718519B000DE24B /* libjpeg.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libjpeg_turbo.a;
-			remoteRef = B2F703FE17175EC60077E273 /* PBXContainerItemProxy */;
+			path = libjpeg.a;
+			remoteRef = B21C5F141718519B000DE24B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B21C5F171718519B000DE24B /* libturbojpeg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libturbojpeg.a;
+			remoteRef = B21C5F161718519B000DE24B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B21C5F191718519B000DE24B /* libsimd-arm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libsimd-arm.a";
+			remoteRef = B21C5F181718519B000DE24B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B21C5FA61718672D000DE24B /* libvpx_ios.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvpx_ios.a;
+			remoteRef = B21C5FA51718672D000DE24B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B22AB96917186C74002F31E0 /* libvideo_coding_utility.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libvideo_coding_utility.a;
+			remoteRef = B22AB96817186C74002F31E0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		B5BC213B99BA2555FE068F4D /* libvideo_render_module.a */ = {
@@ -1139,15 +1249,30 @@
 			name = webrtc_i420;
 			targetProxy = CCD245D303E231ECC91AA158 /* PBXContainerItemProxy */;
 		};
+		B21C5F2A171851D5000DE24B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = jpeg;
+			targetProxy = B21C5F29171851D5000DE24B /* PBXContainerItemProxy */;
+		};
+		B21C5F2C171851D5000DE24B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = turbojpeg;
+			targetProxy = B21C5F2B171851D5000DE24B /* PBXContainerItemProxy */;
+		};
+		B21C5F2E171851D5000DE24B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "simd-arm";
+			targetProxy = B21C5F2D171851D5000DE24B /* PBXContainerItemProxy */;
+		};
+		B21C5FA8171867C0000DE24B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libvpx_ios;
+			targetProxy = B21C5FA7171867C0000DE24B /* PBXContainerItemProxy */;
+		};
 		B2F7046E1717654B0077E273 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = opus;
 			targetProxy = B2F7046D1717654B0077E273 /* PBXContainerItemProxy */;
-		};
-		B2F704701717654B0077E273 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libjpeg;
-			targetProxy = B2F7046F1717654B0077E273 /* PBXContainerItemProxy */;
 		};
 		B2F704721717654B0077E273 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

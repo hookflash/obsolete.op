@@ -35,9 +35,7 @@
 #include <stdio.h>
 
 #include "typedefs.h"
-
-@class MP4FileObjC;
-@class NSURL;
+#include "mp4_file_objc.h"
 
 namespace webrtc {
 class CriticalSectionWrapper;
@@ -54,9 +52,9 @@ public:
     WebRtc_Word32 CreateAudioStream(WebRtc_Word32 samplerate, WebRtc_UWord16 bitrate);
     WebRtc_Word32 Create(const char* fileName, bool saveVideoToLibrary);
     
-    WebRtc_Word32 WriteAudio(const uint8_t* data, int32_t length,
+    WebRtc_Word32 WriteAudio(const WebRtc_UWord8* data, WebRtc_Word32 length,
                              WebRtc_UWord32 timeStamp);
-    WebRtc_Word32 WriteVideo(const uint8_t* data, int32_t length,
+    WebRtc_Word32 WriteVideo(const WebRtc_UWord8* data, WebRtc_Word32 length,
                              WebRtc_UWord32 timeStamp);
     
     WebRtc_Word32 Close();

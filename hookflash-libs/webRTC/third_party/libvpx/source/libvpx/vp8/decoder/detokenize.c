@@ -53,8 +53,7 @@ static const uint8_t kZigzag[16] = {
 #define NUM_PROBAS  11
 #define NUM_CTX  3
 
-/* for const-casting */
-typedef const uint8_t (*ProbaArray)[NUM_CTX][NUM_PROBAS];
+typedef const uint8_t (*ProbaArray)[NUM_CTX][NUM_PROBAS];  // for const-casting
 
 static int GetSigned(BOOL_DECODER *br, int value_to_sign)
 {

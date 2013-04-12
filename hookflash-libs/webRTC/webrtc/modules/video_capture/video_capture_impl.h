@@ -74,6 +74,7 @@ public:
 
     virtual int32_t EnableFrameRateCallback(const bool enable);
     virtual int32_t EnableNoPictureAlarm(const bool enable);
+    virtual int32_t EnableFaceDetection(const bool enable);
 
     virtual const char* CurrentDeviceName() const;
 
@@ -85,10 +86,11 @@ public:
     virtual int32_t IncomingFrame(uint8_t* videoFrame,
                                   int32_t videoFrameLength,
                                   const VideoCaptureCapability& frameInfo,
-                                  int64_t captureTime = 0);
-    virtual int32_t IncomingFrameI420(
-        const VideoFrameI420& video_frame,
-        int64_t captureTime = 0);
+                                  int64_t captureTime = 0,
+                                  bool faceDetected = false);
+    virtual int32_t IncomingFrameI420( const VideoFrameI420& video_frame,
+                                      int64_t captureTime = 0,
+                                      bool faceDetected = false);
 
     // Platform dependent
     virtual int32_t StartCapture(const VideoCaptureCapability& capability)
@@ -131,6 +133,8 @@ private:
     bool _frameRateCallBack; // true if EnableFrameRateCallback
     bool _noPictureAlarmCallBack; //true if EnableNoPictureAlarm
     VideoCaptureAlarm _captureAlarm; // current value of the noPictureAlarm
+    bool _faceDetectionCallBack; //true if EnableFaceDetection
+    bool _faceDetected; // current value of the faceDetected
 
     int32_t _setCaptureDelay; // The currently used capture delay
     VideoCaptureDataCallback* _dataCallBack;

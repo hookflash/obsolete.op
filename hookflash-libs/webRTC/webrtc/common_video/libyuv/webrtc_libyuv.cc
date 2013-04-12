@@ -284,6 +284,65 @@ int ConvertFromYV12(const I420VideoFrame& src_frame,
                                  ConvertVideoType(dst_video_type));
 }
 
+
+#ifdef WEBRTC_IOS
+int 
+ConvertI420ToABGR(const uint8_t* inFrame, uint8_t* outFrame,
+                  int width, int height,
+                  int strideOut)
+{
+    return libyuv::ConvertI420ToABGR(inFrame, outFrame, width, height, strideOut);
+}
+  
+int 
+ConvertABGRToI420(int width, int height,
+                  const uint8_t* inFrame, uint8_t* outFrame)
+{
+    return libyuv::ConvertABGRToI420(width, height, inFrame, outFrame);
+}
+  
+int
+ScaleRGBAFrameDouble(int width, int height,
+                     uint8_t* inFrame)
+{
+    return libyuv::ScaleRGBAFrameDouble(width, height, inFrame);
+}
+  
+int
+ConvertNV12ToI420AndScaleFrameDouble(int width, int height,
+                                     uint8_t* inFrameY, uint8_t* inFrameUV)
+{
+    return libyuv::ConvertNV12ToI420AndScaleFrameDouble(width, height, inFrameY, inFrameUV);
+}
+  
+int
+ConvertNV12ToI420AndScaleFrameQuad(int width, int height,
+                                   uint8_t* inFrameY, uint8_t* inFrameUV)
+{
+  return libyuv::ConvertNV12ToI420AndScaleFrameQuad(width, height, inFrameY, inFrameUV);
+}
+  
+int ScaleI420FrameDouble(int width, int height,
+                         uint8_t* inFrame)
+{
+  return libyuv::ScaleI420FrameDouble(width, height, inFrame);
+}
+
+    
+int RotateI420(const uint8_t* inBuffer, uint8_t* outBuffer, int width, int height,
+               VideoRotationMode rotateFrame)
+{
+    return libyuv::I420Rotate(inBuffer, width,
+                              inBuffer + width * height, width / 2,
+                              inBuffer + width * height + width * height / 4, width / 2,
+                              outBuffer, width,
+                              outBuffer + width * height, width / 2,
+                              outBuffer + width * height + width * height / 4, width / 2,
+                              width, height,
+                              ConvertRotationMode(rotateFrame));
+}
+#endif
+
 int MirrorI420LeftRight(const I420VideoFrame* src_frame,
                         I420VideoFrame* dst_frame) {
   // Source and destination frames should have equal resolution.

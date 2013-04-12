@@ -2168,6 +2168,350 @@ int ConvertToI420(const uint8* sample,
   return r;
 }
 
+inline
+int Clip(int val)
+{
+    if (val < 0)
+    {
+        return (uint8_t)0;
+    } else if (val > 255)
+    {
+        return (uint8_t)255;
+    }
+    return (uint8_t)val;
+}
+
+int 
+ConvertI420ToABGR(const uint8_t* inFrame, uint8_t* outFrame,
+                  int width, int height,
+                  int strideOut)
+{
+    if (width < 1)
+    {
+        return -1;
+    }
+    bool invertImage;
+    if (height >= 0)
+    {
+        invertImage = false;
+    }
+    else
+    {
+        invertImage = true;
+        height = -height;
+    }
+    if (strideOut == 0)
+    {
+        strideOut = width;
+    }
+    else if (strideOut < width)
+    {
+        return -1;
+    }
+    
+    int src_stride_y, src_stride_u, src_stride_v, dst_stride_argb;
+    const uint8_t *src_y, *src_u, *src_v;
+    uint8_t *dst_argb;
+    
+    src_y = inFrame;
+    src_u = src_y + width * height;
+    src_v = src_u + (( width * height ) >> 2 );
+    dst_argb = outFrame;
+    
+    src_stride_y = width;
+    src_stride_u = width >> 1;
+    src_stride_v = width >> 1;
+    dst_stride_argb = strideOut * 4;
+    
+    // Negative height means invert the image.
+    if (invertImage) 
+    {
+        dst_argb = dst_argb + (height - 1) * dst_stride_argb;
+        dst_stride_argb = -dst_stride_argb;
+    }
+    void (*FastConvertYUVToABGRRow)(const uint8_t* y_buf,
+                                    const uint8_t* u_buf,
+                                    const uint8_t* v_buf,
+                                    uint8_t* rgb_buf,
+                                    int width);
+    
+#ifdef HAS_IPHONE_NEON
+    FastConvertYUVToABGRRow = I420ToARGBRow_NEON;
+#else
+    FastConvertYUVToABGRRow = NULL;
+#endif
+    
+    int residue = width % 16;
+    
+    for (int y = 0; y < height; ++y) 
+    {
+        FastConvertYUVToABGRRow(src_y, src_u, src_v, dst_argb, width-residue);
+        
+        uint8_t cmp_y;
+        uint8_t cmp_u;
+        uint8_t cmp_v;
+        int16_t cmp_y1;
+        for (int i = residue; i > 0; i--)
+        {
+            cmp_y = src_y[width-i];
+            cmp_u = src_u[(width-i)>>1];
+            cmp_v = src_v[(width-i)>>1];
+            cmp_y1 = 74 * (cmp_y - 16);
+            dst_argb[4*(width-i)+0] = Clip((cmp_y1 + 127 * (cmp_u - 128)) >> 6);
+            dst_argb[4*(width-i)+1] = Clip((cmp_y1 - 25 * (cmp_u - 128) - 52 * (cmp_v - 128)) >> 6);
+            dst_argb[4*(width-i)+2] = Clip((cmp_y1 + 102 * (cmp_v - 128)) >> 6);
+            dst_argb[4*(width-i)+3] = 0xFF;
+        }
+        
+        dst_argb += dst_stride_argb;
+        src_y += src_stride_y;
+        if (y & 1) 
+        {
+            src_u += src_stride_u;
+            src_v += src_stride_v;
+        }
+    }
+    return 0;
+}
+
+int 
+ConvertABGRToI420(int width, int height,
+                  const uint8_t* inFrame, uint8_t* outFrame)
+{
+    if (width < 1)
+    {
+        return -1;
+    }
+    bool invertImage;
+    if (height >= 0)
+    {
+        invertImage = false;
+    }
+    else
+    {
+        invertImage = true;
+        height = -height;
+    }
+    
+    int src_stride_argb, dst_stride_y, dst_stride_u, dst_stride_v;
+    const uint8_t *src_argb;
+    uint8_t *dst_y, *dst_u, *dst_v;
+    
+    src_argb = inFrame;
+    dst_y = outFrame;
+    dst_u = dst_y + width * height;
+    dst_v = dst_u + (( width * height ) >> 2 );
+    
+    src_stride_argb = width * 4;
+    dst_stride_y = width;
+    dst_stride_u = width >> 1;
+    dst_stride_v = width >> 1;
+    
+    // Negative height means invert the image.
+    if (invertImage) 
+    {
+        dst_y = dst_y + (height - 1) * dst_stride_y;
+        dst_u = dst_u + (height - 1) * dst_stride_u;
+        dst_v = dst_v + (height - 1) * dst_stride_v;
+        dst_stride_y = -dst_stride_y;
+        dst_stride_u = -dst_stride_u;
+        dst_stride_v = -dst_stride_v;
+    }
+    
+    void (*FastConvertABGRToYUVRow2)(const uint8_t* rgb_buf,
+                                     uint8_t* y_buf,
+                                     uint8_t* u_buf,
+                                     uint8_t* v_buf,
+                                     int width,
+                                     int stride);
+    
+#ifdef HAS_IPHONE_NEON
+    FastConvertABGRToYUVRow2 = ABGRToI420Row2_NEON;
+#else
+    FastConvertABGRToYUVRow2 = NULL;
+#endif
+
+    int residue = width % 16;
+    
+    for (int y = 0; y < height/2; ++y) 
+    {
+        FastConvertABGRToYUVRow2(src_argb, dst_y, dst_u, dst_v, width-residue, width);
+        
+        for (int i = residue; i > 0; i -= 2)
+        {
+            const uint8_t* r1_px = src_argb + (width-i)*4 + 0;
+            const uint8_t* g1_px = src_argb + (width-i)*4 + 1;
+            const uint8_t* b1_px = src_argb + (width-i)*4 + 2;
+            const uint8_t* r2_px = src_argb + (2*width-i)*4 + 0;
+            const uint8_t* g2_px = src_argb + (2*width-i)*4 + 1;
+            const uint8_t* b2_px = src_argb + (2*width-i)*4 + 2;
+            int16_t y1_px = ((77 * r1_px[0] + 150 * g1_px[0] + 29 * b1_px[0] - 32768) >> 8) + 128;
+            int16_t y2_px = ((77 * r1_px[4] + 150 * g1_px[4] + 29 * b1_px[4] - 32768) >> 8) + 128;
+            int16_t y3_px = ((77 * r2_px[0] + 150 * g2_px[0] + 29 * b2_px[0] - 32768) >> 8) + 128;
+            int16_t y4_px = ((77 * r2_px[4] + 150 * g2_px[4] + 29 * b2_px[4] - 32768) >> 8) + 128;
+            dst_y[width-i+0] = Clip(y1_px);
+            dst_y[width-i*4+1] = Clip(y2_px);
+            dst_y[2*width-i*4+0] = Clip(y3_px);
+            dst_y[2*width-i*4+1] = Clip(y4_px);
+            uint8_t rm_px = (r1_px[0] + r1_px[4] + r2_px[0] + r2_px[4]) >> 2;
+            uint8_t gm_px = (g1_px[0] + g1_px[4] + g2_px[0] + g2_px[4]) >> 2;
+            uint8_t bm_px = (b1_px[0] + b1_px[4] + b2_px[0] + b2_px[4]) >> 2;
+            int16_t u_px = ((-43 * rm_px - 85 * gm_px + 128 * bm_px) >> 8) + 128;
+            int16_t v_px = ((128 * rm_px - 107 * gm_px - 128 * bm_px) >> 8) + 128;
+            dst_u[(width-i)>>1] = Clip(u_px);
+            dst_v[(width-i)>>1] = Clip(v_px);
+        }
+        
+        dst_y += dst_stride_y * 2;
+        dst_u += dst_stride_u;
+        dst_v += dst_stride_v;
+        src_argb += src_stride_argb * 2;
+    }
+    return (width * height * 3 >> 1);
+}
+
+int
+ScaleRGBAFrameDouble(int width, int height,
+                     uint8_t* inFrame)
+{
+    if (width < 1 || height < 1)
+    {
+        return -1;
+    }
+    
+    uint8_t* inPtr = inFrame;
+    uint8_t* outPtr = inFrame;
+    
+    int y = 0;
+    for(; y < (height >> 1); y++)
+    {
+        // 2 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown2Int_NEON(inPtr, width, outPtr, width >> 1);
+#endif
+        inPtr += width << 3;
+        outPtr += width << 1; 
+    }
+    
+    return 0;
+}
+
+int
+ConvertNV12ToI420AndScaleFrameDouble(int width, int height,
+                                     uint8_t* inFrameY, uint8_t* inFrameUV)
+{
+    if (width < 1 || height < 1)
+    {
+        return -1;
+    }
+    
+    uint8_t* inPtr = inFrameY;
+    uint8_t* outPtr = inFrameY;
+    
+    int y = 0;
+    for(; y < (height >> 1); y++)
+    {
+        // 2 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown2Int_NEON(inPtr, width, outPtr, width >> 1);
+#endif
+        inPtr += width << 1;
+        outPtr += width >> 1; 
+    }
+    
+    inPtr = inFrameUV;
+    y = 0;
+    for(; y < (height >> 2); y++)
+    {
+        // 2 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown2IntAndDeinterleave_NEON(inPtr, width >> 1, outPtr, outPtr + (width * height >> 4), width >> 2);
+#endif
+        inPtr += width << 1;
+        outPtr += width >> 2; 
+    }
+    
+    return 0;
+}
+  
+int
+ConvertNV12ToI420AndScaleFrameQuad(int width, int height,
+                                   uint8_t* inFrameY, uint8_t* inFrameUV)
+{
+    if (width < 1 || height < 1)
+    {
+        return -1;
+    }
+    
+    uint8_t* inPtr = inFrameY;
+    uint8_t* outPtr = inFrameY;
+    
+    int y = 0;
+    for(; y < (height >> 2); y++)
+    {
+        // 4 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown4Int_NEON(inPtr, width, outPtr, width >> 2);
+#endif
+        inPtr += width << 2;
+        outPtr += width >> 2; 
+    }
+    
+    inPtr = inFrameUV;
+    y = 0;
+    for(; y < (height >> 3); y++)
+    {
+        // 4 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown4IntAndDeinterleave_NEON(inPtr, width >> 1, outPtr, outPtr + (width * height >> 6), width >> 3);
+#endif
+        inPtr += width << 2;
+        outPtr += width >> 3; 
+    }
+    
+    return 0;
+}
+  
+int
+ScaleI420FrameDouble(int width, int height,
+                     uint8_t* inFrame)
+{
+    if (width < 1 || height < 1)
+    {
+        return -1;
+    }
+    
+    uint8_t* inPtr = inFrame;
+    uint8_t* outPtr = inFrame;
+    
+    int y = 0;
+    for(; y < (height >> 1); y++)
+    {
+        // 2 rows
+#ifdef HAS_IPHONE_NEON
+        ScaleRowDown2Int_NEON(inPtr, width, outPtr, width >> 1);
+#endif
+        inPtr += width << 1;
+        outPtr += width >> 1; 
+    }
+    
+    int i = 0;
+    for (; i < 2; i++)
+    {
+        y = 0;
+        for(; y < (height >> 2); y++)
+        {
+            // 2 rows
+#ifdef HAS_IPHONE_NEON
+            ScaleRowDown2Int_NEON(inPtr, width >> 1, outPtr, width >> 2);
+#endif
+            inPtr += width;
+            outPtr += width >> 2; 
+        }
+    } 
+    return 0;
+}
+
 #ifdef __cplusplus
 }  // extern "C"
 }  // namespace libyuv

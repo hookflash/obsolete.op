@@ -12,7 +12,6 @@
 /*
 @*INTRODUCTION
  */
-#include "vpx_config.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

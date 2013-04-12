@@ -12,14 +12,14 @@
 #ifndef VARIANCE_H
 #define VARIANCE_H
 
-#include "vpx_config.h"
-
-typedef unsigned int(*vp8_sad_fn_t)(
+typedef unsigned int(*vp8_sad_fn_t)
+    (
     const unsigned char *src_ptr,
     int source_stride,
     const unsigned char *ref_ptr,
     int ref_stride,
-    unsigned int max_sad);
+    int max_sad
+    );
 
 typedef void (*vp8_copy32xn_fn_t)(
     const unsigned char *src_ptr,
@@ -48,7 +48,7 @@ typedef void (*vp8_sad_multi_d_fn_t)
     (
      const unsigned char *src_ptr,
      int source_stride,
-     const unsigned char * const ref_ptr[],
+     unsigned char *ref_ptr[4],
      int  ref_stride,
      unsigned int *sad_array
     );

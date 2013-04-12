@@ -7,8 +7,6 @@
 #define RTCD_EXTERN extern
 #endif
 
-#include "vp8/common/blockd.h"
-
 struct blockd;
 struct macroblockd;
 struct loop_filter_info;
@@ -119,9 +117,9 @@ void vp8_build_intra_predictors_mby_s_c(struct macroblockd *x, unsigned char * y
 void vp8_build_intra_predictors_mbuv_s_c(struct macroblockd *x, unsigned char * uabove_row, unsigned char * vabove_row,  unsigned char *uleft, unsigned char *vleft, int left_stride, unsigned char * upred_ptr, unsigned char * vpred_ptr, int pred_stride);
 #define vp8_build_intra_predictors_mbuv_s vp8_build_intra_predictors_mbuv_s_c
 
-void vp8_intra4x4_predict_c(unsigned char *Above, unsigned char *yleft, int left_stride, B_PREDICTION_MODE b_mode, unsigned char *dst, int dst_stride, unsigned char top_left);
-void vp8_intra4x4_predict_armv6(unsigned char *Above, unsigned char *yleft, int left_stride, B_PREDICTION_MODE b_mode, unsigned char *dst, int dst_stride, unsigned char top_left);
-RTCD_EXTERN void (*vp8_intra4x4_predict)(unsigned char *Above, unsigned char *yleft, int left_stride, B_PREDICTION_MODE b_mode, unsigned char *dst, int dst_stride, unsigned char top_left);
+void vp8_intra4x4_predict_c(unsigned char *src, int src_stride, int b_mode, unsigned char *dst, int dst_stride);
+void vp8_intra4x4_predict_armv6(unsigned char *src, int src_stride, int b_mode, unsigned char *dst, int dst_stride);
+RTCD_EXTERN void (*vp8_intra4x4_predict)(unsigned char *src, int src_stride, int b_mode, unsigned char *dst, int dst_stride);
 
 void vp8_mbpost_proc_down_c(unsigned char *dst, int pitch, int rows, int cols,int flimit);
 #define vp8_mbpost_proc_down vp8_mbpost_proc_down_c
@@ -129,8 +127,8 @@ void vp8_mbpost_proc_down_c(unsigned char *dst, int pitch, int rows, int cols,in
 void vp8_mbpost_proc_across_ip_c(unsigned char *dst, int pitch, int rows, int cols,int flimit);
 #define vp8_mbpost_proc_across_ip vp8_mbpost_proc_across_ip_c
 
-void vp8_post_proc_down_and_across_mb_row_c(unsigned char *src, unsigned char *dst, int src_pitch, int dst_pitch, int cols, unsigned char *flimits, int size);
-#define vp8_post_proc_down_and_across_mb_row vp8_post_proc_down_and_across_mb_row_c
+void vp8_post_proc_down_and_across_c(unsigned char *src, unsigned char *dst, int src_pitch, int dst_pitch, int rows, int cols, int flimit);
+#define vp8_post_proc_down_and_across vp8_post_proc_down_and_across_c
 
 void vp8_plane_add_noise_c(unsigned char *s, char *noise, char blackclamp[16], char whiteclamp[16], char bothclamp[16], unsigned int w, unsigned int h, int pitch);
 #define vp8_plane_add_noise vp8_plane_add_noise_c
@@ -248,70 +246,70 @@ unsigned int vp8_variance_halfpixvar16x16_hv_armv6(const unsigned char *src_ptr,
 unsigned int vp8_variance_halfpixvar16x16_hv_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sse);
 RTCD_EXTERN unsigned int (*vp8_variance_halfpixvar16x16_hv)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sse);
 
-unsigned int vp8_sad4x4_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad4x4_neon(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-RTCD_EXTERN unsigned int (*vp8_sad4x4)(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
+unsigned int vp8_sad4x4_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad4x4_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+RTCD_EXTERN unsigned int (*vp8_sad4x4)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
 
-unsigned int vp8_sad8x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad8x8_neon(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-RTCD_EXTERN unsigned int (*vp8_sad8x8)(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
+unsigned int vp8_sad8x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad8x8_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+RTCD_EXTERN unsigned int (*vp8_sad8x8)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
 
-unsigned int vp8_sad8x16_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad8x16_neon(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-RTCD_EXTERN unsigned int (*vp8_sad8x16)(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
+unsigned int vp8_sad8x16_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad8x16_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+RTCD_EXTERN unsigned int (*vp8_sad8x16)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
 
-unsigned int vp8_sad16x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad16x8_neon(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-RTCD_EXTERN unsigned int (*vp8_sad16x8)(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
+unsigned int vp8_sad16x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad16x8_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+RTCD_EXTERN unsigned int (*vp8_sad16x8)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
 
-unsigned int vp8_sad16x16_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad16x16_armv6(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-unsigned int vp8_sad16x16_neon(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
-RTCD_EXTERN unsigned int (*vp8_sad16x16)(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int ref_stride, unsigned int max_sad);
+unsigned int vp8_sad16x16_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad16x16_armv6(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+unsigned int vp8_sad16x16_neon(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
+RTCD_EXTERN unsigned int (*vp8_sad16x16)(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int ref_stride, int max_sad);
 
-void vp8_sad4x4x3_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
+void vp8_sad4x4x3_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
 #define vp8_sad4x4x3 vp8_sad4x4x3_c
 
-void vp8_sad8x8x3_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
+void vp8_sad8x8x3_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
 #define vp8_sad8x8x3 vp8_sad8x8x3_c
 
-void vp8_sad8x16x3_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
+void vp8_sad8x16x3_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
 #define vp8_sad8x16x3 vp8_sad8x16x3_c
 
-void vp8_sad16x8x3_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
+void vp8_sad16x8x3_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
 #define vp8_sad16x8x3 vp8_sad16x8x3_c
 
-void vp8_sad16x16x3_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
+void vp8_sad16x16x3_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned int *sad_array);
 #define vp8_sad16x16x3 vp8_sad16x16x3_c
 
-void vp8_sad4x4x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
+void vp8_sad4x4x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
 #define vp8_sad4x4x8 vp8_sad4x4x8_c
 
-void vp8_sad8x8x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
+void vp8_sad8x8x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
 #define vp8_sad8x8x8 vp8_sad8x8x8_c
 
-void vp8_sad8x16x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
+void vp8_sad8x16x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
 #define vp8_sad8x16x8 vp8_sad8x16x8_c
 
-void vp8_sad16x8x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
+void vp8_sad16x8x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
 #define vp8_sad16x8x8 vp8_sad16x8x8_c
 
-void vp8_sad16x16x8_c(const unsigned char *src_ptr, int src_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
+void vp8_sad16x16x8_c(const unsigned char *src_ptr, int source_stride, const unsigned char *ref_ptr, int  ref_stride, unsigned short *sad_array);
 #define vp8_sad16x16x8 vp8_sad16x16x8_c
 
-void vp8_sad4x4x4d_c(const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array);
+void vp8_sad4x4x4d_c(const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array);
 #define vp8_sad4x4x4d vp8_sad4x4x4d_c
 
-void vp8_sad8x8x4d_c(const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array);
+void vp8_sad8x8x4d_c(const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array);
 #define vp8_sad8x8x4d vp8_sad8x8x4d_c
 
-void vp8_sad8x16x4d_c(const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array);
+void vp8_sad8x16x4d_c(const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array);
 #define vp8_sad8x16x4d vp8_sad8x16x4d_c
 
-void vp8_sad16x8x4d_c(const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array);
+void vp8_sad16x8x4d_c(const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array);
 #define vp8_sad16x8x4d vp8_sad16x8x4d_c
 
-void vp8_sad16x16x4d_c(const unsigned char *src_ptr, int src_stride, const unsigned char * const ref_ptr[], int  ref_stride, unsigned int *sad_array);
+void vp8_sad16x16x4d_c(const unsigned char *src_ptr, int source_stride, unsigned char *ref_ptr[4], int  ref_stride, unsigned int *sad_array);
 #define vp8_sad16x16x4d vp8_sad16x16x4d_c
 
 unsigned int vp8_get_mb_ss_c(const short *);
@@ -407,94 +405,13 @@ int vp8_diamond_search_sad_c(struct macroblock *x, struct block *b, struct block
 void vp8_yv12_copy_partial_frame_c(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
 void vp8_yv12_copy_partial_frame_neon(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
 RTCD_EXTERN void (*vp8_yv12_copy_partial_frame)(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-
-int vp8_denoiser_filter_c(struct yv12_buffer_config* mc_running_avg, struct yv12_buffer_config* running_avg, struct macroblock* signal, unsigned int motion_magnitude2, int y_offset, int uv_offset);
-#define vp8_denoiser_filter vp8_denoiser_filter_c
-
-void vp8_horizontal_line_4_5_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_4_5_scale vp8_horizontal_line_4_5_scale_c
-
-void vp8_vertical_band_4_5_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_4_5_scale vp8_vertical_band_4_5_scale_c
-
-void vp8_last_vertical_band_4_5_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_last_vertical_band_4_5_scale vp8_last_vertical_band_4_5_scale_c
-
-void vp8_horizontal_line_2_3_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_2_3_scale vp8_horizontal_line_2_3_scale_c
-
-void vp8_vertical_band_2_3_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_2_3_scale vp8_vertical_band_2_3_scale_c
-
-void vp8_last_vertical_band_2_3_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_last_vertical_band_2_3_scale vp8_last_vertical_band_2_3_scale_c
-
-void vp8_horizontal_line_3_5_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_3_5_scale vp8_horizontal_line_3_5_scale_c
-
-void vp8_vertical_band_3_5_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_3_5_scale vp8_vertical_band_3_5_scale_c
-
-void vp8_last_vertical_band_3_5_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_last_vertical_band_3_5_scale vp8_last_vertical_band_3_5_scale_c
-
-void vp8_horizontal_line_3_4_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_3_4_scale vp8_horizontal_line_3_4_scale_c
-
-void vp8_vertical_band_3_4_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_3_4_scale vp8_vertical_band_3_4_scale_c
-
-void vp8_last_vertical_band_3_4_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_last_vertical_band_3_4_scale vp8_last_vertical_band_3_4_scale_c
-
-void vp8_horizontal_line_1_2_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_1_2_scale vp8_horizontal_line_1_2_scale_c
-
-void vp8_vertical_band_1_2_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_1_2_scale vp8_vertical_band_1_2_scale_c
-
-void vp8_last_vertical_band_1_2_scale_c(unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_last_vertical_band_1_2_scale vp8_last_vertical_band_1_2_scale_c
-
-void vp8_horizontal_line_5_4_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_5_4_scale vp8_horizontal_line_5_4_scale_c
-
-void vp8_vertical_band_5_4_scale_c(unsigned char *source, unsigned int src_pitch, unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_5_4_scale vp8_vertical_band_5_4_scale_c
-
-void vp8_horizontal_line_5_3_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_5_3_scale vp8_horizontal_line_5_3_scale_c
-
-void vp8_vertical_band_5_3_scale_c(unsigned char *source, unsigned int src_pitch, unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_5_3_scale vp8_vertical_band_5_3_scale_c
-
-void vp8_horizontal_line_2_1_scale_c(const unsigned char *source, unsigned int source_width, unsigned char *dest, unsigned int dest_width);
-#define vp8_horizontal_line_2_1_scale vp8_horizontal_line_2_1_scale_c
-
-void vp8_vertical_band_2_1_scale_c(unsigned char *source, unsigned int src_pitch, unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_2_1_scale vp8_vertical_band_2_1_scale_c
-
-void vp8_vertical_band_2_1_scale_i_c(unsigned char *source, unsigned int src_pitch, unsigned char *dest, unsigned int dest_pitch, unsigned int dest_width);
-#define vp8_vertical_band_2_1_scale_i vp8_vertical_band_2_1_scale_i_c
-
-void vp8_yv12_extend_frame_borders_c(struct yv12_buffer_config *ybf);
-void vp8_yv12_extend_frame_borders_neon(struct yv12_buffer_config *ybf);
-RTCD_EXTERN void (*vp8_yv12_extend_frame_borders)(struct yv12_buffer_config *ybf);
-
-void vp8_yv12_copy_frame_c(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-void vp8_yv12_copy_frame_neon(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-RTCD_EXTERN void (*vp8_yv12_copy_frame)(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-
-void vp8_yv12_copy_y_c(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-void vp8_yv12_copy_y_neon(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
-RTCD_EXTERN void (*vp8_yv12_copy_y)(struct yv12_buffer_config *src_ybc, struct yv12_buffer_config *dst_ybc);
+#include "vpx_config.h"
 
 void vpx_rtcd(void);
-#include "vpx_config.h"
 
 #ifdef RTCD_C
 #include "vpx_ports/arm.h"
-static void setup_rtcd_internal(void)
+void vpx_rtcd(void)
 {
     int flags = arm_cpu_caps();
 
@@ -748,38 +665,6 @@ static void setup_rtcd_internal(void)
 
     vp8_yv12_copy_partial_frame = vp8_yv12_copy_partial_frame_c;
     if (flags & HAS_NEON) vp8_yv12_copy_partial_frame = vp8_yv12_copy_partial_frame_neon;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    vp8_yv12_extend_frame_borders = vp8_yv12_extend_frame_borders_c;
-    if (flags & HAS_NEON) vp8_yv12_extend_frame_borders = vp8_yv12_extend_frame_borders_neon;
-
-    vp8_yv12_copy_frame = vp8_yv12_copy_frame_c;
-    if (flags & HAS_NEON) vp8_yv12_copy_frame = vp8_yv12_copy_frame_neon;
-
-    vp8_yv12_copy_y = vp8_yv12_copy_y_c;
-    if (flags & HAS_NEON) vp8_yv12_copy_y = vp8_yv12_copy_y_neon;
 }
 #endif
 #endif

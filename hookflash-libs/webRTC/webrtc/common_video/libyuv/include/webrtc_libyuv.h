@@ -152,6 +152,24 @@ int ConvertNV12ToRGB565(const uint8_t* src_frame,
                         uint8_t* dst_frame,
                         int width, int height);
 
+#ifdef WEBRTC_IOS
+    int ConvertI420ToABGR(const uint8_t* inFrame, uint8_t* outFrame,
+                          int width, int height,
+                          int strideOut);
+    int ConvertABGRToI420(int width, int height,
+                          const uint8_t* inFrame, uint8_t* outFrame);
+    int ScaleRGBAFrameDouble(int width, int height,
+                             uint8_t* inFrame);
+    int ConvertNV12ToI420AndScaleFrameDouble(int width, int height,
+                                             uint8_t* inFrameY, uint8_t* inFrameUV);
+    int ConvertNV12ToI420AndScaleFrameQuad(int width, int height,
+                                           uint8_t* inFrameY, uint8_t* inFrameUV);
+    int ScaleI420FrameDouble(int width, int height,
+                             uint8_t* inFrame);
+    int RotateI420(const uint8_t* inBuffer, uint8_t* outBuffer, int width, int height,
+                   VideoRotationMode rotateFrame);
+#endif
+
 // Mirror functions
 // The following 2 functions perform mirroring on a given image
 // (LeftRight/UpDown).

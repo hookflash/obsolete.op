@@ -29,13 +29,12 @@ log() {
 
 
 vpx_style() {
-  for f; do
-    case "$f" in
-      *.h|*.c|*.cc)
-        "${dirname_self}"/vpx-astyle.sh "$f"
-        ;;
-    esac
-  done
+  astyle --style=bsd --min-conditional-indent=0 --break-blocks \
+         --pad-oper --pad-header --unpad-paren \
+         --align-pointer=name \
+         --indent-preprocessor --convert-tabs --indent-labels \
+         --suffix=none --quiet "$@"
+  sed -i 's/[[:space:]]\{1,\},/,/g' "$@"
 }
 
 
@@ -120,7 +119,8 @@ cd "$(git rev-parse --show-toplevel)"
 git show > "${ORIG_DIFF}"
 
 # Apply the style guide on new and modified files and collect its diff
-for f in $(git diff HEAD^ --name-only -M90 --diff-filter=AM); do
+for f in $(git diff HEAD^ --name-only -M90 --diff-filter=AM \
+           | grep '\.[ch]$'); do
   case "$f" in
     third_party/*) continue;;
     nestegg/*) continue;;

@@ -97,13 +97,13 @@ static double similarity
 static double ssim_16x16(unsigned char *s,int sp, unsigned char *r,int rp)
 {
     unsigned long sum_s=0,sum_r=0,sum_sq_s=0,sum_sq_r=0,sum_sxr=0;
-    vp8_ssim_parms_16x16(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
+    vp8_ssim_parms_16x16_c(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
     return similarity(sum_s, sum_r, sum_sq_s, sum_sq_r, sum_sxr, 256);
 }
 static double ssim_8x8(unsigned char *s,int sp, unsigned char *r,int rp)
 {
     unsigned long sum_s=0,sum_r=0,sum_sq_s=0,sum_sq_r=0,sum_sxr=0;
-    vp8_ssim_parms_8x8(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
+    vp8_ssim_parms_8x8_c(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
     return similarity(sum_s, sum_r, sum_sq_s, sum_sq_r, sum_sxr, 64);
 }
 
@@ -122,7 +122,7 @@ long dssim(unsigned char *s,int sp, unsigned char *r,int rp)
     c1 = cc1*16;
     c2 = cc2*16;
 
-    vp8_ssim_parms_16x16(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
+    vp8_ssim_parms_16x16_c(s, sp, r, rp, &sum_s, &sum_r, &sum_sq_s, &sum_sq_r, &sum_sxr);
     ssim_n1 = (2*sum_s*sum_r+ c1);
 
     ssim_n2 =((int64_t) 2*256*sum_sxr-(int64_t) 2*sum_s*sum_r+c2);

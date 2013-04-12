@@ -27,22 +27,15 @@
 # Android.mk file in the libvpx directory:
 # LOCAL_PATH := $(call my-dir)
 # include $(CLEAR_VARS)
-# include jni/libvpx/build/make/Android.mk
+# include libvpx/build/make/Android.mk
 #
 # There are currently two TARGET_ARCH_ABI targets for ARM.
 # armeabi and armeabi-v7a.  armeabi-v7a is selected by creating an
 # Application.mk in the jni directory that contains:
 # APP_ABI := armeabi-v7a
 #
-# By default libvpx will detect at runtime the existance of NEON extension.
-# For this we import the 'cpufeatures' module from the NDK sources.
-# libvpx can also be configured without this runtime detection method.
-# Configuring with --disable-runtime-cpu-detect will assume presence of NEON.
-# Configuring with --disable-runtime-cpu-detect --disable-neon will remove any
-# NEON dependency.
-
 # To change to building armeabi, run ./libvpx/configure again, but with
-# --target=arm5te-android-gcc and modify the Application.mk file to
+# --target=arm5te-android-gcc and and modify the Application.mk file to
 # set APP_ABI := armeabi
 #
 # Running ndk-build will build libvpx and include it in your project.
@@ -173,9 +166,7 @@ LOCAL_MODULE := libvpx
 
 LOCAL_LDLIBS := -llog
 
-ifeq ($(CONFIG_RUNTIME_CPU_DETECT),yes)
-  LOCAL_STATIC_LIBRARIES := cpufeatures
-endif
+LOCAL_STATIC_LIBRARIES := cpufeatures
 
 $(foreach file, $(LOCAL_SRC_FILES), $(LOCAL_PATH)/$(file)): vpx_rtcd.h
 
@@ -205,6 +196,4 @@ ifeq ($(CONFIG_VP8_ENCODER), yes)
     $(LIBVPX_PATH)/vp8/encoder/asm_enc_offsets.c))
 endif
 
-ifeq ($(CONFIG_RUNTIME_CPU_DETECT),yes)
 $(call import-module,cpufeatures)
-endif

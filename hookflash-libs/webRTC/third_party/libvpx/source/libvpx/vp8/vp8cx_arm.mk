@@ -9,7 +9,7 @@
 ##
 
 
-VP8_CX_SRCS-$(ARCH_ARM)  += vp8cx_arm.mk
+#VP8_CX_SRCS list is modified according to different platforms.
 
 #File list for arm
 # encoder
