@@ -246,8 +246,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int TestMediaEngine::setVoiceTransportParameters()
       {
-        mError = mVoiceBase->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
-        mError = mVoiceBase->SetLocalReceiver(mVoiceChannel, 20010);
+        mError = mVoiceTransport->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
+        mError = mVoiceTransport->SetLocalReceiver(mVoiceChannel, 20010);
         return mError;
       }
       
