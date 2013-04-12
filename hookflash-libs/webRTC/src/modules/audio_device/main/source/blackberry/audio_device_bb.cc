@@ -10,6 +10,7 @@
 
 #include <cassert>
 #include <string.h>
+#include <errno.h>
 
 #include "audio_device_utility.h"
 #include "audio_device_bb.h"
@@ -54,19 +55,23 @@ AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _inputDeviceIsSpecified(false),
     _outputDeviceIsSpecified(false),
 //    _handleRecord(NULL),
-//    _handlePlayout(NULL),
+    _handlePlayout(NULL),
+//    _handleAudioManagerRecord(-1),
+	_handleAudioManagerPlayout(-1),
 //    _recordingBuffersizeInFrame(0),
 //    _recordingPeriodSizeInFrame(0),
 //    _playoutBufferSizeInFrame(0),
 //    _playoutPeriodSizeInFrame(0),
 //    _recordingBufferSizeIn10MS(0),
-//    _playoutBufferSizeIn10MS(0),
+    _playoutBufferSizeIn10MS(0),
     _recordingFramesIn10MS(0),
     _playoutFramesIn10MS(0),
     _recordingFreq(ALSA_CAPTURE_FREQ),
     _playoutFreq(ALSA_PLAYOUT_FREQ),
     _recChannels(ALSA_CAPTURE_CH),
     _playChannels(ALSA_PLAYOUT_CH),
+    _recFrameSize(0),
+    _playFrameSize(0),
     _recordingBuffer(NULL),
     _playoutBuffer(NULL),
     _recordingFramesLeft(0),
@@ -78,8 +83,6 @@ AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _playing(false),
     _recIsInitialized(false),
     _playIsInitialized(false),
-    _recordingDeviceIsSpecified(false),
-    _playoutDeviceIsSpecified(false),
     _micIsInitialized(false),
     _speakerIsInitialized(false),
     _AGC(false),
@@ -220,6 +223,8 @@ WebRtc_Word32 AudioDeviceBB::Terminate()
     }
 
     _initialized = false;
+    _speakerIsInitialized = false;
+    _micIsInitialized = false;
     _outputDeviceIsSpecified = false;
     _inputDeviceIsSpecified = false;
 
@@ -256,9 +261,9 @@ WebRtc_Word32 AudioDeviceBB::InitSpeaker()
         return -1;
     }
 
-    if (!_playoutDeviceIsSpecified) {
+    if (!_outputDeviceIsSpecified) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
-                     _id, "  Playout device is not specified");
+                     _id, "  Output device is not specified");
         return -1;
     }
 
@@ -292,9 +297,9 @@ WebRtc_Word32 AudioDeviceBB::InitMicrophone()
         return -1;
     }
 
-    if (!_recordingDeviceIsSpecified) {
+    if (!_inputDeviceIsSpecified) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
-                     _id, "  Recording device is not specified");
+                     _id, "  Input device is not specified");
         return -1;
     }
 
@@ -613,7 +618,7 @@ WebRtc_Word32 AudioDeviceBB::SetPlayoutDevice(WebRtc_UWord16 index)
                      "  SetPlayoutDevice invalid index");
         return -1;
     }
-    _playoutDeviceIsSpecified = true;
+    _outputDeviceIsSpecified = true;
 
     return 0;
 }
@@ -682,7 +687,7 @@ WebRtc_Word32 AudioDeviceBB::SetRecordingDevice(WebRtc_UWord16 index)
         return -1;
     }
 
-    _recordingDeviceIsSpecified = true;
+    _inputDeviceIsSpecified = true;
 
     return 0;
 }
@@ -737,7 +742,6 @@ WebRtc_Word32 AudioDeviceBB::RecordingIsAvailable(bool& available)
 
 WebRtc_Word32 AudioDeviceBB::InitPlayout()
 {
-#if 0
     int errVal = 0;
 
     CriticalSectionScoped lock(&_critSect);
@@ -766,41 +770,48 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     //
     if (_handlePlayout != NULL)
     {
-        LATE(snd_pcm_close)(_handlePlayout);
+        snd_pcm_close(_handlePlayout);
         _handlePlayout = NULL;
         _playIsInitialized = false;
         if (errVal < 0)
         {
             WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                          "  Error closing current playout sound device, error:"
-                         " %s", LATE(snd_strerror)(errVal));
+                         " %s", snd_strerror(errVal));
         }
     }
 
     // Open PCM device for playout
-    char deviceName[kAdmMaxDeviceNameSize] = {0};
-    GetDevicesInfo(2, true, _outputDeviceIndex, deviceName,
-                   kAdmMaxDeviceNameSize);
+//    char deviceName[kAdmMaxDeviceNameSize] = {0};
+//    GetDevicesInfo(2, true, _outputDeviceIndex, deviceName,
+//                   kAdmMaxDeviceNameSize);
 
-    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
-                 "  InitPlayout open (%s)", deviceName);
+//    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
+//                 "  InitPlayout open (%s)", deviceName);
 
-    errVal = LATE(snd_pcm_open)
-                 (&_handlePlayout,
-                  deviceName,
-                  SND_PCM_STREAM_PLAYBACK,
-                  SND_PCM_NONBLOCK);
+//    errVal = snd_pcm_open
+//                 (&_handlePlayout,
+//                  deviceName,
+//                  SND_PCM_STREAM_PLAYBACK,
+//                  SND_PCM_NONBLOCK);
+
+    errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
+    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
+    			SND_PCM_OPEN_PLAYBACK);
 
     if (errVal == -EBUSY) // Device busy - try some more!
     {
         for (int i=0; i < 5; i++)
         {
             sleep(1);
-            errVal = LATE(snd_pcm_open)
-                         (&_handlePlayout,
-                          deviceName,
-                          SND_PCM_STREAM_PLAYBACK,
-                          SND_PCM_NONBLOCK);
+//            errVal = snd_pcm_open
+//                         (&_handlePlayout,
+//                          deviceName,
+//                          SND_PCM_STREAM_PLAYBACK,
+//                          SND_PCM_NONBLOCK);
+            errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
+            			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
+            			SND_PCM_OPEN_PLAYBACK);
             if (errVal == 0)
             {
                 break;
@@ -811,20 +822,103 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                      "     unable to open playback device: %s (%d)",
-                     LATE(snd_strerror)(errVal),
+                     snd_strerror(errVal),
                      errVal);
         _handlePlayout = NULL;
         return -1;
     }
 
+    errVal = snd_pcm_plugin_set_disable(_handlePlayout, PLUGIN_DISABLE_MMAP);
+    if (errVal < 0)
+    {
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"    snd_pcm_get_params %s",
+    				snd_strerror(errVal),
+    				errVal);
+    	_handlePlayout = NULL;
+    	return -1;
+    }
+
+	snd_pcm_channel_setup_t setup;
+	snd_pcm_channel_info_t pi;
+	snd_mixer_group_t group;
+	snd_pcm_channel_params_t pp;
+
+	memset(&pi, 0, sizeof(pi));
+	pi.channel = SND_PCM_CHANNEL_PLAYBACK;
+	errVal = snd_pcm_plugin_info(_handlePlayout, &pi);
+    if (errVal < 0)
+    {
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"    snd_pcm_plugin_info %s",
+    				snd_strerror(errVal),
+    				errVal);
+    	_handlePlayout = NULL;
+		return -1;
+	}
+
+	memset(&pp, 0, sizeof(pp));
+	pp.mode = SND_PCM_MODE_BLOCK;
+	pp.channel = SND_PCM_CHANNEL_PLAYBACK;
+	pp.start_mode = SND_PCM_START_DATA;
+	pp.stop_mode = SND_PCM_STOP_ROLLOVER;
+	pp.buf.block.frag_size = 320;
+	pp.buf.block.frags_max = 3;
+	pp.buf.block.frags_min = 1;
+	pp.format.interleave = 1;
+	pp.format.rate = 16000;
+	pp.format.voices = 1;
+	pp.format.format = SND_PCM_SFMT_S16_LE;
+	errVal = snd_pcm_plugin_params(_handlePlayout, &pp);
+    if (errVal < 0)
+    {
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"    snd_pcm_plugin_params %s",
+    				snd_strerror(errVal),
+    				errVal);
+    	_handlePlayout = NULL;
+		return -1;
+	}
+
+	memset(&setup, 0, sizeof(setup));
+	memset(&group, 0, sizeof(group));
+	setup.channel = SND_PCM_CHANNEL_PLAYBACK;
+	setup.mixer_gid = &group.gid;
+	errVal = snd_pcm_plugin_setup(_handlePlayout, &setup);
+	if (errVal < 0)
+	{
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"    snd_pcm_plugin_setup %s",
+    				snd_strerror(errVal),
+    				errVal);
+    	_handlePlayout = NULL;
+		return -1;
+	}
+
+    _playFrameSize = setup.buf.block.frag_size;
+
+	if (group.gid.name[0] == 0)
+	{
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"Mixer Pcm Group [%s] Not Set",
+    				group.gid.name,
+    				errVal);
+    	_handlePlayout = NULL;
+		return -1;
+	}
+
+#if 0
     _playoutFramesIn10MS = _playoutFreq/100;
-    if ((errVal = LATE(snd_pcm_set_params)( _handlePlayout,
+    if ((errVal = snd_pcm_set_params( _handlePlayout,
 #if defined(WEBRTC_BIG_ENDIAN)
-        SND_PCM_FORMAT_S16_BE,
+//        SND_PCM_FORMAT_S16_BE,
+        0,
 #else
-        SND_PCM_FORMAT_S16_LE, //format
+//        SND_PCM_FORMAT_S16_LE, //format
+        0, //format
 #endif
-        SND_PCM_ACCESS_RW_INTERLEAVED, //access
+//        SND_PCM_ACCESS_RW_INTERLEAVED, //access
+        0, //access
         _playChannels, //channels
         _playoutFreq, //rate
         1, //soft_resample
@@ -834,21 +928,21 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
         _playoutFramesIn10MS = 0;
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                      "     unable to set playback device: %s (%d)",
-                     LATE(snd_strerror)(errVal),
+                     snd_strerror(errVal),
                      errVal);
-        ErrorRecovery(errVal, _handlePlayout);
-        errVal = LATE(snd_pcm_close)(_handlePlayout);
+//        ErrorRecovery(errVal, _handlePlayout);
+        errVal = snd_pcm_close(_handlePlayout);
         _handlePlayout = NULL;
         return -1;
     }
 
-    errVal = LATE(snd_pcm_get_params)(_handlePlayout,
+    errVal = snd_pcm_get_params(_handlePlayout,
         &_playoutBufferSizeInFrame, &_playoutPeriodSizeInFrame);
     if (errVal < 0)
     {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                      "    snd_pcm_get_params %s",
-                     LATE(snd_strerror)(errVal),
+                     snd_strerror(errVal),
                      errVal);
         _playoutBufferSizeInFrame = 0;
         _playoutPeriodSizeInFrame = 0;
@@ -859,7 +953,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
                      "buffer_size:%d period_size :%d",
                      _playoutBufferSizeInFrame, _playoutPeriodSizeInFrame);
     }
-
+#endif
     if (_ptrAudioBuffer)
     {
         // Update webrtc audio buffer with the selected parameters
@@ -868,8 +962,8 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     }
 
     // Set play buffer size
-    _playoutBufferSizeIn10MS = LATE(snd_pcm_frames_to_bytes)(
-        _handlePlayout, _playoutFramesIn10MS);
+//    _playoutBufferSizeIn10MS = snd_pcm_frames_to_bytes(
+//        _handlePlayout, _playoutFramesIn10MS);
 
     // Init varaibles used for play
     _playWarning = 0;
@@ -884,7 +978,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     {
         return -1;
     }
-#endif
+
     return 0;
 }
 
@@ -1165,6 +1259,7 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
 
       // Make sure we don't start recording (it's asynchronous).
       _recIsInitialized = false;
+      _micIsInitialized = false;
       _recording = false;
     }
 
@@ -1237,7 +1332,7 @@ bool AudioDeviceBB::PlayoutIsInitialized() const
 
 WebRtc_Word32 AudioDeviceBB::StartPlayout()
 {
-#if 0
+
     if (!_playIsInitialized)
     {
         return -1;
@@ -1291,22 +1386,32 @@ WebRtc_Word32 AudioDeviceBB::StartPlayout()
     }
     _playThreadID = threadID;
 
-    int errVal = LATE(snd_pcm_prepare)(_handlePlayout);
+/*
+    int errVal = snd_pcm_prepare(_handlePlayout);
     if (errVal < 0)
     {
         WEBRTC_TRACE(kTraceCritical, kTraceAudioDevice, _id,
                      "     playout snd_pcm_prepare failed (%s)\n",
-                     LATE(snd_strerror)(errVal));
+                     snd_strerror(errVal));
         // just log error
         // if snd_pcm_open fails will return -1
     }
-#endif
+*/
+	int errVal = snd_pcm_plugin_prepare(_handlePlayout, SND_PCM_CHANNEL_PLAYBACK);
+	if (errVal < 0)
+	{
+    	WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+    				"    snd_pcm_plugin_prepare %s",
+    				snd_strerror(errVal),
+    				errVal);
+		return -1;
+	}
+
     return 0;
 }
 
 WebRtc_Word32 AudioDeviceBB::StopPlayout()
 {
-#if 0
     {
         CriticalSectionScoped lock(&_critSect);
 
@@ -1340,28 +1445,41 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
     _playoutFramesLeft = 0;
     delete [] _playoutBuffer;
     _playoutBuffer = NULL;
-
+/*
     // stop and close pcm playout device
-    int errVal = LATE(snd_pcm_drop)(_handlePlayout);
+    int errVal = snd_pcm_drop(_handlePlayout);
     if (errVal < 0)
     {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                      "    Error stop playing: %s",
-                     LATE(snd_strerror)(errVal));
+                     snd_strerror(errVal));
     }
+*/
+     int errVal = snd_pcm_plugin_flush(_handlePlayout, SND_PCM_CHANNEL_PLAYBACK);
+     if (errVal < 0)
+         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+                      "    Cannot flush pcm plugin, error: %s",
+                      snd_strerror(errVal));
 
-    errVal = LATE(snd_pcm_close)(_handlePlayout);
+     errVal = snd_pcm_close(_handlePlayout);
      if (errVal < 0)
          WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                       "    Error closing playout sound device, error: %s",
-                      LATE(snd_strerror)(errVal));
+                      snd_strerror(errVal));
+
+     errVal = audio_manager_free_handle(_handleAudioManagerPlayout);
+     if (errVal < 0)
+         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+                      "    Cannot free audio manager handle, error: %s",
+                      snd_strerror(errVal));
 
      // set the pcm input handle to NULL
      _playIsInitialized = false;
+     _speakerIsInitialized = false;
      _handlePlayout = NULL;
      WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
                   "  handle_playout is now set to NULL");
-#endif
+
      return 0;
 }
 
@@ -1753,23 +1871,23 @@ bool AudioDeviceBB::RecThreadFunc(void* pThis)
 
 bool AudioDeviceBB::PlayThreadProcess()
 {
-#if 0
     if(!_playing)
         return false;
 
     int err;
-    snd_pcm_sframes_t frames;
-    snd_pcm_sframes_t avail_frames;
+//    snd_pcm_sframes_t frames;
+//    snd_pcm_sframes_t avail_frames;
 
     Lock();
+/*
     //return a positive number of frames ready otherwise a negative error code
-    avail_frames = LATE(snd_pcm_avail_update)(_handlePlayout);
+    avail_frames = snd_pcm_avail_update(_handlePlayout);
     if (avail_frames < 0)
     {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
                    "playout snd_pcm_avail_update error: %s",
                    LATE(snd_strerror)(avail_frames));
-        ErrorRecovery(avail_frames, _handlePlayout);
+//        ErrorRecovery(avail_frames, _handlePlayout);
         UnLock();
         return true;
     }
@@ -1778,7 +1896,7 @@ bool AudioDeviceBB::PlayThreadProcess()
         UnLock();
 
         //maximum tixe in milliseconds to wait, a negative value means infinity
-        err = LATE(snd_pcm_wait)(_handlePlayout, 2);
+        err = snd_pcm_wait(_handlePlayout, 2);
         if (err == 0)
         { //timeout occured
             WEBRTC_TRACE(kTraceStream, kTraceAudioDevice, _id,
@@ -1787,7 +1905,7 @@ bool AudioDeviceBB::PlayThreadProcess()
 
         return true;
     }
-
+*/
     if (_playoutFramesLeft <= 0)
     {
         UnLock();
@@ -1798,12 +1916,32 @@ bool AudioDeviceBB::PlayThreadProcess()
         assert(_playoutFramesLeft == _playoutFramesIn10MS);
     }
 
+    int size = _playoutFramesLeft << 1;
+    int frames = snd_pcm_plugin_write(_handlePlayout,
+    		&_playoutBuffer[_playoutBufferSizeIn10MS - size],
+    		320);
+    if (frames < 0)
+    {
+        WEBRTC_TRACE(kTraceStream, kTraceAudioDevice, _id,
+                     "       snd_pcm_plugin_write error: %s",
+                     snd_strerror(frames));
+        _playoutFramesLeft = 0;
+//        ErrorRecovery(frames, _handlePlayout);
+        UnLock();
+        return true;
+    }
+    else
+    {
+        _playoutFramesLeft -= frames;
+    }
+
+/*
     if (static_cast<WebRtc_UWord32>(avail_frames) > _playoutFramesLeft)
         avail_frames = _playoutFramesLeft;
 
-    int size = LATE(snd_pcm_frames_to_bytes)(_handlePlayout,
+    int size = snd_pcm_frames_to_bytes(_handlePlayout,
         _playoutFramesLeft);
-    frames = LATE(snd_pcm_writei)(
+    frames = snd_pcm_writei(
         _handlePlayout,
         &_playoutBuffer[_playoutBufferSizeIn10MS - size],
         avail_frames);
@@ -1812,9 +1950,9 @@ bool AudioDeviceBB::PlayThreadProcess()
     {
         WEBRTC_TRACE(kTraceStream, kTraceAudioDevice, _id,
                      "playout snd_pcm_avail_update error: %s",
-                     LATE(snd_strerror)(frames));
+                     snd_strerror(frames));
         _playoutFramesLeft = 0;
-        ErrorRecovery(frames, _handlePlayout);
+//        ErrorRecovery(frames, _handlePlayout);
         UnLock();
         return true;
     }
@@ -1822,9 +1960,9 @@ bool AudioDeviceBB::PlayThreadProcess()
         assert(frames==avail_frames);
         _playoutFramesLeft -= frames;
     }
-
+*/
     UnLock();
-#endif
+
     return true;
 }
 

@@ -11,13 +11,15 @@
 #ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
 #define WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
 
+#include "audio_device_defines.h"
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
 
 //#include <sys/soundcard.h>
 //#include <sys/ioctl.h>
 
-//#include <alsa/asoundlib.h>
+#include <sys/asoundlib.h>
+#include <audio/audio_manager_routing.h>
 
 namespace webrtc
 {
@@ -198,7 +200,9 @@ private:
     bool _outputDeviceIsSpecified;
 
 //    snd_pcm_t* _handleRecord;
-//    snd_pcm_t* _handlePlayout;
+    snd_pcm_t* _handlePlayout;
+//    unsigned int _handleAudioManagerRecord;
+    unsigned int _handleAudioManagerPlayout;
 
 //    snd_pcm_uframes_t _recordingBuffersizeInFrame;
 //    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
@@ -206,7 +210,7 @@ private:
 //    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
 
 //    ssize_t _recordingBufferSizeIn10MS;
-//    ssize_t _playoutBufferSizeIn10MS;
+    ssize_t _playoutBufferSizeIn10MS;
     WebRtc_UWord32 _recordingFramesIn10MS;
     WebRtc_UWord32 _playoutFramesIn10MS;
 
@@ -214,6 +218,9 @@ private:
     WebRtc_UWord32 _playoutFreq;
     WebRtc_UWord8 _recChannels;
     WebRtc_UWord8 _playChannels;
+
+    WebRtc_UWord32 _recFrameSize;
+    WebRtc_UWord32 _playFrameSize;
 
     WebRtc_Word8* _recordingBuffer; // in byte
     WebRtc_Word8* _playoutBuffer; // in byte
@@ -231,8 +238,6 @@ private:
     bool _recIsInitialized;
     bool _playIsInitialized;
 
-    bool _recordingDeviceIsSpecified;
-    bool _playoutDeviceIsSpecified;
     bool _micIsInitialized;
     bool _speakerIsInitialized;
 
