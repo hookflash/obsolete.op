@@ -8,11 +8,12 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
-#define WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
+#ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
+#define WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
 
 #include <stdio.h>
 
+#include "audio_device_defines.h"
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
 
@@ -23,8 +24,6 @@
 
 //#include <sys/soundcard.h>
 //#include <sys/ioctl.h>
-
-//#include <alsa/asoundlib.h>
 
 namespace webrtc {
 class EventWrapper;
@@ -183,13 +182,51 @@ private:
     WebRtc_UWord32 _recThreadID;
     WebRtc_UWord32 _playThreadID;
 
+    WebRtc_UWord16 _inputDeviceIndex;
+    WebRtc_UWord16 _outputDeviceIndex;
+    bool _inputDeviceIsSpecified;
+    bool _outputDeviceIsSpecified;
+
+//    snd_pcm_t* _handleRecord;
+    snd_pcm_t* _handlePlayout;
+//    unsigned int _handleAudioManagerRecord;
+    unsigned int _handleAudioManagerPlayout;
+
+//    snd_pcm_uframes_t _recordingBuffersizeInFrame;
+//    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
+//    snd_pcm_uframes_t _playoutBufferSizeInFrame;
+//    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
+
+//    ssize_t _recordingBufferSizeIn10MS;
+    ssize_t _playoutBufferSizeIn10MS;
+    WebRtc_UWord32 _recordingFramesIn10MS;
+    WebRtc_UWord32 _playoutFramesIn10MS;
+
+    WebRtc_UWord32 _recordingFreq;
+    WebRtc_UWord32 _playoutFreq;
+    WebRtc_UWord8 _recChannels;
+    WebRtc_UWord8 _playChannels;
+
+    WebRtc_UWord32 _recFrameSize;
+    WebRtc_UWord32 _playFrameSize;
+
+    WebRtc_Word8* _recordingBuffer; // in byte
+    WebRtc_Word8* _playoutBuffer; // in byte
+    WebRtc_UWord32 _recordingFramesLeft;
+    WebRtc_UWord32 _playoutFramesLeft;
+
+    WebRtc_UWord32 _playbackBufferSize;
+
+    AudioDeviceModule::BufferType _playBufType;
+
+private:
     bool _initialized;
     bool _recording;
     bool _playing;
     bool _recIsInitialized;
     bool _playIsInitialized;
+    bool _micIsInitialized;
     bool _speakerIsInitialized;
-    bool _microphoneIsInitialized;
 
     WebRtc_Word8 _recBuffer[2*160];
 
@@ -230,4 +267,4 @@ private:
 
 }  // namespace webrtc
 
-#endif  // WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_DUMMY_H
+#endif  // WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
