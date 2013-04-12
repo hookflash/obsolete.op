@@ -19,6 +19,12 @@
 #include "trace.h"
 #include "thread_wrapper.h"
 
+// needed for Blackberry
+//#include <sys/asoundlib.h>
+//#include <audio/audio_manager_routing.h>
+#include <stdio.h> // fprintf
+#include <stdlib.h> //malloc
+
 // snd_lib_error_handler_t
 void WebrtcAlsaErrorHandler(const char *file,
                           int line,
@@ -40,6 +46,15 @@ static const unsigned int ALSA_CAPTURE_WAIT_TIMEOUT = 5; // in ms
 #define FUNC_GET_NUM_OF_DEVICE 0
 #define FUNC_GET_DEVICE_NAME 1
 #define FUNC_GET_DEVICE_NAME_FOR_AN_ENUM 2
+
+//Blackberry defines
+#define JITTER_BUFFER_NUMBER_FRAMES 20;
+// Standard VoIP
+#define PREFERRED_FRAME_SIZE 320;//640; 320 = 10ms
+#define VOIP_SAMPLE_RATE 16000;
+// ulaw silence is FF
+#define SILENCE 0xFF;
+
 
 AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _ptrAudioBuffer(NULL),
@@ -91,7 +106,16 @@ AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _recWarning(0),
     _recError(0),
     _playBufDelay(80),
-    _playBufDelayFixed(80)
+    _playBufDelayFixed(80),
+
+    g_pcm_handle_c(NULL),
+    g_pcm_handle_p(NULL),
+    g_audio_manager_handle_c(NULL),
+    g_audio_manager_handle_p(0),
+    g_frame_size_c(0),
+    g_frame_size_p(0),
+    capture_ready(false),
+    g_execute_audio(true)
 {
     WEBRTC_TRACE(kTraceMemory, kTraceAudioDevice, id,
                  "%s created", __FUNCTION__);
@@ -890,6 +914,125 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 
 WebRtc_Word32 AudioDeviceBB::InitRecording()
 {
+	snd_pcm_channel_setup_t setup;
+	int ret;
+	snd_pcm_channel_info_t pi;
+	snd_mixer_group_t group;
+	snd_pcm_channel_params_t pp;
+	int card = setup.mixer_card;
+
+
+
+	int errVal = 0;
+
+	CriticalSectionScoped lock(&_critSect);
+
+	if (_recording)
+	{
+		return -1;
+	}
+
+	if (!_inputDeviceIsSpecified)
+	{
+		return -1;
+	}
+
+	if (_recIsInitialized)
+	{
+		return 0;
+	}
+
+	// Initialize the microphone (devices might have been added or removed)
+	if (InitMicrophone() == -1)
+	{
+		WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+				   "  InitMicrophone() failed");
+	}
+
+
+
+
+	audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT, &g_pcm_handle_c,
+			&g_audio_manager_handle_c, (char*) "/dev/snd/defaultc", SND_PCM_OPEN_CAPTURE);
+
+	if ((ret = snd_pcm_plugin_set_disable(g_pcm_handle_c, PLUGIN_DISABLE_MMAP))
+			< 0) {
+		fprintf(stderr, "snd_pcm_plugin_set_disable failed: %s\n", snd_strerror (ret));
+		return -1;
+	}
+
+	if ((ret = snd_pcm_plugin_set_enable(g_pcm_handle_c, PLUGIN_ROUTING)) < 0) {
+		fprintf(stderr, "snd_pcm_plugin_set_enable: %s\n", snd_strerror (ret));
+		return -1;
+	}
+
+	// sample reads the capabilities of the capture
+	memset(&pi, 0, sizeof(pi));
+	pi.channel = SND_PCM_CHANNEL_CAPTURE;
+	if ((ret = snd_pcm_plugin_info(g_pcm_handle_c, &pi)) < 0) {
+		fprintf(stderr, "snd_pcm_plugin_info failed: %s\n", snd_strerror (ret));
+		return -1;
+	}
+
+	fprintf(stderr,"CAPTURE Minimum Rate = %d\n",pi.min_rate);
+
+	// Request the VoIP parameters
+	// These parameters are different to waverec sample
+	memset(&pp, 0, sizeof(pp));
+	fprintf(stderr,"CAPTURE Minimum fragment size = %d\n",pi.min_fragment_size);
+	// Blocking read
+	pp.mode = SND_PCM_MODE_BLOCK;
+	pp.channel = SND_PCM_CHANNEL_CAPTURE;
+	pp.start_mode = SND_PCM_START_DATA;
+	// Auto-recover from errors
+	pp.stop_mode = SND_PCM_STOP_ROLLOVER;
+	pp.buf.block.frag_size = PREFERRED_FRAME_SIZE;
+	pp.buf.block.frags_max = 1;
+	pp.buf.block.frags_min = 1;
+	pp.format.interleave = 1;
+	pp.format.rate = VOIP_SAMPLE_RATE;
+	pp.format.voices = 1;
+	pp.format.format = SND_PCM_SFMT_S16_LE;
+	// make the request
+	if ((ret = snd_pcm_plugin_params(g_pcm_handle_c, &pp)) < 0) {
+		fprintf(stderr, "snd_pcm_plugin_params failed: %s\n", snd_strerror (ret));
+		return -1;
+	}
+
+	// Again based on the sample
+	memset(&setup, 0, sizeof(setup));
+	memset(&group, 0, sizeof(group));
+	setup.channel = SND_PCM_CHANNEL_CAPTURE;
+	setup.mixer_gid = &group.gid;
+	if ((ret = snd_pcm_plugin_setup(g_pcm_handle_c, &setup)) < 0) {
+		fprintf(stderr, "snd_pcm_plugin_setup failed: %s\n", snd_strerror (ret));
+		return -1;
+	}
+	// On the simulator at least, our requested capabilities are accepted.
+	fprintf(stderr,"CAPTURE Format %s card = %d\n", snd_pcm_get_format_name (setup.format.format),card);
+	fprintf(stderr,"CAPTURE Rate %d \n", setup.format.rate);
+	g_frame_size_c = setup.buf.block.frag_size;
+
+	if (group.gid.name[0] == 0) {
+		printf("Mixer Pcm Group [%s] Not Set \n", group.gid.name);
+		printf("***>>>> Input Gain Controls Disabled <<<<*** \n");
+	} else {
+		printf("Mixer Pcm Group [%s]\n", group.gid.name);
+	}
+
+	// frag_size should be 160
+	g_frame_size_c = setup.buf.block.frag_size;
+	fprintf(stderr, "CAPTURE frame_size = %d\n", g_frame_size_c);
+
+	// Sample calls prepare()
+
+	//moved to start method to be compliant to alsa example
+	if ((ret = snd_pcm_plugin_prepare(g_pcm_handle_c, SND_PCM_CHANNEL_CAPTURE))
+			< 0) {
+		fprintf(stderr, "snd_pcm_plugin_prepare failed: %s\n", snd_strerror (ret));
+	}
+
+
 #if 0
     int errVal = 0;
 
@@ -1061,6 +1204,48 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 
 WebRtc_Word32 AudioDeviceBB::StartRecording()
 {
+	// Re-usable buffer for capture
+	char *record_buffer;
+	record_buffer = (char*) malloc(g_frame_size_c);
+
+	// Some diagnostic variables
+	int failed = 0;
+	int totalRead = 0;
+	snd_pcm_channel_status_t status;
+	status.channel = SND_PCM_CHANNEL_CAPTURE;
+
+	// Loop until stopAudio() flags us
+	while (g_execute_audio) {
+		// This blocking read appears to take much longer than 20ms on the simulator
+		// but it never fails and always returns 160 bytes
+		int read = snd_pcm_plugin_read(g_pcm_handle_c, record_buffer,
+				g_frame_size_c);
+		if (read < 0 || read != g_frame_size_c) {
+			failed++;
+			fprintf(stderr,"CAPTURE FAILURE: snd_pcm_plugin_read: %d requested = %d\n",read,g_frame_size_c);
+			if (snd_pcm_plugin_status(g_pcm_handle_c, &status) < 0) {
+				fprintf(stderr, "Capture channel status error: %d\n",status.status);
+			} else {
+				if (status.status == SND_PCM_STATUS_READY
+				|| status.status == SND_PCM_STATUS_OVERRUN
+				|| status.status == SND_PCM_STATUS_ERROR) {
+					fprintf(stderr, "CAPTURE FAILURE:snd_pcm_plugin_status: = %d \n",status.status);
+					if (snd_pcm_plugin_prepare (g_pcm_handle_c, SND_PCM_CHANNEL_CAPTURE) < 0) {
+						fprintf (stderr, "Capture channel prepare error %d\n",status.status);
+						exit (1);
+					}
+				}
+			}
+		} else {
+			totalRead += read;
+		}
+		capture_ready = true;
+		// On simulator always room in the circular buffer
+//		if (!writeToCircularBuffer(circular_buffer, record_buffer,
+//				g_frame_size_c)) {
+//			failed++;
+//		}
+	}
 #if 0
     if (!_recIsInitialized)
     {
@@ -1149,6 +1334,55 @@ WebRtc_Word32 AudioDeviceBB::StartRecording()
 
 WebRtc_Word32 AudioDeviceBB::StopRecording()
 {
+	{
+	  CriticalSectionScoped lock(&_critSect);
+
+	  if (!_recIsInitialized)
+	  {
+		  return 0;
+	  }
+
+//	  if (_handleRecord == NULL)
+//	  {
+//		  return -1;
+//	  }
+
+	  // Make sure we don't start recording (it's asynchronous).
+	  _recIsInitialized = false;
+	  _recording = false;
+	}
+
+	if (_ptrThreadRec && !_ptrThreadRec->Stop())
+	{
+		WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+					 "    failed to stop the rec audio thread");
+		return -1;
+	}
+	else {
+		delete _ptrThreadRec;
+		_ptrThreadRec = NULL;
+	}
+
+	CriticalSectionScoped lock(&_critSect);
+	_recordingFramesLeft = 0;
+	if (_recordingBuffer)
+	{
+		delete [] _recordingBuffer;
+		_recordingBuffer = NULL;
+	}
+
+	// Threads will see this flag every 20ms in their loop
+	fprintf(stderr,"\nStopPCMAudio ****************: ENTER \n");
+	g_execute_audio = false;
+
+
+	fprintf(stderr,"CAPTURE EXIT BEGIN\n");
+	(void) snd_pcm_plugin_flush(g_pcm_handle_c, SND_PCM_CHANNEL_CAPTURE);
+	//(void)snd_mixer_close (mixer_handle);
+	(void) snd_pcm_close(g_pcm_handle_c);
+	audio_manager_free_handle(g_audio_manager_handle_c);
+	// IMPORTANT NB: You only get failed on capture if the play loop has exited hence the circular buffer fills. This is with the simulator
+
 #if 0
     {
       CriticalSectionScoped lock(&_critSect);

@@ -14,6 +14,10 @@
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
 
+//Blackbery includes
+#include <sys/asoundlib.h>
+#include <audio/audio_manager_routing.h>
+
 //#include <sys/soundcard.h>
 //#include <sys/ioctl.h>
 
@@ -249,6 +253,23 @@ private:
 
     WebRtc_UWord16 _playBufDelay;                 // playback delay
     WebRtc_UWord16 _playBufDelayFixed;            // fixed playback delay
+
+    //Blackberry specific fields
+    //static pthread_t g_capturethread;
+    //static pthread_t g_playerthread;
+    snd_pcm_t *g_pcm_handle_c;
+    snd_pcm_t *g_pcm_handle_p;
+    unsigned int g_audio_manager_handle_c;
+    unsigned int g_audio_manager_handle_p;
+    unsigned int g_audio_manager_handle_t;
+    int g_frame_size_c;
+    int g_frame_size_p;
+    // Flag to stop the record and capture threads
+    //static bool g_execute_audio = true;
+    // Global used by both threads
+    //static circular_buffer_t* g_circular_buffer;
+    bool capture_ready;
+    bool g_execute_audio;
 };
 
 }

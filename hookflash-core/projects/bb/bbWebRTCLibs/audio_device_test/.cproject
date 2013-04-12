@@ -67,6 +67,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1583574334" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Device-Debug}&quot;"/>
@@ -184,6 +186,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.444275165" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Device-Release}&quot;"/>
@@ -303,6 +307,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1359112605" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Device-Profile}&quot;"/>
@@ -421,6 +427,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1868263382" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Device-Coverage}&quot;"/>
@@ -536,6 +544,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.915450269" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Simulator-Debug}&quot;"/>
@@ -653,6 +663,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.943256713" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Simulator-Profile}&quot;"/>
@@ -770,6 +782,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="asound"/>
+									<listOptionValue builtIn="false" value="audio_manager"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1205227820" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_audio/Simulator-Coverage}&quot;"/>
