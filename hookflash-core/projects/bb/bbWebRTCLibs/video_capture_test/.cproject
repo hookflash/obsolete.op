@@ -75,6 +75,8 @@
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
 									<listOptionValue builtIn="false" value="slog2"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1088829621" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Debug}&quot;"/>
@@ -207,6 +209,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1787362062" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Release}&quot;"/>
@@ -338,6 +342,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.94342882" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Profile}&quot;"/>
@@ -468,6 +474,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1502655147" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Device-Coverage}&quot;"/>
@@ -595,6 +603,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.281053564" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Debug}&quot;"/>
@@ -724,6 +734,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1727337270" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Profile}&quot;"/>
@@ -853,6 +865,8 @@
 									<listOptionValue builtIn="false" value="bps"/>
 									<listOptionValue builtIn="false" value="screen"/>
 									<listOptionValue builtIn="false" value="m"/>
+									<listOptionValue builtIn="false" value="EGL"/>
+									<listOptionValue builtIn="false" value="GLESv2"/>
 								</option>
 								<option id="com.qnx.qcc.option.linker.libraryPaths.1321784709" name="Library Paths (-L)" superClass="com.qnx.qcc.option.linker.libraryPaths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/common_video/Simulator-Coverage}&quot;"/>

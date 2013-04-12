@@ -19,7 +19,7 @@ public:
   BlackberryWindowWrapper(screen_window_t window, screen_context_t context, const char* groupId);
   virtual ~BlackberryWindowWrapper();
 
-  void SetRenderer(VideoRenderBlackBerry* renderer) { _renderer = renderer; }
+  void SetRenderer(VideoRenderBlackBerry* renderer);
 
   void Render();
 

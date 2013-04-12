@@ -29,18 +29,28 @@ class CriticalSectionWrapper;
 class EventWrapper;
 class ThreadWrapper;
 class BlackberryWindowWrapper;
-
-class BlackberryRenderCallback;
+class VideoRenderBlackBerry;
+class VideoRenderOpenGles20;
 
 // The object a module user uses to send new frames to the Blackberry OpenGL ES window
 
 class BlackberryRenderCallback : public VideoRenderCallback {
  public:
+  BlackberryRenderCallback(VideoRenderBlackBerry* parentRenderer) : _ptrParentRenderer(parentRenderer), _hasFrame(false), _frameIsRendered(false) { }
 
   virtual WebRtc_Word32 RenderFrame(const WebRtc_UWord32 streamId,
-                                    VideoFrame& videoFrame) = 0;
+                                    VideoFrame& videoFrame);
 
   virtual ~BlackberryRenderCallback() {};
+
+  void RenderToGL();
+
+ private:
+  VideoRenderBlackBerry* _ptrParentRenderer;
+  VideoFrame _videoFrame;
+  bool _hasFrame;
+  bool _frameIsRendered;
+  VideoRenderOpenGles20* _ptrOpenGLRenderer;
 };
 
 class VideoRenderBlackBerry : IVideoRender
@@ -154,6 +164,10 @@ class VideoRenderBlackBerry : IVideoRender
   EGLConfig _eglConfig;
   EGLContext _eglContext;
   EGLSurface _eglSurface;
+
+  int _windowWidth;
+  int _windowHeight;
+  bool _glInitialized;
 
 
  private:

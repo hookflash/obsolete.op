@@ -41,10 +41,38 @@ static screen_window_t vf_win = NULL;
 static const char vf_group[] = "viewfinder_window_group";
 const char* trace_file_name = "";
 
-
 //----------------------------------------------
 VideoRenderBlackBerry* blackberryRenderer;
+VideoRenderCallback* mainVideoCallback;
 webrtc::BlackberryWindowWrapper* wrapper;
+
+//----------------------------------------------
+// Callback class to be implemented by module user
+class CaptureTestCallback : public VideoCaptureDataCallback
+{
+public:
+  CaptureTestCallback() : _ptrCallback(NULL) {}
+
+  void SetVideoRenderCallback(VideoRenderCallback* callback) { _ptrCallback = callback; }
+
+  virtual void OnIncomingCapturedFrame(const WebRtc_Word32 id, VideoFrame& videoFrame, VideoCodecType codecType);
+  virtual void OnCaptureDelayChanged(const WebRtc_Word32 id, const WebRtc_Word32 delay);
+protected:
+  virtual ~CaptureTestCallback(){}
+  VideoRenderCallback* _ptrCallback;
+};
+
+void CaptureTestCallback::OnIncomingCapturedFrame(const WebRtc_Word32 id, VideoFrame& videoFrame, VideoCodecType codecType) {
+  if(_ptrCallback) {
+    _ptrCallback->RenderFrame(0, videoFrame);
+  }
+}
+void CaptureTestCallback::OnCaptureDelayChanged(const WebRtc_Word32 id, const WebRtc_Word32 delay) {
+}
+
+CaptureTestCallback* captureCallback;
+
+//----------------------------------------------
 
 bool test_thread(ThreadObj obj);
 
@@ -98,21 +126,25 @@ bool test_thread(ThreadObj obj)
     capability.maxFPS = 30;
     capability.rawType = kVideoUnknown;
 
-    capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
+   capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
 
-    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
-    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
+    captureCallback = new CaptureTestCallback();
+    captureCallback->SetVideoRenderCallback(mainVideoCallback);
+    capture_module->RegisterCaptureDataCallback(*captureCallback);
+
+//    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
+//    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
 
     usleep(1000000);
 
     capture_module->StartCapture(capability);
-    render_module->StartRender(0);
+//    render_module->StartRender(0);
 
     usleep(10000000);
 
-    render_module->StopRender(0);
-    render_module->DeleteIncomingRenderStream(0);
-    VideoRender::DestroyVideoRender(render_module);
+//    render_module->StopRender(0);
+//    render_module->DeleteIncomingRenderStream(0);
+//    VideoRender::DestroyVideoRender(render_module);
     capture_module->StopCapture();
 
     Trace::ReturnTrace();
@@ -175,6 +207,9 @@ handle_navigator_event(bps_event_t *event) {
 
 void render()
 {
+  static int i = 0;
+  i++;
+  fprintf(stderr, "Render[%d]\n", i);
   wrapper->Render();
 }
 
@@ -253,7 +288,7 @@ main(int argc, char **argv)
       (void*) wrapper,
       true);                      // Full screen
 
-    VideoRenderCallback* mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
+    mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
 
 
 

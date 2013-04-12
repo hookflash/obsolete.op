@@ -28,6 +28,31 @@
 
 namespace webrtc {
 
+//----------------------------------------------------------------------------------------
+
+WebRtc_Word32 BlackberryRenderCallback::RenderFrame(const WebRtc_UWord32 streamId, VideoFrame& videoFrame) {
+  _videoFrame.CopyFrame(videoFrame);
+  _hasFrame = true;
+  _frameIsRendered = false;
+  return 0;
+}
+
+void BlackberryRenderCallback::RenderToGL() {
+  if(_hasFrame) {
+    if(!_ptrOpenGLRenderer) {
+      _ptrOpenGLRenderer = new VideoRenderOpenGles20(0);
+      _ptrOpenGLRenderer->Setup();
+    }
+    if(!_frameIsRendered) {
+      _frameIsRendered = true;
+      _ptrOpenGLRenderer->UpdateTextures(_videoFrame);
+    }
+    _ptrOpenGLRenderer->Render();
+  }
+}
+
+//----------------------------------------------------------------------------------------
+
 VideoRenderBlackBerry::VideoRenderBlackBerry(
     const WebRtc_Word32 id,
     const VideoRenderType videoRenderType,
@@ -43,8 +68,12 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _eglConfig(NULL),
     _eglContext(NULL),
     _eglSurface(NULL),
+    _windowWidth(640),
+    _windowHeight(480),
+    _glInitialized(false),
     _streamsMap()
 {
+  _ptrWindowWrapper->SetRenderer(this);
 }
 
 VideoRenderBlackBerry::~VideoRenderBlackBerry() {
@@ -76,15 +105,6 @@ VideoRenderBlackBerry::AddIncomingRenderStream(const WebRtc_UWord32 streamId,
                                             const float right,
                                             const float bottom) {
   CriticalSectionScoped cs(&_critSect);
-
-  if(NULL == _ptrGLWindow) {
-    bool status = CreateGLWindow();
-    if(!status) {
-      WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
-                   "(%s:%d): unable to create Blackberry GL window", __FUNCTION__, __LINE__);
-      return NULL;
-    }
-  }
 
   BlackberryRenderCallback* renderStream = NULL;
   MapItem* item = _streamsMap.Find(streamId);
@@ -159,9 +179,37 @@ void VideoRenderBlackBerry::ReDraw() {
 void VideoRenderBlackBerry::OnBBRenderEvent() {
   CriticalSectionScoped cs(&_critSect);
 
+  if(NULL == _ptrGLWindow) {
+    bool status = CreateGLWindow();
+    if(!status) {
+      WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
+                   "(%s:%d): unable to create Blackberry GL window", __FUNCTION__, __LINE__);
+      return;
+    }
+
+    int size[2];
+    status = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
+    _windowWidth = size[0];
+    _windowHeight = size[1];
+  }
+
   if(_ptrGLWindow) {
+    if(!_glInitialized) {
+      _glInitialized = true;
+      glViewport(0, 0, _windowWidth, _windowHeight);
+    }
     glClearColor(1.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    MapItem* item = _streamsMap.First();
+    while(item) {
+      if(item->GetItem()) {
+        BlackberryRenderCallback* callback = (BlackberryRenderCallback*) item->GetItem();
+        callback->RenderToGL();
+      }
+      item = _streamsMap.Next(item);
+    }
+
     eglSwapBuffers(_eglDisplay, _eglSurface);
   }
 }
@@ -262,12 +310,12 @@ BlackberryRenderCallback* VideoRenderBlackBerry::CreateRenderChannel(
     const float right,
     const float bottom,
     VideoRenderBlackBerry& renderer) {
-  return NULL;
+
+  BlackberryRenderCallback* callback = new BlackberryRenderCallback(this);
+  return callback;
 }
 
 bool VideoRenderBlackBerry::CreateGLWindow() {
-
-    _ptrWindowWrapper->SetRenderer(this);
 
     int usage;
     int format = SCREEN_FORMAT_RGBX8888;

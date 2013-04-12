@@ -32,5 +32,10 @@ void BlackberryWindowWrapper::Render() {
   }
 }
 
+void BlackberryWindowWrapper::SetRenderer(VideoRenderBlackBerry* renderer) {
+  _renderer = renderer;
+}
+
+
 }
 
