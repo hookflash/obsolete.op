@@ -8,7 +8,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#include "audio_device_utility_bb.h"
+#include "audio_device_utility_dummy.h"
 #include "audio_device_config.h" // DEBUG_PRINT()
 #include "critical_section_wrapper.h"
 #include "trace.h"
@@ -16,7 +16,7 @@
 namespace webrtc
 {
 
-AudioDeviceUtilityBB::AudioDeviceUtilityBB(const WebRtc_Word32 id) :
+AudioDeviceUtilityDummy::AudioDeviceUtilityDummy(const WebRtc_Word32 id) :
     _critSect(*CriticalSectionWrapper::CreateCriticalSection()),
     _id(id)
 {
@@ -24,7 +24,7 @@ AudioDeviceUtilityBB::AudioDeviceUtilityBB(const WebRtc_Word32 id) :
                  "%s created", __FUNCTION__);
 }
 
-AudioDeviceUtilityBB::~AudioDeviceUtilityBB()
+AudioDeviceUtilityDummy::~AudioDeviceUtilityDummy()
 {
     WEBRTC_TRACE(kTraceMemory, kTraceAudioDevice, _id,
                  "%s destroyed", __FUNCTION__);
@@ -42,11 +42,11 @@ AudioDeviceUtilityBB::~AudioDeviceUtilityBB()
 // ============================================================================
 
 
-WebRtc_Word32 AudioDeviceUtilityBB::Init()
+WebRtc_Word32 AudioDeviceUtilityDummy::Init()
 {
 
     WEBRTC_TRACE(kTraceStateInfo, kTraceAudioDevice, _id,
-                 "  OS info: %s", "BlackBerry");
+                 "  OS info: %s", "Dummy");
 
     return 0;
 }

@@ -391,7 +391,6 @@ WebRtc_Word32 AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
         ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());//AudioDeviceUtilityBB(Id());
     }
 #endif   // #if defined(WEBRTC_QNX)
-
     // Create the *Dummy* implementation of the Audio Device
     // Available for all platforms
     //
@@ -399,13 +398,13 @@ WebRtc_Word32 AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
     {
         // Create *Dummy Audio* implementation
         assert(!ptrAudioDevice);
-        ptrAudioDevice = new AudioDeviceDummy(Id());
-        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "Dummy Audio APIs will be utilized");
-
-        if (ptrAudioDevice != NULL)
-        {
-            ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());
-        }
+//        ptrAudioDevice = new AudioDeviceDummy(Id());
+//        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "Dummy Audio APIs will be utilized");
+//
+//        if (ptrAudioDevice != NULL)
+//        {
+//            ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());
+//        }
     }
 #endif  // if defined(WEBRTC_DUMMY_AUDIO_BUILD)
 

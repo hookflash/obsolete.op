@@ -21,7 +21,7 @@ class CriticalSectionWrapper;
 class AudioDeviceUtilityBB: public AudioDeviceUtility
 {
 public:
-	AudioDeviceUtilityBB(const WebRtc_Word32 id);
+    AudioDeviceUtilityBB(const WebRtc_Word32 id);
     ~AudioDeviceUtilityBB();
 
     virtual WebRtc_Word32 Init();
@@ -33,4 +33,4 @@ private:
 
 } // namespace webrtc
 
-#endif  // WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_UTILITY_BB_H
+#endif  // MODULES_AUDIO_DEVICE_MAIN_SOURCE_LINUX_AUDIO_DEVICE_UTILITY_DUMMY_H_
