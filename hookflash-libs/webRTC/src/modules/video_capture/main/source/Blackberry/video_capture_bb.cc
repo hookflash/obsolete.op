@@ -58,15 +58,15 @@ VideoCaptureModuleBB* video_capture_module;
 
 void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_buffer, void* arg)
 {
-	capture_crit_sect->Enter();
+    capture_crit_sect->Enter();
 
-	camera_frametype_t frame_type = camera_buffer->frametype;
-	uint64_t frame_size = camera_buffer->framesize;
-	uint8_t* frame_buffer = camera_buffer->framebuf;
-	uint64_t frame_meta_size = camera_buffer->framemetasize;
-	void* frame_meta = camera_buffer->framemeta;
-	int64_t frame_timestamp = camera_buffer->frametimestamp;
-	camera_frame_nv12_t frame_desc = camera_buffer->framedesc.nv12;
+    camera_frametype_t frame_type = camera_buffer->frametype;
+    uint64_t frame_size = camera_buffer->framesize;
+    uint8_t* frame_buffer = camera_buffer->framebuf;
+    uint64_t frame_meta_size = camera_buffer->framemetasize;
+    void* frame_meta = camera_buffer->framemeta;
+    int64_t frame_timestamp = camera_buffer->frametimestamp;
+    camera_frame_nv12_t frame_desc = camera_buffer->framedesc.nv12;
 
     uint32_t height = frame_desc.height;
     uint32_t width = frame_desc.width;
@@ -74,19 +74,19 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
     int64_t uv_offset = frame_desc.uv_offset;
     int64_t uv_stride = frame_desc.uv_stride;
 
-	VideoCaptureCapability frame_info;
-	frame_info.width = width;
-	frame_info.height = height;
-	frame_info.rawType = kVideoI420;
+    VideoCaptureCapability frame_info;
+    frame_info.width = width;
+    frame_info.height = height;
+    frame_info.rawType = kVideoI420;
 
-	WebRtc_Word32 output_buffer_size = width * height * 3 / 2;
-	WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
+    WebRtc_Word32 output_buffer_size = width * height * 3 / 2;
+    WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
 
-	WebRtc_UWord8* source_data_y = frame_buffer;
-	WebRtc_UWord8* source_data_uv = frame_buffer + uv_offset;
-	WebRtc_UWord8* destination_data_y = output_buffer;
-	WebRtc_UWord8* destination_data_u = output_buffer + width * height;
-	WebRtc_UWord8* destination_data_v = output_buffer + width * height * 5 / 4;
+    WebRtc_UWord8* source_data_y = frame_buffer;
+    WebRtc_UWord8* source_data_uv = frame_buffer + uv_offset;
+    WebRtc_UWord8* destination_data_y = output_buffer;
+    WebRtc_UWord8* destination_data_u = output_buffer + width * height;
+    WebRtc_UWord8* destination_data_v = output_buffer + width * height * 5 / 4;
 
     for (int i = 0; i < (int)height; i++)
     {
@@ -156,12 +156,12 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
     camera_handle_t cameraHandle;
 
     error = camera_open(CAMERA_UNIT_FRONT,
-    		CAMERA_MODE_RW,
+            CAMERA_MODE_RW,
             &cameraHandle);
     if (error != CAMERA_EOK)
     {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot open camera - error: %d", error);
-    	return -1;
+        return -1;
     }
 
     _cameraHandle = cameraHandle;
@@ -189,11 +189,18 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 //
 //    free(resolutions);
 
+/*
     error = camera_set_video_property(cameraHandle,
-    		CAMERA_IMGPROP_WIDTH, 240,
-    		CAMERA_IMGPROP_HEIGHT, 320,
-    		CAMERA_IMGPROP_ROTATION, 90,
-    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
+        CAMERA_IMGPROP_WIDTH, 240,
+        CAMERA_IMGPROP_HEIGHT, 320,
+        CAMERA_IMGPROP_ROTATION, 90,
+        CAMERA_IMGPROP_FRAMERATE, (double)15.0);
+        */
+    error = camera_set_video_property(cameraHandle,
+        CAMERA_IMGPROP_WIDTH, 480,
+        CAMERA_IMGPROP_HEIGHT, 640,
+        CAMERA_IMGPROP_ROTATION, 90,
+        CAMERA_IMGPROP_FRAMERATE, (double)15.0);
 //    error = camera_set_video_property(cameraHandle,
 //    		CAMERA_IMGPROP_WIDTH, 240,
 //    		CAMERA_IMGPROP_HEIGHT, 320);
@@ -208,20 +215,7 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
     if (error != CAMERA_EOK)
     {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
-    	return -1;
-    }
-
-    error = camera_set_videovf_property(cameraHandle,
-    		CAMERA_IMGPROP_WIN_GROUPID, "viewfinder_window_group",
-            CAMERA_IMGPROP_WIN_ID, "my_viewfinder",
-            CAMERA_IMGPROP_WIDTH, 240,
-            CAMERA_IMGPROP_HEIGHT, 320,
-            CAMERA_IMGPROP_ROTATION, 90,
-    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
-    if (error != CAMERA_EOK)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video viewfinder properties - error: %d", error);
-    	return -1;
+        return -1;
     }
 
     return 0;

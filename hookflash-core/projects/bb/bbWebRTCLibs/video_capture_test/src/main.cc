@@ -249,12 +249,12 @@ main(int argc, char **argv)
     screen_create_context(&screen_ctx, 0);
     screen_create_window(&screen_win, screen_ctx);
     screen_create_window_group(screen_win, vf_group);
+    /*
     screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
     screen_create_window_buffers(screen_win, 1);
-
     screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
     screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
-
+*/
 
     //---------------------------------------------------------------------------------------------------
     // The video window.
@@ -291,14 +291,14 @@ main(int argc, char **argv)
     mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
 
 
-
+/*
 
     //---------------------------------------------------------------------------------------------------
-    /* Fill the screen buffer with blue */
+    // Fill the screen buffer with blue
     int attribs[] = { SCREEN_BLIT_COLOR, 0xff0000ff, SCREEN_BLIT_END };
     screen_fill(screen_ctx, screen_buf, attribs);
     screen_post_window(screen_win, screen_buf, 1, rect, 0);
-
+*/
     /* Signal bps library that navigator and screen events will be requested */
     bps_initialize();
     screen_request_events(screen_ctx);

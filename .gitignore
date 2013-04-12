@@ -63,6 +63,7 @@ hookflash-libs/curl/curl/tests/server/.deps/
 hookflash-libs/curl/curl/tests/unit/.deps/
 hookflash-libs/curl/curl/tests/server/Makefile
 hookflash-libs/curl/curl/tests/unit/Makefile
+.metadata/
 /hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.core.resources/.projects/OpenPeer10/.indexes/e4/
 /hookflash-core/projects/bb/bbworkspace/.metadata/.plugins/org.eclipse.ui.workbench/workbench.xml
 /hookflash-core/projects/bb/bbzsLib/Simulator-Debug/src/cpp/zsLib_XMLText.o
