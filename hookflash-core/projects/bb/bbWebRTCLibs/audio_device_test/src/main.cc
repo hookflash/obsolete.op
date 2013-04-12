@@ -94,6 +94,8 @@ bool test_thread(ThreadObj obj)
 
     Trace::ReturnTrace();
 
+    int i =0; i++;
+
     return 0;
 }
 

@@ -1,5 +1,0 @@
-#include <stdio.h>
-
-void printSomethingLinked(const char* text) {
-  fprintf(stderr, "From printSomethingLinked: %s", text);
-}

@@ -625,6 +625,8 @@ namespace hookflash
           
           ElementPtr privatePeerElement = mPeerContactSession->getPeerFiles()->getPeerFilePrivate()->saveToElement();
           zsLib::String privatePeerText = convertToString(privatePeerElement);
+          
+          privatePeerText = password + "\n" + privatePeerText;
           writeToFile(privatePeerText, "/tmp/privatePeerFile.txt");
           
           //first time login, save peer file
