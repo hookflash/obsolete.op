@@ -21,6 +21,9 @@
 #include "trace.h"
 #include "thread_wrapper.h"
 
+#include <audio/audio_manager_device.h>
+#include <audio/audio_manager_volume.h>
+
 // snd_lib_error_handler_t
 void WebrtcAlsaErrorHandler(const char *file,
                           int line,
@@ -49,7 +52,7 @@ const WebRtc_UWord32 PLAY_TIMER_PERIOD_MS = 10;
 //Blackberry defines
 #define JITTER_BUFFER_NUMBER_FRAMES 20;
 // Standard VoIP
-static const unsigned int PREFERRED_FRAME_SIZE = 160;//640; 320 = 10ms
+static const unsigned int PREFERRED_FRAME_SIZE = 320;//640; 320 = 10ms
 static const unsigned int VOIP_SAMPLE_RATE = 16000;
 // ulaw silence is FF
 #define SILENCE 0xFF;
@@ -834,7 +837,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 //                  SND_PCM_NONBLOCK);
 
     errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
+    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice", //"/dev/snd/defaultp",
     			SND_PCM_OPEN_PLAYBACK);
 
     if (errVal == -EBUSY) // Device busy - try some more!
@@ -848,7 +851,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 //                          SND_PCM_STREAM_PLAYBACK,
 //                          SND_PCM_NONBLOCK);
             errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-            			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
+            			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice", //"/dev/snd/defaultp",
             			SND_PCM_OPEN_PLAYBACK);
             if (errVal == 0)
             {
@@ -865,6 +868,12 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
         _handlePlayout = NULL;
         return -1;
     }
+    audio_manager_device_t dev;
+
+    errVal = audio_manager_get_default_device(&dev);
+
+    errVal = audio_manager_set_output_level(dev, 100.0);
+
 
     errVal = snd_pcm_plugin_set_disable(_handlePlayout, PLUGIN_DISABLE_MMAP);
     if (errVal < 0)
@@ -1068,7 +1077,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	}
 ////////////////////////////
 	errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-					&_handleRecord, &_handleAudioManagerRecord, (char*) "voice" /*(char*) "/dev/snd/defaultc"*/,
+					&_handleRecord, &_handleAudioManagerRecord, (char*) "voice" ,//"/dev/snd/defaultc" /*(char*) "/dev/snd/defaultc"*/,
 					SND_PCM_OPEN_CAPTURE);
 
 	if (errVal == -EBUSY) // Device busy - try some more!
@@ -1082,7 +1091,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 //                          SND_PCM_STREAM_PLAYBACK,
 //                          SND_PCM_NONBLOCK);
 			errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-						&_handleRecord, &_handleAudioManagerRecord, "voice" /*(char*) "/dev/snd/defaultc"*/,
+						&_handleRecord, &_handleAudioManagerRecord, (char*) "voice", //"/dev/snd/defaultc",
 						SND_PCM_OPEN_CAPTURE);
 			if (errVal == 0)
 			{
