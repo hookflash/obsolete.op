@@ -155,6 +155,7 @@ void AudioDeviceBB::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer)
 {
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "AttachAudioBuffer - Lock\n");
 
     _ptrAudioBuffer = audioBuffer;
 
@@ -165,6 +166,8 @@ void AudioDeviceBB::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer)
     _ptrAudioBuffer->SetPlayoutSampleRate(0);
     _ptrAudioBuffer->SetRecordingChannels(0);
     _ptrAudioBuffer->SetPlayoutChannels(0);
+
+    fprintf(stderr, "AttachAudioBuffer - UnLock\n");
 }
 
 WebRtc_Word32 AudioDeviceBB::ActiveAudioLayer(
@@ -178,6 +181,7 @@ WebRtc_Word32 AudioDeviceBB::Init()
 {
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "Init - Lock\n");
 
     if (_initialized)
     {
@@ -191,6 +195,7 @@ WebRtc_Word32 AudioDeviceBB::Init()
 
     _initialized = true;
 
+	fprintf(stderr, "Init - UnLock\n");
     return 0;
 }
 
@@ -203,6 +208,7 @@ WebRtc_Word32 AudioDeviceBB::Terminate()
     }
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "Terminate - Lock\n");
 
     // RECORDING
     if (_ptrThreadRec)
@@ -254,6 +260,7 @@ WebRtc_Word32 AudioDeviceBB::Terminate()
     _outputDeviceIsSpecified = false;
     _inputDeviceIsSpecified = false;
 
+	fprintf(stderr, "Terminate - UnLock\n");
     return 0;
 }
 
@@ -274,6 +281,7 @@ WebRtc_Word32 AudioDeviceBB::InitSpeaker()
 {
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "InitSpeaker - Lock\n");
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
@@ -295,6 +303,7 @@ WebRtc_Word32 AudioDeviceBB::InitSpeaker()
 
     _speakerIsInitialized = true;
 
+	fprintf(stderr, "InitSpeaker - UnLock\n");
     return 0;
 }
 
@@ -310,6 +319,7 @@ WebRtc_Word32 AudioDeviceBB::InitMicrophone()
 {
 
     CriticalSectionScoped lock(_critSect);
+	fprintf(stderr, "InitMicrophone - Lock\n");
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
@@ -331,6 +341,7 @@ WebRtc_Word32 AudioDeviceBB::InitMicrophone()
 
     _micIsInitialized = true;
 
+	fprintf(stderr, "InitMicrophone - UnLock\n");
     return 0;
 }
 
@@ -771,6 +782,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     int errVal = 0;
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "InitPlayout - Lock\n");
     if (_playing)
     {
         return -1;
@@ -822,7 +834,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 //                  SND_PCM_NONBLOCK);
 
     errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "/dev/snd/defaultp",
+    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
     			SND_PCM_OPEN_PLAYBACK);
 
     if (errVal == -EBUSY) // Device busy - try some more!
@@ -892,7 +904,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 	pp.buf.block.frags_max = 3;
 	pp.buf.block.frags_min = 1;
 	pp.format.interleave = 1;
-	pp.format.rate = 16000;
+	pp.format.rate = VOIP_SAMPLE_RATE;
 	pp.format.voices = 1;
 	pp.format.format = SND_PCM_SFMT_S16_LE;
 	errVal = snd_pcm_plugin_params(_handlePlayout, &pp);
@@ -933,9 +945,8 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 		return -1;
 	}
 
-	_playoutFramesIn10MS = _playoutFreq/100;
-#if 0
     _playoutFramesIn10MS = _playoutFreq/100;
+#if 0
     if ((errVal = snd_pcm_set_params( _handlePlayout,
 #if defined(WEBRTC_BIG_ENDIAN)
 //        SND_PCM_FORMAT_S16_BE,
@@ -999,6 +1010,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     if (_handlePlayout != NULL)
     {
         _playIsInitialized = true;
+    	fprintf(stderr, "InitPlayout - UnLock\n");
         return 0;
     }
     else
@@ -1006,6 +1018,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
         return -1;
     }
 
+	fprintf(stderr, "InitPlayout - UnLock\n");
     return 0;
 }
 
@@ -1014,6 +1027,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	int errVal = 0;
 
 	CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "InitRecording - Lock\n");
 
 	if (_recording)
 	{
@@ -1054,7 +1068,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	}
 ////////////////////////////
 	errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-					&_handleRecord, &_handleAudioManagerRecord, (char*) "/dev/snd/defaultc",
+					&_handleRecord, &_handleAudioManagerRecord, (char*) "voice" /*(char*) "/dev/snd/defaultc"*/,
 					SND_PCM_OPEN_CAPTURE);
 
 	if (errVal == -EBUSY) // Device busy - try some more!
@@ -1068,7 +1082,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 //                          SND_PCM_STREAM_PLAYBACK,
 //                          SND_PCM_NONBLOCK);
 			errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-						&_handleRecord, &_handleAudioManagerRecord, (char*) "/dev/snd/defaultc",
+						&_handleRecord, &_handleAudioManagerRecord, "voice" /*(char*) "/dev/snd/defaultc"*/,
 						SND_PCM_OPEN_CAPTURE);
 			if (errVal == 0)
 			{
@@ -1195,6 +1209,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	{
 		// Mark recording side as initialized
 		_recIsInitialized = true;
+		fprintf(stderr, "InitRecording - UnLock\n");
 		return 0;
 	}
 	else
@@ -1368,6 +1383,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
         return -1;
     }
 #endif
+	fprintf(stderr, "InitRecording - UnLock\n");
     return 0;
 }
 
@@ -1553,7 +1569,8 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
 
 #endif
     {
-      //CriticalSectionScoped lock(&_critSect);
+      CriticalSectionScoped lock(&_critSect);
+  	fprintf(stderr, "StopRecording - Lock\n");
 
       if (!_recIsInitialized)
       {
@@ -1569,6 +1586,7 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
       _recIsInitialized = false;
       _micIsInitialized = false;
       _recording = false;
+  	fprintf(stderr, "StopRecording - UnLock\n");
     }
 
     if (_ptrThreadRec && !_ptrThreadRec->Stop())
@@ -1583,6 +1601,7 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
     }
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "StopRecording - Lock\n");
     _recordingFramesLeft = 0;
     if (_recordingBuffer)
     {
@@ -1609,8 +1628,8 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
 					  snd_strerror(errVal));
 
 	 // set the pcm input handle to NULL
-	 _playIsInitialized = false;
-	 _speakerIsInitialized = false;
+	 _recIsInitialized = false;
+	 _micIsInitialized = false;
 	 _handleRecord = NULL;
 	 WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
 				  "  handle_record is now set to NULL");
@@ -1626,6 +1645,7 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
     // set the pcm input handle to NULL
     _handleRecord = NULL;
 
+	fprintf(stderr, "StopRecording - UnLock\n");
     return 0;
 }
 
@@ -1728,6 +1748,7 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
 {
     {
         CriticalSectionScoped lock(&_critSect);
+    	fprintf(stderr, "StopPlayout - Lock\n");
 
         if (!_playIsInitialized)
         {
@@ -1740,6 +1761,7 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
         }
 
         _playing = false;
+    	fprintf(stderr, "StopPlayout - UnLock\n");
     }
 
     // stop playout thread first
@@ -1755,6 +1777,7 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
     }
 
     CriticalSectionScoped lock(&_critSect);
+	fprintf(stderr, "StopPlayout - Lock\n");
 
     _playoutFramesLeft = 0;
     delete [] _playoutBuffer;
@@ -1794,6 +1817,7 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
      WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
                   "  handle_playout is now set to NULL");
 
+ 	fprintf(stderr, "StopPlayout - UnLock\n");
      return 0;
 }
 
@@ -2191,8 +2215,9 @@ bool AudioDeviceBB::PlayThreadProcess()
     int err;
 //    snd_pcm_sframes_t frames;
 //    snd_pcm_sframes_t avail_frames;
-    printf("PLAY 1 Lock() \n");
-    //Lock();
+
+//    printf("PLAY 1 Lock() \n");
+    Lock();
 /*
     //return a positive number of frames ready otherwise a negative error code
     avail_frames = snd_pcm_avail_update(_handlePlayout);
@@ -2222,34 +2247,34 @@ bool AudioDeviceBB::PlayThreadProcess()
 */
     if (_playoutFramesLeft <= 0)
     {
-    	printf("PLAY 1 Unlock() \n");
-        //UnLock();
+//        printf("PLAY 1 Unlock() \n");
+        UnLock();
         _ptrAudioBuffer->RequestPlayoutData(_playoutFramesIn10MS);
-        printf("PLAY 2 Lock() \n");
-        //Lock();
+//        printf("PLAY 2 Lock() \n");
+        Lock();
 
-        _playoutFramesLeft = _ptrAudioBuffer->GetPlayoutData(_recordingBuffer);
+        _playoutFramesLeft = _ptrAudioBuffer->GetPlayoutData(_playoutBuffer);
         assert(_playoutFramesLeft == _playoutFramesIn10MS);
     }
 
-    int size = _playoutFramesLeft << 1;
-    int frames = snd_pcm_plugin_write(_handlePlayout,
-    		&_recordingBuffer[0],
-    		320);
-    if (frames < 0)
+    int writeSize = _playoutFramesLeft << 1;
+    int bytesWritten = snd_pcm_plugin_write(_handlePlayout,
+    		&_playoutBuffer[_playoutBufferSizeIn10MS - writeSize],
+    		writeSize);
+    if (bytesWritten < 0)
     {
         WEBRTC_TRACE(kTraceStream, kTraceAudioDevice, _id,
                      "       snd_pcm_plugin_write error: %s",
-                     snd_strerror(frames));
+                     snd_strerror(bytesWritten));
         _playoutFramesLeft = 0;
 //        ErrorRecovery(frames, _handlePlayout);
-        printf("PLAY 1 Unlock() \n");
-        //UnLock();
+//        printf("PLAY 1 Unlock() \n");
+        UnLock();
         return true;
     }
     else
     {
-        _playoutFramesLeft -= frames;
+        _playoutFramesLeft -= bytesWritten >> 1;
     }
 
 /*
@@ -2278,8 +2303,8 @@ bool AudioDeviceBB::PlayThreadProcess()
         _playoutFramesLeft -= frames;
     }
 */
-    printf("PLAY 3 Unlock() \n");
-    //UnLock();
+//    printf("PLAY 3 Unlock() \n");
+    UnLock();
 
     return true;
 }
@@ -2332,10 +2357,11 @@ bool AudioDeviceBB::RecThreadProcess()
     //WebRtc_Word8 buffer = new WebRtc_Word8[_recordingBufferSizeIn10MS];
 
     char *record_buffer;
-    record_buffer = (char*) malloc(_recordingBufferSizeIn10MS);
+    	record_buffer = (char*) malloc(_recordingBufferSizeIn10MS);
 
     //ptrAudioBuffer->SetRecordedBuffer(_recBuffer, 320);
-    printf("REC 1 Lock() \n");
+
+//    printf("REC 1 Lock() \n");
     Lock();
 
     //return a positive number of frames ready otherwise a negative error code
@@ -2374,7 +2400,7 @@ bool AudioDeviceBB::RecThreadProcess()
                      "capture snd_pcm_readi error: %s",
                      snd_strerror(frames));
         //ErrorRecovery(frames, _handleRecord);
-        printf("REC 1 Unlock() \n");
+//        printf("REC 1 Unlock() \n");
         UnLock();
         return true;
     }
@@ -2448,10 +2474,10 @@ bool AudioDeviceBB::RecThreadProcess()
 
             // Deliver recorded samples at specified sample rate, mic level etc.
             // to the observer using callback.
-            printf("REC 2 Unlock() \n");
+//            printf("REC 2 Unlock() \n");
             UnLock();
             _ptrAudioBuffer->DeliverRecordedData();
-            printf("REC 2 Lock() \n");
+//            printf("REC 2 Lock() \n");
             Lock();
 
             if (AGC())
@@ -2471,7 +2497,7 @@ bool AudioDeviceBB::RecThreadProcess()
         }
     }
     free(record_buffer);
-    printf("REC 3 Unlock() \n");
+//    printf("REC 3 Unlock() \n");
     UnLock();
 
     return true;
