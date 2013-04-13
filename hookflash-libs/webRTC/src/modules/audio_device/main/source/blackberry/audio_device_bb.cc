@@ -34,7 +34,7 @@ static const unsigned int ALSA_PLAYOUT_FREQ = 48000;
 static const unsigned int ALSA_PLAYOUT_CH = 1;
 static const unsigned int ALSA_PLAYOUT_LATENCY = 40*1000; // in us
 static const unsigned int ALSA_CAPTURE_FREQ = 48000;
-static const unsigned int ALSA_CAPTURE_CH = 2;
+static const unsigned int ALSA_CAPTURE_CH = 1;
 static const unsigned int ALSA_CAPTURE_LATENCY = 40*1000; // in us
 static const unsigned int ALSA_PLAYOUT_WAIT_TIMEOUT = 5; // in ms
 static const unsigned int ALSA_CAPTURE_WAIT_TIMEOUT = 5; // in ms
@@ -822,7 +822,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 //                  SND_PCM_NONBLOCK);
 
     errVal = audio_manager_snd_pcm_open_name(AUDIO_TYPE_VIDEO_CHAT,
-    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "voice",
+    			&_handlePlayout, &_handleAudioManagerPlayout, (char*) "/dev/snd/defaultp",
     			SND_PCM_OPEN_PLAYBACK);
 
     if (errVal == -EBUSY) // Device busy - try some more!
@@ -888,7 +888,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 	pp.channel = SND_PCM_CHANNEL_PLAYBACK;
 	pp.start_mode = SND_PCM_START_DATA;
 	pp.stop_mode = SND_PCM_STOP_ROLLOVER;
-	pp.buf.block.frag_size = 320;
+	pp.buf.block.frag_size = PREFERRED_FRAME_SIZE;
 	pp.buf.block.frags_max = 3;
 	pp.buf.block.frags_min = 1;
 	pp.format.interleave = 1;
@@ -933,6 +933,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 		return -1;
 	}
 
+	_playoutFramesIn10MS = _playoutFreq/100;
 #if 0
     _playoutFramesIn10MS = _playoutFreq/100;
     if ((errVal = snd_pcm_set_params( _handlePlayout,
@@ -988,7 +989,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
     }
 
     // Set play buffer size
-//    _playoutBufferSizeIn10MS = snd_pcm_frames_to_bytes(
+    _playoutBufferSizeIn10MS = _playoutFramesIn10MS << 1;//snd_pcm_frames_to_bytes(
 //        _handlePlayout, _playoutFramesIn10MS);
 
     // Init varaibles used for play
@@ -1187,7 +1188,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	}
 
 	// Set rec buffer size and create buffer
-	_recordingBufferSizeIn10MS = _recordingFramesIn10MS;//snd_pcm_frames_to_bytes(
+	_recordingBufferSizeIn10MS = _recordingFramesIn10MS << 1 ;//snd_pcm_frames_to_bytes(
 //		_handleRecord, _recordingFramesIn10MS);
 
 	if (_handleRecord != NULL)
@@ -2190,8 +2191,8 @@ bool AudioDeviceBB::PlayThreadProcess()
     int err;
 //    snd_pcm_sframes_t frames;
 //    snd_pcm_sframes_t avail_frames;
-
-    Lock();
+    printf("PLAY 1 Lock() \n");
+    //Lock();
 /*
     //return a positive number of frames ready otherwise a negative error code
     avail_frames = snd_pcm_avail_update(_handlePlayout);
@@ -2221,17 +2222,19 @@ bool AudioDeviceBB::PlayThreadProcess()
 */
     if (_playoutFramesLeft <= 0)
     {
-        UnLock();
+    	printf("PLAY 1 Unlock() \n");
+        //UnLock();
         _ptrAudioBuffer->RequestPlayoutData(_playoutFramesIn10MS);
-        Lock();
+        printf("PLAY 2 Lock() \n");
+        //Lock();
 
-        _playoutFramesLeft = _ptrAudioBuffer->GetPlayoutData(_playoutBuffer);
+        _playoutFramesLeft = _ptrAudioBuffer->GetPlayoutData(_recordingBuffer);
         assert(_playoutFramesLeft == _playoutFramesIn10MS);
     }
 
     int size = _playoutFramesLeft << 1;
     int frames = snd_pcm_plugin_write(_handlePlayout,
-    		&_playoutBuffer[_playoutBufferSizeIn10MS - size],
+    		&_recordingBuffer[0],
     		320);
     if (frames < 0)
     {
@@ -2240,7 +2243,8 @@ bool AudioDeviceBB::PlayThreadProcess()
                      snd_strerror(frames));
         _playoutFramesLeft = 0;
 //        ErrorRecovery(frames, _handlePlayout);
-        UnLock();
+        printf("PLAY 1 Unlock() \n");
+        //UnLock();
         return true;
     }
     else
@@ -2274,7 +2278,8 @@ bool AudioDeviceBB::PlayThreadProcess()
         _playoutFramesLeft -= frames;
     }
 */
-    UnLock();
+    printf("PLAY 3 Unlock() \n");
+    //UnLock();
 
     return true;
 }
@@ -2327,10 +2332,10 @@ bool AudioDeviceBB::RecThreadProcess()
     //WebRtc_Word8 buffer = new WebRtc_Word8[_recordingBufferSizeIn10MS];
 
     char *record_buffer;
-    	record_buffer = (char*) malloc(_recordingBufferSizeIn10MS);
+    record_buffer = (char*) malloc(_recordingBufferSizeIn10MS);
 
     //ptrAudioBuffer->SetRecordedBuffer(_recBuffer, 320);
-
+    printf("REC 1 Lock() \n");
     Lock();
 
     //return a positive number of frames ready otherwise a negative error code
@@ -2369,6 +2374,7 @@ bool AudioDeviceBB::RecThreadProcess()
                      "capture snd_pcm_readi error: %s",
                      snd_strerror(frames));
         //ErrorRecovery(frames, _handleRecord);
+        printf("REC 1 Unlock() \n");
         UnLock();
         return true;
     }
@@ -2376,12 +2382,12 @@ bool AudioDeviceBB::RecThreadProcess()
     {
         //assert(frames == avail_frames);
 
-        int left_size = 0;//snd_pcm_frames_to_bytes(_handleRecord, _recordingFramesLeft);
-        int size = 160;//snd_pcm_frames_to_bytes(_handleRecord, frames);
+        int left_size = _recordingFramesLeft << 1;
+        int size = _recordingFramesLeft << 1;//snd_pcm_frames_to_bytes(_handleRecord, frames);
 
-        memcpy(&_recordingBuffer[0],
+        memcpy(&_recordingBuffer[_recordingBufferSizeIn10MS - left_size],
                record_buffer, size);
-        _recordingFramesLeft -= frames;
+        _recordingFramesLeft -= frames >> 1;
 
         if (!_recordingFramesLeft)
         { // buf is full
@@ -2442,8 +2448,10 @@ bool AudioDeviceBB::RecThreadProcess()
 
             // Deliver recorded samples at specified sample rate, mic level etc.
             // to the observer using callback.
+            printf("REC 2 Unlock() \n");
             UnLock();
             _ptrAudioBuffer->DeliverRecordedData();
+            printf("REC 2 Lock() \n");
             Lock();
 
             if (AGC())
@@ -2463,6 +2471,7 @@ bool AudioDeviceBB::RecThreadProcess()
         }
     }
     free(record_buffer);
+    printf("REC 3 Unlock() \n");
     UnLock();
 
     return true;
