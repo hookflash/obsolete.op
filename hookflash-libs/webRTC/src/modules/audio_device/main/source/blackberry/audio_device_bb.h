@@ -1,11 +1,32 @@
 /*
- *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
- *
- *  Use of this source code is governed by a BSD-style license
- *  that can be found in the LICENSE file in the root of the source
- *  tree. An additional intellectual property rights grant can be found
- *  in the file PATENTS.  All contributing project authors may
- *  be found in the AUTHORS file in the root of the source tree.
+
+ Copyright (c) 2013, SMB Phone Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ The views and conclusions contained in the software and documentation are those
+ of the authors and should not be interpreted as representing official policies,
+ either expressed or implied, of the FreeBSD Project.
+
  */
 
 #ifndef WEBRTC_AUDIO_DEVICE_AUDIO_DEVICE_BB_H
@@ -17,16 +38,11 @@
 #include "audio_device_generic.h"
 #include "critical_section_wrapper.h"
 
-
 //Blackbery includes
 #include <sys/asoundlib.h>
 #include <audio/audio_manager_routing.h>
 
-//#include <sys/soundcard.h>
-//#include <sys/ioctl.h>
-
 namespace webrtc {
-class EventWrapper;
 class ThreadWrapper;
 
 class AudioDeviceBB : public AudioDeviceGeneric
@@ -172,18 +188,11 @@ private:
     CriticalSectionWrapper&	_critSect;
     WebRtc_Word32 _id;
 
-    EventWrapper& _timeEventRec;
-    EventWrapper& _timeEventPlay;
-    EventWrapper& _recStartEvent;
-    EventWrapper& _playStartEvent;
-
     ThreadWrapper* _ptrThreadRec;
     ThreadWrapper* _ptrThreadPlay;
     WebRtc_UWord32 _recThreadID;
     WebRtc_UWord32 _playThreadID;
 
-    WebRtc_UWord16 _inputDeviceIndex;
-    WebRtc_UWord16 _outputDeviceIndex;
     bool _inputDeviceIsSpecified;
     bool _outputDeviceIsSpecified;
 
@@ -191,11 +200,6 @@ private:
     snd_pcm_t* _handlePlayout;
     unsigned int _handleAudioManagerRecord;
     unsigned int _handleAudioManagerPlayout;
-
-//    snd_pcm_uframes_t _recordingBuffersizeInFrame;
-//    snd_pcm_uframes_t _recordingPeriodSizeInFrame;
-//    snd_pcm_uframes_t _playoutBufferSizeInFrame;
-//    snd_pcm_uframes_t _playoutPeriodSizeInFrame;
 
     ssize_t _recordingBufferSizeIn10MS;
     ssize_t _playoutBufferSizeIn10MS;
@@ -215,8 +219,6 @@ private:
     WebRtc_UWord32 _recordingFramesLeft;
     WebRtc_UWord32 _playoutFramesLeft;
 
-    WebRtc_UWord32 _playbackBufferSize;
-
     AudioDeviceModule::BufferType _playBufType;
 
 private:
@@ -228,9 +230,6 @@ private:
     bool _micIsInitialized;
     bool _speakerIsInitialized;
 
-    WebRtc_Word8 _recBuffer[2*160];
-
-    WebRtc_UWord16 _playBufDelay;                 // playback delay
     WebRtc_UWord16 _playBufDelayFixed;            // fixed playback delay
 
     bool _AGC;
@@ -238,31 +237,10 @@ private:
     // Errors and warnings count
 	WebRtc_UWord16 _playWarning;
 	WebRtc_UWord16 _playError;
-	bool _playoutRouteChanged;
 	WebRtc_UWord16 _recWarning;
 	WebRtc_UWord16 _recError;
 
 	WebRtc_UWord16 _writeErrors;
-
-    //Blackberry specific fields
-    //static pthread_t g_capturethread;
-    //static pthread_t g_playerthread;
-    snd_pcm_t *g_pcm_handle_c;
-    snd_pcm_t *g_pcm_handle_p;
-    unsigned int g_audio_manager_handle_c;
-    unsigned int g_audio_manager_handle_p;
-    unsigned int g_audio_manager_handle_t;
-    int g_frame_size_c;
-    int g_frame_size_p;
-    // Flag to stop the record and capture threads
-    //static bool g_execute_audio = true;
-    // Global used by both threads
-    //static circular_buffer_t* g_circular_buffer;
-    bool capture_ready;
-    bool g_execute_audio;
-
-    FILE* _playDataFile;
-
 };
 
 }  // namespace webrtc

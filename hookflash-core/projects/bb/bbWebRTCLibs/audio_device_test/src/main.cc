@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <screen/screen.h>
 #include <slog2.h>
+#include <sys/time.h>
 
 #include "trace.h"
 #include "thread_wrapper.h"
@@ -208,9 +209,10 @@ bool test_thread(ThreadObj obj)
     audioDevice->InitPlayout();
 
     audioDevice->StartRecording();
+    usleep(1000000);
     audioDevice->StartPlayout();
 
-    usleep(10000000);
+    usleep(20000000);
 
     audioDevice->StopRecording();
     audioDevice->StopPlayout();
