@@ -1,0 +1,36 @@
+dependencies: \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/receiver.cc \
+  ../../webrtc/modules/video_coding/main/source/receiver.h \
+  ../../webrtc/system_wrappers/interface/critical_section_wrapper.h \
+  ../../webrtc/common_types.h ../typedefs.h \
+  ../../webrtc/modules/video_coding/main/source/jitter_buffer.h \
+  ../../webrtc/modules/interface/module_common_types.h \
+  ../../webrtc/system_wrappers/interface/constructor_magic.h \
+  ../../webrtc/modules/video_coding/main/interface/video_coding_defines.h \
+  ../common_video/interface/i420_video_frame.h \
+  ../../webrtc/common_video/plane.h \
+  ../system_wrappers/interface/aligned_malloc.h \
+  ../system_wrappers/interface/scoped_ptr.h \
+  ../../webrtc/modules/video_coding/main/source/decoding_state.h \
+  ../../webrtc/modules/video_coding/main/source/inter_frame_delay.h \
+  ../../webrtc/modules/video_coding/main/source/jitter_buffer_common.h \
+  ../../webrtc/modules/video_coding/main/source/jitter_estimator.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/rtt_filter.h \
+  ../../webrtc/modules/video_coding/main/source/packet.h \
+  ../../webrtc/modules/video_coding/main/source/timing.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/codec_timer.h \
+  ../../webrtc/modules/video_coding/main/interface/video_coding.h \
+  ../../webrtc/modules/interface/module.h \
+  ../../webrtc/system_wrappers/interface/event_wrapper.h \
+  ../../webrtc/modules/video_coding/main/source/encoded_frame.h \
+  ../common_video/interface/video_image.h \
+  ../modules/video_coding/codecs/interface/video_codec_interface.h \
+  ../modules/video_coding/codecs/interface/video_error_codes.h \
+  ../../webrtc/modules/video_coding/main/source/internal_defines.h \
+  ../../webrtc/modules/video_coding/main/source/media_opt_util.h \
+  ../../webrtc/modules/video_coding/utility/include/exp_filter.h \
+  ../../webrtc/modules/video_coding/main/source/qm_select.h \
+  ../../webrtc/system_wrappers/interface/trace.h \
+  ../../webrtc/system_wrappers/interface/clock.h \
+  ../../webrtc/system_wrappers/interface/trace_event.h \
+  ../../webrtc/system_wrappers/interface/event_tracer.h

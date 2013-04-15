@@ -1,0 +1,19 @@
+dependencies: \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/encode.c \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/structs.h \
+  ../typedefs.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/settings.h \
+  audio_coding/codecs/isac/main/interface/isac.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/codec.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/pitch_estimator.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/entropy_coding.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/arith_routines.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/pitch_gain_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/pitch_lag_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/spectrum_ar_model_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/lpc_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/lpc_analysis.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/bandwidth_estimator.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/lpc_shape_swb12_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/lpc_shape_swb16_tables.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/isac/main/source/lpc_gain_swb_tables.h

@@ -1,0 +1,892 @@
+TNetEq
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libNetEq.a normal armv7
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libNetEq.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/NetEq.LinkFileList
+c0000000051658DF40000000000001326
+t1365609972
+s4902
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c
+c000000005165705D00000000000043F8
+t1365602397
+s17400
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c
+c000000005165705D0000000000005DC9
+t1365602397
+s24009
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c
+c000000005165705D0000000000002338
+t1365602397
+s9016
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c
+c000000005165705D0000000000003DE6
+t1365602397
+s15846
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c
+c000000005165705D00000000000014CF
+t1365602397
+s5327
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c
+c000000005165705D000000000000502E
+t1365602397
+s20526
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c
+c000000005165705D0000000000001051
+t1365602397
+s4177
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c
+c000000005165705D0000000000003AF8
+t1365602397
+s15096
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c
+c000000005165705D0000000000000C17
+t1365602397
+s3095
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c
+c000000005165705D0000000000001E90
+t1365602397
+s7824
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c
+c000000005165705D00000000000029AC
+t1365602397
+s10668
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c
+c000000005165705D000000000000BC0D
+t1365602397
+s48141
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c
+c000000005165705D00000000000003FA
+t1365602397
+s1018
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c
+c000000005165705D0000000000000452
+t1365602397
+s1106
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c
+c000000005165705D0000000000000D2F
+t1365602397
+s3375
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c
+c000000005165705D00000000000054B4
+t1365602397
+s21684
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c
+c000000005165705D00000000000005D2
+t1365602397
+s1490
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c
+c000000005165705D000000000000056F
+t1365602397
+s1391
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c
+c000000005165705D00000000000003B6
+t1365602397
+s950
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c
+c000000005165705D00000000000027A7
+t1365602397
+s10151
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c
+c000000005165705D0000000000006BD0
+t1365602397
+s27600
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c
+c000000005165705D0000000000001DBC
+t1365602397
+s7612
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c
+c000000005165705D0000000000004A9C
+t1365602397
+s19100
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c
+c000000005165705D0000000000000B00
+t1365602397
+s2816
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c
+c000000005165705D00000000000044FB
+t1365602397
+s17659
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c
+c000000005165705D000000000000D44D
+t1365602397
+s54349
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c
+c000000005165705D0000000000001055
+t1365602397
+s4181
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c
+c000000005165705D000000000000255C
+t1365602397
+s9564
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c
+c000000005165705D0000000000000757
+t1365602397
+s1879
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c
+c000000005165705D00000000000074BC
+t1365602397
+s29884
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c
+c000000005165705D00000000000010D0
+t1365602397
+s4304
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c
+c000000005165705D000000000000051E
+t1365602397
+s1310
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c
+c000000005165705D000000000000C252
+t1365602397
+s49746
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies7b827874c515b741^3d9b7974c515b741^---0#1#0#--18"Check dependencies36"9F11EDDF-5A5B-4EC4-8151-702A0CCF6C94-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302778.904252
+e387302779.031674
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c0de2e77ac515b741^323a087bc515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c0000000000000000^3169"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o audio_coding/neteq/accelerate.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/accelerate.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/accelerate.o36"261CD91D-83CC-437E-91E4-207E4DE1DA48-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.033206
+e387302779.161904
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.cc7d9087bc515b741^569d297bc515b741^---0#0#0#-19%DVTDocumentLocation2@101"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c0000000000000000^3157"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o audio_coding/neteq/automode.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/automode.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/automode.o36"ED1574C0-8486-42D6-B071-260E3E36795F-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.164049
+e387302779.276718
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c2d7b2a7bc515b741^c5fe467bc515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c0000000000000000^3169"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o audio_coding/neteq/bgn_update.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bgn_update.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bgn_update.o36"3AF185D1-C6BE-47FA-BD73-E05F4BB2BA45-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.278178
+e387302779.387186
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.ce695477bc515b741^1841637bc515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c0000000000000000^3211"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o audio_coding/neteq/bufstats_decision.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/bufstats_decision.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/bufstats_decision.o36"EF8FC093-AFA9-4819-9C43-C7DA88ECCE84-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.388667
+e387302779.486269
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.cfad2637bc515b741^1fa17e7bc515b741^---0#0#0#-19%DVTDocumentLocation2@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c0000000000000000^3181"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o audio_coding/neteq/cng_internal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/cng_internal.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/cng_internal.o36"1C979498-81FB-408F-ACC2-A956A189FA32-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.501378
+e387302779.630971
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c5bb4807bc515b741^529ea17bc515b741^---0#0#0#-19%DVTDocumentLocation2@101"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c0000000000000000^3157"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o audio_coding/neteq/codec_db.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/codec_db.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/codec_db.o36"AEAEEE4C-C155-48B5-876E-551B3C983A8E-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.632487
+e387302779.743337
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.caa43a27bc515b741^1b64be7bc515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c0000000000000000^3169"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o audio_coding/neteq/correlator.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/correlator.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/correlator.o36"D708D0CD-2F13-4ADE-B657-B26AD5BC8C2F-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.661255
+e387302779.771728
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c889da97bc515b741^20b5c57bc515b741^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c0000000000000000^3127"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o audio_coding/neteq/dsp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp.o36"56F07235-647A-4170-83D8-E9A99A88E45C-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.774021
+e387302779.865904
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.cd57bc67bc515b741^8fc6dd7bc515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c0000000000000000^3211"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o audio_coding/neteq/dsp_helpfunctions.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dsp_helpfunctions.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dsp_helpfunctions.o36"4997E5F9-C290-4E6E-998D-EA2AB861506D-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.803354
+e387302779.945837
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c1effcd7bc515b741^8b37f27bc515b741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c0000000000000000^3175"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o audio_coding/neteq/dtmf_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_buffer.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_buffer.o36"E318D6A1-F2F4-4AE5-926D-4C75FFA887BE-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.879591
+e387302780.011606
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c3c88e17bc515b741^5b41037cc515b741^---0#0#0#-19%DVTDocumentLocation2@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c0000000000000000^3181"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o audio_coding/neteq/dtmf_tonegen.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/dtmf_tonegen.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/dtmf_tonegen.o36"355EC3B8-A364-4056-AA9F-8559361C3C2A-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302779.947346
+e387302780.282967
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.ca1d8f27bc515b741^f790487cc515b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c0000000000000000^3145"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o audio_coding/neteq/expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/expand.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/expand.o36"0F2E8DB3-50E1-4284-8F86-19195672736D-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.013031
+e387302780.171626
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection101"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.cd5cf037cc515b741^f1122c7cc515b741^---0#0#0#-19%DVTDocumentLocation2@109"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c0000000000000000^3205"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o audio_coding/neteq/mcu_address_init.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_address_init.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_address_init.o36"ABCC46B7-258D-49B4-B00C-610FF70C49EC-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.173103
+e387302780.272801
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.cbb5f2d7cc515b741^5d17467cc515b741^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c0000000000000000^3193"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o audio_coding/neteq/mcu_dsp_common.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_dsp_common.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_dsp_common.o36"15322623-B3CF-4131-A1C2-1DCF45D8DD72-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.274516
+e387302780.369596
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection94"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c0b9a467cc515b741^0bb55e7cc515b741^---0#0#0#-19%DVTDocumentLocation2@102"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c0000000000000000^3163"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o audio_coding/neteq/mcu_reset.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mcu_reset.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mcu_reset.o36"2450E959-19DA-4291-B841-C3DDC1F660EB-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.284408
+e387302780.449590
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.cea22497cc515b741^cd3e737cc515b741^---0#0#0#-19%DVTDocumentLocation2@98"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c0000000000000000^3139"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o audio_coding/neteq/merge.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/merge.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/merge.o36"1677C223-69DA-4326-A8D7-ADDD8585CB72-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.371175
+e387302780.464903
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c5b5c5f7cc515b741^861c777cc515b741^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c0000000000000000^3193"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o audio_coding/neteq/min_distortion.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/min_distortion.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/min_distortion.o36"E31B387B-BB09-44CA-8240-EB933C95FAD8-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.451082
+e387302780.545512
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.cd9ce737cc515b741^dfc18b7cc515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c0000000000000000^3211"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o audio_coding/neteq/mix_voice_unvoice.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mix_voice_unvoice.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mix_voice_unvoice.o36"9CF60CAC-5CA2-4315-8D93-95F89BEFD3CC-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.466414
+e387302780.566084
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c6a887a7cc515b741^cc0a917cc515b741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c0000000000000000^3175"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o audio_coding/neteq/mute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/mute_signal.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/mute_signal.o36"3085F0B1-1138-4670-BC01-07E40DCAE44D-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.547055
+e387302780.796517
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.cae638c7cc515b741^0403cc7cc515b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c0000000000000000^3145"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o audio_coding/neteq/normal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/normal.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/normal.o36"AE4B3B68-0068-41EB-BD95-F890D9EE9A88-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.567563
+e387302780.812406
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.ce7aa917cc515b741^6423d07cc515b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c0000000000000000^3187"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o audio_coding/neteq/packet_buffer.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/packet_buffer.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/packet_buffer.o36"89EB25C5-99A2-41BF-89BC-D14EF5C1B57B-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.798001
+e387302780.918885
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c4da0cc7cc515b741^c154eb7cc515b741^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c0000000000000000^3193"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o audio_coding/neteq/peak_detection.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/peak_detection.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/peak_detection.o36"FEB274F6-379C-4548-8140-1F4B284A9BDA-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.813898
+e387302780.939267
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c3db7d07cc515b741^268ef07cc515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c0000000000000000^3211"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o audio_coding/neteq/preemptive_expand.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/preemptive_expand.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/preemptive_expand.o36"2F11BD56-2550-403D-856B-522608D5565E-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.920501
+e387302781.007669
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.cd7f9eb7cc515b741^ed11027dc515b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c0000000000000000^3187"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o audio_coding/neteq/random_vector.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/random_vector.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/random_vector.o36"D8D9DA86-2979-4A92-A27D-367811267D57-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302780.940804
+e387302781.088607
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.cd82ef17cc515b741^aed5167dc515b741^---0#0#0#-19%DVTDocumentLocation2@98"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c0000000000000000^3139"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o audio_coding/neteq/recin.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recin.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recin.o36"A43E0E70-BA37-4FB6-9EE7-1F9FDB6B1EC8-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.009197
+e387302781.225370
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c4eb5027dc515b741^4ed1397dc515b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c0000000000000000^3145"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o audio_coding/neteq/recout.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/recout.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/recout.o36"FA5D4AF7-E240-45EF-81DE-C6E88491BACD-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.090099
+e387302781.184458
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection89"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c5665177dc515b741^a4382f7dc515b741^---0#0#0#-19%DVTDocumentLocation2@97"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c0000000000000000^3133"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o audio_coding/neteq/rtcp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtcp.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtcp.o36"C3298B8E-A3DB-4BB3-824E-46AF2FE250DA-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.185969
+e387302781.269431
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection88"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c35f02f7dc515b741^635e477dc515b741^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c0000000000000000^3127"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o audio_coding/neteq/rtp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/rtp.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/rtp.o36"A2D24422-7571-410E-909E-3E4F2DEE03C2-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.226975
+e387302781.387281
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c077c3a7dc515b741^1e4f637dc515b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c0000000000000000^3145"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o audio_coding/neteq/set_fs.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/set_fs.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/set_fs.o36"46FFEBE6-C8B0-4D95-84A9-5ECBB1A58D59-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.329920
+e387302781.515012
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c21cd547dc515b741^5dfa837dc515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c0000000000000000^3169"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o audio_coding/neteq/signal_mcu.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/signal_mcu.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/signal_mcu.o36"720A455A-1033-4F61-9865-59A250CE2CC5-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.388766
+e387302781.481441
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection101"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c5edb637dc515b741^6c417b7dc515b741^---0#0#0#-19%DVTDocumentLocation2@109"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c0000000000000000^3205"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o audio_coding/neteq/split_and_insert.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/split_and_insert.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/split_and_insert.o36"A23E41B1-6487-4D94-8342-2267A2C0B5B8-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.482944
+e387302781.572739
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c66f87b7dc515b741^09c1927dc515b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c0000000000000000^3187"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o audio_coding/neteq/unmute_signal.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/unmute_signal.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/unmute_signal.o36"7C67EE2D-01DC-4E1C-BD76-215E8A20AB7F-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387302781.516840
+e387302781.787175
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.cdba2847dc515b741^80b6c97dc515b741^---0#0#0#-19%DVTDocumentLocation2@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c0000000000000000^3181"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o audio_coding/neteq/webrtc_neteq.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DNETEQ_VOICEENGINE_CODECS -DSCRATCH -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/neteq/interface -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/neteq/webrtc_neteq.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/webrtc_neteq.o36"AB87EB04-E678-4015-8FCE-8165850068C8-
+
+CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libNetEq.a normal armv7
+s387302781.955470
+e387302781.991705
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libNetEq.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection63"Libtool ../../xcodebuild/Debug-iphoneos/libNetEq.a normal armv710cdf47dc515b741^11e3fd7dc515b741^---0#0#0#--951"Libtool ../../xcodebuild/Debug-iphoneos/libNetEq.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/NetEq.build/Objects-normal/armv7/NetEq.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libNetEq.a36"80193CAA-53A9-41F6-81D2-1213ACF95D01-
+

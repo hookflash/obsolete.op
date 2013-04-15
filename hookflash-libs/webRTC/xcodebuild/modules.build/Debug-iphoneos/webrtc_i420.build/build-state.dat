@@ -1,0 +1,287 @@
+Twebrtc_i420
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a normal armv7
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a normal armv7s
+cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal "armv7 armv7s"
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/common_video/plane.h
+c000000005165C63B00000000000008F0
+t1365624379
+s2288
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/video_coding/codecs/interface/video_codec_interface.h
+c000000005165C6410000000000002747
+t1365624385
+s10055
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/constructor_magic.h
+c000000005165C64300000000000006F7
+t1365624387
+s1783
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a
+t1365710700
+s83504
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o
+t1365710700
+s39044
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a
+t1365710700
+s41744
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/webrtc_i420.LinkFileList
+c000000005167176900000000000000A0
+t1365710697
+s160
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o
+t1365710700
+s39012
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a
+t1365710700
+s41712
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/webrtc_i420.LinkFileList
+c000000005167176900000000000000A1
+t1365710697
+s161
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../common_types.h
+c000000005165F28300000000000042FA
+t1365635715
+s17146
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../common_video/interface/i420_video_frame.h
+c000000005165C63B000000000000111E
+t1365624379
+s4382
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../common_video/interface/video_image.h
+c000000005165C63B000000000000072A
+t1365624379
+s1834
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../common_video/libyuv/include/webrtc_libyuv.h
+c000000005165C63B0000000000001AB0
+t1365624379
+s6832
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/interface/module_common_types.h
+c000000005165C6400000000000007293
+t1365624384
+s29331
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/video_coding/codecs/i420/main/interface/i420.h
+c000000005165C6410000000000001630
+t1365624385
+s5680
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/video_coding/codecs/interface/video_error_codes.h
+c000000005165C6410000000000000485
+t1365624385
+s1157
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../system_wrappers/interface/aligned_malloc.h
+c000000005165C6430000000000000873
+t1365624387
+s2163
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../system_wrappers/interface/scoped_ptr.h
+c000000005165C6430000000000001476
+t1365624387
+s5238
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../typedefs.h
+c000000005165C6440000000000000DD4
+t1365624388
+s3540
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+c000000005165C6410000000000001C48
+t1365624385
+s7240
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/common_video/plane.h
+c000000005165706B00000000000008F0
+t1365602411
+s2288
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/video_coding/codecs/interface/video_codec_interface.h
+c000000005165705F0000000000002747
+t1365602399
+s10055
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/constructor_magic.h
+c000000005165704E00000000000006F7
+t1365602382
+s1783
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a
+t1365610020
+s41680
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o
+t1365610020
+s38980
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/webrtc_i420.LinkFileList
+c0000000051658E230000000000000094
+t1365610019
+s148
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../common_types.h
+c000000005165706B000000000000422F
+t1365602411
+s16943
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../common_video/interface/i420_video_frame.h
+c000000005165706B000000000000111E
+t1365602411
+s4382
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../common_video/interface/video_image.h
+c000000005165706B000000000000072A
+t1365602411
+s1834
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../common_video/libyuv/include/webrtc_libyuv.h
+c000000005165706B0000000000001AB0
+t1365602411
+s6832
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/interface/module_common_types.h
+c00000000516570680000000000007293
+t1365602408
+s29331
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/video_coding/codecs/i420/main/interface/i420.h
+c00000000516570600000000000001630
+t1365602400
+s5680
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/video_coding/codecs/interface/video_error_codes.h
+c000000005165705F0000000000000485
+t1365602399
+s1157
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../system_wrappers/interface/aligned_malloc.h
+c000000005165704E0000000000000873
+t1365602382
+s2163
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../system_wrappers/interface/scoped_ptr.h
+c000000005165704E0000000000001476
+t1365602382
+s5238
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../typedefs.h
+c000000005165706B0000000000000DD4
+t1365602411
+s3540
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+c00000000516570600000000000001C48
+t1365602400
+s7240
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies3e08b9146818b741^ed82bd146818b741^---0#1#0#--18"Check dependencies36"7DC3A038-E2D8-47BE-B760-36B93ADA82B0-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403499.044556
+e387403500.726625
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc5ebc0beb4e17b741^b62dbaec4e17b741^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc0000000000000000^3474"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o video_coding/codecs/i420/main/source/i420.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_coding/codecs/i420/main/interface -Ivideo_coding/codecs/interface -I../common_video/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o36"285D6775-C9A9-46D3-88A6-6A1677AC4CE1-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302819.632751
+e387302820.345298
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc9c52a2a3c515b741^1f6558a4c515b741^---0#0#0#-19%DVTDocumentLocation2@116"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc0000000000000000^3366"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o video_coding/codecs/i420/main/source/i420.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_coding/codecs/i420/main/interface -Ivideo_coding/codecs/interface -I../common_video/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/i420.o36"F16195D3-292A-40B1-A686-92F7D65ACB41-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403499.272348
+e387403500.776284
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc1d1e46eb4e17b741^4ed0c6ec4e17b741^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc0000000000000000^3481"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o video_coding/codecs/i420/main/source/i420.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_coding/codecs/i420/main/interface -Ivideo_coding/codecs/interface -I../common_video/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/i420/main/source/i420.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/i420.o36"F5C374A1-8869-469C-BE77-9E2BF6812DAA-
+
+CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal "armv7 armv7s"
+s387403500.818112
+e387403500.860648
+r1
+xCreateUniversalBinary
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a
+xnormal
+xarmv7 armv7s
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection140"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.aaea0d1ec4e17b741^3255dcec4e17b741^---0#0#0#-19%DVTDocumentLocation2@132"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a0000000000000000^837"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a36"0159BDA3-58CD-4B0E-A85A-2CBD84B05092-
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a normal armv7
+s387403500.777720
+e387403500.810521
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection122"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a normal armv75b5cc7ec4e17b741^7498cfec4e17b741^---0#0#0#--1129"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/webrtc_i420.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/libwebrtc_i420.a36"5B110600-C81D-477D-BFB5-9C3548832ADC-
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a normal armv7s
+s387403500.783312
+e387403500.810897
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a
+xnormal
+xarmv7s
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection124"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a normal armv7saab9c8ec4e17b741^e8a4cfec4e17b741^---0#0#0#--1134"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/webrtc_i420.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7s/libwebrtc_i420.a36"1BB8C9B9-33A0-43A8-8AC3-102F664732A1-
+
+CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal armv7
+s387302820.779176
+e387302820.810386
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection69"Libtool ../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal armv760b0c7a4c515b741^2c9ae2a4c515b741^---0#0#0#--975"Libtool ../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_i420.build/Objects-normal/armv7/webrtc_i420.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_i420.a36"D1F8FEA3-BBB5-4BC3-BC5E-A13952875C92-
+

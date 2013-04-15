@@ -1,0 +1,24 @@
+dependencies: \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/vp8/default_temporal_layers.cc \
+  ../../../../../webrtc/modules/video_coding/codecs/vp8/default_temporal_layers.h \
+  ../../../../../webrtc/modules/video_coding/codecs/vp8/temporal_layers.h \
+  ../../../../../webrtc/common_video/interface/video_image.h \
+  ../../../../typedefs.h \
+  ../../../../../webrtc/modules/interface/module_common_types.h \
+  ../../../../../webrtc/common_types.h \
+  ../../../../../webrtc/system_wrappers/interface/constructor_magic.h \
+  ../../../../../webrtc/modules/video_coding/codecs/interface/video_codec_interface.h \
+  ../../../../common_video/interface/i420_video_frame.h \
+  ../../../../../webrtc/common_video/plane.h \
+  ../../../../system_wrappers/interface/aligned_malloc.h \
+  ../../../../system_wrappers/interface/scoped_ptr.h \
+  ../../../../modules/video_coding/codecs/interface/video_error_codes.h \
+  ../../../../../webrtc/modules/video_coding/codecs/vp8/include/vp8_common_types.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_encoder.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_codec.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_integer.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_image.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vp8cx.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vp8.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_codec_impl_top.h \
+  ../../../../../third_party/libvpx/source/libvpx/vpx/vpx_codec_impl_bottom.h

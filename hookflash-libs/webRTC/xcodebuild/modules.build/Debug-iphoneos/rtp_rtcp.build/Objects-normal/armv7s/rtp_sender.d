@@ -1,0 +1,32 @@
+dependencies: \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/source/rtp_sender.cc \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_sender.h \
+  ../../webrtc/common_types.h ../typedefs.h \
+  ../../webrtc/modules/rtp_rtcp/interface/rtp_rtcp_defines.h \
+  interface/module_common_types.h \
+  ../../webrtc/system_wrappers/interface/constructor_magic.h \
+  ../../webrtc/system_wrappers/interface/clock.h \
+  ../../webrtc/modules/rtp_rtcp/source/bitrate.h \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_rtcp_config.h \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_header_extension.h \
+  ../../webrtc/modules/rtp_rtcp/source/ssrc_database.h \
+  ../system_wrappers/interface/static_instance.h \
+  ../../webrtc/system_wrappers/interface/critical_section_wrapper.h \
+  ../../webrtc/modules/rtp_rtcp/source/video_codec_information.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/source/rtp_utility.h \
+  ../../webrtc/modules/pacing/include/paced_sender.h \
+  ../../webrtc/modules/interface/module.h \
+  ../../webrtc/system_wrappers/interface/scoped_ptr.h \
+  ../../webrtc/system_wrappers/interface/tick_util.h \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_packet_history.h \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_sender_audio.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/source/dtmf_queue.h \
+  ../../webrtc/modules/rtp_rtcp/source/rtp_sender_video.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/source/forward_error_correction.h \
+  ../system_wrappers/interface/ref_count.h \
+  ../system_wrappers/interface/atomic32.h \
+  ../system_wrappers/interface/scoped_refptr.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/source/producer_fec.h \
+  ../../webrtc/system_wrappers/interface/trace.h \
+  ../../webrtc/system_wrappers/interface/trace_event.h \
+  ../../webrtc/system_wrappers/interface/event_tracer.h

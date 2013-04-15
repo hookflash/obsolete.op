@@ -1,0 +1,596 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0571C9693B17938C20F54FB6 /* vie_channel_group.cc in Sources */ = {isa = PBXBuildFile; fileRef = 00346D59DA21C5EBC448A4F1 /* vie_channel_group.cc */; };
+		0B07FB85D1860F48C8421DC0 /* stream_synchronization.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0C363F8774FBA49276FD4869 /* stream_synchronization.cc */; };
+		0D63CF1601610D8A270A2C2D /* vie_receiver.cc in Sources */ = {isa = PBXBuildFile; fileRef = A7D02FB11194EA159EE1850D /* vie_receiver.cc */; };
+		10AF35C7FCB8F620FA345C1B /* vie_renderer.cc in Sources */ = {isa = PBXBuildFile; fileRef = E3725456AAE084EC2B9C65D6 /* vie_renderer.cc */; };
+		17B40795019DA7EB69469B3C /* vie_input_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = B56D268D32150D0B8956FA88 /* vie_input_manager.cc */; };
+		1FACA2C853B4DF52960CD627 /* vie_render_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = FDF07046437E231B89631442 /* vie_render_impl.cc */; };
+		2B1B2C92EED5B7E33EC9EFFA /* call_stats.cc in Sources */ = {isa = PBXBuildFile; fileRef = 84053663E0445F35CFDB93D3 /* call_stats.cc */; };
+		2DD50D71E2954F8D1A7DF4B1 /* vie_capturer.cc in Sources */ = {isa = PBXBuildFile; fileRef = 422BE9932466CB755F655B29 /* vie_capturer.cc */; };
+		2F399B39FF0AE5F95990BD05 /* vie_file_player.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2FEDF048ECF27B887DE41956 /* vie_file_player.cc */; };
+		3DCA4D9BCA957F6A9424F441 /* vie_file_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 9B8D2019315B47DA761F3DE1 /* vie_file_impl.cc */; };
+		42EE776D89EAF9FF48EE9C66 /* vie_render_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = 137CA8C952D12EDA8E725379 /* vie_render_manager.cc */; };
+		4497174B8438FA1751F1498D /* vie_file_image.cc in Sources */ = {isa = PBXBuildFile; fileRef = 08D1097649DFAE59B6A2FAF1 /* vie_file_image.cc */; };
+		5B8D929FA60B23DB88ABC257 /* vie_sync_module.cc in Sources */ = {isa = PBXBuildFile; fileRef = FBB81EA5B89C7F0526D1F27C /* vie_sync_module.cc */; };
+		602E1AEE3507FA5866CA9140 /* encoder_state_feedback.cc in Sources */ = {isa = PBXBuildFile; fileRef = CBC569049D192B01358C9147 /* encoder_state_feedback.cc */; };
+		6330BC166A2519303513C9C5 /* vie_sender.cc in Sources */ = {isa = PBXBuildFile; fileRef = C9A7979E649B7BD9DE92A33B /* vie_sender.cc */; };
+		661EEAEC121CF8393DAB3B66 /* vie_base_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 50FA5699E4414B93675A0554 /* vie_base_impl.cc */; };
+		6E2DB3FC403338C0C0920600 /* vie_ref_count.cc in Sources */ = {isa = PBXBuildFile; fileRef = 789F4A67FF53E950FBC7D12A /* vie_ref_count.cc */; };
+		71106CEBBE3DDD3F0D9CCAE5 /* vie_rtp_rtcp_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 0E2F632C6C5E86418C8477CF /* vie_rtp_rtcp_impl.cc */; };
+		83612F26D176DF97C136DC1D /* vie_external_codec_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 18029CFED30877BDB20A0C33 /* vie_external_codec_impl.cc */; };
+		8B347E6DA1376271DE1B83B4 /* vie_file_recorder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3E95C3CABC719C8E9740EA21 /* vie_file_recorder.cc */; };
+		8FED60B2B2B5327C566FC3CF /* vie_codec_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = 648225F250AE5AFF6F1D6480 /* vie_codec_impl.cc */; };
+		9B004A91D047BC435102908C /* vie_image_process_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = B5D0C60497191F913DBF98FC /* vie_image_process_impl.cc */; };
+		9DB2E9B6A9CAE1883D289A6A /* vie_capture_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = BAB256185324DC9A3088443A /* vie_capture_impl.cc */; };
+		9F46713E1C11FB72B300DAFE /* vie_network_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = DEA34578BBDF516F6A1FA724 /* vie_network_impl.cc */; };
+		A12F3DF49DE90E4E5AE138CE /* vie_remb.cc in Sources */ = {isa = PBXBuildFile; fileRef = ACDC3FF2FCC119F751608433 /* vie_remb.cc */; };
+		B4E1B65C3DB687960E4745A1 /* vie_encryption_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = C6C21BFDD480D15F27EA67D3 /* vie_encryption_impl.cc */; };
+		BDF9A5DE261E05E08968F097 /* vie_frame_provider_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = F6B9B8D320E8381EE7004EDF /* vie_frame_provider_base.cc */; };
+		BECAA298576BA7CC3795350E /* vie_channel.cc in Sources */ = {isa = PBXBuildFile; fileRef = 71DC69C62F72E96AF2CE6800 /* vie_channel.cc */; };
+		D1D57B84F523470BFC993868 /* vie_shared_data.cc in Sources */ = {isa = PBXBuildFile; fileRef = 4D9AB008147D4DC0CB84BA78 /* vie_shared_data.cc */; };
+		DCE1D0CA5933F58F55AF6EA7 /* vie_channel_manager.cc in Sources */ = {isa = PBXBuildFile; fileRef = FBD4DC4C8242807395AA4FE0 /* vie_channel_manager.cc */; };
+		DD132F0AA91A4848C5C5CEDB /* vie_encoder.cc in Sources */ = {isa = PBXBuildFile; fileRef = 5B2362582EFAA721240FB5FD /* vie_encoder.cc */; };
+		ECDBE09A9C8E0C59A11BCEBF /* vie_manager_base.cc in Sources */ = {isa = PBXBuildFile; fileRef = 401E25695E57B524309F0CEA /* vie_manager_base.cc */; };
+		F7906E4CC5C28A9331FF0B93 /* vie_impl.cc in Sources */ = {isa = PBXBuildFile; fileRef = FF0C183105BF08843FE7FCE9 /* vie_impl.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		00346D59DA21C5EBC448A4F1 /* vie_channel_group.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel_group.cc; sourceTree = "<group>"; };
+		012F8F332D66C2018872610D /* vie_encryption_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_encryption_impl.h; sourceTree = "<group>"; };
+		06FA4874D2CBFFAC7DB15ACA /* vie_receiver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_receiver.h; sourceTree = "<group>"; };
+		08D1097649DFAE59B6A2FAF1 /* vie_file_image.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_image.cc; sourceTree = "<group>"; };
+		0AF91E7D74DCF6B2E493F46D /* vie_channel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_channel.h; sourceTree = "<group>"; };
+		0C363F8774FBA49276FD4869 /* stream_synchronization.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stream_synchronization.cc; sourceTree = "<group>"; };
+		0E2F632C6C5E86418C8477CF /* vie_rtp_rtcp_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_rtp_rtcp_impl.cc; sourceTree = "<group>"; };
+		10E17DF076E4B5DBEBF918F9 /* vie_encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_encoder.h; sourceTree = "<group>"; };
+		137CA8C952D12EDA8E725379 /* vie_render_manager.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_render_manager.cc; sourceTree = "<group>"; };
+		1506C08F378DA1C7AF0B1CBB /* vie_channel_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_channel_manager.h; sourceTree = "<group>"; };
+		1788A01507F446DCB9B5EE63 /* vie_file_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_file_impl.h; sourceTree = "<group>"; };
+		18029CFED30877BDB20A0C33 /* vie_external_codec_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_external_codec_impl.cc; sourceTree = "<group>"; };
+		1875DB35FB61B241A24B7134 /* vie_manager_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_manager_base.h; sourceTree = "<group>"; };
+		18CFA9B64E31B90BE9C77E24 /* vie_file.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_file.h; sourceTree = "<group>"; };
+		1AF93C3D476B532CE14F4607 /* vie_shared_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_shared_data.h; sourceTree = "<group>"; };
+		1E024BB431D285E47876910F /* video_engine.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = video_engine.gyp; sourceTree = "<group>"; };
+		1E1D14E55B3E5A5605D8E860 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		2421396C54F0F803F513711E /* vie_external_codec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_external_codec.h; sourceTree = "<group>"; };
+		26527AA81CFD0A6792741C0F /* vie_capture_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_capture_impl.h; sourceTree = "<group>"; };
+		26A950A666374E7143CA1217 /* vie_ref_count.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_ref_count.h; sourceTree = "<group>"; };
+		28531DB3D34FB7FA86031EE8 /* vie_file_player.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_file_player.h; sourceTree = "<group>"; };
+		298FE8A7D28BD4DF3477EC2D /* vie_remb.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_remb.h; sourceTree = "<group>"; };
+		2F1C49D205D2F850BE90DA45 /* vie_capturer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_capturer.h; sourceTree = "<group>"; };
+		2FEDF048ECF27B887DE41956 /* vie_file_player.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_player.cc; sourceTree = "<group>"; };
+		3095625068B80DEF90250B34 /* android_video_demo.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = android_video_demo.gypi; path = test/android/android_video_demo.gypi; sourceTree = "<group>"; };
+		30F4F01316BD11986D9F48AE /* vie_render_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_render_impl.h; sourceTree = "<group>"; };
+		35F45089E831CFB174B0F902 /* libvietest.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = libvietest.gypi; path = test/libvietest/libvietest.gypi; sourceTree = "<group>"; };
+		3C340D0DFDC394065D213CB9 /* stream_synchronization.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stream_synchronization.h; sourceTree = "<group>"; };
+		3E95C3CABC719C8E9740EA21 /* vie_file_recorder.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_recorder.cc; sourceTree = "<group>"; };
+		401E25695E57B524309F0CEA /* vie_manager_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_manager_base.cc; sourceTree = "<group>"; };
+		422BE9932466CB755F655B29 /* vie_capturer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_capturer.cc; sourceTree = "<group>"; };
+		48732B51EC1C801CD0F5EC3E /* vie_sender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_sender.h; sourceTree = "<group>"; };
+		4D9AB008147D4DC0CB84BA78 /* vie_shared_data.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_shared_data.cc; sourceTree = "<group>"; };
+		50FA5699E4414B93675A0554 /* vie_base_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_base_impl.cc; sourceTree = "<group>"; };
+		51D2BB32BA44366326B39BBD /* vie_channel_group.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_channel_group.h; sourceTree = "<group>"; };
+		547974DA333D3FB93CE32DB0 /* vie_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_base.h; sourceTree = "<group>"; };
+		5B2362582EFAA721240FB5FD /* vie_encoder.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_encoder.cc; sourceTree = "<group>"; };
+		5B79E0E3108F51CA97452FD7 /* vie_render_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_render_manager.h; sourceTree = "<group>"; };
+		60E2B52CC84C5A4E8E739B0C /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		624D2F82627DC006D0413411 /* vie_network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_network.h; sourceTree = "<group>"; };
+		648225F250AE5AFF6F1D6480 /* vie_codec_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_codec_impl.cc; sourceTree = "<group>"; };
+		65FAD501761E53144B6833FF /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../build/common.gypi; sourceTree = "<group>"; };
+		6F7BFF2CEDAECF3801728DD6 /* vie_external_codec_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_external_codec_impl.h; sourceTree = "<group>"; };
+		71DC69C62F72E96AF2CE6800 /* vie_channel.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel.cc; sourceTree = "<group>"; };
+		73FFE1A160C1E365959C954F /* filename_rules.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = filename_rules.gypi; path = ../../build/filename_rules.gypi; sourceTree = "<group>"; };
+		787512B1B2781EF2840F9E3E /* vie_frame_provider_base.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_frame_provider_base.h; sourceTree = "<group>"; };
+		789F4A67FF53E950FBC7D12A /* vie_ref_count.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_ref_count.cc; sourceTree = "<group>"; };
+		7F416E68D228CF55E9A04E1D /* vie_base_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_base_impl.h; sourceTree = "<group>"; };
+		8399CDBAADB2B1160DD4A0D2 /* vie_image_process_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_image_process_impl.h; sourceTree = "<group>"; };
+		84053663E0445F35CFDB93D3 /* call_stats.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = call_stats.cc; sourceTree = "<group>"; };
+		872997A5CEFA5F897C043DCA /* libvideo_engine_core.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libvideo_engine_core.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		882184A8D2D35FC624D5CE26 /* vie_codec_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_codec_impl.h; sourceTree = "<group>"; };
+		884CC79869FAF6BAC3158FC3 /* vie_sync_module.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_sync_module.h; sourceTree = "<group>"; };
+		8B7C15976A3BD275DA32FDD4 /* vie_network_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_network_impl.h; sourceTree = "<group>"; };
+		8E5A6C32602D3E74702D6CC4 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../build/common.gypi; sourceTree = "<group>"; };
+		8E5F9DFBB8DA7B48D12B361E /* call_stats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = call_stats.h; sourceTree = "<group>"; };
+		912296B231719D25088FF0ED /* vie_file_image.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_file_image.h; sourceTree = "<group>"; };
+		941F9E908AA3EB42C63C49C5 /* vie_file_recorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_file_recorder.h; sourceTree = "<group>"; };
+		947786C9EE62CEF0563FEC17 /* vie_input_manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_input_manager.h; sourceTree = "<group>"; };
+		94C309AD7F86A1EEA08B88B4 /* vie_auto_test.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = vie_auto_test.gypi; path = test/auto_test/vie_auto_test.gypi; sourceTree = "<group>"; };
+		99278AFDD0DE38E37798C7BB /* vie_render.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_render.h; sourceTree = "<group>"; };
+		9B8D2019315B47DA761F3DE1 /* vie_file_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_file_impl.cc; sourceTree = "<group>"; };
+		9F6192A7FD62F14F22306465 /* vie_renderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_renderer.h; sourceTree = "<group>"; };
+		A09DF7C8BDF2FD7DB29E1094 /* vie_rtp_rtcp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_rtp_rtcp.h; sourceTree = "<group>"; };
+		A5310AC7D9F876D2CF0745B1 /* vie_image_process.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_image_process.h; sourceTree = "<group>"; };
+		A677EF07CB1D5C2E55759C7A /* vie_capture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_capture.h; sourceTree = "<group>"; };
+		A6DA737F57B3E24A3DA8BB7F /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		A7D02FB11194EA159EE1850D /* vie_receiver.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_receiver.cc; sourceTree = "<group>"; };
+		AB40F4A465CEB884E6DC178D /* vie_defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_defines.h; sourceTree = "<group>"; };
+		ACDC3FF2FCC119F751608433 /* vie_remb.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_remb.cc; sourceTree = "<group>"; };
+		B3B0AD9ADBB5F637D2B4169F /* video_engine_core.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; path = video_engine_core.gypi; sourceTree = "<group>"; };
+		B56D268D32150D0B8956FA88 /* vie_input_manager.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_input_manager.cc; sourceTree = "<group>"; };
+		B5D0C60497191F913DBF98FC /* vie_image_process_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_image_process_impl.cc; sourceTree = "<group>"; };
+		B7DE32A71C62072A7D61435F /* vie_rtp_rtcp_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_rtp_rtcp_impl.h; sourceTree = "<group>"; };
+		BAB256185324DC9A3088443A /* vie_capture_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_capture_impl.cc; sourceTree = "<group>"; };
+		C27E0B8981BEF7E1C6FCDF50 /* encoder_state_feedback.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = encoder_state_feedback.h; sourceTree = "<group>"; };
+		C6C21BFDD480D15F27EA67D3 /* vie_encryption_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_encryption_impl.cc; sourceTree = "<group>"; };
+		C9A7979E649B7BD9DE92A33B /* vie_sender.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_sender.cc; sourceTree = "<group>"; };
+		CBC569049D192B01358C9147 /* encoder_state_feedback.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = encoder_state_feedback.cc; sourceTree = "<group>"; };
+		D0E71B4C1E959716F2C91D85 /* vie_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_errors.h; sourceTree = "<group>"; };
+		D898A3998421299700C1B8ED /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../supplement.gypi; sourceTree = "<group>"; };
+		D96B235E2F4AB388278151FC /* vie_encryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_encryption.h; sourceTree = "<group>"; };
+		DEA34578BBDF516F6A1FA724 /* vie_network_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_network_impl.cc; sourceTree = "<group>"; };
+		E3725456AAE084EC2B9C65D6 /* vie_renderer.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_renderer.cc; sourceTree = "<group>"; };
+		E7478C7C70C9CECBB942E1B7 /* vie_impl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_impl.h; sourceTree = "<group>"; };
+		EA8173C8E3D35AC0FB3D5684 /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../build/release.gypi; sourceTree = "<group>"; };
+		F6B9B8D320E8381EE7004EDF /* vie_frame_provider_base.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_frame_provider_base.cc; sourceTree = "<group>"; };
+		FBB81EA5B89C7F0526D1F27C /* vie_sync_module.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_sync_module.cc; sourceTree = "<group>"; };
+		FBD4DC4C8242807395AA4FE0 /* vie_channel_manager.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_channel_manager.cc; sourceTree = "<group>"; };
+		FDF07046437E231B89631442 /* vie_render_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_render_impl.cc; sourceTree = "<group>"; };
+		FE0A2E9A497FB425465C48B0 /* vie_codec.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vie_codec.h; sourceTree = "<group>"; };
+		FF0C183105BF08843FE7FCE9 /* vie_impl.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vie_impl.cc; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C5BE670F741C2D089481AED6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF9B720F73943421997AC354 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				D7EC00FC09EEFA6AA4EF5D16 /* include */,
+				84053663E0445F35CFDB93D3 /* call_stats.cc */,
+				8E5F9DFBB8DA7B48D12B361E /* call_stats.h */,
+				CBC569049D192B01358C9147 /* encoder_state_feedback.cc */,
+				C27E0B8981BEF7E1C6FCDF50 /* encoder_state_feedback.h */,
+				0C363F8774FBA49276FD4869 /* stream_synchronization.cc */,
+				3C340D0DFDC394065D213CB9 /* stream_synchronization.h */,
+				50FA5699E4414B93675A0554 /* vie_base_impl.cc */,
+				7F416E68D228CF55E9A04E1D /* vie_base_impl.h */,
+				BAB256185324DC9A3088443A /* vie_capture_impl.cc */,
+				26527AA81CFD0A6792741C0F /* vie_capture_impl.h */,
+				422BE9932466CB755F655B29 /* vie_capturer.cc */,
+				2F1C49D205D2F850BE90DA45 /* vie_capturer.h */,
+				71DC69C62F72E96AF2CE6800 /* vie_channel.cc */,
+				0AF91E7D74DCF6B2E493F46D /* vie_channel.h */,
+				00346D59DA21C5EBC448A4F1 /* vie_channel_group.cc */,
+				51D2BB32BA44366326B39BBD /* vie_channel_group.h */,
+				FBD4DC4C8242807395AA4FE0 /* vie_channel_manager.cc */,
+				1506C08F378DA1C7AF0B1CBB /* vie_channel_manager.h */,
+				648225F250AE5AFF6F1D6480 /* vie_codec_impl.cc */,
+				882184A8D2D35FC624D5CE26 /* vie_codec_impl.h */,
+				AB40F4A465CEB884E6DC178D /* vie_defines.h */,
+				5B2362582EFAA721240FB5FD /* vie_encoder.cc */,
+				10E17DF076E4B5DBEBF918F9 /* vie_encoder.h */,
+				C6C21BFDD480D15F27EA67D3 /* vie_encryption_impl.cc */,
+				012F8F332D66C2018872610D /* vie_encryption_impl.h */,
+				18029CFED30877BDB20A0C33 /* vie_external_codec_impl.cc */,
+				6F7BFF2CEDAECF3801728DD6 /* vie_external_codec_impl.h */,
+				08D1097649DFAE59B6A2FAF1 /* vie_file_image.cc */,
+				912296B231719D25088FF0ED /* vie_file_image.h */,
+				9B8D2019315B47DA761F3DE1 /* vie_file_impl.cc */,
+				1788A01507F446DCB9B5EE63 /* vie_file_impl.h */,
+				2FEDF048ECF27B887DE41956 /* vie_file_player.cc */,
+				28531DB3D34FB7FA86031EE8 /* vie_file_player.h */,
+				3E95C3CABC719C8E9740EA21 /* vie_file_recorder.cc */,
+				941F9E908AA3EB42C63C49C5 /* vie_file_recorder.h */,
+				F6B9B8D320E8381EE7004EDF /* vie_frame_provider_base.cc */,
+				787512B1B2781EF2840F9E3E /* vie_frame_provider_base.h */,
+				B5D0C60497191F913DBF98FC /* vie_image_process_impl.cc */,
+				8399CDBAADB2B1160DD4A0D2 /* vie_image_process_impl.h */,
+				FF0C183105BF08843FE7FCE9 /* vie_impl.cc */,
+				E7478C7C70C9CECBB942E1B7 /* vie_impl.h */,
+				B56D268D32150D0B8956FA88 /* vie_input_manager.cc */,
+				947786C9EE62CEF0563FEC17 /* vie_input_manager.h */,
+				401E25695E57B524309F0CEA /* vie_manager_base.cc */,
+				1875DB35FB61B241A24B7134 /* vie_manager_base.h */,
+				DEA34578BBDF516F6A1FA724 /* vie_network_impl.cc */,
+				8B7C15976A3BD275DA32FDD4 /* vie_network_impl.h */,
+				A7D02FB11194EA159EE1850D /* vie_receiver.cc */,
+				06FA4874D2CBFFAC7DB15ACA /* vie_receiver.h */,
+				789F4A67FF53E950FBC7D12A /* vie_ref_count.cc */,
+				26A950A666374E7143CA1217 /* vie_ref_count.h */,
+				ACDC3FF2FCC119F751608433 /* vie_remb.cc */,
+				298FE8A7D28BD4DF3477EC2D /* vie_remb.h */,
+				FDF07046437E231B89631442 /* vie_render_impl.cc */,
+				30F4F01316BD11986D9F48AE /* vie_render_impl.h */,
+				137CA8C952D12EDA8E725379 /* vie_render_manager.cc */,
+				5B79E0E3108F51CA97452FD7 /* vie_render_manager.h */,
+				E3725456AAE084EC2B9C65D6 /* vie_renderer.cc */,
+				9F6192A7FD62F14F22306465 /* vie_renderer.h */,
+				0E2F632C6C5E86418C8477CF /* vie_rtp_rtcp_impl.cc */,
+				B7DE32A71C62072A7D61435F /* vie_rtp_rtcp_impl.h */,
+				C9A7979E649B7BD9DE92A33B /* vie_sender.cc */,
+				48732B51EC1C801CD0F5EC3E /* vie_sender.h */,
+				4D9AB008147D4DC0CB84BA78 /* vie_shared_data.cc */,
+				1AF93C3D476B532CE14F4607 /* vie_shared_data.h */,
+				FBB81EA5B89C7F0526D1F27C /* vie_sync_module.cc */,
+				884CC79869FAF6BAC3158FC3 /* vie_sync_module.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		D66677C50FAE24ADD0208714 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				872997A5CEFA5F897C043DCA /* libvideo_engine_core.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6AE97C91F3C5FA0E9A3D896 = {
+			isa = PBXGroup;
+			children = (
+				BF9B720F73943421997AC354 /* Source */,
+				D66677C50FAE24ADD0208714 /* Products */,
+				E77CC3E3957B12EC780FFB6A /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		D7EC00FC09EEFA6AA4EF5D16 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				547974DA333D3FB93CE32DB0 /* vie_base.h */,
+				A677EF07CB1D5C2E55759C7A /* vie_capture.h */,
+				FE0A2E9A497FB425465C48B0 /* vie_codec.h */,
+				D96B235E2F4AB388278151FC /* vie_encryption.h */,
+				D0E71B4C1E959716F2C91D85 /* vie_errors.h */,
+				2421396C54F0F803F513711E /* vie_external_codec.h */,
+				18CFA9B64E31B90BE9C77E24 /* vie_file.h */,
+				A5310AC7D9F876D2CF0745B1 /* vie_image_process.h */,
+				624D2F82627DC006D0413411 /* vie_network.h */,
+				99278AFDD0DE38E37798C7BB /* vie_render.h */,
+				A09DF7C8BDF2FD7DB29E1094 /* vie_rtp_rtcp.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		E77CC3E3957B12EC780FFB6A /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				3095625068B80DEF90250B34 /* android_video_demo.gypi */,
+				8E5A6C32602D3E74702D6CC4 /* common.gypi */,
+				65FAD501761E53144B6833FF /* common.gypi */,
+				73FFE1A160C1E365959C954F /* filename_rules.gypi */,
+				35F45089E831CFB174B0F902 /* libvietest.gypi */,
+				EA8173C8E3D35AC0FB3D5684 /* release.gypi */,
+				60E2B52CC84C5A4E8E739B0C /* release_defaults.gypi */,
+				A6DA737F57B3E24A3DA8BB7F /* release_impl.gypi */,
+				1E1D14E55B3E5A5605D8E860 /* release_impl_official.gypi */,
+				D898A3998421299700C1B8ED /* supplement.gypi */,
+				1E024BB431D285E47876910F /* video_engine.gyp */,
+				B3B0AD9ADBB5F637D2B4169F /* video_engine_core.gypi */,
+				94C309AD7F86A1EEA08B88B4 /* vie_auto_test.gypi */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1247F349AF14CF01874DA447 /* video_engine_core */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0BF471FD390BFC17338CC368 /* Build configuration list for PBXNativeTarget "video_engine_core" */;
+			buildPhases = (
+				6980ACD1D709644FE02ADCC5 /* Sources */,
+				C5BE670F741C2D089481AED6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = video_engine_core;
+			productName = video_engine_core;
+			productReference = 872997A5CEFA5F897C043DCA /* libvideo_engine_core.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		89B610676921C5F6E85081C3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 4E700130979D1C438B5FD310 /* Build configuration list for PBXProject "video_engine" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D6AE97C91F3C5FA0E9A3D896;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1247F349AF14CF01874DA447 /* video_engine_core */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6980ACD1D709644FE02ADCC5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B1B2C92EED5B7E33EC9EFFA /* call_stats.cc in Sources */,
+				602E1AEE3507FA5866CA9140 /* encoder_state_feedback.cc in Sources */,
+				0B07FB85D1860F48C8421DC0 /* stream_synchronization.cc in Sources */,
+				661EEAEC121CF8393DAB3B66 /* vie_base_impl.cc in Sources */,
+				9DB2E9B6A9CAE1883D289A6A /* vie_capture_impl.cc in Sources */,
+				8FED60B2B2B5327C566FC3CF /* vie_codec_impl.cc in Sources */,
+				B4E1B65C3DB687960E4745A1 /* vie_encryption_impl.cc in Sources */,
+				83612F26D176DF97C136DC1D /* vie_external_codec_impl.cc in Sources */,
+				3DCA4D9BCA957F6A9424F441 /* vie_file_impl.cc in Sources */,
+				9B004A91D047BC435102908C /* vie_image_process_impl.cc in Sources */,
+				F7906E4CC5C28A9331FF0B93 /* vie_impl.cc in Sources */,
+				9F46713E1C11FB72B300DAFE /* vie_network_impl.cc in Sources */,
+				6E2DB3FC403338C0C0920600 /* vie_ref_count.cc in Sources */,
+				1FACA2C853B4DF52960CD627 /* vie_render_impl.cc in Sources */,
+				71106CEBBE3DDD3F0D9CCAE5 /* vie_rtp_rtcp_impl.cc in Sources */,
+				D1D57B84F523470BFC993868 /* vie_shared_data.cc in Sources */,
+				2DD50D71E2954F8D1A7DF4B1 /* vie_capturer.cc in Sources */,
+				BECAA298576BA7CC3795350E /* vie_channel.cc in Sources */,
+				0571C9693B17938C20F54FB6 /* vie_channel_group.cc in Sources */,
+				DCE1D0CA5933F58F55AF6EA7 /* vie_channel_manager.cc in Sources */,
+				DD132F0AA91A4848C5C5CEDB /* vie_encoder.cc in Sources */,
+				4497174B8438FA1751F1498D /* vie_file_image.cc in Sources */,
+				2F399B39FF0AE5F95990BD05 /* vie_file_player.cc in Sources */,
+				8B347E6DA1376271DE1B83B4 /* vie_file_recorder.cc in Sources */,
+				BDF9A5DE261E05E08968F097 /* vie_frame_provider_base.cc in Sources */,
+				17B40795019DA7EB69469B3C /* vie_input_manager.cc in Sources */,
+				ECDBE09A9C8E0C59A11BCEBF /* vie_manager_base.cc in Sources */,
+				0D63CF1601610D8A270A2C2D /* vie_receiver.cc in Sources */,
+				A12F3DF49DE90E4E5AE138CE /* vie_remb.cc in Sources */,
+				10AF35C7FCB8F620FA345C1B /* vie_renderer.cc in Sources */,
+				42EE776D89EAF9FF48EE9C66 /* vie_render_manager.cc in Sources */,
+				6330BC166A2519303513C9C5 /* vie_sender.cc in Sources */,
+				5B8D929FA60B23DB88ABC257 /* vie_sync_module.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		42108511DCE2D5F40B73F36D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Release;
+		};
+		BCD39D0F3A002D156FD092F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
+					"\"DISABLE_NACL\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"WEBRTC_LOGGING\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_IOS\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_VIDEO_ENGINE_FILE_API\"",
+					"\"__STDC_CONSTANT_MACROS\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../..,
+					../..,
+					include,
+					../common_video/interface,
+					../modules/video_render/,
+					../common_video/jpeg/include,
+					../common_video/libyuv/include,
+					../modules/media_file/interface,
+					../modules/interface,
+					../modules/rtp_rtcp/interface,
+					../modules/utility/interface,
+					../modules/audio_coding/main/interface,
+					../../webrtc/modules/rtp_rtcp/interface,
+					../modules/video_coding/main/interface,
+					../modules/video_coding/codecs/interface,
+					../modules/video_processing/main/interface,
+					../modules/video_render/include,
+					../voice_engine/include,
+					../system_wrappers/interface,
+				);
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = video_engine_core;
+				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+				);
+			};
+			name = Debug;
+		};
+		D0C5B073A401468CD3E739AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
+					"\"DISABLE_NACL\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"WEBRTC_LOGGING\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_IOS\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"WEBRTC_VIDEO_ENGINE_FILE_API\"",
+					"\"__STDC_CONSTANT_MACROS\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"_FORTIFY_SOURCE=2\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					..,
+					../..,
+					../..,
+					include,
+					../common_video/interface,
+					../modules/video_render/,
+					../common_video/jpeg/include,
+					../common_video/libyuv/include,
+					../modules/media_file/interface,
+					../modules/interface,
+					../modules/rtp_rtcp/interface,
+					../modules/utility/interface,
+					../modules/audio_coding/main/interface,
+					../../webrtc/modules/rtp_rtcp/interface,
+					../modules/video_coding/main/interface,
+					../modules/video_coding/codecs/interface,
+					../modules/video_processing/main/interface,
+					../modules/video_render/include,
+					../voice_engine/include,
+					../system_wrappers/interface,
+				);
+				OTHER_CFLAGS = "";
+				PRODUCT_NAME = video_engine_core;
+				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-unnamed-type-template-args",
+					"-Wno-c++11-extensions",
+				);
+			};
+			name = Release;
+		};
+		E53EC6BDEABCCC97BD2DC066 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = ../../xcodebuild;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv7 armv7s";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0BF471FD390BFC17338CC368 /* Build configuration list for PBXNativeTarget "video_engine_core" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BCD39D0F3A002D156FD092F3 /* Debug */,
+				D0C5B073A401468CD3E739AA /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		4E700130979D1C438B5FD310 /* Build configuration list for PBXProject "video_engine" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E53EC6BDEABCCC97BD2DC066 /* Debug */,
+				42108511DCE2D5F40B73F36D /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 89B610676921C5F6E85081C3 /* Project object */;
+}

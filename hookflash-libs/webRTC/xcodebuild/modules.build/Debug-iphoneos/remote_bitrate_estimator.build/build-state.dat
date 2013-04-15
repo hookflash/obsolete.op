@@ -1,0 +1,712 @@
+Tremote_bitrate_estimator
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a normal armv7s
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a normal armv7
+cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal "armv7 armv7s"
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/common_types.h
+c000000005165F28300000000000042FA
+t1365635715
+s17146
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/interface/module.h
+c000000005165C64000000000000007B9
+t1365624384
+s1977
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.h
+c000000005165C6400000000000000F86
+t1365624384
+s3974
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.h
+c000000005165C6400000000000000DB2
+t1365624384
+s3506
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/clock.h
+c000000005165C64300000000000008D9
+t1365624387
+s2265
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/constructor_magic.h
+c000000005165C64300000000000006F7
+t1365624387
+s1783
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/tick_util.h
+c000000005165C643000000000000283D
+t1365624387
+s10301
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a
+t1365710663
+s1215136
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o
+t1365624399
+s46768
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a
+t1365710654
+s607560
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o
+t1365710589
+s53832
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator.LinkFileList
+c00000000516716FA000000000000047F
+t1365710586
+s1151
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o
+t1365710591
+s214960
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o
+t1365710591
+s179892
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o
+t1365710654
+s21276
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o
+t1365624399
+s31612
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o
+t1365710654
+s46800
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a
+t1365710659
+s607528
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o
+t1365710656
+s53832
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator.LinkFileList
+c00000000516716FA0000000000000485
+t1365710586
+s1157
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o
+t1365710657
+s214960
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o
+t1365710658
+s179892
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o
+t1365710658
+s21168
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o
+t1365710658
+s31660
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/interface/module_common_types.h
+c000000005165C6400000000000007293
+t1365624384
+s29331
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/bitrate_estimator.h
+c000000005165C6400000000000000518
+t1365624384
+s1304
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/include/bwe_defines.h
+c000000005165C640000000000000053D
+t1365624384
+s1341
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/include/remote_bitrate_estimator.h
+c000000005165C6400000000000000CDE
+t1365624384
+s3294
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/include/rtp_to_ntp.h
+c000000005165C64000000000000005BC
+t1365624384
+s1468
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/overuse_detector.h
+c000000005165C6400000000000000DA9
+t1365624384
+s3497
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/remote_bitrate_estimator/remote_rate_control.h
+c000000005165C6400000000000000D10
+t1365624384
+s3344
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/rtp_rtcp/interface/rtp_rtcp_defines.h
+c000000005165C64000000000000021F5
+t1365624384
+s8693
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/rtp_rtcp/source/rtp_header_extension.h
+c000000005165C6400000000000000756
+t1365624384
+s1878
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/rtp_rtcp/source/rtp_rtcp_config.h
+c000000005165C6400000000000000829
+t1365624384
+s2089
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../modules/rtp_rtcp/source/rtp_utility.h
+c000000005165C6400000000000001DB5
+t1365624384
+s7605
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../system_wrappers/interface/critical_section_wrapper.h
+c000000005165C64300000000000006C7
+t1365624387
+s1735
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../system_wrappers/interface/scoped_ptr.h
+c000000005165C6430000000000001476
+t1365624387
+s5238
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../system_wrappers/interface/trace.h
+c000000005165C6430000000000000E28
+t1365624387
+s3624
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../typedefs.h
+c000000005165C6440000000000000DD4
+t1365624388
+s3540
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+c000000005165C64000000000000007EE
+t1365624384
+s2030
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+c000000005165C6400000000000003661
+t1365624384
+s13921
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+c000000005165C6400000000000001DE8
+t1365624384
+s7656
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+c000000005165C6400000000000001753
+t1365624384
+s5971
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+c000000005165C6400000000000003981
+t1365624384
+s14721
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+c000000005165C64000000000000012AD
+t1365624384
+s4781
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/common_types.h
+c000000005165706B000000000000422F
+t1365602411
+s16943
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/interface/module.h
+c000000005165706800000000000007B9
+t1365602408
+s1977
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.h
+c00000000516570640000000000000F86
+t1365602404
+s3974
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.h
+c00000000516570640000000000000DB2
+t1365602404
+s3506
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/clock.h
+c000000005165704E00000000000008D9
+t1365602382
+s2265
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/constructor_magic.h
+c000000005165704E00000000000006F7
+t1365602382
+s1783
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/tick_util.h
+c000000005165704E000000000000283D
+t1365602382
+s10301
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a
+t1365610005
+s607368
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o
+t1365610002
+s46768
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o
+t1365610003
+s53784
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator.LinkFileList
+c0000000051658E120000000000000437
+t1365610002
+s1079
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o
+t1365610004
+s214912
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o
+t1365610004
+s179844
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o
+t1365610004
+s21228
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o
+t1365610004
+s31612
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/interface/module_common_types.h
+c00000000516570680000000000007293
+t1365602408
+s29331
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/remote_bitrate_estimator/include/bwe_defines.h
+c0000000051657064000000000000053D
+t1365602404
+s1341
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/remote_bitrate_estimator/include/remote_bitrate_estimator.h
+c00000000516570640000000000000CDE
+t1365602404
+s3294
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/remote_bitrate_estimator/include/rtp_to_ntp.h
+c000000005165706400000000000005BC
+t1365602404
+s1468
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/remote_bitrate_estimator/overuse_detector.h
+c00000000516570640000000000000DA9
+t1365602404
+s3497
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/remote_bitrate_estimator/remote_rate_control.h
+c00000000516570640000000000000D10
+t1365602404
+s3344
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/rtp_rtcp/interface/rtp_rtcp_defines.h
+c000000005165706600000000000021F5
+t1365602406
+s8693
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/rtp_rtcp/source/rtp_header_extension.h
+c00000000516570680000000000000756
+t1365602408
+s1878
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/rtp_rtcp/source/rtp_rtcp_config.h
+c00000000516570680000000000000829
+t1365602408
+s2089
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../modules/rtp_rtcp/source/rtp_utility.h
+c00000000516570680000000000001DB5
+t1365602408
+s7605
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../system_wrappers/interface/critical_section_wrapper.h
+c000000005165704F00000000000006C7
+t1365602383
+s1735
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../system_wrappers/interface/scoped_ptr.h
+c000000005165704E0000000000001476
+t1365602382
+s5238
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../system_wrappers/interface/trace.h
+c000000005165704E0000000000000E28
+t1365602382
+s3624
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../typedefs.h
+c000000005165706B0000000000000DD4
+t1365602411
+s3540
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+c000000005165706400000000000007EE
+t1365602404
+s2030
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.h
+c00000000516570640000000000000518
+t1365602404
+s1304
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+c00000000516570640000000000003661
+t1365602404
+s13921
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+c00000000516570640000000000001DE8
+t1365602404
+s7656
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+c00000000516570640000000000001753
+t1365602404
+s5971
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+c00000000516570640000000000003981
+t1365602404
+s14721
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+c000000005168206700000000000011D3
+t1365778535
+s4563
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb54fab0c6818b741^319ab90c6818b741^---0#1#0#--18"Check dependencies36"0F72B5FD-D63C-4520-A97B-4843BCD1170D-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302802.422741
+e387302802.845854
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.ccc98f6c92c515b741^12bdd892c515b741^---0#0#0#-19%DVTDocumentLocation2@117"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc0000000000000000^3464"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o remote_bitrate_estimator/bitrate_estimator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/bitrate_estimator.o36"8C55E6EB-E2F7-402E-9DC9-5F1B60D4B3A1-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403386.897670
+e387403389.144520
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc3b36e67a4e17b741^c617257d4e17b741^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc0000000000000000^3566"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o remote_bitrate_estimator/overuse_detector.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o36"6AC61F81-BCE8-464A-A861-C0D758F100EC-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302802.847389
+e387302803.601131
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc0e49d992c515b741^97e39993c515b741^---0#0#0#-19%DVTDocumentLocation2@116"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc0000000000000000^3458"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o remote_bitrate_estimator/overuse_detector.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/overuse_detector.o36"D7534F24-7E46-4D4B-BB18-9049979F1C4B-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403387.821086
+e387403391.384132
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection141"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc508ed27b4e17b741^747e627f4e17b741^---0#0#0#-19%DVTDocumentLocation2@149"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc0000000000000000^3692"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o36"693C65F6-06C7-451B-9419-8FD9F74D76EA-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302802.927876
+e387302804.065362
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection129"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc76faed92c515b741^7bd71094c515b741^---0#0#0#-19%DVTDocumentLocation2@137"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc0000000000000000^3584"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_multi_stream.o36"BBB6752C-9AA9-4CC8-83C9-31EC4F9C8C93-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403389.185611
+e387403391.787351
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection142"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.ccb5e22f7d4e17b741^0491c97f4e17b741^---0#0#0#-19%DVTDocumentLocation2@150"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc0000000000000000^3698"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o36"05FB37C6-34CA-4BBF-91B7-D6E7E7A439C5-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302803.625621
+e387302804.826862
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection130"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc6a86a093c515b741^c6c3d394c515b741^---0#0#0#-19%DVTDocumentLocation2@138"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc0000000000000000^3590"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator_single_stream.o36"17D2866A-F8D5-48EF-B759-FD9F0F748A39-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403453.644264
+e387403454.103052
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.ccdd44a5bd4e17b741^b16c1abe4e17b741^---0#0#0#-19%DVTDocumentLocation2@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc0000000000000000^3584"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o remote_bitrate_estimator/remote_rate_control.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o36"BF963AC6-1ADC-4BD8-94D4-6418F8B83777-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302804.068170
+e387302804.266148
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection111"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc92cd1194c515b741^683d4494c515b741^---0#0#0#-19%DVTDocumentLocation2@119"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc0000000000000000^3476"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o remote_bitrate_estimator/remote_rate_control.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_rate_control.o36"F5AA8308-A62E-4D37-904B-22BC053A3CDC-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387475468.697531
+e387475472.788702
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc75e6b20c6818b741^037c17136818b741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc0000000000000000^3530"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o remote_bitrate_estimator/rtp_to_ntp.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o36"9A6D955A-4B42-4F09-AFC2-A2D5F6D89656-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387302804.267642
+e387302804.559315
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cca3e54494c515b741^a65e8f94c515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc0000000000000000^3422"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o remote_bitrate_estimator/rtp_to_ntp.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/rtp_to_ntp.o36"D63173BD-288B-42C5-A418-B5F34CF57146-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403453.649494
+e387403454.486044
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection121"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cccb9ca6bd4e17b741^70eb7ebe4e17b741^---0#0#0#-19%DVTDocumentLocation2@129"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc0000000000000000^3579"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o remote_bitrate_estimator/bitrate_estimator.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/bitrate_estimator.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/bitrate_estimator.o36"55CD9116-E9F7-4478-B1FB-48287D0DE200-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403454.107654
+e387403456.271021
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cce1eb1bbe4e17b741^456345c04e17b741^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc0000000000000000^3573"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o remote_bitrate_estimator/overuse_detector.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/overuse_detector.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/overuse_detector.o36"07C49EA6-3F82-4668-9982-8DC7E852E270-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403454.935339
+e387403457.917602
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection141"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cceaceefbe4e17b741^2ee7eac14e17b741^---0#0#0#-19%DVTDocumentLocation2@149"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc0000000000000000^3699"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_multi_stream.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_multi_stream.o36"34C25F87-182C-425B-9BA8-A1421C176FAB-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403456.273112
+e387403458.586811
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection142"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc9e4246c04e17b741^c93c96c24e17b741^---0#0#0#-19%DVTDocumentLocation2@150"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc0000000000000000^3705"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_bitrate_estimator_single_stream.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator_single_stream.o36"37904F5C-8C13-411B-93BE-42AF546C87BF-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403457.919061
+e387403458.203875
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc7c9eebc14e17b741^6e3434c24e17b741^---0#0#0#-19%DVTDocumentLocation2@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc0000000000000000^3591"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o remote_bitrate_estimator/remote_rate_control.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/remote_rate_control.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_rate_control.o36"B0609C85-B84E-46C6-8157-D1D79F80D574-
+
+CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387403458.205557
+e387403458.802242
+r1
+xCompileC
+x../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc
+xnormal
+xarmv7s
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc66f734c24e17b741^a67fcdc24e17b741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc0000000000000000^3537"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o remote_bitrate_estimator/rtp_to_ntp.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iremote_bitrate_estimator/include -Irtp_rtcp/interface -Iinterface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/remote_bitrate_estimator/rtp_to_ntp.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/rtp_to_ntp.o36"7AC5A94D-9B52-4A94-9EFA-3EF2B1DD8B0D-
+
+CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal "armv7 armv7s"
+s387475473.001682
+e387475473.279581
+r1
+xCreateUniversalBinary
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a
+xnormal
+xarmv7 armv7s
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection153"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.aa8aa00116818b741^2c9d17136818b741^---0#0#0#-19%DVTDocumentLocation2@145"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a0000000000000000^915"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a36"FF728CBC-F9E9-4DF0-BB58-57085687960A-
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a normal armv7
+s387475472.797403
+e387475472.862277
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection148"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a normal armv76269cc106818b741^fb9017136818b741^---0#0#0#--1207"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/libremote_bitrate_estimator.a36"7C02DD2C-42C0-480E-99FD-C4396038EC62-
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a normal armv7s
+s387403459.594038
+e387403459.642169
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a
+xnormal
+xarmv7s
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection150"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a normal armv7s3a5798c34e17b741^1f65a4c34e17b741^---0#0#0#--1212"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/remote_bitrate_estimator.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7s/libremote_bitrate_estimator.a36"7F1956C4-1B2C-4742-BE16-25780CFF8811-
+
+CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal armv7
+s387302805.140189
+e387302805.178940
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection82"Libtool ../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal armv71d1c2495c515b741^32e72d95c515b741^---0#0#0#--1027"Libtool ../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/remote_bitrate_estimator.build/Objects-normal/armv7/remote_bitrate_estimator.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libremote_bitrate_estimator.a36"5E65F777-FCA2-49DC-9343-9C983378A01F-
+

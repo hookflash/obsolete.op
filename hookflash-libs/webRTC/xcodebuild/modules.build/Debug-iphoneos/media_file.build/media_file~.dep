@@ -1,0 +1,4 @@
+ffffffffffffffffffffffffffffffff 7ddea33a8aed3806e1c0791409474dfb ffffffffffffffffffffffffffffffff 0 /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libmedia_file.a
+000000005165706a0000000000011e9e c9ad01ee68df906d407065b3124fef74 ffffffffffffffffffffffffffffffff 0 /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/media_file.build/Objects-normal/armv7/media_file_utility.o
+000000005165706a0000000000009905 a6ce3765d5af6466b0d4f080508f6c98 ffffffffffffffffffffffffffffffff 0 /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/media_file.build/Objects-normal/armv7/media_file_impl.o
+000000005165706a000000000000be41 d2bf2d1b57cbdacc76b9931148422498 ffffffffffffffffffffffffffffffff 0 /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/media_file.build/Objects-normal/armv7/avi_file.o

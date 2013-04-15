@@ -1,0 +1,332 @@
+Tlibvpx_asm_offsets
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/libvpx_asm_offsets.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/libvpx_asm_offsets.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/vpx_asm_offsets.LinkFileList
+c00000000516720AB00000000000000B5
+t1365713067
+s181
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/libvpx_asm_offsets.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/vpx_asm_offsets.LinkFileList
+c00000000516720AB00000000000000B6
+t1365713067
+s182
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/config/mac/ia32/vp8_rtcd.h
+c000000005165C61F000000000000F340
+t1365624351
+s62272
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/config/mac/ia32/vpx_config.h
+c000000005165C61F0000000000000AFE
+t1365624351
+s2814
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/blockd.h
+c000000005165C6230000000000001FD6
+t1365624355
+s8150
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/entropy.h
+c000000005165C6230000000000000F83
+t1365624355
+s3971
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/entropymv.h
+c000000005165C62300000000000005EB
+t1365624355
+s1515
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/findnearmv.h
+c000000005165C62300000000000013CC
+t1365624355
+s5068
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/header.h
+c000000005165C62300000000000003E9
+t1365624355
+s1001
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/loopfilter.h
+c000000005165C6230000000000000DAB
+t1365624355
+s3499
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/modecont.h
+c000000005165C6230000000000000202
+t1365624355
+s514
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/mv.h
+c000000005165C62300000000000002A5
+t1365624355
+s677
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/onyx.h
+c000000005165C623000000000000226D
+t1365624355
+s8813
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/onyxc_int.h
+c000000005165C623000000000000127B
+t1365624355
+s4731
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/postproc.h
+c000000005165C62300000000000006A5
+t1365624355
+s1701
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/ppflags.h
+c000000005165C623000000000000049C
+t1365624355
+s1180
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/threading.h
+c000000005165C62300000000000014D7
+t1365624355
+s5335
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/treecoder.h
+c000000005165C6230000000000000A95
+t1365624355
+s2709
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/variance.h
+c000000005165C6230000000000000B13
+t1365624355
+s2835
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c
+c000000005165C624000000000000118A
+t1365624356
+s4490
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/block.h
+c000000005165C62400000000000010AE
+t1365624356
+s4270
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/boolhuff.h
+c000000005165C6240000000000000CF1
+t1365624356
+s3313
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/denoising.h
+c000000005165C62400000000000004EA
+t1365624356
+s1258
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/encodemb.h
+c000000005165C6240000000000000336
+t1365624356
+s822
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/lookahead.h
+c000000005165C6240000000000000CEB
+t1365624356
+s3307
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/mcomp.h
+c000000005165C6240000000000000AE0
+t1365624356
+s2784
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h
+c000000005165C624000000000000497D
+t1365624356
+s18813
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/quantize.h
+c000000005165C624000000000000035E
+t1365624356
+s862
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/tokenize.h
+c000000005165C624000000000000050E
+t1365624356
+s1294
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/treewriter.h
+c000000005165C6240000000000000B51
+t1365624356
+s2897
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vp8.h
+c000000005165C6260000000000001121
+t1365624358
+s4385
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_codec.h
+c000000005165C6260000000000004C88
+t1365624358
+s19592
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_codec_impl_bottom.h
+c000000005165C6260000000000000279
+t1365624358
+s633
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_codec_impl_top.h
+c000000005165C6260000000000000281
+t1365624358
+s641
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_decoder.h
+c000000005165C626000000000000371C
+t1365624358
+s14108
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_encoder.h
+c000000005165C6260000000000008EA0
+t1365624358
+s36512
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_image.h
+c000000005165C6260000000000002976
+t1365624358
+s10614
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/../vpx_integer.h
+c000000005165C626000000000000052E
+t1365624358
+s1326
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/internal/vpx_codec_internal.h
+c000000005165C6260000000000004933
+t1365624358
+s18739
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx/vp8cx.h
+c000000005165C62600000000000029AE
+t1365624358
+s10670
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/asm_offsets.h
+c000000005165C6260000000000000384
+t1365624358
+s900
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/mem.h
+c000000005165C6260000000000000616
+t1365624358
+s1558
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h
+c000000005165C62600000000000017DA
+t1365624358
+s6106
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/yv12config.h
+c000000005165C62600000000000006BA
+t1365624358
+s1722
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesa989de8b5917b741^1539f08b5917b741^---0#1#0#--18"Check dependencies36"5CDAC13F-0FD1-4BD2-B52F-6FE7862C5BF1-
+
+CCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387406219.880006
+e387406221.508809
+r0
+xCompileC
+x../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+oIn file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:
+oIn file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:
+oIn file included from source/libvpx/vp8/common/threading.h:179:
+osource/libvpx/vpx_ports/x86.h:121:3: error: invalid output constraint '=a' in asm
+o  cpuid(0, reg_eax, reg_ebx, reg_ecx, reg_edx);
+o  ^
+osource/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'
+o                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \
+o                          ^
+osource/libvpx/vpx_ports/x86.h:127:3: error: invalid output constraint '=a' in asm
+o  cpuid(1, reg_eax, reg_ebx, reg_ecx, reg_edx);
+o  ^
+osource/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'
+o                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \
+o                          ^
+osource/libvpx/vpx_ports/x86.h:154:36: error: invalid output constraint '=a' in asm
+o  __asm__ __volatile__("rdtsc\n\t":"=a"(tsc):);
+o                                   ^
+o3 errors generated.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0ea2e18b5917b741^533c828d5917b741^-1137"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:In file included from source/libvpx/vp8/common/threading.h:179:source/libvpx/vpx_ports/x86.h:121:3: error: invalid output constraint '=a' in asm  cpuid(0, reg_eax, reg_ebx, reg_ecx, reg_edx);  ^source/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \                          ^source/libvpx/vpx_ports/x86.h:127:3: error: invalid output constraint '=a' in asm  cpuid(1, reg_eax, reg_ebx, reg_ecx, reg_edx);  ^source/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \                          ^source/libvpx/vpx_ports/x86.h:154:36: error: invalid output constraint '=a' in asm  __asm__ __volatile__("rdtsc\n\t":"=a"(tsc):);                                   ^3 errors generated.3(36%IDEClangDiagnosticActivityLogMessage2@37"Invalid output constraint '=a' in asm-387406221#18446744073709551615#0#4(2@141"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0000000000000000^15#9#15#9#531#0#30"Apple LLVM compiler 4.2 Notice--2@134"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h0000000000000000^24#9#24#9#732#0#30"Apple LLVM compiler 4.2 Notice--2@63"In file included from source/libvpx/vp8/common/threading.h:179:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/threading.h0000000000000000^178#9#178#9#5217#0#30"Apple LLVM compiler 4.2 Notice--2@27"Expanded from macro 'cpuid'-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@117"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h0000000000000000^48#26#48#26#1319#0#30"Apple LLVM compiler 4.2 Notice--2#27"com.apple.dt.IDE.diagnostic3@117"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h0000000000000000^120#2#120#2#3188#0#21"Inline Assembly Issue--2@37"Invalid output constraint '=a' in asm-387406221#18446744073709551615#0#4(2@141"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0000000000000000^15#9#15#9#531#0#30"Apple LLVM compiler 4.2 Notice--2@134"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h0000000000000000^24#9#24#9#732#0#30"Apple LLVM compiler 4.2 Notice--2@63"In file included from source/libvpx/vp8/common/threading.h:179:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/threading.h0000000000000000^178#9#178#9#5217#0#30"Apple LLVM compiler 4.2 Notice--2@27"Expanded from macro 'cpuid'-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@117"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h0000000000000000^48#26#48#26#1319#0#30"Apple LLVM compiler 4.2 Notice--2#27"com.apple.dt.IDE.diagnostic3@117"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h0000000000000000^126#2#126#2#3310#0#21"Inline Assembly Issue--2@37"Invalid output constraint '=a' in asm-387406221#18446744073709551615#0#3(2@141"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0000000000000000^15#9#15#9#531#0#30"Apple LLVM compiler 4.2 Notice--2@134"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h0000000000000000^24#9#24#9#732#0#30"Apple LLVM compiler 4.2 Notice--2@63"In file included from source/libvpx/vp8/common/threading.h:179:-387406221#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/common/threading.h0000000000000000^178#9#178#9#5217#0#30"Apple LLVM compiler 4.2 Notice--2#27"com.apple.dt.IDE.diagnostic3@117"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_ports/x86.h0000000000000000^153#35#153#35#3947#0#21"Inline Assembly Issue--0#0#0#-19%DVTDocumentLocation4@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0000000000000000^3665"CompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac/ia32 -Isource/config -Isource/libvpx -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/asm_enc_offsets.o36"BCC69894-3CF7-4FEA-BDE1-2741466857FF-
+
+CCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
+s387406219.882295
+e387406221.610746
+r0
+xCompileC
+x../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c
+xnormal
+xarmv7s
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+oIn file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:
+oIn file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:
+oIn file included from source/libvpx/vp8/common/threading.h:179:
+osource/libvpx/vpx_ports/x86.h:121:3: error: invalid output constraint '=a' in asm
+o  cpuid(0, reg_eax, reg_ebx, reg_ecx, reg_edx);
+o  ^
+osource/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'
+o                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \
+o                          ^
+osource/libvpx/vpx_ports/x86.h:127:3: error: invalid output constraint '=a' in asm
+o  cpuid(1, reg_eax, reg_ebx, reg_ecx, reg_edx);
+o  ^
+osource/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'
+o                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \
+o                          ^
+osource/libvpx/vpx_ports/x86.h:154:36: error: invalid output constraint '=a' in asm
+o  __asm__ __volatile__("rdtsc\n\t":"=a"(tsc):);
+o                                   ^
+o3 errors generated.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c083ee28b5917b741^5b959c8d5917b741^-1137"In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c:16:In file included from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/onyx_int.h:25:In file included from source/libvpx/vp8/common/threading.h:179:source/libvpx/vpx_ports/x86.h:121:3: error: invalid output constraint '=a' in asm  cpuid(0, reg_eax, reg_ebx, reg_ecx, reg_edx);  ^source/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \                          ^source/libvpx/vpx_ports/x86.h:127:3: error: invalid output constraint '=a' in asm  cpuid(1, reg_eax, reg_ebx, reg_ecx, reg_edx);  ^source/libvpx/vpx_ports/x86.h:49:27: note: expanded from macro 'cpuid'                        : "=a" (ax), "=D" (bx), "=c" (cx), "=d" (dx) \                          ^source/libvpx/vpx_ports/x86.h:154:36: error: invalid output constraint '=a' in asm  __asm__ __volatile__("rdtsc\n\t":"=a"(tsc):);                                   ^3 errors generated.-0#0#0#-19%DVTDocumentLocation2@131"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c0000000000000000^3672"CompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o source/libvpx/vp8/encoder/asm_enc_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac/ia32 -Isource/config -Isource/libvpx -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vp8/encoder/asm_enc_offsets.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/asm_enc_offsets.o36"5CF1ADA6-0008-4DBA-935F-C88B6510FB16-
+
+CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/libvpx_asm_offsets.a normal "armv7 armv7s"
+r0
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7/libvpx_asm_offsets.a normal armv7
+r0
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets.build/Objects-normal/armv7s/libvpx_asm_offsets.a normal armv7s
+r0
+

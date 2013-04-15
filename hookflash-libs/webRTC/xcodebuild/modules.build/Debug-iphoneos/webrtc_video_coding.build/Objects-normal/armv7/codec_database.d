@@ -1,0 +1,29 @@
+dependencies: \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/codec_database.cc \
+  ../../webrtc/modules/video_coding/main/source/codec_database.h \
+  ../modules/video_coding/codecs/interface/video_codec_interface.h \
+  ../common_types.h ../typedefs.h \
+  ../common_video/interface/i420_video_frame.h \
+  ../../webrtc/common_video/plane.h \
+  ../system_wrappers/interface/aligned_malloc.h \
+  ../system_wrappers/interface/scoped_ptr.h \
+  ../modules/interface/module_common_types.h \
+  ../../webrtc/system_wrappers/interface/constructor_magic.h \
+  ../modules/video_coding/codecs/interface/video_error_codes.h \
+  ../common_video/interface/video_image.h \
+  ../modules/video_coding/main/interface/video_coding.h \
+  ../../webrtc/modules/interface/module.h \
+  ../../webrtc/modules/video_coding/main/interface/video_coding_defines.h \
+  ../../webrtc/system_wrappers/interface/event_wrapper.h \
+  ../modules/video_coding/main/source/generic_decoder.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/timing.h \
+  ../system_wrappers/interface/critical_section_wrapper.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/codec_timer.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/timestamp_map.h \
+  /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/main/source/encoded_frame.h \
+  ../modules/video_coding/main/source/generic_encoder.h \
+  ../../webrtc/engine_configurations.h \
+  ../../webrtc/modules/video_coding/codecs/i420/main/interface/i420.h \
+  ../../webrtc/modules/video_coding/codecs/vp8/include/vp8.h \
+  ../../webrtc/modules/video_coding/main/source/internal_defines.h \
+  ../../webrtc/system_wrappers/interface/trace.h

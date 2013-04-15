@@ -1,0 +1,25 @@
+Tlibjpeg Support
+v5
+r1
+cCheck dependencies
+cPhaseScriptExecution "Rule \"assemble\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh
+c0000000051671D8100000000000000D3
+t1365712257
+s211
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesd36c62015517b741^7b8264015517b741^---0#1#0#--18"Check dependencies36"3ADBA0D5-803E-4B46-B52D-59D8CC30E739-
+
+CPhaseScriptExecution "Rule \"assemble\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"
+s387405057.393802
+e387405057.476228
+r0
+xPhaseScriptExecution
+xRule "assemble"
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh
+omake: *** No rule to make target `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/Debug-iphoneos/yasm', needed by `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/DerivedSources/Debug/third_party/libjpeg_turbo/jccolmmx.o'.  Stop.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection41"Run custom shell script 'Rule "assemble"'695266015517b741^450d7a015517b741^-366"make: *** No rule to make target `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/Debug-iphoneos/yasm', needed by `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/DerivedSources/Debug/third_party/libjpeg_turbo/jccolmmx.o'.  Stop.Command /bin/sh failed with exit code 22(21%IDEActivityLogMessage2@326"make: *** No rule to make target `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/Debug-iphoneos/yasm', needed by `/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/DerivedSources/Debug/third_party/libjpeg_turbo/jccolmmx.o'.  Stop.-387405057#0#326#-0#-----2@39"Command /bin/sh failed with exit code 2-387405057#18446744073709551615#0#-2#--29"Shell Script Invocation Error--0#0#0#--435"PhaseScriptExecution "Rule \"assemble\"" "../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug-iphoneos/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh\""36"660EC7A9-DE13-4DE4-A02C-E26001148CF2-
+

@@ -1,0 +1,105 @@
+Tlibvpx_asm_offsets_vpx_scale
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a normal armv7
+cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a normal armv7s
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_asm_offsets_vpx_scale.LinkFileList
+c000000005167220D00000000000000C5
+t1365713421
+s197
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_asm_offsets_vpx_scale.LinkFileList
+c000000005167220D00000000000000C6
+t1365713421
+s198
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c
+c000000005165C6260000000000000721
+t1365624358
+s1825
+
+CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies2d778a8d5917b741^86ab8b8d5917b741^---0#1#0#--18"Check dependencies36"8F638E67-7CF2-4AB8-A841-CFE5AA0A8DC9-
+
+CCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
+s387406221.549129
+e387406222.200899
+r1
+xCompileC
+x../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c
+xnormal
+xarmv7
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection127"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c51f48c8d5917b741^55be578e5917b741^---0#0#0#-19%DVTDocumentLocation2@135"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c0000000000000000^4048"CompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac/ia32 -Isource/config -Isource/libvpx -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_scale_asm_offsets.o36"125A15ED-ACFF-4D0D-BFA7-AD02FFDF8BE4-
+
+CCompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
+s387406221.613297
+e387406222.213194
+r1
+xCompileC
+x../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c
+xnormal
+xarmv7s
+xc
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection127"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c40689d8d5917b741^32ca578e5917b741^---0#0#0#-19%DVTDocumentLocation2@135"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c0000000000000000^4055"CompileC ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o source/libvpx/vpx_scale/vpx_scale_asm_offsets.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac/ia32 -Isource/config -Isource/libvpx -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/source/libvpx/vpx_scale/vpx_scale_asm_offsets.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_scale_asm_offsets.o36"155286BF-0885-45BE-BFF9-8DCFC19DA5DE-
+
+CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.a normal "armv7 armv7s"
+r0
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a normal armv7
+s387406222.251018
+e387406222.531334
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a
+xnormal
+xarmv7
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection152"Libtool ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a normal armv764cd408e5917b741^d028898e5917b741^---0#0#0#--1235"Libtool ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/vpx_asm_offsets_vpx_scale.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7/libvpx_asm_offsets_vpx_scale.a36"42BB18CA-4F45-4197-94B0-F1EFD7D2E02C-
+
+CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a normal armv7s
+s387406222.326411
+e387406222.532990
+r1
+xLibtool
+x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a
+xnormal
+xarmv7s
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection154"Libtool ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a normal armv7s4ed3538e5917b741^3734898e5917b741^---0#0#0#--1240"Libtool ../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/vpx_asm_offsets_vpx_scale.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libvpx/../../xcodebuild/libvpx.build/Debug-iphoneos/libvpx_asm_offsets_vpx_scale.build/Objects-normal/armv7s/libvpx_asm_offsets_vpx_scale.a36"A10AB585-D9BE-4816-A173-F729FDF772B9-
+

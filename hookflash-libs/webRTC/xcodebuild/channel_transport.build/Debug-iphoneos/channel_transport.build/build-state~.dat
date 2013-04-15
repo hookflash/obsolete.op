@@ -1,0 +1,203 @@
+Tchannel_transport
+v5
+r1
+cCheck dependencies
+cCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
+c0000000050ED385D0000000000000110
+t1357723741
+s272
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos/libchannel_transport.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.LinkFileList
+c0000000051657FA30000000000000425
+t1365606307
+s1061
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/libchannel_transport.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_manager_posix.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_manager_wrapper.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_posix.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_wrapper.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/channel_transport.LinkFileList
+c0000000051657FA3000000000000042B
+t1365606307
+s1067
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/channel_transport.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/libchannel_transport.a
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_manager_posix.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_manager_wrapper.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_posix.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_wrapper.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_transport_impl.o
+t2
+s0
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc
+c00000000516570470000000000001180
+t1365602375
+s4480
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_posix.cc
+c00000000516570470000000000002BCE
+t1365602375
+s11214
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_wrapper.cc
+c000000005165704700000000000007B3
+t1365602375
+s1971
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_posix.cc
+c00000000516570470000000000001C4C
+t1365602375
+s7244
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_wrapper.cc
+c00000000516570470000000000000EB9
+t1365602375
+s3769
+
+N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc
+c00000000516570470000000000015BB3
+t1365602375
+s89011
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_posix.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_wrapper.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_posix.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_wrapper.cc
+r0
+
+CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies5e0f5a23b715b741^6abc5c23b715b741^---0#1#0#--18"Check dependencies36"765B0D23-587E-49EE-89AF-5025D56038D3-
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387299107.401180
+e387299110.597453
+r1
+xCompileC
+x../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc0d196723b715b741^8d9c9926b715b741^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc0000000000000000^3963"CompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o channel_transport/channel_transport.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DUNIT_TEST -DGTEST_HAS_RTTI=0 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I../../testing/gtest/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/channel_transport.o36"0F097F5D-46B6-413C-967B-68941390A15C-
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_manager_posix.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_posix.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_manager_wrapper.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_wrapper.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_posix.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_posix.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_socket_wrapper.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_wrapper.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
+s387299107.403341
+e387299108.172709
+r0
+xCompileC
+x../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o
+x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc
+xnormal
+xarmv7
+xc++
+xcom.apple.compilers.llvm.clang.1_0.compiler
+o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc:34:10: fatal error: 'net/if_arp.h' file not found
+o#include <net/if_arp.h>
+o         ^
+o1 error generated.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc74b48a23b715b741^0e4e2c24b715b741^-197"/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc:34:10: fatal error: 'net/if_arp.h' file not found#include <net/if_arp.h>         ^1 error generated.1(36%IDEClangDiagnosticActivityLogMessage2@29"'net/if_arp.h' file not found-387299108#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc0000000000000000^33#9#33#9#931#0#29"Lexical or Preprocessor Issue--0#0#0#-19%DVTDocumentLocation4@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc0000000000000000^3969"CompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o channel_transport/udp_transport_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DUNIT_TEST -DGTEST_HAS_RTTI=0 -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I../../testing/gtest/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/udp_transport_impl.o36"1D73C380-2DA7-4BD7-938B-0B3C91EBB5A2-
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/channel_transport.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/channel_transport.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_manager_posix.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_posix.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_manager_wrapper.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_manager_wrapper.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_posix.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_posix.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_socket_wrapper.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_socket_wrapper.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCompileC ../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/udp_transport_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/channel_transport/udp_transport_impl.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
+r0
+
+CCreateUniversalBinary /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/Debug-iphoneos/libchannel_transport.a normal "armv7 armv7s"
+r0
+
+CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7/libchannel_transport.a normal armv7
+r0
+
+CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/test/../../xcodebuild/channel_transport.build/Debug-iphoneos/channel_transport.build/Objects-normal/armv7s/libchannel_transport.a normal armv7s
+r0
+
