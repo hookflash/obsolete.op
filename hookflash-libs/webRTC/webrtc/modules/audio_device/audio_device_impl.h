@@ -199,6 +199,7 @@ public:
     virtual int32_t ResetAudioDevice();
     virtual int32_t SetLoudspeakerStatus(bool enable);
     virtual int32_t GetLoudspeakerStatus(bool* enabled) const;
+    virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const;
 
     virtual int32_t EnableBuiltInAEC(bool enable);
     virtual bool BuiltInAECIsEnabled() const;

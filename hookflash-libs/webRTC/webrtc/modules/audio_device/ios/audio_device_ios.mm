@@ -9,6 +9,7 @@
  */
 
 #include "audio_device_ios.h"
+#import "audio_device_info_ios_objc.h"
 
 #include "trace.h"
 #include "thread_wrapper.h"
@@ -66,7 +67,7 @@ AudioDeviceIPhone::~AudioDeviceIPhone() {
 
     delete &_critSect;
   
-    [_audioDeviceInfo release];
+    [(AudioDeviceInfoIPhoneObjC*)_audioDeviceInfo release];
 }
 
 
@@ -78,7 +79,7 @@ void AudioDeviceIPhone::AttachAudioBuffer(AudioDeviceBuffer* audioBuffer) {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id,
                  "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     _ptrAudioBuffer = audioBuffer;
 
@@ -101,7 +102,7 @@ WebRtc_Word32 AudioDeviceIPhone::Init() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id,
                  "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (_initialized) {
         return 0;
@@ -223,7 +224,7 @@ WebRtc_Word32 AudioDeviceIPhone::InitSpeaker() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id,
                  "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
@@ -277,7 +278,7 @@ WebRtc_Word32 AudioDeviceIPhone::InitMicrophone() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id,
                  "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice,
@@ -761,7 +762,7 @@ WebRtc_Word32 AudioDeviceIPhone::GetLoudspeakerStatus(bool &enabled) const {
                  "AudioDeviceIPhone::GetLoudspeakerStatus()");
   
     char osVersion[30];
-    [[_audioDeviceInfo getOSVersion] getCString:osVersion maxLength:30 encoding:NSUTF8StringEncoding];
+    [[(AudioDeviceInfoIPhoneObjC*)_audioDeviceInfo getOSVersion] getCString:osVersion maxLength:30 encoding:NSUTF8StringEncoding];
   
     if (strncmp(osVersion, "5.0", 3) >= 0) {
         CFDictionaryRef audioRouteDescription;
@@ -800,11 +801,11 @@ WebRtc_Word32 AudioDeviceIPhone::GetLoudspeakerStatus(bool &enabled) const {
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceIPhone::GetOutputAudioRoute(OutputAudioRoute &route) const {
+WebRtc_Word32 AudioDeviceIPhone::GetOutputAudioRoute(OutputAudioRoute *route) const {
     WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
                  "AudioDeviceIPhone::GetOutputAudioRoute()");
 
-    route = _outputAudioRoute;
+    *route = _outputAudioRoute;
     return 0;
 }
 
@@ -847,7 +848,7 @@ WebRtc_Word32 AudioDeviceIPhone::RecordingIsAvailable(bool& available) {
 WebRtc_Word32 AudioDeviceIPhone::InitPlayout() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id, "  Not initialized");
@@ -903,7 +904,7 @@ bool AudioDeviceIPhone::PlayoutIsInitialized() const {
 WebRtc_Word32 AudioDeviceIPhone::InitRecording() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_initialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
@@ -961,7 +962,7 @@ bool AudioDeviceIPhone::RecordingIsInitialized() const {
 WebRtc_Word32 AudioDeviceIPhone::StartRecording() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_recIsInitialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
@@ -1008,7 +1009,7 @@ WebRtc_Word32 AudioDeviceIPhone::StartRecording() {
 WebRtc_Word32 AudioDeviceIPhone::StopRecording() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_recIsInitialized) {
         WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
@@ -1040,7 +1041,7 @@ WebRtc_Word32 AudioDeviceIPhone::StartPlayout() {
     // This lock is (among other things) needed to avoid concurrency issues
     // with capture thread
     // shutting down AU Remote IO
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_playIsInitialized) {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
@@ -1084,7 +1085,7 @@ WebRtc_Word32 AudioDeviceIPhone::StartPlayout() {
 WebRtc_Word32 AudioDeviceIPhone::StopPlayout() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_playIsInitialized) {
         WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
@@ -1121,7 +1122,7 @@ bool AudioDeviceIPhone::Playing() const {
 WebRtc_Word32 AudioDeviceIPhone::ResetAudioDevice() {
     WEBRTC_TRACE(kTraceModuleCall, kTraceAudioDevice, _id, "%s", __FUNCTION__);
 
-    CriticalSectionScoped lock(_critSect);
+    CriticalSectionScoped lock(&_critSect);
 
     if (!_playIsInitialized && !_recIsInitialized) {
         WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
@@ -1260,7 +1261,7 @@ void AudioDeviceIPhone::PropertyListenerCallback(void *inClientData, AudioSessio
     if (inID == kAudioSessionProperty_AudioRouteChange)
     {
       char osVersion[30];
-      [[ptrThis->_audioDeviceInfo getOSVersion] getCString:osVersion maxLength:30 encoding:NSUTF8StringEncoding];
+      [[(AudioDeviceInfoIPhoneObjC*)ptrThis->_audioDeviceInfo getOSVersion] getCString:osVersion maxLength:30 encoding:NSUTF8StringEncoding];
       
       if (strncmp(osVersion, "5.0", 3) >= 0)
       {

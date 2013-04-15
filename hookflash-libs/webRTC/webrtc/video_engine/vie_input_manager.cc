@@ -147,9 +147,9 @@ int ViEInputManager::GetOrientation(const char* device_unique_idUTF8,
                device_unique_idUTF8);
   CriticalSectionScoped cs(device_info_cs_.get());
   if (capture_device_info_ == NULL)
-    capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(
-        ViEModuleId(engine_id_));
+    capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
   assert(capture_device_info_);
+    
   VideoCaptureRotation module_orientation;
   int result = capture_device_info_->GetOrientation(device_unique_idUTF8,
                                                     module_orientation);
@@ -176,7 +176,11 @@ int ViEInputManager::SetDefaultOrientation(const char* device_unique_idUTF8,
   WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
                "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
                device_unique_idUTF8);
-  assert(capture_device_info_);
+    CriticalSectionScoped cs(device_info_cs_.get());
+    if (capture_device_info_ == NULL)
+        capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
+    assert(capture_device_info_);
+    
   VideoCaptureOrientation module_orientation;
   
   // Copy from module type to public type.
@@ -203,7 +207,11 @@ int ViEInputManager::SetLockedOrientation(const char* device_unique_idUTF8,
   WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
                "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
                device_unique_idUTF8);
-  assert(capture_device_info_);
+    CriticalSectionScoped cs(device_info_cs_.get());
+    if (capture_device_info_ == NULL)
+        capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
+    assert(capture_device_info_);
+    
   VideoCaptureOrientation module_orientation;
   
   // Copy from module type to public type.
@@ -231,7 +239,10 @@ int ViEInputManager::EnableOrientationLock(const char* device_unique_idUTF8,
   WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideo, ViEId(engine_id_),
                "%s(device_unique_idUTF8: %s,)", __FUNCTION__,
                device_unique_idUTF8);
-  assert(capture_device_info_);
+    CriticalSectionScoped cs(device_info_cs_.get());
+    if (capture_device_info_ == NULL)
+        capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
+    assert(capture_device_info_);
   
   return capture_device_info_->EnableOrientationLock(device_unique_idUTF8,
                                                      enable);

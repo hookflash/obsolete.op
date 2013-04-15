@@ -240,14 +240,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int TestMediaEngine::registerVoiceTransport()
       {
+        voice_channel_transports_[mVoiceChannel].reset( new VoiceChannelTransport(mVoiceNetwork, mVoiceChannel));
+
         return 0;
       }
       
       //-----------------------------------------------------------------------
       int TestMediaEngine::setVoiceTransportParameters()
       {
-        mError = mVoiceTransport->SetSendDestination(mVoiceChannel, 20010, mReceiverAddress.c_str());
-        mError = mVoiceTransport->SetLocalReceiver(mVoiceChannel, 20010);
+        mError = voice_channel_transports_[mVoiceChannel]->SetSendDestination(mReceiverAddress.c_str(), 20010);
+        mError = voice_channel_transports_[mVoiceChannel]->SetLocalReceiver(20010);
         return mError;
       }
       
@@ -278,20 +280,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int TestMediaEngine::registerVideoTransport()
       {
+        video_channel_transports_[mVideoChannel].reset( new VideoChannelTransport(mVideoNetwork, mVideoChannel));
+
         return 0;
       }
       
       //-----------------------------------------------------------------------
       int TestMediaEngine::deregisterVideoTransport()
       {
+          video_channel_transports_[mVideoChannel].reset( NULL );
         return 0;
       }
       
       //-----------------------------------------------------------------------
       int TestMediaEngine::setVideoTransportParameters()
       {
-        mError = mVideoNetwork->SetSendDestination(mVideoChannel, mReceiverAddress.c_str(), 20000);
-        mError = mVideoNetwork->SetLocalReceiver(mVideoChannel, 20000);
+        mError = video_channel_transports_[mVideoChannel]->SetSendDestination(mReceiverAddress.c_str(), 20000);
+        mError = video_channel_transports_[mVideoChannel]->SetLocalReceiver(20000);
         return mError;
       }
       

@@ -45,6 +45,8 @@ class VoiceChannelTransport : public UdpTransportData {
   // Specifies the destination port and IP address for a specified channel.  
   int SetSendDestination(const char* ip_address, uint16_t rtp_port);
 
+  webrtc::Transport* GetTransport() { return socket_transport_; }
+
  private:
   int channel_;
   VoENetwork* voe_network_;
@@ -75,6 +77,8 @@ class VideoChannelTransport : public UdpTransportData {
 
   // Specifies the destination port and IP address for a specified channel.  
   int SetSendDestination(const char* ip_address, uint16_t rtp_port);
+
+  webrtc::Transport* GetTransport() { return socket_transport_; }
 
  private:
   int channel_;

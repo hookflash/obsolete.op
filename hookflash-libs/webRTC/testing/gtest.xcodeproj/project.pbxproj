@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -298,7 +298,11 @@
 			};
 			buildConfigurationList = 7609FECDCE37CCF1BA62889B /* Build configuration list for PBXProject "gtest" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 8D5F8A9B33447AED8EB06731;
 			projectDirPath = "";
 			projectRoot = "";
@@ -367,6 +371,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = All;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -468,10 +473,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Release;
 		};
@@ -591,10 +593,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Release;
 		};
@@ -602,6 +601,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = All;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -703,10 +703,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Debug;
 		};
@@ -789,6 +786,7 @@
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = gtest_prod;
+				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -803,10 +801,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Release;
 		};
@@ -906,10 +901,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Debug;
 		};
@@ -992,6 +984,7 @@
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = gtest_prod;
+				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -1006,10 +999,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Debug;
 		};

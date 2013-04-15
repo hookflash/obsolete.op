@@ -11,6 +11,7 @@
 #ifndef MODULES_AUDIO_DEVICE_INCLUDE_AUDIO_DEVICE_H_
 #define MODULES_AUDIO_DEVICE_INCLUDE_AUDIO_DEVICE_H_
 
+#include "common_types.h"
 #include "modules/audio_device/include/audio_device_defines.h"
 #include "modules/interface/module.h"
 
@@ -183,6 +184,7 @@ class AudioDeviceModule : public RefCountedModule {
   virtual int32_t ResetAudioDevice() = 0;
   virtual int32_t SetLoudspeakerStatus(bool enable) = 0;
   virtual int32_t GetLoudspeakerStatus(bool* enabled) const = 0;
+  virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const = 0;
 
   // *Experimental - not recommended for use.*
   // Enables the Windows Core Audio built-in AEC. Fails on other platforms.

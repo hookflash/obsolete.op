@@ -2015,6 +2015,18 @@ int32_t AudioDeviceModuleImpl::GetLoudspeakerStatus(bool* enabled) const
     return 0;
 }
 
+int32_t AudioDeviceModuleImpl::GetOutputAudioRoute(OutputAudioRoute* route) const
+{
+    CHECK_INITIALIZED();
+        
+    if (_ptrAudioDevice->GetOutputAudioRoute(route) != 0)
+    {
+        return -1;
+    }
+        
+    return 0;
+}
+
 int32_t AudioDeviceModuleImpl::EnableBuiltInAEC(bool enable)
 {
     CHECK_INITIALIZED();

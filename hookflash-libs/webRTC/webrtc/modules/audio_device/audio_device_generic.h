@@ -147,6 +147,7 @@ class AudioDeviceGeneric
     // Speaker audio routing (for mobile devices)
     virtual int32_t SetLoudspeakerStatus(bool enable);
     virtual int32_t GetLoudspeakerStatus(bool& enable) const;
+    virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const;
     
     // Reset Audio Device (for mobile devices)
     virtual int32_t ResetAudioDevice();

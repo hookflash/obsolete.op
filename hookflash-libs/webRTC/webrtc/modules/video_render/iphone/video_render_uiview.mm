@@ -163,20 +163,19 @@ int VideoChannelUIView::FrameSizeChange(int width, int height, int numberOfStrea
 
 int VideoChannelUIView::DeliverFrame(I420VideoFrame &src_frame)
 {
+    int bufferSize = CalcBufferSize(kARGB, _width, _height);
 
     _owner->LockAGLCntx();
     
-/*JAT bufferSize
     if (bufferSize != _incommingBufferSize)
     {
         _owner->UnlockAGLCntx();
         return -1;
     }
-*/
     
     // Allocate ARGB buffer
     VideoFrame captureFrame;
-    captureFrame.VerifyAndAllocate(CalcBufferSize(kARGB, _width, _height));
+    captureFrame.VerifyAndAllocate(bufferSize);
     if (!captureFrame.Buffer())
     {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,

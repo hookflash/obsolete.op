@@ -657,14 +657,13 @@ int VoEHardwareImpl::SetLoudspeakerStatus(bool enable)
 {
     WEBRTC_TRACE(kTraceApiCall, kTraceVoice, VoEId(_shared->instance_id(), -1),
                  "SetLoudspeakerStatus(enable=%i)", (int) enable);
-    IPHONE_NOT_SUPPORTED(_shared->statistics());
 
     if (!_shared->statistics().Initialized())
     {
         _shared->SetLastError(VE_NOT_INITED, kTraceError);
         return -1;
     }
-#if defined(WEBRTC_ANDROID)
+#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS)
     if (_shared->audio_device()->SetLoudspeakerStatus(enable) < 0)
     {
         _shared->SetLastError(VE_IGNORED_FUNCTION, kTraceError,
@@ -713,7 +712,7 @@ int VoEHardwareImpl::GetOutputAudioRoute(OutputAudioRoute& route)
     WEBRTC_TRACE(kTraceApiCall, kTraceVoice, VoEId(_shared->instance_id(), -1),
                  "GetOutputAudioRoute()");
   
-#if defined(WEBRTC_ANDROID) || defined(MAC_IPHONE)
+#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS)
     if (!_shared->statistics().Initialized())
     {
         _shared->SetLastError(VE_NOT_INITED, kTraceError);

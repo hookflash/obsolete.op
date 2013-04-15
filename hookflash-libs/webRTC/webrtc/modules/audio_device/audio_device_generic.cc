@@ -43,6 +43,13 @@ int32_t AudioDeviceGeneric::GetLoudspeakerStatus(bool& enable) const
     return -1;
 }
 
+int32_t AudioDeviceGeneric::GetOutputAudioRoute(OutputAudioRoute* route) const
+{
+    WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
+        "Get output audio route status not supported on this platform");
+    return -1;
+}
+    
 int32_t AudioDeviceGeneric::ResetAudioDevice()
 {
     WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
