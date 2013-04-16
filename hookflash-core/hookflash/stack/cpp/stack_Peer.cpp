@@ -40,7 +40,7 @@
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -184,9 +184,9 @@ namespace hookflash
           return false;
         }
 
-        const boost::regex e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
-        if (!boost::regex_match(peerURI, e)) {
-          ZS_LOG_WARNING(Detail, String("Peer [] peer URI is not valid, uri=") + peerURI)
+        zsLib::RegEx e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
+        if (!e.hasMatch(peerURI)) {
+          ZS_LOG_WARNING(Detail, String("Peer [] peer URI is not valid, uri=") + peerURI);
           return false;
         }
         return true;

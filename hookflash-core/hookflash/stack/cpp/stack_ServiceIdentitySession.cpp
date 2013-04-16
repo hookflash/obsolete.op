@@ -53,7 +53,7 @@
 
 #include <zsLib/Stringize.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
@@ -1419,10 +1419,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
-      if (!boost::regex_match(identityURI, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
-        if (!boost::regex_match(identityURI, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
+      if (!e.hasMatch(identityURI)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
+        if (!e2.hasMatch(identityURI)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
           return false;
         }
@@ -1438,10 +1438,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
-      if (!boost::regex_match(identityBase, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
-        if (!boost::regex_match(identityBase, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
+      if (!e.hasMatch(identityBase)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
+        if (!e2.hasMatch(identityBase)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity base URI is not valid, uri=") + identityBase)
           return false;
         }
@@ -1457,8 +1457,8 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+      if (!e.hasMatch(identityURI)) {
         return false;
       }
       return true;
@@ -1479,8 +1479,8 @@ namespace hookflash
 
       // scope: check legacy identity
       {
-        const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-        if (boost::regex_match(identityURI, e)) {
+        zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+        if (e.hasMatch(identityURI)) {
 
           // find second colon
           size_t startPos = strlen("identity:");
@@ -1496,8 +1496,8 @@ namespace hookflash
         }
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
+      if (!e.hasMatch(identityURI)) {
         ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
         return false;
       }

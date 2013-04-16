@@ -37,7 +37,7 @@
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 #include <cryptopp/modes.h>
 #include <cryptopp/hex.h>
@@ -536,8 +536,8 @@ namespace hookflash
       bool Helper::isValidDomain(const char *inDomain)
       {
         String domain(inDomain ? String(inDomain) : String());
-        const boost::regex e("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
-        if (!boost::regex_match(domain, e)) {
+        zsLib::RegEx regex("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
+        if (!regex.hasMatch(inDomain)) {
           ZS_LOG_WARNING(Detail, "Helper [] domain name is not valid, domain=" + domain)
           return false;
         }

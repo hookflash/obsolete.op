@@ -30,6 +30,8 @@
 #include "bb_window_wrapper.h"
 #include "video_render.h"
 
+#include "zslib/RegEx.h"
+
 using namespace std;
 using namespace webrtc;
 
@@ -239,6 +241,9 @@ handle_event()
 int
 main(int argc, char **argv)
 {
+    zsLib::RegEx regex("identity");
+    bool has = regex.hasMatch(zsLib::String("blahicdentityblah"));
+
     const int usage = SCREEN_USAGE_NATIVE;
 
     screen_window_t screen_win;
