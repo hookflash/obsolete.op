@@ -769,7 +769,7 @@ namespace hookflash
         // now we have the DNS service name...
         if (!mServicesGetQuery) {
           bool forceOverHTTP = (0 == HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP ? false : true);
-          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/" + HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
+          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/.well-known/" + HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
           ZS_LOG_DEBUG(log("step - performing services get request") + ", services-get URL=" + serviceURL)
 
           ServicesGetRequestPtr request = ServicesGetRequest::create();
