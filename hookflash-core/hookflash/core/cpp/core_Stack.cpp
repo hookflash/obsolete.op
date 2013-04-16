@@ -35,6 +35,8 @@
 #include <hookflash/core/ICall.h>
 #include <hookflash/services/IHelper.h>
 
+#include <hookflash/stack/IStack.h>
+
 #include <zsLib/helpers.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Socket.h>
@@ -409,6 +411,8 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(mUserAgent.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mOS.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mSystem.isEmpty())
+
+        stack::IStack::setup(mApplicationThreadQueue, mCoreThreadQueue, mServicesThreadQueue, mDeviceID, mUserAgent, mOS, mSystem);
       }
 
       //-----------------------------------------------------------------------
