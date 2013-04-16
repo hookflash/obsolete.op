@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -24,20 +24,17 @@
 
 /* Begin PBXBuildFile section */
 		075E52B4118FCFFF3830623C /* resampler.cc in Sources */ = {isa = PBXBuildFile; fileRef = 3030A68169B0F698FE502EA5 /* resampler.cc */; };
-		121615542B3949635552B659 /* spl_sqrt_floor.c in Sources */ = {isa = PBXBuildFile; fileRef = EC5AA2D7918C67CBDC8E641D /* spl_sqrt_floor.c */; };
 		1C9654B208D0911D2B0584FB /* sinc_resampler.cc in Sources */ = {isa = PBXBuildFile; fileRef = FB40FA2ACC4A8BDFE7BB267C /* sinc_resampler.cc */; };
 		24CBBD687D88265B62F52644 /* division_operations.c in Sources */ = {isa = PBXBuildFile; fileRef = 1E857DA4A8738CBAE9070946 /* division_operations.c */; };
 		26133E5B1E1FC4227EAD38C3 /* complex_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = 425EE1BF72F4123F70DF52F3 /* complex_fft.c */; };
 		29C56FF5806F5455AC8F8956 /* real_fft.c in Sources */ = {isa = PBXBuildFile; fileRef = AE272249A808F06AC9469F30 /* real_fft.c */; };
 		2C155C09604A047CAB5BED77 /* dot_product_with_scale.c in Sources */ = {isa = PBXBuildFile; fileRef = 8676F9C38E84249C733924F6 /* dot_product_with_scale.c */; };
 		3066540C8FF9B760FBD44091 /* refl_coef_to_lpc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C95419ADA139D51E57CA799 /* refl_coef_to_lpc.c */; };
-		3151DE61754F57FA5C169745 /* complex_bit_reverse.c in Sources */ = {isa = PBXBuildFile; fileRef = BDFC6E6AC0D7FF88B8419453 /* complex_bit_reverse.c */; };
 		338CA30A85262910DFCAB04B /* vad_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F396535B4DFBB3ECBA30C88 /* vad_core.c */; };
 		39F1F98862B6D775A9E51015 /* vad_filterbank.c in Sources */ = {isa = PBXBuildFile; fileRef = 885688AC8B8AAE5A2D06DF48 /* vad_filterbank.c */; };
 		49AA7B896EBC49D03E9FD343 /* vad_sp.c in Sources */ = {isa = PBXBuildFile; fileRef = 297389366FECFA2C22ECA34A /* vad_sp.c */; };
 		4C4E9B0989573B44E3AF477C /* randomization_functions.c in Sources */ = {isa = PBXBuildFile; fileRef = 77C358152470AD3A8CC39D53 /* randomization_functions.c */; };
 		594FD910CEB503C5AD6CD593 /* resample.c in Sources */ = {isa = PBXBuildFile; fileRef = 96AB36E8A8BF6825ABDD79D3 /* resample.c */; };
-		60F8007C9650028C6CF0AA58 /* filter_ar_fast_q12.c in Sources */ = {isa = PBXBuildFile; fileRef = 79F14FE133A398C560FF1876 /* filter_ar_fast_q12.c */; };
 		63468EE4572F5B3F99B52B5A /* spl_init.c in Sources */ = {isa = PBXBuildFile; fileRef = C8B4DF74CB0E2AC6EA7D6955 /* spl_init.c */; };
 		6829D67FDEFAAAA8524CC449 /* resample_48khz.c in Sources */ = {isa = PBXBuildFile; fileRef = 037DD3B65E2D263B567F6DB5 /* resample_48khz.c */; };
 		6BD68BC8C77C2E4C84EDFFC3 /* spl_version.c in Sources */ = {isa = PBXBuildFile; fileRef = 9043B722457A337201EF9E6B /* spl_version.c */; };
@@ -49,6 +46,13 @@
 		9DB340EA668FBC34B36E9887 /* lpc_to_refl_coef.c in Sources */ = {isa = PBXBuildFile; fileRef = 30A48C46CFAC258A476C051B /* lpc_to_refl_coef.c */; };
 		A9FA2999297408B1A63BB23F /* ilbc_specific_functions.c in Sources */ = {isa = PBXBuildFile; fileRef = F6F1881EC751CF75EF39F1D0 /* ilbc_specific_functions.c */; };
 		B020364798C56F6416B9A3DD /* cross_correlation.c in Sources */ = {isa = PBXBuildFile; fileRef = 73A033E88969512EA44B3DBC /* cross_correlation.c */; };
+		B28DDB11171DCEDB00A5EDC2 /* complex_bit_reverse_arm.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB0A171DCDAA00A5EDC2 /* complex_bit_reverse_arm.s */; };
+		B28DDB12171DCEDB00A5EDC2 /* cross_correlation_neon.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB0B171DCDAB00A5EDC2 /* cross_correlation_neon.s */; };
+		B28DDB13171DCEDB00A5EDC2 /* downsample_fast_neon.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB0C171DCDAB00A5EDC2 /* downsample_fast_neon.s */; };
+		B28DDB14171DCEDB00A5EDC2 /* filter_ar_fast_q12_armv7.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB0D171DCDAB00A5EDC2 /* filter_ar_fast_q12_armv7.s */; };
+		B28DDB15171DCEDB00A5EDC2 /* min_max_operations_neon.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB0E171DCDAB00A5EDC2 /* min_max_operations_neon.s */; };
+		B28DDB17171DCEDB00A5EDC2 /* vector_scaling_operations_neon.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB10171DCDAB00A5EDC2 /* vector_scaling_operations_neon.s */; };
+		B28DDB1B171DE06100A5EDC2 /* spl_sqrt_floor.s in Sources */ = {isa = PBXBuildFile; fileRef = B28DDB19171DD71800A5EDC2 /* spl_sqrt_floor.s */; };
 		B3A34F4A630347269042C42F /* energy.c in Sources */ = {isa = PBXBuildFile; fileRef = 57631F096C730515440C5DD7 /* energy.c */; };
 		B901AC1015974DD0DA55671A /* resample_by_2.c in Sources */ = {isa = PBXBuildFile; fileRef = D72D58B4263AA6E923F49D5E /* resample_by_2.c */; };
 		BFB63663619332DC130E09C8 /* filter_ma_fast_q12.c in Sources */ = {isa = PBXBuildFile; fileRef = EF5F6D40FAF5DF7443FB2307 /* filter_ma_fast_q12.c */; };
@@ -127,7 +131,6 @@
 		7374542209139FA6B83064ED /* filter_ar.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = filter_ar.c; sourceTree = "<group>"; };
 		73A033E88969512EA44B3DBC /* cross_correlation.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cross_correlation.c; sourceTree = "<group>"; };
 		77C358152470AD3A8CC39D53 /* randomization_functions.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = randomization_functions.c; sourceTree = "<group>"; };
-		79F14FE133A398C560FF1876 /* filter_ar_fast_q12.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = filter_ar_fast_q12.c; sourceTree = "<group>"; };
 		823D73B52FE8D27D6DD94FFE /* resampler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resampler.h; sourceTree = "<group>"; };
 		839F8F3C5F06A8A2F8C98BEC /* vad.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = vad.gypi; path = vad/vad.gypi; sourceTree = "<group>"; };
 		8676F9C38E84249C733924F6 /* dot_product_with_scale.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dot_product_with_scale.c; sourceTree = "<group>"; };
@@ -141,9 +144,16 @@
 		AB808657C0FC96F1541D67E3 /* spl_inl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = spl_inl.h; sourceTree = "<group>"; };
 		AB817B977B9DC103D365B11A /* libresampler.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libresampler.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE272249A808F06AC9469F30 /* real_fft.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = real_fft.c; sourceTree = "<group>"; };
+		B28DDB09171DCC2000A5EDC2 /* spl_inl_armv7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spl_inl_armv7.h; sourceTree = "<group>"; };
+		B28DDB0A171DCDAA00A5EDC2 /* complex_bit_reverse_arm.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = complex_bit_reverse_arm.s; sourceTree = "<group>"; };
+		B28DDB0B171DCDAB00A5EDC2 /* cross_correlation_neon.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = cross_correlation_neon.s; sourceTree = "<group>"; };
+		B28DDB0C171DCDAB00A5EDC2 /* downsample_fast_neon.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = downsample_fast_neon.s; sourceTree = "<group>"; };
+		B28DDB0D171DCDAB00A5EDC2 /* filter_ar_fast_q12_armv7.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = filter_ar_fast_q12_armv7.s; sourceTree = "<group>"; };
+		B28DDB0E171DCDAB00A5EDC2 /* min_max_operations_neon.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = min_max_operations_neon.s; sourceTree = "<group>"; };
+		B28DDB10171DCDAB00A5EDC2 /* vector_scaling_operations_neon.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = vector_scaling_operations_neon.s; sourceTree = "<group>"; };
+		B28DDB19171DD71800A5EDC2 /* spl_sqrt_floor.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = spl_sqrt_floor.s; sourceTree = "<group>"; };
 		B7BDFA273318B6B1BBC6B024 /* resample_fractional.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = resample_fractional.c; sourceTree = "<group>"; };
 		B8552694B6DB67C59D2AC388 /* vad_gmm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vad_gmm.h; sourceTree = "<group>"; };
-		BDFC6E6AC0D7FF88B8419453 /* complex_bit_reverse.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = complex_bit_reverse.c; sourceTree = "<group>"; };
 		C472EB32FA65B9AD1163A2D5 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../build/common.gypi; sourceTree = "<group>"; };
 		C7A07A032CA3E75BB122BDBF /* levinson_durbin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = levinson_durbin.c; sourceTree = "<group>"; };
 		C8B4DF74CB0E2AC6EA7D6955 /* spl_init.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spl_init.c; sourceTree = "<group>"; };
@@ -152,7 +162,6 @@
 		D72D58B4263AA6E923F49D5E /* resample_by_2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = resample_by_2.c; sourceTree = "<group>"; };
 		DC6C123D9CFE4B7157D932D4 /* downsample_fast.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = downsample_fast.c; sourceTree = "<group>"; };
 		E11A1F2CABA309E7BFCE6E55 /* real_fft.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = real_fft.h; sourceTree = "<group>"; };
-		EC5AA2D7918C67CBDC8E641D /* spl_sqrt_floor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spl_sqrt_floor.c; sourceTree = "<group>"; };
 		EF5F6D40FAF5DF7443FB2307 /* filter_ma_fast_q12.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = filter_ma_fast_q12.c; sourceTree = "<group>"; };
 		F311F2B3D798A70090CE1645 /* arm_neon.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = arm_neon.gypi; path = ../build/arm_neon.gypi; sourceTree = "<group>"; };
 		F3E53B2584AC6BAF085E1CFA /* resample_by_2_internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = resample_by_2_internal.h; sourceTree = "<group>"; };
@@ -215,6 +224,7 @@
 		23C3EB552AC2747BEBD8C890 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				B28DDB09171DCC2000A5EDC2 /* spl_inl_armv7.h */,
 				E11A1F2CABA309E7BFCE6E55 /* real_fft.h */,
 				081A3B4070EC26263F3705DE /* signal_processing_library.h */,
 				AB808657C0FC96F1541D67E3 /* spl_inl.h */,
@@ -236,9 +246,15 @@
 			isa = PBXGroup;
 			children = (
 				23C3EB552AC2747BEBD8C890 /* include */,
+				B28DDB0A171DCDAA00A5EDC2 /* complex_bit_reverse_arm.s */,
+				B28DDB0B171DCDAB00A5EDC2 /* cross_correlation_neon.s */,
+				B28DDB0C171DCDAB00A5EDC2 /* downsample_fast_neon.s */,
+				B28DDB0D171DCDAB00A5EDC2 /* filter_ar_fast_q12_armv7.s */,
+				B28DDB0E171DCDAB00A5EDC2 /* min_max_operations_neon.s */,
+				B28DDB19171DD71800A5EDC2 /* spl_sqrt_floor.s */,
+				B28DDB10171DCDAB00A5EDC2 /* vector_scaling_operations_neon.s */,
 				69577A4D5F9B0AA6BB1C506A /* auto_corr_to_refl_coef.c */,
 				0AD83201AB435FBEC09AC015 /* auto_correlation.c */,
-				BDFC6E6AC0D7FF88B8419453 /* complex_bit_reverse.c */,
 				425EE1BF72F4123F70DF52F3 /* complex_fft.c */,
 				50A39F5F8D83195ABB829F0C /* copy_set_operations.c */,
 				73A033E88969512EA44B3DBC /* cross_correlation.c */,
@@ -247,7 +263,6 @@
 				DC6C123D9CFE4B7157D932D4 /* downsample_fast.c */,
 				57631F096C730515440C5DD7 /* energy.c */,
 				7374542209139FA6B83064ED /* filter_ar.c */,
-				79F14FE133A398C560FF1876 /* filter_ar_fast_q12.c */,
 				EF5F6D40FAF5DF7443FB2307 /* filter_ma_fast_q12.c */,
 				1858448899937FF9B51F27CF /* get_hanning_window.c */,
 				431BF591E462B179C18B9BA9 /* get_scaling_square.c */,
@@ -266,7 +281,6 @@
 				B7BDFA273318B6B1BBC6B024 /* resample_fractional.c */,
 				C8B4DF74CB0E2AC6EA7D6955 /* spl_init.c */,
 				0EA0910AC0625DEAD850281F /* spl_sqrt.c */,
-				EC5AA2D7918C67CBDC8E641D /* spl_sqrt_floor.c */,
 				9043B722457A337201EF9E6B /* spl_version.c */,
 				643E6E9458C817DCFDE83E97 /* splitting_filter.c */,
 				A5EE71C0A366EDC937CE02C5 /* sqrt_of_one_minus_x_squared.c */,
@@ -393,7 +407,11 @@
 			};
 			buildConfigurationList = 80E866B730CBB6ACD90534B0 /* Build configuration list for PBXProject "common_audio" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 1960A3E60D7B5F08BA7DE5D2;
 			projectDirPath = "";
 			projectRoot = "";
@@ -420,10 +438,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B28DDB1B171DE06100A5EDC2 /* spl_sqrt_floor.s in Sources */,
+				B28DDB11171DCEDB00A5EDC2 /* complex_bit_reverse_arm.s in Sources */,
+				B28DDB12171DCEDB00A5EDC2 /* cross_correlation_neon.s in Sources */,
+				B28DDB13171DCEDB00A5EDC2 /* downsample_fast_neon.s in Sources */,
+				B28DDB14171DCEDB00A5EDC2 /* filter_ar_fast_q12_armv7.s in Sources */,
+				B28DDB15171DCEDB00A5EDC2 /* min_max_operations_neon.s in Sources */,
+				B28DDB17171DCEDB00A5EDC2 /* vector_scaling_operations_neon.s in Sources */,
 				72E74D2F65C3539F8AB0F090 /* auto_corr_to_refl_coef.c in Sources */,
 				FECD08D4463A080C915F5BCF /* auto_correlation.c in Sources */,
 				26133E5B1E1FC4227EAD38C3 /* complex_fft.c in Sources */,
-				3151DE61754F57FA5C169745 /* complex_bit_reverse.c in Sources */,
 				C88546B60FA84CF504F1BE88 /* copy_set_operations.c in Sources */,
 				B020364798C56F6416B9A3DD /* cross_correlation.c in Sources */,
 				24CBBD687D88265B62F52644 /* division_operations.c in Sources */,
@@ -431,7 +455,6 @@
 				FE7BAB35C4395B87BDFA7B09 /* downsample_fast.c in Sources */,
 				B3A34F4A630347269042C42F /* energy.c in Sources */,
 				EE72D8937922D4B62FA3D797 /* filter_ar.c in Sources */,
-				60F8007C9650028C6CF0AA58 /* filter_ar_fast_q12.c in Sources */,
 				BFB63663619332DC130E09C8 /* filter_ma_fast_q12.c in Sources */,
 				C5FC396430DF427D09A07FF9 /* get_hanning_window.c in Sources */,
 				EBAC513DCCC673DAEC5AC9F1 /* get_scaling_square.c in Sources */,
@@ -449,7 +472,6 @@
 				DE59E01938505A1659CC182E /* resample_fractional.c in Sources */,
 				63468EE4572F5B3F99B52B5A /* spl_init.c in Sources */,
 				E589E7323D0AAF6DDFDBCD4F /* spl_sqrt.c in Sources */,
-				121615542B3949635552B659 /* spl_sqrt_floor.c in Sources */,
 				6BD68BC8C77C2E4C84EDFFC3 /* spl_version.c in Sources */,
 				8C0AD5AB2CF0D2B52CB9AA3C /* splitting_filter.c in Sources */,
 				F3CE87EC17203A419E35675A /* sqrt_of_one_minus_x_squared.c in Sources */,
@@ -601,6 +623,8 @@
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 					"\"_FORTIFY_SOURCE=2\"",
+					"\"WEBRTC_ARCH_ARM_V7=1\"",
+					"\"WEBRTC_ARCH_ARM_NEON=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
@@ -684,6 +708,8 @@
 					"\"__STDC_FORMAT_MACROS\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"WEBRTC_ARCH_ARM_V7=1\"",
+					"\"WEBRTC_ARCH_ARM_NEON=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
@@ -755,6 +781,7 @@
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 					"\"_FORTIFY_SOURCE=2\"",
+					"\"WEBRTC_ARCH_ARM_V7=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
@@ -824,6 +851,7 @@
 					"\"__STDC_FORMAT_MACROS\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"WEBRTC_ARCH_ARM_V7=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
@@ -914,6 +942,7 @@
 					"\"__STDC_FORMAT_MACROS\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+					"\"WEBRTC_ARCH_ARM_V7=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
