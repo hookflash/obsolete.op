@@ -215,7 +215,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, pThis->log("identit specified is not valid") + ", identity=" + identity + ", domain=" + domain)
             return IdentityPtr();
           }
-          pThis->mSession->loginWithIdentityTBD(pThis, redirectAfterLoginCompleteURL, provider, identity);
+            pThis->mSession = IServiceIdentitySession::loginWithIdentityTBD(pThis, redirectAfterLoginCompleteURL, provider, identity);
         }
 
         pThis->init();
