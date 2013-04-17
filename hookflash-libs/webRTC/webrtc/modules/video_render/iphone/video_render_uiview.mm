@@ -103,7 +103,24 @@ WebRtc_Word32 VideoChannelUIView::RenderFrame(const WebRtc_UWord32 /*streamId*/,
         }
     }
 
-    int ret = DeliverFrame(videoFrame);
+    int bufferSize = CalcBufferSize(kI420, _width, _height);
+    
+    // Allocate ARGB buffer
+    VideoFrame captureFrame;
+    captureFrame.VerifyAndAllocate(bufferSize);
+    if (!captureFrame.Buffer())
+    {
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
+                     "Failed to allocate capture frame buffer.");
+        _owner->UnlockAGLCntx();
+        return -1;
+    }
+    
+    captureFrame.SetLength(bufferSize);
+    
+    webrtc::ExtractBuffer(videoFrame, captureFrame.Length(), captureFrame.Buffer());
+
+    int ret = DeliverFrame(captureFrame.Buffer(), captureFrame.Length(), videoFrame.timestamp());
 
     _owner->UnlockAGLCntx();
     return ret;
@@ -161,9 +178,8 @@ int VideoChannelUIView::FrameSizeChange(int width, int height, int numberOfStrea
     return 0;
 }
 
-int VideoChannelUIView::DeliverFrame(I420VideoFrame& videoFrame)
+int VideoChannelUIView::DeliverFrame(unsigned char* buffer, int bufferSize, unsigned int /*timeStamp90kHz*/)
 {
-    int bufferSize = CalcBufferSize(kI420, videoFrame.width(), videoFrame.height() );
 
     _owner->LockAGLCntx();
 
@@ -186,7 +202,7 @@ int VideoChannelUIView::DeliverFrame(I420VideoFrame& videoFrame)
 
     _framesDelivered++;
 
-    webrtc::ConvertFromI420(videoFrame, kARGB, 0, captureFrame.Buffer());
+    ConvertI420ToABGR(buffer, captureFrame.Buffer(), _width, _height, 0);
 
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     

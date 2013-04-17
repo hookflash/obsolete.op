@@ -1,10 +1,10 @@
 /*
- *  Copyright 2011 The LibYuv Project Authors. All rights reserved.
+ *  Copyright (c) 2011 The LibYuv project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree. An additional intellectual property rights grant can be found
- *  in the file PATENTS. All contributing project authors may
+ *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
@@ -13,12 +13,85 @@
 #include "libyuv/basic_types.h"
 #include "libyuv/cpu_id.h"
 #include "libyuv/video_common.h"
-#include "libyuv/row.h"
+#include "row.h"
 
 #ifdef __cplusplus
 namespace libyuv {
 extern "C" {
 #endif
+
+// Note: to do this with Neon vld4.8 would load ARGB values into 4 registers
+// and vst would select which 2 components to write.  The low level would need
+// to be ARGBToBG, ARGBToGB, ARGBToRG, ARGBToGR
+
+#if defined(_M_IX86) && !defined(YUV_DISABLE_ASM)
+#define HAS_ARGBTOBAYERROW_SSSE3
+__declspec(naked)
+static void ARGBToBayerRow_SSSE3(const uint8* src_argb,
+                                 uint8* dst_bayer, uint32 selector, int pix) {
+  __asm {
+    mov        eax, [esp + 4]    // src_argb
+    mov        edx, [esp + 8]    // dst_bayer
+    movd       xmm5, [esp + 12]  // selector
+    mov        ecx, [esp + 16]   // pix
+    pshufd     xmm5, xmm5, 0
+
+  wloop:
+    movdqa     xmm0, [eax]
+    lea        eax, [eax + 16]
+    pshufb     xmm0, xmm5
+    sub        ecx, 4
+    movd       [edx], xmm0
+    lea        edx, [edx + 4]
+    jg         wloop
+    ret
+  }
+}
+
+#elif (defined(__x86_64__) || defined(__i386__)) && !defined(YUV_DISABLE_ASM)
+
+#define HAS_ARGBTOBAYERROW_SSSE3
+static void ARGBToBayerRow_SSSE3(const uint8* src_argb, uint8* dst_bayer,
+                                 uint32 selector, int pix) {
+  asm volatile (
+    "movd   %3,%%xmm5                          \n"
+    "pshufd $0x0,%%xmm5,%%xmm5                 \n"
+"1:                                            \n"
+    "movdqa (%0),%%xmm0                        \n"
+    "lea    0x10(%0),%0                        \n"
+    "pshufb %%xmm5,%%xmm0                      \n"
+    "sub    $0x4,%2                            \n"
+    "movd   %%xmm0,(%1)                        \n"
+    "lea    0x4(%1),%1                         \n"
+    "jg     1b                                 \n"
+  : "+r"(src_argb),  // %0
+    "+r"(dst_bayer), // %1
+    "+r"(pix)        // %2
+  : "g"(selector)    // %3
+  : "memory", "cc"
+#if defined(__SSE2__)
+    , "xmm0", "xmm5"
+#endif
+
+);
+}
+#endif
+
+static void ARGBToBayerRow_C(const uint8* src_argb,
+                             uint8* dst_bayer, uint32 selector, int pix) {
+  int index0 = selector & 0xff;
+  int index1 = (selector >> 8) & 0xff;
+  // Copy a row of Bayer.
+  for (int x = 0; x < pix - 1; x += 2) {
+    dst_bayer[0] = src_argb[index0];
+    dst_bayer[1] = src_argb[index1];
+    src_argb += 8;
+    dst_bayer += 2;
+  }
+  if (pix & 1) {
+    dst_bayer[0] = src_argb[index0];
+  }
+}
 
 // generate a selector mask useful for pshufb
 static uint32 GenerateSelector(int select0, int select1) {
@@ -53,13 +126,12 @@ static int MakeSelectors(const int blue_index,
       index_map[1] = GenerateSelector(blue_index, green_index);
       break;
     default:
-      return -1;  // Bad FourCC
+      return -1; // Bad FourCC
   }
   return 0;
 }
 
 // Converts 32 bit ARGB to Bayer RGB formats.
-LIBYUV_API
 int ARGBToBayer(const uint8* src_argb, int src_stride_argb,
                 uint8* dst_bayer, int dst_stride_bayer,
                 int width, int height,
@@ -69,31 +141,25 @@ int ARGBToBayer(const uint8* src_argb, int src_stride_argb,
     src_argb = src_argb + (height - 1) * src_stride_argb;
     src_stride_argb = -src_stride_argb;
   }
-  void (*ARGBToBayerRow)(const uint8* src_argb, uint8* dst_bayer,
-                         uint32 selector, int pix) = ARGBToBayerRow_C;
+  void (*ARGBToBayerRow)(const uint8* src_argb,
+                         uint8* dst_bayer, uint32 selector, int pix);
 #if defined(HAS_ARGBTOBAYERROW_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && width >= 8 &&
+  if (TestCpuFlag(kCpuHasSSSE3) &&
+      IS_ALIGNED(width, 4) &&
       IS_ALIGNED(src_argb, 16) && IS_ALIGNED(src_stride_argb, 16)) {
-    ARGBToBayerRow = ARGBToBayerRow_Any_SSSE3;
-    if (IS_ALIGNED(width, 8)) {
-      ARGBToBayerRow = ARGBToBayerRow_SSSE3;
-    }
-  }
-#elif defined(HAS_ARGBTOBAYERROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && width >= 4) {
-    ARGBToBayerRow = ARGBToBayerRow_Any_NEON;
-    if (IS_ALIGNED(width, 4)) {
-      ARGBToBayerRow = ARGBToBayerRow_NEON;
-    }
-  }
+    ARGBToBayerRow = ARGBToBayerRow_SSSE3;
+  } else
 #endif
+  {
+    ARGBToBayerRow = ARGBToBayerRow_C;
+  }
   const int blue_index = 0;  // Offsets for ARGB format
   const int green_index = 1;
   const int red_index = 2;
   uint32 index_map[2];
   if (MakeSelectors(blue_index, green_index, red_index,
                     dst_fourcc_bayer, index_map)) {
-    return -1;  // Bad FourCC
+    return -1; // Bad FourCC
   }
 
   for (int y = 0; y < height; ++y) {
@@ -104,7 +170,7 @@ int ARGBToBayer(const uint8* src_argb, int src_stride_argb,
   return 0;
 }
 
-#define AVG(a, b) (((a) + (b)) >> 1)
+#define AVG(a,b) (((a) + (b)) >> 1)
 
 static void BayerRowBG(const uint8* src_bayer0, int src_stride_bayer,
                        uint8* dst_argb, int pix) {
@@ -231,7 +297,6 @@ static void BayerRowGR(const uint8* src_bayer0, int src_stride_bayer,
 }
 
 // Converts any Bayer RGB format to ARGB.
-LIBYUV_API
 int BayerToARGB(const uint8* src_bayer, int src_stride_bayer,
                 uint8* dst_argb, int dst_stride_argb,
                 int width, int height,
@@ -274,13 +339,12 @@ int BayerToARGB(const uint8* src_bayer, int src_stride_bayer,
     dst_argb += dst_stride_argb * 2;
   }
   if (height & 1) {
-    BayerRow0(src_bayer, src_stride_bayer, dst_argb, width);
+    BayerRow0(src_bayer, -src_stride_bayer, dst_argb, width);
   }
   return 0;
 }
 
 // Converts any Bayer RGB format to ARGB.
-LIBYUV_API
 int BayerToI420(const uint8* src_bayer, int src_stride_bayer,
                 uint8* dst_y, int dst_stride_y,
                 uint8* dst_u, int dst_stride_u,
@@ -305,37 +369,29 @@ int BayerToI420(const uint8* src_bayer, int src_stride_bayer,
                     uint8* dst_argb, int pix);
   void (*BayerRow1)(const uint8* src_bayer, int src_stride_bayer,
                     uint8* dst_argb, int pix);
-
+  void (*ARGBToYRow)(const uint8* src_argb, uint8* dst_y, int pix);
   void (*ARGBToUVRow)(const uint8* src_argb0, int src_stride_argb,
-                      uint8* dst_u, uint8* dst_v, int width) = ARGBToUVRow_C;
-  void (*ARGBToYRow)(const uint8* src_argb, uint8* dst_y, int pix) =
-      ARGBToYRow_C;
+                      uint8* dst_u, uint8* dst_v, int width);
+  SIMD_ALIGNED(uint8 row[kMaxStride * 2]);
+
 #if defined(HAS_ARGBTOYROW_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && width >= 16) {
-    ARGBToUVRow = ARGBToUVRow_Any_SSSE3;
-    ARGBToYRow = ARGBToYRow_Any_SSSE3;
-    if (IS_ALIGNED(width, 16)) {
-      ARGBToYRow = ARGBToYRow_Unaligned_SSSE3;
-      ARGBToUVRow = ARGBToUVRow_SSSE3;
-      if (IS_ALIGNED(dst_y, 16) && IS_ALIGNED(dst_stride_y, 16)) {
-        ARGBToYRow = ARGBToYRow_SSSE3;
-      }
-    }
-  }
-#elif defined(HAS_ARGBTOYROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && width >= 8) {
-    ARGBToYRow = ARGBToYRow_Any_NEON;
-    if (IS_ALIGNED(width, 8)) {
-      ARGBToYRow = ARGBToYRow_NEON;
-    }
-    if (width >= 16) {
-      ARGBToUVRow = ARGBToUVRow_Any_NEON;
-      if (IS_ALIGNED(width, 16)) {
-        ARGBToUVRow = ARGBToUVRow_NEON;
-      }
-    }
-  }
+  if (TestCpuFlag(kCpuHasSSSE3) &&
+      IS_ALIGNED(width, 16) &&
+      IS_ALIGNED(dst_y, 16) && IS_ALIGNED(dst_stride_y, 16)) {
+    ARGBToYRow = ARGBToYRow_SSSE3;
+  } else
 #endif
+  {
+    ARGBToYRow = ARGBToYRow_C;
+  }
+#if defined(HAS_ARGBTOUVROW_SSSE3)
+  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 16)) {
+    ARGBToUVRow = ARGBToUVRow_SSSE3;
+  } else
+#endif
+  {
+    ARGBToUVRow = ARGBToUVRow_C;
+  }
 
   switch (src_fourcc_bayer) {
     case FOURCC_BGGR:
@@ -355,10 +411,9 @@ int BayerToI420(const uint8* src_bayer, int src_stride_bayer,
       BayerRow1 = BayerRowGB;
       break;
     default:
-      return -1;  // Bad FourCC
+      return -1;    // Bad FourCC
   }
 
-  SIMD_ALIGNED(uint8 row[kMaxStride * 2]);
   for (int y = 0; y < height - 1; y += 2) {
     BayerRow0(src_bayer, src_stride_bayer, row, width);
     BayerRow1(src_bayer + src_stride_bayer, -src_stride_bayer,
@@ -380,7 +435,6 @@ int BayerToI420(const uint8* src_bayer, int src_stride_bayer,
 }
 
 // Convert I420 to Bayer.
-LIBYUV_API
 int I420ToBayer(const uint8* src_y, int src_stride_y,
                 const uint8* src_u, int src_stride_u,
                 const uint8* src_v, int src_stride_v,
@@ -398,53 +452,34 @@ int I420ToBayer(const uint8* src_y, int src_stride_y,
     src_stride_u = -src_stride_u;
     src_stride_v = -src_stride_v;
   }
-  void (*I422ToARGBRow)(const uint8* y_buf,
-                        const uint8* u_buf,
-                        const uint8* v_buf,
-                        uint8* rgb_buf,
-                        int width) = I422ToARGBRow_C;
-#if defined(HAS_I422TOARGBROW_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && width >= 8) {
-    I422ToARGBRow = I422ToARGBRow_Any_SSSE3;
-    if (IS_ALIGNED(width, 8)) {
-      I422ToARGBRow = I422ToARGBRow_SSSE3;
-    }
-  }
-#elif defined(HAS_I422TOARGBROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && width >= 8) {
-    I422ToARGBRow = I422ToARGBRow_Any_NEON;
-    if (IS_ALIGNED(width, 8)) {
-      I422ToARGBRow = I422ToARGBRow_NEON;
-    }
-  }
-#elif defined(HAS_I422TOARGBROW_MIPS_DSPR2)
-  if (TestCpuFlag(kCpuHasMIPS_DSPR2) && IS_ALIGNED(width, 4) &&
-      IS_ALIGNED(src_y, 4) && IS_ALIGNED(src_stride_y, 4) &&
-      IS_ALIGNED(src_u, 2) && IS_ALIGNED(src_stride_u, 2) &&
-      IS_ALIGNED(src_v, 2) && IS_ALIGNED(src_stride_v, 2)) {
-    I422ToARGBRow = I422ToARGBRow_MIPS_DSPR2;
-  }
+  void (*I420ToARGBRow)(const uint8* y_buf,
+                                  const uint8* u_buf,
+                                  const uint8* v_buf,
+                                  uint8* rgb_buf,
+                                  int width);
+#if defined(HAS_I420TOARGBROW_NEON)
+  if (TestCpuFlag(kCpuHasNEON)) {
+    I420ToARGBRow = I420ToARGBRow_NEON;
+  } else
+#elif defined(HAS_I420TOARGBROW_SSSE3)
+  if (TestCpuFlag(kCpuHasSSSE3)) {
+    I420ToARGBRow = I420ToARGBRow_SSSE3;
+  } else
 #endif
-
+  {
+    I420ToARGBRow = I420ToARGBRow_C;
+  }
   SIMD_ALIGNED(uint8 row[kMaxStride]);
-  void (*ARGBToBayerRow)(const uint8* src_argb, uint8* dst_bayer,
-                         uint32 selector, int pix) = ARGBToBayerRow_C;
+  void (*ARGBToBayerRow)(const uint8* src_argb,
+                         uint8* dst_bayer, uint32 selector, int pix);
 #if defined(HAS_ARGBTOBAYERROW_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && width >= 8) {
-    ARGBToBayerRow = ARGBToBayerRow_Any_SSSE3;
-    if (IS_ALIGNED(width, 8)) {
-      ARGBToBayerRow = ARGBToBayerRow_SSSE3;
-    }
-  }
-#elif defined(HAS_ARGBTOBAYERROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && width >= 4) {
-    ARGBToBayerRow = ARGBToBayerRow_Any_NEON;
-    if (IS_ALIGNED(width, 4)) {
-      ARGBToBayerRow = ARGBToBayerRow_NEON;
-    }
-  }
+  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 4)) {
+    ARGBToBayerRow = ARGBToBayerRow_SSSE3;
+  } else
 #endif
-
+  {
+    ARGBToBayerRow = ARGBToBayerRow_C;
+  }
   const int blue_index = 0;  // Offsets for ARGB format
   const int green_index = 1;
   const int red_index = 2;
@@ -455,7 +490,7 @@ int I420ToBayer(const uint8* src_y, int src_stride_y,
   }
 
   for (int y = 0; y < height; ++y) {
-    I422ToARGBRow(src_y, src_u, src_v, row, width);
+    I420ToARGBRow(src_y, src_u, src_v, row, width);
     ARGBToBayerRow(row, dst_bayer, index_map[y & 1], width);
     dst_bayer += dst_stride_bayer;
     src_y += src_stride_y;
@@ -468,7 +503,6 @@ int I420ToBayer(const uint8* src_y, int src_stride_y,
 }
 
 #define MAKEBAYERFOURCC(BAYER)                                                 \
-LIBYUV_API                                                                     \
 int Bayer##BAYER##ToI420(const uint8* src_bayer, int src_stride_bayer,         \
                          uint8* dst_y, int dst_stride_y,                       \
                          uint8* dst_u, int dst_stride_u,                       \
@@ -482,7 +516,6 @@ int Bayer##BAYER##ToI420(const uint8* src_bayer, int src_stride_bayer,         \
                      FOURCC_##BAYER);                                          \
 }                                                                              \
                                                                                \
-LIBYUV_API                                                                     \
 int I420ToBayer##BAYER(const uint8* src_y, int src_stride_y,                   \
                        const uint8* src_u, int src_stride_u,                   \
                        const uint8* src_v, int src_stride_v,                   \
@@ -496,7 +529,6 @@ int I420ToBayer##BAYER(const uint8* src_y, int src_stride_y,                   \
                      FOURCC_##BAYER);                                          \
 }                                                                              \
                                                                                \
-LIBYUV_API                                                                     \
 int ARGBToBayer##BAYER(const uint8* src_argb, int src_stride_argb,             \
                        uint8* dst_bayer, int dst_stride_bayer,                 \
                        int width, int height) {                                \
@@ -506,7 +538,6 @@ int ARGBToBayer##BAYER(const uint8* src_argb, int src_stride_argb,             \
                      FOURCC_##BAYER);                                          \
 }                                                                              \
                                                                                \
-LIBYUV_API                                                                     \
 int Bayer##BAYER##ToARGB(const uint8* src_bayer, int src_stride_bayer,         \
                          uint8* dst_argb, int dst_stride_argb,                 \
                          int width, int height) {                              \

@@ -43,7 +43,7 @@ public:
     virtual ~VideoChannelUIView();
 
     // A new frame is delivered
-    virtual int DeliverFrame(I420VideoFrame& videoFrame);
+    virtual int DeliverFrame(unsigned char* buffer, int bufferSize, unsigned int timeStamp90kHz);
 
     // Called when the incomming frame size and/or number of streams in mix changes
     virtual int FrameSizeChange(int width, int height, int numberOfStreams);

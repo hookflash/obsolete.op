@@ -1,21 +1,18 @@
 /*
- *  Copyright 2012 The LibYuv Project Authors. All rights reserved.
+ *  Copyright (c) 2012 The LibYuv project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree. An additional intellectual property rights grant can be found
- *  in the file PATENTS. All contributing project authors may
+ *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef INCLUDE_LIBYUV_MJPEG_DECODER_H_  // NOLINT
-#define INCLUDE_LIBYUV_MJPEG_DECODER_H_
-
-#ifdef __cplusplus
+#ifndef LIBYUV_MJPEG_DECODER_H_
+#define LIBYUV_MJPEG_DECODER_H_
 
 #include "libyuv/basic_types.h"
-
-// NOTE: For a simplified public API use convert.h MJPGToI420().
+#include "libyuv/scoped_ptr.h"
 
 struct jpeg_common_struct;
 struct jpeg_decompress_struct;
@@ -28,7 +25,7 @@ static const uint32 kUnknownDataSize = 0xFFFFFFFF;
 enum JpegSubsamplingType {
   kJpegYuv420,
   kJpegYuv422,
-  kJpegYuv411,
+  kJpegYuv411,   // TODO(fbarchard): Test 411
   kJpegYuv444,
   kJpegYuv400,
   kJpegUnknown
@@ -46,7 +43,7 @@ struct SetJmpErrorMgr;
 class MJpegDecoder {
  public:
   typedef void (*CallbackFunction)(void* opaque,
-                                   const uint8* const* data,
+                                   const uint8*  const * data,
                                    const int* strides,
                                    int rows);
 
@@ -89,10 +86,10 @@ class MJpegDecoder {
 
   int GetVertSubSampFactor(int component);
 
-  // Public for testability.
+  // Public for testability
   int GetImageScanlinesPerImcuRow();
 
-  // Public for testability.
+  // Public for testability
   int GetComponentScanlinesPerImcuRow(int component);
 
   // Width of a component in bytes.
@@ -138,19 +135,18 @@ class MJpegDecoder {
   };
 
   struct BufferVector {
-    Buffer* buffers;
+    Buffer *buffers;
     int len;
     int pos;
   };
 
   // Methods that are passed to jpeglib.
-  static int fill_input_buffer(jpeg_decompress_struct* cinfo);
-  static void init_source(jpeg_decompress_struct* cinfo);
-  static void skip_input_data(jpeg_decompress_struct* cinfo,
-                              long num_bytes);  // NOLINT
-  static void term_source(jpeg_decompress_struct* cinfo);
+  static int fill_input_buffer(jpeg_decompress_struct *cinfo);
+  static void init_source(jpeg_decompress_struct *cinfo);
+  static void skip_input_data(jpeg_decompress_struct *cinfo, long num_bytes);
+  static void term_source(jpeg_decompress_struct *cinfo);
 
-  static void ErrorHandler(jpeg_common_struct* cinfo);
+  static void ErrorHandler(jpeg_common_struct *cinfo);
 
   void AllocOutputBuffers(int num_outbufs);
   void DestroyOutputBuffers();
@@ -167,9 +163,9 @@ class MJpegDecoder {
   Buffer buf_;
   BufferVector buf_vec_;
 
-  jpeg_decompress_struct* decompress_struct_;
-  jpeg_source_mgr* source_mgr_;
-  SetJmpErrorMgr* error_mgr_;
+  libyuv::scoped_ptr<jpeg_decompress_struct> decompress_struct_;
+  libyuv::scoped_ptr<jpeg_source_mgr> source_mgr_;
+  libyuv::scoped_ptr<SetJmpErrorMgr> error_mgr_;
 
   // true iff at least one component has scanline padding. (i.e.,
   // GetComponentScanlinePadding() != 0.)
@@ -177,7 +173,7 @@ class MJpegDecoder {
 
   // Temporaries used to point to scanline outputs.
   int num_outbufs_;  // Outermost size of all arrays below.
-  uint8*** scanlines_;
+  uint8** *scanlines_;
   int* scanlines_sizes_;
   // Temporary buffer used for decoding when we can't decode directly to the
   // output buffers. Large enough for just one iMCU row.
@@ -187,5 +183,4 @@ class MJpegDecoder {
 
 }  // namespace libyuv
 
-#endif  //  __cplusplus
-#endif  // INCLUDE_LIBYUV_MJPEG_DECODER_H_  NOLINT
+#endif  // LIBYUV_MJPEG_DECODER_H_

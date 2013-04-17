@@ -8,10 +8,6 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#ifndef INCLUDE_LIBYUV_VERSION_H_
-#define INCLUDE_LIBYUV_VERSION_H_
-
-#define LIBYUV_VERSION 216
-
-#endif  // INCLUDE_LIBYUV_VERSION_H_
+// TODO(fbarchard): Remove once builds have switched to convert_from
+#include "convert_from.cc"
 

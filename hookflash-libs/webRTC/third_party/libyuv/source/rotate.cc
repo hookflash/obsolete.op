@@ -1,10 +1,10 @@
 /*
- *  Copyright 2011 The LibYuv Project Authors. All rights reserved.
+ *  Copyright (c) 2011 The LibYuv project authors. All Rights Reserved.
  *
  *  Use of this source code is governed by a BSD-style license
  *  that can be found in the LICENSE file in the root of the source
  *  tree. An additional intellectual property rights grant can be found
- *  in the file PATENTS. All contributing project authors may
+ *  in the file PATENTS.  All contributing project authors may
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
@@ -13,22 +13,23 @@
 #include "libyuv/cpu_id.h"
 #include "libyuv/convert.h"
 #include "libyuv/planar_functions.h"
-#include "libyuv/row.h"
+#include "rotate_priv.h"
+#include "row.h"
 
 #ifdef __cplusplus
 namespace libyuv {
 extern "C" {
 #endif
 
-#if !defined(LIBYUV_DISABLE_X86) && \
-    (defined(_M_IX86) || defined(__x86_64__) || defined(__i386__))
+#if (defined(_M_IX86) || defined(__x86_64__) || defined(__i386__)) && \
+    !defined(YUV_DISABLE_ASM)
 #if defined(__APPLE__) && defined(__i386__)
 #define DECLARE_FUNCTION(name)                                                 \
     ".text                                     \n"                             \
     ".private_extern _" #name "                \n"                             \
     ".align 4,0x90                             \n"                             \
 "_" #name ":                                   \n"
-#elif defined(__MINGW32__) || defined(__CYGWIN__) && defined(__i386__)
+#elif (defined(__MINGW32__) || defined(__CYGWIN__)) && defined(__i386__)
 #define DECLARE_FUNCTION(name)                                                 \
     ".text                                     \n"                             \
     ".align 4,0x90                             \n"                             \
@@ -41,12 +42,23 @@ extern "C" {
 #endif
 #endif
 
-#if !defined(LIBYUV_DISABLE_NEON) && \
-    (defined(__ARM_NEON__) || defined(LIBYUV_NEON))
+typedef void (*mirror_uv_func)(const uint8*, uint8*, uint8*, int);
+typedef void (*rotate_uv_wx8_func)(const uint8*, int,
+                                   uint8*, int,
+                                   uint8*, int, int);
+typedef void (*rotate_uv_wxh_func)(const uint8*, int,
+                                   uint8*, int,
+                                   uint8*, int, int, int);
+typedef void (*rotate_wx8_func)(const uint8*, int, uint8*, int, int);
+typedef void (*rotate_wxh_func)(const uint8*, int, uint8*, int, int, int);
+
+#ifdef __ARM_NEON__
 #define HAS_MIRRORROW_NEON
 void MirrorRow_NEON(const uint8* src, uint8* dst, int width);
 #define HAS_MIRRORROW_UV_NEON
-void MirrorUVRow_NEON(const uint8* src, uint8* dst_a, uint8* dst_b, int width);
+void MirrorRowUV_NEON(const uint8* src,
+                        uint8* dst_a, uint8* dst_b,
+                        int width);
 #define HAS_TRANSPOSE_WX8_NEON
 void TransposeWx8_NEON(const uint8* src, int src_stride,
                        uint8* dst, int dst_stride, int width);
@@ -55,26 +67,11 @@ void TransposeUVWx8_NEON(const uint8* src, int src_stride,
                          uint8* dst_a, int dst_stride_a,
                          uint8* dst_b, int dst_stride_b,
                          int width);
-#endif  // defined(__ARM_NEON__)
+#endif
 
-#if !defined(LIBYUV_DISABLE_MIPS) && defined(__mips__) && \
-    defined(__mips_dsp) && (__mips_dsp_rev >= 2)
-#define HAS_TRANSPOSE_WX8_MIPS_DSPR2
-void TransposeWx8_MIPS_DSPR2(const uint8* src, int src_stride,
-                             uint8* dst, int dst_stride, int width);
-
-void TransposeWx8_FAST_MIPS_DSPR2(const uint8* src, int src_stride,
-                                  uint8* dst, int dst_stride, int width);
-#define HAS_TRANSPOSE_UVWx8_MIPS_DSPR2
-void TransposeUVWx8_MIPS_DSPR2(const uint8* src, int src_stride,
-                               uint8* dst_a, int dst_stride_a,
-                               uint8* dst_b, int dst_stride_b,
-                               int width);
-#endif  // defined(__mips__)
-
-#if !defined(LIBYUV_DISABLE_X86) && defined(_M_IX86)
+#if defined(_M_IX86) && !defined(YUV_DISABLE_ASM)
 #define HAS_TRANSPOSE_WX8_SSSE3
-__declspec(naked) __declspec(align(16))
+__declspec(naked)
 static void TransposeWx8_SSSE3(const uint8* src, int src_stride,
                                uint8* dst, int dst_stride, int width) {
   __asm {
@@ -166,7 +163,7 @@ static void TransposeWx8_SSSE3(const uint8* src, int src_stride,
 }
 
 #define HAS_TRANSPOSE_UVWX8_SSE2
-__declspec(naked) __declspec(align(16))
+__declspec(naked)
 static void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
                                 uint8* dst_a, int dst_stride_a,
                                 uint8* dst_b, int dst_stride_b,
@@ -294,14 +291,13 @@ static void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
     ret
   }
 }
-#elif !defined(LIBYUV_DISABLE_X86) && (defined(__i386__) || defined(__x86_64__))
+#elif (defined(__i386__) || defined(__x86_64__)) && !defined(YUV_DISABLE_ASM)
 #define HAS_TRANSPOSE_WX8_SSSE3
 static void TransposeWx8_SSSE3(const uint8* src, int src_stride,
                                uint8* dst, int dst_stride, int width) {
   asm volatile (
     // Read in the data from the source pointer.
     // First round of bit swap.
-    ".p2align  4                                 \n"
   "1:                                            \n"
     "movq       (%0),%%xmm0                      \n"
     "movq       (%0,%3),%%xmm1                   \n"
@@ -383,7 +379,7 @@ static void TransposeWx8_SSSE3(const uint8* src, int src_stride,
   );
 }
 
-#if !defined(LIBYUV_DISABLE_X86) && defined (__i386__)
+#if defined (__i386__)
 #define HAS_TRANSPOSE_UVWX8_SSE2
 extern "C" void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
                                     uint8* dst_a, int dst_stride_a,
@@ -505,7 +501,7 @@ extern "C" void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
     "pop    %ebx                               \n"
     "ret                                       \n"
 );
-#elif !defined(LIBYUV_DISABLE_X86) && defined(__x86_64__)
+#elif defined (__x86_64__)
 // 64 bit version has enough registers to do 16x8 to 8x16 at a time.
 #define HAS_TRANSPOSE_WX8_FAST_SSSE3
 static void TransposeWx8_FAST_SSSE3(const uint8* src, int src_stride,
@@ -513,7 +509,6 @@ static void TransposeWx8_FAST_SSSE3(const uint8* src, int src_stride,
   asm volatile (
   // Read in the data from the source pointer.
   // First round of bit swap.
-  ".p2align  4                                 \n"
 "1:                                            \n"
   "movdqa     (%0),%%xmm0                      \n"
   "movdqa     (%0,%3),%%xmm1                   \n"
@@ -654,7 +649,6 @@ static void TransposeUVWx8_SSE2(const uint8* src, int src_stride,
   asm volatile (
   // Read in the data from the source pointer.
   // First round of bit swap.
-  ".p2align  4                                 \n"
 "1:                                            \n"
   "movdqa     (%0),%%xmm0                      \n"
   "movdqa     (%0,%4),%%xmm1                   \n"
@@ -779,181 +773,124 @@ static void TransposeWx8_C(const uint8* src, int src_stride,
 static void TransposeWxH_C(const uint8* src, int src_stride,
                            uint8* dst, int dst_stride,
                            int width, int height) {
-  for (int i = 0; i < width; ++i) {
-    for (int j = 0; j < height; ++j) {
+  for (int i = 0; i < width; ++i)
+    for (int j = 0; j < height; ++j)
       dst[i * dst_stride + j] = src[j * src_stride + i];
-    }
-  }
 }
 
-LIBYUV_API
 void TransposePlane(const uint8* src, int src_stride,
                     uint8* dst, int dst_stride,
                     int width, int height) {
-  void (*TransposeWx8)(const uint8* src, int src_stride,
-                       uint8* dst, int dst_stride,
-                       int width) = TransposeWx8_C;
+  int i = height;
+  rotate_wx8_func TransposeWx8;
+  rotate_wxh_func TransposeWxH;
+
 #if defined(HAS_TRANSPOSE_WX8_NEON)
   if (TestCpuFlag(kCpuHasNEON)) {
     TransposeWx8 = TransposeWx8_NEON;
-  }
-#endif
-#if defined(HAS_TRANSPOSE_WX8_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 8)) {
-    TransposeWx8 = TransposeWx8_SSSE3;
-  }
+    TransposeWxH = TransposeWxH_C;
+  } else
 #endif
 #if defined(HAS_TRANSPOSE_WX8_FAST_SSSE3)
   if (TestCpuFlag(kCpuHasSSSE3) &&
       IS_ALIGNED(width, 16) &&
       IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16)) {
     TransposeWx8 = TransposeWx8_FAST_SSSE3;
-  }
+    TransposeWxH = TransposeWxH_C;
+  } else
 #endif
-#if defined(HAS_TRANSPOSE_WX8_MIPS_DSPR2)
-  if (TestCpuFlag(kCpuHasMIPS_DSPR2)) {
-    if (IS_ALIGNED(width, 4) &&
-        IS_ALIGNED(src, 4) && IS_ALIGNED(src_stride, 4)) {
-      TransposeWx8 = TransposeWx8_FAST_MIPS_DSPR2;
-    } else {
-      TransposeWx8 = TransposeWx8_MIPS_DSPR2;
-    }
-  }
+#if defined(HAS_TRANSPOSE_WX8_SSSE3)
+  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 8)) {
+    TransposeWx8 = TransposeWx8_SSSE3;
+    TransposeWxH = TransposeWxH_C;
+  } else
 #endif
+  {
+    TransposeWx8 = TransposeWx8_C;
+    TransposeWxH = TransposeWxH_C;
+  }
 
-  // Work across the source in 8x8 tiles
-  int i = height;
+  // work across the source in 8x8 tiles
   while (i >= 8) {
     TransposeWx8(src, src_stride, dst, dst_stride, width);
-    src += 8 * src_stride;    // Go down 8 rows.
-    dst += 8;                 // Move over 8 columns.
-    i -= 8;
+
+    src += 8 * src_stride;    // go down 8 rows
+    dst += 8;                 // move over 8 columns
+    i   -= 8;
   }
 
-  TransposeWxH_C(src, src_stride, dst, dst_stride, width, i);
+  TransposeWxH(src, src_stride, dst, dst_stride, width, i);
 }
 
-LIBYUV_API
 void RotatePlane90(const uint8* src, int src_stride,
                    uint8* dst, int dst_stride,
                    int width, int height) {
   // Rotate by 90 is a transpose with the source read
-  // from bottom to top. So set the source pointer to the end
+  // from bottom to top.  So set the source pointer to the end
   // of the buffer and flip the sign of the source stride.
   src += src_stride * (height - 1);
   src_stride = -src_stride;
+
   TransposePlane(src, src_stride, dst, dst_stride, width, height);
 }
 
-LIBYUV_API
 void RotatePlane270(const uint8* src, int src_stride,
                     uint8* dst, int dst_stride,
                     int width, int height) {
   // Rotate by 270 is a transpose with the destination written
-  // from bottom to top. So set the destination pointer to the end
+  // from bottom to top.  So set the destination pointer to the end
   // of the buffer and flip the sign of the destination stride.
   dst += dst_stride * (width - 1);
   dst_stride = -dst_stride;
+
   TransposePlane(src, src_stride, dst, dst_stride, width, height);
 }
 
-LIBYUV_API
 void RotatePlane180(const uint8* src, int src_stride,
                     uint8* dst, int dst_stride,
                     int width, int height) {
-  void (*MirrorRow)(const uint8* src, uint8* dst, int width) = MirrorRow_C;
+  void (*MirrorRow)(const uint8* src, uint8* dst, int width);
 #if defined(HAS_MIRRORROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && IS_ALIGNED(width, 16)) {
+  if (TestCpuFlag(kCpuHasNEON)) {
     MirrorRow = MirrorRow_NEON;
-  }
-#endif
-#if defined(HAS_MIRRORROW_SSE2)
-  if (TestCpuFlag(kCpuHasSSE2) && IS_ALIGNED(width, 16) &&
-      IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16) &&
-      IS_ALIGNED(dst, 16) && IS_ALIGNED(dst_stride, 16)) {
-    MirrorRow = MirrorRow_SSE2;
-  }
+  } else
 #endif
 #if defined(HAS_MIRRORROW_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 16) &&
+  if (TestCpuFlag(kCpuHasSSSE3) &&
+      IS_ALIGNED(width, 16) &&
       IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16) &&
       IS_ALIGNED(dst, 16) && IS_ALIGNED(dst_stride, 16)) {
     MirrorRow = MirrorRow_SSSE3;
-  }
+  } else
 #endif
-#if defined(HAS_MIRRORROW_AVX2)
-  bool clear = false;
-  if (TestCpuFlag(kCpuHasAVX2) && IS_ALIGNED(width, 32)) {
-    clear = true;
-    MirrorRow = MirrorRow_AVX2;
-  }
-#endif
-#if defined(HAS_MIRRORROW_MIPS_DSPR2)
-  if (TestCpuFlag(kCpuHasMIPS_DSPR2) &&
-      IS_ALIGNED(src, 4) && IS_ALIGNED(src_stride, 4) &&
-      IS_ALIGNED(dst, 4) && IS_ALIGNED(dst_stride, 4)) {
-    MirrorRow = MirrorRow_MIPS_DSPR2;
-  }
-#endif
-  void (*CopyRow)(const uint8* src, uint8* dst, int width) = CopyRow_C;
-#if defined(HAS_COPYROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && IS_ALIGNED(width, 32)) {
-    CopyRow = CopyRow_NEON;
-  }
-#endif
-#if defined(HAS_COPYROW_X86)
-  if (TestCpuFlag(kCpuHasX86) && IS_ALIGNED(width, 4)) {
-    CopyRow = CopyRow_X86;
-  }
-#endif
-#if defined(HAS_COPYROW_SSE2)
-  if (TestCpuFlag(kCpuHasSSE2) && IS_ALIGNED(width, 32) &&
+#if defined(HAS_MIRRORROW_SSE2)
+  if (TestCpuFlag(kCpuHasSSE2) &&
+      IS_ALIGNED(width, 16) &&
       IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16) &&
       IS_ALIGNED(dst, 16) && IS_ALIGNED(dst_stride, 16)) {
-    CopyRow = CopyRow_SSE2;
-  }
+    MirrorRow = MirrorRow_SSE2;
+  } else
 #endif
-#if defined(HAS_COPYROW_AVX2)
-  // TODO(fbarchard): Detect Fast String support.
-  if (TestCpuFlag(kCpuHasAVX2)) {
-    CopyRow = CopyRow_AVX2;
+  {
+    MirrorRow = MirrorRow_C;
   }
-#endif
-#if defined(HAS_COPYROW_MIPS)
-  if (TestCpuFlag(kCpuHasMIPS)) {
-    CopyRow = CopyRow_MIPS;
-  }
-#endif
-  if (width > kMaxStride) {
-    return;
-  }
-  // Swap first and last row and mirror the content. Uses a temporary row.
-  SIMD_ALIGNED(uint8 row[kMaxStride]);
-  const uint8* src_bot = src + src_stride * (height - 1);
-  uint8* dst_bot = dst + dst_stride * (height - 1);
-  int half_height = (height + 1) >> 1;
-  // Odd height will harmlessly mirror the middle row twice.
-  for (int y = 0; y < half_height; ++y) {
-    MirrorRow(src, row, width);  // Mirror first row into a buffer
-    src += src_stride;
-    MirrorRow(src_bot, dst, width);  // Mirror last row into first row
+
+  // Rotate by 180 is a mirror and vertical flip
+  src += src_stride * (height - 1);
+
+  for (int y = 0; y < height; ++y) {
+    MirrorRow(src, dst, width);
+    src -= src_stride;
     dst += dst_stride;
-    CopyRow(row, dst_bot, width);  // Copy first mirrored row into last
-    src_bot -= src_stride;
-    dst_bot -= dst_stride;
   }
-#if defined(HAS_MIRRORROW_AVX2)
-  if (clear) {
-    __asm vzeroupper;
-  }
-#endif
 }
 
 static void TransposeUVWx8_C(const uint8* src, int src_stride,
                              uint8* dst_a, int dst_stride_a,
                              uint8* dst_b, int dst_stride_b,
                              int width) {
-  for (int i = 0; i < width; ++i) {
+  int i;
+  for (i = 0; i < width; ++i) {
     dst_a[0] = src[0 * src_stride + 0];
     dst_b[0] = src[0 * src_stride + 1];
     dst_a[1] = src[1 * src_stride + 0];
@@ -980,59 +917,61 @@ static void TransposeUVWxH_C(const uint8* src, int src_stride,
                              uint8* dst_a, int dst_stride_a,
                              uint8* dst_b, int dst_stride_b,
                              int width, int height) {
-  for (int i = 0; i < width * 2; i += 2)
-    for (int j = 0; j < height; ++j) {
+  int i, j;
+  for (i = 0; i < width * 2; i += 2)
+    for (j = 0; j < height; ++j) {
       dst_a[j + ((i >> 1) * dst_stride_a)] = src[i + (j * src_stride)];
       dst_b[j + ((i >> 1) * dst_stride_b)] = src[i + (j * src_stride) + 1];
     }
 }
 
-LIBYUV_API
 void TransposeUV(const uint8* src, int src_stride,
                  uint8* dst_a, int dst_stride_a,
                  uint8* dst_b, int dst_stride_b,
                  int width, int height) {
-  void (*TransposeUVWx8)(const uint8* src, int src_stride,
-                         uint8* dst_a, int dst_stride_a,
-                         uint8* dst_b, int dst_stride_b,
-                         int width) = TransposeUVWx8_C;
+  int i = height;
+  rotate_uv_wx8_func TransposeWx8;
+  rotate_uv_wxh_func TransposeWxH;
+
 #if defined(HAS_TRANSPOSE_UVWX8_NEON)
   if (TestCpuFlag(kCpuHasNEON)) {
-    TransposeUVWx8 = TransposeUVWx8_NEON;
-  }
-#elif defined(HAS_TRANSPOSE_UVWX8_SSE2)
+    TransposeWx8 = TransposeUVWx8_NEON;
+    TransposeWxH = TransposeUVWxH_C;
+  } else
+#endif
+#if defined(HAS_TRANSPOSE_UVWX8_SSE2)
   if (TestCpuFlag(kCpuHasSSE2) &&
       IS_ALIGNED(width, 8) &&
       IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16)) {
-    TransposeUVWx8 = TransposeUVWx8_SSE2;
-  }
-#elif defined(HAS_TRANSPOSE_UVWx8_MIPS_DSPR2)
-  if (TestCpuFlag(kCpuHasMIPS_DSPR2) && IS_ALIGNED(width, 2) &&
-      IS_ALIGNED(src, 4) && IS_ALIGNED(src_stride, 4)) {
-    TransposeUVWx8 = TransposeUVWx8_MIPS_DSPR2;
-  }
+    TransposeWx8 = TransposeUVWx8_SSE2;
+    TransposeWxH = TransposeUVWxH_C;
+  } else
 #endif
-
-  // Work through the source in 8x8 tiles.
-  int i = height;
-  while (i >= 8) {
-    TransposeUVWx8(src, src_stride,
-                   dst_a, dst_stride_a,
-                   dst_b, dst_stride_b,
-                   width);
-    src += 8 * src_stride;    // Go down 8 rows.
-    dst_a += 8;               // Move over 8 columns.
-    dst_b += 8;               // Move over 8 columns.
-    i -= 8;
+  {
+    TransposeWx8 = TransposeUVWx8_C;
+    TransposeWxH = TransposeUVWxH_C;
   }
 
-  TransposeUVWxH_C(src, src_stride,
-                   dst_a, dst_stride_a,
-                   dst_b, dst_stride_b,
-                   width, i);
+  // work through the source in 8x8 tiles
+  while (i >= 8) {
+    TransposeWx8(src, src_stride,
+                 dst_a, dst_stride_a,
+                 dst_b, dst_stride_b,
+                 width);
+
+    src   += 8 * src_stride;    // go down 8 rows
+    dst_a += 8;                 // move over 8 columns
+    dst_b += 8;                 // move over 8 columns
+    i     -= 8;
+  }
+
+  TransposeWxH(src, src_stride,
+               dst_a, dst_stride_a,
+               dst_b, dst_stride_b,
+               width, i);
+
 }
 
-LIBYUV_API
 void RotateUV90(const uint8* src, int src_stride,
                 uint8* dst_a, int dst_stride_a,
                 uint8* dst_b, int dst_stride_b,
@@ -1046,7 +985,6 @@ void RotateUV90(const uint8* src, int src_stride,
               width, height);
 }
 
-LIBYUV_API
 void RotateUV270(const uint8* src, int src_stride,
                  uint8* dst_a, int dst_stride_a,
                  uint8* dst_b, int dst_stride_b,
@@ -1063,41 +1001,39 @@ void RotateUV270(const uint8* src, int src_stride,
 }
 
 // Rotate 180 is a horizontal and vertical flip.
-LIBYUV_API
 void RotateUV180(const uint8* src, int src_stride,
                  uint8* dst_a, int dst_stride_a,
                  uint8* dst_b, int dst_stride_b,
                  int width, int height) {
-  void (*MirrorRowUV)(const uint8* src, uint8* dst_u, uint8* dst_v, int width) =
-      MirrorUVRow_C;
-#if defined(HAS_MIRRORUVROW_NEON)
-  if (TestCpuFlag(kCpuHasNEON) && IS_ALIGNED(width, 8)) {
-    MirrorRowUV = MirrorUVRow_NEON;
-  }
-#elif defined(HAS_MIRRORROW_UV_SSSE3)
-  if (TestCpuFlag(kCpuHasSSSE3) && IS_ALIGNED(width, 16) &&
-      IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16)) {
-    MirrorRowUV = MirrorUVRow_SSSE3;
-  }
-#elif defined(HAS_MIRRORUVROW_MIPS_DSPR2)
-  if (TestCpuFlag(kCpuHasMIPS_DSPR2) &&
-      IS_ALIGNED(src, 4) && IS_ALIGNED(src_stride, 4)) {
-    MirrorRowUV = MirrorUVRow_MIPS_DSPR2;
-  }
+  mirror_uv_func MirrorRow;
+
+#if defined(HAS_MIRRORROW_UV_NEON)
+  if (TestCpuFlag(kCpuHasNEON)) {
+    MirrorRow = MirrorRowUV_NEON;
+  } else
 #endif
+#if defined(HAS_MIRRORROW_UV_SSSE3)
+  if (TestCpuFlag(kCpuHasSSSE3) &&
+      IS_ALIGNED(width, 16) &&
+      IS_ALIGNED(src, 16) && IS_ALIGNED(src_stride, 16)) {
+    MirrorRow = MirrorRowUV_SSSE3;
+  } else
+#endif
+  {
+    MirrorRow = MirrorRowUV_C;
+  }
 
   dst_a += dst_stride_a * (height - 1);
   dst_b += dst_stride_b * (height - 1);
 
   for (int i = 0; i < height; ++i) {
-    MirrorRowUV(src, dst_a, dst_b, width);
+    MirrorRow(src, dst_a, dst_b, width);
     src += src_stride;
     dst_a -= dst_stride_a;
     dst_b -= dst_stride_b;
   }
 }
 
-LIBYUV_API
 int I420Rotate(const uint8* src_y, int src_stride_y,
                const uint8* src_u, int src_stride_u,
                const uint8* src_v, int src_stride_v,
@@ -1106,10 +1042,6 @@ int I420Rotate(const uint8* src_y, int src_stride_y,
                uint8* dst_v, int dst_stride_v,
                int width, int height,
                RotationMode mode) {
-  if (!src_y || !src_u || !src_v || width <= 0 || height == 0 ||
-      !dst_y || !dst_u || !dst_v) {
-    return -1;
-  }
   int halfwidth = (width + 1) >> 1;
   int halfheight = (height + 1) >> 1;
 
@@ -1174,7 +1106,6 @@ int I420Rotate(const uint8* src_y, int src_stride_y,
   return -1;
 }
 
-LIBYUV_API
 int NV12ToI420Rotate(const uint8* src_y, int src_stride_y,
                      const uint8* src_uv, int src_stride_uv,
                      uint8* dst_y, int dst_stride_y,
@@ -1182,10 +1113,6 @@ int NV12ToI420Rotate(const uint8* src_y, int src_stride_y,
                      uint8* dst_v, int dst_stride_v,
                      int width, int height,
                      RotationMode mode) {
-  if (!src_y || !src_uv || width <= 0 || height == 0 ||
-      !dst_y || !dst_u || !dst_v) {
-    return -1;
-  }
   int halfwidth = (width + 1) >> 1;
   int halfheight = (height + 1) >> 1;
 

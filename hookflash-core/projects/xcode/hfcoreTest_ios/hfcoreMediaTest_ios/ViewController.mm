@@ -40,7 +40,7 @@
     const char* fileNameString = [fileName UTF8String];
 
     mediaEngine->startVideoCapture();
-    mediaEngine->startRecordVideoCapture(fileNameString, saveToLibrary);
+//    mediaEngine->startRecordVideoCapture(fileNameString, saveToLibrary);
 }
 
 -(IBAction)startTest2
