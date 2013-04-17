@@ -57,6 +57,7 @@ namespace hookflash
           {
             Method_Invalid = Message::Method_Invalid,
 
+            Method_IdentityLookupCheck,
             Method_IdentityLookup,
 
             Method_Last = Method_IdentityLookup,

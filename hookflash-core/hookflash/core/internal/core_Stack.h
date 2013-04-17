@@ -69,8 +69,11 @@ namespace hookflash
         IStackForInternal &forInternal() {return *this;}
         const IStackForInternal &forInternal() const {return *this;}
 
-        static const String &deviceID();
+        static const String &appID();
+        static const String &appName();
+        static const String &appImageURL();
         static const String &userAgent();
+        static const String &deviceID();
         static const String &os();
         static const String &system();
 
@@ -122,8 +125,11 @@ namespace hookflash
         virtual void setup(
                            IStackDelegatePtr stackDelegate,
                            IMediaEngineDelegatePtr mediaEngineDelegate,
-                           const char *deviceID,
+                           const char *appID,
+                           const char *appName,
+                           const char *appImageURL,
                            const char *userAgent,
+                           const char *deviceID,
                            const char *os,
                            const char *system
                            );
@@ -153,8 +159,11 @@ namespace hookflash
         #pragma mark Stack => IStackForInternal
         #pragma mark
 
-        virtual const String &getDeviceID() const {return mDeviceID;}
+        virtual const String &getAppID() const {return mAppID;}
+        virtual const String &getAppName() const {return mAppName;}
+        virtual const String &getAppImageURL() const {return mAppImageURL;}
         virtual const String &getUserAgent() const {return mUserAgent;}
+        virtual const String &getDeviceID() const {return mDeviceID;}
         virtual const String &getOS() const {return mOS;}
         virtual const String &getSystem() const {return mSystem;}
 
@@ -197,8 +206,11 @@ namespace hookflash
 
         IStackMessageQueueDelegatePtr  mStackMessageQueueDelegate;
 
-        String mDeviceID;
+        String mAppID;
+        String mAppName;
+        String mAppImageURL;
         String mUserAgent;
+        String mDeviceID;
         String mOS;
         String mSystem;
       };

@@ -65,9 +65,13 @@
 #include <hookflash/stack/message/identity/IdentitySignRequest.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
+
+#include <hookflash/stack/message/peer/MessageFactoryPeer.h>
 
 #include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>

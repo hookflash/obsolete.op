@@ -194,28 +194,15 @@ namespace hookflash
 
         String mBase;
         String mURI;
-        String mURIEncrypted;
-        String mHash;
         String mProvider;
 
-        String mContactUserID;
-        String mContact;
-        String mContactFindSecret;
-        String mPrivatePeerFileSalt;
-        String mPrivatePeerFileSecretEncrypted;
-
-        Time mLastReset;
-        String mReloginAccessKey;
-        String mReloginAccessKeyEncrypted;
-
-        String mSecret;
-        String mSecretSalt;
-        String mSecretEncrypted;
-        String mSecretDecryptionKeyEncrypted;
+        String mStableID;
+        IPeerFilePublicPtr mPeerFilePublic;
 
         WORD mPriority;
         WORD mWeight;
 
+        Time mCreated;
         Time mUpdated;
         Time mExpires;
 
@@ -236,6 +223,65 @@ namespace hookflash
       };
       typedef std::list<IdentityInfo> IdentityInfoList;
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LockboxInfo
+      #pragma mark
+
+      struct LockboxInfo
+      {
+        String mDomain;
+        String mAccountID;
+
+        String mAccessToken;
+        String mAccessSecret;
+        Time mAccessSecretExpires;
+        String mAccessSecretProof;
+        Time mAccessSecretProofExpires;
+
+        String mKeyLockboxHalf;
+        String mKeyIdentityHalf;
+        String mHash;
+
+        bool mResetFlag;
+
+        LockboxInfo() : mResetFlag(false) {}
+        bool hasData() const;
+        String getDebugValueString(bool includeCommaPrefix = true) const;
+
+        void mergeFrom(
+                       const LockboxInfo &source,
+                       bool overwriteExisting = true
+                       );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AgentInfo
+      #pragma mark
+
+      struct AgentInfo
+      {
+        String mUserAgent;
+        String mName;
+        String mImageURL;
+
+        AgentInfo() {}
+        bool hasData() const;
+        String getDebugValueString(bool includeCommaPrefix = true) const;
+
+        void mergeFrom(
+                       const AgentInfo &source,
+                       bool overwriteExisting = true
+                       );
+      };
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -323,37 +369,41 @@ namespace hookflash
         typedef boost::shared_ptr<MessageFactoryIdentity> MessageFactoryIdentityPtr;
         typedef boost::weak_ptr<MessageFactoryIdentity> MessageFactoryIdentityWeakPtr;
 
-        class IdentityLoginStartRequest;
-        typedef boost::shared_ptr<IdentityLoginStartRequest> IdentityLoginStartRequestPtr;
-        typedef boost::weak_ptr<IdentityLoginStartRequest> IdentityLoginStartRequestWeakPtr;
+        class IdentityAccessWindowNotify;
+        typedef boost::shared_ptr<IdentityAccessWindowNotify> IdentityAccessWindowNotifyPtr;
+        typedef boost::weak_ptr<IdentityAccessWindowNotify> IdentityAccessWindowNotifyWeakPtr;
+        
+        class IdentityAccessStartNotify;
+        typedef boost::shared_ptr<IdentityAccessStartNotify> IdentityAccessStartNotifyPtr;
+        typedef boost::weak_ptr<IdentityAccessStartNotify> IdentityAccessStartNotifyWeakPtr;
 
-        class IdentityLoginStartResult;
-        typedef boost::shared_ptr<IdentityLoginStartResult> IdentityLoginStartResultPtr;
-        typedef boost::weak_ptr<IdentityLoginStartResult> IdentityLoginStartResultWeakPtr;
+        class IdentityAccessCompleteNotify;
+        typedef boost::shared_ptr<IdentityAccessCompleteNotify> IdentityAccessCompleteNotifyPtr;
+        typedef boost::weak_ptr<IdentityAccessCompleteNotify> IdentityAccessCompleteNotifyWeakPtr;
 
-        class IdentityLoginNotify;
-        typedef boost::shared_ptr<IdentityLoginNotify> IdentityLoginNotifyPtr;
-        typedef boost::weak_ptr<IdentityLoginNotify> IdentityLoginNotifyWeakPtr;
+        class IdentityAccessLockboxUpdateRequest;
+        typedef boost::shared_ptr<IdentityAccessLockboxUpdateRequest> IdentityAccessLockboxUpdateRequestPtr;
+        typedef boost::weak_ptr<IdentityAccessLockboxUpdateRequest> IdentityAccessLockboxUpdateRequestWeakPtr;
 
-        class IdentityLoginBrowserWindowControlNotify;
-        typedef boost::shared_ptr<IdentityLoginBrowserWindowControlNotify> IdentityLoginBrowserWindowControlNotifyPtr;
-        typedef boost::weak_ptr<IdentityLoginBrowserWindowControlNotify> IdentityLoginBrowserWindowControlNotifyWeakPtr;
+        class IdentityAccessLockboxUpdateResult;
+        typedef boost::shared_ptr<IdentityAccessLockboxUpdateResult> IdentityAccessLockboxUpdateResultPtr;
+        typedef boost::weak_ptr<IdentityAccessLockboxUpdateResult> IdentityAccessLockboxUpdateResultWeakPtr;
+        
+        class IdentityAccessValidateRequest;
+        typedef boost::shared_ptr<IdentityAccessValidateRequest> IdentityAccessValidateRequestPtr;
+        typedef boost::weak_ptr<IdentityAccessValidateRequest> IdentityAccessValidateRequestWeakPtr;
 
-        class IdentityLoginCompleteRequest;
-        typedef boost::shared_ptr<IdentityLoginCompleteRequest> IdentityLoginCompleteRequestPtr;
-        typedef boost::weak_ptr<IdentityLoginCompleteRequest> IdentityLoginCompleteRequestWeakPtr;
+        class IdentityAccessValidateResult;
+        typedef boost::shared_ptr<IdentityAccessValidateResult> IdentityAccessValidateResultPtr;
+        typedef boost::weak_ptr<IdentityAccessValidateResult> IdentityAccessValidateResultWeakPtr;
+        
+        class IdentityLockupUpdateRequest;
+        typedef boost::shared_ptr<IdentityLockupUpdateRequest> IdentityLockupUpdateRequestPtr;
+        typedef boost::weak_ptr<IdentityLockupUpdateRequest> IdentityLockupUpdateRequestWeakPtr;
 
-        class IdentityLoginCompleteResult;
-        typedef boost::shared_ptr<IdentityLoginCompleteResult> IdentityLoginCompleteResultPtr;
-        typedef boost::weak_ptr<IdentityLoginCompleteResult> IdentityLoginCompleteResultWeakPtr;
-
-        class IdentityAssociateRequest;
-        typedef boost::shared_ptr<IdentityAssociateRequest> IdentityAssociateRequestPtr;
-        typedef boost::weak_ptr<IdentityAssociateRequest> IdentityAssociateRequestWeakPtr;
-
-        class IdentityAssociateResult;
-        typedef boost::shared_ptr<IdentityAssociateResult> IdentityAssociateResultPtr;
-        typedef boost::weak_ptr<IdentityAssociateResult> IdentityAssociateResultWeakPtr;
+        class IdentityLockupUpdateResult;
+        typedef boost::shared_ptr<IdentityLockupUpdateResult> IdentityLockupUpdateResultPtr;
+        typedef boost::weak_ptr<IdentityLockupUpdateResult> IdentityLockupUpdateResultWeakPtr;
 
         class IdentitySignRequest;
         typedef boost::shared_ptr<IdentitySignRequest> IdentitySignRequestPtr;
@@ -364,11 +414,98 @@ namespace hookflash
         typedef boost::weak_ptr<IdentitySignResult> IdentitySignResultWeakPtr;
       }
 
+      namespace identity_lockbox
+      {
+        class MessageFactoryIdentityLockbox;
+        typedef boost::shared_ptr<MessageFactoryIdentityLockbox> MessageFactoryIdentityLockboxPtr;
+        typedef boost::weak_ptr<MessageFactoryIdentityLockbox> MessageFactoryIdentityLockboxWeakPtr;
+
+        class LockboxAccessRequest;
+        typedef boost::shared_ptr<LockboxAccessRequest> LockboxAccessRequestPtr;
+        typedef boost::weak_ptr<LockboxAccessRequest> LockboxAccessRequestWeakPtr;
+
+        class LockboxAccessResult;
+        typedef boost::shared_ptr<LockboxAccessResult> LockboxAccessResultPtr;
+        typedef boost::weak_ptr<LockboxAccessResult> LockboxAccessResultWeakPtr;
+
+        class LockboxAccessValidateRequest;
+        typedef boost::shared_ptr<LockboxAccessValidateRequest> LockboxAccessValidateRequestPtr;
+        typedef boost::weak_ptr<LockboxAccessValidateRequest> LockboxAccessValidateRequestWeakPtr;
+
+        class LockboxAccessValidateResult;
+        typedef boost::shared_ptr<LockboxAccessValidateResult> LockboxAccessValidateResultPtr;
+        typedef boost::weak_ptr<LockboxAccessValidateResult> LockboxAccessValidateResultWeakPtr;
+
+        class LockboxIdentitiesUpdateRequest;
+        typedef boost::shared_ptr<LockboxIdentitiesUpdateRequest> LockboxIdentitiesUpdateRequestPtr;
+        typedef boost::weak_ptr<LockboxIdentitiesUpdateRequest> LockboxIdentitiesUpdateRequestWeakPtr;
+
+        class LockboxIdentitiesUpdateResult;
+        typedef boost::shared_ptr<LockboxIdentitiesUpdateResult> LockboxIdentitiesUpdateResultPtr;
+        typedef boost::weak_ptr<LockboxIdentitiesUpdateResult> LockboxIdentitiesUpdateResultWeakPtr;
+
+        class LockboxNamespaceGrantWindowNotify;
+        typedef boost::shared_ptr<LockboxNamespaceGrantWindowNotify> LockboxNamespaceGrantWindowNotifyPtr;
+        typedef boost::weak_ptr<LockboxNamespaceGrantWindowNotify> LockboxNamespaceGrantWindowNotifyWeakPtr;
+
+        class LockboxNamespaceGrantStartNotify;
+        typedef boost::shared_ptr<LockboxNamespaceGrantStartNotify> LockboxNamespaceGrantStartNotifyPtr;
+        typedef boost::weak_ptr<LockboxNamespaceGrantStartNotify> LockboxNamespaceGrantStartNotifyWeakPtr;
+
+        class LockboxNamespaceGrantCompleteNotify;
+        typedef boost::shared_ptr<LockboxNamespaceGrantCompleteNotify> LockboxNamespaceGrantCompleteNotifyPtr;
+        typedef boost::weak_ptr<LockboxNamespaceGrantCompleteNotify> LockboxNamespaceGrantCompleteNotifyWeakPtr;
+
+        class LockboxContentGetRequest;
+        typedef boost::shared_ptr<LockboxContentGetRequest> LockboxContentGetRequestPtr;
+        typedef boost::weak_ptr<LockboxContentGetRequest> LockboxContentGetRequestWeakPtr;
+        
+        class LockboxContentGetResult;
+        typedef boost::shared_ptr<LockboxContentGetResult> LockboxContentGetResultPtr;
+        typedef boost::weak_ptr<LockboxContentGetResult> LockboxContentGetResultWeakPtr;
+        
+        class LockboxContentSetRequest;
+        typedef boost::shared_ptr<LockboxContentSetRequest> LockboxContentSetRequestPtr;
+        typedef boost::weak_ptr<LockboxContentSetRequest> LockboxContentSetRequestWeakPtr;
+
+        class LockboxContentSetResult;
+        typedef boost::shared_ptr<LockboxContentSetResult> LockboxContentSetResultPtr;
+        typedef boost::weak_ptr<LockboxContentSetResult> LockboxContentSetResultWeakPtr;
+
+        class LockboxAdminWindowNotify;
+        typedef boost::shared_ptr<LockboxAdminWindowNotify> LockboxAdminWindowNotifyPtr;
+        typedef boost::weak_ptr<LockboxAdminWindowNotify> LockboxAdminWindowNotifyWeakPtr;
+
+        class LockboxAdminStartNotify;
+        typedef boost::shared_ptr<LockboxAdminStartNotify> LockboxAdminStartNotifyPtr;
+        typedef boost::weak_ptr<LockboxAdminStartNotify> LockboxAdminStartNotifyWeakPtr;
+
+        class LockboxAdminCompleteNotify;
+        typedef boost::shared_ptr<LockboxAdminCompleteNotify> LockboxAdminCompleteNotifyPtr;
+        typedef boost::weak_ptr<LockboxAdminCompleteNotify> LockboxAdminCompleteNotifyWeakPtr;
+
+        class LockboxNamespacePreapprovedGrantRequest;
+        typedef boost::shared_ptr<LockboxNamespacePreapprovedGrantRequest> LockboxNamespacePreapprovedGrantRequestPtr;
+        typedef boost::weak_ptr<LockboxNamespacePreapprovedGrantRequest> LockboxNamespacePreapprovedGrantRequestWeakPtr;
+
+        class LockboxNamespacePreapprovedGrantResult;
+        typedef boost::shared_ptr<LockboxNamespacePreapprovedGrantResult> LockboxNamespacePreapprovedGrantResultPtr;
+        typedef boost::weak_ptr<LockboxNamespacePreapprovedGrantResult> LockboxNamespacePreapprovedGrantResultWeakPtr;
+      }
+
       namespace identity_lookup
       {
         class MessageFactoryIdentityLookup;
         typedef boost::shared_ptr<MessageFactoryIdentityLookup> MessageFactoryIdentityLookupPtr;
         typedef boost::weak_ptr<MessageFactoryIdentityLookup> MessageFactoryIdentityLookupWeakPtr;
+
+        class IdentityLookupCheckRequest;
+        typedef boost::shared_ptr<IdentityLookupCheckRequest> IdentityLookupCheckRequestPtr;
+        typedef boost::weak_ptr<IdentityLookupCheckRequest> IdentityLookupCheckRequestWeakPtr;
+        
+        class IdentityLookupCheckResult;
+        typedef boost::shared_ptr<IdentityLookupCheckResult> IdentityLookupCheckResultPtr;
+        typedef boost::weak_ptr<IdentityLookupCheckResult> IdentityLookupCheckResultWeakPtr;
 
         class IdentityLookupRequest;
         typedef boost::shared_ptr<IdentityLookupRequest> IdentityLookupRequestPtr;
@@ -377,6 +514,21 @@ namespace hookflash
         class IdentityLookupResult;
         typedef boost::shared_ptr<IdentityLookupResult> IdentityLookupResultPtr;
         typedef boost::weak_ptr<IdentityLookupResult> IdentityLookupResultWeakPtr;
+      }
+
+      namespace peer
+      {
+        class MessageFactoryPeer;
+        typedef boost::shared_ptr<MessageFactoryPeer> MessageFactoryPeerPtr;
+        typedef boost::weak_ptr<MessageFactoryPeer> MessageFactoryPeerWeakPtr;
+
+        class PeerServicesGetRequest;
+        typedef boost::shared_ptr<PeerServicesGetRequest> PeerServicesGetRequestPtr;
+        typedef boost::weak_ptr<PeerServicesGetRequest> PeerServicesGetRequestWeakPtr;
+        
+        class PeerServicesGetResult;
+        typedef boost::shared_ptr<PeerServicesGetResult> PeerServicesGetResultPtr;
+        typedef boost::weak_ptr<PeerServicesGetResult> PeerServicesGetResultWeakPtr;
       }
 
       namespace peer_common
@@ -424,61 +576,6 @@ namespace hookflash
         class PeerPublishNotifyResult;
         typedef boost::shared_ptr<PeerPublishNotifyResult> PeerPublishNotifyResultPtr;
         typedef boost::weak_ptr<PeerPublishNotifyResult> PeerPublishNotifyResultWeakPtr;
-      }
-
-      namespace peer_contact
-      {
-        class MessageFactoryPeerContact;
-        typedef boost::shared_ptr<MessageFactoryPeerContact> MessageFactoryPeerContactPtr;
-        typedef boost::weak_ptr<MessageFactoryPeerContact> MessageFactoryPeerContactWeakPtr;
-
-        class PublicPeerFilesGetRequest;
-        typedef boost::shared_ptr<PublicPeerFilesGetRequest> PublicPeerFilesGetRequestPtr;
-        typedef boost::weak_ptr<PublicPeerFilesGetRequest> PublicPeerFilesGetRequestWeakPtr;
-
-        class PublicPeerFilesGetResult;
-        typedef boost::shared_ptr<PublicPeerFilesGetResult> PublicPeerFilesGetResultPtr;
-        typedef boost::weak_ptr<PublicPeerFilesGetResult> PublicPeerFilesGetResultWeakPtr;
-
-        class PeerContactLoginRequest;
-        typedef boost::shared_ptr<PeerContactLoginRequest> PeerContactLoginRequestPtr;
-        typedef boost::weak_ptr<PeerContactLoginRequest> PeerContactLoginRequestWeakPtr;
-
-        class PeerContactLoginResult;
-        typedef boost::shared_ptr<PeerContactLoginResult> PeerContactLoginResultPtr;
-        typedef boost::weak_ptr<PeerContactLoginResult> PeerContactLoginResultWeakPtr;
-
-        class PrivatePeerFileGetRequest;
-        typedef boost::shared_ptr<PrivatePeerFileGetRequest> PrivatePeerFileGetRequestPtr;
-        typedef boost::weak_ptr<PrivatePeerFileGetRequest> PrivatePeerFileGetRequestWeakPtr;
-
-        class PrivatePeerFileGetResult;
-        typedef boost::shared_ptr<PrivatePeerFileGetResult> PrivatePeerFileGetResultPtr;
-        typedef boost::weak_ptr<PrivatePeerFileGetResult> PrivatePeerFileGetResultWeakPtr;
-
-        class PrivatePeerFileSetRequest;
-        typedef boost::shared_ptr<PrivatePeerFileSetRequest> PrivatePeerFileSetRequestPtr;
-        typedef boost::weak_ptr<PrivatePeerFileSetRequest> PrivatePeerFileSetRequestWeakPtr;
-
-        class PrivatePeerFileSetResult;
-        typedef boost::shared_ptr<PrivatePeerFileSetResult> PrivatePeerFileSetResultPtr;
-        typedef boost::weak_ptr<PrivatePeerFileSetResult> PrivatePeerFileSetResultWeakPtr;
-
-        class PeerContactIdentityAssociateRequest;
-        typedef boost::shared_ptr<PeerContactIdentityAssociateRequest> PeerContactIdentityAssociateRequestPtr;
-        typedef boost::weak_ptr<PeerContactIdentityAssociateRequest> PeerContactIdentityAssociateRequestWeakPtr;
-
-        class PeerContactIdentityAssociateResult;
-        typedef boost::shared_ptr<PeerContactIdentityAssociateResult> PeerContactIdentityAssociateResultPtr;
-        typedef boost::weak_ptr<PeerContactIdentityAssociateResult> PeerContactIdentityAssociateResultWeakPtr;
-
-        class PeerContactServicesGetRequest;
-        typedef boost::shared_ptr<PeerContactServicesGetRequest> PeerContactServicesGetRequestPtr;
-        typedef boost::weak_ptr<PeerContactServicesGetRequest> PeerContactServicesGetRequestWeakPtr;
-
-        class PeerContactServicesGetResult;
-        typedef boost::shared_ptr<PeerContactServicesGetResult> PeerContactServicesGetResultPtr;
-        typedef boost::weak_ptr<PeerContactServicesGetResult> PeerContactServicesGetResultWeakPtr;
       }
 
       namespace peer_finder

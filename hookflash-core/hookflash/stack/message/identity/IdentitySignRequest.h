@@ -69,9 +69,11 @@ namespace hookflash
           // IdentityInfo members need to be set:
           //
           // mURI
+          // mProvider
+          //
           // mAccessToken
           // mAccessSecret
-          //
+          // mAccessSecretExpires
 
           const IdentityInfo &identityInfo() const    {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)  {mIdentityInfo = val;}

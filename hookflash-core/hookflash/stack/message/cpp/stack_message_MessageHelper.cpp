@@ -39,12 +39,14 @@
 #include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
 #include <hookflash/stack/message/peer-common/PeerGetResult.h>
 
-#include <hookflash/stack/IPublicationRepository.h>
 #include <hookflash/stack/internal/stack_Location.h>
 #include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/internal/stack_Publication.h>
 #include <hookflash/stack/internal/stack_PublicationMetaData.h>
+
+#include <hookflash/stack/IPublicationRepository.h>
+#include <hookflash/stack/IHelper.h>
+#include <hookflash/stack/IPeerFilePublic.h>
 #include <hookflash/stack/IRSAPublicKey.h>
 
 #include <zsLib/Numeric.h>
@@ -99,9 +101,15 @@ namespace hookflash
 
         String domain = message.domain();
 
-        if (!domain.isEmpty()) {
+        if (domain.hasData()) {
           IMessageHelper::setAttribute(root, "domain", domain);
         }
+
+        String appID = message.appID();
+        if (appID.hasData()) {
+          IMessageHelper::setAttribute(root, "appID", appID);
+        }
+
         IMessageHelper::setAttribute(root, "handler", factory->getHandler());
         IMessageHelper::setAttributeID(root, message.messageID());
         IMessageHelper::setAttribute(root, "method", factory->toString(message.method()));
@@ -321,12 +329,16 @@ namespace hookflash
       {
         String id = IMessageHelper::getAttribute(root, "id");
         String domain = IMessageHelper::getAttribute(root, "domain");
+        String appID = IMessageHelper::getAttribute(root, "appID");
 
-        if (!id.isEmpty()) {
+        if (id.hasData()) {
           message.messageID(id);
         }
-        if (!domain.isEmpty()) {
+        if (domain.hasData()) {
           message.domain(domain);
+        }
+        if (appID.hasData()) {
+          message.appID(appID);
         }
         if (message.isResult()) {
           Time time = IMessageHelper::getAttributeEpoch(root);
@@ -490,50 +502,16 @@ namespace hookflash
           if (!identity.mURI.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("uri", identity.mURI));
           }
-          if (!identity.mURIEncrypted.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("uriEncrypted", identity.mURIEncrypted));
-          }
-          if (!identity.mHash.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("hash", identity.mHash));
-          }
           if (!identity.mProvider.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("provider", identity.mProvider));
           }
 
-          if (!identity.mContactUserID.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("contactUserID", identity.mContactUserID));
-          }
-          if (!identity.mContact.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("contact", identity.mContact));
-          }
-          if (!identity.mContactFindSecret.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("contactFindSecret", identity.mContactFindSecret));
-          }
-          if (!identity.mPrivatePeerFileSalt.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("privatePeerFileSalt", identity.mPrivatePeerFileSalt));
-          }
-          if (!identity.mPrivatePeerFileSecretEncrypted.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("privatePeerFileSecretEncrypted", identity.mPrivatePeerFileSecretEncrypted));
+          if (!identity.mStableID.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("stableID", identity.mStableID));
           }
 
-          if (Time() != identity.mLastReset) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("lastRest", IMessageHelper::timeToString(identity.mLastReset)));
-          }
-          if (!identity.mReloginAccessKey.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("reloginAccessKey", identity.mReloginAccessKey));
-          }
-          if (!identity.mReloginAccessKeyEncrypted.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("reloginAccessKeyEncrypted", identity.mReloginAccessKeyEncrypted));
-          }
-
-          if (!identity.mSecretSalt.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretSalt", identity.mSecretSalt));
-          }
-          if (!identity.mSecretEncrypted.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretEncrypted", identity.mSecretEncrypted));
-          }
-          if (!identity.mSecretDecryptionKeyEncrypted.isEmpty()) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretDecryptionKeyEncrypted", identity.mSecretDecryptionKeyEncrypted));
+          if (!identity.mPeerFilePublic) {
+            identityEl->adoptAsLastChild(identity.mPeerFilePublic->saveToElement());
           }
 
           if ((0 != identity.mPriority) ||
@@ -545,6 +523,9 @@ namespace hookflash
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", Stringize<WORD>(identity.mWeight).string()));
           }
 
+          if (Time() != identity.mCreated) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("created", IMessageHelper::timeToString(identity.mCreated)));
+          }
           if (Time() != identity.mUpdated) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updated", IMessageHelper::timeToString(identity.mUpdated)));
           }
@@ -598,6 +579,62 @@ namespace hookflash
           return identityEl;
         }
 
+        //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(const LockboxInfo &info)
+        {
+          ElementPtr lockboxEl = Element::create("lockbox");
+
+          if (!info.mAccessToken.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessToken", info.mAccessToken));
+          }
+          if (!info.mAccessSecret.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", info.mAccessSecret));
+          }
+          if (Time() != info.mAccessSecretExpires) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(info.mAccessSecretExpires)));
+          }
+          if (!info.mAccessSecretProof.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
+          }
+          if (Time() != info.mAccessSecretExpires) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
+          }
+
+          if (!info.mKeyIdentityHalf.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", info.mKeyIdentityHalf));
+          }
+          if (!info.mKeyLockboxHalf.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", info.mKeyLockboxHalf));
+          }
+          if (!info.mHash.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("hash", info.mHash));
+          }
+
+          if (info.mResetFlag) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("reset", "true"));
+          }
+
+          return lockboxEl;
+        }
+
+        //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(const AgentInfo &info)
+        {
+          ElementPtr agentEl = Element::create("agent");
+
+          if (info.mUserAgent.hasData()) {
+            agentEl->adoptAsLastChild(IMessageHelper::createElementWithText("userAgent", info.mUserAgent));
+          }
+          if (info.mName.hasData()) {
+            agentEl->adoptAsLastChild(IMessageHelper::createElementWithText("name", info.mName));
+          }
+          if (info.mImageURL.hasData()) {
+            agentEl->adoptAsLastChild(IMessageHelper::createElementWithText("image", info.mImageURL));
+          }
+
+          return agentEl;
+        }
+        
         //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(
                                                 const PublishToRelationshipsMap &relationships,
@@ -1525,7 +1562,7 @@ namespace hookflash
         {
           IdentityInfo info;
 
-          if (elem) return info;
+          if (!elem) return info;
 
           info.mDisposition = IdentityInfo::toDisposition(elem->getAttributeValue("disposition"));
 
@@ -1537,21 +1574,13 @@ namespace hookflash
 
           info.mBase = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("base"));
           info.mURI = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("uri"));
-          info.mURIEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("uriEncrypted"));
-          info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
           info.mProvider = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("provider"));
 
-          info.mContact = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contact"));
-          info.mContactFindSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactFindSecret"));
-          info.mPrivatePeerFileSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSalt"));
-          info.mPrivatePeerFileSecretEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSecretEncrypted"));
-
-          info.mLastReset = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("lastReset")));
-          info.mReloginAccessKeyEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("reloginAccessKeyEncrypted"));
-
-          info.mSecretSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretSalt"));
-          info.mSecretEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretEncrypted"));
-          info.mSecretDecryptionKeyEncrypted = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretDecryptionKeyEncrypted"));
+          info.mStableID = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("stableID"));
+          ElementPtr peerEl = elem->findFirstChildElement("peer");
+          if (peerEl) {
+            info.mPeerFilePublic = IPeerFilePublic::loadFromElement(peerEl);
+          }
 
           try {
             info.mPriority = Numeric<WORD>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("priority")));
@@ -1562,6 +1591,7 @@ namespace hookflash
           } catch(Numeric<WORD>::ValueOutOfRange &) {
           }
 
+          info.mUpdated = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("created")));
           info.mUpdated = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updated")));
           info.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
 
@@ -1594,6 +1624,46 @@ namespace hookflash
 
           return info;
         }
+
+        //---------------------------------------------------------------------
+        LockboxInfo MessageHelper::createLockbox(ElementPtr elem)
+        {
+          LockboxInfo info;
+
+          if (!elem) return info;
+
+          info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
+          info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
+          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+
+          info.mKeyIdentityHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyIdentityHalf"));
+          info.mKeyLockboxHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyLockboxHalf"));
+          info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
+
+          try {
+            info.mResetFlag = Numeric<bool>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("reset")));
+          } catch(Numeric<bool>::ValueOutOfRange &) {
+          }
+
+          return info;
+        }
+
+        //---------------------------------------------------------------------
+        AgentInfo MessageHelper::createAgent(ElementPtr elem)
+        {
+          AgentInfo info;
+
+          if (!elem) return info;
+
+          info.mUserAgent = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("userAgent"));
+          info.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
+          info.mImageURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("image"));
+          
+          return info;
+        }
+
       }
     }
   }

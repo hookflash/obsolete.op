@@ -80,6 +80,7 @@ namespace hookflash
         }
         MessageResultPtr pThis(new MessageResult);
         pThis->mDomain = requestOrNotify->domain();
+        pThis->mAppID = requestOrNotify->appID();
         pThis->mID = requestOrNotify->messageID();
         pThis->mOriginalMethod = requestOrNotify->method();
         pThis->mOriginalFactory = requestOrNotify->factory();
@@ -118,6 +119,7 @@ namespace hookflash
         MessageResultPtr pThis(new MessageResult);
 
         pThis->mDomain = IMessageHelper::getAttribute(root, "domain");
+        pThis->mAppID = IMessageHelper::getAttribute(root, "appID");
         pThis->mID = IMessageHelper::getAttributeID(root);
         pThis->mErrorCode = errorCode;
         pThis->mErrorReason = String(reason ? String(reason) : String());

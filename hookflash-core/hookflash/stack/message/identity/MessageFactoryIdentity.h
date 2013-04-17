@@ -57,11 +57,11 @@ namespace hookflash
           {
             Method_Invalid = Message::Method_Invalid,
 
-            Method_IdentityLoginStart,
-            Method_IdentityLoginNotify,
-            Method_IdentityLoginBrowserWindowControl,
-            Method_IdentityLoginComplete,
-            Method_IdentityAssociate,
+            Method_IdentityAccessWindow,
+            Method_IdentityAccessStart,
+            Method_IdentityAccessComplete,
+            Method_IdentityAccessLockboxUpdate,
+            Method_IdentityAccessValidate,
             Method_IdentitySign,
 
             Method_Last = Method_IdentitySign,

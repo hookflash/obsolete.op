@@ -53,8 +53,11 @@ namespace hookflash
         IStackForInternal &forInternal() {return *this;}
         const IStackForInternal &forInternal() const {return *this;}
 
-        static const String &deviceID();
+        static const String &appID();
+        static const String &appName();
+        static const String &appImageURL();
         static const String &userAgent();
+        static const String &deviceID();
         static const String &os();
         static const String &system();
 
@@ -99,8 +102,11 @@ namespace hookflash
                            IMessageQueuePtr defaultDelegateMessageQueue,
                            IMessageQueuePtr stackMessageQueue,
                            IMessageQueuePtr servicesMessageQueue,
-                           const char *deviceID,   // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
+                           const char *appID,       // organization assigned ID for the application e.g. "com.xyz123.app1"
+                           const char *appName,     // a branded human readable application name, e.g. "Hookflash"
+                           const char *appImageURL, // an HTTPS downloadable branded image for the application
                            const char *userAgent,  // e.g. "hookflash/1.0.1001a (iOS/iPad)"
+                           const char *deviceID,   // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
                            const char *os,         // e.g. "iOS 5.0.3
                            const char *system      // e.g. "iPad 2"
                            );
@@ -112,8 +118,11 @@ namespace hookflash
         #pragma mark Stack => IStackForInternal
         #pragma mark
 
-        virtual const String &getDeviceID() const {return mDeviceID;}
+        virtual const String &getAppID() const {return mAppID;}
+        virtual const String &getAppName() const {return mAppName;}
+        virtual const String &getAppImageURL() const {return mAppImageURL;}
         virtual const String &getUserAgent() const {return mUserAgent;}
+        virtual const String &getDeviceID() const {return mDeviceID;}
         virtual const String &getOS() const {return mOS;}
         virtual const String &getSystem() const {return mSystem;}
 
@@ -138,8 +147,11 @@ namespace hookflash
         StackWeakPtr mThisWeak;
         RecursiveLock mLock;
 
-        String mDeviceID;
+        String mAppID;
+        String mAppName;
+        String mAppImageURL;
         String mUserAgent;
+        String mDeviceID;
         String mOS;
         String mSystem;
 

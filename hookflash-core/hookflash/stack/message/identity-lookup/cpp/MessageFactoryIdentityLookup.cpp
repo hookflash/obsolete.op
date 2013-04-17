@@ -31,6 +31,7 @@
 
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
 
@@ -108,6 +109,7 @@ namespace hookflash
           {
             case Method_Invalid:                return "";
 
+            case Method_IdentityLookupCheck:    return "identity-lookup-check";
             case Method_IdentityLookup:         return "identity-lookup";
           }
           return "";
@@ -133,6 +135,7 @@ namespace hookflash
               switch (msgMethod) {
                 case Method_Invalid:                          return MessagePtr();
 
+                case Method_IdentityLookupCheck:              return IdentityLookupCheckResult::create(root, messageSource);
                 case Method_IdentityLookup:                   return IdentityLookupResult::create(root, messageSource);
               }
               break;

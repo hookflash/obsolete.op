@@ -71,9 +71,8 @@ namespace hookflash
           // mURI
           // mProvider
           //
-          // mContactUserID
-          // mContact
-          // mContactFindSecret (optional)
+          // mStableID
+          // mPeerFilePublic
           //
           // mPriority
           // mWeight

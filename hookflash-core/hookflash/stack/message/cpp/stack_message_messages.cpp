@@ -48,26 +48,12 @@ namespace hookflash
       using stack::internal::Helper;
 
       //-----------------------------------------------------------------------
-      const char *IdentityInfo::toString(Dispositions disposition)
-      {
-        switch (disposition)
-        {
-          case Disposition_NA:        return "";
-          case Disposition_Update:    return "update";
-          case Disposition_Remove:    return "remove";
-        }
-        return "";
-      }
-
       //-----------------------------------------------------------------------
-      IdentityInfo::Dispositions IdentityInfo::toDisposition(const char *inStr)
-      {
-        if (!inStr) return Disposition_NA;
-        String str(inStr);
-        if ("update" == str) return Disposition_Update;
-        if ("remove" == str) return Disposition_Remove;
-        return Disposition_NA;
-      }
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::Service
+      #pragma mark
 
       //-----------------------------------------------------------------------
       bool Service::hasData() const
@@ -108,6 +94,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::Certificate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       bool Certificate::hasData() const
       {
         return (mID.hasData()) ||
@@ -125,6 +119,14 @@ namespace hookflash
                Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("public key", mPublicKey ? String("true") : String(), firstTime);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::Finder
+      #pragma mark
 
       //-----------------------------------------------------------------------
       bool Finder::hasData() const
@@ -156,6 +158,14 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::IdentityInfo::Avatar
+      #pragma mark
+
+      //-----------------------------------------------------------------------
       bool IdentityInfo::Avatar::hasData() const
       {
         return ((mName.hasData()) ||
@@ -175,6 +185,36 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::IdentityInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      const char *IdentityInfo::toString(Dispositions disposition)
+      {
+        switch (disposition)
+        {
+          case Disposition_NA:        return "";
+          case Disposition_Update:    return "update";
+          case Disposition_Remove:    return "remove";
+        }
+        return "";
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityInfo::Dispositions IdentityInfo::toDisposition(const char *inStr)
+      {
+        if (!inStr) return Disposition_NA;
+        String str(inStr);
+        if ("update" == str) return Disposition_Update;
+        if ("remove" == str) return Disposition_Remove;
+        return Disposition_NA;
+      }
+      
+      //-----------------------------------------------------------------------
       bool IdentityInfo::hasData() const
       {
         return ((Disposition_NA != mDisposition) ||
@@ -187,27 +227,15 @@ namespace hookflash
 
                 (mBase.hasData()) ||
                 (mURI.hasData()) ||
-                (mURIEncrypted.hasData()) ||
-                (mHash.hasData()) ||
                 (mProvider.hasData()) ||
 
-                (mContactUserID.hasData()) ||
-                (mContact.hasData()) ||
-                (mContactFindSecret.hasData()) ||
-                (mPrivatePeerFileSalt.hasData()) ||
-                (mPrivatePeerFileSecretEncrypted.hasData()) ||
+                (mStableID.hasData()) ||
+                (mPeerFilePublic) ||
 
-                (Time() != mLastReset) ||
-                (mReloginAccessKey.hasData()) ||
-                (mReloginAccessKeyEncrypted.hasData()) ||
                 (0 != mPriority) ||
                 (0 != mWeight) ||
 
-                (mSecret.hasData()) ||
-                (mSecretSalt.hasData()) ||
-                (mSecretEncrypted.hasData()) ||
-                (mSecretDecryptionKeyEncrypted.hasData()) ||
-
+                (Time() != mCreated) ||
                 (Time() != mUpdated) ||
                 (Time() != mExpires) ||
 
@@ -230,23 +258,12 @@ namespace hookflash
                Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
                Helper::getDebugValue("identity base", mBase, firstTime) +
                Helper::getDebugValue("identity", mURI, firstTime) +
-               Helper::getDebugValue("identity (encrypted)", mURIEncrypted, firstTime) +
-               Helper::getDebugValue("identity (hash)", mHash, firstTime) +
                Helper::getDebugValue("identity provider", mProvider, firstTime) +
-               Helper::getDebugValue("contact user ID", mContactUserID, firstTime) +
-               Helper::getDebugValue("contact", mContact, firstTime) +
-               Helper::getDebugValue("contact find secret", mContactFindSecret, firstTime) +
-               Helper::getDebugValue("private peer file salt", mPrivatePeerFileSalt, firstTime) +
-               Helper::getDebugValue("private peer secret (encrypted)", mPrivatePeerFileSecretEncrypted, firstTime) +
-               Helper::getDebugValue("last reset", Time() != mLastReset ? IMessageHelper::timeToString(mLastReset) : String(), firstTime) +
-               Helper::getDebugValue("relogin access key", mReloginAccessKey, firstTime) +
-               Helper::getDebugValue("relogin access key (encrypted)", mReloginAccessKeyEncrypted, firstTime) +
+               Helper::getDebugValue("stable ID", mStableID, firstTime) +
+               IPeerFilePublic::toDebugString(mPeerFilePublic, !firstTime) +
                Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
                Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mPriority).string() : String(), firstTime) +
-               Helper::getDebugValue("secret", mSecret, firstTime) +
-               Helper::getDebugValue("secret salt", mSecretSalt, firstTime) +
-               Helper::getDebugValue("secret (encrypted)", mSecretEncrypted, firstTime) +
-               Helper::getDebugValue("secret decryption key (encrypted)", mSecretDecryptionKeyEncrypted, firstTime) +
+               Helper::getDebugValue("created", Time() != mCreated ? IMessageHelper::timeToString(mCreated) : String(), firstTime) +
                Helper::getDebugValue("updated", Time() != mUpdated ? IMessageHelper::timeToString(mUpdated) : String(), firstTime) +
                Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("name", mName, firstTime) +
@@ -286,6 +303,26 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      static void merge(bool &result, bool source, bool overwrite)
+      {
+        if (!source) return;
+        if (result) {
+          if (!overwrite) return;
+        }
+        result = source;
+      }
+
+      //-----------------------------------------------------------------------
+      static void merge(IPeerFilePublicPtr &result, const IPeerFilePublicPtr &source, bool overwrite)
+      {
+        if (!source) return;
+        if (result) {
+          if (!overwrite) return;
+        }
+        result = source;
+      }
+      
+      //-----------------------------------------------------------------------
       static void merge(IdentityInfo::Dispositions &result, IdentityInfo::Dispositions source, bool overwrite)
       {
         if (IdentityInfo::Disposition_NA == source) return;
@@ -321,29 +358,15 @@ namespace hookflash
 
         merge(mBase, source.mBase, overwriteExisting);
         merge(mURI, source.mURI, overwriteExisting);
-        merge(mURIEncrypted, source.mURIEncrypted, overwriteExisting);
-        merge(mHash, source.mHash, overwriteExisting);
         merge(mProvider, source.mProvider, overwriteExisting);
 
-        merge(mContactUserID, source.mContactUserID, overwriteExisting);
-        merge(mContact, source.mContact, overwriteExisting);
-        merge(mContactFindSecret, source.mContactFindSecret, overwriteExisting);
-        merge(mPrivatePeerFileSalt, source.mPrivatePeerFileSalt, overwriteExisting);
-        merge(mPrivatePeerFileSecretEncrypted, source.mPrivatePeerFileSecretEncrypted, overwriteExisting);
-
-
-        merge(mLastReset, source.mLastReset, overwriteExisting);
-        merge(mReloginAccessKey, source.mReloginAccessKey, overwriteExisting);
-        merge(mReloginAccessKeyEncrypted, source.mReloginAccessKeyEncrypted, overwriteExisting);
-
-        merge(mSecret, source.mSecret, overwriteExisting);
-        merge(mSecretSalt, source.mSecretSalt, overwriteExisting);
-        merge(mSecretEncrypted, source.mSecretEncrypted, overwriteExisting);
-        merge(mSecretDecryptionKeyEncrypted, source.mSecretDecryptionKeyEncrypted, overwriteExisting);
+        merge(mStableID, source.mStableID, overwriteExisting);
+        merge(mPeerFilePublic, source.mPeerFilePublic, overwriteExisting);
 
         merge(mPriority, source.mPriority, overwriteExisting);
         merge(mWeight, source.mWeight, overwriteExisting);
 
+        merge(mCreated, source.mCreated, overwriteExisting);
         merge(mUpdated, source.mUpdated, overwriteExisting);
         merge(mExpires, source.mExpires, overwriteExisting);
 
@@ -352,6 +375,108 @@ namespace hookflash
         merge(mVProfile, source.mVProfile, overwriteExisting);
         merge(mAvatars, source.mAvatars, overwriteExisting);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::IdentityInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool LockboxInfo::hasData() const
+      {
+        return ((mDomain.hasData()) ||
+                (mAccountID.hasData()) ||
+
+                (mAccessToken.hasData()) ||
+                (mAccessSecret.hasData()) ||
+                (Time() != mAccessSecretExpires) ||
+                (mAccessSecretProof.hasData()) ||
+                (Time() != mAccessSecretProofExpires) ||
+
+                (mKeyIdentityHalf.hasData()) ||
+                (mKeyLockboxHalf.hasData()) ||
+                (mHash.hasData()) ||
+
+                (mResetFlag));
+      }
+
+      //-----------------------------------------------------------------------
+      String LockboxInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("domain", mDomain, firstTime) +
+               Helper::getDebugValue("account ID", mAccountID, firstTime) +
+               Helper::getDebugValue("access token", mAccessToken, firstTime) +
+               Helper::getDebugValue("access secret", mAccessSecret, firstTime) +
+               Helper::getDebugValue("access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime) +
+               Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("key (identity half)", mKeyIdentityHalf, firstTime) +
+               Helper::getDebugValue("key (lockbox half)", mKeyLockboxHalf, firstTime) +
+               Helper::getDebugValue("hash", mHash, firstTime) +
+               Helper::getDebugValue("reset", mResetFlag ? "true" : "false", firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void LockboxInfo::mergeFrom(
+                                  const LockboxInfo &source,
+                                  bool overwriteExisting
+                                  )
+      {
+        merge(mDomain, source.mDomain, overwriteExisting);
+        merge(mAccountID, source.mAccountID, overwriteExisting);
+
+        merge(mAccessToken, source.mAccessToken, overwriteExisting);
+        merge(mAccessSecret, source.mAccessSecret, overwriteExisting);
+        merge(mAccessSecretExpires, source.mAccessSecretExpires, overwriteExisting);
+        merge(mAccessSecretProof, source.mAccessSecretProof, overwriteExisting);
+        merge(mAccessSecretProofExpires, source.mAccessSecretProofExpires, overwriteExisting);
+
+        merge(mKeyIdentityHalf, source.mKeyIdentityHalf, overwriteExisting);
+        merge(mKeyLockboxHalf, source.mKeyLockboxHalf, overwriteExisting);
+        merge(mHash, source.mHash, overwriteExisting);
+        merge(mResetFlag, source.mResetFlag, overwriteExisting);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::AgentInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool AgentInfo::hasData() const
+      {
+        return ((mUserAgent.hasData()) ||
+                (mName.hasData()) ||
+                (mImageURL.hasData()));
+      }
+
+      //-----------------------------------------------------------------------
+      String AgentInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("user agent", mUserAgent, firstTime) +
+               Helper::getDebugValue("name", mName, firstTime) +
+               Helper::getDebugValue("image url", mImageURL, firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void AgentInfo::mergeFrom(
+                                const LockboxInfo &source,
+                                bool overwriteExisting
+                                )
+      {
+        merge(mUserAgent, source.mUserAgent, overwriteExisting);
+        merge(mName, source.mName, overwriteExisting);
+        merge(mImageURL, source.mImageURL, overwriteExisting);
+      }
+
     }
   }
 }

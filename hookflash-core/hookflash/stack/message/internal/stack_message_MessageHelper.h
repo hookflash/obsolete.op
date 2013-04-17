@@ -63,6 +63,8 @@ namespace hookflash
                                           const IdentityInfo &identity,
                                           bool forcePriorityWeightOutput = false
                                           );
+          static ElementPtr createElement(const LockboxInfo &info);
+          static ElementPtr createElement(const AgentInfo &info);
 
           static ElementPtr createElement(
                                           const PublishToRelationshipsMap &relationships,
@@ -102,6 +104,8 @@ namespace hookflash
           static Finder       createFinder(ElementPtr elem);
           static Service      createService(ElementPtr serviceEl);
           static IdentityInfo createIdentity(ElementPtr elem);
+          static LockboxInfo  createLockbox(ElementPtr elem);
+          static AgentInfo    createAgent(ElementPtr elem);
         };
       }
     }

@@ -65,12 +65,16 @@ namespace hookflash
 
           String id = IMessageHelper::getAttribute(root, "id");
           String domain = IMessageHelper::getAttribute(root, "domain");
+          String appID = IMessageHelper::getAttribute(root, "appID");
 
-          if (!id.isEmpty()) {
+          if (id.hasData()) {
             pThis->messageID(id);
           }
-          if (!domain.isEmpty()) {
+          if (domain.hasData()) {
             pThis->domain(domain);
+          }
+          if (appID.hasData()) {
+            pThis->appID(appID);
           }
           return pThis;
         }

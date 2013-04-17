@@ -39,7 +39,7 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define HOOKFLASH_STACK_MESSAGE_IDENTITY_SIGN_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -90,21 +90,20 @@ namespace hookflash
           ElementPtr root = ret->getFirstChildElement();
 
           String clientNonce = IHelper::randomString(32);
-          String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS));
+          IdentityInfo identityInfo;
 
-          IdentityInfo info;
-          info.mURI = mIdentityInfo.mURI;
-          info.mAccessToken = mIdentityInfo.mAccessToken;
-          info.mAccessSecret = mIdentityInfo.mAccessSecret;
+          identityInfo.mURI = mIdentityInfo.mURI;
+          identityInfo.mProvider = mIdentityInfo.mProvider;
 
-          if (info.mAccessSecret.hasData()) {
-            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
-            info.mAccessSecret.clear();
+          identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
+          if (mIdentityInfo.mAccessSecret.hasData()) {
+            identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_SIGN_EXPIRES_TIME_IN_SECONDS);
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":identity-sign"));
           }
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(expires);
 
-          if (info.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(info));
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          if (identityInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
 
           return ret;

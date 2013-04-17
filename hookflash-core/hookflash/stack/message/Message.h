@@ -89,6 +89,9 @@ namespace hookflash
         virtual const String &domain() const        {return mDomain;}
         virtual void domain(const String &id)       {mDomain = id;}
 
+        virtual const String &appID() const         {return mAppID;}
+        virtual void appID(const String &appID)     {mAppID = appID;}
+
         virtual const String &messageID() const     {return mID;}
         virtual void messageID(const String &id)    {mID = id;}
 
@@ -103,6 +106,7 @@ namespace hookflash
         Message();
 
         String mDomain;
+        String mAppID;
         String mID;
       };
     }

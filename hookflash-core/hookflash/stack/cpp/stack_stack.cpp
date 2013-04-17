@@ -35,8 +35,8 @@
 #include <hookflash/stack/message/certificates/MessageFactoryCertificates.h>
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <hookflash/stack/message/peer/MessageFactoryPeer.h>
 #include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/peer-contact/MessageFactoryPeerContact.h>
 #include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 #include <hookflash/stack/message/peer-salt/MessageFactoryPeerSalt.h>
 #include <hookflash/stack/message/peer-to-peer/MessageFactoryPeerToPeer.h>
@@ -59,8 +59,8 @@ namespace hookflash
       using message::certificates::MessageFactoryCertificates;
       using message::identity::MessageFactoryIdentity;
       using message::identity_lookup::MessageFactoryIdentityLookup;
+      using message::peer::MessageFactoryPeer;
       using message::peer_common::MessageFactoryPeerCommon;
-      using message::peer_contact::MessageFactoryPeerContact;
       using message::peer_finder::MessageFactoryPeerFinder;
       using message::peer_salt::MessageFactoryPeerSalt;
       using message::peer_to_peer::MessageFactoryPeerToPeer;
@@ -74,15 +74,33 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      const String &IStackForInternal::deviceID()
+      const String &IStackForInternal::appID()
       {
-        return (Stack::singleton())->getDeviceID();
+        return (Stack::singleton())->getAppID();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::appName()
+      {
+        return (Stack::singleton())->getAppName();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::appImageURL()
+      {
+        return (Stack::singleton())->getAppImageURL();
       }
 
       //-----------------------------------------------------------------------
       const String &IStackForInternal::userAgent()
       {
         return (Stack::singleton())->getUserAgent();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::deviceID()
+      {
+        return (Stack::singleton())->getDeviceID();
       }
 
       //-----------------------------------------------------------------------
@@ -133,8 +151,8 @@ namespace hookflash
         MessageFactoryCertificates::singleton();
         MessageFactoryIdentity::singleton();
         MessageFactoryIdentityLookup::singleton();
+        MessageFactoryPeer::singleton();
         MessageFactoryPeerCommon::singleton();
-        MessageFactoryPeerContact::singleton();
         MessageFactoryPeerFinder::singleton();
         MessageFactoryPeerSalt::singleton();
         MessageFactoryPeerToPeer::singleton();
@@ -181,8 +199,11 @@ namespace hookflash
                         IMessageQueuePtr defaultDelegateMessageQueue,
                         IMessageQueuePtr stackMessageQueue,
                         IMessageQueuePtr servicesMessageQueue,
-                        const char *deviceID,
+                        const char *appID,
+                        const char *appName,
+                        const char *appImageURL,
                         const char *userAgent,
+                        const char *deviceID,
                         const char *os,
                         const char *system
                         )
@@ -201,6 +222,15 @@ namespace hookflash
           mServicesQueue = servicesMessageQueue;
         }
 
+        if (appID) {
+          mAppID = appID;
+        }
+        if (appName) {
+          mAppName = appName;
+        }
+        if (appImageURL) {
+          mAppImageURL = appImageURL;
+        }
         if (deviceID) {
           mDeviceID = String(deviceID);
         }
@@ -217,8 +247,11 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(!mDelegateQueue)
         ZS_THROW_INVALID_ARGUMENT_IF(!mStackQueue)
         ZS_THROW_INVALID_ARGUMENT_IF(!mServicesQueue)
-        ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppID.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppName.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppImageURL.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mUserAgent.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mOS.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mSystem.isEmpty())
       }
@@ -283,13 +316,16 @@ namespace hookflash
                        IMessageQueuePtr defaultDelegateMessageQueue,
                        IMessageQueuePtr stackMessageQueue,
                        IMessageQueuePtr servicesQueue,
-                       const char *deviceID,   // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
-                       const char *userAgent,  // e.g. "hookflash/1.0.1001a (iOS/iPad)"
-                       const char *os,         // e.g. "iOS 5.0.3
-                       const char *system      // e.g. "iPad 2"
+                       const char *appID,
+                       const char *appName,
+                       const char *appImageURL,
+                       const char *userAgent,
+                       const char *deviceID,
+                       const char *os,
+                       const char *system
                        )
     {
-      return internal::Stack::singleton()->setup(defaultDelegateMessageQueue, stackMessageQueue, servicesQueue, deviceID, userAgent, os, system);
+      return internal::Stack::singleton()->setup(defaultDelegateMessageQueue, stackMessageQueue, servicesQueue, appID, appName, appImageURL, userAgent, deviceID, os, system);
     }
   }
 }

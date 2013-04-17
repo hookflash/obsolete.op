@@ -34,6 +34,7 @@
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/MessageResult.h>
 #include <hookflash/stack/internal/stack_Helper.h>
+#include <hookflash/stack/internal/stack_Stack.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -49,6 +50,7 @@ namespace hookflash
     {
       using zsLib::Stringize;
 
+      using stack::internal::IStackForInternal;
       using stack::internal::Helper;
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
@@ -83,9 +85,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      Message::Message()
+      Message::Message() :
+        mAppID(IStackForInternal::appID()),
+        mID(IHelper::randomString(32))
       {
-        mID = IHelper::randomString(32);
       }
 
       //-----------------------------------------------------------------------
@@ -96,6 +99,7 @@ namespace hookflash
         const char *messageTypeStr = Message::toString(message->messageType());
         const char *methodStr = message->methodAsString();
         String domain = message->domain();
+        String appID = message->appID();
         String messageID = message->messageID();
 
         String handler;
@@ -122,6 +126,7 @@ namespace hookflash
                Helper::getDebugValue("handler", handler, firstTime) +
                Helper::getDebugValue("method", method, firstTime) +
                Helper::getDebugValue("domain", domain, firstTime) +
+               Helper::getDebugValue("appID", appID, firstTime) +
                Helper::getDebugValue("id", messageID, firstTime) +
                Helper::getDebugValue("error code", errorCode, firstTime) +
                Helper::getDebugValue("error reason", errorReason, firstTime);

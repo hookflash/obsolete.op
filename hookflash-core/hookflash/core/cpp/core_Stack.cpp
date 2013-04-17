@@ -35,6 +35,8 @@
 #include <hookflash/core/ICall.h>
 #include <hookflash/services/IHelper.h>
 
+#include <hookflash/stack/IStack.h>
+
 #include <zsLib/helpers.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Socket.h>
@@ -267,15 +269,33 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      const String &IStackForInternal::deviceID()
+      const String &IStackForInternal::appID()
       {
-        return (Stack::singleton())->getDeviceID();
+        return (Stack::singleton())->getAppID();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::appName()
+      {
+        return (Stack::singleton())->getAppName();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::appImageURL()
+      {
+        return (Stack::singleton())->getAppImageURL();
       }
 
       //-----------------------------------------------------------------------
       const String &IStackForInternal::userAgent()
       {
         return (Stack::singleton())->getUserAgent();
+      }
+
+      //-----------------------------------------------------------------------
+      const String &IStackForInternal::deviceID()
+      {
+        return (Stack::singleton())->getDeviceID();
       }
 
       //-----------------------------------------------------------------------
@@ -373,8 +393,11 @@ namespace hookflash
       void Stack::setup(
                         IStackDelegatePtr stackDelegate,
                         IMediaEngineDelegatePtr mediaEngineDelegate,
-                        const char *deviceID,
+                        const char *appID,
+                        const char *appName,
+                        const char *appImageURL,
                         const char *userAgent,
+                        const char *deviceID,
                         const char *os,
                         const char *system
                         )
@@ -391,12 +414,21 @@ namespace hookflash
           mMediaEngineDelegate = IMediaEngineDelegateProxy::create(getQueueApplication(), mediaEngineDelegate);
           IMediaEngineForStack::setup(mMediaEngineDelegate);
         }
-
-        if (deviceID) {
-          mDeviceID = String(deviceID);
+        
+        if (appID) {
+          mAppID = appID;
+        }
+        if (appName) {
+          mAppName = appName;
+        }
+        if (appImageURL) {
+          mAppImageURL = appImageURL;
         }
         if (userAgent) {
           mUserAgent = String(userAgent);
+        }
+        if (deviceID) {
+          mDeviceID = String(deviceID);
         }
         if (os) {
           mOS = String(os);
@@ -405,10 +437,15 @@ namespace hookflash
           mSystem = String(system);
         }
 
-        ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppID.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppName.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppImageURL.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mUserAgent.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mOS.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mSystem.isEmpty())
+
+        stack::IStack::setup(mApplicationThreadQueue, mCoreThreadQueue, mServicesThreadQueue, mAppID, mAppName, mAppImageURL, mUserAgent, mDeviceID, mOS, mSystem);
       }
 
       //-----------------------------------------------------------------------

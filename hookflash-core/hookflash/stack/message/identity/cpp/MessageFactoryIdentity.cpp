@@ -30,10 +30,9 @@
  */
 
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
-#include <hookflash/stack/message/identity/IdentityLoginStartResult.h>
-#include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
-#include <hookflash/stack/message/identity/IdentityLoginCompleteResult.h>
-#include <hookflash/stack/message/identity/IdentityAssociateResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
@@ -112,11 +111,11 @@ namespace hookflash
           {
             case Method_Invalid:                            return "";
 
-            case Method_IdentityLoginStart:                 return "identity-login-start";
-            case Method_IdentityLoginNotify:                return "identity-login-notify";
-            case Method_IdentityLoginBrowserWindowControl:  return "identity-login-browser-window-control";
-            case Method_IdentityLoginComplete:              return "identity-login-complete";
-            case Method_IdentityAssociate:                  return "identity-login-associate";
+            case Method_IdentityAccessWindow:               return "identity-access-window";
+            case Method_IdentityAccessStart:                return "identity-access-start";
+            case Method_IdentityAccessComplete:             return "identity-access-complete";
+            case Method_IdentityAccessLockboxUpdate:        return "identity-access-lockbox-update";
+            case Method_IdentityAccessValidate:             return "identity-access-validate";
             case Method_IdentitySign:                       return "identity-sign";
           }
           return "";
@@ -141,11 +140,11 @@ namespace hookflash
               switch (msgMethod) {
                 case Method_Invalid:                            return MessagePtr();
 
-                case Method_IdentityLoginStart:                 return MessagePtr();
-                case Method_IdentityLoginNotify:                return MessagePtr();
-                case Method_IdentityLoginBrowserWindowControl:  return MessagePtr();
-                case Method_IdentityLoginComplete:              return MessagePtr();
-                case Method_IdentityAssociate:                  return MessagePtr();
+                case Method_IdentityAccessWindow:               return MessagePtr();
+                case Method_IdentityAccessStart:                return MessagePtr();
+                case Method_IdentityAccessComplete:             return MessagePtr();
+                case Method_IdentityAccessLockboxUpdate:        return MessagePtr();
+                case Method_IdentityAccessValidate:             return MessagePtr();
                 case Method_IdentitySign:                       return MessagePtr();
               }
               break;
@@ -155,11 +154,11 @@ namespace hookflash
               switch (msgMethod) {
                 case Method_Invalid:                            return MessagePtr();
 
-                case Method_IdentityLoginStart:                 return IdentityLoginStartResult::create(root, messageSource);
-                case Method_IdentityLoginNotify:                return MessagePtr();
-                case Method_IdentityLoginBrowserWindowControl:  return MessagePtr();
-                case Method_IdentityLoginComplete:              return IdentityLoginCompleteResult::create(root, messageSource);
-                case Method_IdentityAssociate:                  return IdentityAssociateResult::create(root, messageSource);
+                case Method_IdentityAccessWindow:               return MessagePtr();
+                case Method_IdentityAccessStart:                return MessagePtr();
+                case Method_IdentityAccessComplete:             return MessagePtr();
+                case Method_IdentityAccessLockboxUpdate:        return IdentityAccessLockboxUpdateResult::create(root, messageSource);
+                case Method_IdentityAccessValidate:             return MessagePtr();
                 case Method_IdentitySign:                       return IdentitySignResult::create(root, messageSource);
               }
               break;
@@ -168,11 +167,11 @@ namespace hookflash
               switch (msgMethod) {
                 case Method_Invalid:                            return MessagePtr();
 
-                case Method_IdentityLoginStart:                 return MessagePtr();
-                case Method_IdentityLoginNotify:                return MessagePtr();
-                case Method_IdentityLoginBrowserWindowControl:  return IdentityLoginBrowserWindowControlNotify::create(root, messageSource);
-                case Method_IdentityLoginComplete:              return MessagePtr();
-                case Method_IdentityAssociate:                  return MessagePtr();
+                case Method_IdentityAccessWindow:               return IdentityAccessWindowNotify::create(root, messageSource);
+                case Method_IdentityAccessStart:                return MessagePtr();
+                case Method_IdentityAccessComplete:             return IdentityAccessCompleteNotify::create(root, messageSource);
+                case Method_IdentityAccessLockboxUpdate:        return MessagePtr();
+                case Method_IdentityAccessValidate:             return MessagePtr();
                 case Method_IdentitySign:                       return MessagePtr();
               }
               break;
