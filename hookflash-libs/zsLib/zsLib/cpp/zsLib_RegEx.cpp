@@ -54,7 +54,8 @@ namespace zsLib
 
 #else
 
-    const boost::regex e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
+      //const boost::regex e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
+    const boost::regex e(mRegularExpression);
     if (!boost::regex_match(stringToSearch, e)) {
       return false;
     }
