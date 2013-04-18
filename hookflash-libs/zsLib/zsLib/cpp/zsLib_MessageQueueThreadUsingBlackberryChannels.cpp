@@ -50,50 +50,60 @@ namespace zsLib
     public:
       MessageQueueThreadUsingBlackberryChannelsWrapper() : mThreadQueue(MessageQueueThreadUsingBlackberryChannels::create())
       {
+        // From the BB docs:
+        // Your application can call the bps_initialize() function more than once. An application that
+        // calls the bps_initialize() function multiple times should call the bps_shutdown() function the
+        //same number of times.
+        bps_initialize();
+
         mThreadQueue->setup();
       }
       ~MessageQueueThreadUsingBlackberryChannelsWrapper()
       {
         mThreadQueue->waitForShutdown();
+
+        // See note above regarding bps_initialize.
+        bps_shutdown();
       }
 
     public:
       MessageQueueThreadUsingBlackberryChannelsPtr mThreadQueue;
     };
 
-    typedef boost::thread_specific_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper> MessageQueueThreadUsingBlackberryChannelsWrapperThreadPtr;
+    static pthread_once_t messageQueueKeyOnce = PTHREAD_ONCE_INIT;
+    static pthread_key_t messageQueueKey;
 
     //-----------------------------------------------------------------------
+
+    void messageQueueKeyDestructor(void* value) {
+      boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>* ptr = (boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>*) value;
+      (*ptr).reset();
+      delete ptr;
+      pthread_setspecific(messageQueueKey, NULL);
+    }
+
     //-----------------------------------------------------------------------
+
+    void makeMessageQueueKeyOnce() {
+      pthread_key_create(&messageQueueKey, messageQueueKeyDestructor);
+    }
+
     //-----------------------------------------------------------------------
-    //-----------------------------------------------------------------------
-    #pragma mark
-    #pragma mark zsLib::internal::MessageQueueThreadUsingBlackberryChannelsGlobal
-    #pragma mark
-    class MessageQueueThreadUsingBlackberryChannelsGlobal
+    static MessageQueueThreadUsingBlackberryChannelsPtr getThreadMessageQueue()
     {
-    public:
-      MessageQueueThreadUsingBlackberryChannelsGlobal()
-      {
-        // From the BB docs:
-        // Your application can call the bps_initialize() function more than once. An application that
-        // calls the bps_initialize() function multiple times should call the bps_shutdown() function the
-        //same number of times.
-        bps_initialize();
+      pthread_once(&messageQueueKeyOnce, makeMessageQueueKeyOnce);
+
+      if (!pthread_getspecific(messageQueueKey)) {
+        boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>* ptr = new boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>(new MessageQueueThreadUsingBlackberryChannelsWrapper());
+        pthread_setspecific(messageQueueKey, (void*) ptr);
       }
 
-      ~MessageQueueThreadUsingBlackberryChannelsGlobal()
-      {
-        // See not above regarding bps_initialize.
-        bps_shutdown();
-      }
+      boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>* returnPtr = (boost::shared_ptr<MessageQueueThreadUsingBlackberryChannelsWrapper>*) pthread_getspecific(messageQueueKey);
+      return (*returnPtr).get()->mThreadQueue;
+    }
 
-    public:
-      MessageQueueThreadUsingBlackberryChannelsWrapperThreadPtr mThreadQueueWrapper;
-      const TCHAR *mCustomMessageName;
-      UINT mCustomMessage;
-    };
 
+#ifndef __QNX__
     //-----------------------------------------------------------------------
     static MessageQueueThreadUsingBlackberryChannelsGlobal &getGlobal()
     {
@@ -104,10 +114,12 @@ namespace zsLib
     //-----------------------------------------------------------------------
     static MessageQueueThreadUsingBlackberryChannelsPtr getThreadMessageQueue()
     {
-      if (! getGlobal().mThreadQueueWrapper.get())
+      if (! getGlobal().mThreadQueueWrapper.get()) {
         getGlobal().mThreadQueueWrapper.reset(new MessageQueueThreadUsingBlackberryChannelsWrapper);
+      }
       return getGlobal().mThreadQueueWrapper->mThreadQueue;
     }
+#endif // not __QNX__
 
     //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::singleton()
