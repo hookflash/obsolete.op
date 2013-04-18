@@ -1,0 +1,125 @@
+!SESSION 2013-04-17 17:49:48.632 -----------------------------------------------
+eclipse.buildId=10.1.0
+java.version=1.6.0_41
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -data /Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/bbworkspace -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.ui.workbench 2 0 2013-04-17 17:49:53.019
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2013-04-17 17:49:53.019
+!MESSAGE Conflict for 'AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction':
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@182b9b5),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@182b9b5)),sourcePriority=16640)
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@182b9b5),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@182b9b5)),sourcePriority=16640)
+
+!ENTRY org.eclipse.core.net 1 0 2013-04-17 17:49:53.481
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.071
+!MESSAGE Cannot resolve ValueType variant: Number
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.072
+!MESSAGE Cannot resolve ValueType variant: QLocale
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.072
+!MESSAGE Cannot resolve ValueType variant: String
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.073
+!MESSAGE Cannot resolve ValueType variant: bb::device::CellularService::Types
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.073
+!MESSAGE Cannot resolve ValueType variant: Boolean
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.074
+!MESSAGE Cannot resolve ValueType variant:  bb::system::SystemUiButton 
+
+!ENTRY com.rim.tad.tools.qml.core 2 0 2013-04-17 17:51:11.080
+!MESSAGE Issues while loading Components Definition:
+Duplicate Signal in: ComponentID: bb::cascades::InvokeActionItem, Signal: handlerChanged
+
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:53:32.670
+!MESSAGE Indexed 'modules' (325 sources, 561 headers) in 26.79 sec: 62,175 declarations; 207,143 references; 0 unresolved inclusions; 5 syntax errors; 43 unresolved names (0.02%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:53:36.631
+!MESSAGE Indexed 'voice_engine' (28 sources, 165 headers) in 3.96 sec: 16,793 declarations; 39,568 references; 0 unresolved inclusions; 0 syntax errors; 21 unresolved names (0.04%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:53:39.419
+!MESSAGE Indexed 'system_wrappers' (26 sources, 131 headers) in 2.79 sec: 14,917 declarations; 30,849 references; 0 unresolved inclusions; 0 syntax errors; 1 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:53:39.987
+!MESSAGE Indexed 'audio_device_test' (1 sources, 57 headers) in 0.57 sec: 4,762 declarations; 3,895 references; 0 unresolved inclusions; 0 syntax errors; 5 unresolved names (0.06%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:05.183
+!MESSAGE Indexed 'bbzsLib' (33 sources, 929 headers) in 25.20 sec: 58,056 declarations; 251,655 references; 0 unresolved inclusions; 54 syntax errors; 1,546 unresolved names (0.50%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:43.348
+!MESSAGE Indexed 'bbhfstack' (104 sources, 978 headers) in 38.16 sec: 67,953 declarations; 318,810 references; 0 unresolved inclusions; 51 syntax errors; 6,416 unresolved names (1.63%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:43.968
+!MESSAGE Indexed 'common_video' (4 sources, 57 headers) in 0.62 sec: 4,594 declarations; 4,863 references; 0 unresolved inclusions; 0 syntax errors; 19 unresolved names (0.20%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:57.204
+!MESSAGE Indexed 'video_capture_test' (1 sources, 799 headers) in 13.23 sec: 46,108 declarations; 208,529 references; 0 unresolved inclusions; 51 syntax errors; 1,047 unresolved names (0.41%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:57.750
+!MESSAGE Indexed 'bbudns' (17 sources, 54 headers) in 0.54 sec: 4,800 declarations; 8,741 references; 0 unresolved inclusions; 0 syntax errors; 4 unresolved names (0.03%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:54:58.865
+!MESSAGE Indexed 'yuv' (16 sources, 61 headers) in 1.11 sec: 8,913 declarations; 15,091 references; 0 unresolved inclusions; 0 syntax errors; 5 unresolved names (0.02%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:00.004
+!MESSAGE Indexed 'metrics' (1 sources, 67 headers) in 1.14 sec: 8,659 declarations; 13,327 references; 0 unresolved inclusions; 0 syntax errors; 5 unresolved names (0.02%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:03.335
+!MESSAGE Indexed 'pcre' (30 sources, 108 headers) in 3.33 sec: 15,369 declarations; 56,794 references; 0 unresolved inclusions; 1 syntax errors; 752 unresolved names (1.03%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:04.042
+!MESSAGE Indexed 'common_audio' (40 sources, 56 headers) in 0.71 sec: 5,151 declarations; 12,476 references; 0 unresolved inclusions; 0 syntax errors; 5 unresolved names (0.03%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:33.920
+!MESSAGE Indexed 'bbhfcore' (19 sources, 963 headers) in 29.88 sec: 69,932 declarations; 314,978 references; 0 unresolved inclusions; 54 syntax errors; 5,413 unresolved names (1.39%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:34.270
+!MESSAGE Indexed 'ogg' (2 sources, 37 headers) in 0.35 sec: 2,601 declarations; 4,120 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:55:49.881
+!MESSAGE Indexed 'bbcryptopp' (122 sources, 245 headers) in 15.61 sec: 34,557 declarations; 163,233 references; 0 unresolved inclusions; 0 syntax errors; 443 unresolved names (0.22%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:56:12.414
+!MESSAGE Indexed 'bbhfservices' (21 sources, 943 headers) in 22.53 sec: 68,699 declarations; 293,683 references; 0 unresolved inclusions; 54 syntax errors; 7,792 unresolved names (2.10%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:56:16.385
+!MESSAGE Indexed 'video_engine' (31 sources, 153 headers) in 3.97 sec: 16,816 declarations; 41,655 references; 0 unresolved inclusions; 0 syntax errors; 28 unresolved names (0.05%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:56:17.295
+!MESSAGE Indexed 'jpeg' (44 sources, 44 headers) in 0.91 sec: 5,495 declarations; 26,059 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2013-04-17 17:56:20.434
+!MESSAGE Indexed 'vpx' (99 sources, 149 headers) in 3.14 sec: 15,613 declarations; 76,474 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+!SESSION 2013-04-17 17:58:16.290 -----------------------------------------------
+eclipse.buildId=10.1.0
+java.version=1.6.0_41
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=cocoa, NL=en_US
+Framework arguments:  -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86 -data /Users/lawrence.gunn/Documents/op/hookflash-core/projects/bb/workspace -keyring /Users/lawrence.gunn/.eclipse_keyring -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2013-04-17 17:58:20.207
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+
+!ENTRY org.eclipse.ui.workbench 2 0 2013-04-17 17:58:29.456
+!MESSAGE A handler conflict occurred.  This may disable some commands.
+!SUBENTRY 1 org.eclipse.ui.workbench 2 0 2013-04-17 17:58:29.456
+!MESSAGE Conflict for 'AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction':
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@76f1f4),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@76f1f4)),sourcePriority=16640)
+HandlerActivation(commandId=AUTOGEN:::org.eclipse.ui.cheatsheets.actionSet/org.eclipse.ui.cheatsheets.actions.CheatSheetHelpMenuAction,
+	handler=ActionDelegateHandlerProxy(null,org.eclipse.ui.cheatsheets.CheatSheetExtensionFactory:helpMenuAction),
+	expression=AndExpression(ActionSetExpression(org.eclipse.ui.cheatsheets.actionSet,org.eclipse.ui.internal.WorkbenchWindow@76f1f4),WorkbenchWindowExpression(org.eclipse.ui.internal.WorkbenchWindow@76f1f4)),sourcePriority=16640)

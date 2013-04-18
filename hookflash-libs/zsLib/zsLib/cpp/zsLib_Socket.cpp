@@ -59,7 +59,7 @@ namespace zsLib
     static void ignoreSigTermOnThread()
     {
       if (!threadLocalData.get()) {
-        threadLocalData.reset(new bool);
+        // threadLocalData.reset(new bool);
 
         struct sigaction act;
         memset(&act, 0, sizeof(act));

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>usb</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+		<nature>com.qnx.tools.ide.target.core.nature.target</nature>
+		<nature>com.qnx.tools.ide.bbt.target.core.nature</nature>
+	</natures>
+</projectDescription>
