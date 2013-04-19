@@ -378,7 +378,7 @@ int ViEFileImpl::StartRecordCaptureVideo(const int capture_id,
   
   VoiceEngine* ve_ptr = NULL;
   if (audio_source != NO_AUDIO) {
-    ve_ptr = shared_data_->input_manager()->GetVoiceEngine();
+    ve_ptr = shared_data_->channel_manager()->GetVoiceEngine();
     if (!ve_ptr) {
       WEBRTC_TRACE(kTraceError, kTraceVideo,
                    ViEId(shared_data_->instance_id(), capture_id),

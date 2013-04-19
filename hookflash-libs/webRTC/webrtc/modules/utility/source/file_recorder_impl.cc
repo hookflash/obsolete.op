@@ -417,7 +417,8 @@ int32_t AviRecorder::StartRecordingVideoFile(
     const CodecInst& audioCodecInst,
     const VideoCodec& videoCodecInst,
     ACMAMRPackingFormat amrFormat,
-    bool videoOnly)
+    bool videoOnly,
+    bool saveVideoToLibrary)
 {
     _firstAudioFrameReceived = false;
     _videoCodecInst = videoCodecInst;
@@ -787,6 +788,451 @@ int32_t AviRecorder::WriteEncodedAudioData(
 
     if(playoutTS)
     {
+        _audioFramesToWrite.PushBack(new AudioFrameFileInfo(audioBuffer,
+                                                            bufferLength,
+                                                            millisecondsOfData,
+                                                            *playoutTS));
+    } else {
+        _audioFramesToWrite.PushBack(new AudioFrameFileInfo(audioBuffer,
+                                                            bufferLength,
+                                                            millisecondsOfData,
+                                                            TickTime::Now()));
+    }
+    _timeEvent.Set();
+    return 0;
+}
+
+  
+MP4Recorder::MP4Recorder(WebRtc_UWord32 instanceID, FileFormats fileFormat)
+: FileRecorderImpl(instanceID, fileFormat),
+    _videoOnly(false),
+    _thread( 0),
+    _timeEvent(*EventWrapper::Create()),
+    _critSec(CriticalSectionWrapper::CreateCriticalSection()),
+    _writtenVideoFramesCounter(0),
+    _writtenAudioMS(0),
+    _writtenVideoMS(0)
+{
+    _videoEncoder = new VideoCoder(instanceID);
+    _frameScaler = new FrameScaler();
+    _videoFramesQueue = new VideoFramesQueue();
+    _thread = ThreadWrapper::CreateThread(Run, this, kNormalPriority,
+                                          "MP4Recorder()");
+}
+
+MP4Recorder::~MP4Recorder( )
+{
+    if(IsRecording())
+        StopRecording( );
+    
+    delete _videoEncoder;
+    delete _frameScaler;
+    delete _videoFramesQueue;
+    delete _thread;
+    delete &_timeEvent;
+    delete _critSec;
+}
+
+WebRtc_Word32 MP4Recorder::StartRecordingVideoFile(
+                                                   const char* fileName,
+                                                   const CodecInst& audioCodecInst,
+                                                   const VideoCodec& videoCodecInst,
+                                                   ACMAMRPackingFormat amrFormat,
+                                                   bool videoOnly,
+                                                   bool saveVideoToLibrary)
+{
+    _firstAudioFrameReceived = false;
+    _videoCodecInst = videoCodecInst;
+    _videoOnly = videoOnly;
+    
+    if(_moduleFile->StartRecordingVideoFile(fileName, _fileFormat,
+                                            audioCodecInst, videoCodecInst,
+                                            videoOnly, saveVideoToLibrary) != 0)
+    {
+        return -1;
+    }
+    
+    if(!videoOnly)
+    {
+        if(FileRecorderImpl::StartRecordingAudioFile(fileName,audioCodecInst, 0,
+                                                     amrFormat) !=0)
+        {
+            StopRecording();
+            return -1;
+        }
+    }
+    if( SetUpVideoEncoder() != 0)
+    {
+        StopRecording();
+        return -1;
+    }
+    if(_videoOnly)
+    {
+        // Writing to MP4 file is non-blocking.
+        // Start non-blocking timer if video only. If recording both video and
+        // audio let the pushing of audio frames be the timer.
+        _timeEvent.StartTimer(true, 1000 / _videoCodecInst.maxFramerate);
+    }
+    StartThread();
+    return 0;
+}
+
+WebRtc_Word32 MP4Recorder::StopRecording()
+{
+    _timeEvent.StopTimer();
+    
+    StopThread();
+    return FileRecorderImpl::StopRecording();
+}
+
+WebRtc_Word32 MP4Recorder::CalcI420FrameSize( ) const
+{
+    return 3 * _videoCodecInst.width * _videoCodecInst.height / 2;
+}
+
+WebRtc_Word32 MP4Recorder::SetUpVideoEncoder()
+{
+    _videoMaxPayloadSize = 0;
+    return 0;
+}
+
+WebRtc_Word32 MP4Recorder::RecordVideoToFile(const I420VideoFrame& i420VideoFrame)
+{
+    CriticalSectionScoped lock(_critSec);
+
+    if(!IsRecording())
+    {
+        return -1;
+    }
+    
+    int videoFrameLength = CalcBufferSize(kI420, i420VideoFrame.width(), i420VideoFrame.height());    
+    if( videoFrameLength == 0)
+    {
+        return -1;
+    }    
+    
+//    printf("RecordVideoToFile - TS: %lld\n", videoFrame.RenderTimeMs());
+    // The frame is written to file in MP4Recorder::Process().
+    WebRtc_Word32 retVal = _videoFramesQueue->AddFrame(i420VideoFrame);
+    if(retVal != 0)
+    {
+        StopRecording();
+    }
+    return retVal;
+}
+
+bool MP4Recorder::StartThread()
+{
+    unsigned int id;
+    if( _thread == 0)
+    {
+        return false;
+    }
+    
+    return _thread->Start(id);
+}
+
+bool MP4Recorder::StopThread()
+{
+    _critSec->Enter();
+    
+    if(_thread)
+    {
+        _thread->SetNotAlive();
+        
+        ThreadWrapper* thread = _thread;
+        _thread = NULL;
+        
+        _timeEvent.Set();
+        
+        _critSec->Leave();
+        
+        if(thread->Stop())
+        {
+            delete thread;
+        } else {
+            return false;
+        }
+    } else {
+        _critSec->Leave();
+    }
+    return true;
+}
+
+bool MP4Recorder::Run( ThreadObj threadObj)
+{
+    return static_cast<MP4Recorder*>( threadObj)->Process();
+}
+
+WebRtc_Word32 MP4Recorder::ProcessAudio()
+{
+    if (_writtenVideoFramesCounter == 0)
+    {
+        // Get the most recent frame that is due for writing to file. Since
+        // frames are unencoded it's safe to throw away frames if necessary
+        // for synchronizing audio and video.
+        I420VideoFrame* frameToProcess = _videoFramesQueue->FrameToRecord();
+        if(frameToProcess)
+        {
+            // Syncronize audio to the current frame to process by throwing away
+            // audio samples with older timestamp than the video frame.
+            WebRtc_UWord32 numberOfAudioElements =
+                _audioFramesToWrite.GetSize();
+            for (WebRtc_UWord32 i = 0; i < numberOfAudioElements; ++i)
+            {
+                AudioFrameFileInfo* frameInfo =
+                    (AudioFrameFileInfo*)_audioFramesToWrite.First()->GetItem();
+                if(frameInfo)
+                {
+                    if(TickTime::TicksToMilliseconds(
+                                                     frameInfo->_playoutTS.Ticks()) <
+                       frameToProcess->render_time_ms())
+                    {
+                        delete frameInfo;
+                        _audioFramesToWrite.PopFront();
+                    } else
+                    {
+                      break;
+                    }
+                }
+            }
+        }
+    }
+    // Write all audio up to current timestamp.
+    WebRtc_Word32 error = 0;
+    WebRtc_UWord32 numberOfAudioElements = _audioFramesToWrite.GetSize();
+    for (WebRtc_UWord32 i = 0; i < numberOfAudioElements; ++i)
+    {
+        AudioFrameFileInfo* frameInfo =
+            (AudioFrameFileInfo*)_audioFramesToWrite.First()->GetItem();
+        if(frameInfo)
+        {
+//            printf("ProcessAudio - TS: %lld ", TickTime::TicksToMilliseconds(frameInfo->_playoutTS.Ticks()) );
+            if((TickTime::Now() - frameInfo->_playoutTS).Milliseconds() > 0)
+            {
+//                printf("- processed\n");
+                _moduleFile->IncomingMP4AudioData(frameInfo->_audioData,
+                                                  frameInfo->_audioSize,
+                                                  TickTime::TicksToMilliseconds((frameInfo->_playoutTS).Ticks()));
+                _writtenAudioMS += frameInfo->_audioMS;
+                delete frameInfo;
+                _audioFramesToWrite.PopFront();
+            } else {
+//                printf("- not processed\n");
+                break;
+            }
+        } else {
+//            printf("ProcessAudio - not processed\n");
+            _audioFramesToWrite.PopFront();
+        }
+    }
+    return error;
+}
+
+bool MP4Recorder::Process()
+{
+    switch(_timeEvent.Wait(500))
+    {
+        case kEventSignaled:
+            if(_thread == NULL)
+            {
+              return false;
+            }
+            break;
+        case kEventError:
+            return false;
+        case kEventTimeout:
+            // No events triggered. No work to do.
+            return true;
+    }
+    CriticalSectionScoped lock( _critSec);
+    
+    // Get the most recent frame to write to file (if any). Synchronize it with
+    // the audio stream (if any). Synchronization the video based on its render
+    // timestamp (i.e. VideoFrame::RenderTimeMS())
+    I420VideoFrame* frameToProcess = _videoFramesQueue->FrameToRecord();
+    if( frameToProcess == NULL)
+    {
+        return true;
+    }
+    WebRtc_Word32 error = 0;
+    if(!_videoOnly)
+    {
+        if(!_firstAudioFrameReceived)
+        {
+            // Video and audio can only be synchronized if both have been
+            // received.
+            return true;
+        }
+        error = ProcessAudio();
+        
+        while (_writtenAudioMS > _writtenVideoMS)
+        {
+            error = EncodeAndWriteVideoToFile( *frameToProcess);
+            if( error != 0)
+            {
+                WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
+                             "MP4Recorder::Process() error writing to file.");
+                break;
+            } else {
+                WebRtc_UWord32 frameLengthMS = 1000 / _videoCodecInst.maxFramerate;
+                _writtenVideoFramesCounter++;
+                _writtenVideoMS += frameLengthMS;
+                // A full seconds worth of frames have been written.
+                if(_writtenVideoFramesCounter%_videoCodecInst.maxFramerate == 0)
+                {
+                    // Frame rate is in frames per seconds. Frame length is
+                    // calculated as an integer division which means it may
+                    // be rounded down. Compensate for this every second.
+                    WebRtc_UWord32 rest = 1000 % frameLengthMS;
+                    _writtenVideoMS += rest;
+                }
+            }
+        }
+    } else {
+        // Frame rate is in frames per seconds. Frame length is calculated as an
+        // integer division which means it may be rounded down. This introduces
+        // drift. Once a full frame worth of drift has happened, skip writing
+        // one frame. Note that frame rate is in frames per second so the
+        // drift is completely compensated for.
+        WebRtc_UWord32 frameLengthMS;
+        WebRtc_UWord32 restMS;
+        WebRtc_UWord32 frameSkip;
+        frameLengthMS = 1000 / _videoCodecInst.maxFramerate;
+        restMS = 1000 % frameLengthMS;
+        frameSkip = (_videoCodecInst.maxFramerate *
+                     frameLengthMS) / restMS;
+        
+        _writtenVideoFramesCounter++;
+        if(_writtenVideoFramesCounter % frameSkip == 0)
+        {
+            _writtenVideoMS += frameLengthMS;
+            return true;
+        }
+        
+        error = EncodeAndWriteVideoToFile( *frameToProcess);
+        if(error != 0)
+        {
+            WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
+                         "MP4Recorder::Process() error writing to file.");
+        } else {
+            _writtenVideoMS += frameLengthMS;
+        }
+    }
+    return error == 0;
+}
+
+WebRtc_Word32 MP4Recorder::EncodeAndWriteVideoToFile(I420VideoFrame& i420VideoFrame)
+{
+    if(!IsRecording())
+    {
+        return -1;
+    }
+    
+    int bufferSize = CalcBufferSize(kI420, i420VideoFrame.width(), i420VideoFrame.height());
+    
+    // Allocate ARGB buffer
+    VideoFrame videoFrame;
+    videoFrame.VerifyAndAllocate(bufferSize);
+    if (!videoFrame.Buffer())
+    {
+        WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
+                     "Failed to allocate capture frame buffer.");
+        return -1;
+    }
+    
+    videoFrame.SetLength(bufferSize);
+    
+    webrtc::ExtractBuffer(i420VideoFrame, videoFrame.Length(), videoFrame.Buffer());
+    
+    if(videoFrame.Length() == 0)
+    {
+        return -1;
+    }
+
+//    if(_frameScaler->ResizeFrameIfNeeded(&videoFrame, _videoCodecInst.width,
+//                                         _videoCodecInst.height) != 0)
+//    {
+//        return -1;
+//    }
+    
+    _videoEncodedData.payloadSize = 0;
+    
+    _videoEncodedData.VerifyAndAllocate(videoFrame.Length());
+    memcpy(_videoEncodedData.payloadData, videoFrame.Buffer(),
+       videoFrame.Length());
+    _videoEncodedData.payloadSize = videoFrame.Length();
+    _videoEncodedData.frameType = kVideoFrameKey;
+    
+//    if( STR_CASE_CMP(_videoCodecInst.plName, "I420") == 0)
+//    {
+//        _videoEncodedData.VerifyAndAllocate(videoFrame.Length());
+//        
+//        // I420 is raw data. No encoding needed (each sample is represented by
+//        // 1 byte so there is no difference depending on endianness).
+//        memcpy(_videoEncodedData.payloadData, videoFrame.Buffer(),
+//               videoFrame.Length());
+//        
+//        _videoEncodedData.payloadSize = videoFrame.Length();
+//        _videoEncodedData.frameType = kVideoFrameKey;
+//    }else {
+//        if( _videoEncoder->Encode(videoFrame, _videoEncodedData) != 0)
+//        {
+//            return -1;
+//        }
+//    }
+    
+    if(_videoEncodedData.payloadSize > 0)
+    {
+        if(_moduleFile->IncomingMP4VideoData(
+                                             (WebRtc_Word8*)(_videoEncodedData.payloadData),
+                                             _videoEncodedData.payloadSize, videoFrame.RenderTimeMs()))
+        {
+            WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
+                         "Error writing MP4 file");
+            return -1;
+        }
+    } else {
+        WEBRTC_TRACE(
+                     kTraceError,
+                     kTraceVideo,
+                     _instanceID,
+                     "FileRecorder::RecordVideoToFile() frame dropped by encoder bitrate\
+                     likely to low.");
+    }
+    return 0;
+}
+
+// Store audio frame in the _audioFramesToWrite buffer. The writing to file
+// happens in MP4Recorder::Process().
+WebRtc_Word32 MP4Recorder::WriteEncodedAudioData(
+                                                 const WebRtc_Word8* audioBuffer,
+                                                 WebRtc_UWord16 bufferLength,
+                                                 WebRtc_UWord16 millisecondsOfData,
+                                                 const TickTime* playoutTS)
+{
+    if (!IsRecording())
+    {
+        return -1;
+    }
+    if (bufferLength > MAX_AUDIO_BUFFER_IN_BYTES)
+    {
+        return -1;
+    }
+    if (_videoOnly)
+    {
+        return -1;
+    }
+    if (_audioFramesToWrite.GetSize() > kMaxAudioBufferQueueLength)
+    {
+        StopRecording();
+        return -1;
+    }
+    _firstAudioFrameReceived = true;
+    
+    if(playoutTS)
+    {
+//        printf("WriteEncodedAudioData - TS: %lld\n", TickTime::TicksToMilliseconds(playoutTS->Ticks()));
         _audioFramesToWrite.PushBack(new AudioFrameFileInfo(audioBuffer,
                                                             bufferLength,
                                                             millisecondsOfData,

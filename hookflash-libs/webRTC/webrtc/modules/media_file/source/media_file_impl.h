@@ -58,7 +58,10 @@ public:
                               const uint32_t bufferLength);
     int32_t IncomingAVIVideoData(const int8_t*  audioBuffer,
                                  const uint32_t bufferLength);
-    WebRtc_Word32 IncomingMP4VideoData(const WebRtc_Word8*  audioBuffer,
+    int32_t IncomingMP4AudioData( const WebRtc_Word8*  buffer,
+                                 const WebRtc_UWord32 bufferLengthInBytes,
+                                 const WebRtc_UWord32 timeStamp);
+    int32_t IncomingMP4VideoData(const WebRtc_Word8*  audioBuffer,
                                        const WebRtc_UWord32 bufferLength,
                                        const WebRtc_UWord32 timeStamp);
     int32_t StartRecordingAudioFile(
@@ -72,7 +75,8 @@ public:
         const FileFormats   format,
         const CodecInst&    codecInst,
         const VideoCodec&   videoCodecInst,
-        bool                videoOnly = false);
+        bool                videoOnly = false,
+        bool                saveVideoToLibrary = false);
     int32_t StartRecordingAudioStream(
         OutStream&           stream,
         const FileFormats    format,
@@ -187,7 +191,8 @@ private:
         const VideoCodec&    videoCodecInst,
         const uint32_t notificationTimeMs = 0,
         const uint32_t maxSizeBytes = 0,
-        bool                 videoOnly = false);
+        bool                 videoOnly = false,
+        bool                 saveVideoToLibrary = false);
 
     // Open/creates file specified by fileName for writing (relative path is
     // allowed). FileCallback::RecordNotification(..) will be called after
@@ -209,7 +214,8 @@ private:
         const CodecInst&     codecInst,
         const VideoCodec&    videoCodecInst,
         const uint32_t notificationTimeMs = 0,
-        const bool           videoOnly = false);
+        const bool           videoOnly = false,
+        bool                 saveVideoToLibrary = false);
 
     // Returns true if frequencyInHz is a supported frequency.
     static bool ValidFrequency(const uint32_t frequencyInHz);

@@ -6982,6 +6982,7 @@
 					"\"WEBRTC_LOGGING\"",
 					"\"WEBRTC_MAC\"",
 					"\"WEBRTC_IOS\"",
+					"\"WEBRTC_MODULE_UTILITY_VIDEO\"",
 					"\"WEBRTC_THREAD_RR\"",
 					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
 					"\"__STDC_CONSTANT_MACROS\"",
@@ -7004,6 +7005,7 @@
 					audio_coding/main/interface,
 					../common_audio/resampler/include,
 					../system_wrappers/interface,
+					video_coding/main/interface,
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = webrtc_utility;
@@ -7423,6 +7425,7 @@
 					"\"WEBRTC_LOGGING\"",
 					"\"WEBRTC_MAC\"",
 					"\"WEBRTC_IOS\"",
+					"\"WEBRTC_MODULE_UTILITY_VIDEO\"",
 					"\"WEBRTC_THREAD_RR\"",
 					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
 					"\"__STDC_CONSTANT_MACROS\"",
@@ -7447,6 +7450,7 @@
 					audio_coding/main/interface,
 					../common_audio/resampler/include,
 					../system_wrappers/interface,
+					video_coding/main/interface,
 				);
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = webrtc_utility;

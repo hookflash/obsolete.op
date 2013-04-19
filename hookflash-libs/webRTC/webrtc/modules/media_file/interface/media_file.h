@@ -133,6 +133,15 @@ public:
         const int8_t*  audioBuffer,
         const uint32_t bufferLength) = 0;
 
+    // Write one audio frame, i.e. the bufferLength first bytes of audioBuffer,
+    // to file. The audio frame size is determined by the codecInst.pacsize
+    // parameter of the last sucessfull StartRecordingAudioFile(..) call.
+    // Note: bufferLength must be exactly one frame.
+    virtual WebRtc_Word32 IncomingMP4AudioData(
+                                            const WebRtc_Word8*  audioBuffer,
+                                            const WebRtc_UWord32 bufferLength,
+                                            const WebRtc_UWord32 timeStamp) = 0;
+
     // Write one video frame, i.e. the bufferLength first bytes of videoBuffer,
     // to file.
     // Note: videoBuffer can contain encoded data. The codec used must be the
@@ -182,7 +191,8 @@ public:
         const FileFormats   format,
         const CodecInst&    codecInst,
         const VideoCodec&   videoCodecInst,
-        bool videoOnly = false) = 0;
+        bool videoOnly = false,
+        bool saveVideoToLibrary = false) = 0;
 
     // Prepare for recording audio to stream.
     // FileCallback::RecordNotification(..) will be called after
