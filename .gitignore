@@ -14,7 +14,6 @@ Device-Release
 Device-Debug
 Simulator-Debug
 hookflash-core/projects/bb/.metadata
-hookflash-core/projects/bb/bbworkspace
 hookflash-libs/boost/boost/bin.v2/
 hookflash-libs/boost/boost/bjam
 hookflash-libs/boost/boost/bootstrap.log

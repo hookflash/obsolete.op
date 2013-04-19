@@ -53,13 +53,36 @@ namespace zsLib
 
   namespace internal
   {
+#ifdef __QNX__
+    static pthread_once_t ignoreSigTermKeyOnce = PTHREAD_ONCE_INIT;
+    static pthread_key_t ignoreSigTermKey;
+
+    void ignoreSigTermKeyDestructor(void* value) {
+      delete (bool*) value;
+      pthread_setspecific(ignoreSigTermKey, NULL);
+    }
+
+    void makeIgnoreSigTermKeyOnce() {
+      pthread_key_create(&ignoreSigTermKey, ignoreSigTermKeyDestructor);
+    }
+
+#else
     static boost::thread_specific_ptr<bool> threadLocalData;
+#endif
 
     //-------------------------------------------------------------------------
     static void ignoreSigTermOnThread()
     {
+#ifdef __QNX__
+      pthread_once(&ignoreSigTermKeyOnce, makeIgnoreSigTermKeyOnce);
+
+      if (!pthread_getspecific(ignoreSigTermKey)) {
+        pthread_setspecific(ignoreSigTermKey, new bool);
+
+#else
       if (!threadLocalData.get()) {
         threadLocalData.reset(new bool);
+#endif
 
         struct sigaction act;
         memset(&act, 0, sizeof(act));
