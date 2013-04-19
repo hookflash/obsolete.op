@@ -44,9 +44,15 @@ namespace zsLib
     if(!re) {
       ZS_THROW_CUSTOM(Exceptions::ParseError, ("Failed to parse regular expression: " + mRegularExpression).c_str())
     }
+    pcre_extra* study = pcre_study(re, 0, &errorMsg);
 
-    int   ovector[100];
-    int rc = pcre_exec(re, 0, stringToSearch.c_str(), stringToSearch.size(), 0, 0, ovector, sizeof(ovector));
+    int ovector[30];
+    int rc = pcre_exec(re, study, stringToSearch.c_str(), stringToSearch.size(), 0, 0, ovector, 30);
+    pcre_free(re);
+    if(study != NULL) {
+      pcre_free(study);
+    }
+
     if(rc <= 0) {
       return false;
     }
@@ -54,7 +60,6 @@ namespace zsLib
 
 #else
 
-      //const boost::regex e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
     const boost::regex e(mRegularExpression);
     if (!boost::regex_match(stringToSearch, e)) {
       return false;

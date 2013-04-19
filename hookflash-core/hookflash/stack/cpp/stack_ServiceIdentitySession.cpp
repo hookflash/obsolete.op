@@ -191,7 +191,7 @@ namespace hookflash
           }
         }
 
-        if ((!IServiceIdentity::isValid(identityURI)) ||
+        if ((!IServiceIdentity::isValid(identityURI)) &&
             (!IServiceIdentity::isValidBase(identityURI))) {
           ZS_LOG_ERROR(Detail, String("identity URI specified is not valid, uri=") + identityURI)
           return ServiceIdentitySessionPtr();
