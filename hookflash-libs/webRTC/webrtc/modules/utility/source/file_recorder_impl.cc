@@ -116,7 +116,7 @@ int32_t FileRecorderImpl::StartRecordingAudioFile(
     _amrFormat = amrFormat;
 
     int32_t retVal = 0;
-    if(_fileFormat != kFileFormatAviFile)
+    if(_fileFormat != kFileFormatAviFile && _fileFormat != kFileFormatMP4File)
     {
         // AVI files should be started using StartRecordingVideoFile(..) all
         // other formats should use this API.

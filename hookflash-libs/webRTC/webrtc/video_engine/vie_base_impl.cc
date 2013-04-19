@@ -97,6 +97,11 @@ int ViEBaseImpl::SetVoiceEngine(VoiceEngine* voice_engine) {
     shared_data_.SetLastError(kViEBaseVoEFailure);
     return -1;
   }
+  if (shared_data_.input_manager()->SetVoiceEngine(voice_engine) != 0) {
+    shared_data_.SetLastError(kViEBaseVoEFailure);
+    return -1;
+  }
+    
   return 0;
 }
 

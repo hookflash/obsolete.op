@@ -1147,7 +1147,7 @@ int32_t MediaFileImpl::StartRecordingStream(
                (_ptrFileUtilityObj->codec_info(tmpAudioCodec) != 0))
             {
                 WEBRTC_TRACE(kTraceError, kTraceFile, _id,
-                             "Failed to initialize AVI file!");
+                             "Failed to initialize MP4 file!");
                 delete _ptrFileUtilityObj;
                 _ptrFileUtilityObj = NULL;
                 return -1;
