@@ -896,7 +896,7 @@ WebRtc_Word32 MP4Recorder::SetUpVideoEncoder()
     return 0;
 }
 
-WebRtc_Word32 MP4Recorder::RecordVideoToFile(const I420VideoFrame& i420VideoFrame)
+WebRtc_Word32 MP4Recorder::RecordVideoToFile(const I420VideoFrame& videoFrame)
 {
     CriticalSectionScoped lock(_critSec);
 
@@ -905,7 +905,7 @@ WebRtc_Word32 MP4Recorder::RecordVideoToFile(const I420VideoFrame& i420VideoFram
         return -1;
     }
     
-    int videoFrameLength = CalcBufferSize(kI420, i420VideoFrame.width(), i420VideoFrame.height());    
+    int videoFrameLength = CalcBufferSize(kI420, videoFrame.width(), videoFrame.height());    
     if( videoFrameLength == 0)
     {
         return -1;
@@ -913,7 +913,7 @@ WebRtc_Word32 MP4Recorder::RecordVideoToFile(const I420VideoFrame& i420VideoFram
     
 //    printf("RecordVideoToFile - TS: %lld\n", videoFrame.RenderTimeMs());
     // The frame is written to file in MP4Recorder::Process().
-    WebRtc_Word32 retVal = _videoFramesQueue->AddFrame(i420VideoFrame);
+    WebRtc_Word32 retVal = _videoFramesQueue->AddFrame(videoFrame);
     if(retVal != 0)
     {
         StopRecording();
@@ -1122,30 +1122,16 @@ bool MP4Recorder::Process()
     return error == 0;
 }
 
-WebRtc_Word32 MP4Recorder::EncodeAndWriteVideoToFile(I420VideoFrame& i420VideoFrame)
+WebRtc_Word32 MP4Recorder::EncodeAndWriteVideoToFile(I420VideoFrame& videoFrame)
 {
     if(!IsRecording())
     {
         return -1;
     }
     
-    int bufferSize = CalcBufferSize(kI420, i420VideoFrame.width(), i420VideoFrame.height());
+    int bufferSize = CalcBufferSize(kI420, videoFrame.width(), videoFrame.height());    
     
-    // Allocate ARGB buffer
-    VideoFrame videoFrame;
-    videoFrame.VerifyAndAllocate(bufferSize);
-    if (!videoFrame.Buffer())
-    {
-        WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
-                     "Failed to allocate capture frame buffer.");
-        return -1;
-    }
-    
-    videoFrame.SetLength(bufferSize);
-    
-    webrtc::ExtractBuffer(i420VideoFrame, videoFrame.Length(), videoFrame.Buffer());
-    
-    if(videoFrame.Length() == 0)
+    if(bufferSize == 0)
     {
         return -1;
     }
@@ -1158,10 +1144,10 @@ WebRtc_Word32 MP4Recorder::EncodeAndWriteVideoToFile(I420VideoFrame& i420VideoFr
     
     _videoEncodedData.payloadSize = 0;
     
-    _videoEncodedData.VerifyAndAllocate(videoFrame.Length());
-    memcpy(_videoEncodedData.payloadData, videoFrame.Buffer(),
-       videoFrame.Length());
-    _videoEncodedData.payloadSize = videoFrame.Length();
+    _videoEncodedData.VerifyAndAllocate(bufferSize);
+    webrtc::ExtractBuffer(videoFrame, bufferSize, _videoEncodedData.payloadData);
+    
+    _videoEncodedData.payloadSize = bufferSize;
     _videoEncodedData.frameType = kVideoFrameKey;
     
 //    if( STR_CASE_CMP(_videoCodecInst.plName, "I420") == 0)
@@ -1186,7 +1172,7 @@ WebRtc_Word32 MP4Recorder::EncodeAndWriteVideoToFile(I420VideoFrame& i420VideoFr
     {
         if(_moduleFile->IncomingMP4VideoData(
                                              (WebRtc_Word8*)(_videoEncodedData.payloadData),
-                                             _videoEncodedData.payloadSize, videoFrame.RenderTimeMs()))
+                                             _videoEncodedData.payloadSize, videoFrame.render_time_ms()))
         {
             WEBRTC_TRACE(kTraceError, kTraceVideo, _instanceID,
                          "Error writing MP4 file");
