@@ -54,7 +54,8 @@ namespace zsLib
         // Your application can call the bps_initialize() function more than once. An application that
         // calls the bps_initialize() function multiple times should call the bps_shutdown() function the
         //same number of times.
-        bps_initialize();
+        int status = bps_initialize();
+        ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
 
         mThreadQueue->setup();
       }

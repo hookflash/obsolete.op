@@ -32,12 +32,24 @@ namespace zsLib
     class Event : public boost::noncopyable
     {
     public:
-      Event() : mNotified(0) {}
+      Event() : mNotified(0) {
+#ifdef __QNX__
+        pthread_mutex_init(&mMutex, NULL);
+        pthread_cond_init(&mCondition, NULL);
+#endif
+      }
 
     protected:
+      static int NextEventId;
+      int mEventId;
       DWORD mNotified;
+#ifdef __QNX__
+      pthread_mutex_t mMutex;
+      pthread_cond_t mCondition;
+#else
       boost::mutex mMutex;
       boost::condition_variable mCondition;
+#endif
     };
   }
 }

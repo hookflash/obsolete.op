@@ -41,13 +41,37 @@ namespace zsLib
     if (0 != notified)
       return;
 
+#ifdef __QNX__
+    int status = pthread_mutex_lock(&mMutex);
+
+    do {
+      status = pthread_cond_wait(&mCondition, &mMutex);
+      notified = zsLib::atomicGetValue32(mNotified);
+    } while(!notified);
+
+    reset();
+
+    status = pthread_mutex_unlock(&mMutex);
+
+#else
     boost::unique_lock<boost::mutex> lock(mMutex);
     mCondition.wait(lock);
+#endif
   }
 
   void Event::notify() {
+#ifdef __QNX__
+    int status = pthread_mutex_lock(&mMutex);
+    zsLib::atomicSetValue32(mNotified, 1);
+    status = pthread_cond_signal(&mCondition);
+    if (status) {
+      ZS_LOG_ERROR(Detail, "Error returned from pthread_cond_signal")
+    }
+    status = pthread_mutex_unlock(&mMutex);
+#else
     boost::lock_guard<boost::mutex> lock(mMutex);
     zsLib::atomicSetValue32(mNotified, 1);
     mCondition.notify_one();
+#endif
   }
 }
