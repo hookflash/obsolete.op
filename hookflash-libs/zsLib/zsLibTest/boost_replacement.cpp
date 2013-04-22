@@ -23,6 +23,7 @@
 #include <iostream>
 
 #include <zsLib/helpers.h>
+#include "boost_replacement.h"
 
 namespace BoostReplacement
 {
@@ -49,9 +50,9 @@ namespace BoostReplacement
 
   void output()
   {
-    std::cout << "PASSED:       [" << BoostReplacement::getGlobalPassedVar() << "]\n";
+    BOOST_STDOUT() << "PASSED:       [" << BoostReplacement::getGlobalPassedVar() << "]\n";
     if (0 != BoostReplacement::getGlobalFailedVar()) {
-      std::cout << "***FAILED***: [" << BoostReplacement::getGlobalFailedVar() << "]\n";
+      BOOST_STDOUT() << "***FAILED***: [" << BoostReplacement::getGlobalFailedVar() << "]\n";
     }
   }
 
