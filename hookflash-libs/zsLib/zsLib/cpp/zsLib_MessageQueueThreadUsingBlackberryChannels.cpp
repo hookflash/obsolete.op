@@ -50,13 +50,6 @@ namespace zsLib
     public:
       MessageQueueThreadUsingBlackberryChannelsWrapper() : mThreadQueue(MessageQueueThreadUsingBlackberryChannels::create())
       {
-        // From the BB docs:
-        // Your application can call the bps_initialize() function more than once. An application that
-        // calls the bps_initialize() function multiple times should call the bps_shutdown() function the
-        //same number of times.
-        int status = bps_initialize();
-        ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
-
         mThreadQueue->setup();
       }
       ~MessageQueueThreadUsingBlackberryChannelsWrapper()
@@ -103,25 +96,6 @@ namespace zsLib
       return (*returnPtr).get()->mThreadQueue;
     }
 
-
-#ifndef __QNX__
-    //-----------------------------------------------------------------------
-    static MessageQueueThreadUsingBlackberryChannelsGlobal &getGlobal()
-    {
-      static MessageQueueThreadUsingBlackberryChannelsGlobal global;
-      return global;
-    }
-
-    //-----------------------------------------------------------------------
-    static MessageQueueThreadUsingBlackberryChannelsPtr getThreadMessageQueue()
-    {
-      if (! getGlobal().mThreadQueueWrapper.get()) {
-        getGlobal().mThreadQueueWrapper.reset(new MessageQueueThreadUsingBlackberryChannelsWrapper);
-      }
-      return getGlobal().mThreadQueueWrapper->mThreadQueue;
-    }
-#endif // not __QNX__
-
     //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannelsPtr MessageQueueThreadUsingBlackberryChannels::singleton()
     {
@@ -145,26 +119,20 @@ namespace zsLib
     #pragma mark
 
     //-----------------------------------------------------------------------
-    MessageQueueThreadUsingBlackberryChannels::MessageQueueThreadUsingBlackberryChannels() :
-    mChannelId(0)
+    MessageQueueThreadUsingBlackberryChannels::MessageQueueThreadUsingBlackberryChannels()
     {
     }
 
     //-----------------------------------------------------------------------
     MessageQueueThreadUsingBlackberryChannels::~MessageQueueThreadUsingBlackberryChannels()
     {
-      if (0 != mChannelId)
-      {
-        ZS_THROW_BAD_STATE_IF(BPS_FAILURE == bps_channel_destroy(mChannelId))
-        mChannelId = 0;
-      }
     }
 
     //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::setup()
     {
-      int status = bps_channel_create(&mChannelId, 0); // last arg is reserved for future use.
-      ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
+      // NOTE!!! Must be called for the main thread.
+      mCrossThreadNotifier = IQtCrossThreadNotifier::createNotifier();
     }
 
     //-----------------------------------------------------------------------
@@ -179,7 +147,7 @@ namespace zsLib
           return;
       }
 
-      queue->processOnlyOneMessage(); // process only one messsage at a time since this must be syncrhonized through the GUI message queue
+      queue->processOnlyOneMessage(); // process only one message at a time since this must be synchronized through the GUI message queue
     }
 
     //-----------------------------------------------------------------------
@@ -209,13 +177,11 @@ namespace zsLib
     //-----------------------------------------------------------------------
     void MessageQueueThreadUsingBlackberryChannels::notifyMessagePosted()
     {
-      AutoLock lock(mLock);
-      if (0 == mChannelId) {
-        ZS_THROW_CUSTOM(Exceptions::MessageQueueAlreadyDeleted, "message posted to message queue after message queue was deleted.")
+      {
+        AutoLock lock(mLock);
+        mCrossThreadNotifier->setDelegate(singleton());
       }
-
-      int status = bps_channel_exec(mChannelId, &MessageQueueThreadUsingBlackberryChannels::channelExec, NULL);
-      ZS_THROW_BAD_STATE_IF(BPS_SUCCESS != status)
+      mCrossThreadNotifier->notifyMessagePosted();
     }
 
     //-----------------------------------------------------------------------
@@ -224,19 +190,16 @@ namespace zsLib
       AutoLock lock(mLock);
       mQueue.reset();
 
-      if (0 != mChannelId)
+      if (mCrossThreadNotifier)
       {
-        ZS_THROW_BAD_STATE_IF(BPS_FAILURE == bps_channel_destroy(mChannelId))
-        mChannelId = 0;
+        mCrossThreadNotifier.reset();
       }
     }
-
     //-----------------------------------------------------------------------
-    int MessageQueueThreadUsingBlackberryChannels::channelExec(void* thisPtr)
+    void MessageQueueThreadUsingBlackberryChannels::processMessageFromThread()
     {
       MessageQueueThreadUsingBlackberryChannelsPtr queue(getThreadMessageQueue());
       queue->process();
-      return BPS_SUCCESS;
     }
   }
 }
