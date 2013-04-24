@@ -421,7 +421,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))
-        IServicePeerContactSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        step();
       }
 
       //-----------------------------------------------------------------------
