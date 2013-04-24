@@ -725,16 +725,22 @@ namespace hookflash
         mLoginCompleteMonitor.reset();
 
         mIdentityInfo.mergeFrom(result->identityInfo());
-
+#define IDENTITY_ENCRYPTION_TEMPORARILY_REMOVED_MUST_UNCOMMENT_TO_FIX 1
+#define IDENTITY_ENCRYPTION_TEMPORARILY_REMOVED_MUST_UNCOMMENT_TO_FIX 2
         if (mIdentityInfo.mURIEncrypted.hasData())
         {
           // mURI
           // key=hmac(<client-login-secret>, "identity:" + <client-token> + ":" + <server-token>)
           // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+          //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret,IHelper::HashAlgorthm_SHA256), "identity:" + mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_SHA256);
+          
+          //BYTE* keyB = key->BytePtr();
+          //SecureByteBlockPtr key = IHelper::hmac(mClientLoginSecret, "identity:" + mClientToken + ":" + mServerToken);
+          //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-          String uri = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mURIEncrypted)));
+          //String uri = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mURIEncrypted)));
+          //????????????????????? 1111111
+          String uri = mIdentityInfo.mURIEncrypted;
 
           if (mIdentityInfo.mHash.hasData()) {
             // validate against the hash
@@ -760,10 +766,12 @@ namespace hookflash
           // mReloginAccessKey
           // key = hmac(<client-login-secret>, "relogin-access-key:" + <client-token> + ":" + <server-token>)
           // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "relogin-access-key:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+          //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "relogin-access-key:" + mClientToken + ":" + mServerToken);
+          //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-          mIdentityInfo.mReloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mReloginAccessKeyEncrypted)));
+          //mIdentityInfo.mReloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mReloginAccessKeyEncrypted)));
+          //??????????????????? 22222222
+          mIdentityInfo.mReloginAccessKey = mIdentityInfo.mReloginAccessKeyEncrypted;
         }
 
         // try to decrypt the identity secret
@@ -778,20 +786,24 @@ namespace hookflash
             // key=hmac(<client-login-secret>, "identity-secret-decryption-key:" + <client-token> + ":" + <server-token>)
             // iv=hash(<client-token> + ":" + <server-token>)
 
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity-secret-decryption-key:" + mClientToken + ":" + mServerToken);
-            SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+            //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity-secret-decryption-key:" + mClientToken + ":" + mServerToken);
+            //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-            secretDecryptionKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretDecryptionKeyEncrypted)));
+            //secretDecryptionKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretDecryptionKeyEncrypted)));
+            //??????????????? 33333333
+            secretDecryptionKey = mIdentityInfo.mSecretDecryptionKeyEncrypted;
           }
 
           {
             // mSecret
             // key = hmac(<identity-secret-decryption-key>, "identity-secret:" + base64(<identity-secret-salt>))
             // iv=hash(base64(<identity-secret-salt>))
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(secretDecryptionKey), "identity-secret:" + mIdentityInfo.mSecretSalt);
-            SecureByteBlockPtr iv = IHelper::hash("", IHelper::HashAlgorthm_MD5);
+            //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(secretDecryptionKey), "identity-secret:" + mIdentityInfo.mSecretSalt);
+            //SecureByteBlockPtr iv = IHelper::hash("", IHelper::HashAlgorthm_MD5);
 
-            mIdentityInfo.mSecret = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretEncrypted)));
+            //mIdentityInfo.mSecret = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretEncrypted)));
+            //?????????? 44444444
+            mIdentityInfo.mSecret = mIdentityInfo.mSecretEncrypted;
           }
         }
 

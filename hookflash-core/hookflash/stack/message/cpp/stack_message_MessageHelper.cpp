@@ -1525,7 +1525,7 @@ namespace hookflash
         {
           IdentityInfo info;
 
-          if (elem) return info;
+          if (!elem) return info;
 
           info.mDisposition = IdentityInfo::toDisposition(elem->getAttributeValue("disposition"));
 
