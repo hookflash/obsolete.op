@@ -29,7 +29,16 @@
 namespace webrtc {
 
 //----------------------------------------------------------------------------------------
+BlackberryRenderCallback::BlackberryRenderCallback(VideoRenderBlackBerry* parentRenderer,
+                                                   WebRtc_UWord32 streamId) :
+                                                   _ptrParentRenderer(parentRenderer),
+                                                   _hasFrame(false),
+                                                   _frameIsRendered(false),
+                                                   _isSetup(false) {
+  _ptrOpenGLRenderer = new VideoRenderOpenGles20(streamId);
+}
 
+//----------------------------------------------------------------------------------------
 WebRtc_Word32 BlackberryRenderCallback::RenderFrame(const WebRtc_UWord32 streamId, VideoFrame& videoFrame) {
   _videoFrame.CopyFrame(videoFrame);
   _hasFrame = true;
@@ -37,22 +46,29 @@ WebRtc_Word32 BlackberryRenderCallback::RenderFrame(const WebRtc_UWord32 streamI
   return 0;
 }
 
+//----------------------------------------------------------------------------------------
 void BlackberryRenderCallback::RenderToGL() {
   if(_hasFrame) {
-    if(!_ptrOpenGLRenderer) {
-      _ptrOpenGLRenderer = new VideoRenderOpenGles20(0);
+
+    // Setup the renderer (i.e. compile shaders, set up vertex arrays, etc).
+    // This must be done as part of the render cycle, when the OpenGL context is valid.
+    if(!_isSetup) {
+      _isSetup = true;
       _ptrOpenGLRenderer->Setup();
     }
+
     if(!_frameIsRendered) {
       _frameIsRendered = true;
       _ptrOpenGLRenderer->UpdateTextures(_videoFrame);
     }
+
     _ptrOpenGLRenderer->Render();
   }
 }
 
 //----------------------------------------------------------------------------------------
-
+//----------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------
 VideoRenderBlackBerry::VideoRenderBlackBerry(
     const WebRtc_Word32 id,
     const VideoRenderType videoRenderType,
@@ -273,8 +289,18 @@ WebRtc_Word32 VideoRenderBlackBerry::ConfigureRenderer(
     const float top,
     const float right,
     const float bottom) {
-  WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
-               "%s - not supported on Blackberry", __FUNCTION__);
+
+  BlackberryRenderCallback* renderStream = NULL;
+  MapItem* item = _streamsMap.Find(streamId);
+  if (item) {
+    renderStream = (BlackberryRenderCallback*) (item->GetItem());
+    if (NULL != renderStream) {
+      renderStream->GetRenderer()->SetCoordinates(zOrder, left, top, right, bottom);
+      return 0;
+    }
+  }
+  WEBRTC_TRACE(kTraceInfo, kTraceVideoRenderer, -1,
+               "%s: Render stream %d does not exist", __FUNCTION__, streamId);
   return -1;
 }
 
@@ -311,7 +337,8 @@ BlackberryRenderCallback* VideoRenderBlackBerry::CreateRenderChannel(
     const float bottom,
     VideoRenderBlackBerry& renderer) {
 
-  BlackberryRenderCallback* callback = new BlackberryRenderCallback(this);
+  BlackberryRenderCallback* callback = new BlackberryRenderCallback(this, streamId);
+  callback->GetRenderer()->SetCoordinates(zOrder, left, top, right, bottom);
   return callback;
 }
 

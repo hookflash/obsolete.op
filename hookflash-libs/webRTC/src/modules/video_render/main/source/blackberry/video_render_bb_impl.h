@@ -36,7 +36,8 @@ class VideoRenderOpenGles20;
 
 class BlackberryRenderCallback : public VideoRenderCallback {
  public:
-  BlackberryRenderCallback(VideoRenderBlackBerry* parentRenderer) : _ptrParentRenderer(parentRenderer), _hasFrame(false), _frameIsRendered(false) { }
+  BlackberryRenderCallback(VideoRenderBlackBerry* parentRenderer,
+                           WebRtc_UWord32 streamId);
 
   virtual WebRtc_Word32 RenderFrame(const WebRtc_UWord32 streamId,
                                     VideoFrame& videoFrame);
@@ -45,11 +46,14 @@ class BlackberryRenderCallback : public VideoRenderCallback {
 
   void RenderToGL();
 
+  VideoRenderOpenGles20* GetRenderer() { return _ptrOpenGLRenderer; }
+
  private:
   VideoRenderBlackBerry* _ptrParentRenderer;
   VideoFrame _videoFrame;
   bool _hasFrame;
   bool _frameIsRendered;
+  bool _isSetup;
   VideoRenderOpenGles20* _ptrOpenGLRenderer;
 };
 

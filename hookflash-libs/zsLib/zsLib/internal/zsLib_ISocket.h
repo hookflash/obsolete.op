@@ -55,9 +55,9 @@ namespace zsLib
     SO_EXCLUSIVEADDRUSE = -1,
     SO_DONTLINGER = -1,
     SO_MAX_MSG_SIZE = -1,
-#ifdef _LINUX
+#if (defined _ANDROID || defined __QNX__ || defined _LINUX)
     SO_NOSIGPIPE = -1,
-#endif //_LINUX
+#endif //(defined _ANDROID || defined __QNX__ || defined _LINUX)
 
     INVALID_SOCKET = -1,
     SOCKET_ERROR = -1,

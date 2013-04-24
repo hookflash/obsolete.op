@@ -137,7 +137,7 @@ void doTestCanonicalXML()
 
     zsLib::String output = ICanonicalXML::convert(elementDoc);
     BOOST_EQUAL(output, finalized)
-    std::cout << output.c_str() << "\n";
+    BOOST_STDOUT() << output.c_str() << "\n";
   }
 
 }
