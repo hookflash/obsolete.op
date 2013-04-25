@@ -291,8 +291,9 @@ namespace hookflash
           }
           return false;
         }
-
-        IHTTPQueryPtr query = post(service->mURI, message);
+        zsLib::String tmp = service->mURI;
+        tmp.replaceAll("https", "http");
+        IHTTPQueryPtr query = post(tmp, message);
         if (!query) {
           ZS_LOG_WARNING(Detail, log("failed to create query for message"))
           if ((message->isRequest()) ||
@@ -850,7 +851,10 @@ namespace hookflash
 
           CertificatesGetRequestPtr request = CertificatesGetRequest::create();
           request->domain(mDomain);
-          mCertificatesGetQuery = post(method->mURI, request);
+          
+          zsLib::String tmp = method->mURI;
+          tmp.replaceAll("https", "http");
+          mCertificatesGetQuery = post(tmp, request);
         }
 
         if (!mCertificatesGetQuery->isComplete()) {
