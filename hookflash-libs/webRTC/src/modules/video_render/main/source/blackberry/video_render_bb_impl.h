@@ -145,7 +145,12 @@ class VideoRenderBlackBerry : IVideoRender
 
  protected:
 
+  bool CreateGLThread();
+  static void* GLThread(void* pThis);
+  void GLThreadRun();
+
   bool CreateGLWindow();
+  bool CleanUpGLWindow();
 
   virtual BlackberryRenderCallback* CreateRenderChannel(
       WebRtc_Word32 streamId,
@@ -172,6 +177,7 @@ class VideoRenderBlackBerry : IVideoRender
   int _windowWidth;
   int _windowHeight;
   bool _glInitialized;
+  bool _stopped;
 
 
  private:
