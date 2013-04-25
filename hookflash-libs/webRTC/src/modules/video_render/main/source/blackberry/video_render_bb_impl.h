@@ -55,6 +55,7 @@ class BlackberryRenderCallback : public VideoRenderCallback {
   bool _frameIsRendered;
   bool _isSetup;
   VideoRenderOpenGles20* _ptrOpenGLRenderer;
+  CriticalSectionWrapper& _critSect;
 };
 
 class VideoRenderBlackBerry : IVideoRender

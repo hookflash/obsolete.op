@@ -37,12 +37,15 @@ BlackberryRenderCallback::BlackberryRenderCallback(VideoRenderBlackBerry* parent
                                                    _ptrParentRenderer(parentRenderer),
                                                    _hasFrame(false),
                                                    _frameIsRendered(false),
-                                                   _isSetup(false) {
+                                                   _isSetup(false),
+                                                   _critSect(*CriticalSectionWrapper::CreateCriticalSection()) {
   _ptrOpenGLRenderer = new VideoRenderOpenGles20(streamId);
 }
 
 //----------------------------------------------------------------------------------------
 WebRtc_Word32 BlackberryRenderCallback::RenderFrame(const WebRtc_UWord32 streamId, VideoFrame& videoFrame) {
+  CriticalSectionScoped cs(&_critSect);
+
   _videoFrame.CopyFrame(videoFrame);
   _hasFrame = true;
   _frameIsRendered = false;
@@ -53,18 +56,21 @@ WebRtc_Word32 BlackberryRenderCallback::RenderFrame(const WebRtc_UWord32 streamI
 void BlackberryRenderCallback::RenderToGL() {
   if(_hasFrame) {
 
-    // Setup the renderer (i.e. compile shaders, set up vertex arrays, etc).
-    // This must be done as part of the render cycle, when the OpenGL context is valid.
-    if(!_isSetup) {
-      _isSetup = true;
-      _ptrOpenGLRenderer->Setup();
-    }
+    {
+      CriticalSectionScoped cs(&_critSect);
 
-    if(!_frameIsRendered) {
-      _frameIsRendered = true;
-      _ptrOpenGLRenderer->UpdateTextures(_videoFrame);
-    }
+      // Setup the renderer (i.e. compile shaders, set up vertex arrays, etc).
+      // This must be done as part of the render cycle, when the OpenGL context is valid.
+      if(!_isSetup) {
+        _isSetup = true;
+        _ptrOpenGLRenderer->Setup();
+      }
 
+      if(!_frameIsRendered) {
+        _frameIsRendered = true;
+        _ptrOpenGLRenderer->UpdateTextures(_videoFrame);
+      }
+    }
     _ptrOpenGLRenderer->Render();
   }
 }
@@ -199,20 +205,6 @@ void VideoRenderBlackBerry::ReDraw() {
 
 void VideoRenderBlackBerry::OnBBRenderEvent() {
   CriticalSectionScoped cs(&_critSect);
-
-  if(NULL == _ptrGLWindow) {
-    bool status = CreateGLWindow();
-    if(!status) {
-      WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
-                   "(%s:%d): unable to create Blackberry GL window", __FUNCTION__, __LINE__);
-      return;
-    }
-
-    int size[2];
-    status = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
-    _windowWidth = size[0];
-    _windowHeight = size[1];
-  }
 
   if(_ptrGLWindow) {
     if(!_glInitialized) {
@@ -361,6 +353,11 @@ void* VideoRenderBlackBerry::GLThread(void* arg) {
 
 void VideoRenderBlackBerry::GLThreadRun() {
   CreateGLWindow();
+
+  int size[2];
+  screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
+  _windowWidth = size[0];
+  _windowHeight = size[1];
 
   bps_initialize();
   screen_request_events(_ptrWindowWrapper->GetContext());
