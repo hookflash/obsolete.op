@@ -39,6 +39,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.18591828" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1715267277" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -54,7 +56,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1671996822" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1769605993" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.includePath.565710416" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.565710416" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1002401898" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1228825692" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -139,6 +141,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.97484819" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1380864564" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -218,6 +222,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1965561132" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1608644658" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -300,6 +306,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.789903272" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1033642334" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -381,6 +389,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1052894257" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.318468777" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -393,7 +403,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.267817657" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1120063056" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.includePath.502776466" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath" valueType="includePath"/>
+								<option id="com.qnx.qcc.option.assembler.includePath.502776466" name="Include Directories (-I)" superClass="com.qnx.qcc.option.assembler.includePath"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1920398828" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.881064130" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -479,6 +489,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1023056508" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1544449643" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -557,6 +569,8 @@
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/cryptopp"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/udns"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4/QtCore&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${QNX_TARGET}/usr/include/qt4&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1574087747" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.793031867" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">

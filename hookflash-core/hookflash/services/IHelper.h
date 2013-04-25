@@ -68,13 +68,13 @@ namespace hookflash
                                               bool colorizeOutput,
                                               const char *sendStringUponConnection
                                               );
-      static void installWindowsDebuggerLogger();
+      static void installDebuggerLogger(bool colorizeOutput = false);
 
       static void uninstallStdOutLogger();
       static void uninstallFileLogger();
       static void uninstallTelnetLogger();
       static void uninstallOutgoingTelnetLogger();
-      static void uninstallWindowsDebuggerLogger();
+      static void uninstallDebuggerLogger();
 
       static void setLogLevel(Log::Level logLevel);
       static void setLogLevel(const char *component, Log::Level logLevel);
