@@ -551,7 +551,7 @@ void doTestTURNSocket()
   TestTURNSocketCallbackPtr testObject4 = TestTURNSocketCallback::create(thread, 0, "turntest1." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
   TestTURNSocketCallbackPtr testObject5 = TestTURNSocketCallback::create(thread, 0, "turntest4." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
 
-  std::cout << "WAITING:      Waiting for TURN testing to complete (max wait is 180 seconds).\n";
+  BOOST_STDOUT() << "WAITING:      Waiting for TURN testing to complete (max wait is 180 seconds).\n";
 
   // check to see if all DNS routines have resolved
   {
@@ -593,7 +593,7 @@ void doTestTURNSocket()
       if (testObject5) found += (testObject5->isComplete() ? 1 : 0);
       if (lastFound != found) {
         lastFound = found;
-        std::cout << "FOUND:        [" << found << "].\n";
+        BOOST_STDOUT() << "FOUND:        [" << found << "].\n";
       }
 
     } while(found < expecting);
@@ -601,7 +601,7 @@ void doTestTURNSocket()
     BOOST_EQUAL(found, expecting);
   }
 
-  std::cout << "WAITING:      All TURN sockets have finished. Waiting for 'bogus' events to process (10 second wait).\n";
+  BOOST_STDOUT() << "WAITING:      All TURN sockets have finished. Waiting for 'bogus' events to process (10 second wait).\n";
   boost::this_thread::sleep(Seconds(10));
 
   if (testObject1) {std::cout << "object1: [" << testObject1->getID() << "]\n";}

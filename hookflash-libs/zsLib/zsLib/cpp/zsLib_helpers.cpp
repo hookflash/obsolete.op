@@ -82,7 +82,7 @@ namespace zsLib
 #ifdef __QNX__
     boost::interprocess::ipcdetail::atomic_write32((boost::uint32_t *)&value, newValue);
 #else
-	boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
+	  boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
 #endif
   }
 

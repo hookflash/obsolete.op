@@ -28,50 +28,88 @@ namespace zsLib {ZS_DECLARE_SUBSYSTEM(zsLib)}
 
 namespace zsLib
 {
+  namespace internal
+  {
+    Event::Event() :
+      mNotified(0)
+    {
+#ifdef __QNX__
+      static pthread_cond_t gConditionInit = PTHREAD_COND_INITIALIZER;
+      static pthread_mutex_t gMutexInit = PTHREAD_MUTEX_INITIALIZER;
+
+      mCondition = gConditionInit;
+      mMutex = gMutexInit;
+#endif //__QNX__
+    }
+
+    Event::~Event()
+    {
+#ifdef __QNX__
+      pthread_cond_destroy(&mCondition);
+      pthread_mutex_destroy(&mMutex);
+#endif //__QNX__
+    }
+
+  }
+
   EventPtr Event::create() {
     return EventPtr(new Event);
   }
 
-  void Event::reset() {
+  void Event::reset()
+  {
     zsLib::atomicSetValue32(mNotified, 0);
   }
 
-  void Event::wait() {
+  void Event::wait()
+  {
     DWORD notified = zsLib::atomicGetValue32(mNotified);
-    if (0 != notified)
+    if (0 != notified) {
       return;
+    }
 
 #ifdef __QNX__
-    int status = pthread_mutex_lock(&mMutex);
+    int result = pthread_mutex_lock(&mMutex);
+    ZS_THROW_BAD_STATE_IF(0 != result)
 
-    do {
-      status = pthread_cond_wait(&mCondition, &mMutex);
-      notified = zsLib::atomicGetValue32(mNotified);
-    } while(!notified);
+    notified = zsLib::atomicGetValue32(mNotified);
+    if (0 != notified) {
+      result = pthread_mutex_unlock(&mMutex);
+      ZS_THROW_BAD_STATE_IF(0 != result)
+      return;
+    }
 
-    reset();
+    result = pthread_cond_wait(&mCondition, &mMutex);
+    ZS_THROW_BAD_STATE_IF(0 != result)
 
-    status = pthread_mutex_unlock(&mMutex);
-
+    result = pthread_mutex_unlock(&mMutex);
+    ZS_THROW_BAD_STATE_IF(0 != result)
 #else
     boost::unique_lock<boost::mutex> lock(mMutex);
+    notified = zsLib::atomicGetValue32(mNotified);
+    if (0 != notified) return;
     mCondition.wait(lock);
-#endif
+#endif //__QNX__
   }
 
-  void Event::notify() {
+  void Event::notify()
+  {
 #ifdef __QNX__
-    int status = pthread_mutex_lock(&mMutex);
+    int result = pthread_mutex_lock(&mMutex);
+    ZS_THROW_BAD_STATE_IF(0 != result)
+
+    result = pthread_cond_signal(&mCondition);
+    ZS_THROW_BAD_STATE_IF(0 != result)
+
     zsLib::atomicSetValue32(mNotified, 1);
-    status = pthread_cond_signal(&mCondition);
-    if (status) {
-      ZS_LOG_ERROR(Detail, "Error returned from pthread_cond_signal")
-    }
-    status = pthread_mutex_unlock(&mMutex);
+
+    result = pthread_mutex_unlock(&mMutex);
+    ZS_THROW_BAD_STATE_IF(0 != result)
 #else
     boost::lock_guard<boost::mutex> lock(mMutex);
     zsLib::atomicSetValue32(mNotified, 1);
     mCondition.notify_one();
-#endif
+#endif //__QNX__
   }
+
 }
