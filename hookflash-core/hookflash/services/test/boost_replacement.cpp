@@ -34,9 +34,13 @@
 
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
+#include <zsLib/Log.h>
 #include <hookflash/services/IHelper.h>
 
 #include <iostream>
+
+namespace hookflash { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
+
 
 
 typedef hookflash::services::IHelper IHelper;
