@@ -14,6 +14,8 @@
 #include "i_video_render.h"
 #include "common_types.h"
 #include "map_wrapper.h"
+#include <bps/bps.h>
+#include <bps/screen.h>
 
 struct _screen_context;
 struct _screen_window;
@@ -168,6 +170,7 @@ class VideoRenderBlackBerry : IVideoRender
   CriticalSectionWrapper& _critSect;
   VideoRenderType _renderType;
   BlackberryWindowWrapper* _ptrWindowWrapper;
+  screen_context_t _screen_ctx;
   _screen_window* _ptrGLWindow;
   _screen_display* _ptrDisplay;
   EGLDisplay _eglDisplay;

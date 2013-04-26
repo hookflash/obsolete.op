@@ -19,8 +19,6 @@
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include <EGL/egl.h>
-#include <bps/bps.h>
-#include <bps/screen.h>
 #include <pthread.h>
 
 #include "bb_window_wrapper.h"
@@ -99,7 +97,6 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _stopped(false),
     _streamsMap()
 {
-  _ptrWindowWrapper->SetRenderer(this);
   CreateGLThread();
 }
 
@@ -211,7 +208,7 @@ void VideoRenderBlackBerry::OnBBRenderEvent() {
       _glInitialized = true;
       glViewport(0, 0, _windowWidth, _windowHeight);
     }
-    glClearColor(1.0, 0.0, 0.0, 1.0);
+    glClearColor(0.0, 1.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     MapItem* item = _streamsMap.First();
@@ -352,6 +349,8 @@ void* VideoRenderBlackBerry::GLThread(void* arg) {
 }
 
 void VideoRenderBlackBerry::GLThreadRun() {
+  bps_initialize();
+
   CreateGLWindow();
 
   int size[2];
@@ -359,12 +358,11 @@ void VideoRenderBlackBerry::GLThreadRun() {
   _windowWidth = size[0];
   _windowHeight = size[1];
 
-  bps_initialize();
-  screen_request_events(_ptrWindowWrapper->GetContext());
+  screen_request_events(_screen_ctx);
 
   bps_event_t *event = NULL;
 
-  while (_stopped) {
+  while (!_stopped) {
       //Request and process BPS next available event
       event = NULL;
       int returnCode = bps_get_event(&event, 0);
@@ -378,18 +376,28 @@ void VideoRenderBlackBerry::GLThreadRun() {
   // remove and cleanup each view
   CleanUpGLWindow();
 
-  //Stop requesting events from libscreen
-  screen_stop_events(_ptrWindowWrapper->GetContext());
+  // Stop requesting events from libscreen
+  screen_stop_events(_screen_ctx);
 
-  //Shut down BPS library for this process
+  // Shut down BPS library for this process
   bps_shutdown();
 
-  //Destroy libscreen context
-  // ??? screen_destroy_context(m_screen_ctx);
+  // Destroy libscreen context
+  screen_destroy_context(_screen_ctx);
 }
 
 bool VideoRenderBlackBerry::CreateGLWindow() {
 
+  int status = screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT);
+
+  status = screen_create_window_type(&_ptrGLWindow, _screen_ctx, SCREEN_CHILD_WINDOW);
+
+  status = screen_join_window_group(_ptrGLWindow, _ptrWindowWrapper->GetGroupId());
+
+  status = screen_set_window_property_cv(_ptrGLWindow,
+                                SCREEN_PROPERTY_ID_STRING,
+                                strlen(_ptrWindowWrapper->GetParentWindowId()),
+                                _ptrWindowWrapper->GetParentWindowId());
   int usage;
   int format = SCREEN_FORMAT_RGBX8888;
   EGLint interval = 1;
@@ -421,7 +429,7 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
   _eglContext = eglCreateContext(_eglDisplay, _eglConfig, EGL_NO_CONTEXT, attributes);
   if (_eglContext == EGL_NO_CONTEXT) { return LOG_ERROR("eglCreateContext"); }
 
-  _ptrGLWindow = _ptrWindowWrapper->GetWindow();
+//  _ptrGLWindow = _ptrWindowWrapper->GetWindow();
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_FORMAT, &format);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)"); }
