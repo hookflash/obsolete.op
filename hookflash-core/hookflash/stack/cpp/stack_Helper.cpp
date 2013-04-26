@@ -244,12 +244,13 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String Helper::convertToHex(
                                   const BYTE *buffer,
-                                  ULONG bufferLengthInBytes
+                                  ULONG bufferLengthInBytes,
+                                  bool outputUpperCase
                                   )
       {
         String result;
 
-        HexEncoder encoder(new StringSink(result));
+        HexEncoder encoder(new StringSink(result), outputUpperCase);
         encoder.Put(buffer, bufferLengthInBytes);
         encoder.MessageEnd();
 
@@ -257,9 +258,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String Helper::convertToHex(SecureByteBlock &input)
+      String Helper::convertToHex(
+                                  SecureByteBlock &input,
+                                  bool outputUpperCase
+                                  )
       {
-        return convertToHex(input, input.size());
+        return convertToHex(input, input.size(), outputUpperCase);
       }
 
       //-------------------------------------------------------------------------
@@ -714,16 +718,20 @@ namespace hookflash
     //-------------------------------------------------------------------------
     String IHelper::convertToHex(
                                  const BYTE *buffer,
-                                 ULONG bufferLengthInBytes
+                                 ULONG bufferLengthInBytes,
+                                 bool outputUpperCase
                                  )
     {
-      return internal::Helper::convertToHex(buffer, bufferLengthInBytes);
+      return internal::Helper::convertToHex(buffer, bufferLengthInBytes, outputUpperCase);
     }
 
     //-------------------------------------------------------------------------
-    String IHelper::convertToHex(SecureByteBlock &input)
+    String IHelper::convertToHex(
+                                 SecureByteBlock &input,
+                                 bool outputUpperCase
+                                 )
     {
-      return internal::Helper::convertToHex(input);
+      return internal::Helper::convertToHex(input, outputUpperCase);
     }
 
     //-------------------------------------------------------------------------
