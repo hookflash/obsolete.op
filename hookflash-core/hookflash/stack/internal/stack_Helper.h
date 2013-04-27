@@ -94,10 +94,14 @@ namespace hookflash
 
         static String convertToHex(
                                    const BYTE *buffer,
-                                   ULONG bufferLengthInBytes
+                                   ULONG bufferLengthInBytes,
+                                   bool outputUpperCase = false
                                    );
 
-        static String convertToHex(SecureByteBlock &input);
+        static String convertToHex(
+                                   SecureByteBlock &input,
+                                   bool outputUpperCase = false
+                                   );
 
         static SecureByteBlockPtr convertFromHex(const String &input);
 

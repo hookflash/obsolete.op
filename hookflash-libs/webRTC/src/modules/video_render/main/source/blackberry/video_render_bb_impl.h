@@ -14,6 +14,8 @@
 #include "i_video_render.h"
 #include "common_types.h"
 #include "map_wrapper.h"
+#include <bps/bps.h>
+#include <bps/screen.h>
 
 struct _screen_context;
 struct _screen_window;
@@ -55,6 +57,7 @@ class BlackberryRenderCallback : public VideoRenderCallback {
   bool _frameIsRendered;
   bool _isSetup;
   VideoRenderOpenGles20* _ptrOpenGLRenderer;
+  CriticalSectionWrapper& _critSect;
 };
 
 class VideoRenderBlackBerry : IVideoRender
@@ -145,7 +148,12 @@ class VideoRenderBlackBerry : IVideoRender
 
  protected:
 
+  bool CreateGLThread();
+  static void* GLThread(void* pThis);
+  void GLThreadRun();
+
   bool CreateGLWindow();
+  bool CleanUpGLWindow();
 
   virtual BlackberryRenderCallback* CreateRenderChannel(
       WebRtc_Word32 streamId,
@@ -162,6 +170,7 @@ class VideoRenderBlackBerry : IVideoRender
   CriticalSectionWrapper& _critSect;
   VideoRenderType _renderType;
   BlackberryWindowWrapper* _ptrWindowWrapper;
+  screen_context_t _screen_ctx;
   _screen_window* _ptrGLWindow;
   _screen_display* _ptrDisplay;
   EGLDisplay _eglDisplay;
@@ -172,6 +181,7 @@ class VideoRenderBlackBerry : IVideoRender
   int _windowWidth;
   int _windowHeight;
   bool _glInitialized;
+  bool _stopped;
 
 
  private:

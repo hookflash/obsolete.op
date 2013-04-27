@@ -16,22 +16,19 @@ class VideoRenderBlackBerry;
 
 class BlackberryWindowWrapper {
 public:
-  BlackberryWindowWrapper(screen_window_t window, screen_context_t context, const char* groupId);
+  BlackberryWindowWrapper(const char* parentWindowId, const char* groupId, int width, int height);
   virtual ~BlackberryWindowWrapper();
 
-  void SetRenderer(VideoRenderBlackBerry* renderer);
-
-  void Render();
-
-  screen_window_t GetWindow() { return _ptrWindow; }
-  screen_context_t GetContext() { return _ptrContext; }
+  const char* GetParentWindowId() { return _parentWindowId; }
   const char* GetGroupId() { return _groupId; }
+  int GetWidth() { return _width; }
+  int GetHeight() { return _height; }
 
 private:
-  screen_window_t _ptrWindow;
-  screen_context_t _ptrContext;
-  VideoRenderBlackBerry* _renderer;
+  char* _parentWindowId;
   char* _groupId;
+  int _width;
+  int _height;
 };
 
 }

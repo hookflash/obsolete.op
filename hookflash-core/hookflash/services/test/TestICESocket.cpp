@@ -378,7 +378,7 @@ void doTestICESocket()
   IICESocket::CandidateList candidates3;
   IICESocket::CandidateList candidates4;
 
-  std::cout << "WAITING:      Waiting for ICE testing to complete (max wait is 180 seconds).\n";
+  BOOST_STDOUT() << "WAITING:      Waiting for ICE testing to complete (max wait is 180 seconds).\n";
 
   // check to see if all DNS routines have resolved
   {
@@ -387,7 +387,7 @@ void doTestICESocket()
 
     do
     {
-      std::cout << "STEP:         ---------->>>>>>>>>> " << step << " <<<<<<<<<<----------\n";
+      BOOST_STDOUT() << "STEP:         ---------->>>>>>>>>> " << step << " <<<<<<<<<<----------\n";
 
       ULONG expecting = 0;
       switch (step) {
@@ -461,7 +461,7 @@ void doTestICESocket()
 
         if (lastFound != found) {
           lastFound = found;
-          std::cout << "FOUND:        [" << found << "].\n";
+          BOOST_STDOUT() << "FOUND:        [" << found << "].\n";
         }
       }
       BOOST_EQUAL(found, expecting);
@@ -488,7 +488,7 @@ void doTestICESocket()
     } while (step < totalSteps);
   }
 
-  std::cout << "WAITING:      All ICE sockets have finished. Waiting for 'bogus' events to process (10 second wait).\n";
+  BOOST_STDOUT() << "WAITING:      All ICE sockets have finished. Waiting for 'bogus' events to process (10 second wait).\n";
   boost::this_thread::sleep(zsLib::Seconds(10));
 
   // wait for shutdown

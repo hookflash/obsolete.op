@@ -11,31 +11,20 @@
 
 namespace webrtc {
 
-BlackberryWindowWrapper::BlackberryWindowWrapper(
-  screen_window_t window,
-  screen_context_t context,
-  const char* groupId) :
-  _ptrWindow(window),
-  _ptrContext(context),
-  _renderer(NULL) {
-  _groupId = new char[strlen(groupId)+1];
-  strcpy(_groupId, groupId);
-}
+  BlackberryWindowWrapper::BlackberryWindowWrapper(const char* parentWindowId, const char* groupId, int width, int height) :
+    _width(width),
+    _height(height) {
 
-BlackberryWindowWrapper::~BlackberryWindowWrapper() {
-  delete[] _groupId;
-}
-
-void BlackberryWindowWrapper::Render() {
-  if(_renderer) {
-    _renderer->OnBBRenderEvent();
+    _parentWindowId = new char[strlen(parentWindowId)+1];
+    strcpy(_parentWindowId, parentWindowId);
+    _groupId = new char[strlen(groupId)+1];
+    strcpy(_groupId, groupId);
   }
-}
 
-void BlackberryWindowWrapper::SetRenderer(VideoRenderBlackBerry* renderer) {
-  _renderer = renderer;
-}
-
+  BlackberryWindowWrapper::~BlackberryWindowWrapper() {
+    delete[] _parentWindowId;
+    delete[] _groupId;
+  }
 
 }
 
