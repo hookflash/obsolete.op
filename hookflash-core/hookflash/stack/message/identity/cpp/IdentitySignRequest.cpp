@@ -98,10 +98,10 @@ namespace hookflash
           info.mAccessSecret = mIdentityInfo.mAccessSecret;
 
           if (info.mAccessSecret.hasData()) {
-            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
+            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-sign:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
             info.mAccessSecret.clear();
           }
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(expires);
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(expires);
 
           if (info.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(info));

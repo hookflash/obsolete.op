@@ -38,7 +38,7 @@
 
 #include <hookflash/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER "bootstrapped-finder"
+#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER "bootstrapped-finders"
 
 
 namespace hookflash

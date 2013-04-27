@@ -335,7 +335,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool BootstrappedNetwork::isValidSignature(ElementPtr signedElement) const
       {
-        //LBOJAN HACK
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
         return true;
         
         ElementPtr signatureEl;

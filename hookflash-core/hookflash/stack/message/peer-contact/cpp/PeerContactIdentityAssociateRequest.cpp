@@ -135,11 +135,14 @@ namespace hookflash
 
                 SecureByteBlockPtr peerSalt = peerFilePrivate->getSalt();
                 if (peerSalt) {
-                  String peerSaltAsBase64 = IHelper::convertToBase64(*peerSalt);
-                  SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*peerFilePrivate->getPassword(true)))), "relogin:" + IHelper::convertToHex(*IHelper::hash(info.mURI)));
-                  SecureByteBlockPtr iv = IHelper::hash(info.mSecretSalt + ":" + peerSaltAsBase64, IHelper::HashAlgorthm_MD5);
-
-                  info.mReloginAccessKeyEncrypted = IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, info.mReloginAccessKey));
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+//                  String peerSaltAsBase64 = IHelper::convertToBase64(*peerSalt);
+//                  SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*peerFilePrivate->getPassword(true)))), "relogin:" + IHelper::convertToHex(*IHelper::hash(info.mURI)), IHelper::HashAlgorthm_SHA256);
+//                  SecureByteBlockPtr iv = IHelper::hash(info.mSecretSalt + ":" + peerSaltAsBase64, IHelper::HashAlgorthm_MD5);
+//
+//                  info.mReloginAccessKeyEncrypted = IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, info.mReloginAccessKey));
+                  info.mReloginAccessKeyEncrypted = info.mReloginAccessKey;
                 }
               }
 

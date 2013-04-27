@@ -811,13 +811,17 @@ namespace hookflash
             (mIdentityInfo.mPrivatePeerFileSalt.hasData()) &&
             (mIdentityInfo.mSecret.hasData()))
         {
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
           // mPrivatePeerFileSecret
           // key=hmac(<identity-secret>, "private-peer-file-secret:" + base64(<private-peer-file-salt>))
           // iv=hash(base64(<private-peer-file-salt>))
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mSecret), "private-peer-file-secret:" + mIdentityInfo.mPrivatePeerFileSalt);
-          SecureByteBlockPtr iv = IHelper::hash(mIdentityInfo.mPrivatePeerFileSalt, IHelper::HashAlgorthm_MD5);
-
-          mPrivatePeerFileSecret = IHelper::makeBufferStringSafe(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mPrivatePeerFileSecretEncrypted)));
+//          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mSecret), "private-peer-file-secret:" + mIdentityInfo.mPrivatePeerFileSalt);
+//          SecureByteBlockPtr iv = IHelper::hash(mIdentityInfo.mPrivatePeerFileSalt, IHelper::HashAlgorthm_MD5);
+//
+//          mPrivatePeerFileSecret = IHelper::makeBufferStringSafe(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mPrivatePeerFileSecretEncrypted)));
+          
+          mPrivatePeerFileSecret = IHelper::convertToBuffer(mIdentityInfo.mPrivatePeerFileSecretEncrypted);
         }
 
         // should no longer just have a base
@@ -1248,7 +1252,7 @@ namespace hookflash
         request->identityInfo(mIdentityInfo);
         request->peerFiles(peerFiles);
 
-        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginCompleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-associate", request);
         ZS_LOG_DEBUG(log("sending associate request"))
         return false;
