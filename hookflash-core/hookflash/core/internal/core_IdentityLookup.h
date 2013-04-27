@@ -83,6 +83,8 @@ namespace hookflash
         typedef std::map<DomainOrLegacyType, IdentifierMap> IdentifierDomainOrLegacyTypeMap;
         typedef std::map<DomainOrLegacyType, StringConcatinatedIdentifiers> IdentifierSafeCharDomainLegacyTypeMap;
 
+        typedef std::map<Domain, bool> FailedBootstrappedNetworkDomainMap;
+
         typedef std::map<DomainOrLegacyType, Domain> DomainOrLegacyTypeToDomainMap;
 
         typedef PUID MonitorID;
@@ -187,6 +189,9 @@ namespace hookflash
 
         IIdentityLookupDelegatePtr mDelegate;
 
+        String mLookupProviderDomain;
+        bool mAlreadyIssuedForProviderDomain;
+
         WORD mErrorCode;
         String mErrorReason;
 
@@ -200,6 +205,8 @@ namespace hookflash
         DomainOrLegacyTypeToDomainMap mTypeToDomainMap;
 
         IdentityLookupInfoList mResults;
+
+        FailedBootstrappedNetworkDomainMap mFailedBootstrappedNetworks;
       };
 
       //-----------------------------------------------------------------------
