@@ -92,14 +92,14 @@ namespace hookflash
           String clientNonce = IHelper::randomString(32);
           String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_PEER_CONTACT_SERVICES_GET_REQUEST_EXPIRES_TIME_IN_SECONDS));
 
-          String finalAccessProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mContactAccessSecret), "private-peer-file-get:" + clientNonce + ":" + expires + ":" + mContactAccessToken));
+          String finalAccessProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mContactAccessSecret), "peer-contact-services-get:" + clientNonce + ":" + expires + ":" + mContactAccessToken));
 
           root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
           if (hasAttribute(AttributeType_ContactAccessToken)) {
             root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessToken", mContactAccessToken));
           }
           if (hasAttribute(AttributeType_ContactAccessSecret)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessToken", finalAccessProof));
+            root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessSecretProof", finalAccessProof));
           }
           root->adoptAsLastChild(IMessageHelper::createElementWithNumber("contactAccessSecretProofExpires", expires));
 

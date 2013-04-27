@@ -480,7 +480,7 @@ namespace hookflash
           if (!identity.mAccessSecretProof.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", identity.mAccessSecretProof));
           }
-          if (Time() != identity.mAccessSecretExpires) {
+          if (Time() != identity.mAccessSecretProofExpires) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(identity.mAccessSecretProofExpires)));
           }
 

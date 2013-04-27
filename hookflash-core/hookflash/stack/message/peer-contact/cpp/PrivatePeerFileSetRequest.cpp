@@ -93,14 +93,14 @@ namespace hookflash
           String clientNonce = IHelper::randomString(32);
           String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_PRIVATE_PEER_FILE_SET_REQUEST_EXPIRES_TIME_IN_SECONDS));
 
-          String finalAccessProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mContactAccessSecret), "private-peer-file-get:" + clientNonce + ":" + expires + ":" + mContactAccessToken));
+          String finalAccessProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mContactAccessSecret), "private-peer-file-set:" + clientNonce + ":" + expires + ":" + mContactAccessToken));
 
           root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
           if (hasAttribute(AttributeType_ContactAccessToken)) {
             root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessToken", mContactAccessToken));
           }
           if (hasAttribute(AttributeType_ContactAccessSecret)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessToken", finalAccessProof));
+            root->adoptAsLastChild(IMessageHelper::createElementWithText("contactAccessSecretProof", finalAccessProof));
           }
           root->adoptAsLastChild(IMessageHelper::createElementWithNumber("contactAccessSecretProofExpires", expires));
 
@@ -113,13 +113,15 @@ namespace hookflash
               root->adoptAsLastChild(privatePeerFileProofBundleEl);
 
               ElementPtr privatePeerFileProofEl = Element::create("privatePeerFileProof");
+              
+
+              privatePeerFileProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+              privatePeerFileProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", expires));
+              privatePeerFileProofEl->adoptAsLastChild(publicPeer->saveToElement());
+              privatePeerFileProofEl->adoptAsLastChild(mPeerFiles->saveToPrivatePeerElement());
+              
               privatePeerFileProofBundleEl->adoptAsLastChild(privatePeerFileProofEl);
-
-              privatePeerFileProofBundleEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
-              privatePeerFileProofBundleEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", expires));
-              privatePeerFileProofBundleEl->adoptAsLastChild(publicPeer->saveToElement());
-              privatePeerFileProofBundleEl->adoptAsLastChild(mPeerFiles->saveToPrivatePeerElement());
-
+              
               privatePeer->signElement(privatePeerFileProofEl);
             }
           }
