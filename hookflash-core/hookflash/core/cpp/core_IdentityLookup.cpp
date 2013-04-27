@@ -103,6 +103,7 @@ namespace hookflash
         mID(zsLib::createPUID()),
         mAccount(account),
         mDelegate(IIdentityLookupDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate)),
+        mAlreadyIssuedForProviderDomain(false),
         mErrorCode(0)
       {
         ZS_LOG_DEBUG(log("created"))
@@ -111,6 +112,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void IdentityLookup::init(const IdentityURIList &identityURIs)
       {
+        IServicePeerContactSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
+        ZS_THROW_BAD_STATE_IF(!peerContact)
+
+        IBootstrappedNetworkPtr network = peerContact->getService()->getBootstrappedNetwork();
+        ZS_THROW_BAD_STATE_IF(!network)
+
+        mLookupProviderDomain = network->getDomain();
+        ZS_THROW_BAD_STATE_IF(mLookupProviderDomain.isEmpty())
+
         for (IdentityURIList::const_iterator iter = identityURIs.begin(); iter != identityURIs.end(); ++iter) {
           const IdentityURI &identityURI = (*iter);
 
@@ -132,14 +142,7 @@ namespace hookflash
           }
 
           if (IServiceIdentity::isLegacy(identityURI)) {
-            IServicePeerContactSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
-            ZS_THROW_BAD_STATE_IF(!peerContact)
-
-            IBootstrappedNetworkPtr network = peerContact->getService()->getBootstrappedNetwork();
-            ZS_THROW_BAD_STATE_IF(!network)
-
-            prepareIdentity(network->getDomain(), domain, identifier);
-
+            prepareIdentity(mLookupProviderDomain, domain, identifier);
           } else {
             prepareIdentity(domain, domain, identifier);
           }
@@ -318,22 +321,70 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("bootstrapped network prepared notification") + IBootstrappedNetwork::toDebugString(network))
 
-        String networkDomain = network->getDomain();
-
-        BootstrappedNetworkMap::iterator found = mBootstrappedNetworks.find(networkDomain);
+        BootstrappedNetworkMap::iterator found = mBootstrappedNetworks.find(network->getDomain());
         if (found == mBootstrappedNetworks.end()) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete bootstrapped network") + IBootstrappedNetwork::toDebugString(network))
           return;
         }
+
+        mBootstrappedNetworks.erase(found);
 
         WORD errorCode = 0;
         String errorResaon;
         bool success = network->wasSuccessful(&errorCode, &errorResaon);
         if (!success) {
           ZS_LOG_ERROR(Detail, log("bootstrapped network failed") + IBootstrappedNetwork::toDebugString(network))
-          setError(errorCode, errorResaon);
-          step();
-          return;
+
+          if (mLookupProviderDomain == network->getDomain()) {
+            ZS_LOG_ERROR(Detail, log("cannot access peer contact service's identity lookup service") + ", provider domain=" + mLookupProviderDomain)
+            setError(errorCode, errorResaon);
+            step();
+            return;
+          }
+
+          // see if there is already an attempt to use the bootstrapped network for the peer contact service's domain
+          BootstrappedNetworkMap::iterator foundProvider = mBootstrappedNetworks.find(mLookupProviderDomain);
+          if (foundProvider == mBootstrappedNetworks.end()) {
+            IBootstrappedNetworkPtr providerNetwork = IBootstrappedNetwork::prepare(mLookupProviderDomain, mThisWeak.lock());
+            if (!providerNetwork) {
+              ZS_LOG_ERROR(Detail, log("failed to create bootstrapper for domain") + ", domain=" + mLookupProviderDomain)
+              setError(errorCode, errorResaon);
+              step();
+              return;
+            }
+
+            // bootstrapped network not prepared yet for this domain, attempt to prepare it now
+            mBootstrappedNetworks[mLookupProviderDomain] = providerNetwork;
+
+            // delay handling this failure until later...
+            mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+            ZS_LOG_DETAIL(log("waiting to perform lookup on backup service peer contact's identity lookup service") + ", failed domain=" + network->getDomain() + ", backup=" + providerNetwork->getDomain())
+
+            // wait for the bootstrapped network to complete
+            return;
+          }
+
+          IBootstrappedNetworkPtr providerNetwork = (*foundProvider).second;
+          if (!providerNetwork->isPreparationComplete()) {
+            mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+            ZS_LOG_DETAIL(log("waiting to perform lookup on backup service peer contact's identity lookup service") + ", failed domain=" + network->getDomain() + ", backup=" + providerNetwork->getDomain())
+            return;
+          }
+
+          if (!providerNetwork->wasSuccessful(&errorCode, &errorResaon)) {
+            ZS_LOG_ERROR(Detail, log("failed to create bootstrapper for domain") + ", domain=" + mLookupProviderDomain)
+            setError(errorCode, errorResaon);
+            step();
+            return;
+          }
+
+          // the domain lookuped was a failure but we can issue a request using the provider's network instead
+          mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+          // pretend we are re-issuing a request from the provider domain
+          network = providerNetwork;
         }
 
         typedef IdentityLookupRequest::Provider Provider;
@@ -347,7 +398,19 @@ namespace hookflash
           const String &type = (*iter).first;
           String &domain = (*iter).second;
 
-          if (networkDomain == domain) {
+          bool lookupThisDomain = (network->getDomain() == domain);
+
+          if (mLookupProviderDomain == network->getDomain()) {
+            if (mAlreadyIssuedForProviderDomain)
+              lookupThisDomain = false; // don't issue unless this is for a failed domain
+
+            if (mFailedBootstrappedNetworks.find(domain) != mFailedBootstrappedNetworks.end()) {
+              ZS_LOG_DETAIL(log("performing lookup on failed domain") + ", failed domain=" + domain + ", lookup now done on domain=" + mLookupProviderDomain)
+              lookupThisDomain = true;
+            }
+          }
+
+          if (lookupThisDomain) {
             // this type uses this domain
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundConcat = mConcatDomains.find(type);
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafeChar = mSafeCharDomains.find(type);
@@ -359,7 +422,7 @@ namespace hookflash
             const String &splitChar = (*foundSafeChar).second;
 
             if (identifiers.isEmpty()) {
-              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + networkDomain + ", type=" + type)
+              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + network->getDomain() + ", type=" + type)
               continue;
             }
 
@@ -373,10 +436,15 @@ namespace hookflash
           }
         }
 
+        if (network->getDomain() == mLookupProviderDomain)
+          mAlreadyIssuedForProviderDomain = true;
+
+        mFailedBootstrappedNetworks.clear();
+
         if (providers.size() > 0) {
           // let's issue a request to discover these identities
           IdentityLookupRequestPtr request = IdentityLookupRequest::create();
-          request->domain(networkDomain);
+          request->domain(network->getDomain());
           request->providers(providers);
 
           IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
