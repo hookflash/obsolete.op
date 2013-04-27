@@ -291,6 +291,8 @@ namespace hookflash
           }
           return false;
         }
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
         zsLib::String tmp = service->mURI;
         tmp.replaceAll("https", "http");
         IHTTPQueryPtr query = post(tmp, message);
@@ -335,8 +337,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool BootstrappedNetwork::isValidSignature(ElementPtr signedElement) const
       {
-#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
-#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 3
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 4
         return true;
         
         ElementPtr signatureEl;
@@ -855,7 +857,8 @@ namespace hookflash
 
           CertificatesGetRequestPtr request = CertificatesGetRequest::create();
           request->domain(mDomain);
-          
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 5
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 6
           zsLib::String tmp = method->mURI;
           tmp.replaceAll("https", "http");
           mCertificatesGetQuery = post(tmp, request);
