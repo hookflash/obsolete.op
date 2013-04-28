@@ -436,7 +436,7 @@ namespace hookflash
         if (!account) return PeerPtr();
         if (!peerURI) return PeerPtr();
 
-        if (isValid(peerURI)) {
+        if (!isValid(peerURI)) {
           ZS_LOG_DEBUG(String("Peer [] cannot create peer as URI is not valid, peer URI=") + peerURI)
           return PeerPtr();
         }
