@@ -1098,7 +1098,7 @@ namespace hookflash
         ILocationPtr selfLocation = ILocation::getForLocal(mStackAccount);
 
         stack::IPublicationMetaData::PublishToRelationshipsMap empty;
-        mSubscribersPermissionDocument = stack::IPublication::create(selfLocation, "/threads/1.0/subscribers/permissions", "text/x-xml-openpeer-permissions", relationships, empty);
+        mSubscribersPermissionDocument = stack::IPublication::create(selfLocation, "/threads/1.0/subscribers/permissions", "text/x-json-openpeer-permissions", relationships, empty, selfLocation);
         if (!mSubscribersPermissionDocument) {
           ZS_LOG_ERROR(Detail, log("unable to create subscription permission document thus shutting down"))
           setError(IHTTP::HTTPStatusCode_InternalServerError, "Failed to create subscribers document");

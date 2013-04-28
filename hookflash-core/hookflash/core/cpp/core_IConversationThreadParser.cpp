@@ -2345,7 +2345,7 @@ namespace hookflash
             if (mPermissionPublication) {
               mPermissionPublication->update(relationships);
             } else {
-              mPermissionPublication = IPublication::create(mPermissionPublication->getCreatorLocation(), mPermissionPublication->getName(), "text/x-xml-openpeer-permissions", relationships, publishEmptyRelationships, mPermissionPublication->getPublishedLocation());
+              mPermissionPublication = IPublication::create(mPermissionPublication->getCreatorLocation(), mPermissionPublication->getName(), "text/x-json-openpeer-permissions", relationships, publishEmptyRelationships, mPermissionPublication->getPublishedLocation());
             }
           }
         }
