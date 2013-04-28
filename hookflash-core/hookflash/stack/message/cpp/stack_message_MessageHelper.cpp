@@ -1541,6 +1541,7 @@ namespace hookflash
           info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
           info.mProvider = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("provider"));
 
+          info.mContactUserID = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactUserID"));
           info.mContact = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contact"));
           info.mContactFindSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactFindSecret"));
           info.mPrivatePeerFileSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSalt"));
