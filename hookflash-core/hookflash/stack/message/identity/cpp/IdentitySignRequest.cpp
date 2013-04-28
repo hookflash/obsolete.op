@@ -91,6 +91,8 @@ namespace hookflash
 
           String clientNonce = IHelper::randomString(32);
           String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS));
+          
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
 
           IdentityInfo info;
           info.mURI = mIdentityInfo.mURI;

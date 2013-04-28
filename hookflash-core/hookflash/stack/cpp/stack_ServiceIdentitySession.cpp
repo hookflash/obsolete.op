@@ -932,10 +932,13 @@ namespace hookflash
                                                                       )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
+        if (monitor != mSignMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
+        
+        mSignMonitor->cancel();
+        mSignMonitor.reset();
 
         mSignedIdentityBundleEl = result->identityBundle();
         if (mSignedIdentityBundleEl) {
