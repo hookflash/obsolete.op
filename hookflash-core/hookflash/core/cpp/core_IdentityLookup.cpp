@@ -182,6 +182,8 @@ namespace hookflash
             concat += safeChar + identifier;
           }
 
+          ZS_LOG_DEBUG(log("adding safe char for type") + ", type=" + type + ", safe char=" + (String() + safeChar))
+
           mSafeCharDomains[type] = String() + safeChar;
         }
 
@@ -411,6 +413,8 @@ namespace hookflash
           }
 
           if (lookupThisDomain) {
+            ZS_LOG_DEBUG(log("will perform lookup on type") + ", type=" + type)
+
             // this type uses this domain
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundConcat = mConcatDomains.find(type);
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafeChar = mSafeCharDomains.find(type);
@@ -639,8 +643,9 @@ namespace hookflash
             mDomainOrLegacyTypeIdentifiers[type] = empty;
             found = mDomainOrLegacyTypeIdentifiers.find(type);
 
-            mConcatDomains[type] = String();
+            ZS_LOG_DEBUG(log("adding contact type") + ", type=" + type)
 
+            mConcatDomains[type] = String();
             mTypeToDomainMap[type] = domain;
           }
 
