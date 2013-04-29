@@ -2214,6 +2214,7 @@ namespace hookflash
         }
 
         LocationInfoPtr locationInfo = getLocationInfo(mSelfLocation);
+        request->findPeer(peerInfo->mPeer);
         request->peerSecret(IHelper::random(32));
         request->excludeLocations(exclude);
         request->locationInfo(*locationInfo);
