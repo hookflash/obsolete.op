@@ -72,7 +72,7 @@ namespace hookflash
               if (peerFile) {
                 ret->mPeerFiles.push_back(peerFile);
               }
-              peerEl = peersEl->findNextSiblingElement("peer");
+              peerEl = peerEl->findNextSiblingElement("peer");
             }
           }
 
