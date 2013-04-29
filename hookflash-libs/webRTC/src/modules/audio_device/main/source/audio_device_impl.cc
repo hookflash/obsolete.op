@@ -388,7 +388,7 @@ WebRtc_Word32 AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
     if (ptrAudioDevice != NULL)
     {
         // Create the BlackBerry implementation of the Device Utility.
-        ptrAudioDeviceUtility = new AudioDeviceUtilityDummy(Id());//AudioDeviceUtilityBB(Id());
+        ptrAudioDeviceUtility = new AudioDeviceUtilityBB(Id());
     }
 #endif   // #if defined(WEBRTC_QNX)
     // Create the *Dummy* implementation of the Audio Device

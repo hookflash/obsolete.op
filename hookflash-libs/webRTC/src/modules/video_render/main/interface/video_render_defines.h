@@ -32,6 +32,7 @@ enum VideoRenderType
     kRenderiPhone = 4, // iPhone
     kRenderAndroid = 5, // Android
     kRenderX11 = 6, // Linux
+    kRenderQNX = 7, // QNX
     kRenderDefault
 };
 

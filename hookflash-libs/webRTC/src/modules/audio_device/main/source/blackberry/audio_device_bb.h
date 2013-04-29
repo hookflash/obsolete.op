@@ -166,10 +166,12 @@ public:
 
     virtual bool PlayoutWarning() const;
     virtual bool PlayoutError() const;
+    virtual bool PlayoutRouteChanged() const;
     virtual bool RecordingWarning() const;
     virtual bool RecordingError() const;
     virtual void ClearPlayoutWarning();
     virtual void ClearPlayoutError();
+    virtual void ClearPlayoutRouteChanged();
     virtual void ClearRecordingWarning();
     virtual void ClearRecordingError();
 
@@ -179,10 +181,14 @@ private:
     void Lock() { _critSect.Enter(); };
     void UnLock() { _critSect.Leave(); };
 
-    static bool RecThreadFunc(void*);
+    WebRtc_Word32 StartRecordingThread();
+    WebRtc_Word32 StopRecordingThread();
+    WebRtc_Word32 StartPlayoutThread();
+    WebRtc_Word32 StopPlayoutThread();
     static bool PlayThreadFunc(void*);
-    bool RecThreadProcess();
+    static bool RecThreadFunc(void*);
     bool PlayThreadProcess();
+    bool RecThreadProcess();
 
     AudioDeviceBuffer* _ptrAudioBuffer;
     CriticalSectionWrapper&	_critSect;
@@ -225,6 +231,8 @@ private:
     bool _initialized;
     bool _recording;
     bool _playing;
+    bool _wantRecording;
+    bool _wantPlaying;
     bool _recIsInitialized;
     bool _playIsInitialized;
     bool _micIsInitialized;

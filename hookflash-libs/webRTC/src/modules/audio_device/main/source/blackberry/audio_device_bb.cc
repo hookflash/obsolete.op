@@ -87,6 +87,8 @@ AudioDeviceBB::AudioDeviceBB(const WebRtc_Word32 id) :
     _initialized(false),
     _recording(false),
     _playing(false),
+    _wantRecording(false),
+    _wantPlaying(false),
     _recIsInitialized(false),
     _playIsInitialized(false),
     _micIsInitialized(false),
@@ -716,7 +718,7 @@ WebRtc_Word32 AudioDeviceBB::PlayoutIsAvailable(bool& available)
     WebRtc_Word32 res = InitPlayout();
 
     // Cancel effect of initialization
-    StopPlayout();
+    StopPlayoutThread();
 
     if (res != -1) {
         available = true;
@@ -734,7 +736,7 @@ WebRtc_Word32 AudioDeviceBB::RecordingIsAvailable(bool& available)
     WebRtc_Word32 res = InitRecording();
 
     // Cancel effect of initialization
-    StopRecording();
+    StopRecordingThread();
 
     if (res != -1) {
         available = true;
@@ -849,7 +851,7 @@ WebRtc_Word32 AudioDeviceBB::InitPlayout()
 	memset(&pp, 0, sizeof(pp));
 	pp.mode = SND_PCM_MODE_BLOCK;
 	pp.channel = SND_PCM_CHANNEL_PLAYBACK;
-	pp.start_mode = SND_PCM_START_DATA;
+	pp.start_mode = SND_PCM_START_FULL;
 	pp.stop_mode = SND_PCM_STOP_ROLLOVER;
 	pp.buf.block.frag_size = PREFERRED_FRAME_SIZE;
 	pp.buf.block.frags_max = 3;
@@ -1033,7 +1035,7 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 	memset(&pp, 0, sizeof(pp));
 	pp.mode = SND_PCM_MODE_BLOCK;
 	pp.channel = SND_PCM_CHANNEL_CAPTURE;
-	pp.start_mode = SND_PCM_START_DATA;
+	pp.start_mode = SND_PCM_START_FULL;
 	// Auto-recover from errors
 	pp.stop_mode = SND_PCM_STOP_ROLLOVER;
 	pp.buf.block.frag_size = PREFERRED_FRAME_SIZE;
@@ -1099,32 +1101,261 @@ WebRtc_Word32 AudioDeviceBB::InitRecording()
 
 WebRtc_Word32 AudioDeviceBB::StartRecording()
 {
+	CriticalSectionScoped lock(&_critSect);
+
+	bool startRecordPlayout = false;
+
+	if (_wantRecording)
+		return 0;
+	_wantRecording = true;
+	if (_wantPlaying)
+		startRecordPlayout = true;
+
+	if (startRecordPlayout)
+	{
+		WebRtc_Word32 res;
+		res = StartPlayoutThread();
+		if (res < 0)
+			return res;
+		res = StartRecordingThread();
+		if (res < 0)
+			return res;
+	}
+
+	return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::StopRecording()
+{
+	bool stopRecordPlayout = false;
+
+	{
+		CriticalSectionScoped lock(&_critSect);
+		if (!_wantRecording)
+			return 0;
+		_wantRecording = false;
+		if (!_wantPlaying)
+			stopRecordPlayout = true;
+	}
+
+	if (stopRecordPlayout)
+	{
+		WebRtc_Word32 res;
+		res = StopPlayoutThread();
+		if (res < 0)
+			return res;
+		res = StopRecordingThread();
+		if (res < 0)
+			return res;
+	}
+
+	return 0;
+}
+
+bool AudioDeviceBB::RecordingIsInitialized() const
+{
+    return (_recIsInitialized);
+}
+
+bool AudioDeviceBB::Recording() const
+{
+    return (_recording);
+}
+
+bool AudioDeviceBB::PlayoutIsInitialized() const
+{
+    return (_playIsInitialized);
+}
+
+WebRtc_Word32 AudioDeviceBB::StartPlayout()
+{
+	CriticalSectionScoped lock(&_critSect);
+
+	bool startRecordPlayout = false;
+
+	if (_wantPlaying)
+		return 0;
+	_wantPlaying = true;
+	if (_wantRecording)
+		startRecordPlayout = true;
+
+	if (startRecordPlayout)
+	{
+		WebRtc_Word32 res;
+		res = StartRecordingThread();
+		if (res < 0)
+			return res;
+		res = StartPlayoutThread();
+		if (res < 0)
+			return res;
+	}
+
+	return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::StopPlayout()
+{
+	bool stopRecordPlayout = false;
+
+	{
+		CriticalSectionScoped lock(&_critSect);
+		if (!_wantPlaying)
+			return 0;
+		_wantPlaying = false;
+		if (!_wantRecording)
+			stopRecordPlayout = true;
+	}
+
+	if (stopRecordPlayout)
+	{
+		WebRtc_Word32 res;
+		res = StopRecordingThread();
+		if (res < 0)
+			return res;
+		res = StopPlayoutThread();
+		if (res < 0)
+			return res;
+	}
+
+	return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::PlayoutDelay(WebRtc_UWord16& delayMS) const
+{
+    delayMS = 20;
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::RecordingDelay(WebRtc_UWord16& delayMS) const
+{
+    // Adding 20ms adjusted value to the record delay due to 20ms buffering.
+    delayMS = 20;
+    return 0;
+}
+
+bool AudioDeviceBB::Playing() const
+{
+    return (_playing);
+}
+// ----------------------------------------------------------------------------
+//  SetPlayoutBuffer
+// ----------------------------------------------------------------------------
+
+WebRtc_Word32 AudioDeviceBB::SetPlayoutBuffer(
+    const AudioDeviceModule::BufferType type,
+    WebRtc_UWord16 sizeMS)
+{
+    _playBufType = type;
+    if (type == AudioDeviceModule::kFixedBufferSize)
+    {
+        _playBufDelayFixed = sizeMS;
+    }
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::PlayoutBuffer(
+    AudioDeviceModule::BufferType& type,
+    WebRtc_UWord16& sizeMS) const
+{
+    type = _playBufType;
+    if (type == AudioDeviceModule::kFixedBufferSize)
+    {
+        sizeMS = _playBufDelayFixed;
+    }
+
+    return 0;
+}
+
+WebRtc_Word32 AudioDeviceBB::CPULoad(WebRtc_UWord16& load) const
+{
+
+    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
+               "  API call not supported on this platform");
+    return -1;
+}
+
+bool AudioDeviceBB::PlayoutWarning() const
+{
+    return (_playWarning > 0);
+}
+
+bool AudioDeviceBB::PlayoutError() const
+{
+    return (_playError > 0);
+}
+
+bool AudioDeviceBB::PlayoutRouteChanged() const
+{
+    return false;
+}
+
+bool AudioDeviceBB::RecordingWarning() const
+{
+    return (_recWarning > 0);
+}
+
+bool AudioDeviceBB::RecordingError() const
+{
+    return (_recError > 0);
+}
+
+void AudioDeviceBB::ClearPlayoutWarning()
+{
+    _playWarning = 0;
+}
+
+void AudioDeviceBB::ClearPlayoutError()
+{
+    _playError = 0;
+}
+
+void AudioDeviceBB::ClearPlayoutRouteChanged()
+{
+}
+
+void AudioDeviceBB::ClearRecordingWarning()
+{
+    _recWarning = 0;
+}
+
+void AudioDeviceBB::ClearRecordingError()
+{
+    _recError = 0;
+}
+
+// ============================================================================
+//                                  Thread Methods
+// ============================================================================
+
+WebRtc_Word32 AudioDeviceBB::StartRecordingThread()
+{
     int errVal = 0;
 
-    if (!_recIsInitialized)
-    {
-        return -1;
-    }
+	if (!_recIsInitialized)
+	{
+		return -1;
+	}
 
-    if (_recording)
-    {
-        return 0;
-    }
+	if (_recording)
+	{
+		return 0;
+	}
 
-    _recording = true;
+	_recording = true;
 
-    _recordingFramesLeft = _recordingFramesIn10MS;
+	_recordingFramesLeft = _recordingFramesIn10MS;
 
-    // Make sure we only create the buffer once.
-    if (!_recordingBuffer)
-        _recordingBuffer = new WebRtc_Word8[_recordingBufferSizeIn10MS];
-    if (!_recordingBuffer)
-    {
-        WEBRTC_TRACE(kTraceCritical, kTraceAudioDevice, _id,
-                     "   failed to alloc recording buffer");
-        _recording = false;
-        return -1;
-    }
+	// Make sure we only create the buffer once.
+	if (!_recordingBuffer)
+		_recordingBuffer = new WebRtc_Word8[_recordingBufferSizeIn10MS];
+	if (!_recordingBuffer)
+	{
+		WEBRTC_TRACE(kTraceCritical, kTraceAudioDevice, _id,
+					 "   failed to alloc recording buffer");
+		_recording = false;
+		return -1;
+	}
+
     // RECORDING
     const char* threadName = "webrtc_audio_module_capture_thread";
     _ptrThreadRec = ThreadWrapper::CreateThread(RecThreadFunc,
@@ -1155,6 +1386,8 @@ WebRtc_Word32 AudioDeviceBB::StartRecording()
     }
     _recThreadID = threadID;
 
+	CriticalSectionScoped lock(&_critSect);
+
     errVal = snd_pcm_plugin_prepare(_handleRecord, SND_PCM_CHANNEL_CAPTURE);
     if (errVal < 0)
     {
@@ -1167,7 +1400,7 @@ WebRtc_Word32 AudioDeviceBB::StartRecording()
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceBB::StopRecording()
+WebRtc_Word32 AudioDeviceBB::StopRecordingThread()
 {
     {
 		CriticalSectionScoped lock(&_critSect);
@@ -1238,45 +1471,30 @@ WebRtc_Word32 AudioDeviceBB::StopRecording()
     return 0;
 }
 
-bool AudioDeviceBB::RecordingIsInitialized() const
+WebRtc_Word32 AudioDeviceBB::StartPlayoutThread()
 {
-    return (_recIsInitialized);
-}
+	if (!_playIsInitialized)
+	{
+		return -1;
+	}
 
-bool AudioDeviceBB::Recording() const
-{
-    return (_recording);
-}
+	if (_playing)
+	{
+		return 0;
+	}
 
-bool AudioDeviceBB::PlayoutIsInitialized() const
-{
-    return (_playIsInitialized);
-}
+	_playing = true;
 
-WebRtc_Word32 AudioDeviceBB::StartPlayout()
-{
-    if (!_playIsInitialized)
-    {
-        return -1;
-    }
-
-    if (_playing)
-    {
-        return 0;
-    }
-
-    _playing = true;
-
-    _playoutFramesLeft = 0;
-    if (!_playoutBuffer)
-        _playoutBuffer = new WebRtc_Word8[_playoutBufferSizeIn10MS << 1];
-    if (!_playoutBuffer)
-    {
-      WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
-                   "    failed to alloc playout buf");
-      _playing = false;
-      return -1;
-    }
+	_playoutFramesLeft = 0;
+	if (!_playoutBuffer)
+		_playoutBuffer = new WebRtc_Word8[_playoutBufferSizeIn10MS << 1];
+	if (!_playoutBuffer)
+	{
+	  WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
+				   "    failed to alloc playout buf");
+	  _playing = false;
+	  return -1;
+	}
 
     // PLAYOUT
     const char* threadName = "webrtc_audio_module_play_thread";
@@ -1321,7 +1539,7 @@ WebRtc_Word32 AudioDeviceBB::StartPlayout()
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceBB::StopPlayout()
+WebRtc_Word32 AudioDeviceBB::StopPlayoutThread()
 {
     {
         CriticalSectionScoped lock(&_critSect);
@@ -1384,104 +1602,6 @@ WebRtc_Word32 AudioDeviceBB::StopPlayout()
 
      return 0;
 }
-
-WebRtc_Word32 AudioDeviceBB::PlayoutDelay(WebRtc_UWord16& delayMS) const
-{
-    delayMS = 20;
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceBB::RecordingDelay(WebRtc_UWord16& delayMS) const
-{
-    // Adding 20ms adjusted value to the record delay due to 20ms buffering.
-    delayMS = 20;
-    return 0;
-}
-
-bool AudioDeviceBB::Playing() const
-{
-    return (_playing);
-}
-// ----------------------------------------------------------------------------
-//  SetPlayoutBuffer
-// ----------------------------------------------------------------------------
-
-WebRtc_Word32 AudioDeviceBB::SetPlayoutBuffer(
-    const AudioDeviceModule::BufferType type,
-    WebRtc_UWord16 sizeMS)
-{
-    _playBufType = type;
-    if (type == AudioDeviceModule::kFixedBufferSize)
-    {
-        _playBufDelayFixed = sizeMS;
-    }
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceBB::PlayoutBuffer(
-    AudioDeviceModule::BufferType& type,
-    WebRtc_UWord16& sizeMS) const
-{
-    type = _playBufType;
-    if (type == AudioDeviceModule::kFixedBufferSize)
-    {
-        sizeMS = _playBufDelayFixed; 
-    }
-
-    return 0;
-}
-
-WebRtc_Word32 AudioDeviceBB::CPULoad(WebRtc_UWord16& load) const
-{
-
-    WEBRTC_TRACE(kTraceWarning, kTraceAudioDevice, _id,
-               "  API call not supported on this platform");
-    return -1;
-}
-
-bool AudioDeviceBB::PlayoutWarning() const
-{
-    return (_playWarning > 0);
-}
-
-bool AudioDeviceBB::PlayoutError() const
-{
-    return (_playError > 0);
-}
-
-bool AudioDeviceBB::RecordingWarning() const
-{
-    return (_recWarning > 0);
-}
-
-bool AudioDeviceBB::RecordingError() const
-{
-    return (_recError > 0);
-}
-
-void AudioDeviceBB::ClearPlayoutWarning()
-{
-    _playWarning = 0;
-}
-
-void AudioDeviceBB::ClearPlayoutError()
-{
-    _playError = 0;
-}
-
-void AudioDeviceBB::ClearRecordingWarning()
-{
-    _recWarning = 0;
-}
-
-void AudioDeviceBB::ClearRecordingError()
-{
-    _recError = 0;
-}
-
-// ============================================================================
-//                                  Thread Methods
-// ============================================================================
 
 bool AudioDeviceBB::PlayThreadFunc(void* pThis)
 {
@@ -1569,7 +1689,7 @@ bool AudioDeviceBB::RecThreadProcess()
     else if (frames < 0)
     {
         WEBRTC_TRACE(kTraceError, kTraceAudioDevice, _id,
-                     "capture snd_pcm_readi error: %s",
+                     "capture snd_pcm_read error: %s",
                      snd_strerror(frames));
         free(record_buffer);
         UnLock();

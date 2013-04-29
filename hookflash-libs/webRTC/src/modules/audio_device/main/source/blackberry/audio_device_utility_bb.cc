@@ -29,7 +29,7 @@
 
  */
 
-#include "audio_device_utility_dummy.h"
+#include "audio_device_utility_bb.h"
 #include "audio_device_config.h" // DEBUG_PRINT()
 #include "critical_section_wrapper.h"
 #include "trace.h"
@@ -37,7 +37,7 @@
 namespace webrtc
 {
 
-AudioDeviceUtilityDummy::AudioDeviceUtilityDummy(const WebRtc_Word32 id) :
+AudioDeviceUtilityBB::AudioDeviceUtilityBB(const WebRtc_Word32 id) :
     _critSect(*CriticalSectionWrapper::CreateCriticalSection()),
     _id(id)
 {
@@ -45,7 +45,7 @@ AudioDeviceUtilityDummy::AudioDeviceUtilityDummy(const WebRtc_Word32 id) :
                  "%s created", __FUNCTION__);
 }
 
-AudioDeviceUtilityDummy::~AudioDeviceUtilityDummy()
+AudioDeviceUtilityBB::~AudioDeviceUtilityBB()
 {
     WEBRTC_TRACE(kTraceMemory, kTraceAudioDevice, _id,
                  "%s destroyed", __FUNCTION__);
@@ -63,11 +63,11 @@ AudioDeviceUtilityDummy::~AudioDeviceUtilityDummy()
 // ============================================================================
 
 
-WebRtc_Word32 AudioDeviceUtilityDummy::Init()
+WebRtc_Word32 AudioDeviceUtilityBB::Init()
 {
 
     WEBRTC_TRACE(kTraceStateInfo, kTraceAudioDevice, _id,
-                 "  OS info: %s", "Dummy");
+                 "  OS info: %s", "QNX");
 
     return 0;
 }
