@@ -236,6 +236,7 @@ namespace hookflash
 
         ContactPtr pThis(new Contact);
         pThis->mThisWeak = pThis;
+        pThis->mAccount = account;
         pThis->mPeer = peer;
         pThis->mUserID = userID;
         pThis->mCalculatedUniqueID = stableID;
@@ -374,6 +375,7 @@ namespace hookflash
 
         ContactPtr pThis(new Contact);
         pThis->mThisWeak = pThis;
+        pThis->mAccount = account;
         pThis->mPeer = peer;
         pThis->mUserID = userID;
         pThis->init();
@@ -464,6 +466,7 @@ namespace hookflash
 
         ContactPtr pThis(new Contact);
         pThis->mThisWeak = pThis;
+        pThis->mAccount = account;
         pThis->mPeer = peer;
         pThis->mCalculatedUniqueID = stableID;
         pThis->init();
