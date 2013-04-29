@@ -433,6 +433,12 @@ namespace hookflash
         DocumentPtr result = mPendingMessagesToDeliver.front();
         mPendingMessagesToDeliver.pop_front();
 
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(result);
+          ZS_LOG_TRACE(log("sending inner frame message") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         if (mDelegate) {
           if (mPendingMessagesToDeliver.size() > 0) {
             try {
@@ -448,6 +454,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
       {
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(unparsedMessage);
+          ZS_LOG_TRACE(log("handling message from inner frame") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
         if (IMessageMonitor::handleMessageReceived(message)) {
           ZS_LOG_DEBUG(log("message handled via message monitor"))
