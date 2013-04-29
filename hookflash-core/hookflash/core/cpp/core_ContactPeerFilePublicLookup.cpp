@@ -283,6 +283,8 @@ namespace hookflash
           return;
         }
 
+        mBootstrappedNetworks.erase(found);
+        
         WORD errorCode = 0;
         String errorResaon;
         bool success = network->wasSuccessful(&errorCode, &errorResaon);
