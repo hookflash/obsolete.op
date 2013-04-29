@@ -1015,6 +1015,12 @@ namespace hookflash
           ZS_LOG_DEBUG(log("waiting for peer files request to complete"))
           return false;
         }
+        
+        if ((mPeerFiles) &&
+            (!mRegeneratePeerFiles)) {
+          ZS_LOG_DEBUG(log("already have peer files"))
+          return true;
+        }
 
         if (!mRegeneratePeerFiles) {
           // check to see if peer files are already associated to identity

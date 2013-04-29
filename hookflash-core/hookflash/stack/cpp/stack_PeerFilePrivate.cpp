@@ -610,7 +610,7 @@ namespace hookflash
             ElementPtr sectionBundleEl = Element::create("sectionBundle");
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "B");
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
+            //sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
 
             SecureByteBlockPtr privateKey = mPrivateKey->save();
 
@@ -637,7 +637,7 @@ namespace hookflash
 
             contactID.toLower();
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
+            //sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             privatePeerEl->adoptAsLastChild(sectionBundleEl);
@@ -743,6 +743,11 @@ namespace hookflash
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
 
+        
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+        return true;
+        
         ElementPtr sectionAEl = findSection("A");
         ElementPtr sectionBEl = findSection("B");
 
