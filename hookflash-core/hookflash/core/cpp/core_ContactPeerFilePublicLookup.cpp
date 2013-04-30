@@ -125,15 +125,19 @@ namespace hookflash
           {
             DomainPeerInfoMap::iterator found = mDomainPeerInfos.find(domain);
             if (found == mDomainPeerInfos.end()) {
+              ZS_LOG_DEBUG(log("adding new peer info domain") + ", domain=" + domain)
+
               PeerInfoList empty;
               mDomainPeerInfos[domain] = empty;
               found = mDomainPeerInfos.find(domain);
+
+              ZS_THROW_BAD_STATE_IF(found == mDomainPeerInfos.end())
             }
 
             PeerInfoList &infoList = (*found).second;
             infoList.push_back(info);
 
-            ZS_LOG_DEBUG(log("added peer info") + getDebugValueString())
+            ZS_LOG_DEBUG(log("added peer info") + ", peer=" + info.mPeerURI + ", secret=" + info.mFindSecret + getDebugValueString())
           }
 
           // scope: prepare bootstrapper for the domain
