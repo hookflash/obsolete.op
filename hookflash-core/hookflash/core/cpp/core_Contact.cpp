@@ -37,6 +37,7 @@
 #include <hookflash/stack/IHelper.h>
 
 #include <zsLib/Stringize.h>
+#include <zsLib/helpers.h>
 
 
 namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
@@ -120,7 +121,8 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      Contact::Contact()
+      Contact::Contact() :
+        mID(zsLib::createPUID())
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -128,6 +130,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void Contact::init()
       {
+        ZS_LOG_DEBUG(log("init") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -136,7 +139,7 @@ namespace hookflash
         if(isNoop()) return;
         
         mThisWeak.reset();
-        ZS_LOG_DEBUG(log("created"))
+        ZS_LOG_DEBUG(log("destroyed"))
       }
 
       //-----------------------------------------------------------------------
@@ -501,8 +504,7 @@ namespace hookflash
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               IPeer::toDebugString(mPeer, false) +
-               (isSelf() ? String(" (self)") : String()) +
+               IPeer::toDebugString(mPeer) + (isSelf() ? String(" (self)") : String()) +
                Helper::getDebugValue("user ID", mUserID, firstTime) +
                Helper::getDebugValue("calculated find secret", mCalculatedUniqueID, firstTime) +
                Helper::getDebugValue("find secret", mFindSecret, firstTime);

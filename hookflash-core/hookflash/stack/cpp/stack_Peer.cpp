@@ -265,14 +265,19 @@ namespace hookflash
         AutoRecursiveLock lock(pThis->getLock());
 
         // check if it already exists in the account
-        PeerPtr result = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
+        PeerPtr useThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
 
-        if ((pThis != result) &&
-            (peerFilePublic) &&
-            (!(result->mPeerFilePublic))) {
-          result->mPeerFilePublic = peerFilePublic;
+        if (!(useThis->mPeerFilePublic)) {
+          useThis->mPeerFilePublic = peerFilePublic;
         }
-        return result;
+
+        if (pThis != useThis) {
+          // do not inform account of destruction since it was not used
+          ZS_LOG_DEBUG(pThis->log("discarding object since one exists already"))
+          pThis->mAccount.reset();
+        }
+
+        return useThis;
       }
 
       //-----------------------------------------------------------------------
@@ -446,8 +451,13 @@ namespace hookflash
         pThis->init();
 
         // check if it already exists in the account
-        pThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
-        return pThis;
+        PeerPtr useThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
+        if (useThis != pThis) {
+          // do not inform account of destruction since it is not used
+          ZS_LOG_DEBUG(pThis->log("discarding object since one exists already"))
+          pThis->mAccount.reset();
+        }
+        return useThis;
       }
 
       //-----------------------------------------------------------------------

@@ -341,7 +341,13 @@ namespace hookflash
         pThis->mThisWeak = pThis;
         pThis->init();
 
-        return account->forLocation().findExistingOrUse(pThis);
+        LocationPtr useThis = account->forLocation().findExistingOrUse(pThis);
+        if (useThis != pThis) {
+          // do not inform the account of destruction since it was not used
+          ZS_LOG_DEBUG(pThis->log("discarding object since one exists already"))
+          pThis->mAccount.reset();
+        }
+        return useThis;
       }
 
       //-----------------------------------------------------------------------
