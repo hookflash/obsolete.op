@@ -362,7 +362,7 @@ namespace hookflash
 
           ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
           candidateEl->adoptAsLastChild(ipEl);
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
+          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
 
           if (!candidate.mUsernameFrag.isEmpty())
           {
@@ -408,14 +408,14 @@ namespace hookflash
           ElementPtr locationEl = IMessageHelper::createElementWithID("location", location->forMessages().getLocationID());
           ElementPtr detailEl = IMessageHelper::createElement("details");
 
+          if (!locationInfo.mDeviceID.isEmpty()) {
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", locationInfo.mDeviceID));
+          }
+
           if (!locationInfo.mIPAddress.isAddressEmpty())
           {
             ElementPtr ipEl = IMessageHelper::createElementWithText("ip", locationInfo.mIPAddress.string(false));
             detailEl->adoptAsLastChild(ipEl);
-          }
-
-          if (!locationInfo.mDeviceID.isEmpty()) {
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", locationInfo.mDeviceID));
           }
 
           if (!locationInfo.mUserAgent.isEmpty())
