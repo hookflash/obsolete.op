@@ -270,6 +270,8 @@ namespace hookflash
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return;
 
+        mIncoming = true;
+
         mPendingRequests.push_back(request);
         (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
       }
@@ -295,7 +297,9 @@ namespace hookflash
 
         if (!isReady()) {
           PeerIdentifyRequestPtr identifyRequest = PeerIdentifyRequest::convert(message);
-          if (!identifyRequest) {
+          PeerIdentifyResultPtr identifyResult = PeerIdentifyResult::convert(message);
+          if ((!identifyRequest) &&
+              (!identifyResult)) {
             ZS_LOG_WARNING(Detail, log("attempted to send a message as the location is not ready"))
             return false;
           }
@@ -623,7 +627,7 @@ namespace hookflash
           // can't process requests until the incoming is received, drop the message
           if (((!hasPeerFile) ||
                (mIncoming)) &&
-               (Time() != mIdentifyTime)) {
+               (Time() == mIdentifyTime)) {
 
             // scope: handle identify request
             {
