@@ -1078,16 +1078,16 @@ namespace hookflash
 
         LocationPtr location = peerLocation->forAccount().getLocation();
 
-        ZS_LOG_DEBUG(log("notified peer location is shutdown") + ILocation::toDebugString(location))
+        ZS_LOG_DEBUG(log("notified about peer location") + ILocation::toDebugString(location))
 
         PeerInfoMap::iterator found = mPeerInfos.find(location->forAccount().getPeerURI());
         if (found == mPeerInfos.end()) {
-          ZS_LOG_WARNING(Debug, log("notified peer location is shutdown but peer was not found"))
+          ZS_LOG_WARNING(Debug, log("notified peer location state changed but was not found but peer was not found"))
           return;
         }
 
         PeerInfoPtr &peerInfo = (*found).second;
-        PeerInfo::PeerLocationMap::iterator foundLocation = peerInfo->mLocations.find(location->forAccount().getPeerURI());
+        PeerInfo::PeerLocationMap::iterator foundLocation = peerInfo->mLocations.find(location->forAccount().getLocationID());
         if (foundLocation == peerInfo->mLocations.end()) {
           ZS_LOG_WARNING(Debug, log("could not find peer location") + PeerInfo::toDebugString(peerInfo) + ILocation::toDebugString(location))
           return;

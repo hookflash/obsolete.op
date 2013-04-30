@@ -638,8 +638,8 @@ namespace hookflash
 
         struct PeerInfo
         {
-          typedef std::map<LocationID, AccountPeerLocationPtr> PeerLocationMap;                          // every location needs a session
-          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMap;                                 // using this to track the reason why the find needs to be initated or reinitated
+          typedef std::map<LocationID, AccountPeerLocationPtr> PeerLocationMap;     // every location needs a session
+          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMap;   // using this to track the reason why the find needs to be initated or reinitated
 
           static String toDebugString(PeerInfoPtr peerInfo, bool includeCommaPrefix = true);
 
