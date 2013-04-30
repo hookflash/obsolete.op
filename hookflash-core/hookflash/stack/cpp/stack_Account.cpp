@@ -2331,7 +2331,7 @@ namespace hookflash
           }
 
           ZS_LOG_DEBUG(log("notifying subscription peer locations changed") + IPeerSubscription::toDebugString(subscription) + ", state=" + ILocation::toString(state) + ILocation::toDebugString(location))
-          subscription->forAccount().notifyLocationConnectionStateChanged(location, ILocation::LocationConnectionState_Disconnected);
+          subscription->forAccount().notifyLocationConnectionStateChanged(location, state);
         }
       }
 
