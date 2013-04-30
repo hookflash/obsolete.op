@@ -41,6 +41,7 @@
 #include <hookflash/stack/IMessageIncoming.h>
 
 #include <hookflash/stack/message/IMessageHelper.h>
+#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
 #include <hookflash/stack/message/peer-common/PeerPublishResult.h>
 #include <hookflash/stack/message/peer-common/PeerGetRequest.h>
@@ -679,6 +680,11 @@ namespace hookflash
         LocationPtr location = Location::convert(messageIncoming->getLocation());
         message::MessagePtr message = messageIncoming->getMessage();
         ZS_LOG_TRACE(log("received notification of incoming message") + ", message ID=" + message->messageID() +  + ", type=" + message::Message::toString(message->messageType()) + ", method=" + message->methodAsString() + location->forRepo().getDebugValueString())
+
+        if (message->factory() != MessageFactoryPeerCommon::singleton()) {
+          ZS_LOG_DEBUG(log("reposity does not handle messages from non \"peer-common\" factories"))
+          return;
+        }
 
         AutoRecursiveLock lock(getLock());
         if (subscription != mPeerSubscription) {

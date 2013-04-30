@@ -151,6 +151,7 @@ namespace hookflash
               ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] peer secret failed to decrypt")
               return PeerLocationFindRequestPtr();
             }
+            ZS_LOG_TRACE(String("decrypted peer secret") + ", secret=" + IHelper::convertToHex(*ret->mPeerSecret))
 
             ElementPtr locationEl = findProofEl->findFirstChildElement("location");
             if (locationEl) {
@@ -299,8 +300,11 @@ namespace hookflash
               }
 
               if (hasAttribute(AttributeType_PeerSecret)) {
+
+                ZS_LOG_TRACE(String("encrypting peer secret") + ", secret=" + IHelper::convertToHex(*mPeerSecret))
+
                 String peerSecret = IHelper::convertToBase64(*remotePeerFilePublic->encrypt(*mPeerSecret));
-                findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("peerSecret", peerSecret));
+                findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("peerSecretEncrypted", peerSecret));
               }
             }
           }

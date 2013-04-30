@@ -217,7 +217,7 @@ namespace hookflash
 
         if (pThis->getID() != useThis->getID()) {
           ZS_LOG_DEBUG(useThis->log("reusing existing object") + useThis->getDebugValueString())
-          pThis->reuse();
+          useThis->reuse();
         }
 
         if (delegate) {

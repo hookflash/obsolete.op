@@ -118,6 +118,8 @@ namespace hookflash
         const IAccountForLocation &forLocation() const {return *this;}
 
         virtual LocationPtr findExistingOrUse(LocationPtr location) = 0;
+        virtual LocationPtr getLocationForLocal() const = 0;
+        virtual LocationPtr getLocationForFinder() const = 0;
         virtual void notifyDestroyed(Location &location) = 0;
 
         virtual const String &getLocationID() const = 0;
@@ -400,6 +402,8 @@ namespace hookflash
         #pragma mark
 
         virtual LocationPtr findExistingOrUse(LocationPtr location);
+        virtual LocationPtr getLocationForLocal() const;
+        virtual LocationPtr getLocationForFinder() const;
         virtual void notifyDestroyed(Location &location);
 
         virtual const String &getLocationID() const;
@@ -634,8 +638,8 @@ namespace hookflash
 
         struct PeerInfo
         {
-          typedef std::map<LocationID, AccountPeerLocationPtr> PeerLocationMap;                          // every location needs a session
-          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMap;                                 // using this to track the reason why the find needs to be initated or reinitated
+          typedef std::map<LocationID, AccountPeerLocationPtr> PeerLocationMap;     // every location needs a session
+          typedef std::map<LocationID, LocationID> FindingBecauseOfLocationIDMap;   // using this to track the reason why the find needs to be initated or reinitated
 
           static String toDebugString(PeerInfoPtr peerInfo, bool includeCommaPrefix = true);
 

@@ -270,6 +270,8 @@ namespace hookflash
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return;
 
+        mIncoming = true;
+
         mPendingRequests.push_back(request);
         (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
       }
@@ -295,7 +297,9 @@ namespace hookflash
 
         if (!isReady()) {
           PeerIdentifyRequestPtr identifyRequest = PeerIdentifyRequest::convert(message);
-          if (!identifyRequest) {
+          PeerIdentifyResultPtr identifyResult = PeerIdentifyResult::convert(message);
+          if ((!identifyRequest) &&
+              (!identifyResult)) {
             ZS_LOG_WARNING(Detail, log("attempted to send a message as the location is not ready"))
             return false;
           }
@@ -457,6 +461,8 @@ namespace hookflash
       void AccountPeerLocation::onRUDPICESocketSessionChannelWaiting(IRUDPICESocketSessionPtr session)
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!session)
+
+        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + Stringize<PUID>(session->getID()).string())
 
         AutoRecursiveLock lock(getLock());
 
@@ -621,7 +627,7 @@ namespace hookflash
           // can't process requests until the incoming is received, drop the message
           if (((!hasPeerFile) ||
                (mIncoming)) &&
-               (Time() != mIdentifyTime)) {
+               (Time() == mIdentifyTime)) {
 
             // scope: handle identify request
             {
@@ -975,6 +981,7 @@ namespace hookflash
         if (!stepSocketSession()) return;
         if (!stepIncomingIdentify()) return;
         if (!stepMessaging()) return;
+        if (!stepIdentify()) return;
 
         setState(IAccount::AccountState_Ready);
 
@@ -1022,7 +1029,7 @@ namespace hookflash
 
         LocationPtr finderLocation = ILocationForAccount::getForFinder(outer);
 
-        if (finderLocation->forAccount().isConnected()) {
+        if (!finderLocation->forAccount().isConnected()) {
           ZS_LOG_WARNING(Detail, log("cannot respond to pending find request if the finder is not ready thus shutting down"))
           return false;
         }
@@ -1099,6 +1106,11 @@ namespace hookflash
             return false;
           }
           ZS_LOG_DEBUG(log("messaging is ready"))
+          return true;
+        }
+
+        if (mIncoming) {
+          ZS_LOG_DEBUG(log("no need to create messaging since incoming"))
           return true;
         }
 

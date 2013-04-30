@@ -128,6 +128,8 @@ namespace hookflash
         AccountPtr account = mAccount.lock();
         ZS_THROW_INVALID_ASSUMPTION_IF(!account)
 
+        AutoRecursiveLock lock(account->forConversationThread().getLock());
+
         ConversationThreadPtr baseThread = mBaseThread.lock();
 
         mHostThread = Thread::create(account, Thread::ThreadType_Host, account->forConversationThread().getSelfLocation(), baseThread->forHostOrSlave().getThreadID(), mThreadID, "", "", state);

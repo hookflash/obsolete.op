@@ -89,6 +89,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ContactPeerFilePublicLookup::init()
       {
+        AutoRecursiveLock lock(mLock);
+
         for (ContactList::iterator iter = mResults.begin(); iter != mResults.end(); ++iter) {
           ContactPtr contact = Contact::convert(*iter);
 
@@ -103,7 +105,7 @@ namespace hookflash
           info.mPeerURI = peer->getPeerURI();
           info.mFindSecret = contact->forContactPeerFilePublicLookup().getFindSecret();
 
-          if (info.mFindSecret) {
+          if (info.mFindSecret.isEmpty()) {
             ZS_LOG_WARNING(Detail, log("missing find secret so server will likely reject request") + ", peer=" + info.mPeerURI)
           }
 
@@ -125,14 +127,19 @@ namespace hookflash
           {
             DomainPeerInfoMap::iterator found = mDomainPeerInfos.find(domain);
             if (found == mDomainPeerInfos.end()) {
+              ZS_LOG_DEBUG(log("adding new peer info domain") + ", domain=" + domain)
+
               PeerInfoList empty;
               mDomainPeerInfos[domain] = empty;
               found = mDomainPeerInfos.find(domain);
+
+              ZS_THROW_BAD_STATE_IF(found == mDomainPeerInfos.end())
             }
 
             PeerInfoList &infoList = (*found).second;
-
             infoList.push_back(info);
+
+            ZS_LOG_DEBUG(log("added peer info") + ", domain=" + domain + ", peer=" + info.mPeerURI + ", secret=" + info.mFindSecret +  + ", infos=" + Stringize<PeerInfoList::size_type>(infoList.size()).string() + getDebugValueString())
           }
 
           // scope: prepare bootstrapper for the domain
@@ -148,6 +155,7 @@ namespace hookflash
 
               // bootstrapper was created for this domain
               mBootstrappedNetworks[domain] = network;
+              ZS_LOG_DEBUG(log("domain added") + getDebugValueString())
             }
           }
         }
@@ -304,7 +312,7 @@ namespace hookflash
         }
 
         PeerInfoList &infos = (*foundDomain).second;
-
+        ZS_LOG_DEBUG(log("getting peer infos for domain") + ", domain=" + networkDomain + ", infos=" + Stringize<PeerInfoList::size_type>(infos.size()).string())
 
         if (infos.size() > 0) {
           // let's issue a request to discover these identities
@@ -426,9 +434,9 @@ namespace hookflash
               Helper::getDebugValue("error reason", mErrorReason, firstTime) +
               Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? Stringize<size_t>(mBootstrappedNetworks.size()).string() : String(), firstTime) +
               Helper::getDebugValue("monitors", mMonitors.size() > 0 ? Stringize<size_t>(mMonitors.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("domain peer infos", mDomainPeerInfos.size() > 0 ? Stringize<size_t>(mDomainPeerInfos.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("contacts (map)", mContacts.size() > 0 ? Stringize<size_t>(mContacts.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("contacts (result)", mResults.size() > 0 ? Stringize<size_t>(mResults.size()).string() : String(), firstTime);
+              Helper::getDebugValue("domain peer infos", mDomainPeerInfos.size() > 0 ? Stringize<size_t>(mDomainPeerInfos.size()).string() : String(), firstTime) +
+              Helper::getDebugValue("contacts (map)", mContacts.size() > 0 ? Stringize<size_t>(mContacts.size()).string() : String(), firstTime) +
+              Helper::getDebugValue("contacts (result)", mResults.size() > 0 ? Stringize<size_t>(mResults.size()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

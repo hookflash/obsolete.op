@@ -37,6 +37,7 @@
 #include <hookflash/stack/IHelper.h>
 
 #include <zsLib/Stringize.h>
+#include <zsLib/helpers.h>
 
 
 namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
@@ -120,7 +121,8 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      Contact::Contact()
+      Contact::Contact() :
+        mID(zsLib::createPUID())
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -128,6 +130,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void Contact::init()
       {
+        ZS_LOG_DEBUG(log("init") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -136,7 +139,7 @@ namespace hookflash
         if(isNoop()) return;
         
         mThisWeak.reset();
-        ZS_LOG_DEBUG(log("created"))
+        ZS_LOG_DEBUG(log("destroyed"))
       }
 
       //-----------------------------------------------------------------------
@@ -242,11 +245,12 @@ namespace hookflash
         pThis->mCalculatedUniqueID = stableID;
         pThis->mFindSecret = findSecret;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 
       //-----------------------------------------------------------------------
-      IContactPtr Contact::getForSelf(IAccountPtr inAccount)
+      ContactPtr Contact::getForSelf(IAccountPtr inAccount)
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
 
@@ -379,6 +383,7 @@ namespace hookflash
         pThis->mPeer = peer;
         pThis->mUserID = userID;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 
@@ -470,6 +475,7 @@ namespace hookflash
         pThis->mPeer = peer;
         pThis->mCalculatedUniqueID = stableID;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 
@@ -501,8 +507,7 @@ namespace hookflash
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               IPeer::toDebugString(mPeer, false) +
-               (isSelf() ? String(" (self)") : String()) +
+               IPeer::toDebugString(mPeer) + (isSelf() ? String(" (self)") : String()) +
                Helper::getDebugValue("user ID", mUserID, firstTime) +
                Helper::getDebugValue("calculated find secret", mCalculatedUniqueID, firstTime) +
                Helper::getDebugValue("find secret", mFindSecret, firstTime);
@@ -555,6 +560,11 @@ namespace hookflash
                                             )
     {
       return internal::IContactFactory::singleton().createFromPeerURI(account, peerURI, findSecret, previousStableUniqueID, NULL);
+    }
+
+    IContactPtr IContact::getForSelf(IAccountPtr account)
+    {
+      return internal::IContactFactory::singleton().getForSelf(account);
     }
 
     //-------------------------------------------------------------------------
