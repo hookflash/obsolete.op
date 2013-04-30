@@ -1022,7 +1022,7 @@ namespace hookflash
 
         LocationPtr finderLocation = ILocationForAccount::getForFinder(outer);
 
-        if (finderLocation->forAccount().isConnected()) {
+        if (!finderLocation->forAccount().isConnected()) {
           ZS_LOG_WARNING(Detail, log("cannot respond to pending find request if the finder is not ready thus shutting down"))
           return false;
         }

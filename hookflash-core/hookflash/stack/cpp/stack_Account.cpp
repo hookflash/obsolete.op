@@ -365,6 +365,20 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      LocationPtr Account::getLocationForLocal() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mSelfLocation;
+      }
+
+      //-----------------------------------------------------------------------
+      LocationPtr Account::getLocationForFinder() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mFinderLocation;
+      }
+
+      //-----------------------------------------------------------------------
       void Account::notifyDestroyed(Location &location)
       {
         AutoRecursiveLock lock(getLock());

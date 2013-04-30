@@ -293,11 +293,17 @@ namespace hookflash
         String locationID = account->forLocation().getLocationID();
         PeerPtr peerLocal = account->forLocation().getPeerForLocal();
 
+        LocationPtr existing = account->forLocation().getLocationForLocal();
+        if (existing) {
+          ZS_LOG_DEBUG(existing->log("using existing local location"))
+          return existing;
+        }
+
         LocationPtr pThis(new Location(account, LocationType_Local, peerLocal, locationID));
         pThis->mThisWeak = pThis;
         pThis->init();
 
-        return account->forLocation().findExistingOrUse(pThis);
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
@@ -305,11 +311,18 @@ namespace hookflash
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
         AccountPtr account = Account::convert(inAccount);
-        LocationPtr pThis(new Location(account, LocationType_Local, PeerPtr(), NULL));
+
+        LocationPtr existing = account->forLocation().getLocationForFinder();
+        if (existing) {
+          ZS_LOG_DEBUG(existing->log("using existing finder location"))
+          return existing;
+        }
+
+        LocationPtr pThis(new Location(account, LocationType_Finder, PeerPtr(), NULL));
         pThis->mThisWeak = pThis;
         pThis->init();
 
-        return account->forLocation().findExistingOrUse(pThis);
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
