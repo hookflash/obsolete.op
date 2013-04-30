@@ -1440,9 +1440,12 @@ namespace hookflash
           if (pwd) ret.mPassword = IMessageHelper::getElementText(pwd);
           if (epwd) {
             if (encryptionKey) {
-              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(pwd))));
+              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(epwd))));
             } else {
               ret.mPassword = IMessageHelper::getElementText(epwd);
+              if (ret.mPassword.isEmpty()) {
+                ret.mPassword =IMessageHelper::getElementText(pwd);
+              }
             }
           }
           if (priority) {

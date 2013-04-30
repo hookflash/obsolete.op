@@ -1269,8 +1269,8 @@ namespace hookflash
           mFindersGetMonitor->cancel();
           mFindersGetMonitor.reset();
 
-          FindersGetResultPtr request = FindersGetResult::convert(message);
-          if (!request) {
+          FindersGetResultPtr result = FindersGetResult::convert(message);
+          if (!result) {
             MessageResultPtr result = MessageResult::convert(message);
             ZS_LOG_ERROR(Detail, log("finders get failed, will try later") + Message::toDebugString(message))
 
@@ -1279,7 +1279,7 @@ namespace hookflash
             return true;
           }
 
-          mAvailableFinders = request->finders();
+          mAvailableFinders = result->finders();
           if (mAvailableFinders.size() < 1) {
             ZS_LOG_ERROR(Detail, log("finders get failed to return any finders"))
             handleFinderRelatedFailure();
@@ -1368,7 +1368,7 @@ namespace hookflash
 
               LocationPtr location = Location::convert(locationInfo.mLocation);
 
-              const CandidateList &candidates = locationInfo.mCandidates;
+              CandidateList candidates = locationInfo.mCandidates;
               if (candidates.size() < 1) {
                 ZS_LOG_ERROR(Debug, log("receiced received a find reply but it did not contain any candidates (thus ignoring reply)") + PeerInfo::toDebugString(peerInfo))
                 return false;
@@ -1414,6 +1414,23 @@ namespace hookflash
 
                 // in this case not only was a location found but the request to find the location came back from the remote party with a reply but it's not sufficient reason
                 // to notify any subscribers since they only care when a connection is actually established.
+              }
+
+              PeerLocationFindRequestPtr request = PeerLocationFindRequest::convert(monitor->getMonitoredMessage());
+
+              SecureByteBlockPtr encryptionKey = request->peerSecret();
+
+              if (encryptionKey) {
+                ZS_LOG_DEBUG(log("decrypting candidate passwords sent from report party"))
+                for (CandidateList::iterator canIter = candidates.begin(); canIter != candidates.end(); ++canIter)
+                {
+                  Candidate &candidate = (*canIter);
+                  String originalPassword = candidate.mPassword;
+
+                  candidate.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(candidate.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(originalPassword)));
+
+                  ZS_LOG_DEBUG(log("decrypted password") + ", orginal=" + originalPassword + ", decrypted=" + candidate.mPassword)
+                }
               }
 
               peerLocation->forAccount().connectLocation(candidates, IICESocket::ICEControl_Controlling);
