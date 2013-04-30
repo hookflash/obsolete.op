@@ -1096,17 +1096,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool AccountPeerLocation::stepMessaging()
       {
-        if (mIncoming) {
-          ZS_LOG_DEBUG(log("no need to create messaging since incoming"))
-          return true;
-        }
-
         if (mMessaging) {
           if (IRUDPMessaging::RUDPMessagingState_Connected != mMessaging->getState()) {
             ZS_LOG_DEBUG(log("waiting for the RUDP messaging to connect"))
             return false;
           }
           ZS_LOG_DEBUG(log("messaging is ready"))
+          return true;
+        }
+
+        if (mIncoming) {
+          ZS_LOG_DEBUG(log("no need to create messaging since incoming"))
           return true;
         }
 
