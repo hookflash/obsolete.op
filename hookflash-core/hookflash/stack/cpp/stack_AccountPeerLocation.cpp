@@ -458,6 +458,8 @@ namespace hookflash
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!session)
 
+        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + Stringize<PUID>(session->getID()).string())
+
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) return;
@@ -1094,6 +1096,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool AccountPeerLocation::stepMessaging()
       {
+        if (mIncoming) {
+          ZS_LOG_DEBUG(log("no need to create messaging since incoming"))
+          return true;
+        }
+
         if (mMessaging) {
           if (IRUDPMessaging::RUDPMessagingState_Connected != mMessaging->getState()) {
             ZS_LOG_DEBUG(log("waiting for the RUDP messaging to connect"))
