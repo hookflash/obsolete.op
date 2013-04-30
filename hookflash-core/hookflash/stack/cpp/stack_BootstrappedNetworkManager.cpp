@@ -10,6 +10,8 @@
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 
+#include <zsLib/helpers.h>
+
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
 namespace hookflash
@@ -44,7 +46,8 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      BootstrappedNetworkManager::BootstrappedNetworkManager()
+      BootstrappedNetworkManager::BootstrappedNetworkManager() :
+        mID(zsLib::createPUID())
       {
         ZS_LOG_DEBUG(log("created"))
       }

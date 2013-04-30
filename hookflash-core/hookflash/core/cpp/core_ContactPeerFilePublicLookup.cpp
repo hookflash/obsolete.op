@@ -103,7 +103,7 @@ namespace hookflash
           info.mPeerURI = peer->getPeerURI();
           info.mFindSecret = contact->forContactPeerFilePublicLookup().getFindSecret();
 
-          if (info.mFindSecret) {
+          if (info.mFindSecret.isEmpty()) {
             ZS_LOG_WARNING(Detail, log("missing find secret so server will likely reject request") + ", peer=" + info.mPeerURI)
           }
 
@@ -131,8 +131,9 @@ namespace hookflash
             }
 
             PeerInfoList &infoList = (*found).second;
-
             infoList.push_back(info);
+
+            ZS_LOG_DEBUG(log("added peer info") + getDebugValueString())
           }
 
           // scope: prepare bootstrapper for the domain
