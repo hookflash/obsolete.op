@@ -13,11 +13,11 @@
 @  file in the root of the source tree.
 @
 
-    .globl _vp8_dequant_idct_add_v6
+	.text
+	.p2align 2
 	.globl vp8_dequant_idct_add_v6
+	.type  vp8_dequant_idct_add_v6, %function
 
-.text
-.p2align 2
 @void vp8_dequant_idct_v6(short *input, short *dq,
 @                         unsigned char *dest, int stride)
 @ r0 = q
@@ -25,8 +25,7 @@
 @ r2 = dst
 @ r3 = stride
 
-_vp8_dequant_idct_add_v6:
-	vp8_dequant_idct_add_v6: @
+vp8_dequant_idct_add_v6: @
     stmdb   sp!, {r4-r11, lr}
 
     ldr     r4, [r0]                @input

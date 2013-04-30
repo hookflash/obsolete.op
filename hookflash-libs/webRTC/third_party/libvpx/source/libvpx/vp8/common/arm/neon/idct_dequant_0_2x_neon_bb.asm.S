@@ -14,22 +14,21 @@
 @
 
 
-    .globl _idct_dequant_0_2x_neon
+	.text
+	.p2align 2
 	.globl idct_dequant_0_2x_neon
+	.type  idct_dequant_0_2x_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @void idct_dequant_0_2x_neon(short *q, short dq,
 @                            unsigned char *dst, int stride)@
 @ r0   *q
 @ r1   dq
 @ r2   *dst
 @ r3   stride
-_idct_dequant_0_2x_neon:
-	idct_dequant_0_2x_neon: @
+idct_dequant_0_2x_neon: @
     push            {r4, r5}
 
     add             r12, r2, #4

@@ -15,23 +15,23 @@
 @
 
 
-    .globl _vp8_filter_block2d_first_pass_armv6
+	.text
+	.p2align 2
 	.globl vp8_filter_block2d_first_pass_armv6
-    .globl _vp8_filter_block2d_first_pass_16x16_armv6
 	.globl vp8_filter_block2d_first_pass_16x16_armv6
-    .globl _vp8_filter_block2d_first_pass_8x8_armv6
 	.globl vp8_filter_block2d_first_pass_8x8_armv6
-    .globl _vp8_filter_block2d_second_pass_armv6
 	.globl vp8_filter_block2d_second_pass_armv6
-    .globl _vp8_filter4_block2d_second_pass_armv6
 	.globl vp8_filter4_block2d_second_pass_armv6
-    .globl _vp8_filter_block2d_first_pass_only_armv6
 	.globl vp8_filter_block2d_first_pass_only_armv6
-    .globl _vp8_filter_block2d_second_pass_only_armv6
 	.globl vp8_filter_block2d_second_pass_only_armv6
+	.type  vp8_filter_block2d_first_pass_armv6, %function
+	.type  vp8_filter_block2d_first_pass_16x16_armv6, %function
+	.type  vp8_filter_block2d_first_pass_8x8_armv6, %function
+	.type  vp8_filter_block2d_second_pass_armv6, %function
+	.type  vp8_filter4_block2d_second_pass_armv6, %function
+	.type  vp8_filter_block2d_first_pass_only_armv6, %function
+	.type  vp8_filter_block2d_second_pass_only_armv6, %function
 
-.text
-.p2align 2
 @-------------------------------------
 @ r0    unsigned char *src_ptr
 @ r1    short         *output_ptr
@@ -42,8 +42,7 @@
 @-------------------------------------
 @ vp8_filter the input and put in the output array.  Apply the 6 tap FIR filter with
 @ the output being a 2 byte value and the intput being a 1 byte value.
-_vp8_filter_block2d_first_pass_armv6:
-	vp8_filter_block2d_first_pass_armv6: @
+vp8_filter_block2d_first_pass_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ vp8_filter address
@@ -65,15 +64,13 @@ _vp8_filter_block2d_first_pass_armv6:
     mov     r7, r7, lsl #16                 @ height is top part of counter
 
 @ six tap filter
-_height_loop_1st_6:
-	height_loop_1st_6:
+height_loop_1st_6:
     ldrb    r8, [r0, #-2]                   @ load source data
     ldrb    r9, [r0, #-1]
     ldrb    r10, [r0], #2
     orr     r7, r7, r3, lsr #2              @ construct loop counter
 
-_width_loop_1st_6:
-	width_loop_1st_6:
+width_loop_1st_6:
     ldrb    r11, [r0, #-1]
 
     pkhbt   lr, r8, r9, lsl #16             @ r9 | r8
@@ -132,8 +129,7 @@ _width_loop_1st_6:
 @ --------------------------
 @ 16x16 version
 @ -----------------------------
-_vp8_filter_block2d_first_pass_16x16_armv6:
-	vp8_filter_block2d_first_pass_16x16_armv6: @
+vp8_filter_block2d_first_pass_16x16_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ vp8_filter address
@@ -158,15 +154,13 @@ _vp8_filter_block2d_first_pass_16x16_armv6:
     mov     r7, r7, lsl #16                 @ height is top part of counter
 
 @ six tap filter
-_height_loop_1st_16_6:
-	height_loop_1st_16_6:
+height_loop_1st_16_6:
     ldrb    r8, [r0, #-2]                   @ load source data
     ldrb    r9, [r0, #-1]
     ldrb    r10, [r0], #2
     orr     r7, r7, r3, lsr #2              @ construct loop counter
 
-_width_loop_1st_16_6:
-	width_loop_1st_16_6:
+width_loop_1st_16_6:
     ldrb    r11, [r0, #-1]
 
     pkhbt   lr, r8, r9, lsl #16             @ r9 | r8
@@ -228,8 +222,7 @@ _width_loop_1st_16_6:
 @ --------------------------
 @ 8x8 version
 @ -----------------------------
-_vp8_filter_block2d_first_pass_8x8_armv6:
-	vp8_filter_block2d_first_pass_8x8_armv6: @
+vp8_filter_block2d_first_pass_8x8_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ vp8_filter address
@@ -254,15 +247,13 @@ _vp8_filter_block2d_first_pass_8x8_armv6:
     mov     r7, r7, lsl #16                 @ height is top part of counter
 
 @ six tap filter
-_height_loop_1st_8_6:
-	height_loop_1st_8_6:
+height_loop_1st_8_6:
     ldrb    r8, [r0, #-2]                   @ load source data
     ldrb    r9, [r0, #-1]
     ldrb    r10, [r0], #2
     orr     r7, r7, r3, lsr #2              @ construct loop counter
 
-_width_loop_1st_8_6:
-	width_loop_1st_8_6:
+width_loop_1st_8_6:
     ldrb    r11, [r0, #-1]
 
     pkhbt   lr, r8, r9, lsl #16             @ r9 | r8
@@ -328,8 +319,7 @@ _width_loop_1st_8_6:
 @ r3    unsigned int cnt,
 @ stack const short *vp8_filter
 @---------------------------------
-_vp8_filter_block2d_second_pass_armv6:
-	vp8_filter_block2d_second_pass_armv6: @
+vp8_filter_block2d_second_pass_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #36]                  @ vp8_filter address
@@ -346,14 +336,12 @@ _vp8_filter_block2d_second_pass_armv6:
 
     sub     r0, r0, #4                      @ offset input buffer
 
-_height_loop_2nd:
-	height_loop_2nd:
+height_loop_2nd:
     ldr     r8, [r0]                        @ load the data
     ldr     r9, [r0, #4]
     orr     r7, r7, r3, lsr #1              @ loop counter
 
-_width_loop_2nd:
-	width_loop_2nd:
+width_loop_2nd:
     smuad   lr, r4, r8                      @ apply filter
     sub     r7, r7, #1
     smulbt  r8, r4, r8
@@ -404,8 +392,7 @@ _width_loop_2nd:
 @ r3    unsigned int cnt,
 @ stack const short *vp8_filter
 @---------------------------------
-_vp8_filter4_block2d_second_pass_armv6:
-	vp8_filter4_block2d_second_pass_armv6: @
+vp8_filter4_block2d_second_pass_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #36]                  @ vp8_filter address
@@ -420,13 +407,11 @@ _vp8_filter4_block2d_second_pass_armv6:
     pkhbt   r11, r6, r5
     mov     r4, #0x40                       @ rounding factor (for smlad{x})
 
-_height_loop_2nd_4:
-	height_loop_2nd_4:
+height_loop_2nd_4:
     ldrd    r8, [r0, #-4]                   @ load the data
     orr     r7, r7, r3, lsr #1              @ loop counter
 
-_width_loop_2nd_4:
-	width_loop_2nd_4:
+width_loop_2nd_4:
     ldr     r10, [r0, #4]!
     smladx  r6, r9, r12, r4                 @ apply filter
     pkhbt   r8, r9, r8
@@ -466,8 +451,7 @@ _width_loop_2nd_4:
 @ stack unsigned int output_pitch,
 @ stack const short *vp8_filter
 @------------------------------------
-_vp8_filter_block2d_first_pass_only_armv6:
-	vp8_filter_block2d_first_pass_only_armv6: @
+vp8_filter_block2d_first_pass_only_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     add     r7, r2, r3                      @ preload next low
@@ -494,16 +478,14 @@ _vp8_filter_block2d_first_pass_only_armv6:
     ldr     r6, [r11, #8]
 
 @ six tap filter
-_height_loop_1st_only_6:
-	height_loop_1st_only_6:
+height_loop_1st_only_6:
     ldrb    r8, [r0, #-2]                   @ load data
     ldrb    r9, [r0, #-1]
     ldrb    r10, [r0], #2
 
     mov     r12, r3, lsr #1                 @ loop counter
 
-_width_loop_1st_only_6:
-	width_loop_1st_only_6:
+width_loop_1st_only_6:
     ldrb    r11, [r0, #-1]
 
     pkhbt   lr, r8, r9, lsl #16             @ r9 | r8
@@ -570,8 +552,7 @@ _width_loop_1st_only_6:
 @ stack unsigned int output_pitch,
 @ stack const short *vp8_filter
 @------------------------------------
-_vp8_filter_block2d_second_pass_only_armv6:
-	vp8_filter_block2d_second_pass_only_armv6: @
+vp8_filter_block2d_second_pass_only_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ VFilter address
@@ -590,15 +571,13 @@ _vp8_filter_block2d_second_pass_only_armv6:
     str     r1, [sp, #4]                    @ save dst to stack
 
 @ six tap filter
-_width_loop_2nd_only_6:
-	width_loop_2nd_only_6:
+width_loop_2nd_only_6:
     ldrb    r8, [r0], r2                    @ load data
     orr     r7, r7, r3                      @ loop counter
     ldrb    r9, [r0], r2
     ldrb    r10, [r0], r2
 
-_height_loop_2nd_only_6:
-	height_loop_2nd_only_6:
+height_loop_2nd_only_6:
     @ filter first column in this inner loop, than, move to next colum.
     ldrb    r11, [r0], r2
 

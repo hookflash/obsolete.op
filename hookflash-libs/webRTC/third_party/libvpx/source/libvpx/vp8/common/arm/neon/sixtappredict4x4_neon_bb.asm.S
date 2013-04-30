@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_sixtap_predict4x4_neon
+	.text
+	.p2align 2
 	.globl vp8_sixtap_predict4x4_neon
+	.type  vp8_sixtap_predict4x4_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 filter4_coeff:
     .long      0,  0,  128,    0,   0,  0,   0,  0
@@ -41,8 +41,7 @@ filter4_coeff:
 @ stack(r4) unsigned char *dst_ptr,
 @ stack(lr) int  dst_pitch
 
-_vp8_sixtap_predict4x4_neon:
-	vp8_sixtap_predict4x4_neon: @
+vp8_sixtap_predict4x4_neon: @
     push            {r4, lr}
 
     adr             r12, filter4_coeff

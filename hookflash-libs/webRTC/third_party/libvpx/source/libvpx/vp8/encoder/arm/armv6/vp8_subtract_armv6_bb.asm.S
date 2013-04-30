@@ -15,12 +15,14 @@
 @
 
 
-    .globl _vp8_subtract_mby_armv6
+	.text
+	.p2align 2
 	.globl vp8_subtract_mby_armv6
-    .globl _vp8_subtract_mbuv_armv6
 	.globl vp8_subtract_mbuv_armv6
-    .globl _vp8_subtract_b_armv6
 	.globl vp8_subtract_b_armv6
+	.type  vp8_subtract_mby_armv6, %function
+	.type  vp8_subtract_mbuv_armv6, %function
+	.type  vp8_subtract_b_armv6, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -28,14 +30,11 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @ r0    BLOCK *be
 @ r1    BLOCKD *bd
 @ r2    int pitch
-_vp8_subtract_b_armv6:
-	vp8_subtract_b_armv6: @
+vp8_subtract_b_armv6: @
 
     stmfd   sp!, {r4-r9}
 
@@ -87,8 +86,7 @@ loop_block:
 @ sp    unsigned char *upred
 @ sp    unsigned char *vpred
 @ sp    int pred_stride
-_vp8_subtract_mbuv_armv6:
-	vp8_subtract_mbuv_armv6: @
+vp8_subtract_mbuv_armv6: @
 
     stmfd   sp!, {r4-r11}
 
@@ -195,8 +193,7 @@ loop_v:
 @ r2    int src_stride
 @ r3    unsigned char *pred
 @ sp    int pred_stride
-_vp8_subtract_mby_armv6:
-	vp8_subtract_mby_armv6: @
+vp8_subtract_mby_armv6: @
 
     stmfd   sp!, {r4-r11}
     ldr     r12, [sp, #32]      @ pred_stride

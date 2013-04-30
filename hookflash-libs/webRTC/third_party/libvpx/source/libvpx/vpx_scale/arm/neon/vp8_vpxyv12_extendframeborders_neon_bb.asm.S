@@ -15,21 +15,20 @@
 @
 
 
-    .globl _vp8_yv12_extend_frame_borders_neon
+	.text
+	.p2align 2
 	.globl vp8_yv12_extend_frame_borders_neon
+	.type  vp8_yv12_extend_frame_borders_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
     .include  "asm_com_offsets.asm"
 
-.text
-.p2align 2
 @void vp8_yv12_extend_frame_borders_neon (YV12_BUFFER_CONFIG *ybf)@
 @ we depend on VP8BORDERINPIXELS being 32
 
-_vp8_yv12_extend_frame_borders_neon:
-	vp8_yv12_extend_frame_borders_neon: @
+vp8_yv12_extend_frame_borders_neon: @
     push            {r4 - r10, lr}
     vpush           {d8 - d15}
 

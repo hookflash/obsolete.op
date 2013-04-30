@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_short_idct4x4llm_neon
+	.text
+	.p2align 2
 	.globl vp8_short_idct4x4llm_neon
+	.type  vp8_short_idct4x4llm_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @*************************************************************
 @void vp8_short_idct4x4llm_c(short *input, unsigned char *pred, int pitch,
@@ -44,8 +44,7 @@
 @ (13+16+1=30bits<32bits). This instruction gives the high half
 @ result of the multiplication that is needed in IDCT.
 
-_vp8_short_idct4x4llm_neon:
-	vp8_short_idct4x4llm_neon: @
+vp8_short_idct4x4llm_neon: @
     adr             r12, idct_coeff
     vld1.16         {q1, q2}, [r0]
     vld1.16         {d0}, [r12]

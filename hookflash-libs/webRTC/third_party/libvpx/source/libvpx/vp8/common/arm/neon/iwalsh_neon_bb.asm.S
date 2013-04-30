@@ -13,19 +13,18 @@
 @  in the file PATENTS.  All contributing project authors may
 @  be found in the AUTHORS file in the root of the source tree.
 @
-    .globl _vp8_short_inv_walsh4x4_neon
+	.text
+	.p2align 2
 	.globl vp8_short_inv_walsh4x4_neon
+	.type  vp8_short_inv_walsh4x4_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @short vp8_short_inv_walsh4x4_neon(short *input, short *mb_dqcoeff)
-_vp8_short_inv_walsh4x4_neon:
-	vp8_short_inv_walsh4x4_neon: @
+vp8_short_inv_walsh4x4_neon: @
 
     @ read in all four lines of values: d0->d3
     vld1.i16 {q0-q1}, [r0,:128]

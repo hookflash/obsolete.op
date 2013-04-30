@@ -15,23 +15,22 @@
 @
 
 
-    .globl _vp8_sad16x16_armv6
+	.text
+	.p2align 2
 	.globl vp8_sad16x16_armv6
+	.type  vp8_sad16x16_armv6, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @ r0    const unsigned char *src_ptr
 @ r1    int  src_stride
 @ r2    const unsigned char *ref_ptr
 @ r3    int  ref_stride
 @ stack max_sad (not used)
-_vp8_sad16x16_armv6:
-	vp8_sad16x16_armv6: @
+vp8_sad16x16_armv6: @
     stmfd   sp!, {r4-r12, lr}
 
     pld     [r0, r1, lsl #0]

@@ -88,6 +88,7 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
     WebRtc_UWord8* destination_data_u = output_buffer + width * height;
     WebRtc_UWord8* destination_data_v = output_buffer + width * height * 5 / 4;
 
+    // Y
     for (int i = 0; i < (int)height; i++)
     {
         memcpy(destination_data_y, source_data_y, stride);
@@ -95,6 +96,7 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
         destination_data_y += width;
     }
 
+    // UV
     // NV12 -> i420 conversion
     for (int j = 0; j < (height >> 1); j++)
     {
@@ -107,6 +109,40 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
         destination_data_u += width >> 1;
         destination_data_v += width >> 1;
     }
+
+	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
+
+	free(output_buffer);
+
+	capture_crit_sect->Leave();
+}
+
+void encoded_video_callback(camera_handle_t camera_handle, camera_buffer_t* camera_buffer, void* arg)
+{
+    capture_crit_sect->Enter();
+
+    camera_frametype_t frame_type = camera_buffer->frametype;
+    uint64_t frame_size = camera_buffer->framesize;
+    uint8_t* frame_buffer = camera_buffer->framebuf;
+    uint64_t frame_meta_size = camera_buffer->framemetasize;
+    void* frame_meta = camera_buffer->framemeta;
+    int64_t frame_timestamp = camera_buffer->frametimestamp;
+    camera_frame_compressedvideo_t frame_desc = camera_buffer->framedesc.compvid;
+
+    uint64_t bufsize = frame_desc.bufsize;
+    bool keyframe = frame_desc.keyframe;
+    uint64_t bitrate = frame_desc.bitrate;
+
+    VideoCaptureCapability frame_info;
+    frame_info.width = 240;
+    frame_info.height = 320;
+    frame_info.rawType = kVideoUnknown;
+    frame_info.codecType = kVideoCodecH264;
+
+    WebRtc_Word32 output_buffer_size = frame_size;
+    WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
+
+    memcpy(output_buffer, frame_buffer, frame_size);
 
 	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
 
@@ -189,13 +225,6 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 //
 //    free(resolutions);
 
-/*
-    error = camera_set_video_property(cameraHandle,
-        CAMERA_IMGPROP_WIDTH, 240,
-        CAMERA_IMGPROP_HEIGHT, 320,
-        CAMERA_IMGPROP_ROTATION, 90,
-        CAMERA_IMGPROP_FRAMERATE, (double)15.0);
-        */
     error = camera_set_video_property(cameraHandle,
         CAMERA_IMGPROP_WIDTH, 240,
         CAMERA_IMGPROP_HEIGHT, 320,
@@ -209,12 +238,19 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 //    error = camera_set_video_property(cameraHandle,
 //    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
 //    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_VIDEOCODEC, CAMERA_VIDEOCODEC_NONE);
+//    		CAMERA_IMGPROP_VIDEOCODEC, CAMERA_VIDEOCODEC_H264);
 //    error = camera_set_video_property(cameraHandle,
 //    		CAMERA_IMGPROP_AUDIOCODEC, CAMERA_AUDIOCODEC_NONE);
     if (error != CAMERA_EOK)
     {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
+        return -1;
+    }
+
+    error = camera_init_video_encoder();
+    if (error != CAMERA_EOK)
+    {
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot init video encoder - error: %d", error);
         return -1;
     }
 
@@ -249,7 +285,19 @@ WebRtc_Word32 VideoCaptureModuleBB::StartCapture(
             NULL);
     if (error != CAMERA_EOK) {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot start video viewfinder - error: %d", error);
-    }
+        return -1;
+   }
+
+//    error = camera_start_encode(_cameraHandle,
+//    		NULL,
+//    		encoded_video_callback,
+//            NULL,
+//            NULL,
+//            NULL);
+//    if (error != CAMERA_EOK) {
+//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot start encoding - error: %d", error);
+//        return -1;
+//    }
 
     _captureStarted = true;
 
@@ -260,9 +308,16 @@ WebRtc_Word32 VideoCaptureModuleBB::StopCapture()
 {
     camera_error_t error;
 
+//    error = camera_stop_encode(_cameraHandle);
+//    if (error != CAMERA_EOK) {
+//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot stop video encoding - error: %d", error);
+//        return -1;
+//    }
+
     error = camera_stop_video_viewfinder(_cameraHandle);
     if (error != CAMERA_EOK) {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot stop video viewfinder - error: %d", error);
+        return -1;
     }
 
     return 0;

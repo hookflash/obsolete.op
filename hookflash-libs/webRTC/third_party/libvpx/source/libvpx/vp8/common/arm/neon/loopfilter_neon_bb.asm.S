@@ -15,26 +15,25 @@
 @
 
 
-    .globl _vp8_loop_filter_horizontal_edge_y_neon
+	.text
+	.p2align 2
 	.globl vp8_loop_filter_horizontal_edge_y_neon
-    .globl _vp8_loop_filter_horizontal_edge_uv_neon
 	.globl vp8_loop_filter_horizontal_edge_uv_neon
-    .globl _vp8_loop_filter_vertical_edge_y_neon
 	.globl vp8_loop_filter_vertical_edge_y_neon
-    .globl _vp8_loop_filter_vertical_edge_uv_neon
 	.globl vp8_loop_filter_vertical_edge_uv_neon
+	.type  vp8_loop_filter_horizontal_edge_y_neon, %function
+	.type  vp8_loop_filter_horizontal_edge_uv_neon, %function
+	.type  vp8_loop_filter_vertical_edge_y_neon, %function
+	.type  vp8_loop_filter_vertical_edge_uv_neon, %function
    @ ARM
 
-.text
-.p2align 2
 
 @ r0    unsigned char *src
 @ r1    int pitch
 @ r2    unsigned char blimit
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
-_vp8_loop_filter_horizontal_edge_y_neon:
-	vp8_loop_filter_horizontal_edge_y_neon: @
+vp8_loop_filter_horizontal_edge_y_neon: @
     push        {lr}
     vdup.u8     q0, r2                     @ duplicate blimit
     vdup.u8     q1, r3                     @ duplicate limit
@@ -74,8 +73,7 @@ _vp8_loop_filter_horizontal_edge_y_neon:
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
 @ sp+4  unsigned char *v
-_vp8_loop_filter_horizontal_edge_uv_neon:
-	vp8_loop_filter_horizontal_edge_uv_neon: @
+vp8_loop_filter_horizontal_edge_uv_neon: @
     push        {lr}
     vdup.u8     q0, r2                      @ duplicate blimit
     vdup.u8     q1, r3                      @ duplicate limit
@@ -131,8 +129,7 @@ _vp8_loop_filter_horizontal_edge_uv_neon:
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
 
-_vp8_loop_filter_vertical_edge_y_neon:
-	vp8_loop_filter_vertical_edge_y_neon: @
+vp8_loop_filter_vertical_edge_y_neon: @
     push        {lr}
     vdup.u8     q0, r2                     @ duplicate blimit
     vdup.u8     q1, r3                     @ duplicate limit
@@ -222,8 +219,7 @@ _vp8_loop_filter_vertical_edge_y_neon:
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
 @ sp+4  unsigned char *v
-_vp8_loop_filter_vertical_edge_uv_neon:
-	vp8_loop_filter_vertical_edge_uv_neon: @
+vp8_loop_filter_vertical_edge_uv_neon: @
     push        {lr}
     vdup.u8     q0, r2                      @ duplicate blimit
     sub         r12, r0, #4                 @ move u pointer down by 4 columns
@@ -315,8 +311,7 @@ _vp8_loop_filter_vertical_edge_uv_neon:
 @ q8    q1
 @ q9    q2
 @ q10   q3
-_vp8_loop_filter_neon:
-	vp8_loop_filter_neon: @
+vp8_loop_filter_neon: @
 
     @ vp8_filter_mask
     vabd.u8     q11, q3, q4                 @ abs(p3 - p2)

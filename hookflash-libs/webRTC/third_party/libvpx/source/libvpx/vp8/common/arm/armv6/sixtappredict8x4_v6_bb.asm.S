@@ -15,11 +15,11 @@
 @
 
 
-    .globl _vp8_sixtap_predict8x4_armv6
+	.text
+	.p2align 2
 	.globl vp8_sixtap_predict8x4_armv6
+	.type  vp8_sixtap_predict8x4_armv6, %function
 
-.text
-.p2align 2
 @-------------------------------------
 @ r0    unsigned char *src_ptr,
 @ r1    int  src_pixels_per_line,
@@ -31,8 +31,7 @@
 @note: In first pass, store the result in transpose(8linesx9columns) on stack. Temporary stack size is 184.
 @Line width is 20 that is 9 short data plus 2 to make it 4bytes aligned. In second pass, load data from stack,
 @and the result is stored in transpose.
-_vp8_sixtap_predict8x4_armv6:
-	vp8_sixtap_predict8x4_armv6: @
+vp8_sixtap_predict8x4_armv6: @
     stmdb       sp!, {r4 - r11, lr}
     str         r3, [sp, #-184]!            @reserve space on stack for temporary storage, store yoffset
 
@@ -58,8 +57,7 @@ _vp8_sixtap_predict8x4_armv6:
 
     sub         r1, r1, #8
 
-_first_pass_hloop_v6:
-	first_pass_hloop_v6:
+first_pass_hloop_v6:
     ldrb        r6, [r0, #-5]               @ load source data
     ldrb        r7, [r0, #-4]
     ldrb        r8, [r0, #-3]
@@ -74,8 +72,7 @@ _first_pass_hloop_v6:
     pkhbt       r8, r8, r9, lsl #16         @ r9 | r8
     pkhbt       r9, r9, r10, lsl #16        @ r10 | r9
 
-_first_pass_wloop_v6:
-	first_pass_wloop_v6:
+first_pass_wloop_v6:
     smuad       r11, r6, r3                 @ vp8_filter[0], vp8_filter[1]
     smuad       r12, r7, r3
 

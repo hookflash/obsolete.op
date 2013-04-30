@@ -14,19 +14,18 @@
 @  be found in the AUTHORS file in the root of the source tree.
 @
 
-    .globl _vp8_short_inv_walsh4x4_v6
+	.text
+	.p2align 2
 	.globl vp8_short_inv_walsh4x4_v6
+	.type  vp8_short_inv_walsh4x4_v6, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @short vp8_short_inv_walsh4x4_v6(short *input, short *mb_dqcoeff)
-_vp8_short_inv_walsh4x4_v6:
-	vp8_short_inv_walsh4x4_v6: @
+vp8_short_inv_walsh4x4_v6: @
 
     stmdb       sp!, {r4 - r12, lr}
 

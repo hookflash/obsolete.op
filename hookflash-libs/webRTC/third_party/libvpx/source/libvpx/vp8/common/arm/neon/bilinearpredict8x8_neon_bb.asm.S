@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_bilinear_predict8x8_neon
+	.text
+	.p2align 2
 	.globl vp8_bilinear_predict8x8_neon
+	.type  vp8_bilinear_predict8x8_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ r0    unsigned char  *src_ptr,
 @ r1    int  src_pixels_per_line,
 @ r2    int  xoffset,
@@ -30,8 +30,7 @@
 @ r4    unsigned char *dst_ptr,
 @ stack(lr) int  dst_pitch
 
-_vp8_bilinear_predict8x8_neon:
-	vp8_bilinear_predict8x8_neon: @
+vp8_bilinear_predict8x8_neon: @
     push            {r4, lr}
 
     adr             r12, bifilter8_coeff

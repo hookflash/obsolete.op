@@ -15,18 +15,18 @@
 @
 
 
-    .globl _vp8_mbloop_filter_horizontal_edge_y_neon
+	.text
+	.p2align 2
 	.globl vp8_mbloop_filter_horizontal_edge_y_neon
-    .globl _vp8_mbloop_filter_horizontal_edge_uv_neon
 	.globl vp8_mbloop_filter_horizontal_edge_uv_neon
-    .globl _vp8_mbloop_filter_vertical_edge_y_neon
 	.globl vp8_mbloop_filter_vertical_edge_y_neon
-    .globl _vp8_mbloop_filter_vertical_edge_uv_neon
 	.globl vp8_mbloop_filter_vertical_edge_uv_neon
+	.type  vp8_mbloop_filter_horizontal_edge_y_neon, %function
+	.type  vp8_mbloop_filter_horizontal_edge_uv_neon, %function
+	.type  vp8_mbloop_filter_vertical_edge_y_neon, %function
+	.type  vp8_mbloop_filter_vertical_edge_uv_neon, %function
    @ ARM
 
-.text
-.p2align 2
 
 @ void vp8_mbloop_filter_horizontal_edge_y_neon(unsigned char *src, int pitch,
 @                                               const unsigned char *blimit,
@@ -37,8 +37,7 @@
 @ r2    unsigned char blimit
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
-_vp8_mbloop_filter_horizontal_edge_y_neon:
-	vp8_mbloop_filter_horizontal_edge_y_neon: @
+vp8_mbloop_filter_horizontal_edge_y_neon: @
     push        {lr}
     add         r1, r1, r1                  @ double stride
     ldr         r12, [sp, #4]               @ load thresh
@@ -82,8 +81,7 @@ _vp8_mbloop_filter_horizontal_edge_y_neon:
 @ sp    unsigned char thresh,
 @ sp+4  unsigned char *v
 
-_vp8_mbloop_filter_horizontal_edge_uv_neon:
-	vp8_mbloop_filter_horizontal_edge_uv_neon: @
+vp8_mbloop_filter_horizontal_edge_uv_neon: @
     push        {lr}
     ldr         r12, [sp, #4]                 @ load thresh
     sub         r0, r0, r1, lsl #2            @ move u pointer down by 4 lines
@@ -141,8 +139,7 @@ _vp8_mbloop_filter_horizontal_edge_uv_neon:
 @ r2    unsigned char blimit
 @ r3    unsigned char limit
 @ sp    unsigned char thresh,
-_vp8_mbloop_filter_vertical_edge_y_neon:
-	vp8_mbloop_filter_vertical_edge_y_neon: @
+vp8_mbloop_filter_vertical_edge_y_neon: @
     push        {lr}
     ldr         r12, [sp, #4]               @ load thresh
     sub         r0, r0, #4                  @ move src pointer down by 4 columns
@@ -236,8 +233,7 @@ _vp8_mbloop_filter_vertical_edge_y_neon:
 @ r3    const signed char *limit,
 @ sp    const signed char *thresh,
 @ sp+4  unsigned char *v
-_vp8_mbloop_filter_vertical_edge_uv_neon:
-	vp8_mbloop_filter_vertical_edge_uv_neon: @
+vp8_mbloop_filter_vertical_edge_uv_neon: @
     push        {lr}
     ldr         r12, [sp, #4]               @ load thresh
     sub         r0, r0, #4                  @ move u pointer down by 4 columns
@@ -340,8 +336,7 @@ _vp8_mbloop_filter_vertical_edge_uv_neon:
 @ q9    q2
 @ q10   q3 PRESERVE
 
-_vp8_mbloop_filter_neon:
-	vp8_mbloop_filter_neon: @
+vp8_mbloop_filter_neon: @
 
     @ vp8_filter_mask
     vabd.u8     q11, q3, q4                 @ abs(p3 - p2)

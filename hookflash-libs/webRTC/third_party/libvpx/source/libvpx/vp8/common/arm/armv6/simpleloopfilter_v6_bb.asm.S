@@ -15,13 +15,13 @@
 @
 
 
-    .globl _vp8_loop_filter_simple_horizontal_edge_armv6
+	.text
+	.p2align 2
 	.globl vp8_loop_filter_simple_horizontal_edge_armv6
-    .globl _vp8_loop_filter_simple_vertical_edge_armv6
 	.globl vp8_loop_filter_simple_vertical_edge_armv6
+	.type  vp8_loop_filter_simple_horizontal_edge_armv6, %function
+	.type  vp8_loop_filter_simple_vertical_edge_armv6, %function
 
-.text
-.p2align 2
 
 .macro TRANSPOSE_MATRIX a0 a1 a2 a3 b0 b1 b2 b3
     @ input: $0, $1, $2, $3@ output: $4, $5, $6, $7
@@ -60,8 +60,7 @@
 @r2     const char *blimit
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_loop_filter_simple_horizontal_edge_armv6:
-	vp8_loop_filter_simple_horizontal_edge_armv6: @
+vp8_loop_filter_simple_horizontal_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -76,8 +75,7 @@ _vp8_loop_filter_simple_horizontal_edge_armv6:
     mov         r9, #4                      @ double the count. we're doing 4 at a time
     mov         lr, #0                      @ need 0 in a couple places
 
-_simple_hnext8:
-	simple_hnext8:
+simple_hnext8:
     @ vp8_simple_filter_mask()
 
     uqsub8      r7, r3, r6                  @ p1 - q1
@@ -129,8 +127,7 @@ _simple_hnext8:
     eor         r4, r4, r2                  @ *op0 = u^0x80
     str         r4, [r0, -r1]           @ store op0 result
 
-_simple_hskip_filter:
-	simple_hskip_filter:
+simple_hskip_filter:
     subs        r9, r9, #1
     addne       r0, r0, #4                @ next row
 
@@ -146,8 +143,7 @@ _simple_hskip_filter:
 
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_loop_filter_simple_vertical_edge_armv6:
-	vp8_loop_filter_simple_vertical_edge_armv6: @
+vp8_loop_filter_simple_vertical_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -178,8 +174,7 @@ _vp8_loop_filter_simple_vertical_edge_armv6:
     ldrh        r6, [r0], r1
     mov         r11, #4                     @ double the count. we're doing 4 at a time
 
-_simple_vnext8:
-	simple_vnext8:
+simple_vnext8:
     @ vp8_simple_filter_mask() function
     pkhbt       r9, r3, r4, lsl #16
     pkhbt       r10, r5, r6, lsl #16
@@ -260,8 +255,7 @@ _simple_vnext8:
     strb        r4, [r0, #-1]
     strb        r5, [r0], r1
 
-_simple_vskip_filter:
-	simple_vskip_filter:
+simple_vskip_filter:
     subs        r11, r11, #1
 
     @ load soure data to r7, r8, r9, r10

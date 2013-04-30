@@ -14,18 +14,17 @@
 @  be found in the AUTHORS file in the root of the source tree.
 @
 
-    .globl _vp8_short_fdct4x4_armv6
+	.text
+	.p2align 2
 	.globl vp8_short_fdct4x4_armv6
+	.type  vp8_short_fdct4x4_armv6, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ void vp8_short_fdct4x4_c(short *input, short *output, int pitch)
-_vp8_short_fdct4x4_armv6:
-	vp8_short_fdct4x4_armv6: @
+vp8_short_fdct4x4_armv6: @
 
     stmfd       sp!, {r4 - r12, lr}
 

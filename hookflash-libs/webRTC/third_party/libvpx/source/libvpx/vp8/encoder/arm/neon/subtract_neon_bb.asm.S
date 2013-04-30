@@ -14,12 +14,14 @@
 @  be found in the AUTHORS file in the root of the source tree.
 @
 
-    .globl _vp8_subtract_b_neon
+	.text
+	.p2align 2
 	.globl vp8_subtract_b_neon
-    .globl _vp8_subtract_mby_neon
 	.globl vp8_subtract_mby_neon
-    .globl _vp8_subtract_mbuv_neon
 	.globl vp8_subtract_mbuv_neon
+	.type  vp8_subtract_b_neon, %function
+	.type  vp8_subtract_mby_neon, %function
+	.type  vp8_subtract_mbuv_neon, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -27,12 +29,9 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @void vp8_subtract_b_neon(BLOCK *be, BLOCKD *bd, int pitch)
-_vp8_subtract_b_neon:
-	vp8_subtract_b_neon: @
+vp8_subtract_b_neon: @
 
     stmfd   sp!, {r4-r7}
 
@@ -74,8 +73,7 @@ _vp8_subtract_b_neon:
 @==========================================
 @void vp8_subtract_mby_neon(short *diff, unsigned char *src, int src_stride
 @                           unsigned char *pred, int pred_stride)
-_vp8_subtract_mby_neon:
-	vp8_subtract_mby_neon: @
+vp8_subtract_mby_neon: @
     push            {r4-r7}
     mov             r12, #4
     ldr             r4, [sp, #16]           @ pred_stride
@@ -122,8 +120,7 @@ subtract_mby_loop:
 @                         int src_stride, unsigned char *upred,
 @                         unsigned char *vpred, int pred_stride)
 
-_vp8_subtract_mbuv_neon:
-	vp8_subtract_mbuv_neon: @
+vp8_subtract_mbuv_neon: @
     push            {r4-r7}
     ldr             r4, [sp, #16]       @ upred
     ldr             r5, [sp, #20]       @ vpred

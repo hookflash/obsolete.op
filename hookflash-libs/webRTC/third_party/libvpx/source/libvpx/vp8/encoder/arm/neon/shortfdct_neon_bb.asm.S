@@ -15,17 +15,17 @@
 @
 
 
-    .globl _vp8_short_fdct4x4_neon
+	.text
+	.p2align 4
 	.globl vp8_short_fdct4x4_neon
-    .globl _vp8_short_fdct8x4_neon
 	.globl vp8_short_fdct8x4_neon
+	.type  vp8_short_fdct4x4_neon, %function
+	.type  vp8_short_fdct8x4_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 4
 
 
     .balign 16    @ enable use of ,:128 bit aligned loads
@@ -38,8 +38,7 @@ coeff:
     .long      51000, 51000, 51000, 51000
 
 @void vp8_short_fdct4x4_c(short *input, short *output, int pitch)
-_vp8_short_fdct4x4_neon:
-	vp8_short_fdct4x4_neon: @
+vp8_short_fdct4x4_neon: @
 
     @ Part one
     vld1.16         {d0}, [r0,:64], r2
@@ -119,8 +118,7 @@ _vp8_short_fdct4x4_neon:
     @
 
 @void vp8_short_fdct8x4_c(short *input, short *output, int pitch)
-_vp8_short_fdct8x4_neon:
-	vp8_short_fdct8x4_neon: @
+vp8_short_fdct8x4_neon: @
 
     @ Part one
 

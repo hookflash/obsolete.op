@@ -15,8 +15,10 @@
 @
 
 
-    .globl _vp8_yv12_copy_y_neon
+	.text
+	.p2align 2
 	.globl vp8_yv12_copy_y_neon
+	.type  vp8_yv12_copy_y_neon, %function
 
    @ ARM
    @ 
@@ -24,12 +26,9 @@
 
     .include  "asm_com_offsets.asm"
 
-.text
-.p2align 2
 
 @void vpxyv12_copy_y_neon(YV12_BUFFER_CONFIG *src_ybc, YV12_BUFFER_CONFIG *dst_ybc)
-_vp8_yv12_copy_y_neon:
-	vp8_yv12_copy_y_neon: @
+vp8_yv12_copy_y_neon: @
     push            {r4 - r11, lr}
     vpush           {d8-d15}
 

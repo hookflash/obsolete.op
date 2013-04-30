@@ -15,13 +15,13 @@
 @
 
 
-    .globl _vp8_mse16x16_armv6
+	.text
+	.p2align 2
 	.globl vp8_mse16x16_armv6
+	.type  vp8_mse16x16_armv6, %function
 
    @ ARM
 
-.text
-.p2align 2
 
 @ r0    unsigned char *src_ptr
 @ r1    int source_stride
@@ -32,8 +32,7 @@
 @note: Based on vp8_variance16x16_armv6. In this function, sum is never used.
 @      So, we can remove this part of calculation.
 
-_vp8_mse16x16_armv6:
-	vp8_mse16x16_armv6: @
+vp8_mse16x16_armv6: @
 
     push    {r4-r9, lr}
 
