@@ -245,6 +245,7 @@ namespace hookflash
         pThis->mCalculatedUniqueID = stableID;
         pThis->mFindSecret = findSecret;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 
@@ -382,6 +383,7 @@ namespace hookflash
         pThis->mPeer = peer;
         pThis->mUserID = userID;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 
@@ -473,6 +475,7 @@ namespace hookflash
         pThis->mPeer = peer;
         pThis->mCalculatedUniqueID = stableID;
         pThis->init();
+        account->forContact().notifyAboutContact(pThis);
         return pThis;
       }
 

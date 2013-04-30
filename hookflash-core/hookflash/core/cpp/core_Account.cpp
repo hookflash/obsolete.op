@@ -658,6 +658,7 @@ namespace hookflash
             return;
           }
 
+          // create and remember this contact for the future
           ContactPtr contact = IContactForAccount::createFromPeer(mThisWeak.lock(), peer);
 
           // attempt find once more as contact might now be registered
