@@ -206,7 +206,7 @@ namespace hookflash
                                             const char *inUserID
                                             );
 
-        static IContactPtr getForSelf(IAccountPtr account);
+        static ContactPtr getForSelf(IAccountPtr account);
 
         virtual PUID getID() const {return  mID;}
 
@@ -339,6 +339,8 @@ namespace hookflash
                                                     IPeerFilePublicPtr publicPeerFile,
                                                     const char *previousStableUniqueID = NULL // (if known)
                                                     );
+
+        virtual ContactPtr getForSelf(IAccountPtr account);
       };
 
     }

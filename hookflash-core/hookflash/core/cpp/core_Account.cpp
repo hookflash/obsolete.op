@@ -1266,6 +1266,7 @@ namespace hookflash
 
           mPeerSubscriptionAutoCloseTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS), false);
         } else {
+          ZS_LOG_DEBUG(log("creating location subscription to location") + ILocation::toDebugString(peerLocation))
           mLocations[peerLocation->getLocationID()] = LocationSubscription::create(mThisWeak.lock(), peerLocation);
         }
 

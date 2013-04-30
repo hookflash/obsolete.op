@@ -250,7 +250,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      IContactPtr Contact::getForSelf(IAccountPtr inAccount)
+      ContactPtr Contact::getForSelf(IAccountPtr inAccount)
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
 
@@ -560,6 +560,11 @@ namespace hookflash
                                             )
     {
       return internal::IContactFactory::singleton().createFromPeerURI(account, peerURI, findSecret, previousStableUniqueID, NULL);
+    }
+
+    IContactPtr IContact::getForSelf(IAccountPtr account)
+    {
+      return internal::IContactFactory::singleton().getForSelf(account);
     }
 
     //-------------------------------------------------------------------------
