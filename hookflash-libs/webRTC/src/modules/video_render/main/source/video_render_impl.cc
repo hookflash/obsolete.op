@@ -49,6 +49,10 @@
 #include "linux/video_render_linux_impl.h"
 #define STANDARD_RENDERING kRenderX11
 
+#elif defined(WEBRTC_QNX)
+#include "blackberry/video_render_bb_impl.h"
+#define STANDARD_RENDERING kRenderQNX
+
 #else
 //Other platforms
 #endif
@@ -193,6 +197,17 @@ ModuleVideoRenderImpl::ModuleVideoRenderImpl(
             if ( ptrRenderer )
             {
                 _ptrRenderer = reinterpret_cast<IVideoRender*> (ptrRenderer);
+            }
+        }
+        break;
+
+#elif defined(WEBRTC_QNX)
+        case kRenderQNX:
+        {
+        	VideoRenderBlackBerry* ptrRenderer = new VideoRenderBlackBerry(_id, videoRenderType, window, _fullScreen);
+            if(ptrRenderer)
+            {
+                _ptrRenderer = reinterpret_cast<IVideoRender*>(ptrRenderer);
             }
         }
         break;

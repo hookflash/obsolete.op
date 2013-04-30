@@ -51,7 +51,6 @@
 #include <vie_capture.h>
 #include <vie_codec.h>
 #include <vie_rtp_rtcp.h>
-#include <video_capture.h>
 #include <vie_file.h>
 
 namespace hookflash

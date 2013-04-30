@@ -84,6 +84,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1675131319" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1131338617" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -197,6 +199,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.221320834" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1100711308" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -315,6 +319,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.14343285" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1570570682" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -431,6 +437,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.189438971" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.401354133" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -545,6 +553,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.928348883" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.2120643175" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -656,6 +666,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1914212049" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1610497633" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
@@ -768,6 +780,8 @@
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1304691275" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1357470904" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER"/>
+									<listOptionValue builtIn="false" value="NETEQ_VOICEENGINE_CODECS"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 									<listOptionValue builtIn="false" value="WEBRTC_NS_FIXED"/>
 									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>

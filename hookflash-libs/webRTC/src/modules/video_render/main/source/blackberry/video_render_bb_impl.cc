@@ -97,7 +97,6 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _stopped(false),
     _streamsMap()
 {
-  CreateGLThread();
 }
 
 VideoRenderBlackBerry::~VideoRenderBlackBerry() {
@@ -183,6 +182,9 @@ WebRtc_Word32 VideoRenderBlackBerry::StartRender() {
   CriticalSectionScoped cs(&_critSect);
 
   unsigned int tId = 0;
+
+  CreateGLThread();
+
   return 0;
 }
 
@@ -191,6 +193,8 @@ WebRtc_Word32 VideoRenderBlackBerry::StopRender() {
   {
     CriticalSectionScoped cs(&_critSect);
   }
+
+  _stopped = true;
 
   return 0;
 }
