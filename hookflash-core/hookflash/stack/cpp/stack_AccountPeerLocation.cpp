@@ -975,6 +975,7 @@ namespace hookflash
         if (!stepSocketSession()) return;
         if (!stepIncomingIdentify()) return;
         if (!stepMessaging()) return;
+        if (!stepIdentify()) return;
 
         setState(IAccount::AccountState_Ready);
 
