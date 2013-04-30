@@ -112,6 +112,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void IdentityLookup::init(const IdentityURIList &identityURIs)
       {
+        AutoRecursiveLock lock(getLock());
+
         IServicePeerContactSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
         ZS_THROW_BAD_STATE_IF(!peerContact)
 
