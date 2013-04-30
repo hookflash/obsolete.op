@@ -15,21 +15,20 @@
 @
 
 
-    .globl _vp8_short_walsh4x4_neon
+	.text
+	.p2align 2
 	.globl vp8_short_walsh4x4_neon
+	.type  vp8_short_walsh4x4_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @void vp8_short_walsh4x4_neon(short *input, short *output, int pitch)
 @ r0   short *input,
 @ r1   short *output,
 @ r2   int pitch
-_vp8_short_walsh4x4_neon:
-	vp8_short_walsh4x4_neon: @
+vp8_short_walsh4x4_neon: @
 
     vld1.16         {d0}, [r0,:64], r2   @ load input
     vld1.16         {d1}, [r0,:64], r2

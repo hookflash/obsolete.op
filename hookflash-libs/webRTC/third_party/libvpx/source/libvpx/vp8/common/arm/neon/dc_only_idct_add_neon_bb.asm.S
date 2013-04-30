@@ -14,14 +14,14 @@
 @
 
 
-    .globl _vp8_dc_only_idct_add_neon
+	.text
+	.p2align 2
 	.globl vp8_dc_only_idct_add_neon
+	.type  vp8_dc_only_idct_add_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @void vp8_dc_only_idct_add_c(short input_dc, unsigned char *pred_ptr,
 @                            int pred_stride, unsigned char *dst_ptr,
@@ -33,8 +33,7 @@
 @ r3  dst_ptr
 @ sp  dst_stride
 
-_vp8_dc_only_idct_add_neon:
-	vp8_dc_only_idct_add_neon: @
+vp8_dc_only_idct_add_neon: @
     add             r0, r0, #4
     asr             r0, r0, #3
     ldr             r12, [sp]

@@ -14,22 +14,21 @@
 @  be found in the AUTHORS file in the root of the source tree.
 @
 
-    .globl _vp8_short_walsh4x4_armv6
+	.text
+	.p2align 2
 	.globl vp8_short_walsh4x4_armv6
+	.type  vp8_short_walsh4x4_armv6, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @short vp8_short_walsh4x4_armv6(short *input, short *output, int pitch)
 @ r0    short *input,
 @ r1    short *output,
 @ r2    int pitch
-_vp8_short_walsh4x4_armv6:
-	vp8_short_walsh4x4_armv6: @
+vp8_short_walsh4x4_armv6: @
 
     stmdb       sp!, {r4 - r11, lr}
 

@@ -15,21 +15,20 @@
 @
 
 
-    .globl _vp8_variance8x8_armv6
+	.text
+	.p2align 2
 	.globl vp8_variance8x8_armv6
+	.type  vp8_variance8x8_armv6, %function
 
    @ ARM
 
-.text
-.p2align 2
 
 @ r0    unsigned char *src_ptr
 @ r1    int source_stride
 @ r2    unsigned char *ref_ptr
 @ r3    int  recon_stride
 @ stack unsigned int *sse
-_vp8_variance8x8_armv6:
-	vp8_variance8x8_armv6: @
+vp8_variance8x8_armv6: @
 
     push    {r4-r10, lr}
 

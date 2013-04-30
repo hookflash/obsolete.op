@@ -15,29 +15,28 @@
 @
 
 
-    .globl _vp8_variance16x16_neon
+	.text
+	.p2align 2
 	.globl vp8_variance16x16_neon
-    .globl _vp8_variance16x8_neon
 	.globl vp8_variance16x8_neon
-    .globl _vp8_variance8x16_neon
 	.globl vp8_variance8x16_neon
-    .globl _vp8_variance8x8_neon
 	.globl vp8_variance8x8_neon
+	.type  vp8_variance16x16_neon, %function
+	.type  vp8_variance16x8_neon, %function
+	.type  vp8_variance8x16_neon, %function
+	.type  vp8_variance8x8_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @ r0    unsigned char *src_ptr
 @ r1    int source_stride
 @ r2    unsigned char *ref_ptr
 @ r3    int  recon_stride
 @ stack unsigned int *sse
-_vp8_variance16x16_neon:
-	vp8_variance16x16_neon: @
+vp8_variance16x16_neon: @
     vmov.i8         q8, #0                      @q8 - sum
     vmov.i8         q9, #0                      @q9, q10 - sse
     vmov.i8         q10, #0
@@ -110,8 +109,7 @@ variance16x16_neon_loop:
 @    unsigned char *ref_ptr,
 @    int  recon_stride,
 @   unsigned int *sse)
-_vp8_variance16x8_neon:
-	vp8_variance16x8_neon: @
+vp8_variance16x8_neon: @
     vmov.i8         q8, #0                      @q8 - sum
     vmov.i8         q9, #0                      @q9, q10 - sse
     vmov.i8         q10, #0
@@ -174,8 +172,7 @@ variance16x8_neon_loop:
 @    int  recon_stride,
 @   unsigned int *sse)
 
-_vp8_variance8x16_neon:
-	vp8_variance8x16_neon: @
+vp8_variance8x16_neon: @
     vmov.i8         q8, #0                      @q8 - sum
     vmov.i8         q9, #0                      @q9, q10 - sse
     vmov.i8         q10, #0
@@ -228,8 +225,7 @@ variance8x16_neon_loop:
 @ r2    unsigned char *ref_ptr
 @ r3    int  recon_stride
 @ stack unsigned int *sse
-_vp8_variance8x8_neon:
-	vp8_variance8x8_neon: @
+vp8_variance8x8_neon: @
     vmov.i8         q8, #0                      @q8 - sum
     vmov.i8         q9, #0                      @q9, q10 - sse
     vmov.i8         q10, #0

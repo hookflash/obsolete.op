@@ -15,8 +15,10 @@
 @
 
 
-    .globl _vp8_fast_quantize_b_armv6
+	.text
+	.p2align 2
 	.globl vp8_fast_quantize_b_armv6
+	.type  vp8_fast_quantize_b_armv6, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -24,13 +26,10 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @ r0    BLOCK *b
 @ r1    BLOCKD *d
-_vp8_fast_quantize_b_armv6:
-	vp8_fast_quantize_b_armv6: @
+vp8_fast_quantize_b_armv6: @
     stmfd   sp!, {r1, r4-r11, lr}
 
     ldr     r3, [r0, #vp8_block_coeff]      @ coeff

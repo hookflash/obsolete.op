@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_sixtap_predict16x16_neon
+	.text
+	.p2align 2
 	.globl vp8_sixtap_predict16x16_neon
+	.type  vp8_sixtap_predict16x16_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 filter16_coeff:
     .long      0,  0,  128,    0,   0,  0,   0,  0
@@ -49,8 +49,7 @@ filter16_coeff:
 @ which ensures that the result stays in s16 range. Finally, saturated add the result by
 @ applying 3rd filter coeff. Same applys to other filter functions.
 
-_vp8_sixtap_predict16x16_neon:
-	vp8_sixtap_predict16x16_neon: @
+vp8_sixtap_predict16x16_neon: @
     push            {r4-r5, lr}
 
     adr             r12, filter16_coeff

@@ -15,18 +15,17 @@
 @
 
 
-    .globl _vp8_copy_mem16x16_neon
+	.text
+	.p2align 2
 	.globl vp8_copy_mem16x16_neon
+	.type  vp8_copy_mem16x16_neon, %function
     @@ ARM
     @@ 
     @@ PRESERVE8
 
-.text
-.p2align 2
 @void copy_mem16x16_neon( unsigned char *src, int src_stride, unsigned char *dst, int dst_stride)
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-_vp8_copy_mem16x16_neon:
-	vp8_copy_mem16x16_neon: @
+vp8_copy_mem16x16_neon: @
 
     vld1.u8     {q0}, [r0], r1
     vld1.u8     {q1}, [r0], r1

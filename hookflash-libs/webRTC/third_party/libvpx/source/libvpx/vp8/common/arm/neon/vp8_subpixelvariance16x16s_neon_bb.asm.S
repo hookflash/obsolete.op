@@ -15,20 +15,20 @@
 @
 
 
-    .globl _vp8_variance_halfpixvar16x16_h_neon
+	.text
+	.p2align 2
 	.globl vp8_variance_halfpixvar16x16_h_neon
-    .globl _vp8_variance_halfpixvar16x16_v_neon
 	.globl vp8_variance_halfpixvar16x16_v_neon
-    .globl _vp8_variance_halfpixvar16x16_hv_neon
 	.globl vp8_variance_halfpixvar16x16_hv_neon
-    .globl _vp8_sub_pixel_variance16x16s_neon
 	.globl vp8_sub_pixel_variance16x16s_neon
+	.type  vp8_variance_halfpixvar16x16_h_neon, %function
+	.type  vp8_variance_halfpixvar16x16_v_neon, %function
+	.type  vp8_variance_halfpixvar16x16_hv_neon, %function
+	.type  vp8_sub_pixel_variance16x16s_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @================================================
 @unsigned int vp8_variance_halfpixvar16x16_h_neon
@@ -40,8 +40,7 @@
 @    unsigned int *sse
 @)@
 @================================================
-_vp8_variance_halfpixvar16x16_h_neon:
-	vp8_variance_halfpixvar16x16_h_neon: @
+vp8_variance_halfpixvar16x16_h_neon: @
     push            {lr}
 
     mov             r12, #4                  @loop counter
@@ -141,8 +140,7 @@ vp8_filt_fpo16x16s_4_0_loop_neon:
 @    unsigned int *sse
 @)@
 @================================================
-_vp8_variance_halfpixvar16x16_v_neon:
-	vp8_variance_halfpixvar16x16_v_neon: @
+vp8_variance_halfpixvar16x16_v_neon: @
     push            {lr}
 
     mov             r12, #4                     @loop counter
@@ -238,8 +236,7 @@ vp8_filt_spo16x16s_0_4_loop_neon:
 @    unsigned int *sse
 @)@
 @================================================
-_vp8_variance_halfpixvar16x16_hv_neon:
-	vp8_variance_halfpixvar16x16_hv_neon: @
+vp8_variance_halfpixvar16x16_hv_neon: @
     push            {lr}
 
     vld1.u8         {d0, d1, d2, d3}, [r0], r1      @load src data
@@ -361,8 +358,7 @@ vp8_filt16x16s_4_4_loop_neon:
 @or filter coeff is {64, 64}. This simplified program only works in this situation.
 @note: It happens that both xoffset and yoffset are zero. This can be handled in c code later.
 
-_vp8_sub_pixel_variance16x16s_neon:
-	vp8_sub_pixel_variance16x16s_neon: @
+vp8_sub_pixel_variance16x16s_neon: @
     push            {r4, lr}
 
     ldr             r4, [sp, #8]            @load *dst_ptr from stack

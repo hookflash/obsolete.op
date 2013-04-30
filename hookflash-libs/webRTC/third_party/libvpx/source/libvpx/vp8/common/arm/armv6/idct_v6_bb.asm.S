@@ -15,11 +15,11 @@
 @
 
 
-    .globl _vp8_short_idct4x4llm_v6_dual
+	.text
+	.p2align 2
 	.globl vp8_short_idct4x4llm_v6_dual
+	.type  vp8_short_idct4x4llm_v6_dual, %function
 
-.text
-.p2align 2
 
 
 @ void vp8_short_idct4x4llm_c(short *input, unsigned char *pred, int pitch,
@@ -30,8 +30,7 @@
 @ r3    unsigned char* dst
 @ sp    int stride
 
-_vp8_short_idct4x4llm_v6_dual:
-	vp8_short_idct4x4llm_v6_dual: @
+vp8_short_idct4x4llm_v6_dual: @
     stmdb   sp!, {r4-r11, lr}
 
     sub     sp, sp, #4

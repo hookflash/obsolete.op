@@ -15,24 +15,23 @@
 @
 
 
-    @.globl _vp8_loop_filter_simple_vertical_edge_neon
+	.text
+	.p2align 2
 	.globl vp8_loop_filter_simple_vertical_edge_neon
-    .globl _vp8_loop_filter_bvs_neon
 	.globl vp8_loop_filter_bvs_neon
-    .globl _vp8_loop_filter_mbvs_neon
 	.globl vp8_loop_filter_mbvs_neon
+	.type  vp8_loop_filter_simple_vertical_edge_neon, %function
+	.type  vp8_loop_filter_bvs_neon, %function
+	.type  vp8_loop_filter_mbvs_neon, %function
    @ ARM
    @ PRESERVE8
 
-.text
-.p2align 2
 
 @ r0    unsigned char *s, PRESERVE
 @ r1    int p, PRESERVE
 @ q1    limit, PRESERVE
 
-_vp8_loop_filter_simple_vertical_edge_neon:
-	vp8_loop_filter_simple_vertical_edge_neon: @
+vp8_loop_filter_simple_vertical_edge_neon: @
     sub         r0, r0, #2                  @ move src pointer down by 2 columns
     add         r12, r1, r1
     add         r3, r0, r1
@@ -138,8 +137,7 @@ _vp8_loop_filter_simple_vertical_edge_neon:
 @ r1    int ystride
 @ r2    const unsigned char *blimit
 
-_vp8_loop_filter_bvs_neon:
-	vp8_loop_filter_bvs_neon: @
+vp8_loop_filter_bvs_neon: @
     push        {r4, lr}
     ldrb        r3, [r2]                   @ load blim from mem
     mov         r4, r0
@@ -158,8 +156,7 @@ _vp8_loop_filter_bvs_neon:
 @ r1    int ystride
 @ r2    const unsigned char *blimit
 
-_vp8_loop_filter_mbvs_neon:
-	vp8_loop_filter_mbvs_neon: @
+vp8_loop_filter_mbvs_neon: @
     ldrb        r3, [r2]                   @ load mblim from mem
     vdup.s8     q1, r3                     @ duplicate mblim
     b           vp8_loop_filter_simple_vertical_edge_neon

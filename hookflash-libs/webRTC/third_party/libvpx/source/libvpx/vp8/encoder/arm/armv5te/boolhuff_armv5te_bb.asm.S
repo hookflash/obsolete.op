@@ -15,16 +15,18 @@
 @
 
 
-    .globl _vp8_start_encode
+	.text
+	.p2align 2
 	.globl vp8_start_encode
-    .globl _vp8_encode_bool
 	.globl vp8_encode_bool
-    .globl _vp8_stop_encode
 	.globl vp8_stop_encode
-    .globl _vp8_encode_value
 	.globl vp8_encode_value
-    .globl _vp8_validate_buffer_arm
     .globl vp8_validate_buffer_arm
+	.type  vp8_start_encode, %function
+	.type  vp8_encode_bool, %function
+	.type  vp8_stop_encode, %function
+	.type  vp8_encode_value, %function
+	.type  vp8_validate_buffer_arm, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -32,8 +34,6 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
     @ macro for validating write buffer position
     @ needs vp8_writer in r0
@@ -51,8 +51,7 @@
 @ r0 BOOL_CODER *br
 @ r1 unsigned char *source
 @ r2 unsigned char *source_end
-_vp8_start_encode:
-	vp8_start_encode: @
+vp8_start_encode: @
     str     r2,  [r0, #vp8_writer_buffer_end]
     mov     r12, #0
     mov     r3,  #255
@@ -68,8 +67,7 @@ _vp8_start_encode:
 @ r0 BOOL_CODER *br
 @ r1 int bit
 @ r2 int probability
-_vp8_encode_bool:
-	vp8_encode_bool: @
+vp8_encode_bool: @
     push    {r4-r10, lr}
 
     mov     r4, r2
@@ -148,8 +146,7 @@ token_count_lt_zero:
     @
 
 @ r0 BOOL_CODER *br
-_vp8_stop_encode:
-	vp8_stop_encode: @
+vp8_stop_encode: @
     push    {r4-r10, lr}
 
     ldr     r2, [r0, #vp8_writer_lowvalue]
@@ -231,8 +228,7 @@ token_count_lt_zero_se:
 @ r0 BOOL_CODER *br
 @ r1 int data
 @ r2 int bits
-_vp8_encode_value:
-	vp8_encode_value: @
+vp8_encode_value: @
     push    {r4-r12, lr}
 
     mov     r10, r2

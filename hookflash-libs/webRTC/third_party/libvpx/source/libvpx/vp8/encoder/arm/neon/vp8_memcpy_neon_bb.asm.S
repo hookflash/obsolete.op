@@ -15,21 +15,20 @@
 @
 
 
-    .globl _vp8_memcpy_partial_neon
+	.text
+	.p2align 2
 	.globl vp8_memcpy_partial_neon
+	.type  vp8_memcpy_partial_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @=========================================
 @this is not a full memcpy function!!!
 @void vp8_memcpy_partial_neon(unsigned char *dst_ptr, unsigned char *src_ptr,
 @                             int sz)@
-_vp8_memcpy_partial_neon:
-	vp8_memcpy_partial_neon: @
+vp8_memcpy_partial_neon: @
     @pld                [r1]                        @preload pred data
     @pld                [r1, #128]
     @pld                [r1, #256]

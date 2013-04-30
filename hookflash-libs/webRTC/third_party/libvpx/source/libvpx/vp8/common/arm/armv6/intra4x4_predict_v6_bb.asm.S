@@ -15,22 +15,21 @@
 @
 
 
-    .globl _vp8_intra4x4_predict_armv6
+	.text
+	.p2align 2
 	.globl vp8_intra4x4_predict_armv6
+	.type  vp8_intra4x4_predict_armv6, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 
 @void vp8_intra4x4_predict(unsigned char *src, int src_stride, int b_mode,
 @                          unsigned char *dst, int dst_stride)
 
-_vp8_intra4x4_predict_armv6:
-	vp8_intra4x4_predict_armv6: @
+vp8_intra4x4_predict_armv6: @
     push        {r4-r12, lr}
 
 

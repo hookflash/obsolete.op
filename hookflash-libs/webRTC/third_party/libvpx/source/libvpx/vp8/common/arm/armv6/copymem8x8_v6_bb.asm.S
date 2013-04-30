@@ -15,18 +15,17 @@
 @
 
 
-    .globl _vp8_copy_mem8x8_v6
+	.text
+	.p2align 2
 	.globl vp8_copy_mem8x8_v6
+	.type  vp8_copy_mem8x8_v6, %function
     @@ ARM
     @@ 
     @@ PRESERVE8
 
-.text
-.p2align 2
 @void copy_mem8x8_v6( unsigned char *src, int src_stride, unsigned char *dst, int dst_stride)
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-_vp8_copy_mem8x8_v6:
-	vp8_copy_mem8x8_v6: @
+vp8_copy_mem8x8_v6: @
     @push   {r4-r5}
     stmdb  sp!, {r4-r5}
 

@@ -15,28 +15,26 @@
 @
 
 
-    .globl _vp8_push_neon
+	.text
+	.p2align 2
 	.globl vp8_push_neon
-    .globl _vp8_pop_neon
 	.globl vp8_pop_neon
+	.type  vp8_push_neon, %function
+	.type  vp8_pop_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
-_vp8_push_neon:
-	vp8_push_neon: @
+vp8_push_neon: @
     vst1.i64            {d8, d9, d10, d11}, [r0]!
     vst1.i64            {d12, d13, d14, d15}, [r0]!
     bx              lr
 
     @
 
-_vp8_pop_neon:
-	vp8_pop_neon: @
+vp8_pop_neon: @
     vld1.i64            {d8, d9, d10, d11}, [r0]!
     vld1.i64            {d12, d13, d14, d15}, [r0]!
     bx              lr

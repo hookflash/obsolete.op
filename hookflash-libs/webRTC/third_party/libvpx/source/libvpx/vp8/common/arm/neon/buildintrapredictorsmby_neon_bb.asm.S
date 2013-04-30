@@ -15,17 +15,17 @@
 @
 
 
-    .globl _vp8_build_intra_predictors_mby_neon_func
+	.text
+	.p2align 2
 	.globl vp8_build_intra_predictors_mby_neon_func
-    .globl _vp8_build_intra_predictors_mby_s_neon_func
 	.globl vp8_build_intra_predictors_mby_s_neon_func
+	.type  vp8_build_intra_predictors_mby_neon_func, %function
+	.type  vp8_build_intra_predictors_mby_s_neon_func, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ r0    unsigned char *y_buffer
 @ r1    unsigned char *ypred_ptr
 @ r2    int y_stride
@@ -33,8 +33,7 @@
 @ stack int Up
 @ stack int Left
 
-_vp8_build_intra_predictors_mby_neon_func:
-	vp8_build_intra_predictors_mby_neon_func: @
+vp8_build_intra_predictors_mby_neon_func: @
     push            {r4-r8, lr}
 
     cmp             r3, #0
@@ -315,8 +314,7 @@ case_tm_pred_loop:
 @ stack int Up
 @ stack int Left
 
-_vp8_build_intra_predictors_mby_s_neon_func:
-	vp8_build_intra_predictors_mby_s_neon_func: @
+vp8_build_intra_predictors_mby_s_neon_func: @
     push            {r4-r8, lr}
 
     mov             r1, r0      @   unsigned char *ypred_ptr = x->dst.y_buffer@ //x->Predictor@

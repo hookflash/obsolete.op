@@ -15,10 +15,12 @@
 @
 
 
-    .globl _vp8_fast_quantize_b_neon
+	.text
+	.p2align 4
 	.globl vp8_fast_quantize_b_neon
-    .globl _vp8_fast_quantize_b_pair_neon
 	.globl vp8_fast_quantize_b_pair_neon
+	.type  vp8_fast_quantize_b_neon, %function
+	.type  vp8_fast_quantize_b_pair_neon, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -26,12 +28,9 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 4
 
 @vp8_fast_quantize_b_pair_neon(BLOCK *b1, BLOCK *b2, BLOCKD *d1, BLOCKD *d2)@
-_vp8_fast_quantize_b_pair_neon:
-	vp8_fast_quantize_b_pair_neon: @
+vp8_fast_quantize_b_pair_neon: @
 
     stmfd           sp!, {r4-r9}
     vstmdb          sp!, {q4-q7}
@@ -163,8 +162,7 @@ _vp8_fast_quantize_b_pair_neon:
     @
 
 @void vp8_fast_quantize_b_c(BLOCK *b, BLOCKD *d)
-_vp8_fast_quantize_b_neon:
-	vp8_fast_quantize_b_neon: @
+vp8_fast_quantize_b_neon: @
 
     stmfd           sp!, {r4-r7}
 

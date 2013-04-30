@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_dequant_idct_add_neon
+	.text
+	.p2align 2
 	.globl vp8_dequant_idct_add_neon
+	.type  vp8_dequant_idct_add_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @void vp8_dequant_idct_add_neon(short *input, short *dq,
 @                           unsigned char *dest, int stride)
 @ r0    short *input,
@@ -30,8 +30,7 @@
 @ r2    unsigned char *dest
 @ r3    int stride
 
-_vp8_dequant_idct_add_neon:
-	vp8_dequant_idct_add_neon: @
+vp8_dequant_idct_add_neon: @
     vld1.16         {q3, q4}, [r0]
     vld1.16         {q5, q6}, [r1]
 

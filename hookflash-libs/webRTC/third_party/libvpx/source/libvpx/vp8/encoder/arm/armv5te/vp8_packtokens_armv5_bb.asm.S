@@ -15,10 +15,12 @@
 @
 
 
-    .globl _vp8cx_pack_tokens_armv5
+	.text
+	.p2align 2
 	.globl vp8cx_pack_tokens_armv5
-    .globl _vp8_validate_buffer_arm
     .globl vp8_validate_buffer_arm
+	.type  vp8cx_pack_tokens_armv5, %function
+	.type  vp8_validate_buffer_arm, %function
 
     .include  "asm_enc_offsets.asm"
 
@@ -26,8 +28,6 @@
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 
 
     @ macro for validating write buffer position
@@ -50,8 +50,7 @@
 @ r3 vp8_coef_encodings
 @ s0 vp8_extra_bits
 @ s1 vp8_coef_tree
-_vp8cx_pack_tokens_armv5:
-	vp8cx_pack_tokens_armv5: @
+vp8cx_pack_tokens_armv5: @
     push    {r4-r12, lr}
     sub     sp, sp, #16
 

@@ -15,19 +15,18 @@
 @
 
 
-    .globl _vp8_dequantize_b_loop_neon
+	.text
+	.p2align 2
 	.globl vp8_dequantize_b_loop_neon
+	.type  vp8_dequantize_b_loop_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ r0    short *Q,
 @ r1    short *DQC
 @ r2    short *DQ
-_vp8_dequantize_b_loop_neon:
-	vp8_dequantize_b_loop_neon: @
+vp8_dequantize_b_loop_neon: @
     vld1.16         {q0, q1}, [r0]
     vld1.16         {q2, q3}, [r1]
 

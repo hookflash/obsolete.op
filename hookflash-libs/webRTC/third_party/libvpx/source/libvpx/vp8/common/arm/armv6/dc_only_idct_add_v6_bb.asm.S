@@ -13,11 +13,11 @@
 @  file in the root of the source tree.
 @
 
-    .globl _vp8_dc_only_idct_add_v6
+	.text
+	.p2align 2
 	.globl vp8_dc_only_idct_add_v6
+	.type  vp8_dc_only_idct_add_v6, %function
 
-.text
-.p2align 2
 
 @void vp8_dc_only_idct_add_c(short input_dc, unsigned char *pred_ptr,
 @                            int pred_stride, unsigned char *dst_ptr,
@@ -28,8 +28,7 @@
 @ r3  dst_ptr
 @ sp  dst_stride
 
-_vp8_dc_only_idct_add_v6:
-	vp8_dc_only_idct_add_v6: @
+vp8_dc_only_idct_add_v6: @
     stmdb       sp!, {r4 - r7}
 
     add         r0, r0, #4                @ input_dc += 4

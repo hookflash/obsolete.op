@@ -15,17 +15,17 @@
 @
 
 
-    .globl _vp8_mse16x16_neon
+	.text
+	.p2align 2
 	.globl vp8_mse16x16_neon
-    .globl _vp8_get4x4sse_cs_neon
 	.globl vp8_get4x4sse_cs_neon
+	.type  vp8_mse16x16_neon, %function
+	.type  vp8_get4x4sse_cs_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @============================
 @ r0    unsigned char *src_ptr
 @ r1    int source_stride
@@ -35,8 +35,7 @@
 @note: in this function, sum is never used. So, we can remove this part of calculation
 @from vp8_variance().
 
-_vp8_mse16x16_neon:
-	vp8_mse16x16_neon: @
+vp8_mse16x16_neon: @
     vmov.i8         q7, #0                      @q7, q8, q9, q10 - sse
     vmov.i8         q8, #0
     vmov.i8         q9, #0
@@ -91,8 +90,7 @@ mse16x16_neon_loop:
 @ r1    int  source_stride,
 @ r2    unsigned char *ref_ptr,
 @ r3    int  recon_stride
-_vp8_get4x4sse_cs_neon:
-	vp8_get4x4sse_cs_neon: @
+vp8_get4x4sse_cs_neon: @
     vld1.8          {d0}, [r0], r1              @Load up source and reference
     vld1.8          {d4}, [r2], r3
     vld1.8          {d1}, [r0], r1

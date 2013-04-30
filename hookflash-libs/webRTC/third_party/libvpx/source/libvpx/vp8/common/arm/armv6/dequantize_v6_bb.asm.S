@@ -15,18 +15,17 @@
 @
 
 
-    .globl _vp8_dequantize_b_loop_v6
+	.text
+	.p2align 2
 	.globl vp8_dequantize_b_loop_v6
+	.type  vp8_dequantize_b_loop_v6, %function
 
-.text
-.p2align 2
 @-------------------------------
 @void   vp8_dequantize_b_loop_v6(short *Q, short *DQC, short *DQ)@
 @ r0    short *Q,
 @ r1    short *DQC
 @ r2    short *DQ
-_vp8_dequantize_b_loop_v6:
-	vp8_dequantize_b_loop_v6: @
+vp8_dequantize_b_loop_v6: @
     stmdb   sp!, {r4-r9, lr}
 
     ldr     r3, [r0]                @load Q

@@ -15,22 +15,21 @@
 @
 
 
-    .globl _idct_dequant_full_2x_neon
+	.text
+	.p2align 2
 	.globl idct_dequant_full_2x_neon
+	.type  idct_dequant_full_2x_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @void idct_dequant_full_2x_neon(short *q, short *dq,
 @                               unsigned char *dst, int stride)@
 @ r0    *q,
 @ r1    *dq,
 @ r2    *dst
 @ r3    stride
-_idct_dequant_full_2x_neon:
-	idct_dequant_full_2x_neon: @
+idct_dequant_full_2x_neon: @
     vld1.16         {q0, q1}, [r1]          @ dq (same l/r)
     vld1.16         {q2, q3}, [r0]          @ l q
     add             r0, r0, #32

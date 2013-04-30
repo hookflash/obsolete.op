@@ -15,14 +15,14 @@
 @
 
 
-    .globl _vp8_sub_pixel_variance8x8_neon
+	.text
+	.p2align 2
 	.globl vp8_sub_pixel_variance8x8_neon
+	.type  vp8_sub_pixel_variance8x8_neon, %function
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ r0    unsigned char  *src_ptr,
 @ r1    int  src_pixels_per_line,
 @ r2    int  xoffset,
@@ -32,8 +32,7 @@
 @ stack(r6) unsigned int *sse
 @note: most of the code is copied from bilinear_predict8x8_neon and vp8_variance8x8_neon.
 
-_vp8_sub_pixel_variance8x8_neon:
-	vp8_sub_pixel_variance8x8_neon: @
+vp8_sub_pixel_variance8x8_neon: @
     push            {r4-r5, lr}
 
     ldr             r12, _BilinearTaps_coeff_

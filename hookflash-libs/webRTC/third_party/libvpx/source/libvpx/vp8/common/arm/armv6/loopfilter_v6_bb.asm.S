@@ -15,17 +15,17 @@
 @
 
 
-    .globl _vp8_loop_filter_horizontal_edge_armv6
+	.text
+	.p2align 2
 	.globl vp8_loop_filter_horizontal_edge_armv6
-    .globl _vp8_mbloop_filter_horizontal_edge_armv6
 	.globl vp8_mbloop_filter_horizontal_edge_armv6
-    .globl _vp8_loop_filter_vertical_edge_armv6
 	.globl vp8_loop_filter_vertical_edge_armv6
-    .globl _vp8_mbloop_filter_vertical_edge_armv6
 	.globl vp8_mbloop_filter_vertical_edge_armv6
+	.type  vp8_loop_filter_horizontal_edge_armv6, %function
+	.type  vp8_mbloop_filter_horizontal_edge_armv6, %function
+	.type  vp8_loop_filter_vertical_edge_armv6, %function
+	.type  vp8_mbloop_filter_vertical_edge_armv6, %function
 
-.text
-.p2align 2
 
 .macro TRANSPOSE_MATRIX a0 a1 a2 a3 b0 b1 b2 b3
     @ input: $0, $1, $2, $3@ output: $4, $5, $6, $7
@@ -66,8 +66,7 @@
 @stack  int  r5
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_loop_filter_horizontal_edge_armv6:
-	vp8_loop_filter_horizontal_edge_armv6: @
+vp8_loop_filter_horizontal_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -90,8 +89,7 @@ _vp8_loop_filter_horizontal_edge_armv6:
     orr         r2, r2, r2, lsl #16
     orr         r3, r3, r3, lsl #16
 
-_Hnext8:
-	Hnext8:
+Hnext8:
     @ vp8_filter_mask() function
     @ calculate breakout conditions
     ldr         r12, [r0], r1           @ p0
@@ -257,8 +255,7 @@ _Hnext8:
 
     sub         r0, r0, r1, lsl #1
 
-_hskip_filter:
-	hskip_filter:
+hskip_filter:
     add         r0, r0, #4
     sub         r0, r0, r1, lsl #2
 
@@ -276,8 +273,7 @@ _hskip_filter:
 
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_mbloop_filter_horizontal_edge_armv6:
-	vp8_mbloop_filter_horizontal_edge_armv6: @
+vp8_mbloop_filter_horizontal_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -300,8 +296,7 @@ _vp8_mbloop_filter_horizontal_edge_armv6:
     orr         r2, r2, r2, lsl #16
     orr         r3, r3, r3, lsl #16
 
-_MBHnext8:
-	MBHnext8:
+MBHnext8:
 
     @ vp8_filter_mask() function
     @ calculate breakout conditions
@@ -574,8 +569,7 @@ _MBHnext8:
     eor         r10, r10, lr                @ *oq2 = s^0x80
     str         r10, [r0], r1, lsl #1   @ store *oq2
 
-_mbhskip_filter:
-	mbhskip_filter:
+mbhskip_filter:
     add         r0, r0, #4
     sub         r0, r0, r1, lsl #3
     subs        r5, r5, #1
@@ -592,8 +586,7 @@ _mbhskip_filter:
 
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_loop_filter_vertical_edge_armv6:
-	vp8_loop_filter_vertical_edge_armv6: @
+vp8_loop_filter_vertical_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -617,8 +610,7 @@ _vp8_loop_filter_vertical_edge_armv6:
     orr         r2, r2, r2, lsl #16
     orr         r3, r3, r3, lsl #16
 
-_Vnext8:
-	Vnext8:
+Vnext8:
 
     @ vp8_filter_mask() function
     @ calculate breakout conditions
@@ -849,8 +841,7 @@ _Vnext8:
     mov         lr, lr, lsr #16
     strh        lr, [r0], r1
 
-_vskip_filter:
-	vskip_filter:
+vskip_filter:
     sub         r0, r0, #4
     subs        r5, r5, #1
 
@@ -869,8 +860,7 @@ _vskip_filter:
 
 
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-_vp8_mbloop_filter_vertical_edge_armv6:
-	vp8_mbloop_filter_vertical_edge_armv6: @
+vp8_mbloop_filter_vertical_edge_armv6: @
 @-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     stmdb       sp!, {r4 - r11, lr}
 
@@ -898,8 +888,7 @@ _vp8_mbloop_filter_vertical_edge_armv6:
     orr         r2, r2, r2, lsl #16
     orr         r3, r3, r3, lsl #16
 
-_MBVnext8:
-	MBVnext8:
+MBVnext8:
     @ vp8_filter_mask() function
     @ calculate breakout conditions
     @ transpose the source data for 4-in-parallel operation
@@ -1270,8 +1259,7 @@ _MBVnext8:
     @adjust r0 pointer for next loop
     sub         r0, r0, #2
 
-_mbvskip_filter:
-	mbvskip_filter:
+mbvskip_filter:
     sub         r0, r0, #4
     subs        r5, r5, #1
 

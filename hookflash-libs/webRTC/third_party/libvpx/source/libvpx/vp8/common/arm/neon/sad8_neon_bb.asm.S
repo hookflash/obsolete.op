@@ -15,27 +15,26 @@
 @
 
 
-    .globl _vp8_sad8x8_neon
+	.text
+	.p2align 2
 	.globl vp8_sad8x8_neon
-    .globl _vp8_sad8x16_neon
 	.globl vp8_sad8x16_neon
-    .globl _vp8_sad4x4_neon
 	.globl vp8_sad4x4_neon
+	.type  vp8_sad8x8_neon, %function
+	.type  vp8_sad8x16_neon, %function
+	.type  vp8_sad4x4_neon, %function
 
    @ ARM
    @ 
    @ PRESERVE8
 
-.text
-.p2align 2
 @ unsigned int vp8_sad8x8_c(
 @    unsigned char *src_ptr,
 @    int  src_stride,
 @    unsigned char *ref_ptr,
 @    int  ref_stride)
 
-_vp8_sad8x8_neon:
-	vp8_sad8x8_neon: @
+vp8_sad8x8_neon: @
     vld1.8          {d0}, [r0], r1
     vld1.8          {d8}, [r2], r3
 
@@ -92,8 +91,7 @@ _vp8_sad8x8_neon:
 @    unsigned char *ref_ptr,
 @    int  ref_stride)
 
-_vp8_sad8x16_neon:
-	vp8_sad8x16_neon: @
+vp8_sad8x16_neon: @
     vld1.8          {d0}, [r0], r1
     vld1.8          {d8}, [r2], r3
 
@@ -190,8 +188,7 @@ _vp8_sad8x16_neon:
 @    unsigned char *ref_ptr,
 @    int  ref_stride)
 
-_vp8_sad4x4_neon:
-	vp8_sad4x4_neon: @
+vp8_sad4x4_neon: @
     vld1.8          {d0}, [r0], r1
     vld1.8          {d8}, [r2], r3
 

@@ -15,13 +15,13 @@
 @
 
 
-    .globl _vp8_filter_block2d_bil_first_pass_armv6
+	.text
+	.p2align 2
 	.globl vp8_filter_block2d_bil_first_pass_armv6
-    .globl _vp8_filter_block2d_bil_second_pass_armv6
 	.globl vp8_filter_block2d_bil_second_pass_armv6
+	.type  vp8_filter_block2d_bil_first_pass_armv6, %function
+	.type  §vp8_filter_block2d_bil_second_pass_armv6, %function
 
-.text
-.p2align 2
 
 @-------------------------------------
 @ r0    unsigned char  *src_ptr,
@@ -32,8 +32,7 @@
 @ stack const short    *vp8_filter
 @-------------------------------------
 @ The output is transposed stroed in output array to make it easy for second pass filtering.
-_vp8_filter_block2d_bil_first_pass_armv6:
-	vp8_filter_block2d_bil_first_pass_armv6: @
+vp8_filter_block2d_bil_first_pass_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ vp8_filter address
@@ -56,15 +55,13 @@ _vp8_filter_block2d_bil_first_pass_armv6:
     cmp     r5, #128                        @ if filter coef = 128, then skip the filter
     beq     bil_null_1st_filter
 
-_bil_height_loop_1st_v6:
-	bil_height_loop_1st_v6:
+bil_height_loop_1st_v6:
     ldrb    r6, [r0]                        @ load source data
     ldrb    r7, [r0, #1]
     ldrb    r8, [r0, #2]
     mov     lr, r4, lsr #2                  @ 4-in-parellel loop counter
 
-_bil_width_loop_1st_v6:
-	bil_width_loop_1st_v6:
+bil_width_loop_1st_v6:
     ldrb    r9, [r0, #3]
     ldrb    r10, [r0, #4]
 
@@ -118,14 +115,11 @@ _bil_width_loop_1st_v6:
 
     ldmia   sp!, {r4 - r11, pc}
 
-_bil_null_1st_filter:
-	bil_null_1st_filter:
-_bil_height_loop_null_1st:
-	bil_height_loop_null_1st:
+bil_null_1st_filter:
+bil_height_loop_null_1st:
     mov     lr, r4, lsr #2                  @ loop counter
 
-_bil_width_loop_null_1st:
-	bil_width_loop_null_1st:
+bil_width_loop_null_1st:
     ldrb    r6, [r0]                        @ load data
     ldrb    r7, [r0, #1]
     ldrb    r8, [r0, #2]
@@ -160,8 +154,7 @@ _bil_width_loop_null_1st:
 @ stack unsigned int    width,
 @ stack const short    *vp8_filter
 @---------------------------------
-_vp8_filter_block2d_bil_second_pass_armv6:
-	vp8_filter_block2d_bil_second_pass_armv6: @
+vp8_filter_block2d_bil_second_pass_armv6: @
     stmdb   sp!, {r4 - r11, lr}
 
     ldr     r11, [sp, #40]                  @ vp8_filter address
@@ -174,15 +167,13 @@ _vp8_filter_block2d_bil_second_pass_armv6:
     cmp     r5, #128                        @ if filter coef = 128, then skip the filter
     beq     bil_null_2nd_filter
 
-_bil_height_loop_2nd:
-	bil_height_loop_2nd:
+bil_height_loop_2nd:
     ldr     r6, [r0]                        @ load the data
     ldr     r8, [r0, #4]
     ldrh    r10, [r0, #8]
     mov     lr, r3, lsr #2                  @ loop counter
 
-_bil_width_loop_2nd:
-	bil_width_loop_2nd:
+bil_width_loop_2nd:
     pkhtb   r7, r6, r8                      @ src[1] | src[2]
     pkhtb   r9, r8, r10                     @ src[3] | src[4]
 
@@ -224,14 +215,11 @@ _bil_width_loop_2nd:
     bne     bil_height_loop_2nd
     ldmia   sp!, {r4 - r11, pc}
 
-_bil_null_2nd_filter:
-	bil_null_2nd_filter:
-_bil_height_loop_null_2nd:
-	bil_height_loop_null_2nd:
+bil_null_2nd_filter:
+bil_height_loop_null_2nd:
     mov     lr, r3, lsr #2
 
-_bil_width_loop_null_2nd:
-	bil_width_loop_null_2nd:
+bil_width_loop_null_2nd:
     ldr     r6, [r0], #4                    @ load data
     subs    lr, lr, #1
     ldr     r8, [r0], #4
