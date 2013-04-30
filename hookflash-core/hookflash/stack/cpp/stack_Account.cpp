@@ -1990,9 +1990,10 @@ namespace hookflash
             // erase the peer now...
             ZS_LOG_DEBUG(log("no locations at this peer thus shutting down now") + PeerInfo::toDebugString(peerInfo))
             mPeerInfos.erase(current);
-          } else {
-            sendPeerKeepAlives(peerURI, peerInfo);
+            continue;
           }
+
+          sendPeerKeepAlives(peerURI, peerInfo);
 
           performPeerFind(peerURI, peerInfo);
         }
