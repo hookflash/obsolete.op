@@ -155,7 +155,7 @@ namespace hookflash
                                                   const DialogPtr &remoteDialog
                                                   )
       {
-        return createForIncomingCall(inConversationThread, callerContact, remoteDialog);
+        return Call::createForIncomingCall(inConversationThread, callerContact, remoteDialog);
       }
 
       //-----------------------------------------------------------------------
