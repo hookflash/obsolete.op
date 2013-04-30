@@ -337,7 +337,7 @@ namespace hookflash
         PeerPtr peer = Peer::convert(inPeer);
         AccountPtr account = peer->forLocation().getAccount();
 
-        LocationPtr pThis(new Location(account, LocationType_Local, peer, locationID));
+        LocationPtr pThis(new Location(account, LocationType_Peer, peer, locationID));
         pThis->mThisWeak = pThis;
         pThis->init();
 

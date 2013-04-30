@@ -1836,7 +1836,7 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!peerFilePrivate)
 
         mSelfPeer = IPeerForAccount::create(mThisWeak.lock(), peerFilePublic);
-        mSelfLocation = ILocationForAccount::getForPeer(mSelfPeer, mLocationID);
+        mSelfLocation = ILocationForAccount::getForLocal(mThisWeak.lock());
         mFinderLocation = ILocationForAccount::getForFinder(mThisWeak.lock());
         return true;
       }
