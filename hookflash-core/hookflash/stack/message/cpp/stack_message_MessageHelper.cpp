@@ -1475,7 +1475,7 @@ namespace hookflash
 
           try
           {
-            ret.mPublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(IMessageHelper::getElementText(elem->findFirstChildElementChecked("key")->findFirstChildElementChecked("X509Data"))));
+            ret.mPublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(IMessageHelper::getElementText(elem->findFirstChildElementChecked("key")->findFirstChildElementChecked("x509Data"))));
             try {
               ret.mPriority = Numeric<WORD>(IMessageHelper::getElementText(elem->findFirstChildElementChecked("priority")));
             } catch(Numeric<WORD>::ValueOutOfRange &) {
