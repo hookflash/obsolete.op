@@ -1385,7 +1385,7 @@ namespace hookflash
 
           if (mLifetimeWantVideoChannel)
             mLifetimeWantVideoCapture = true;
-          else if (!mLifetimeContinuousVideoCapture)
+          else if (mLifetimeHasVideoChannel && !mLifetimeContinuousVideoCapture)
             mLifetimeWantVideoCapture = false;
           if (!mLifetimeWantVideoCapture)
             mLifetimeWantRecordVideoCapture = false;
@@ -1745,12 +1745,10 @@ namespace hookflash
 #else
           void *captureView = NULL;
 #endif
-          /*
           if (captureView == NULL) {
             ZS_LOG_ERROR(Detail, log("capture view is not set"))
             return;
           }
-          */
           
           webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
           if (devInfo == NULL) {
@@ -1840,7 +1838,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          /*
+
           mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
@@ -1853,7 +1851,6 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          */
         }
       }
       
@@ -2039,7 +2036,6 @@ namespace hookflash
           AutoRecursiveLock lock(mLock);
 
           ZS_LOG_DEBUG(log("stop video channel"))
-
           
           mError = mVideoRender->StopRender(mVideoChannel);
           if (mError != 0) {
