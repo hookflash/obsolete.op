@@ -994,7 +994,8 @@ namespace zsLib
             ++lookAheadPos;
             continue;
           }
-          if ('{' == *lookAheadPos) {
+          if (('{' == *lookAheadPos) ||
+              ('[' == *lookAheadPos)) {
             mParserMode = ParserMode_JSON;
             break;
           }
@@ -1038,18 +1039,28 @@ namespace zsLib
 
           while (*pos) {
             skipWhiteSpace(pos);
-            if ('{' != *pos) {
+            if (('{' != *pos) &&
+                ('[' != *pos)) {
               addWarning(ParserWarningType_MustOpenWithObject, pos);
               break;
             }
 
             AutoStack entry(pos);
+
+            char openChar = (*pos);
+
             ++pos;
 
             skipWhiteSpace(pos);
 
             ElementPtr currentEl;
-            JSONParserStackTypes currentType = JSONParserStackType_Object;
+            JSONParserStackTypes currentType = ('{' == openChar ? JSONParserStackType_Object: JSONParserStackType_Array);
+            JSONParserStackTypes rootType = currentType;
+
+            if (JSONParserStackType_Array == currentType) {
+              currentEl = Element::create();
+              outDocument->adoptAsFirstChild(currentEl);
+            }
 
             const char *lastPos = NULL;
 
@@ -1064,6 +1075,12 @@ namespace zsLib
               char endChar = (currentType == JSONParserStackType_Object ? '}' : ']');
               if (endChar == *pos) {
                 if (jsonStack.size() < 1) {
+                  if (JSONParserStackType_Array == currentType) {
+                    if (!currentEl->hasChildren()) {
+                      // there was no values contained within this element
+                      currentEl->orphan();
+                    }
+                  }
                   break;
                 }
                 ++pos;
@@ -1292,9 +1309,16 @@ namespace zsLib
               addWarning(ParserWarningType_MissingObjectClose, entry.mStartPos);
             }
 
-            if ('}' != *pos) {
-              addWarning(ParserWarningType_MustCloseRootObject, pos);
-              break;
+            if (JSONParserStackType_Array == rootType) {
+              if (']' != *pos) {
+                addWarning(ParserWarningType_MustCloseRootObject, pos);
+                break;
+              }
+            } else {
+              if ('}' != *pos) {
+                addWarning(ParserWarningType_MustCloseRootObject, pos);
+                break;
+              }
             }
             ++pos;
 

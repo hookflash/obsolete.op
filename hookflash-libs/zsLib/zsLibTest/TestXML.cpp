@@ -1631,6 +1631,41 @@ static XMLResultInfo gXMLResults19 =
 };
 
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+static const char *gJSON20Input =
+"[\n"
+"\"hello\",\n"
+"{ \"goodbye\": \"foo\" }\n"
+"]";
+
+static const char *gXML20Output =
+"<unknown>hello</unknown><unknown><goodbye>foo</goodbye></unknown>";
+
+static const char *gJSON20Output =
+"[\"hello\",{\"goodbye\":\"foo\"}]"
+;
+
+static XMLWarningInfo *gXMLWarnings20Array[] =
+{NULL};
+
+static XMLResultInfo gXMLResults20 =
+{
+  gJSON20Input,
+  gXML20Output,
+  gJSON20Output,
+  0,
+  NULL,
+  true,
+  true,
+  false,
+  gXMLWarnings20Array
+};
+
+
 
 class TestXML
 {
@@ -1658,6 +1693,7 @@ public:
     parse(gXMLResults17);
     parse(gXMLResults18);
     parse(gXMLResults19);
+    parse(gXMLResults20);
     generate();
     parserPosTest();
     {int i = 0; ++i;}
