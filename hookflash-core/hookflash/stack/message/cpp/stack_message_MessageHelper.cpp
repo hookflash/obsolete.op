@@ -1156,7 +1156,7 @@ namespace hookflash
             Time expires;
             if (expiresEl) {
               String expiresStr = expiresEl->getText();
-              expires = Numeric<Time>(expiresStr);
+              expires = IMessageHelper::stringToTime(expiresStr);
             }
 
             String mimeType;
@@ -1274,7 +1274,6 @@ namespace hookflash
                                                                                         );
               outPublicationMetaData = metaData;
             }
-          } catch (Numeric<Time>::ValueOutOfRange &) {
           } catch (CheckFailed &) {
           }
         }
