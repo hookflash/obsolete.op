@@ -115,6 +115,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      static ElementPtr createElementWithNumber(const char *elementName, const char *number)
+      {
+        return IMessageHelper::createElementWithNumber(elementName ? String(elementName) : String(), number ? String(number) : String());
+      }
+
+      //-----------------------------------------------------------------------
       static ElementPtr createElementWithText(const char *inElementName, const char *inID, const char *inText)
       {
         ElementPtr el = createElementWithText(inElementName, inText);
@@ -126,6 +132,18 @@ namespace hookflash
         return el;
       }
 
+      //-----------------------------------------------------------------------
+      static ElementPtr createElementWithNumber(const char *inElementName, const char *inID, const char *inNumber)
+      {
+        ElementPtr el = createElementWithNumber(inElementName, inNumber);
+
+        String id(inID ? String(inID) : String());
+        if (id.isEmpty()) return el;
+
+        el->setAttribute("id", id);
+        return el;
+      }
+      
       //-----------------------------------------------------------------------
       static ElementPtr createElementWithTextAndJSONEncode(const char *inElementName, const char *inText)
       {
@@ -278,7 +296,7 @@ namespace hookflash
         ElementPtr messageBundleEl = Element::create("messageBundle");
         ElementPtr messageEl = createElement("message", messageID);
         ElementPtr fromEl = createElement("from", fromPeerURI);
-        ElementPtr sentEl = createElementWithText("sent", IMessageHelper::timeToString(sent));
+        ElementPtr sentEl = createElementWithNumber("sent", IMessageHelper::timeToString(sent));
         ElementPtr mimeTypeEl = createElementWithText("mimeType", mimeType);
         ElementPtr bodyEl = createElementWithTextAndJSONEncode("body", body);
 
@@ -419,7 +437,7 @@ namespace hookflash
         {
           const String &messageID = (*iter).first;
           const Time &time = (*iter).second;
-          ElementPtr receiptEl = createElementWithText("receipt", messageID, IMessageHelper::timeToString(time));
+          ElementPtr receiptEl = createElementWithNumber("receipt", messageID, IMessageHelper::timeToString(time));
           receiptsEl->adoptAsLastChild(receiptEl);
         }
 
@@ -1399,7 +1417,7 @@ namespace hookflash
         ElementPtr replacesEl = createElement("replaces", replaces);
         ElementPtr stateEl = createElementWithText("state", toString(state));
         ElementPtr topicEl = createElementWithTextAndJSONEncode("topic", pThis->mTopic);
-        ElementPtr createdEl = createElementWithText("created", IMessageHelper::timeToString(pThis->mCreated));
+        ElementPtr createdEl = createElementWithNumber("created", IMessageHelper::timeToString(pThis->mCreated));
 
         detailsEl->adoptAsLastChild(threadBaseEl);
         detailsEl->adoptAsLastChild(threadHostEl);
