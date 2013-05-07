@@ -1745,10 +1745,12 @@ namespace hookflash
 #else
           void *captureView = NULL;
 #endif
+#ifndef __QNX__
           if (captureView == NULL) {
             ZS_LOG_ERROR(Detail, log("capture view is not set"))
             return;
           }
+#endif
           
           webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
           if (devInfo == NULL) {
@@ -1839,6 +1841,7 @@ namespace hookflash
             return;
           }
 
+#ifndef __QNX__
           mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
@@ -1851,6 +1854,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+#endif
         }
       }
       
@@ -1862,6 +1866,7 @@ namespace hookflash
           
           ZS_LOG_DEBUG(log("stop video capture"))
           
+#ifndef __QNX__
           mError = mVideoRender->StopRender(mCaptureId);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1872,6 +1877,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+#endif
           mError = mVideoCapture->StopCapture(mCaptureId);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
