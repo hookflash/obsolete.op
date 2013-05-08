@@ -661,6 +661,8 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
+        ZS_LOG_DEBUG(log("cancel called"))
+
         HTTPQueryPtr pThis = mThisWeak.lock();
 
         HTTPPtr outer = mOuter.lock();

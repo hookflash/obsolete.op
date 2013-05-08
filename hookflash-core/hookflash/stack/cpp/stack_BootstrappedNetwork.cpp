@@ -545,7 +545,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("on http complete"))
+        ZS_LOG_DEBUG(log("on http complete") + ", query ID=" + Stringize<PUID>(query->getID()).string())
 
         // do step asynchronously
         IBootstrappedNetworkAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
