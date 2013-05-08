@@ -60,6 +60,7 @@ namespace hookflash
     namespace message
     {
       using zsLib::DWORD;
+      using zsLib::QWORD;
       using zsLib::Stringize;
       using zsLib::Numeric;
 
@@ -157,10 +158,17 @@ namespace hookflash
         if (s.isEmpty()) return Time();
 
         try {
-          time_t epoch = Numeric<time_t>(s);
-          return zsLib::toTime(epoch);
+          time_t timestamp = Numeric<time_t>(s);
+          return zsLib::toTime(timestamp);
         } catch (Numeric<time_t>::ValueOutOfRange &) {
           ZS_LOG_WARNING(Detail, "unable to convert value to time_t, value=" + s)
+          try {
+            QWORD timestamp = Numeric<QWORD>(s);
+            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + Stringize<typeof(timestamp)>(timestamp).string())
+            return Time(boost::date_time::max_date_time);
+          } catch (Numeric<QWORD>::ValueOutOfRange &) {
+            ZS_LOG_WARNING(Detail, "even QWORD failed to convert value to max_date_time, value=" + s)
+          }
         }
         return Time();
       }
