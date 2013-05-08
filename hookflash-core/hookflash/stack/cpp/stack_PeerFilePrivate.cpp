@@ -595,7 +595,6 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-            contactID.toLower();
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
@@ -634,10 +633,6 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateKey", encryptedPrivateKey));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPeer", encryptedPublicPeer));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateData", encryptedPrivateData));
-
-            contactID.toLower();
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
-            //sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             privatePeerEl->adoptAsLastChild(sectionBundleEl);
