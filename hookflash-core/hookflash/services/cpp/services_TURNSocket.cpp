@@ -30,6 +30,7 @@
  */
 
 #include <hookflash/services/internal/services_TURNSocket.h>
+#include <hookflash/services/internal/services_Helper.h>
 #include <hookflash/services/STUNPacket.h>
 #include <hookflash/services/ISTUNRequesterManager.h>
 #include <zsLib/Socket.h>
@@ -191,8 +192,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void TURNSocket::init()
       {
-        ZS_LOG_BASIC(log("init"))
         AutoRecursiveLock lock(mLock);
+        ZS_LOG_DETAIL(log("init") + getDebugValueString())
         step();
       }
 
@@ -204,6 +205,12 @@ namespace hookflash
         mThisWeak.reset();
         ZS_LOG_BASIC(log("destroyed"))
         cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      TURNSocketPtr TURNSocket::convert(ITURNSocketPtr socket)
+      {
+        return boost::dynamic_pointer_cast<TURNSocket>(socket);
       }
 
       //-----------------------------------------------------------------------
@@ -257,6 +264,13 @@ namespace hookflash
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      String TURNSocket::toDebugString(ITURNSocketPtr socket, bool includeCommaPrefix)
+      {
+        if (!socket) return String(includeCommaPrefix ? ", TURN socket=(null)" : "TURN socket=(null)");
+        return TURNSocket::convert(socket)->getDebugValueString(includeCommaPrefix);
       }
 
       //-----------------------------------------------------------------------
@@ -1186,6 +1200,59 @@ namespace hookflash
       {
         stun->mLogObject = "TURNSocket";
         stun->mLogObjectID = mID;
+      }
+
+      //-----------------------------------------------------------------------
+      String TURNSocket::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(mLock);
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("turn socket id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("current state", toString(mCurrentState), firstTime) +
+               Helper::getDebugValue("last error", toString(mLastError), firstTime) +
+               Helper::getDebugValue("limit channel range (start)", 0 != mLimitChannelToRangeStart ? Stringize<typeof(mLimitChannelToRangeStart)>(mLimitChannelToRangeStart).string() : String(), firstTime) +
+               Helper::getDebugValue("limit channel range (end)", 0 != mLimitChannelToRangeEnd ? Stringize<typeof(mLimitChannelToRangeEnd)>(mLimitChannelToRangeEnd).string() : String(), firstTime) +
+               Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("server name", mServerName, firstTime) +
+               Helper::getDebugValue("username", mUsername, firstTime) +
+               Helper::getDebugValue("password", mPassword, firstTime) +
+               Helper::getDebugValue("realm", mRealm, firstTime) +
+               Helper::getDebugValue("nonce", mNonce, firstTime) +
+               Helper::getDebugValue("udp dns query", mTURNUDPQuery ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("tcp dns query", mTURNTCPQuery ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("udp dns srv records", mTURNUDPSRVResult ? (mTURNUDPSRVResult->mRecords.size() > 0 ? Stringize<typeof(size_t)>(mTURNUDPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
+               Helper::getDebugValue("tcp dns srv records", mTURNTCPSRVResult ? (mTURNTCPSRVResult->mRecords.size() > 0 ? Stringize<typeof(size_t)>(mTURNTCPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
+               Helper::getDebugValue("use channel binding", mUseChannelBinding ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("allocated response IP", mAllocateResponseIP.string(), firstTime) +
+               Helper::getDebugValue("relayed IP", mRelayedIP.string(), firstTime) +
+               Helper::getDebugValue("reflected IP", mReflectedIP.string(), firstTime) +
+               (mActiveServer ?
+                Helper::getDebugValue("active server", String("true"), firstTime) +
+                Helper::getDebugValue("is udp", mActiveServer->mIsUDP ? String("true") : String(), firstTime) +
+                Helper::getDebugValue("server ip", mActiveServer->mServerIP.string(), firstTime) +
+                Helper::getDebugValue("tcp socket", mActiveServer->mTCPSocket ? String("true") : String(), firstTime) +
+                Helper::getDebugValue("connected", mActiveServer->mIsConnected ? String("true") : String(), firstTime) +
+                Helper::getDebugValue("write ready", mActiveServer->mInformedWriteReady ? String("true") : String(), firstTime) +
+                Helper::getDebugValue("activate after", Time() != mActiveServer->mActivateAfter ? Stringize<Time>(mActiveServer->mActivateAfter).string() : String(), firstTime) +
+                Helper::getDebugValue("allocate requestor", mActiveServer->mAllocateRequester ? String("true") : String(), firstTime) +
+                Helper::getDebugValue("read buffer fill size", 0 != mActiveServer->mReadBufferFilledSizeInBytes ? Stringize<typeof(mActiveServer->mReadBufferFilledSizeInBytes)>(mActiveServer->mReadBufferFilledSizeInBytes).string() : String(), firstTime) +
+                Helper::getDebugValue("write buffer fill size", 0 != mActiveServer->mWriteBufferFilledSizeInBytes ? Stringize<typeof(mActiveServer->mWriteBufferFilledSizeInBytes)>(mActiveServer->mWriteBufferFilledSizeInBytes).string() : String(), firstTime)
+                : String()) +
+               Helper::getDebugValue("lifetime", 0 != mLifetime ? Stringize<typeof(mLifetime)>(mLifetime).string() : String(), firstTime) +
+               Helper::getDebugValue("refresh requester", mRefreshRequester ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("refresh timer", mRefreshTimer ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("last send data to server", Time() != mLastSentDataToServer ? Stringize<Time>(mLastSentDataToServer).string() : String(), firstTime) +
+               Helper::getDebugValue("last refreash timer was sent", Time() != mLastRefreshTimerWasSentAt ? Stringize<Time>(mLastRefreshTimerWasSentAt).string() : String(), firstTime) +
+               Helper::getDebugValue("deallocate requester", mDeallocateRequester ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("servers", mServers.size() > 0 ? Stringize<typeof(size_t)>(mServers.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("activation timer", mActivationTimer ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("permissions", mPermissions.size() > 0 ? Stringize<typeof(size_t)>(mPermissions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("permission timer", mPermissionTimer ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("permission requester", mPermissionRequester ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("permission max capacity", 0 != mPermissionRequesterMaxCapacity ? Stringize<typeof(mPermissionRequesterMaxCapacity)>(mPermissionRequesterMaxCapacity).string() : String(), firstTime) +
+               Helper::getDebugValue("channel IP map", mChannelIPMap.size() > 0 ? Stringize<typeof(size_t)>(mChannelIPMap.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("channel number map", mChannelNumberMap.size() > 0 ? Stringize<typeof(size_t)>(mChannelNumberMap.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("recycle buffers", mRecycledBuffers.size() > 0 ? Stringize<typeof(size_t)>(mRecycledBuffers.size()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2423,5 +2490,12 @@ namespace hookflash
     {
       return internal::ITURNSocketFactory::singleton().create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, useChannelBinding, limitChannelToRangeStart, limitChannelRoRangeEnd);
     }
+
+    //-------------------------------------------------------------------------
+    String ITURNSocket::toDebugString(ITURNSocketPtr socket, bool includeCommaPrefix)
+    {
+      return internal::TURNSocket::toDebugString(socket, includeCommaPrefix);
+    }
+
   }
 }

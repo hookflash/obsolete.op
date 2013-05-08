@@ -89,6 +89,7 @@ namespace hookflash
                          public ITimerDelegate
       {
       public:
+        friend interaction ITURNSocket;
         friend interaction ITURNSocketFactory;
 
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
@@ -146,6 +147,8 @@ namespace hookflash
       public:
         ~TURNSocket();
 
+        static TURNSocketPtr convert(ITURNSocketPtr socket);
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -174,6 +177,8 @@ namespace hookflash
                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
                                     );
+
+        static String toDebugString(ITURNSocketPtr socket, bool includeCommaPrefix = true);
 
         virtual PUID getID() const {return mID;}
 
@@ -267,6 +272,7 @@ namespace hookflash
         bool isShuttingDown() const {return ITURNSocket::TURNSocketState_ShuttingDown ==  mCurrentState;}
         bool isShutdown() const {return ITURNSocket::TURNSocketState_Shutdown ==  mCurrentState;}
         String log(const char *message) const;
+        String getDebugValueString(bool includeCommaPrefix = true) const;
         void fix(STUNPacketPtr stun) const;
 
         IPAddress stepGetNextServer(

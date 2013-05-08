@@ -98,6 +98,8 @@ namespace hookflash
                                    WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
                                    );
 
+      static String toDebugString(ITURNSocketPtr peer, bool includeCommaPrefix = true);
+
       virtual PUID getID() const = 0;
 
       virtual TURNSocketStates getState() const = 0;

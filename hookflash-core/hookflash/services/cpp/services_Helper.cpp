@@ -1512,6 +1512,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      String Helper::getDebugValue(const char *name, const String &value, bool &firstTime)
+      {
+        if (value.isEmpty()) return String();
+        if (firstTime) {
+          firstTime = false;
+          return String(name) + "=" + value;
+        }
+        return String(", ") + name + "=" + value;
+      }
+
+      //-----------------------------------------------------------------------
       String Helper::randomString(UINT lengthInChars)
       {
         static const char *randomCharArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
