@@ -1576,10 +1576,10 @@ namespace hookflash
               ZS_LOG_WARNING(Detail, log("this non picked location closed the call"))
               mustRemove = true;
             }
-          } catch (Exceptions::IllegalState) {
+          } catch (Exceptions::IllegalState &) {
             ZS_LOG_DEBUG(log("remote call is not in a legal state"))
             mustRemove = true;
-          } catch (Exceptions::CallClosed) {
+          } catch (Exceptions::CallClosed &) {
             ZS_LOG_DEBUG(log("remote call is closed"))
             mustRemove = true;
           }

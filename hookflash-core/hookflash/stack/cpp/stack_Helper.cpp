@@ -631,7 +631,7 @@ namespace hookflash
                 AttributePtr current = children.front();
                 children.pop_front();
 
-                // I know this isn't optmized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+                // I know this isn't optimized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
 
                 AttributePtr child = inElement->getFirstAttribute();
                 if (!child) {
@@ -652,7 +652,9 @@ namespace hookflash
                     break;
                   }
 
-                  child = child->getNextSibling()->toAttribute();
+                  NodePtr nextNode = child->getNextSibling();
+                  if (!nextNode) break;
+                  child = nextNode->toAttribute();
                 }
 
                 if (inserted)
@@ -671,6 +673,15 @@ namespace hookflash
         private:
         };
 
+        if (ZS_IS_LOGGING(Trace)) {
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- PRE-SORT  -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(element);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- PRE-SORT  -- ^^^^^^^^^^^^")
+        }
         ElementPtr convertEl = element->clone()->toElement();
 
         Node::FilterList filter;
@@ -680,13 +691,6 @@ namespace hookflash
 
         if (ZS_IS_LOGGING(Trace)) {
           // let's output some logging...
-          ZS_LOG_BASIC("vvvvvvvvvvvv -- PRE-SORT  -- vvvvvvvvvvvv")
-          {
-            GeneratorPtr generator = Generator::createJSONGenerator();
-            boost::shared_array<char> output = generator->write(element);
-            ZS_LOG_BASIC( ((CSTR)output.get()) )
-          }
-          ZS_LOG_BASIC("^^^^^^^^^^^^ -- PRE-SORT  -- ^^^^^^^^^^^^")
           ZS_LOG_BASIC("vvvvvvvvvvvv -- POST-SORT -- vvvvvvvvvvvv")
           {
             GeneratorPtr generator = Generator::createJSONGenerator();
@@ -1068,7 +1072,7 @@ namespace hookflash
                         char splitChar
                         )
     {
-      return internal::Helper::split(input, outResult, splitChar);
+      internal::Helper::split(input, outResult, splitChar);
     }
 
     //-------------------------------------------------------------------------

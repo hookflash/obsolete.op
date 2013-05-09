@@ -516,6 +516,7 @@ namespace hookflash
         case PeerFindState_Finding:   return "Finding";
         case PeerFindState_Completed: return "Complete";
       }
+      return "UNDEFINED";
     }
 
     //-------------------------------------------------------------------------

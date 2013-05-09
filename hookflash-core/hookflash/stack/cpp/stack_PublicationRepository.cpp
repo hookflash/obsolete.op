@@ -2227,7 +2227,7 @@ namespace hookflash
                IPublication::toDebugString(mPublication) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
@@ -2509,7 +2509,7 @@ namespace hookflash
                IPublicationMetaData::toDebugString(mPublicationMetaData) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
                IPublication::toDebugString(mFetchedPublication);
       }
@@ -2772,7 +2772,7 @@ namespace hookflash
                IPublication::toDebugString(mPublication) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
@@ -3659,7 +3659,7 @@ namespace hookflash
                IMessageMonitor::toDebugString(mMonitor) +
                IMessageMonitor::toDebugString(mCancelMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
