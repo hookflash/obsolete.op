@@ -32,8 +32,8 @@
 #include <hookflash/services/internal/services_ICESocket.h>
 #include <hookflash/services/internal/services_ICESocketSession.h>
 #include <hookflash/services/internal/services_TURNSocket.h>
+#include <hookflash/services/internal/services_Helper.h>
 #include <hookflash/services/ISTUNRequesterManager.h>
-#include <hookflash/services/IHelper.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Numeric.h>
@@ -1696,13 +1696,14 @@ namespace hookflash
     //-------------------------------------------------------------------------
     String IICESocket::Candidate::toDebugString(bool includeCommaPrefix) const
     {
-      return includeCommaPrefix ? String(", type=") : String("type=") + IICESocket::toString(mType) +
-             ", ip=" + mIPAddress.string() +
-             ", priority=" + Stringize<DWORD>(mPriority).string() +
-             ", preference=" + Stringize<WORD>(mLocalPreference).string() +
-             ", usernameFrag=" + mUsernameFrag +
-             ", password=" + mPassword +
-             ", protocol=" + mProtocol;
+      bool firstTime = !includeCommaPrefix;
+      return internal::Helper::getDebugValue("type", IICESocket::toString(mType), firstTime) +
+             internal::Helper::getDebugValue("ip", mIPAddress.string(), firstTime) +
+             internal::Helper::getDebugValue("priority", 0 != mPriority ? Stringize<DWORD>(mPriority).string() : String(), firstTime) +
+             internal::Helper::getDebugValue("preference", 0 != mLocalPreference ? Stringize<WORD>(mLocalPreference).string() : String(), firstTime) +
+             internal::Helper::getDebugValue("usernameFrag", mUsernameFrag, firstTime) +
+             internal::Helper::getDebugValue("password", mPassword, firstTime) +
+             internal::Helper::getDebugValue("protocol", mProtocol, firstTime);
     }
   }
 }
