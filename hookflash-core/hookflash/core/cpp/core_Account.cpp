@@ -928,7 +928,9 @@ namespace hookflash
 
         setState(AccountState_Shutdown);
 
-        mPeerContactSession->cancel();  // do not reset
+        if (mPeerContactSession) {
+          mPeerContactSession->cancel();  // do not reset
+        }
 
         mGracefulShutdownReference.reset();
 
