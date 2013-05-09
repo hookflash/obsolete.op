@@ -172,6 +172,8 @@ namespace hookflash
                                            String *outService = NULL
                                            );
 
+        static ElementPtr cloneAsCanonicalJSON(ElementPtr element);
+
         static bool isValidDomain(const char *domain);
 
         static void split(

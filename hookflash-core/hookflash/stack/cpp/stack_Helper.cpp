@@ -537,6 +537,169 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      ElementPtr Helper::cloneAsCanonicalJSON(ElementPtr element)
+      {
+        if (!element) return element;
+
+        class Walker : public WalkSink
+        {
+        public:
+          Walker() {}
+
+          virtual bool onElementEnter(ElementPtr inElement)
+          {
+            typedef std::list<NodePtr> ChildrenList;
+            typedef std::list<AttributePtr> ChildrenAttributeList;
+
+            // sort the elements and "other" node types
+            {
+              ChildrenList children;
+
+              while (inElement->hasChildren()) {
+                NodePtr child = inElement->getFirstChild();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              NodePtr lastInsert;
+              bool insertedElement = false;
+              while (children.size() > 0)
+              {
+                NodePtr currentNode = children.front();
+                children.pop_front();
+
+                ElementPtr currentEl = (currentNode->isElement() ? currentNode->toElement() : ElementPtr());
+
+                if (!insertedElement) {
+                  inElement->adoptAsLastChild(currentNode);
+                  lastInsert = currentNode;
+                  insertedElement = true;
+                  continue;
+                }
+
+                if (!currentEl) {
+                  lastInsert->adoptAsNextSibling(currentNode);
+                  lastInsert = currentNode;
+                  continue;
+                }
+
+                insertedElement = true; // will have to be true now as this child is an element
+
+                String currentName = currentEl->getValue();
+
+                // I know this isn't optmized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                bool inserted = false;
+
+                ElementPtr childEl = inElement->getFirstChildElement();
+                while (childEl) {
+                  String childName = childEl->getValue();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    childEl->adoptAsPreviousSibling(currentEl);
+                    lastInsert = currentEl;
+                    inserted = true;
+                    break;
+                  }
+
+                  childEl = childEl->getNextSiblingElement();
+                }
+
+                if (inserted)
+                  continue;
+
+                inElement->adoptAsLastChild(currentEl);
+                lastInsert = currentEl;
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            // sort the attributes
+            {
+              ChildrenAttributeList children;
+
+              while (inElement->getFirstAttribute()) {
+                AttributePtr child = inElement->getFirstAttribute();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              while (children.size() > 0)
+              {
+                AttributePtr current = children.front();
+                children.pop_front();
+
+                // I know this isn't optmized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                AttributePtr child = inElement->getFirstAttribute();
+                if (!child) {
+                  inElement->setAttribute(current);
+                  continue;
+                }
+
+                bool inserted = false;
+                String currentName = current->getName();
+
+                while (child) {
+                  String childName = child->getName();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    child->adoptAsPreviousSibling(current);
+                    inserted = true;
+                    break;
+                  }
+
+                  child = child->getNextSibling()->toAttribute();
+                }
+
+                if (inserted)
+                  continue;
+
+                // there *MUST* be a last attribute or crash
+                inElement->getLastAttributeChecked()->adoptAsNextSibling(current);
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            return false;
+          }
+
+        private:
+        };
+
+        ElementPtr convertEl = element->clone()->toElement();
+
+        Node::FilterList filter;
+        filter.push_back(Node::NodeType::Element);
+        Walker walker;
+        convertEl->walk(walker, &filter);
+
+        if (ZS_IS_LOGGING(Trace)) {
+          // let's output some logging...
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- PRE-SORT  -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(element);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- PRE-SORT  -- ^^^^^^^^^^^^")
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- POST-SORT -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(convertEl);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- POST-SORT -- ^^^^^^^^^^^^")
+        }
+
+        return convertEl;
+      }
+
+      //-----------------------------------------------------------------------
       bool Helper::isValidDomain(const char *inDomain)
       {
         String domain(inDomain ? String(inDomain) : String());
@@ -884,6 +1047,12 @@ namespace hookflash
                                          )
     {
       return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outPeerURI, outKeyID, outKeyDomain, outService);
+    }
+
+    //-------------------------------------------------------------------------
+    ElementPtr IHelper::cloneAsCanonicalJSON(ElementPtr element)
+    {
+      return internal::Helper::cloneAsCanonicalJSON(element);
     }
 
     //-------------------------------------------------------------------------

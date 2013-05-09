@@ -323,8 +323,10 @@ namespace hookflash
 
           String signatureDigestAsString = signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded();
 
+          ElementPtr canonicalSigned = Helper::cloneAsCanonicalJSON(signedEl);
+
           GeneratorPtr generator = Generator::createJSONGenerator();
-          boost::shared_array<char> signedElAsJSON = generator->write(signedEl);
+          boost::shared_array<char> signedElAsJSON = generator->write(canonicalSigned);
 
           SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
 
@@ -453,7 +455,9 @@ namespace hookflash
           String contactID;
           {
             ULONG length = 0;
-            boost::shared_array<char> sectionAsString = generator->write(sectionAEl, &length);
+            ElementPtr bundleAEl = sectionAEl->getParentElementChecked();
+            ElementPtr canonicalBundleAEl = Helper::cloneAsCanonicalJSON(bundleAEl);
+            boost::shared_array<char> sectionAsString = generator->write(canonicalBundleAEl, &length);
 
             SHA256 sha256;
             SecureByteBlock bundleHash(sha256.DigestSize());
@@ -504,7 +508,8 @@ namespace hookflash
 
           {
             ULONG length = 0;
-            boost::shared_array<char> sectionAAsString = generator->write(sectionAEl, &length);
+            ElementPtr canonicalSectionAEl = Helper::cloneAsCanonicalJSON(sectionAEl);
+            boost::shared_array<char> sectionAAsString = generator->write(canonicalSectionAEl, &length);
 
             SecureByteBlockPtr sectionHash = IHelper::hash((const char *)(sectionAAsString.get()), IHelper::HashAlgorthm_SHA1);
             String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();

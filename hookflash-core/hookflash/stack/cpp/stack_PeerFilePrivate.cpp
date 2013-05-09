@@ -261,7 +261,9 @@ namespace hookflash
         }
 
         GeneratorPtr generator = Generator::createJSONGenerator();
-        boost::shared_array<char> elementAsJSON = generator->write(elementToSign);
+
+        ElementPtr canonicalJSONEl = IHelper::cloneAsCanonicalJSON(elementToSign);
+        boost::shared_array<char> elementAsJSON = generator->write(canonicalJSONEl);
 
         SecureByteBlockPtr elementHash = IHelper::hash(elementAsJSON.get(), IHelper::HashAlgorthm_SHA1);
 
@@ -501,26 +503,10 @@ namespace hookflash
 
             sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
 
-            GeneratorPtr generator = Generator::createJSONGenerator();
-
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
 
             signElement(sectionEl, false, publicKey);
-
-            // calculate the contact ID/domain
-
-            ULONG length = 0;
-            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl, &length);
-
-            SHA256 sha256;
-            SecureByteBlock bundleHash(sha256.DigestSize());
-
-            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
-            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
-            sha256.Final(bundleHash);
-
-            contactID = IHelper::convertToHex(bundleHash);
 
             ElementPtr domainEl;
             try {
@@ -538,6 +524,23 @@ namespace hookflash
               ZS_LOG_ERROR(Basic, log("domain from signed salt was empty"))
               return false;
             }
+
+            // calculate the contact ID/domain
+
+            GeneratorPtr generator = Generator::createJSONGenerator();
+
+            ULONG length = 0;
+            ElementPtr canoncialSectionBundleEl = IHelper::cloneAsCanonicalJSON(sectionBundleEl);
+            boost::shared_array<char> sectionAsJSON = generator->write(canoncialSectionBundleEl, &length);
+
+            SHA256 sha256;
+            SecureByteBlock bundleHash(sha256.DigestSize());
+
+            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
+            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
+            sha256.Final(bundleHash);
+
+            contactID = IHelper::convertToHex(bundleHash);
           }
 
           mPeerURI = IPeer::joinURI(domain, contactID);
