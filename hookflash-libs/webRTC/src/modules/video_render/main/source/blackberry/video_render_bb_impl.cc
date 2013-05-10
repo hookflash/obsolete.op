@@ -405,6 +405,7 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
                                 _ptrWindowWrapper->GetParentWindowId());
   int usage;
   int format = SCREEN_FORMAT_RGBX8888;
+  int zorder = -1;
   EGLint interval = 1;
   int rc, num_configs;
 
@@ -438,6 +439,9 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_FORMAT, &format);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)"); }
+
+  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_ZORDER, &zorder);
+  if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_ZORDER)"); }
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_USAGE, &usage);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)"); }
