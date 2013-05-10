@@ -31,6 +31,10 @@
 
 #pragma once
 
+#ifdef __QNX__
+#include <slog2.h>
+#endif
+
 #include <hookflash/core/internal/core_MediaEngine.h>
 #include <hookflash/core/internal/core_Factory.h>
 
@@ -71,9 +75,7 @@ namespace hookflash
         #pragma mark
         
       protected:
-        TestMediaEngine() :
-          MediaEngine(zsLib::Noop()),
-          mReceiverAddress("") {}
+        TestMediaEngine();
         
       public:
         ~TestMediaEngine();
@@ -144,6 +146,9 @@ namespace hookflash
       private:
         String mReceiverAddress;
         zsLib::TimerPtr mVoiceStatisticsTimer;
+#ifdef __QNX__
+        slog2_buffer_t mBufferHandle;
+#endif
       };
       
       
