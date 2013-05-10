@@ -47,6 +47,7 @@
 #include "trace.h"
 #include "thread_wrapper.h"
 #include "critical_section_wrapper.h"
+//#include "libyuv.h"
 
 namespace webrtc
 {
@@ -109,6 +110,8 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
         destination_data_u += width >> 1;
         destination_data_v += width >> 1;
     }
+
+//    ConvertNV12ToI420AndScaleFrameQuad(width, height, source_data_y, source_data_uv);
 
 	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
 
@@ -224,11 +227,13 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 //    }
 //
 //    free(resolutions);
-
+/*
     error = camera_set_video_property(cameraHandle,
-        CAMERA_IMGPROP_WIDTH, 240,
-        CAMERA_IMGPROP_HEIGHT, 320,
-        CAMERA_IMGPROP_ROTATION, 90,
+//        CAMERA_IMGPROP_WIDTH, 240,
+//        CAMERA_IMGPROP_HEIGHT, 320,
+        CAMERA_IMGPROP_WIDTH, 720,
+        CAMERA_IMGPROP_HEIGHT, 1280,
+//        CAMERA_IMGPROP_ROTATION, 90,
         CAMERA_IMGPROP_FRAMERATE, (double)15.0);
 //    error = camera_set_video_property(cameraHandle,
 //    		CAMERA_IMGPROP_WIDTH, 240,
@@ -246,13 +251,36 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
         return -1;
     }
-
-    error = camera_init_video_encoder();
+*/
+/*
+    error = camera_set_video_property(cameraHandle,
+    		CAMERA_IMGPROP_WIDTH, 240,
+    		CAMERA_IMGPROP_HEIGHT, 320,
+    		CAMERA_IMGPROP_ROTATION, 90,
+    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
     if (error != CAMERA_EOK)
     {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot init video encoder - error: %d", error);
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
         return -1;
     }
+*/
+/*
+    error = camera_set_videovf_property(cameraHandle,
+    		CAMERA_IMGPROP_WIN_GROUPID, "viewfinder_window_group",
+    		CAMERA_IMGPROP_WIN_ID, "");
+	if (error != CAMERA_EOK)
+	{
+		WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video viewfinder properties - error: %d", error);
+		return -1;
+	}
+*/
+
+//    error = camera_init_video_encoder();
+//    if (error != CAMERA_EOK)
+//    {
+//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot init video encoder - error: %d", error);
+//        return -1;
+//    }
 
     return 0;
 }
@@ -286,7 +314,7 @@ WebRtc_Word32 VideoCaptureModuleBB::StartCapture(
     if (error != CAMERA_EOK) {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot start video viewfinder - error: %d", error);
         return -1;
-   }
+    }
 
 //    error = camera_start_encode(_cameraHandle,
 //    		NULL,

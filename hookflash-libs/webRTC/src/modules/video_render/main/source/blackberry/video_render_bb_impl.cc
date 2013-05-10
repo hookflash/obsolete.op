@@ -20,6 +20,7 @@
 #include <GLES2/gl2ext.h>
 #include <EGL/egl.h>
 #include <pthread.h>
+#include <unistd.h>
 
 #include "bb_window_wrapper.h"
 
@@ -374,7 +375,7 @@ void VideoRenderBlackBerry::GLThreadRun() {
       if (!event) {
         OnBBRenderEvent();
       }
-      // usleep(5);
+      usleep(30);
   }
 
   // remove and cleanup each view
