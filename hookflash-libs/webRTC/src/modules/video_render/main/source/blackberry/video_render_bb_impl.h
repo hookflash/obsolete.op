@@ -172,7 +172,6 @@ class VideoRenderBlackBerry : IVideoRender
   BlackberryWindowWrapper* _ptrWindowWrapper;
   screen_context_t _screen_ctx;
   _screen_window* _ptrGLWindow;
-  _screen_display* _ptrDisplay;
   EGLDisplay _eglDisplay;
   EGLConfig _eglConfig;
   EGLContext _eglContext;

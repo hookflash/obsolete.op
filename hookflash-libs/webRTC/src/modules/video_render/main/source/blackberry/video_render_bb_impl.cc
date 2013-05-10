@@ -87,7 +87,6 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _renderType(videoRenderType),
     _ptrWindowWrapper((BlackberryWindowWrapper*)(window)),
     _ptrGLWindow(NULL),
-    _ptrDisplay(NULL),
     _eglDisplay(NULL),
     _eglConfig(NULL),
     _eglContext(NULL),
@@ -368,14 +367,26 @@ void VideoRenderBlackBerry::GLThreadRun() {
   bps_event_t *event = NULL;
 
   while (!_stopped) {
+    do {
       //Request and process BPS next available event
       event = NULL;
       int returnCode = bps_get_event(&event, 0);
 
-      if (!event) {
-        OnBBRenderEvent();
+      if (event) {
+        int domain = bps_event_get_domain(event);
+
+        if (domain == screen_get_domain()) {
+        }
       }
-      usleep(30);
+    } while (event);
+
+    if (_stopped) {
+      break;
+    }
+
+    OnBBRenderEvent();
+
+    usleep(5);
   }
 
   // remove and cleanup each view
@@ -441,9 +452,6 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_USAGE, &usage);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)"); }
-
-  rc = screen_get_window_property_pv(_ptrGLWindow, SCREEN_PROPERTY_DISPLAY, (void **)&_ptrDisplay);
-  if (rc) { return LOG_ERROR("screen_get_window_property_pv"); }
 
   int size[2];
   rc = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
