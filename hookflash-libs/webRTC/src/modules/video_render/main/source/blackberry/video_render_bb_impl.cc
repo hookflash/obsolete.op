@@ -416,7 +416,7 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
                           EGL_RENDERABLE_TYPE, 0,
                           EGL_NONE};
 
-  usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION;
+  usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION | SCREEN_USAGE_VIDEO | SCREEN_USAGE_NATIVE;
   attrib_list[9] = EGL_OPENGL_ES2_BIT;
   EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
 
