@@ -848,6 +848,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      RecursiveLock &Call::getStepLock() const
+      {
+        return mStepLock;
+      }
+
+      //-----------------------------------------------------------------------
       String Call::log(const char *message) const
       {
         return String("Call [") + Stringize<PUID>(mID).string() + "] " + message;
@@ -1427,7 +1433,7 @@ namespace hookflash
             mCallLocations[locationID] = callLocation;
 
             if (mIncomingCall) {
-              ZS_LOG_DEBUG(log("incoming call must pick the remote location") + ", remote local ID=" + locationID)
+              ZS_LOG_DEBUG(log("incoming call must pick the remote location") + ", remote local ID=" + locationID + CallLocation::toDebugString(callLocation, true, false))
               // we *must* pick this location
               picked = callLocation;
             }
@@ -1618,8 +1624,10 @@ namespace hookflash
             case CallState_Inactive:
             case CallState_Hold:      {
               if (ICallLocation::CallLocationState_Ready == callLocation->getState()) {
+                ZS_LOG_DEBUG(log("picked location") + CallLocation::toDebugString(callLocation, true, false))
                 ioPicked = callLocation;
               }
+              break;
             }
             default: break;
           }
@@ -1817,6 +1825,8 @@ namespace hookflash
       {
         typedef Dialog::DialogStates DialogStates;
 
+        AutoRecursiveLock lock(getStepLock());
+
         CallLocationPtr picked;
         CallLocationPtr early;
         bool mediaHolding = false;
@@ -1853,6 +1863,8 @@ namespace hookflash
             ZS_LOG_DEBUG(log("waiting for media to be ready"))
             return;
           }
+
+          AutoRecursiveLock lock(getMediaLock());
 
           picked = mPickedLocation;
           early = mEarlyLocation;
@@ -1949,7 +1961,7 @@ namespace hookflash
             mEarlyLocation = early;
           }
           if ((picked) && (!mPickedLocation)) {
-            ZS_LOG_DEBUG(log("this call now has a picked location"))
+            ZS_LOG_DEBUG(log("this call now has a picked location") + CallLocation::toDebugString(picked, false, true))
             mPickedLocation = picked;
             mEarlyLocation.reset();
           }
