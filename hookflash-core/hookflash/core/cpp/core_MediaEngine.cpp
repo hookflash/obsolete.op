@@ -564,7 +564,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void MediaEngine::setLogLevel()
       {
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
+//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Detail);
       }
 
       //---------------------------------------------------------------------
@@ -2388,6 +2388,8 @@ namespace hookflash
           return -1;
         }
 #else
+//        width = 240;
+//        height = 320;
         width = 640;
         height = 480;
         maxFramerate = 15;
