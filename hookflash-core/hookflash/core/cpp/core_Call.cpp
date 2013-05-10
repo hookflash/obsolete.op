@@ -1851,6 +1851,11 @@ namespace hookflash
             return;
           }
 
+          if (CallClosedReason_None != mClosedReason) {
+            ZS_LOG_WARNING(Detail, log("call close reason set thus call must be shutdown") + ", reason=" + ICall::toString(mClosedReason))
+            goto call_closed_exception;
+          }
+
           needCandidates = !mDialog;
         }
 
