@@ -884,7 +884,9 @@ namespace hookflash
           if (!mListenSocket) {
             mListenSocket = Socket::createTCP();
             try {
+#ifndef __QNX__
               mListenSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
             } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
             }
             mListenSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
@@ -1154,7 +1156,9 @@ namespace hookflash
               return;
 
             try {
+#ifndef __QNX__
               mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
             } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
             }
 
@@ -1360,7 +1364,9 @@ namespace hookflash
 
           mTelnetSocket = Socket::createTCP();
           try {
+#ifndef __QNX__
             mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
           } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
           }
           mTelnetSocket->setBlocking(false);

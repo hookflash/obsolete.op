@@ -1422,7 +1422,9 @@ namespace hookflash
                 server->mTCPSocket = Socket::createTCP();
                 server->mTCPSocket->setBlocking(false);
                 try {
+#ifndef __QNX__
                   server->mTCPSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
                 } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
                 }
                 server->mTCPSocket->setDelegate(mThisWeak.lock());
