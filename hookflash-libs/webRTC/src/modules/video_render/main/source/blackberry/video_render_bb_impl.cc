@@ -416,6 +416,7 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
                                 _ptrWindowWrapper->GetParentWindowId());
   int usage;
   int format = SCREEN_FORMAT_RGBX8888;
+  int zorder = -1;
   EGLint interval = 1;
   int rc, num_configs;
 
@@ -426,7 +427,7 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
                           EGL_RENDERABLE_TYPE, 0,
                           EGL_NONE};
 
-  usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION;
+  usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION | SCREEN_USAGE_VIDEO | SCREEN_USAGE_NATIVE;
   attrib_list[9] = EGL_OPENGL_ES2_BIT;
   EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
 
@@ -449,6 +450,9 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_FORMAT, &format);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)"); }
+
+  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_ZORDER, &zorder);
+  if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_ZORDER)"); }
 
   rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_USAGE, &usage);
   if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)"); }
