@@ -93,8 +93,8 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _eglConfig(NULL),
     _eglContext(NULL),
     _eglSurface(NULL),
-    _windowWidth(640),
-    _windowHeight(480),
+    _windowWidth(768),
+    _windowHeight(1280),
     _glInitialized(false),
     _started(false),
     _stopped(false),
@@ -422,11 +422,6 @@ void VideoRenderBlackBerry::GLThreadRun() {
   bps_initialize();
 
   CreateGLWindow();
-
-  int size[2];
-  int r = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
-  _windowWidth = size[0];
-  _windowHeight = size[1];
 
   screen_request_events(_screen_ctx);
 
