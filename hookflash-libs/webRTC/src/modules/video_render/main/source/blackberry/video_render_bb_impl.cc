@@ -21,6 +21,7 @@
 #include <EGL/egl.h>
 #include <pthread.h>
 #include <unistd.h>
+#include <errno.h>
 
 #include "bb_window_wrapper.h"
 
@@ -87,6 +88,7 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _renderType(videoRenderType),
     _ptrWindowWrapper((BlackberryWindowWrapper*)(window)),
     _ptrGLWindow(NULL),
+    _ptrDisplay(NULL),
     _eglDisplay(NULL),
     _eglConfig(NULL),
     _eglContext(NULL),
@@ -94,6 +96,7 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _windowWidth(640),
     _windowHeight(480),
     _glInitialized(false),
+    _started(false),
     _stopped(false),
     _streamsMap()
 {
@@ -107,6 +110,13 @@ VideoRenderBlackBerry::~VideoRenderBlackBerry() {
            = _streamsMap.Next(item)) { // Delete streams
     delete static_cast<BlackberryRenderCallback*> (item->GetItem());
   }
+}
+
+WebRtc_Word32 VideoRenderBlackBerry::Init()
+{
+  CreateGLThread();
+
+  return 0;
 }
 
 WebRtc_Word32 VideoRenderBlackBerry::ChangeUniqueId(const WebRtc_Word32 id) {
@@ -183,16 +193,15 @@ WebRtc_Word32 VideoRenderBlackBerry::StartRender() {
 
   unsigned int tId = 0;
 
-  CreateGLThread();
+  _started = true;
 
   return 0;
 }
 
 WebRtc_Word32 VideoRenderBlackBerry::StopRender() {
   WEBRTC_TRACE(kTraceInfo, kTraceVideoRenderer, _id, "%s:", __FUNCTION__);
-  {
-    CriticalSectionScoped cs(&_critSect);
-  }
+
+  CriticalSectionScoped cs(&_critSect);
 
   _stopped = true;
 
@@ -207,25 +216,81 @@ void VideoRenderBlackBerry::ReDraw() {
 void VideoRenderBlackBerry::OnBBRenderEvent() {
   CriticalSectionScoped cs(&_critSect);
 
-  if(_ptrGLWindow) {
-    if(!_glInitialized) {
-      _glInitialized = true;
-      glViewport(0, 0, _windowWidth, _windowHeight);
-    }
-    glClearColor(0.0, 1.0, 0.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  if(!_glInitialized) {
 
-    MapItem* item = _streamsMap.First();
-    while(item) {
-      if(item->GetItem()) {
-        BlackberryRenderCallback* callback = (BlackberryRenderCallback*) item->GetItem();
-        callback->RenderToGL();
-      }
-      item = _streamsMap.Next(item);
-    }
+    int rc;
+    EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+    EGLint attrib_list[]= { EGL_RED_SIZE,        8,
+                            EGL_GREEN_SIZE,      8,
+                            EGL_BLUE_SIZE,       8,
+                            EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
+                            EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+                            EGL_NONE};
 
-    eglSwapBuffers(_eglDisplay, _eglSurface);
+    _eglContext = eglCreateContext(_eglDisplay, _eglConfig, EGL_NO_CONTEXT, attributes);
+    if (_eglContext == EGL_NO_CONTEXT) { LOG_ERROR("eglCreateContext"); return; }
+
+    rc = screen_create_window_type(&_ptrGLWindow, _screen_ctx, SCREEN_CHILD_WINDOW);
+    if (rc != 0) { LOG_ERROR("screen_create_window_type"); return; }
+
+	int format = SCREEN_FORMAT_RGBA8888;
+	rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_FORMAT, &format);
+	if (rc) { LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)"); return; }
+
+    int zorder = -1;
+    rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_ZORDER, &zorder);
+    if (rc) { LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_ZORDER)"); return; }
+
+    int size[2];
+    size[0] = 768;
+    size[1] = 1280;
+    rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_BUFFER_SIZE, size);
+    if (rc) { LOG_ERROR("screen_set_window_property_iv"); return; }
+
+    rc = screen_create_window_buffers(_ptrGLWindow, 2);
+    if (rc) { LOG_ERROR("screen_create_window_buffers"); return; }
+
+    int usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION;
+    rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_USAGE, &usage);
+    if (rc) { LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)"); return; }
+
+    _eglSurface = eglCreateWindowSurface(_eglDisplay, _eglConfig, _ptrGLWindow, NULL);
+    if (_eglSurface == EGL_NO_SURFACE) { LOG_ERROR("eglCreateWindowSurface"); return; }
+
+    rc = eglMakeCurrent(_eglDisplay, _eglSurface, _eglSurface, _eglContext);
+    if (rc != EGL_TRUE) { LOG_ERROR("eglMakeCurrent"); return; }
+
+    EGLint interval = 1;
+    rc = eglSwapInterval(_eglDisplay, interval);
+    if (rc != EGL_TRUE) { LOG_ERROR("eglSwapInterval"); return; }
+
+    rc = screen_join_window_group(_ptrGLWindow, _ptrWindowWrapper->GetGroupId());
+    if (rc != 0) { LOG_ERROR("screen_join_window_group"); return; }
+
+    rc = screen_set_window_property_cv(_ptrGLWindow,
+                                  SCREEN_PROPERTY_ID_STRING,
+                                  strlen(_ptrWindowWrapper->GetParentWindowId()),
+                                  _ptrWindowWrapper->GetParentWindowId());
+    if (rc != 0) { LOG_ERROR("screen_set_window_property_cv"); return; }
+
+    glViewport(0, 0, _windowWidth, _windowHeight);
+
+    _glInitialized = true;
   }
+
+  glClearColor(0.0, 1.0, 0.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  MapItem* item = _streamsMap.First();
+  while(item) {
+    if(item->GetItem()) {
+      BlackberryRenderCallback* callback = (BlackberryRenderCallback*) item->GetItem();
+      callback->RenderToGL();
+    }
+    item = _streamsMap.Next(item);
+  }
+
+  eglSwapBuffers(_eglDisplay, _eglSurface);
 }
 
 VideoRenderType VideoRenderBlackBerry::RenderType() {
@@ -353,12 +418,13 @@ void* VideoRenderBlackBerry::GLThread(void* arg) {
 }
 
 void VideoRenderBlackBerry::GLThreadRun() {
+
   bps_initialize();
 
   CreateGLWindow();
 
   int size[2];
-  screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
+  int r = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
   _windowWidth = size[0];
   _windowHeight = size[1];
 
@@ -368,6 +434,7 @@ void VideoRenderBlackBerry::GLThreadRun() {
 
   while (!_stopped) {
     do {
+
       //Request and process BPS next available event
       event = NULL;
       int returnCode = bps_get_event(&event, 0);
@@ -379,6 +446,11 @@ void VideoRenderBlackBerry::GLThreadRun() {
         }
       }
     } while (event);
+
+    if (!_started) {
+  	  usleep(50);
+  	  continue;
+    }
 
     if (_stopped) {
       break;
@@ -404,32 +476,18 @@ void VideoRenderBlackBerry::GLThreadRun() {
 
 bool VideoRenderBlackBerry::CreateGLWindow() {
 
-  int status = screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT);
+  int rc;
 
-  status = screen_create_window_type(&_ptrGLWindow, _screen_ctx, SCREEN_CHILD_WINDOW);
-
-  status = screen_join_window_group(_ptrGLWindow, _ptrWindowWrapper->GetGroupId());
-
-  status = screen_set_window_property_cv(_ptrGLWindow,
-                                SCREEN_PROPERTY_ID_STRING,
-                                strlen(_ptrWindowWrapper->GetParentWindowId()),
-                                _ptrWindowWrapper->GetParentWindowId());
-  int usage;
-  int format = SCREEN_FORMAT_RGBX8888;
-  int zorder = -1;
-  EGLint interval = 1;
-  int rc, num_configs;
+  rc = screen_create_context(&_screen_ctx, SCREEN_APPLICATION_CONTEXT);
+  if (rc != 0) { return LOG_ERROR("screen_create_context"); }
 
   EGLint attrib_list[]= { EGL_RED_SIZE,        8,
                           EGL_GREEN_SIZE,      8,
                           EGL_BLUE_SIZE,       8,
+                          EGL_DEPTH_SIZE, 	   16,
                           EGL_SURFACE_TYPE,    EGL_WINDOW_BIT,
-                          EGL_RENDERABLE_TYPE, 0,
+                          EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
                           EGL_NONE};
-
-  usage = SCREEN_USAGE_OPENGL_ES2 | SCREEN_USAGE_ROTATION | SCREEN_USAGE_VIDEO | SCREEN_USAGE_NATIVE;
-  attrib_list[9] = EGL_OPENGL_ES2_BIT;
-  EGLint attributes[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
 
   _eglDisplay = eglGetDisplay(EGL_DEFAULT_DISPLAY);
   if (_eglDisplay == EGL_NO_DISPLAY) { return LOG_ERROR("eglGetDisplay"); }
@@ -438,43 +496,11 @@ bool VideoRenderBlackBerry::CreateGLWindow() {
   if (rc != EGL_TRUE) { return LOG_ERROR("eglInitialize"); }
 
   rc = eglBindAPI(EGL_OPENGL_ES_API);
+  if (rc != EGL_TRUE) { return LOG_ERROR("eglBindAPI"); }
 
-  if (rc != EGL_TRUE) { return LOG_ERROR("eglBindApi"); }
-
-  if(!eglChooseConfig(_eglDisplay, attrib_list, &_eglConfig, 1, &num_configs)) { return LOG_ERROR("eglChooseConfig"); }
-
-  _eglContext = eglCreateContext(_eglDisplay, _eglConfig, EGL_NO_CONTEXT, attributes);
-  if (_eglContext == EGL_NO_CONTEXT) { return LOG_ERROR("eglCreateContext"); }
-
-//  _ptrGLWindow = _ptrWindowWrapper->GetWindow();
-
-  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_FORMAT, &format);
-  if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_FORMAT)"); }
-
-  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_ZORDER, &zorder);
-  if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_ZORDER)"); }
-
-  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_USAGE, &usage);
-  if (rc) { return LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_USAGE)"); }
-
-  int size[2];
-  rc = screen_get_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_SIZE, size);
-  if (rc) { return LOG_ERROR("screen_get_window_property_iv SIZE"); }
-
-  rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_BUFFER_SIZE, size);
-  if (rc) { return LOG_ERROR("screen_set_window_property_iv"); }
-
-  rc = screen_create_window_buffers(_ptrGLWindow, 2);
-  if (rc) { return LOG_ERROR("screen_create_window_buffers"); }
-
-  _eglSurface = eglCreateWindowSurface(_eglDisplay, _eglConfig, _ptrGLWindow, NULL);
-  if (_eglSurface == EGL_NO_SURFACE) { return LOG_ERROR("eglCreateWindowSurface"); }
-
-  rc = eglMakeCurrent(_eglDisplay, _eglSurface, _eglSurface, _eglContext);
-  if (rc != EGL_TRUE) { return LOG_ERROR("eglMakeCurrent"); }
-
-  rc = eglSwapInterval(_eglDisplay, interval);
-  if (rc != EGL_TRUE) { return LOG_ERROR("eglSwapInterval"); }
+  int num_configs;
+  rc = eglChooseConfig(_eglDisplay, attrib_list, &_eglConfig, 1, &num_configs);
+  if (rc != EGL_TRUE) { return LOG_ERROR("eglChooseConfig"); }
 
   return true;
 }

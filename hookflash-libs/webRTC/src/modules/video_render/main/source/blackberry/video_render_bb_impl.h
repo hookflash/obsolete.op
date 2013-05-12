@@ -72,7 +72,7 @@ class VideoRenderBlackBerry : IVideoRender
 
   virtual ~VideoRenderBlackBerry();
 
-  virtual WebRtc_Word32 Init() { return 1; }
+  virtual WebRtc_Word32 Init();
 
   virtual WebRtc_Word32 ChangeUniqueId(const WebRtc_Word32 id);
 
@@ -171,7 +171,8 @@ class VideoRenderBlackBerry : IVideoRender
   VideoRenderType _renderType;
   BlackberryWindowWrapper* _ptrWindowWrapper;
   screen_context_t _screen_ctx;
-  _screen_window* _ptrGLWindow;
+  screen_window_t _ptrGLWindow;
+  screen_display_t _ptrDisplay;
   EGLDisplay _eglDisplay;
   EGLConfig _eglConfig;
   EGLContext _eglContext;
@@ -180,6 +181,7 @@ class VideoRenderBlackBerry : IVideoRender
   int _windowWidth;
   int _windowHeight;
   bool _glInitialized;
+  bool _started;
   bool _stopped;
 
 
