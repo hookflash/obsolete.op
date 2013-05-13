@@ -310,7 +310,10 @@ void VideoRenderOpenGles20::checkGlError(const char* op) {
                  "after %s() glError (0x%x)\n", op, error);
   }
 #else
-  return;
+  for (GLint error = glGetError(); error; error = glGetError()) {
+    WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
+                 "after %s() glError (0x%x)\n", op, error);
+  }
 #endif
 }
 
@@ -383,6 +386,9 @@ void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
   GLuint currentTextureId = _textureIds[0]; // Y
   glActiveTexture( GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE,
+               (const GLvoid*) frameToRender.Buffer());
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_LUMINANCE,
                   GL_UNSIGNED_BYTE, (const GLvoid*) frameToRender.Buffer());
 
@@ -390,6 +396,8 @@ void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
   glActiveTexture( GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
   const WebRtc_UWord8* uComponent = frameToRender.Buffer() + width * height;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width / 2, height / 2,
                   GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
 
@@ -397,6 +405,8 @@ void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
   glActiveTexture( GL_TEXTURE2);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
   const WebRtc_UWord8* vComponent = uComponent + (width * height) / 4;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) vComponent);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width / 2, height / 2,
                   GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) vComponent);
   checkGlError("UpdateTextures");
