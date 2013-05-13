@@ -231,22 +231,37 @@
   
     if (_index == FRONT_CAMERA_INDEX)
     {
-        if ([_machineName hasPrefix:@"iPod"])
+        if ([_machineName compare:@"iPod" options:NSLiteralSearch] != NSOrderedAscending) // iPod
         {
             _captureWidth = 640;
             _captureHeight = 480;
         }
-        else if ([_machineName hasPrefix:@"iPhone5"])
+        else if ([_machineName compare:@"iPhone5" options:NSLiteralSearch] != NSOrderedAscending) // iPhone 5
         {
             _captureWidth = 1280;
             _captureHeight = 720;
         }
-        else if ([_machineName hasPrefix:@"iPhone"])
+        else if ([_machineName compare:@"iPhone" options:NSLiteralSearch] != NSOrderedAscending) // iPhone
         {
             _captureWidth = 640;
             _captureHeight = 480;
         }
-        else if ([_machineName hasPrefix:@"iPad"])
+        else if ([_machineName compare:@"iPad3,4" options:NSLiteralSearch] != NSOrderedAscending) // iPad 4
+        {
+            _captureWidth = 1280;
+            _captureHeight = 720;
+        }
+        else if ([_machineName compare:@"iPad3" options:NSLiteralSearch] != NSOrderedAscending) // iPad 3
+        {
+            _captureWidth = 640;
+            _captureHeight = 480;
+        }
+        else if ([_machineName compare:@"iPad2,5" options:NSLiteralSearch] != NSOrderedAscending) // iPad mini
+        {
+            _captureWidth = 1280;
+            _captureHeight = 720;
+        }
+        else if ([_machineName compare:@"iPad" options:NSLiteralSearch] != NSOrderedAscending) // iPad
         {
             _captureWidth = 640;
             _captureHeight = 480;
@@ -254,27 +269,27 @@
     }
     else if (_index == BACK_CAMERA_INDEX)
     {
-        if ([_machineName hasPrefix:@"iPod"])
+        if ([_machineName compare:@"iPod" options:NSLiteralSearch] != NSOrderedAscending) // iPod
         {
             _captureWidth = 1280;
             _captureHeight = 720;
         }
-        else if ([_machineName hasPrefix:@"iPhone5"])
+        else if ([_machineName compare:@"iPhone5" options:NSLiteralSearch] != NSOrderedAscending) // iPhone 5
         {
             _captureWidth = 1920;
             _captureHeight = 1080;
         }
-        else if ([_machineName hasPrefix:@"iPhone"])
+        else if ([_machineName compare:@"iPhone" options:NSLiteralSearch] != NSOrderedAscending) // iPhone
         {
             _captureWidth = 1280;
             _captureHeight = 720;
         }
-        else if ([_machineName hasPrefix:@"iPad3"])
+        else if ([_machineName compare:@"iPad2,5" options:NSLiteralSearch] != NSOrderedAscending) // iPad mini
         {
             _captureWidth = 1920;
             _captureHeight = 1080;
         }
-        else if ([_machineName hasPrefix:@"iPad"])
+        else if ([_machineName compare:@"iPad" options:NSLiteralSearch] != NSOrderedAscending) // iPad
         {
             _captureWidth = 1280;
             _captureHeight = 720;
@@ -302,8 +317,8 @@
 /// ***** Returns 0 on success, -1 otherwise.
 - (NSNumber*)startCapture{
     
-    NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
-    self.faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
+//    NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
+//    self.faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
     
     webrtc::Trace::Add(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, 0,
                  "%s:%d", __FUNCTION__, __LINE__);
