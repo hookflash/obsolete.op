@@ -199,7 +199,7 @@ int VideoChannelUIView::DeliverFrame(unsigned char* buffer, int bufferSize, unsi
     CGImageRelease(cgImage);
   
     UIImageView* windowRef = _owner->getWindowReference();
-    [windowRef setFrame:CGRectMake(windowRef.frame.origin.x, windowRef.frame.origin.y, image.size.width, image.size.height)];
+    //[windowRef setFrame:CGRectMake(windowRef.frame.origin.x, windowRef.frame.origin.y, image.size.width, image.size.height)];
     [windowRef performSelectorOnMainThread:@selector(setImage:)
                               withObject:image waitUntilDone:NO];
   
