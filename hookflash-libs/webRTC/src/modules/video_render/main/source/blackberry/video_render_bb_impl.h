@@ -149,8 +149,8 @@ class VideoRenderBlackBerry : IVideoRender
  protected:
 
   bool CreateGLThread();
-  static void* GLThread(void* pThis);
-  void GLThreadRun();
+  static bool GLThread(void* pThis);
+  bool GLThreadRun();
 
   bool CreateGLWindow();
   bool CleanUpGLWindow();
@@ -177,6 +177,7 @@ class VideoRenderBlackBerry : IVideoRender
   EGLConfig _eglConfig;
   EGLContext _eglContext;
   EGLSurface _eglSurface;
+  ThreadWrapper* _GLRenderThreadPtr;
 
   int _windowWidth;
   int _windowHeight;

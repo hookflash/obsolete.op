@@ -93,6 +93,7 @@ VideoRenderBlackBerry::VideoRenderBlackBerry(
     _eglConfig(NULL),
     _eglContext(NULL),
     _eglSurface(NULL),
+    _GLRenderThreadPtr(NULL),
     _windowWidth(768),
     _windowHeight(1280),
     _glInitialized(false),
@@ -114,7 +115,13 @@ VideoRenderBlackBerry::~VideoRenderBlackBerry() {
 
 WebRtc_Word32 VideoRenderBlackBerry::Init()
 {
+
+
+
   CreateGLThread();
+  //bps_initialize();
+
+  //CreateGLWindow();
 
   return 0;
 }
@@ -193,7 +200,9 @@ WebRtc_Word32 VideoRenderBlackBerry::StartRender() {
 
   unsigned int tId = 0;
 
-  _started = true;
+  //_started = true;
+
+  //CreateGLThread();
 
   return 0;
 }
@@ -406,22 +415,43 @@ BlackberryRenderCallback* VideoRenderBlackBerry::CreateRenderChannel(
 }
 
 bool VideoRenderBlackBerry::CreateGLThread() {
-  pthread_t threadId;
-  pthread_create(&threadId, NULL, VideoRenderBlackBerry::GLThread, (void*) this);
-  return true;
+//  pthread_t threadId;
+//  pthread_create(&threadId, NULL, VideoRenderBlackBerry::GLThread, (void*) this);
+//  return true;
+
+  _GLRenderThreadPtr = ThreadWrapper::CreateThread(GLThread, this,
+                                                    kRealtimePriority,
+                                                    "BlackberryGLRenderThread");
+    if (!_GLRenderThreadPtr) {
+      return -1;
+    }
+
+    unsigned int tId = 0;
+    _GLRenderThreadPtr->Start(tId);
+
+    return true;
+
 }
 
-void* VideoRenderBlackBerry::GLThread(void* arg) {
+bool VideoRenderBlackBerry::GLThread(void* arg) {
   VideoRenderBlackBerry* pThis = (VideoRenderBlackBerry*) arg;
   pThis->GLThreadRun();
   return 0;
 }
 
-void VideoRenderBlackBerry::GLThreadRun() {
+bool VideoRenderBlackBerry::GLThreadRun() {
 
-  bps_initialize();
+	{
+	  CriticalSectionScoped cs(&_critSect);
+	  bps_initialize();
 
-  CreateGLWindow();
+	  CreateGLWindow();
+	}
+
+	if (!_started) {
+	  sleep(1);
+	  _started = true;
+	}
 
   screen_request_events(_screen_ctx);
 
@@ -443,7 +473,7 @@ void VideoRenderBlackBerry::GLThreadRun() {
     } while (event);
 
     if (!_started) {
-  	  usleep(50);
+  	  sleep(1);
   	  continue;
     }
 
@@ -467,6 +497,8 @@ void VideoRenderBlackBerry::GLThreadRun() {
 
   // Destroy libscreen context
   screen_destroy_context(_screen_ctx);
+
+  return true;
 }
 
 bool VideoRenderBlackBerry::CreateGLWindow() {
