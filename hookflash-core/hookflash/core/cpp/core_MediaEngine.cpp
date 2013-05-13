@@ -2223,7 +2223,9 @@ namespace hookflash
 #ifdef TARGET_OS_IPHONE
         String iPadString("iPad");
         String iPad2String("iPad2");
+        String iPadMiniString("iPad2,5");
         String iPad3String("iPad3");
+        String iPad4String("iPad3,4");
         String iPhoneString("iPhone");
         String iPhone4SString("iPhone4,1");
         String iPhone5String("iPhone5");
@@ -2256,7 +2258,7 @@ namespace hookflash
               height = 90;
               maxFramerate = 5;
               maxBitrate = 100;
-            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
               width = 480;
               height = 270;
               maxFramerate = 15;
@@ -2296,7 +2298,7 @@ namespace hookflash
               height = 160;
               maxFramerate = 5;
               maxBitrate = 100;
-            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
               width = 270;
               height = 480;
               maxFramerate = 15;
@@ -2338,6 +2340,21 @@ namespace hookflash
               height = 120;
               maxFramerate = 5;
               maxBitrate = 100;
+            } else if (mMachineName.compare(0, iPad4String.size(), iPad4String) >= 0) {
+              width = 320;
+              height = 180;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+              width = 320;
+              height = 240;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
+              width = 320;
+              height = 180;
+              maxFramerate = 15;
+              maxBitrate = 250;
             } else if (mMachineName.compare(0, iPadString.size(), iPadString) >= 0) {
               width = 320;
               height = 240;
@@ -2373,6 +2390,21 @@ namespace hookflash
               height = 160;
               maxFramerate = 5;
               maxBitrate = 100;
+            } else if (mMachineName.compare(0, iPad4String.size(), iPad4String) >= 0) {
+              width = 180;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+              width = 240;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
+              width = 180;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
             } else if (mMachineName.compare(0, iPadString.size(), iPadString) >= 0) {
               width = 240;
               height = 320;
