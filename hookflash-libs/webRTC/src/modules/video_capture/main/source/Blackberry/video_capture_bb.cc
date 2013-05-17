@@ -47,7 +47,9 @@
 #include "trace.h"
 #include "thread_wrapper.h"
 #include "critical_section_wrapper.h"
-//#include "libyuv.h"
+#include "libyuv.h"
+
+//#define NEON_SCALING
 
 namespace webrtc
 {
@@ -76,12 +78,21 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
     int64_t uv_stride = frame_desc.uv_stride;
 
     VideoCaptureCapability frame_info;
+#ifdef NEON_SCALING
+    frame_info.width = width >> 2;
+    frame_info.height = height >> 2;
+#else
     frame_info.width = width;
     frame_info.height = height;
+#endif
     frame_info.rawType = kVideoI420;
 
     WebRtc_Word32 output_buffer_size = width * height * 3 / 2;
+#ifdef NEON_SCALING
+    WebRtc_UWord8* output_buffer = NULL;
+#else
     WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
+#endif
 
     WebRtc_UWord8* source_data_y = frame_buffer;
     WebRtc_UWord8* source_data_uv = frame_buffer + uv_offset;
@@ -89,6 +100,9 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
     WebRtc_UWord8* destination_data_u = output_buffer + width * height;
     WebRtc_UWord8* destination_data_v = output_buffer + width * height * 5 / 4;
 
+#ifdef NEON_SCALING
+    libyuv::ConvertNV12ToI420AndScaleFrameQuad(width, height, source_data_y, source_data_uv);
+#else
     // Y
     for (int i = 0; i < (int)height; i++)
     {
@@ -110,13 +124,15 @@ void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_
         destination_data_u += width >> 1;
         destination_data_v += width >> 1;
     }
+#endif
 
-//    ConvertNV12ToI420AndScaleFrameQuad(width, height, source_data_y, source_data_uv);
-
+#ifdef NEON_SCALING
+	video_capture_module->IncomingFrameBB((unsigned char*)source_data_y, output_buffer_size, frame_info);
+#else
 	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
 
 	free(output_buffer);
-
+#endif
 	capture_crit_sect->Leave();
 }
 
@@ -205,82 +221,13 @@ WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 
     _cameraHandle = cameraHandle;
 
-//    unsigned int numasked = 0;
-//    unsigned int numsupported;
-//    camera_res_t* resolutions = NULL;
-//
-//    error = camera_get_video_output_resolutions(cameraHandle, numasked, &numsupported, resolutions);
-//    if (error != CAMERA_EOK)
-//    {
-//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot get camera resolutions - error: %d", error);
-//    	return -1;
-//    }
-//
-//    numasked = numsupported;
-//    resolutions = (camera_res_t*)malloc(numasked * sizeof(camera_res_t));
-//
-//    error = camera_get_video_output_resolutions(cameraHandle, numasked, &numsupported, resolutions);
-//    if (error != CAMERA_EOK)
-//    {
-//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot get camera resolutions - error: %d", error);
-//    	return -1;
-//    }
-//
-//    free(resolutions);
-/*
     error = camera_set_video_property(cameraHandle,
-//        CAMERA_IMGPROP_WIDTH, 240,
-//        CAMERA_IMGPROP_HEIGHT, 320,
-        CAMERA_IMGPROP_WIDTH, 720,
-        CAMERA_IMGPROP_HEIGHT, 1280,
-//        CAMERA_IMGPROP_ROTATION, 90,
         CAMERA_IMGPROP_FRAMERATE, (double)15.0);
-//    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_WIDTH, 240,
-//    		CAMERA_IMGPROP_HEIGHT, 320);
-//    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_ROTATION, 90);
-//    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
-//    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_VIDEOCODEC, CAMERA_VIDEOCODEC_H264);
-//    error = camera_set_video_property(cameraHandle,
-//    		CAMERA_IMGPROP_AUDIOCODEC, CAMERA_AUDIOCODEC_NONE);
     if (error != CAMERA_EOK)
     {
         WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
         return -1;
     }
-*/
-/*
-    error = camera_set_video_property(cameraHandle,
-    		CAMERA_IMGPROP_WIDTH, 240,
-    		CAMERA_IMGPROP_HEIGHT, 320,
-    		CAMERA_IMGPROP_ROTATION, 90,
-    		CAMERA_IMGPROP_FRAMERATE, (double)15.0);
-    if (error != CAMERA_EOK)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
-        return -1;
-    }
-*/
-/*
-    error = camera_set_videovf_property(cameraHandle,
-    		CAMERA_IMGPROP_WIN_GROUPID, "viewfinder_window_group",
-    		CAMERA_IMGPROP_WIN_ID, "");
-	if (error != CAMERA_EOK)
-	{
-		WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video viewfinder properties - error: %d", error);
-		return -1;
-	}
-*/
-
-//    error = camera_init_video_encoder();
-//    if (error != CAMERA_EOK)
-//    {
-//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot init video encoder - error: %d", error);
-//        return -1;
-//    }
 
     return 0;
 }
@@ -316,17 +263,6 @@ WebRtc_Word32 VideoCaptureModuleBB::StartCapture(
         return -1;
     }
 
-//    error = camera_start_encode(_cameraHandle,
-//    		NULL,
-//    		encoded_video_callback,
-//            NULL,
-//            NULL,
-//            NULL);
-//    if (error != CAMERA_EOK) {
-//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot start encoding - error: %d", error);
-//        return -1;
-//    }
-
     _captureStarted = true;
 
     return 0;
@@ -335,12 +271,6 @@ WebRtc_Word32 VideoCaptureModuleBB::StartCapture(
 WebRtc_Word32 VideoCaptureModuleBB::StopCapture()
 {
     camera_error_t error;
-
-//    error = camera_stop_encode(_cameraHandle);
-//    if (error != CAMERA_EOK) {
-//        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot stop video encoding - error: %d", error);
-//        return -1;
-//    }
 
     error = camera_stop_video_viewfinder(_cameraHandle);
     if (error != CAMERA_EOK) {
