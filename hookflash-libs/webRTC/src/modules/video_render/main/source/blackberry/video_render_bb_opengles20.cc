@@ -19,17 +19,7 @@ using namespace std;
 
 #include "video_render_bb_opengles20.h"
 
-//#define ANDROID_LOG
-
-#ifdef ANDROID_LOG
-#include <stdio.h>
-#include <android/log.h>
-
-#undef WEBRTC_TRACE
-#define WEBRTC_TRACE(a,b,c,...)  __android_log_print(ANDROID_LOG_DEBUG, "*WEBRTCN*", __VA_ARGS__)
-#else
 #include "trace.h"
-#endif
 
 namespace webrtc {
 
@@ -304,17 +294,10 @@ void VideoRenderOpenGles20::printGLString(const char *name, GLenum s) {
 }
 
 void VideoRenderOpenGles20::checkGlError(const char* op) {
-#ifdef ANDROID_LOG
   for (GLint error = glGetError(); error; error = glGetError()) {
     WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
                  "after %s() glError (0x%x)\n", op, error);
   }
-#else
-  for (GLint error = glGetError(); error; error = glGetError()) {
-    WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
-                 "after %s() glError (0x%x)\n", op, error);
-  }
-#endif
 }
 
 void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
@@ -337,6 +320,9 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
+
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0,
                GL_LUMINANCE, GL_UNSIGNED_BYTE,
                (const GLvoid*) frameToRender.Buffer());
@@ -351,6 +337,9 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
+
   const WebRtc_UWord8* uComponent = frameToRender.Buffer() + width * height;
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
                GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
@@ -361,8 +350,12 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
 
   const WebRtc_UWord8* vComponent = uComponent + (width * height) / 4;
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,

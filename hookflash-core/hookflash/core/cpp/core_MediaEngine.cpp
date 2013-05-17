@@ -2420,10 +2420,8 @@ namespace hookflash
           return -1;
         }
 #else
-//        width = 240;
-//        height = 320;
-        width = 640;
-        height = 480;
+        width = 180;
+        height = 320;
         maxFramerate = 15;
         maxBitrate = 250;
 #endif

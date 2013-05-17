@@ -251,8 +251,8 @@ void VideoRenderBlackBerry::OnBBRenderEvent() {
     if (rc) { LOG_ERROR("screen_set_window_property_iv(SCREEN_PROPERTY_ZORDER)"); return; }
 
     int size[2];
-    size[0] = 768;
-    size[1] = 1280;
+    size[0] = _windowWidth;
+    size[1] = _windowHeight;
     rc = screen_set_window_property_iv(_ptrGLWindow, SCREEN_PROPERTY_BUFFER_SIZE, size);
     if (rc) { LOG_ERROR("screen_set_window_property_iv"); return; }
 
@@ -276,10 +276,11 @@ void VideoRenderBlackBerry::OnBBRenderEvent() {
     rc = screen_join_window_group(_ptrGLWindow, _ptrWindowWrapper->GetGroupId());
     if (rc != 0) { LOG_ERROR("screen_join_window_group"); return; }
 
+    char* windowId = "viewfinder";
     rc = screen_set_window_property_cv(_ptrGLWindow,
                                   SCREEN_PROPERTY_ID_STRING,
-                                  strlen(_ptrWindowWrapper->GetParentWindowId()),
-                                  _ptrWindowWrapper->GetParentWindowId());
+                                  strlen(windowId),
+                                  windowId);
     if (rc != 0) { LOG_ERROR("screen_set_window_property_cv"); return; }
 
     glViewport(0, 0, _windowWidth, _windowHeight);
