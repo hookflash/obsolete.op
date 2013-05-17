@@ -87,11 +87,11 @@ namespace hookflash
       enum SessionStates
       {
         SessionState_Pending,
-        SessionState_WaitingAttachment,
+        SessionState_WaitingAttachmentOfDelegate,
         SessionState_WaitingForBrowserWindowToBeLoaded,
         SessionState_WaitingForBrowserWindowToBeMadeVisible,
         SessionState_WaitingForBrowserWindowToClose,
-        SessionState_WaitingAssociationToLockbox,
+        SessionState_WaitingLoginOrAssociationToLockbox,
         SessionState_ReadyAsLoginNotNeeded,
         SessionState_Ready,
         SessionState_Shutdown,
@@ -103,14 +103,16 @@ namespace hookflash
 
       // use when the identity URI is known (or partially known), provider is required if type is legacy
       static IServiceIdentitySessionPtr loginWithIdentity(
+                                                          IServiceLockboxSessionPtr existingLockbox,            // pass NULL IServiceLockboxSessionPtr() if non exists
                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                           const char *outerFrameURLUponReload,
                                                           const char *identityURI,
-                                                          IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
+                                                          IServiceIdentityPtr provider = IServiceIdentityPtr()  // required if identity URI does not have domain
                                                           );
 
       // use when provider is known but nothing more
       static IServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                  IServiceLockboxSessionPtr existingLockbox,    // pass NULL IServiceLockboxSessionPtr() if non exists
                                                                   IServiceIdentitySessionDelegatePtr delegate,
                                                                   const char *outerFrameURLUponReload,
                                                                   IServiceIdentityPtr provider,
@@ -119,6 +121,7 @@ namespace hookflash
 
       // use when a signed identity bundle is available
       static IServiceIdentitySessionPtr loginWithIdentityBundle(
+                                                                IServiceLockboxSessionPtr existingLockbox,      // pass NULL IServiceLockboxSessionPtr() if non exists
                                                                 IServiceIdentitySessionDelegatePtr delegate,
                                                                 const char *outerFrameURLUponReload,
                                                                 ElementPtr signedIdentityBundle
@@ -134,11 +137,11 @@ namespace hookflash
                                      ) const = 0;
 
       virtual bool isAttached() const = 0;
-      virtual void attach(
-                          const char *outerFrameURLUponReload,
-                          IServiceIdentitySessionDelegatePtr delegate
-                          ) = 0;
-
+      virtual void attachDelegate(
+                                  IServiceIdentitySessionDelegatePtr delegate,
+                                  const char *outerFrameURLUponReload
+                                  ) = 0;
+      
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
       virtual ElementPtr getSignedIdentityBundle() const = 0;   // must clone if you intend to adopt

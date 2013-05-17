@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/MessageNotify.h>
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
 
 #include <utility>
@@ -45,34 +45,66 @@ namespace hookflash
     {
       namespace identity
       {
-        class IdentityLoginStartRequest : public MessageRequest
+        class IdentityAccessStartNotify : public MessageNotify
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_ClientToken,
+            AttributeType_AgentInfo,
+            AttributeType_IdentityInfo,
+            AttributeType_BrowserVisibility,
+            AttributeType_BrowserPopup,
+            AttributeType_OuterFrameURL,
           };
 
-        public:
-          static IdentityLoginStartRequestPtr convert(MessagePtr message);
+          enum BrowserVisibilities
+          {
+            BrowserVisibility_NA,
 
-          static IdentityLoginStartRequestPtr create();
+            BrowserVisibility_Hidden,
+            BrowserVisibility_Visible,
+            BrowserVisibility_VisibleOnDemand,
+          };
+
+          static const char *toString(BrowserVisibilities visibility);
+
+        public:
+          static IdentityAccessStartNotifyPtr convert(MessagePtr message);
+
+          static IdentityAccessStartNotifyPtr create();
 
           virtual DocumentPtr encode();
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityLoginStart;}
+          virtual Methods method() const                    {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessStart;}
 
-          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentity::singleton();}
+          virtual IMessageFactoryPtr factory() const        {return MessageFactoryIdentity::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const String &clientToken() const           {return mClientToken;}
-          void clientToken(const String &val)         {mClientToken = val;}
+          const AgentInfo &agentInfo() const                {return mAgentInfo;}
+          void agentInfo(const AgentInfo &val)              {mAgentInfo = val;}
+
+          const IdentityInfo &identityInfo() const          {return mIdentityInfo;}
+          void identityInfo(const IdentityInfo &val)        {mIdentityInfo = val;}
+
+          BrowserVisibilities browserVisibility() const     {return mVisibility;}
+          void browserVisibility(BrowserVisibilities val)   {mVisibility = val;}
+
+          bool popup() const                                {return (mPopup > 0);}
+          void popup(bool val)                              {mPopup = (val ? 1 : 0);}
+
+          const String &outerFrameURL() const               {return mOuterFrameURL;}
+          void outerFrameURL(const String &val)             {mOuterFrameURL = val;}
 
         protected:
-          IdentityLoginStartRequest();
+          IdentityAccessStartNotify();
 
-          String mClientToken;
+          AgentInfo mAgentInfo;
+          IdentityInfo mIdentityInfo;
+
+          BrowserVisibilities mVisibility;
+          int mPopup;
+          String mOuterFrameURL;
         };
       }
     }

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */; };
+		0051C45F1745BB940095FD98 /* LockboxAdminWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */; };
+		0051C4601745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */; };
+		0051C4631745BBB10095FD98 /* LockboxAdminWindowResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 0051C4611745BBB00095FD98 /* LockboxAdminWindowResult.h */; };
+		0051C4641745BBB10095FD98 /* LockboxNamespaceGrantWindowResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 0051C4621745BBB00095FD98 /* LockboxNamespaceGrantWindowResult.h */; };
 		0063B84A16CA8E8B00E6DB4D /* stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B69F16CA8E8A00E6DB4D /* stack.cpp */; };
 		0063B84B16CA8E8B00E6DB4D /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6A016CA8E8A00E6DB4D /* stack_Account.cpp */; };
 		0063B84C16CA8E8B00E6DB4D /* stack_AccountFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6A116CA8E8A00E6DB4D /* stack_AccountFinder.cpp */; };
@@ -57,7 +62,7 @@
 		0063B8B616CA8E8B00E6DB4D /* stack_message_messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71416CA8E8A00E6DB4D /* stack_message_messages.cpp */; };
 		0063B8B716CA8E8B00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71716CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp */; };
 		0063B8B816CA8E8B00E6DB4D /* IdentityAccessLockboxUpdateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71816CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateResult.cpp */; };
-		0063B8B916CA8E8B00E6DB4D /* IdentityAccessWindowNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowNotify.cpp */; };
+		0063B8B916CA8E8B00E6DB4D /* IdentityAccessWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowRequest.cpp */; };
 		0063B8BA16CA8E8B00E6DB4D /* IdentityAccessCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71A16CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.cpp */; };
 		0063B8BD16CA8E8B00E6DB4D /* IdentityAccessStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71D16CA8E8A00E6DB4D /* IdentityAccessStartNotify.cpp */; };
 		0063B8BF16CA8E8B00E6DB4D /* IdentitySignRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B71F16CA8E8A00E6DB4D /* IdentitySignRequest.cpp */; };
@@ -108,18 +113,24 @@
 		00AF4CBD171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4CBC171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp */; };
 		00AF4DCE171D943B00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */; };
 		00AF4DD2171DB85B00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */; };
-		00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowNotify.cpp */; };
+		00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */; };
 		00AF4DD9171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */; };
 		00AF4DDE171DFACB00DCA0A8 /* LockboxContentGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */; };
 		00AF4DDF171DFACB00DCA0A8 /* LockboxContentGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */; };
 		00AF4DE4171E2EE500DCA0A8 /* LockboxContentSetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE2171E2EE200DCA0A8 /* LockboxContentSetRequest.cpp */; };
 		00AF4DE5171E2EE500DCA0A8 /* LockboxContentSetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */; };
-		00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowNotify.cpp */; };
+		00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */; };
 		00AF4DEC171E38A500DCA0A8 /* LockboxAdminStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */; };
 		00AF4DEF171E3B5400DCA0A8 /* LockboxAdminCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowResult.cpp; sourceTree = "<group>"; };
+		0051C45C1745B9A80095FD98 /* IdentityAccessWindowResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowResult.h; sourceTree = "<group>"; };
+		0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowResult.cpp; sourceTree = "<group>"; };
+		0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowResult.cpp; sourceTree = "<group>"; };
+		0051C4611745BBB00095FD98 /* LockboxAdminWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxAdminWindowResult.h; sourceTree = "<group>"; };
+		0051C4621745BBB00095FD98 /* LockboxNamespaceGrantWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantWindowResult.h; sourceTree = "<group>"; };
 		0063B69F16CA8E8A00E6DB4D /* stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack.cpp; sourceTree = "<group>"; };
 		0063B6A016CA8E8A00E6DB4D /* stack_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Account.cpp; sourceTree = "<group>"; };
 		0063B6A116CA8E8A00E6DB4D /* stack_AccountFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_AccountFinder.cpp; sourceTree = "<group>"; };
@@ -231,7 +242,7 @@
 		0063B71416CA8E8A00E6DB4D /* stack_message_messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_messages.cpp; sourceTree = "<group>"; };
 		0063B71716CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessLockboxUpdateRequest.cpp; sourceTree = "<group>"; };
 		0063B71816CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessLockboxUpdateResult.cpp; sourceTree = "<group>"; };
-		0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowNotify.cpp; sourceTree = "<group>"; };
+		0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowRequest.cpp; sourceTree = "<group>"; };
 		0063B71A16CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessCompleteNotify.cpp; sourceTree = "<group>"; };
 		0063B71D16CA8E8A00E6DB4D /* IdentityAccessStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessStartNotify.cpp; sourceTree = "<group>"; };
 		0063B71F16CA8E8A00E6DB4D /* IdentitySignRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentitySignRequest.cpp; sourceTree = "<group>"; };
@@ -239,7 +250,7 @@
 		0063B72116CA8E8A00E6DB4D /* MessageFactoryIdentity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryIdentity.cpp; sourceTree = "<group>"; };
 		0063B72216CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessLockboxUpdateRequest.h; sourceTree = "<group>"; };
 		0063B72316CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessLockboxUpdateResult.h; sourceTree = "<group>"; };
-		0063B72416CA8E8A00E6DB4D /* IdentityAccessWindowNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowNotify.h; sourceTree = "<group>"; };
+		0063B72416CA8E8A00E6DB4D /* IdentityAccessWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowRequest.h; sourceTree = "<group>"; };
 		0063B72616CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessCompleteNotify.h; sourceTree = "<group>"; };
 		0063B72816CA8E8A00E6DB4D /* IdentityAccessStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentityAccessStartNotify.h; sourceTree = "<group>"; };
 		0063B72A16CA8E8A00E6DB4D /* IdentitySignRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentitySignRequest.h; sourceTree = "<group>"; };
@@ -354,9 +365,9 @@
 		00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxIdentitiesUpdateResult.cpp; sourceTree = "<group>"; };
 		00AF4DCF171D944600DCA0A8 /* LockboxIdentitiesUpdateResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxIdentitiesUpdateResult.h; sourceTree = "<group>"; };
 		00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantStartNotify.cpp; sourceTree = "<group>"; };
-		00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowNotify.cpp; sourceTree = "<group>"; };
+		00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowRequest.cpp; sourceTree = "<group>"; };
 		00AF4DD4171DB86600DCA0A8 /* LockboxNamespaceGrantStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantStartNotify.h; sourceTree = "<group>"; };
-		00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantWindowNotify.h; sourceTree = "<group>"; };
+		00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantWindowRequest.h; sourceTree = "<group>"; };
 		00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantCompleteNotify.cpp; sourceTree = "<group>"; };
 		00AF4DDA171DF69800DCA0A8 /* LockboxNamespaceGrantCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantCompleteNotify.h; sourceTree = "<group>"; };
 		00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentGetRequest.cpp; sourceTree = "<group>"; };
@@ -367,8 +378,8 @@
 		00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentSetResult.cpp; sourceTree = "<group>"; };
 		00AF4DE6171E2EFD00DCA0A8 /* LockboxContentSetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetRequest.h; sourceTree = "<group>"; };
 		00AF4DE7171E2EFF00DCA0A8 /* LockboxContentSetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetResult.h; sourceTree = "<group>"; };
-		00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowNotify.cpp; sourceTree = "<group>"; };
-		00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminWindowNotify.h; sourceTree = "<group>"; };
+		00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowRequest.cpp; sourceTree = "<group>"; };
+		00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminWindowRequest.h; sourceTree = "<group>"; };
 		00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminStartNotify.cpp; sourceTree = "<group>"; };
 		00AF4DED171E38B400DCA0A8 /* LockboxAdminStartNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminStartNotify.h; sourceTree = "<group>"; };
 		00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminCompleteNotify.cpp; sourceTree = "<group>"; };
@@ -617,7 +628,8 @@
 			children = (
 				0063B71616CA8E8A00E6DB4D /* cpp */,
 				0063B72C16CA8E8A00E6DB4D /* MessageFactoryIdentity.h */,
-				0063B72416CA8E8A00E6DB4D /* IdentityAccessWindowNotify.h */,
+				0063B72416CA8E8A00E6DB4D /* IdentityAccessWindowRequest.h */,
+				0051C45C1745B9A80095FD98 /* IdentityAccessWindowResult.h */,
 				0063B72816CA8E8A00E6DB4D /* IdentityAccessStartNotify.h */,
 				0063B72616CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.h */,
 				0063B72216CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.h */,
@@ -634,7 +646,8 @@
 			isa = PBXGroup;
 			children = (
 				0063B72116CA8E8A00E6DB4D /* MessageFactoryIdentity.cpp */,
-				0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowNotify.cpp */,
+				0063B71916CA8E8A00E6DB4D /* IdentityAccessWindowRequest.cpp */,
+				0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */,
 				0063B71D16CA8E8A00E6DB4D /* IdentityAccessStartNotify.cpp */,
 				0063B71A16CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.cpp */,
 				0063B71716CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp */,
@@ -829,14 +842,16 @@
 				00AF4CBB171CCA3200DCA0A8 /* LockboxAccessResult.h */,
 				00AF4CBE171CE3E800DCA0A8 /* LockboxIdentitiesUpdateRequest.h */,
 				00AF4DCF171D944600DCA0A8 /* LockboxIdentitiesUpdateResult.h */,
-				00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowNotify.h */,
+				00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowRequest.h */,
+				0051C4621745BBB00095FD98 /* LockboxNamespaceGrantWindowResult.h */,
 				00AF4DD4171DB86600DCA0A8 /* LockboxNamespaceGrantStartNotify.h */,
 				00AF4DDA171DF69800DCA0A8 /* LockboxNamespaceGrantCompleteNotify.h */,
 				00AF4DE0171DFADF00DCA0A8 /* LockboxContentGetRequest.h */,
 				00AF4DE1171DFAE100DCA0A8 /* LockboxContentGetResult.h */,
 				00AF4DE6171E2EFD00DCA0A8 /* LockboxContentSetRequest.h */,
 				00AF4DE7171E2EFF00DCA0A8 /* LockboxContentSetResult.h */,
-				00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowNotify.h */,
+				00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowRequest.h */,
+				0051C4611745BBB00095FD98 /* LockboxAdminWindowResult.h */,
 				00AF4DED171E38B400DCA0A8 /* LockboxAdminStartNotify.h */,
 				00AF4DF0171E3B5E00DCA0A8 /* LockboxAdminCompleteNotify.h */,
 			);
@@ -851,14 +866,16 @@
 				00AF4CB7171CCA2300DCA0A8 /* LockboxAccessResult.cpp */,
 				00AF4CBC171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp */,
 				00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */,
-				00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowNotify.cpp */,
+				00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */,
+				0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */,
 				00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */,
 				00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */,
 				00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */,
 				00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */,
 				00AF4DE2171E2EE200DCA0A8 /* LockboxContentSetRequest.cpp */,
 				00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */,
-				00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowNotify.cpp */,
+				00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */,
+				0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */,
 				00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */,
 				00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */,
 			);
@@ -893,6 +910,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0051C4631745BBB10095FD98 /* LockboxAdminWindowResult.h in Headers */,
+				0051C4641745BBB10095FD98 /* LockboxNamespaceGrantWindowResult.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -997,7 +1016,7 @@
 				0063B8B616CA8E8B00E6DB4D /* stack_message_messages.cpp in Sources */,
 				0063B8B716CA8E8B00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp in Sources */,
 				0063B8B816CA8E8B00E6DB4D /* IdentityAccessLockboxUpdateResult.cpp in Sources */,
-				0063B8B916CA8E8B00E6DB4D /* IdentityAccessWindowNotify.cpp in Sources */,
+				0063B8B916CA8E8B00E6DB4D /* IdentityAccessWindowRequest.cpp in Sources */,
 				0063B8BA16CA8E8B00E6DB4D /* IdentityAccessCompleteNotify.cpp in Sources */,
 				0063B8BD16CA8E8B00E6DB4D /* IdentityAccessStartNotify.cpp in Sources */,
 				0063B8BF16CA8E8B00E6DB4D /* IdentitySignRequest.cpp in Sources */,
@@ -1048,15 +1067,18 @@
 				00AF4CBD171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp in Sources */,
 				00AF4DCE171D943B00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp in Sources */,
 				00AF4DD2171DB85B00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp in Sources */,
-				00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowNotify.cpp in Sources */,
+				00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */,
 				00AF4DD9171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp in Sources */,
 				00AF4DDE171DFACB00DCA0A8 /* LockboxContentGetRequest.cpp in Sources */,
 				00AF4DDF171DFACB00DCA0A8 /* LockboxContentGetResult.cpp in Sources */,
 				00AF4DE4171E2EE500DCA0A8 /* LockboxContentSetRequest.cpp in Sources */,
 				00AF4DE5171E2EE500DCA0A8 /* LockboxContentSetResult.cpp in Sources */,
-				00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowNotify.cpp in Sources */,
+				00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowRequest.cpp in Sources */,
 				00AF4DEC171E38A500DCA0A8 /* LockboxAdminStartNotify.cpp in Sources */,
 				00AF4DEF171E3B5400DCA0A8 /* LockboxAdminCompleteNotify.cpp in Sources */,
+				0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */,
+				0051C45F1745BB940095FD98 /* LockboxAdminWindowResult.cpp in Sources */,
+				0051C4601745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

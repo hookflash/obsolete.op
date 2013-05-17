@@ -31,6 +31,7 @@
 
 #include <hookflash/stack/message/internal/stack_message_messages.h>
 #include <hookflash/stack/internal/stack_Helper.h>
+#include <hookflash/stack/IPeerFilePublic.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
@@ -132,8 +133,7 @@ namespace hookflash
       bool Finder::hasData() const
       {
         return (mID.hasData()) ||
-               (mTransport.hasData()) ||
-               (mSRV.hasData()) ||
+               (mProtocols.size() > 0) ||
                ((bool)mPublicKey) ||
                (mPriority != 0) ||
                (mWeight != 0) ||
@@ -142,13 +142,25 @@ namespace hookflash
                (Time() != mExpires);
       }
 
+      static String getProtocolsDebugValueString(const Finder::ProtocolList &protocols, bool &ioFirstTime)
+      {
+        String result;
+        ULONG index = 0;
+        for (Finder::ProtocolList::const_iterator iter = protocols.begin(); iter != protocols.end(); ++iter)
+        {
+          const Finder::Protocol &protocol = (*iter);
+          result += Helper::getDebugValue((String("transport") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mTransport, ioFirstTime);
+          result += Helper::getDebugValue((String("srv") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mSRV, ioFirstTime);
+        }
+        return result;
+      }
+
       //-----------------------------------------------------------------------
       String Finder::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("finder id", mID, firstTime) +
-               Helper::getDebugValue("transport", mTransport, firstTime) +
-               Helper::getDebugValue("srv", mSRV, firstTime) +
+               getProtocolsDebugValueString(mProtocols, firstTime) +
                Helper::getDebugValue("public key", mPublicKey ? String("true") : String(), firstTime) +
                Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
                Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mWeight).string() : String(), firstTime) +
@@ -468,7 +480,7 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       void AgentInfo::mergeFrom(
-                                const LockboxInfo &source,
+                                const AgentInfo &source,
                                 bool overwriteExisting
                                 )
       {

@@ -29,10 +29,11 @@
 
  */
 
-#pragma once
+#include <hookflash/stack/message/identity/IdentityAccessWindowResult.h>
+#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/message/IMessageFactory.h>
-
+#include <zsLib/XML.h>
+#include <zsLib/helpers.h>
 
 namespace hookflash
 {
@@ -42,52 +43,39 @@ namespace hookflash
     {
       namespace identity
       {
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark MessageFactoryIdentity
-        #pragma mark
+        using internal::MessageHelper;
 
-        class MessageFactoryIdentity : public IMessageFactory
+        //---------------------------------------------------------------------
+        IdentityAccessWindowResultPtr IdentityAccessWindowResult::convert(MessagePtr message)
         {
-        public:
-          enum Methods
+          return boost::dynamic_pointer_cast<IdentityAccessWindowResult>(message);
+        }
+
+        //---------------------------------------------------------------------
+        IdentityAccessWindowResult::IdentityAccessWindowResult()
+        {
+        }
+
+        //---------------------------------------------------------------------
+        IdentityAccessWindowResultPtr IdentityAccessWindowResult::create(
+                                                                         ElementPtr root,
+                                                                         IMessageSourcePtr messageSource
+                                                                         )
+        {
+          IdentityAccessWindowResultPtr ret(new IdentityAccessWindowResult);
+          IMessageHelper::fill(*ret, root, messageSource);
+          return ret;
+        }
+
+        //---------------------------------------------------------------------
+        bool IdentityAccessWindowResult::hasAttribute(AttributeTypes type) const
+        {
+          switch (type)
           {
-            Method_Invalid = Message::Method_Invalid,
-
-            Method_IdentityAccessWindow,
-            Method_IdentityAccessStart,
-            Method_IdentityAccessComplete,
-            Method_IdentityAccessLockboxUpdate,
-            Method_IdentityLookupUpdate,
-            Method_IdentitySign,
-
-            Method_Last = Method_IdentitySign,
-          };
-
-        protected:
-          static MessageFactoryIdentityPtr create();
-
-        public:
-          static MessageFactoryIdentityPtr singleton();
-
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark MessageFactoryIdentity => IMessageFactory
-          #pragma mark
-
-          virtual const char *getHandler() const;
-
-          virtual Message::Methods toMethod(const char *method) const;
-          virtual const char *toString(Message::Methods method) const;
-
-          virtual MessagePtr create(
-                                    ElementPtr root,
-                                    IMessageSourcePtr messageSource
-                                    );
-        };
+            default:                                      break;
+          }
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
+        }
       }
     }
   }

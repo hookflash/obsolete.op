@@ -54,20 +54,22 @@
 #include <hookflash/stack/message/certificates/CertificatesGetResult.h>
 
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
-#include <hookflash/stack/message/identity/IdentityAssociateRequest.h>
-#include <hookflash/stack/message/identity/IdentityAssociateResult.h>
-#include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
-#include <hookflash/stack/message/identity/IdentityLoginCompleteRequest.h>
-#include <hookflash/stack/message/identity/IdentityLoginCompleteResult.h>
-#include <hookflash/stack/message/identity/IdentityLoginNotify.h>
-#include <hookflash/stack/message/identity/IdentityLoginStartRequest.h>
-#include <hookflash/stack/message/identity/IdentityLoginStartResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessStartNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
+#include <hookflash/stack/message/identity/IdentityLookupUpdateRequest.h>
+#include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentitySignRequest.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 
 #include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
 
@@ -85,19 +87,22 @@
 #include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
 #include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
 
-#include <hookflash/stack/message/peer-contact/MessageFactoryPeerContact.h>
-#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateRequest.h>
-#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateResult.h>
-#include <hookflash/stack/message/peer-contact/PeerContactLoginRequest.h>
-#include <hookflash/stack/message/peer-contact/PeerContactLoginResult.h>
-#include <hookflash/stack/message/peer-contact/PeerContactServicesGetRequest.h>
-#include <hookflash/stack/message/peer-contact/PeerContactServicesGetResult.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetRequest.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetResult.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetRequest.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetResult.h>
-#include <hookflash/stack/message/peer-contact/PublicPeerFilesGetRequest.h>
-#include <hookflash/stack/message/peer-contact/PublicPeerFilesGetResult.h>
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminStartNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminCompleteNotify.h>
 
 #include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 #include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>

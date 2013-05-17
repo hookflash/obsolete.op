@@ -29,8 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityLoginStartRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessStartNotify.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
 
 #include <zsLib/XML.h>
@@ -48,45 +49,107 @@ namespace hookflash
       {
         using zsLib::Seconds;
         using internal::MessageHelper;
+        using stack::internal::IStackForInternal;
 
         //---------------------------------------------------------------------
-        IdentityLoginStartRequestPtr IdentityLoginStartRequest::convert(MessagePtr message)
+        const char *IdentityAccessStartNotify::toString(BrowserVisibilities visibility)
         {
-          return boost::dynamic_pointer_cast<IdentityLoginStartRequest>(message);
+          switch (visibility) {
+            case BrowserVisibility_NA:              return "";
+
+            case BrowserVisibility_Hidden:          return "hidden";
+            case BrowserVisibility_Visible:         return "visbile";
+            case BrowserVisibility_VisibleOnDemand: return "visible-on-demand";
+          }
+          return "";
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginStartRequest::IdentityLoginStartRequest()
+        IdentityAccessStartNotifyPtr IdentityAccessStartNotify::convert(MessagePtr message)
+        {
+          return boost::dynamic_pointer_cast<IdentityAccessStartNotify>(message);
+        }
+
+        //---------------------------------------------------------------------
+        IdentityAccessStartNotify::IdentityAccessStartNotify() :
+          mVisibility(BrowserVisibility_NA),
+          mPopup(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginStartRequestPtr IdentityLoginStartRequest::create()
+        IdentityAccessStartNotifyPtr IdentityAccessStartNotify::create()
         {
-          IdentityLoginStartRequestPtr ret(new IdentityLoginStartRequest);
+          IdentityAccessStartNotifyPtr ret(new IdentityAccessStartNotify);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityLoginStartRequest::hasAttribute(AttributeTypes type) const
+        bool IdentityAccessStartNotify::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_ClientToken:       return !mClientToken.isEmpty();
+            case AttributeType_AgentInfo:         return mAgentInfo.hasData();
+            case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
+            case AttributeType_BrowserVisibility: return (BrowserVisibility_NA != mVisibility);
+            case AttributeType_BrowserPopup:      return (mPopup >= 0);
+            case AttributeType_OuterFrameURL:     return mOuterFrameURL.hasData();
+
             default:                              break;
           }
           return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr IdentityLoginStartRequest::encode()
+        DocumentPtr IdentityAccessStartNotify::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
 
-          if (hasAttribute(AttributeType_ClientToken)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithText("clientToken", mClientToken));
+          ElementPtr browserEl = Element::create("browser");
+
+          IdentityInfo identityInfo;
+
+          identityInfo.mBase = mIdentityInfo.mBase;
+          identityInfo.mURI = mIdentityInfo.mURI;
+          identityInfo.mProvider = mIdentityInfo.mProvider;
+
+          AgentInfo agentInfo;
+          agentInfo.mUserAgent = IStackForInternal::userAgent();
+          agentInfo.mName = IStackForInternal::appName();
+          agentInfo.mImageURL = IStackForInternal::appImageURL();
+
+          agentInfo.mergeFrom(mAgentInfo, true);
+
+          if (identityInfo.mURI.hasData()) {
+            // already have a full URI so no need to have a base URI
+            identityInfo.mBase.clear();
           }
+
+          if (mAgentInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
+          }
+
+          if (identityInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
+          }
+
+          if (hasAttribute(AttributeType_BrowserVisibility)) {
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visbility", toString(mVisibility)));
+          }
+
+          if (hasAttribute(AttributeType_BrowserPopup)) {
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("popup", (mPopup ? "allow" : "deny")));
+          }
+
+          if (hasAttribute(AttributeType_OuterFrameURL)) {
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("outerFrameURL", mOuterFrameURL));
+          }
+
+          if (browserEl->hasChildren()) {
+            root->adoptAsLastChild(browserEl);
+          }
+
           return ret;
         }
       }

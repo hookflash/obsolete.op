@@ -45,23 +45,23 @@ namespace hookflash
     {
       namespace identity
       {
-        class IdentityAssociateRequest : public MessageRequest
+        class IdentityAccessLockboxUpdateRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
           {
             AttributeType_IdentityInfo,
-            AttributeType_PeerFiles,
+            AttributeType_LocboxInfo,
           };
 
         public:
-          static IdentityAssociateRequestPtr convert(MessagePtr message);
+          static IdentityAccessLockboxUpdateRequestPtr convert(MessagePtr message);
 
-          static IdentityAssociateRequestPtr create();
+          static IdentityAccessLockboxUpdateRequestPtr create();
 
           virtual DocumentPtr encode();
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAssociate;}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessLockboxUpdate;}
 
           virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentity::singleton();}
 
@@ -71,28 +71,22 @@ namespace hookflash
           //
           // mURI
           // mProvider
+          //
           // mAccessToken
           // mAccessSecret
-          //
-          // mContactUserID
-          //
-          // mSecret
-          // mSecretSalt
-          //
-          // mPriority
-          // mWeight
+          // mAccessSecretExpires
 
           const IdentityInfo &identityInfo() const    {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)  {mIdentityInfo = val;}
 
-          IPeerFilesPtr peerFiles() const             {return mPeerFiles;}
-          void peerFiles(IPeerFilesPtr peerFiles)     {mPeerFiles = peerFiles;}
+          const LockboxInfo &lockboxInfo() const    {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)  {mLockboxInfo = val;}
 
         protected:
-          IdentityAssociateRequest();
+          IdentityAccessLockboxUpdateRequest();
 
           IdentityInfo mIdentityInfo;
-          IPeerFilesPtr mPeerFiles;
+          LockboxInfo mLockboxInfo;
         };
       }
     }

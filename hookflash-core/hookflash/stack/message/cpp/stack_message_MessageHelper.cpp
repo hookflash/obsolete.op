@@ -1501,8 +1501,24 @@ namespace hookflash
           if (!elem) return ret;
 
           ret.mID = IMessageHelper::getAttributeID(elem);
-          ret.mTransport = IMessageHelper::getElementText(elem->findFirstChildElement("transport"));
-          ret.mSRV = IMessageHelper::getElementText(elem->findFirstChildElement("srv"));
+
+          ElementPtr protocolsEl = elem->findFirstChildElement("protocols");
+          if (protocolsEl) {
+            ElementPtr protocolEl = elem->findFirstChildElement("protocol");
+            while (protocolEl) {
+              Finder::Protocol protocol;
+              protocol.mTransport = IMessageHelper::getElementText(elem->findFirstChildElement("transport"));
+              protocol.mSRV = IMessageHelper::getElementText(elem->findFirstChildElement("srv"));
+
+              if ((protocol.mTransport.hasData()) ||
+                  (protocol.mSRV.hasData())) {
+                ret.mProtocols.push_back(protocol);
+              }
+
+              protocolEl = protocolEl->findNextSiblingElement("protocol");
+            }
+          }
+
           ret.mRegion = IMessageHelper::getElementText(elem->findFirstChildElement("region"));
           ret.mCreated = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("created")));
           ret.mExpires = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("expires")));

@@ -31,11 +31,11 @@
 
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
 #include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
-#include <hookflash/stack/message/identity/IdentityLoginStartRequest.h>
-#include <hookflash/stack/message/identity/IdentityLoginNotify.h>
-#include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
-#include <hookflash/stack/message/identity/IdentityLoginCompleteRequest.h>
-#include <hookflash/stack/message/identity/IdentityAssociateRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessStartNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
+#include <hookflash/stack/message/identity/IdentityLookupUpdateRequest.h>
 #include <hookflash/stack/message/identity/IdentitySignRequest.h>
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Helper.h>
@@ -70,16 +70,16 @@ namespace hookflash
 
       using zsLib::Stringize;
 
-      using message::identity::IdentityLoginStartRequest;
-      using message::identity::IdentityLoginStartRequestPtr;
-      using message::identity::IdentityLoginNotify;
-      using message::identity::IdentityLoginNotifyPtr;
-      using message::identity::IdentityLoginBrowserWindowControlNotify;
-      using message::identity::IdentityLoginBrowserWindowControlNotifyPtr;
-      using message::identity::IdentityLoginCompleteRequest;
-      using message::identity::IdentityLoginCompleteRequestPtr;
-      using message::identity::IdentityAssociateRequest;
-      using message::identity::IdentityAssociateRequestPtr;
+      using message::identity::IdentityAccessWindowRequest;
+      using message::identity::IdentityAccessWindowRequestPtr;
+      using message::identity::IdentityAccessStartNotify;
+      using message::identity::IdentityAccessStartNotifyPtr;
+      using message::identity::IdentityAccessCompleteNotify;
+      using message::identity::IdentityAccessCompleteNotifyPtr;
+      using message::identity::IdentityAccessLockboxUpdateRequest;
+      using message::identity::IdentityAccessLockboxUpdateRequestPtr;
+      using message::identity::IdentityLookupUpdateRequest;
+      using message::identity::IdentityLookupUpdateRequestPtr;
       using message::identity::IdentitySignRequest;
       using message::identity::IdentitySignRequestPtr;
 
@@ -92,12 +92,13 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionForServiceLockbox::relogin(
-                                                                                      BootstrappedNetworkPtr network,
-                                                                                      const char *identityReloginAccessKey
-                                                                                      )
+      ServiceIdentitySessionPtr IServiceIdentitySessionForServiceLockbox::reload(
+                                                                                 IServiceLockboxSessionPtr lockbox,
+                                                                                 BootstrappedNetworkPtr network,
+                                                                                 const char *identityURI
+                                                                                 )
       {
-//        return IServiceIdentitySessionFactory::singleton().relogin(IServiceIdentitySessionDelegatePtr(), NULL, network, identityReloginAccessKey);
+        return IServiceIdentitySessionFactory::singleton().reload(lockbox, network, identityURI);
         return ServiceIdentitySessionPtr();
       }
 
@@ -112,6 +113,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceIdentitySession::ServiceIdentitySession(
                                                      IMessageQueuePtr queue,
+                                                     IServiceLockboxSessionPtr existingLockbox,
                                                      BootstrappedNetworkPtr network,
                                                      IServiceIdentitySessionDelegatePtr delegate,
                                                      const char *redirectAfterLoginCompleteURL
@@ -119,21 +121,22 @@ namespace hookflash
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceIdentitySessionDelegatePtr()),
-        mKillAssociation(false),
+        mAssociatedLockbox(existingLockbox),
+//        mKillAssociation(false),
         mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
         mLastReportedState(SessionState_Pending),
         mLastError(0),
-        mLoadedLoginURL(false),
-        mBrowserWindowVisible(false),
-        mBrowserRedirectionComplete(false),
-        mClientLoginSecret(IHelper::randomString(32)),
-        mClientToken(IHelper::randomString(32)),
-        mNeedsBrowserWindowVisible(false),
-        mNotificationSentToInnerBrowserWindow(false),
-        mRedirectAfterLoginCompleteURL(redirectAfterLoginCompleteURL ? String(redirectAfterLoginCompleteURL) : String()),
-        mSignedIdentityBundleValidityChecked(false),
-        mDownloadedSignedIdentityBundle(false)
+//        mLoadedLoginURL(false),
+//        mBrowserWindowVisible(false),
+//        mBrowserRedirectionComplete(false),
+//        mClientLoginSecret(IHelper::randomString(32)),
+//        mClientToken(IHelper::randomString(32)),
+//        mNeedsBrowserWindowVisible(false),
+//        mNotificationSentToInnerBrowserWindow(false),
+//        mRedirectAfterLoginCompleteURL(redirectAfterLoginCompleteURL ? String(redirectAfterLoginCompleteURL) : String()),
+//        mSignedIdentityBundleValidityChecked(false),
+//        mDownloadedSignedIdentityBundle(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -142,7 +145,7 @@ namespace hookflash
       ServiceIdentitySession::~ServiceIdentitySession()
       {
         if(isNoop()) return;
-        
+
         mThisWeak.reset();
         ZS_LOG_DEBUG(log("destroyed"))
         cancel();
@@ -177,6 +180,7 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentity(
+                                                                          IServiceLockboxSessionPtr existingLockbox,
                                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                                           const char *redirectAfterLoginCompleteURL,
                                                                           const char *identityURI,
@@ -206,7 +210,7 @@ namespace hookflash
           network = IBootstrappedNetworkForServices::prepare(domain);
         }
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(provider), delegate, redirectAfterLoginCompleteURL));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), delegate, redirectAfterLoginCompleteURL));
         pThis->mThisWeak = pThis;
         if (IServiceIdentity::isValidBase(identityURI)) {
           pThis->mIdentityInfo.mBase = identityURI;
@@ -219,6 +223,7 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentityProvider(
+                                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                                   IServiceIdentitySessionDelegatePtr delegate,
                                                                                   const char *outerFrameURLUponReload,
                                                                                   IServiceIdentityPtr provider,
@@ -228,15 +233,19 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!provider)
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(provider), delegate, outerFrameURLUponReload));
+        if (legacyIdentityBaseURI) {
+          return loginWithIdentity(existingLockbox, delegate, outerFrameURLUponReload, legacyIdentityBaseURI, provider);
+        }
+
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
-        pThis->mIdentityInfo.mBase = (legacyIdentityBaseURI ? String(legacyIdentityBaseURI) : String());
         pThis->init();
         return pThis;
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentityBundle(
+                                                                                IServiceLockboxSessionPtr existingLockbox,
                                                                                 IServiceIdentitySessionDelegatePtr delegate,
                                                                                 const char *outerFrameURLUponReload,
                                                                                 ElementPtr signedIdentityBundleEl
@@ -282,34 +291,13 @@ namespace hookflash
 
         BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), network, delegate, outerFrameURLUponReload));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, network, delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
         pThis->mIdentityInfo.mURI = identityURI;
         pThis->mSignedIdentityBundleEl = signedIdentityBundleEl->clone()->toElement();
         pThis->init();
         return pThis;
       }
-
-      //-----------------------------------------------------------------------
-//      ServiceIdentitySessionPtr ServiceIdentitySession::relogin(
-//                                                                IServiceIdentitySessionDelegatePtr delegate,
-//                                                                const char *redirectAfterLoginCompleteURL,
-//                                                                IServiceIdentityPtr provider,
-//                                                                const char *identityReloginAccessKey
-//                                                                )
-//      {
-//        if (delegate) {
-//          ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
-//        }
-//        ZS_THROW_INVALID_ARGUMENT_IF(!provider)
-//        ZS_THROW_INVALID_ARGUMENT_IF(!identityReloginAccessKey)
-//
-//        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(provider), delegate, redirectAfterLoginCompleteURL));
-//        pThis->mThisWeak = pThis;
-//        pThis->mIdentityInfo.mReloginAccessKey = (identityReloginAccessKey ? String(identityReloginAccessKey) : String());
-//        pThis->init();
-//        return pThis;
-//      }
 
       //-----------------------------------------------------------------------
       IServiceIdentityPtr ServiceIdentitySession::getService() const
@@ -331,17 +319,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::isAttached() const
+      bool ServiceIdentitySession::isDelegateAttached() const
       {
         AutoRecursiveLock lock(getLock());
         return ((bool)mDelegate);
       }
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::attach(
-                                          const char *redirectAfterLoginCompleteURL,
-                                          IServiceIdentitySessionDelegatePtr delegate
-                                          )
+      void ServiceIdentitySession::attachDelegate(
+                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                  const char *redirectAfterLoginCompleteURL
+                                                  )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
@@ -538,11 +526,30 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::associate(ServiceLockboxSessionPtr peerContact)
+      ServiceIdentitySessionPtr ServiceIdentitySession::reload(
+                                                               IServiceLockboxSessionPtr existingLockbox,
+                                                               BootstrappedNetworkPtr network,
+                                                               const char *identityURI
+                                                               )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!lockbox)
+        ZS_THROW_INVALID_ARGUMENT_IF(!network)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
+
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), IServiceIdentitySessionDelegatePtr(), NULL));
+        pThis->mThisWeak = pThis;
+        pThis->mAssociatedLockbox = lockbox;
+        pThis->mIdentityInfo.mURI = identityURI;
+        pThis->init();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceIdentitySession::associate(ServiceLockboxSessionPtr lockbox)
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
-        mAssociatedPeerContact = peerContact;
+        mAssociatedLockbox = lockbox;
         IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
@@ -1574,11 +1581,11 @@ namespace hookflash
       switch (state)
       {
         case SessionState_Pending:                                  return "Pending";
-        case SessionState_WaitingAttachment:                        return "Waiting Attachment";
+        case SessionState_WaitingAttachmentOfDelegate:              return "Waiting Attachment of Delegate";
         case SessionState_WaitingForBrowserWindowToBeLoaded:        return "Waiting for Browser Window to be Loaded";
         case SessionState_WaitingForBrowserWindowToBeMadeVisible:   return "Waiting for Browser Window to be Made Visible";
         case SessionState_WaitingForBrowserWindowToClose:           return "Waiting for Browser Window to Close";
-        case SessionState_WaitingAssociationToLockbox:              return "Waiting Association to Lockbox";
+        case SessionState_WaitingLoginOrAssociationToLockbox:       return "Waiting Login or Association to Lockbox";
         case SessionState_ReadyAsLoginNotNeeded:                    return "Ready as Login Not Needed";
         case SessionState_Ready:                                    return "Ready";
         case SessionState_Shutdown:                                 return "Shutdown";
@@ -1588,34 +1595,37 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentity(
+                                                                          IServiceLockboxSessionPtr existingLockbox,
                                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                                           const char *outerFrameURLUponReload,
                                                                           const char *identityURI,
                                                                           IServiceIdentityPtr provider
                                                                           )
     {
-      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentity(delegate, outerFrameURLUponReload, identityURI, provider);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentity(existingLockbox, delegate, outerFrameURLUponReload, identityURI, provider);
     }
 
     //-------------------------------------------------------------------------
     IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentityProvider(
+                                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                                   IServiceIdentitySessionDelegatePtr delegate,
                                                                                   const char *outerFrameURLUponReload,
                                                                                   IServiceIdentityPtr provider,
                                                                                   const char *legacyIdentityBaseURI
                                                                                   )
     {
-      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityProvider(delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityProvider(existingLockbox, delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
     }
 
     //-------------------------------------------------------------------------
     IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentityBundle(
+                                                                                IServiceLockboxSessionPtr existingLockbox,
                                                                                 IServiceIdentitySessionDelegatePtr delegate,
                                                                                 const char *outerFrameURLUponReload,
                                                                                 ElementPtr signedIdentityBundle
                                                                                 )
     {
-      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityBundle(delegate, outerFrameURLUponReload, signedIdentityBundle);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityBundle(existingLockbox, delegate, outerFrameURLUponReload, signedIdentityBundle);
     }
   }
 }

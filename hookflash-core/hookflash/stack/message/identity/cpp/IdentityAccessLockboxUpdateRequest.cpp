@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityAssociateRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IPeerFiles.h>
@@ -39,7 +39,7 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define HOOKFLASH_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -55,114 +55,66 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityAssociateRequestPtr IdentityAssociateRequest::convert(MessagePtr message)
+        IdentityAccessLockboxUpdateRequestPtr IdentityAccessLockboxUpdateRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityAssociateRequest>(message);
+          return boost::dynamic_pointer_cast<IdentityAccessLockboxUpdateRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityAssociateRequest::IdentityAssociateRequest()
+        IdentityAccessLockboxUpdateRequest::IdentityAccessLockboxUpdateRequest()
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityAssociateRequestPtr IdentityAssociateRequest::create()
+        IdentityAccessLockboxUpdateRequestPtr IdentityAccessLockboxUpdateRequest::create()
         {
-          IdentityAssociateRequestPtr ret(new IdentityAssociateRequest);
+          IdentityAccessLockboxUpdateRequestPtr ret(new IdentityAccessLockboxUpdateRequest);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityAssociateRequest::hasAttribute(AttributeTypes type) const
+        bool IdentityAccessLockboxUpdateRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
             case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
-            case AttributeType_PeerFiles:         return mPeerFiles;
+            case AttributeType_LocboxInfo:        return mLockboxInfo.hasData();
             default:                              break;
           }
           return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr IdentityAssociateRequest::encode()
+        DocumentPtr IdentityAccessLockboxUpdateRequest::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
 
           String clientNonce = IHelper::randomString(32);
-          String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS));
 
-          IdentityInfo info;
-          info.mURI = mIdentityInfo.mURI;
-          info.mProvider = mIdentityInfo.mProvider;
-          info.mAccessToken = mIdentityInfo.mAccessToken;
-          info.mAccessSecret = mIdentityInfo.mAccessSecret;
+          IdentityInfo identityInfo;
 
-          info.mContactUserID = mIdentityInfo.mContactUserID;
+          identityInfo.mURI = mIdentityInfo.mURI;
+          identityInfo.mProvider = mIdentityInfo.mProvider;
 
-          info.mSecret = mIdentityInfo.mSecret;
-          info.mSecretSalt = mIdentityInfo.mSecretSalt;
-
-          info.mPriority = mIdentityInfo.mPriority;
-          info.mWeight = mIdentityInfo.mWeight;
-
-          if (info.mAccessSecret.hasData()) {
-            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
-            info.mAccessSecret.clear();
-          }
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(expires);
-
-          IPeerFilePrivatePtr peerFilePrivate;
-          IPeerFilePublicPtr peerFilePublic;
-
-          if (mPeerFiles) {
-            peerFilePrivate = mPeerFiles->getPeerFilePrivate();
-            peerFilePublic = mPeerFiles->getPeerFilePublic();
-            if ((!peerFilePrivate) ||
-                (!peerFilePublic)) {
-              mPeerFiles.reset();
-            }
+          identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
+          if (mIdentityInfo.mAccessSecret.hasData()) {
+            identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-update"));
           }
 
-          if (mPeerFiles) {
-            info.mContact = peerFilePublic->getPeerURI();
-            info.mContactFindSecret = peerFilePublic->getFindSecret();
+          LockboxInfo lockboxInfo;
 
-            SecureByteBlockPtr peerSalt = peerFilePrivate->getSalt();
-            String peerSaltAsBase64 = IHelper::convertToBase64(*peerSalt);
-            info.mPrivatePeerFileSalt = peerSaltAsBase64;
-
-            if ((info.mSecret.hasData()) &&
-                (info.mSecretSalt.hasData()) &&
-                (peerSalt)) {
-              SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(info.mSecret), "private-peer-file-secret:" + peerSaltAsBase64 + ":" + info.mSecretSalt);
-              SecureByteBlockPtr iv = IHelper::hash(peerSaltAsBase64 + ":" + info.mSecretSalt, IHelper::HashAlgorthm_MD5);
-
-              info.mPrivatePeerFileSecretEncrypted = IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, *peerFilePrivate->getPassword(false)));
-            }
+          lockboxInfo.mDomain = mLockboxInfo.mDomain;
+          lockboxInfo.mKeyIdentityHalf = mLockboxInfo.mKeyIdentityHalf;
+          
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          if (identityInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
 
-          info.mSecret.clear();
-
-          ElementPtr identityEl = MessageHelper::createElement(info);
-
-          if (info.hasData()) {
-            if (mPeerFiles) {
-              ElementPtr identityAssociateProofBundleEl = Element::create("identityAssociateProofBundle");
-              ElementPtr identityAssociateProofEl = Element::create("identityAssociateProof");
-              identityAssociateProofBundleEl->adoptAsLastChild(identityAssociateProofEl);
-              identityAssociateProofEl->adoptAsLastChild(identityEl);
-
-              ElementPtr peerEl = peerFilePublic->saveToElement();
-              identityAssociateProofEl->adoptAsLastChild(peerEl);
-
-              root->adoptAsLastChild(identityAssociateProofBundleEl);
-
-              peerFilePrivate->signElement(identityAssociateProofEl);
-            } else {
-              root->adoptAsLastChild(identityEl);
-            }
+          if (lockboxInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
           return ret;

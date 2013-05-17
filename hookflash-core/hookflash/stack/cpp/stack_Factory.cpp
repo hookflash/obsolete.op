@@ -703,7 +703,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceCertificatesValidateQueryFactory
+      #pragma mark IServiceIdentitySessionFactory
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -714,34 +714,47 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentity(
+                                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                                   IServiceIdentitySessionDelegatePtr delegate,
                                                                                   const char *outerFrameURLUponReload,
                                                                                   const char *identityURI,
                                                                                   IServiceIdentityPtr provider
                                                                                   )
       {
-        return ServiceIdentitySession::loginWithIdentity(delegate, outerFrameURLUponReload, identityURI, provider);
+        return ServiceIdentitySession::loginWithIdentity(existingLockbox, delegate, outerFrameURLUponReload, identityURI, provider);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityProvider(
+                                                                                          IServiceLockboxSessionPtr existingLockbox,
                                                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                                                           const char *outerFrameURLUponReload,
                                                                                           IServiceIdentityPtr provider,
                                                                                           const char *legacyIdentityBaseURI
                                                                                           )
       {
-        return ServiceIdentitySession::loginWithIdentityProvider(delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
+        return ServiceIdentitySession::loginWithIdentityProvider(existingLockbox, delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityBundle(
+                                                                                        IServiceLockboxSessionPtr existingLockbox,
                                                                                         IServiceIdentitySessionDelegatePtr delegate,
                                                                                         const char *outerFrameURLUponReload,
                                                                                         ElementPtr signedIdentityBundle
                                                                                         )
       {
-        return ServiceIdentitySession::loginWithIdentityBundle(delegate, outerFrameURLUponReload, signedIdentityBundle);
+        return ServiceIdentitySession::loginWithIdentityBundle(existingLockbox, delegate, outerFrameURLUponReload, signedIdentityBundle);
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::relogin(
+                                                                        IServiceLockboxSessionPtr existingLockbox,
+                                                                        BootstrappedNetworkPtr network,
+                                                                        const char *identityURI
+                                                                        )
+      {
+        return ServiceIdentitySession::reload(existingLockbox, network, identityURI);
       }
 
       //-----------------------------------------------------------------------

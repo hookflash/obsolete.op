@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityAssociateResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -46,29 +46,29 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityAssociateResultPtr IdentityAssociateResult::convert(MessagePtr message)
+        IdentityAccessLockboxUpdateResultPtr IdentityAccessLockboxUpdateResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityAssociateResult>(message);
+          return boost::dynamic_pointer_cast<IdentityAccessLockboxUpdateResult>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityAssociateResult::IdentityAssociateResult()
+        IdentityAccessLockboxUpdateResult::IdentityAccessLockboxUpdateResult()
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityAssociateResultPtr IdentityAssociateResult::create(
-                                                                   ElementPtr root,
-                                                                   IMessageSourcePtr messageSource
-                                                                   )
+        IdentityAccessLockboxUpdateResultPtr IdentityAccessLockboxUpdateResult::create(
+                                                                                       ElementPtr root,
+                                                                                       IMessageSourcePtr messageSource
+                                                                                       )
         {
-          IdentityAssociateResultPtr ret(new IdentityAssociateResult);
+          IdentityAccessLockboxUpdateResultPtr ret(new IdentityAccessLockboxUpdateResult);
           IMessageHelper::fill(*ret, root, messageSource);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityAssociateResult::hasAttribute(AttributeTypes type) const
+        bool IdentityAccessLockboxUpdateResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {

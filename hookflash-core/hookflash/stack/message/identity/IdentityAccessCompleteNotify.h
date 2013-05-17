@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/MessageNotify.h>
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
 
 #include <list>
@@ -44,24 +44,24 @@ namespace hookflash
     {
       namespace identity
       {
-        class IdentityLoginCompleteResult : public MessageResult
+        class IdentityAccessCompleteNotify : public MessageNotify
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_IdentityInfo = AttributeType_Last + 1,
-            AttributeType_Custom,
+            AttributeType_IdentityInfo,
+            AttributeType_LockboxInfo,
           };
 
         public:
-          static IdentityLoginCompleteResultPtr convert(MessagePtr message);
+          static IdentityAccessCompleteNotifyPtr convert(MessagePtr message);
 
-          static IdentityLoginCompleteResultPtr create(
+          static IdentityAccessCompleteNotifyPtr create(
                                                        ElementPtr root,
                                                        IMessageSourcePtr messageSource
                                                        );
 
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityLoginComplete;}
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessComplete;}
 
           virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentity::singleton();}
 
@@ -69,39 +69,24 @@ namespace hookflash
 
           // IdentityInfo members expected to be set in result
           //
+          // mURI
+          // mProvider
+          //
           // mAccessToken
           // mAccessSecret
           // mAccessSecretExpires
-          //
-          // mURIEncrypted
-          // mHash
-          // mProvider
-          //
-          // mContact                         (if associated)
-          // mContactFindSecret               (if associated)
-          // mPrivatePeerFileSalt             (if associated)
-          // mPrivatePeerFileSecretEncrypted  (if associated)
-          //
-          // mReloginAccessKeyEncrypted
-          // mSecretSalt
-          // mSecretEncrypted
-          // mSecretDecryptionKeyEncrypted
-          //
-          // mUpdated
-          // mPriority
-          // mWeight
 
           const IdentityInfo &identityInfo() const        {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)      {mIdentityInfo = val;}
 
-          const ElementPtr &custom() const                {return mCustom;}
-          void custom(const ElementPtr &val);
+          const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
 
         protected:
-          IdentityLoginCompleteResult();
+          IdentityAccessCompleteNotify();
 
           IdentityInfo mIdentityInfo;
-          ElementPtr mCustom;
+          LockboxInfo mLockboxInfo;
         };
       }
     }

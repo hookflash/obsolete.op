@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
+#include <hookflash/stack/message/identity/IdentityLookupUpdateRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IPeerFiles.h>
@@ -55,37 +55,36 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityAccessLockboxUpdateRequestPtr IdentityAccessLockboxUpdateRequest::convert(MessagePtr message)
+        IdentityLookupUpdateRequestPtr IdentityLookupUpdateRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityAccessLockboxUpdateRequest>(message);
+          return boost::dynamic_pointer_cast<IdentityLookupUpdateRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityAccessLockboxUpdateRequest::IdentityAccessLockboxUpdateRequest()
+        IdentityLookupUpdateRequest::IdentityLookupUpdateRequest()
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityAccessLockboxUpdateRequestPtr IdentityAccessLockboxUpdateRequest::create()
+        IdentityLookupUpdateRequestPtr IdentityLookupUpdateRequest::create()
         {
-          IdentityAccessLockboxUpdateRequestPtr ret(new IdentityAccessLockboxUpdateRequest);
+          IdentityLookupUpdateRequestPtr ret(new IdentityLookupUpdateRequest);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityAccessLockboxUpdateRequest::hasAttribute(AttributeTypes type) const
+        bool IdentityLookupUpdateRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
             case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
-            case AttributeType_LocboxInfo:        return mLockboxInfo.hasData();
             default:                              break;
           }
           return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr IdentityAccessLockboxUpdateRequest::encode()
+        DocumentPtr IdentityLookupUpdateRequest::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();

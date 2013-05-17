@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -41,38 +41,39 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity
+      namespace identity_lockbox
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityLookupUpdateResultPtr IdentityLookupUpdateResult::convert(MessagePtr message)
+        LockboxAdminWindowResultPtr LockboxAdminWindowResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityLookupUpdateResult>(message);
+          return boost::dynamic_pointer_cast<LockboxAdminWindowResult>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityLookupUpdateResult::IdentityLookupUpdateResult()
+        LockboxAdminWindowResult::LockboxAdminWindowResult()
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityLookupUpdateResultPtr IdentityLookupUpdateResult::create(
-                                                                         ElementPtr root,
-                                                                         IMessageSourcePtr messageSource
-                                                                         )
+        LockboxAdminWindowResultPtr LockboxAdminWindowResult::create(
+                                                                     ElementPtr root,
+                                                                     IMessageSourcePtr messageSource
+                                                                     )
         {
-          IdentityLookupUpdateResultPtr ret(new IdentityLookupUpdateResult);
+          LockboxAdminWindowResultPtr ret(new LockboxAdminWindowResult);
           IMessageHelper::fill(*ret, root, messageSource);
+
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityLookupUpdateResult::hasAttribute(AttributeTypes type) const
+        bool LockboxAdminWindowResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            default:                                      break;
+            default:                                    break;
           }
           return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }

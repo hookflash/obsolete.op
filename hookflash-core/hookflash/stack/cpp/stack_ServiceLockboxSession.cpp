@@ -94,10 +94,10 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceLockboxSession::ServiceLockboxSession(
-                                                           IMessageQueuePtr queue,
-                                                           BootstrappedNetworkPtr network,
-                                                           IServiceLockboxSessionDelegatePtr delegate
-                                                           ) :
+                                                   IMessageQueuePtr queue,
+                                                   BootstrappedNetworkPtr network,
+                                                   IServiceLockboxSessionDelegatePtr delegate
+                                                   ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceLockboxSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceLockboxSessionDelegatePtr()),
@@ -1315,9 +1315,9 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::handleRemoveDisposition(
-                                                              const IdentityInfo &info,
-                                                              ServiceIdentitySessionMap &sessions
-                                                              ) const
+                                                          const IdentityInfo &info,
+                                                          ServiceIdentitySessionMap &sessions
+                                                          ) const
       {
         for (ServiceIdentitySessionMap::iterator iter = sessions.begin(); iter != sessions.end();)
         {

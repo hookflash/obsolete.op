@@ -36,9 +36,8 @@
 #include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/stack/IMessageSource.h>
 #include <hookflash/stack/IServiceIdentity.h>
-#include <hookflash/stack/message/identity/IdentityLoginStartResult.h>
-#include <hookflash/stack/message/identity/IdentityLoginCompleteResult.h>
-#include <hookflash/stack/message/identity/IdentityAssociateResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
+#include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
@@ -51,12 +50,10 @@ namespace hookflash
   {
     namespace internal
     {
-      using message::identity::IdentityLoginStartResult;
-      using message::identity::IdentityLoginStartResultPtr;
-      using message::identity::IdentityLoginCompleteResult;
-      using message::identity::IdentityLoginCompleteResultPtr;
-      using message::identity::IdentityAssociateResult;
-      using message::identity::IdentityAssociateResultPtr;
+      using message::identity::IdentityAccessLockboxUpdateResult;
+      using message::identity::IdentityAccessLockboxUpdateResultPtr;
+      using message::identity::IdentityLookupUpdateResult;
+      using message::identity::IdentityLookupUpdateResultPtr;
       using message::identity::IdentitySignResult;
       using message::identity::IdentitySignResultPtr;
 
@@ -73,15 +70,15 @@ namespace hookflash
         IServiceIdentitySessionForServiceLockbox &forPeerContact() {return *this;}
         const IServiceIdentitySessionForServiceLockbox &forPeerContact() const {return *this;}
 
-        static ServiceIdentitySessionPtr relogin(
-                                                 BootstrappedNetworkPtr network,
-                                                 const char *identityReloginAccessKey
-                                                 );
+        static ServiceIdentitySessionPtr reload(
+                                                BootstrappedNetworkPtr network,
+                                                const char *identityURI
+                                                );
 
         virtual PUID getID() const = 0;
 
-        virtual void associate(ServiceLockboxSessionPtr peerContact) = 0;
-        virtual void killAssociation(ServiceLockboxSessionPtr peerContact) = 0;
+        virtual void associate(ServiceLockboxSessionPtr lockbox) = 0;
+        virtual void killAssociation(ServiceLockboxSessionPtr lockbox) = 0;
 
         virtual void notifyStateChanged() = 0;
 
@@ -120,9 +117,8 @@ namespace hookflash
                                      public IServiceIdentitySessionForServiceLockbox,
                                      public IServiceIdentitySessionAsyncDelegate,
                                      public IBootstrappedNetworkDelegate,
-                                     public IMessageMonitorResultDelegate<IdentityLoginStartResult>,
-                                     public IMessageMonitorResultDelegate<IdentityLoginCompleteResult>,
-                                     public IMessageMonitorResultDelegate<IdentityAssociateResult>,
+                                     public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
+                                     public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentitySignResult>
       {
       public:
@@ -134,11 +130,12 @@ namespace hookflash
       protected:
         ServiceIdentitySession(
                                IMessageQueuePtr queue,
+                               IServiceLockboxSessionPtr existingLockbox,
                                BootstrappedNetworkPtr network,
                                IServiceIdentitySessionDelegatePtr delegate,
-                               const char *redirectAfterLoginCompleteURL
+                               const char *outerFrameURLUponReload
                                );
-        
+
         ServiceIdentitySession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
@@ -157,6 +154,7 @@ namespace hookflash
         static String toDebugString(IServiceIdentitySessionPtr session, bool includeCommaPrefix = true);
 
         static ServiceIdentitySessionPtr loginWithIdentity(
+                                                           IServiceLockboxSessionPtr existingLockbox,
                                                            IServiceIdentitySessionDelegatePtr delegate,
                                                            const char *outerFrameURLUponReload,
                                                            const char *identityURI,
@@ -164,6 +162,7 @@ namespace hookflash
                                                            );
 
         static ServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                   IServiceLockboxSessionPtr existingLockbox,
                                                                    IServiceIdentitySessionDelegatePtr delegate,
                                                                    const char *outerFrameURLUponReload,
                                                                    IServiceIdentityPtr provider,
@@ -171,6 +170,7 @@ namespace hookflash
                                                                    );
 
         static ServiceIdentitySessionPtr loginWithIdentityBundle(
+                                                                 IServiceLockboxSessionPtr existingLockbox,
                                                                  IServiceIdentitySessionDelegatePtr delegate,
                                                                  const char *outerFrameURLUponReload,
                                                                  ElementPtr signedIdentityBundleEl
@@ -185,11 +185,11 @@ namespace hookflash
                                        String *outLastErrorReason
                                        ) const;
 
-        virtual bool isAttached() const;
-        virtual void attach(
-                            const char *outerFrameURLUponReload,
-                            IServiceIdentitySessionDelegatePtr delegate
-                            );
+        virtual bool isDelegateAttached() const;
+        virtual void attachDelegate(
+                                    IServiceIdentitySessionDelegatePtr delegate,
+                                    const char *outerFrameURLUponReload
+                                    );
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
@@ -219,10 +219,16 @@ namespace hookflash
         #pragma mark ServiceIdentitySession => IServiceIdentitySessionForServiceLockbox
         #pragma mark
 
+        static ServiceIdentitySessionPtr reload(
+                                                IServiceLockboxSessionPtr existingLockbox,
+                                                BootstrappedNetworkPtr network,
+                                                const char *identityURI
+                                                );
+
         // (duplicate) virtual PUID getID() const;
 
-        virtual void associate(ServiceLockboxSessionPtr peerContact);
-        virtual void killAssociation(ServiceLockboxSessionPtr peerContact);
+        virtual void associate(ServiceLockboxSessionPtr lockbox);
+        virtual void killAssociation(ServiceLockboxSessionPtr lockbox);
 
         virtual void notifyStateChanged();
 
@@ -248,49 +254,33 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLoginStartResult>
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        IdentityLoginStartResultPtr result
+                                                        IdentityAccessLockboxUpdateResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             IdentityLoginStartResultPtr ignore, // will always be NULL
+                                                             IdentityAccessLockboxUpdateResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLoginCompleteResult>
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupUpdateResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        IdentityLoginCompleteResultPtr result
+                                                        IdentityLookupUpdateResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             IdentityLoginCompleteResultPtr ignore, // will always be NULL
-                                                             message::MessageResultPtr result
-                                                             );
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAssociateResult>
-        #pragma mark
-
-        virtual bool handleMessageMonitorResultReceived(
-                                                        IMessageMonitorPtr monitor,
-                                                        IdentityAssociateResultPtr result
-                                                        );
-
-        virtual bool handleMessageMonitorErrorResultReceived(
-                                                             IMessageMonitorPtr monitor,
-                                                             IdentityAssociateResultPtr ignore, // will always be NULL
+                                                             IdentityLookupUpdateResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
@@ -344,47 +334,47 @@ namespace hookflash
         ServiceIdentitySessionWeakPtr mThisWeak;
 
         IServiceIdentitySessionDelegatePtr mDelegate;
-        ServiceLockboxSessionWeakPtr mAssociatedPeerContact;
-        bool mKillAssociation;
+        ServiceLockboxSessionWeakPtr mAssociatedLockbox;
+//        bool mKillAssociation;
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
 
-        IMessageMonitorPtr mLoginStartMonitor;
-        IMessageMonitorPtr mLoginCompleteMonitor;
-        IMessageMonitorPtr mAssociateMonitor;
-        IMessageMonitorPtr mSignMonitor;
-
+//        IMessageMonitorPtr mLoginStartMonitor;
+//        IMessageMonitorPtr mLoginCompleteMonitor;
+//        IMessageMonitorPtr mAssociateMonitor;
+//        IMessageMonitorPtr mSignMonitor;
+//
         SessionStates mCurrentState;
         SessionStates mLastReportedState;
 
         WORD mLastError;
         String mLastErrorReason;
-
-        bool mLoadedLoginURL;
-        bool mBrowserWindowVisible;
-        bool mBrowserRedirectionComplete;
-
-        String mClientLoginSecret;
-
-        String mClientToken;
-        String mServerToken;
-
-        bool mNeedsBrowserWindowVisible;
-        bool mNotificationSentToInnerBrowserWindow;
-
-        String mRedirectAfterLoginCompleteURL;
-        String mIdentityLoginURL;
-        String mIdentityLoginCompleteURL;
-        Time mIdentityLoginExpires;
-
-        SecureByteBlockPtr mPrivatePeerFileSecret;
-        IdentityInfo mIdentityInfo;
-
-        ElementPtr mSignedIdentityBundleEl;
-        bool mSignedIdentityBundleValidityChecked;
-        bool mDownloadedSignedIdentityBundle;
-
-        DocumentList mPendingMessagesToDeliver;
+//
+//        bool mLoadedLoginURL;
+//        bool mBrowserWindowVisible;
+//        bool mBrowserRedirectionComplete;
+//
+//        String mClientLoginSecret;
+//
+//        String mClientToken;
+//        String mServerToken;
+//
+//        bool mNeedsBrowserWindowVisible;
+//        bool mNotificationSentToInnerBrowserWindow;
+//
+//        String mRedirectAfterLoginCompleteURL;
+//        String mIdentityLoginURL;
+//        String mIdentityLoginCompleteURL;
+//        Time mIdentityLoginExpires;
+//
+//        SecureByteBlockPtr mPrivatePeerFileSecret;
+//        IdentityInfo mIdentityInfo;
+//
+//        ElementPtr mSignedIdentityBundleEl;
+//        bool mSignedIdentityBundleValidityChecked;
+//        bool mDownloadedSignedIdentityBundle;
+//
+//        DocumentList mPendingMessagesToDeliver;
       };
 
       //-----------------------------------------------------------------------
@@ -400,6 +390,7 @@ namespace hookflash
         static IServiceIdentitySessionFactory &singleton();
 
         virtual ServiceIdentitySessionPtr loginWithIdentity(
+                                                            IServiceLockboxSessionPtr existingLockbox,
                                                             IServiceIdentitySessionDelegatePtr delegate,
                                                             const char *outerFrameURLUponReload,
                                                             const char *identityURI,
@@ -407,6 +398,7 @@ namespace hookflash
                                                             );
 
         virtual ServiceIdentitySessionPtr loginWithIdentityProvider(
+                                                                    IServiceLockboxSessionPtr existingLockbox,
                                                                     IServiceIdentitySessionDelegatePtr delegate,
                                                                     const char *outerFrameURLUponReload,
                                                                     IServiceIdentityPtr provider,
@@ -414,10 +406,17 @@ namespace hookflash
                                                                     );
 
         virtual ServiceIdentitySessionPtr loginWithIdentityBundle(
+                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                   IServiceIdentitySessionDelegatePtr delegate,
                                                                   const char *outerFrameURLUponReload,
                                                                   ElementPtr signedIdentityBundle
                                                                   );
+
+        static ServiceIdentitySessionPtr reload(
+                                                IServiceLockboxSessionPtr existingLockbox,
+                                                BootstrappedNetworkPtr network,
+                                                const char *identityURI
+                                                );
       };
     }
   }

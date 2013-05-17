@@ -32,11 +32,11 @@
 #include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAdminCompleteNotify.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
@@ -153,12 +153,12 @@ namespace hookflash
                 case Method_LockboxAccess:                      return MessagePtr();
                 case Method_LockboxAccessValidate:              return MessagePtr();
                 case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxNamespaceGrantWindow:        return MessagePtr();
+                case Method_LockboxNamespaceGrantWindow:        return LockboxNamespaceGrantWindowRequest::create(root, messageSource);
                 case Method_LockboxNamespaceGrantStart:         return MessagePtr();
                 case Method_LockboxNamespaceGrantComplete:      return MessagePtr();
                 case Method_LockboxContentGet:                  return MessagePtr();
                 case Method_LockboxContentSet:                  return MessagePtr();
-                case Method_LockboxAdminWindow:                 return MessagePtr();
+                case Method_LockboxAdminWindow:                 return LockboxAdminWindowRequest::create(root, messageSource);
                 case Method_LockboxAdminStart:                  return MessagePtr();
                 case Method_LockboxAdminComplete:               return MessagePtr();
                 case Method_LockboxNamespacePreappovedGrant:    return MessagePtr();
@@ -192,12 +192,12 @@ namespace hookflash
                 case Method_LockboxAccess:                      return MessagePtr();
                 case Method_LockboxAccessValidate:              return MessagePtr();
                 case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxNamespaceGrantWindow:        return LockboxNamespaceGrantWindowNotify::create(root, messageSource);
+                case Method_LockboxNamespaceGrantWindow:        return MessagePtr();
                 case Method_LockboxNamespaceGrantStart:         return MessagePtr();
                 case Method_LockboxNamespaceGrantComplete:      return LockboxNamespaceGrantCompleteNotify::create(root, messageSource);
                 case Method_LockboxContentGet:                  return MessagePtr();
                 case Method_LockboxContentSet:                  return MessagePtr();
-                case Method_LockboxAdminWindow:                 return LockboxAdminWindowNotify::create(root, messageSource);
+                case Method_LockboxAdminWindow:                 return MessagePtr();
                 case Method_LockboxAdminStart:                  return MessagePtr();
                 case Method_LockboxAdminComplete:               return LockboxAdminCompleteNotify::create(root, messageSource);
                 case Method_LockboxNamespacePreappovedGrant:    return MessagePtr();

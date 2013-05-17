@@ -31,8 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/message/IMessageFactory.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 
+#include <list>
 
 namespace hookflash
 {
@@ -40,53 +42,31 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity
+      namespace identity_lockbox
       {
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark MessageFactoryIdentity
-        #pragma mark
-
-        class MessageFactoryIdentity : public IMessageFactory
+        class LockboxAdminWindowResult : public MessageResult
         {
         public:
-          enum Methods
+          enum AttributeTypes
           {
-            Method_Invalid = Message::Method_Invalid,
-
-            Method_IdentityAccessWindow,
-            Method_IdentityAccessStart,
-            Method_IdentityAccessComplete,
-            Method_IdentityAccessLockboxUpdate,
-            Method_IdentityLookupUpdate,
-            Method_IdentitySign,
-
-            Method_Last = Method_IdentitySign,
           };
 
-        protected:
-          static MessageFactoryIdentityPtr create();
-
         public:
-          static MessageFactoryIdentityPtr singleton();
+          static LockboxAdminWindowResultPtr convert(MessagePtr message);
 
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark MessageFactoryIdentity => IMessageFactory
-          #pragma mark
+          static LockboxAdminWindowResultPtr create(
+                                                   ElementPtr root,
+                                                   IMessageSourcePtr messageSource
+                                                   );
 
-          virtual const char *getHandler() const;
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminWindow;}
 
-          virtual Message::Methods toMethod(const char *method) const;
-          virtual const char *toString(Message::Methods method) const;
+          virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentityLockbox::singleton();}
 
-          virtual MessagePtr create(
-                                    ElementPtr root,
-                                    IMessageSourcePtr messageSource
-                                    );
+          bool hasAttribute(AttributeTypes type) const;
+
+        protected:
+          LockboxAdminWindowResult();
         };
       }
     }

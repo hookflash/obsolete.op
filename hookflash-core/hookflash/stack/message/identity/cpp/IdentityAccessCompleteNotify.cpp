@@ -29,14 +29,11 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityLoginCompleteRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
-
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
 namespace hookflash
 {
@@ -46,53 +43,46 @@ namespace hookflash
     {
       namespace identity
       {
-        using zsLib::Seconds;
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityLoginCompleteRequestPtr IdentityLoginCompleteRequest::convert(MessagePtr message)
+        IdentityAccessCompleteNotifyPtr IdentityAccessCompleteNotify::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityLoginCompleteRequest>(message);
+          return boost::dynamic_pointer_cast<IdentityAccessCompleteNotify>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginCompleteRequest::IdentityLoginCompleteRequest()
+        IdentityAccessCompleteNotify::IdentityAccessCompleteNotify()
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginCompleteRequestPtr IdentityLoginCompleteRequest::create()
+        IdentityAccessCompleteNotifyPtr IdentityAccessCompleteNotify::create(
+                                                                             ElementPtr root,
+                                                                             IMessageSourcePtr messageSource
+                                                                             )
         {
-          IdentityLoginCompleteRequestPtr ret(new IdentityLoginCompleteRequest);
+          IdentityAccessCompleteNotifyPtr ret(new IdentityAccessCompleteNotify);
+          IMessageHelper::fill(*ret, root, messageSource);
+
+          ret->mIdentityInfo = MessageHelper::createIdentity(root->findFirstChildElement("identity"));
+          ret->mLockboxInfo = MessageHelper::createLockbox(root->findFirstChildElement("lockbox"));
+
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool IdentityLoginCompleteRequest::hasAttribute(AttributeTypes type) const
+        bool IdentityAccessCompleteNotify::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_ClientToken:       return !mClientToken.isEmpty();
-            case AttributeType_ServerToken:       return !mClientToken.isEmpty();
-            default:                              break;
+            case AttributeType_IdentityInfo:              return (mIdentityInfo.hasData());
+            case AttributeType_LockboxInfo:               return (mLockboxInfo.hasData());
+            default:                                      break;
           }
           return false;
         }
 
-        //---------------------------------------------------------------------
-        DocumentPtr IdentityLoginCompleteRequest::encode()
-        {
-          DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-          ElementPtr root = ret->getFirstChildElement();
-
-          if (hasAttribute(AttributeType_ClientToken)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithText("clientToken", mClientToken));
-          }
-          if (hasAttribute(AttributeType_ServerToken)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithText("serverToken", mServerToken));
-          }
-          return ret;
-        }
       }
     }
   }

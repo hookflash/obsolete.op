@@ -44,7 +44,7 @@ namespace hookflash
     {
       namespace identity
       {
-        class IdentityAccessLockboxUpdateResult : public MessageResult
+        class IdentityLookupUpdateResult : public MessageResult
         {
         public:
           enum AttributeTypes
@@ -52,21 +52,21 @@ namespace hookflash
           };
 
         public:
-          static IdentityAccessLockboxUpdateResultPtr convert(MessagePtr message);
+          static IdentityLookupUpdateResultPtr convert(MessagePtr message);
 
-          static IdentityAccessLockboxUpdateResultPtr create(
+          static IdentityLookupUpdateResultPtr create(
                                                    ElementPtr root,
                                                    IMessageSourcePtr messageSource
                                                    );
 
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAssociate;}
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityLookupUpdate;}
 
           virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentity::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
         protected:
-          IdentityAccessLockboxUpdateResult();
+          IdentityLookupUpdateResult();
         };
       }
     }
