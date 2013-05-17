@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 
@@ -49,25 +49,25 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowNotifyPtr LockboxAdminWindowNotify::convert(MessagePtr message)
+        LockboxAdminWindowRequestPtr LockboxAdminWindowRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxAdminWindowNotify>(message);
+          return boost::dynamic_pointer_cast<LockboxAdminWindowRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowNotify::LockboxAdminWindowNotify() :
+        LockboxAdminWindowRequest::LockboxAdminWindowRequest() :
           mReady(-1),
           mVisible(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowNotifyPtr LockboxAdminWindowNotify::create(
+        LockboxAdminWindowRequestPtr LockboxAdminWindowRequest::create(
                                                                      ElementPtr root,
                                                                      IMessageSourcePtr messageSource
                                                                      )
         {
-          LockboxAdminWindowNotifyPtr ret(new LockboxAdminWindowNotify);
+          LockboxAdminWindowRequestPtr ret(new LockboxAdminWindowRequest);
           MessageHelper::fill(*ret, root, messageSource);
 
           ElementPtr browserEl = root->findFirstChildElement("browser");
@@ -85,7 +85,7 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        bool LockboxAdminWindowNotify::hasAttribute(AttributeTypes type) const
+        bool LockboxAdminWindowRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {

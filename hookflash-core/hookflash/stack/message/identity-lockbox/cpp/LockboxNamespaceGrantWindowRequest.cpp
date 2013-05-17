@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 
@@ -49,25 +49,25 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowNotifyPtr LockboxNamespaceGrantWindowNotify::convert(MessagePtr message)
+        LockboxNamespaceGrantWindowRequestPtr LockboxNamespaceGrantWindowRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxNamespaceGrantWindowNotify>(message);
+          return boost::dynamic_pointer_cast<LockboxNamespaceGrantWindowRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowNotify::LockboxNamespaceGrantWindowNotify() :
+        LockboxNamespaceGrantWindowRequest::LockboxNamespaceGrantWindowRequest() :
           mReady(-1),
           mVisible(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowNotifyPtr LockboxNamespaceGrantWindowNotify::create(
+        LockboxNamespaceGrantWindowRequestPtr LockboxNamespaceGrantWindowRequest::create(
                                                                                        ElementPtr root,
                                                                                        IMessageSourcePtr messageSource
                                                                                        )
         {
-          LockboxNamespaceGrantWindowNotifyPtr ret(new LockboxNamespaceGrantWindowNotify);
+          LockboxNamespaceGrantWindowRequestPtr ret(new LockboxNamespaceGrantWindowRequest);
           MessageHelper::fill(*ret, root, messageSource);
 
           ElementPtr browserEl = root->findFirstChildElement("browser");
@@ -85,7 +85,7 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        bool LockboxNamespaceGrantWindowNotify::hasAttribute(AttributeTypes type) const
+        bool LockboxNamespaceGrantWindowRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {

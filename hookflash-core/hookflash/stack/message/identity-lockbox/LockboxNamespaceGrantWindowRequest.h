@@ -45,7 +45,7 @@ namespace hookflash
     {
       namespace identity_lockbox
       {
-        class LockboxNamespaceGrantWindowNotify : public MessageRequest
+        class LockboxNamespaceGrantWindowRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
@@ -55,9 +55,9 @@ namespace hookflash
           };
 
         public:
-          static LockboxNamespaceGrantWindowNotifyPtr convert(MessagePtr message);
+          static LockboxNamespaceGrantWindowRequestPtr convert(MessagePtr message);
 
-          static LockboxNamespaceGrantWindowNotifyPtr create(
+          static LockboxNamespaceGrantWindowRequestPtr create(
                                                              ElementPtr root,
                                                              IMessageSourcePtr messageSource
                                                              );
@@ -75,7 +75,7 @@ namespace hookflash
           void visible(bool &val)                     {mVisible = (val ? 1: 0);}
 
         protected:
-          LockboxNamespaceGrantWindowNotify();
+          LockboxNamespaceGrantWindowRequest();
 
           int mReady;
           int mVisible;

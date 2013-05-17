@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity/IdentityLoginBrowserWindowControlNotify.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 
@@ -49,25 +49,25 @@ namespace hookflash
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        IdentityLoginBrowserWindowControlNotifyPtr IdentityLoginBrowserWindowControlNotify::convert(MessagePtr message)
+        IdentityAccessWindowRequestPtr IdentityAccessWindowRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<IdentityLoginBrowserWindowControlNotify>(message);
+          return boost::dynamic_pointer_cast<IdentityAccessWindowRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginBrowserWindowControlNotify::IdentityLoginBrowserWindowControlNotify() :
+        IdentityAccessWindowRequest::IdentityAccessWindowRequest() :
           mReady(-1),
           mVisible(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        IdentityLoginBrowserWindowControlNotifyPtr IdentityLoginBrowserWindowControlNotify::create(
-                                                                                                   ElementPtr root,
-                                                                                                   IMessageSourcePtr messageSource
-                                                                                                   )
+        IdentityAccessWindowRequestPtr IdentityAccessWindowRequest::create(
+                                                                         ElementPtr root,
+                                                                         IMessageSourcePtr messageSource
+                                                                         )
         {
-          IdentityLoginBrowserWindowControlNotifyPtr ret(new IdentityLoginBrowserWindowControlNotify);
+          IdentityAccessWindowRequestPtr ret(new IdentityAccessWindowRequest);
           MessageHelper::fill(*ret, root, messageSource);
 
           ElementPtr browserEl = root->findFirstChildElement("browser");
@@ -85,7 +85,7 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        bool IdentityLoginBrowserWindowControlNotify::hasAttribute(AttributeTypes type) const
+        bool IdentityAccessWindowRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {

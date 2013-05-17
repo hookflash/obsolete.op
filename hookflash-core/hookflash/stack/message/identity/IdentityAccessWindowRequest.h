@@ -45,7 +45,7 @@ namespace hookflash
     {
       namespace identity
       {
-        class IdentityLoginBrowserWindowControlNotify : public MessageRequest
+        class IdentityAccessWindowRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
@@ -55,14 +55,14 @@ namespace hookflash
           };
 
         public:
-          static IdentityLoginBrowserWindowControlNotifyPtr convert(MessagePtr message);
+          static IdentityAccessWindowRequestPtr convert(MessagePtr message);
 
-          static IdentityLoginBrowserWindowControlNotifyPtr create(
-                                                                   ElementPtr root,
-                                                                   IMessageSourcePtr messageSource
-                                                                   );
+          static IdentityAccessWindowRequestPtr create(
+                                                       ElementPtr root,
+                                                       IMessageSourcePtr messageSource
+                                                       );
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityLoginBrowserWindowControl;}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessWindow;}
 
           virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentity::singleton();}
 
@@ -75,7 +75,7 @@ namespace hookflash
           void visible(bool &val)                     {mVisible = (val ? 1: 0);}
 
         protected:
-          IdentityLoginBrowserWindowControlNotify();
+          IdentityAccessWindowRequest();
 
           int mReady;
           int mVisible;
