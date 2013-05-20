@@ -1835,6 +1835,7 @@ namespace hookflash
           capability.height = height;
           capability.maxFPS = maxFramerate;
           capability.rawType = webrtc::kVideoI420;
+          capability.faceDetection = mFaceDetection;
           mError = mVideoCapture->StartCapture(mCaptureId, capability);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
