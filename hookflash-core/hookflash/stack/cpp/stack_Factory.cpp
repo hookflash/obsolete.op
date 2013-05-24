@@ -748,12 +748,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::relogin(
-                                                                        IServiceLockboxSessionPtr existingLockbox,
-                                                                        BootstrappedNetworkPtr network,
-                                                                        const char *identityURI,
-                                                                        const char *reloginKey
-                                                                        )
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::reload(
+                                                                       IServiceLockboxSessionPtr existingLockbox,
+                                                                       BootstrappedNetworkPtr network,
+                                                                       const char *identityURI,
+                                                                       const char *reloginKey
+                                                                       )
       {
         return ServiceIdentitySession::reload(existingLockbox, network, identityURI, reloginKey);
       }
@@ -774,10 +774,10 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::login(
-                                                                            IServiceLockboxSessionDelegatePtr delegate,
-                                                                            IServiceLockboxPtr ServiceLockbox,
-                                                                            IServiceIdentitySessionPtr identitySession
-                                                                            )
+                                                                    IServiceLockboxSessionDelegatePtr delegate,
+                                                                    IServiceLockboxPtr ServiceLockbox,
+                                                                    IServiceIdentitySessionPtr identitySession
+                                                                    )
       {
         return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession);
       }

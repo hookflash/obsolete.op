@@ -566,6 +566,8 @@ namespace hookflash
           return;
         }
 
+        mGraciousShutdownReference.reset();
+
         mPendingMessagesToDeliver.clear();
 
         if (mIdentityAccessLockboxUpdateMonitor) {
@@ -581,6 +583,11 @@ namespace hookflash
         if (mIdentitySignMonitor) {
           mIdentitySignMonitor->cancel();
           mIdentitySignMonitor.reset();
+        }
+
+        if (mIdentityLookupMonitor) {
+          mIdentityLookupMonitor->cancel();
+          mIdentityLookupMonitor.reset();
         }
 
         setState(SessionState_Shutdown);
@@ -647,12 +654,16 @@ namespace hookflash
       void ServiceIdentitySession::killAssociation(ServiceLockboxSessionPtr peerContact)
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("associate called"))
+
+        ZS_LOG_DEBUG(log("kill associate called"))
 
         if (mKillAssociation) {
           ZS_LOG_WARNING(Detail, log("asssoication already killed"))
           return;
         }
+
+        // this shutdown must be performed graciously so that there is time to clean out the associations
+        mGraciousShutdownReference = mThisWeak.lock();
 
         mAssociatedLockbox.reset();
         mKillAssociation = true;

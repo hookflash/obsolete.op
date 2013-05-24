@@ -77,6 +77,8 @@
 #define HOOKFLASH_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS (1)
 #define HOOKFLASH_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS (60)
 
+#define HOOKFLASH_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE "rudp/udp"
+
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
 namespace hookflash
@@ -118,6 +120,19 @@ namespace hookflash
           case IAccount::AccountState_Shutdown:     return ILocation::LocationConnectionState_Disconnected;
         }
         return ILocation::LocationConnectionState_Disconnected;
+      }
+
+      static String getRUDPTransport(const Finder &finder)
+      {
+        for (Finder::ProtocolList::const_iterator iter = finder.mProtocols.begin(); iter != finder.mProtocols.end(); ++iter)
+        {
+          const Finder::Protocol &protocol = (*iter);
+
+          if (HOOKFLASH_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
+            return protocol.mSRV;
+          }
+        }
+        return String();
       }
 
       //-----------------------------------------------------------------------
@@ -448,7 +463,7 @@ namespace hookflash
           Finder finder = mFinder->forAccount().getCurrentFinder(&(info->mUserAgent), &(info->mIPAddress));
 
           info->mDeviceID = finder.mID;
-          info->mHost = finder.mSRV;
+          info->mHost = getRUDPTransport(finder);
           return info;
         }
 
@@ -1908,14 +1923,15 @@ namespace hookflash
 
         if (!mAvailableFinderSRVResult) {
           Finder &finder = mAvailableFinders.front();
-          if (finder.mSRV.isEmpty()) {
+          String srv = getRUDPTransport(finder);
+          if (srv.isEmpty()) {
             ZS_LOG_ERROR(Detail, log("finder missing SRV name"))
             mAvailableFinders.pop_front();
             IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
             return false;
           }
 
-          mFinderDNSLookup = IDNS::lookupSRV(mThisWeak.lock(), finder.mSRV, "_finder", "_udp");
+          mFinderDNSLookup = IDNS::lookupSRV(mThisWeak.lock(), srv, "_finder", "_udp");
           ZS_LOG_DEBUG(log("performing DNS lookup on finder"))
           return false;
         }

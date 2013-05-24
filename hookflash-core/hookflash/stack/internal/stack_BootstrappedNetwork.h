@@ -356,7 +356,7 @@ namespace hookflash
         virtual String getServiceURI(
                                      const char *serviceType,
                                      const char *serviceMethodName
-                                     ) const = 0;
+                                     ) const;
 
         virtual bool isValidSignature(
                                       const String &id,

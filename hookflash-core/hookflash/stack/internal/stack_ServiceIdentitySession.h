@@ -362,6 +362,7 @@ namespace hookflash
         PUID mID;
         mutable RecursiveLock mLock;
         ServiceIdentitySessionWeakPtr mThisWeak;
+        ServiceIdentitySessionPtr mGraciousShutdownReference;
 
         IServiceIdentitySessionDelegatePtr mDelegate;
         ServiceLockboxSessionWeakPtr mAssociatedLockbox;
