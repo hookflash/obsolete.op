@@ -149,6 +149,8 @@ namespace hookflash
                                                  bool appendNUL
                                                  )
       {
+        if (NULL == input) return SecureByteBlockPtr();
+
         SecureByteBlockPtr output(new SecureByteBlock);
         output->CleanNew(((sizeof(char)*strlen(input)) + (appendNUL ? sizeof(char) : 0)));
 

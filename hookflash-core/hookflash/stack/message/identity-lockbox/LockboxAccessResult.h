@@ -51,12 +51,17 @@ namespace hookflash
           {
             AttributeType_LockboxInfo = AttributeType_Last + 1,
             AttributeType_GrantID,
-            AttributeType_NamespaceURLs,
+            AttributeType_NamespaceInfos,
             AttributeType_Identities,
           };
 
-          typedef String NamespaceURL;
-          typedef std::list<NamespaceURL> NamespaceURLList;
+          struct NamespaceInfo
+          {
+            String mURL;
+            Time mLastUpdated;
+          };
+
+          typedef std::list<NamespaceInfo> NamespaceInfoList;
 
         public:
           static LockboxAccessResultPtr convert(MessagePtr message);
@@ -72,17 +77,17 @@ namespace hookflash
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
-          void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
+          const LockboxInfo &lockboxInfo() const            {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)          {mLockboxInfo = val;}
 
-          const String &grantID() const                   {return mGrantID;}
-          void grantID(const String &val)                 {mGrantID = val;}
+          const String &grantID() const                     {return mGrantID;}
+          void grantID(const String &val)                   {mGrantID = val;}
 
-          const NamespaceURLList &namespaceURLs() const   {return mNamespaceURLs;}
-          void namespaceURLs(const NamespaceURLList &val) {mNamespaceURLs = val;}
+          const NamespaceInfoList &namespaceInfos() const   {return mNamespaceInfos;}
+          void namespaceInfos(const NamespaceInfoList &val) {mNamespaceInfos = val;}
 
-          const IdentityInfoList &identities() const      {return mIdentities;}
-          void identities(const IdentityInfoList &val)    {mIdentities = val;}
+          const IdentityInfoList &identities() const        {return mIdentities;}
+          void identities(const IdentityInfoList &val)      {mIdentities = val;}
 
         protected:
           LockboxAccessResult();
@@ -90,7 +95,7 @@ namespace hookflash
           LockboxInfo mLockboxInfo;
 
           String mGrantID;
-          NamespaceURLList mNamespaceURLs;
+          NamespaceInfoList mNamespaceInfos;
 
           IdentityInfoList mIdentities;
         };

@@ -31,11 +31,14 @@
 
 #include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
-#include <hookflash/stack/message/peer-contact/PeerContactLoginRequest.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetRequest.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetRequest.h>
-#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateRequest.h>
-#include <hookflash/stack/message/peer-contact/PeerContactServicesGetRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantStartNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
+
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Account.h>
 #include <hookflash/stack/internal/stack_Helper.h>
@@ -73,16 +76,20 @@ namespace hookflash
 
       using zsLib::Stringize;
 
-      using message::peer_contact::PeerContactLoginRequest;
-      using message::peer_contact::PeerContactLoginRequestPtr;
-      using message::peer_contact::PrivatePeerFileGetRequest;
-      using message::peer_contact::PrivatePeerFileGetRequestPtr;
-      using message::peer_contact::PrivatePeerFileSetRequest;
-      using message::peer_contact::PrivatePeerFileSetRequestPtr;
-      using message::peer_contact::PeerContactIdentityAssociateRequest;
-      using message::peer_contact::PeerContactIdentityAssociateRequestPtr;
-      using message::peer_contact::PeerContactServicesGetRequest;
-      using message::peer_contact::PeerContactServicesGetRequestPtr;
+      using message::identity_lockbox::LockboxAccessRequest;
+      using message::identity_lockbox::LockboxAccessRequestPtr;
+      using message::identity_lockbox::LockboxIdentitiesUpdateRequest;
+      using message::identity_lockbox::LockboxIdentitiesUpdateRequestPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantWindowRequest;
+      using message::identity_lockbox::LockboxNamespaceGrantWindowRequestPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantStartNotify;
+      using message::identity_lockbox::LockboxNamespaceGrantStartNotifyPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantCompleteNotify;
+      using message::identity_lockbox::LockboxNamespaceGrantCompleteNotifyPtr;
+      using message::identity_lockbox::LockboxContentGetRequest;
+      using message::identity_lockbox::LockboxContentGetRequestPtr;
+      using message::identity_lockbox::LockboxContentSetRequest;
+      using message::identity_lockbox::LockboxContentSetRequestPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -103,8 +110,7 @@ namespace hookflash
         mDelegate(delegate ? IServiceLockboxSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceLockboxSessionDelegatePtr()),
         mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
-        mLastError(0),
-        mRegeneratePeerFiles(false)
+        mLastError(0)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -174,31 +180,13 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!identityHalfLockboxKey)
         ZS_THROW_BAD_STATE_IF(!lockboxHalfLockboxKey)
 
-//        IPeerFilePublicPtr peerFilePublic = existingPeerFiles->getPeerFilePublic();
-//        ZS_THROW_BAD_STATE_IF(!peerFilePublic)
-//
-//        String uri = peerFilePublic->getPeerURI();
-//        if (!IPeer::isValid(uri)) {
-//          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] peer file public contains invalid URI, URI=" + uri)
-//          return ServiceLockboxSessionPtr();
-//        }
-//
-//        String domain;
-//        String contactID;
-//        IPeer::splitURI(uri, domain, contactID);
-//
-//        if (!IHelper::isValidDomain(domain)) {
-//          ZS_LOG_WARNING(Detail, "ServiceLockboxSession [] domain is not valid, domain=" + domain)
-//          return ServiceLockboxSessionPtr();
-//        }
-//
-//        BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
-//
-//        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), network, delegate));
-//        pThis->mThisWeak = pThis;
-//        pThis->mPeerFiles = existingPeerFiles;
-//        pThis->init();
-//        return pThis;
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
+        pThis->mThisWeak = pThis;
+        pThis->mLockboxInfo.mAccountID = lockboxAccountID;
+        pThis->mLockboxInfo.mKeyIdentityHalf = IHelper::convertToBuffer(identityHalfLockboxKey);
+        pThis->mLockboxInfo.mKeyLockboxHalf = IHelper::convertToBuffer(lockboxHalfLockboxKey);
+        pThis->init();
+        return pThis;
         return ServiceLockboxSessionPtr();
       }
 
@@ -209,11 +197,13 @@ namespace hookflash
         return mBootstrappedNetwork;
       }
 
+#if 0
+
       //-----------------------------------------------------------------------
       IServiceLockboxSession::SessionStates ServiceLockboxSession::getState(
-                                                                                    WORD *outLastErrorCode,
-                                                                                    String *outLastErrorReason
-                                                                                    ) const
+                                                                            WORD *outLastErrorCode,
+                                                                            String *outLastErrorReason
+                                                                            ) const
       {
         AutoRecursiveLock lock(getLock());
         if (outLastErrorCode) *outLastErrorCode = mLastError;
@@ -232,6 +222,7 @@ namespace hookflash
       String ServiceLockboxSession::getLockboxAccountID() const
       {
         AutoRecursiveLock lock(getLock());
+        return mLockboxInfo.mAccountID;
       }
 
       //-----------------------------------------------------------------------
@@ -241,6 +232,9 @@ namespace hookflash
                                                 )
       {
         AutoRecursiveLock lock(getLock());
+
+        outIdentityHalf = stack::IHelper::convertToBuffer(mLockboxInfo.mKeyIdentityHalf);
+        outLockboxHalf = stack::IHelper::convertToBuffer(mLockboxInfo.mKeyLockboxHalf);
       }
 
       //-----------------------------------------------------------------------
@@ -1387,6 +1381,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+#endif //0
     }
 
     //-------------------------------------------------------------------------

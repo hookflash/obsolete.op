@@ -634,7 +634,7 @@ namespace hookflash
 
         ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), ServiceLockboxSession::convert(existingLockbox), identityNetwork, providerNetwork, IServiceIdentitySessionDelegatePtr(), NULL));
         pThis->mThisWeak = pThis;
-        pThis->mAssociatedLockbox = existingLockbox;
+        pThis->mAssociatedLockbox = ServiceLockboxSession::convert(existingLockbox);
         pThis->mIdentityInfo.mURI = identityURI;
         pThis->mIdentityInfo.mReloginKey = String(reloginKey);
         pThis->init();

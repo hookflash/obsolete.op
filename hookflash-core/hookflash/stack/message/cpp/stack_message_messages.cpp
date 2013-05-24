@@ -298,6 +298,16 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      static void merge(SecureByteBlockPtr &result, const SecureByteBlockPtr &source, bool overwrite)
+      {
+        if (!source) return;
+        if (result) {
+          if (!overwrite) return;
+        }
+        result = source;
+      }
+
+      //-----------------------------------------------------------------------
       static void merge(Time &result, const Time &source, bool overwrite)
       {
         if (Time() == source) return;
@@ -413,8 +423,8 @@ namespace hookflash
                 (mAccessSecretProof.hasData()) ||
                 (Time() != mAccessSecretProofExpires) ||
 
-                (mKeyIdentityHalf.hasData()) ||
-                (mKeyLockboxHalf.hasData()) ||
+                (mKeyIdentityHalf) ||
+                (mKeyLockboxHalf) ||
                 (mHash.hasData()) ||
 
                 (mResetFlag));
@@ -431,8 +441,8 @@ namespace hookflash
                Helper::getDebugValue("access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime) +
                Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
-               Helper::getDebugValue("key (identity half)", mKeyIdentityHalf, firstTime) +
-               Helper::getDebugValue("key (lockbox half)", mKeyLockboxHalf, firstTime) +
+               Helper::getDebugValue("key (identity half)", mKeyIdentityHalf ? String((const char *) mKeyIdentityHalf->BytePtr()) : String(), firstTime) +
+               Helper::getDebugValue("key (lockbox half)", mKeyLockboxHalf ? String((const char *) mKeyLockboxHalf->BytePtr()) : String(), firstTime) +
                Helper::getDebugValue("hash", mHash, firstTime) +
                Helper::getDebugValue("reset", mResetFlag ? "true" : "false", firstTime);
       }

@@ -408,36 +408,38 @@ namespace hookflash
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
 
-        IMessageMonitorPtr mLoginMonitor;
-        IMessageMonitorPtr mPeerFilesGetMonitor;
-        IMessageMonitorPtr mPeerFilesSetMonitor;
-        IMessageMonitorPtr mServicesMonitor;
-        IMessageMonitorPtr mAssociateMonitor;
+//        IMessageMonitorPtr mLoginMonitor;
+//        IMessageMonitorPtr mPeerFilesGetMonitor;
+//        IMessageMonitorPtr mPeerFilesSetMonitor;
+//        IMessageMonitorPtr mServicesMonitor;
+//        IMessageMonitorPtr mAssociateMonitor;
 
         SessionStates mCurrentState;
 
         WORD mLastError;
         String mLastErrorReason;
 
-        IPeerFilesPtr mPeerFiles;
+        LockboxInfo mLockboxInfo;
 
         ServiceIdentitySessionPtr mLoginIdentity;
 
-        String mContactUserID;
-        String mContactAccessToken;
-        String mContactAccessSecret;
-        Time mContactAccessExpires;
+        IPeerFilesPtr mPeerFiles;
 
-        bool mRegeneratePeerFiles;
-
-        IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
-        ServiceTypeMap mServicesByType;
-
-        ServiceIdentitySessionMap mAssociatedIdentities;
-        SecureByteBlockPtr mLastNotificationHash;
-
-        ServiceIdentitySessionMap mPendingUpdateIdentities;
-        ServiceIdentitySessionMap mPendingRemoveIdentities;
+//        String mContactUserID;
+//        String mContactAccessToken;
+//        String mContactAccessSecret;
+//        Time mContactAccessExpires;
+//
+//        bool mRegeneratePeerFiles;
+//
+//        IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
+//        ServiceTypeMap mServicesByType;
+//
+//        ServiceIdentitySessionMap mAssociatedIdentities;
+//        SecureByteBlockPtr mLastNotificationHash;
+//
+//        ServiceIdentitySessionMap mPendingUpdateIdentities;
+//        ServiceIdentitySessionMap mPendingRemoveIdentities;
       };
 
       //-----------------------------------------------------------------------

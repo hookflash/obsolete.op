@@ -57,12 +57,11 @@ namespace hookflash
 
           typedef String Name;
           typedef String Value;
-          typedef std::pair<Name, Value> NameValuePair;
 
-          typedef std::list<NameValuePair> NameValuePairList;
+          typedef std::map<Name, Value> NameValueMap;
 
           typedef String NamespaceURL;
-          typedef std::map<NamespaceURL, NameValuePairList> NamespaceURLNameValueMap;
+          typedef std::map<NamespaceURL, NameValueMap> NamespaceURLNameValueMap;
 
         public:
           static LockboxContentSetRequestPtr convert(MessagePtr message);

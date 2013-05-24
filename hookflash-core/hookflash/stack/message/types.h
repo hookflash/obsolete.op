@@ -250,8 +250,8 @@ namespace hookflash
         String mAccessSecretProof;
         Time mAccessSecretProofExpires;
 
-        String mKeyLockboxHalf;
-        String mKeyIdentityHalf;
+        SecureByteBlockPtr mKeyLockboxHalf;
+        SecureByteBlockPtr mKeyIdentityHalf;
         String mHash;
 
         bool mResetFlag;

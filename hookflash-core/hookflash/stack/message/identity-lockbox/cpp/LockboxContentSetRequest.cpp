@@ -116,14 +116,16 @@ namespace hookflash
             for (NamespaceURLNameValueMap::iterator iter = mNamespaceURLNameValues.begin(); iter != mNamespaceURLNameValues.end(); ++iter)
             {
               const NamespaceURL &namespaceURL = (*iter).first;
-              const NameValuePairList &values = (*iter).second;
+              const NameValueMap &values = (*iter).second;
 
               ElementPtr namespaceEl = IMessageHelper::createElementWithID("namespace", namespaceURL);
 
-              for (NameValuePairList::const_iterator valuesIter = values.begin(); valuesIter != values.end(); ++valuesIter)
+              for (NameValueMap::const_iterator valuesIter = values.begin(); valuesIter != values.end(); ++valuesIter)
               {
-                const NameValuePair &nameValue = (*valuesIter);
-                namespaceEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode(nameValue.first, nameValue.second));
+                const Name &key = (*valuesIter).first;
+                const Value &value = (*valuesIter).second;
+                if ("$updated" == key) continue;  // strip "$update" fromm the values tree in case it migrated back into "set" from original "get"
+                namespaceEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode(key, value));
               }
 
               if (namespaceEl->hasChildren()) {

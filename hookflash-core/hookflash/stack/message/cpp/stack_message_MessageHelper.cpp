@@ -604,11 +604,11 @@ namespace hookflash
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
           }
 
-          if (!info.mKeyIdentityHalf.isEmpty()) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", info.mKeyIdentityHalf));
+          if (info.mKeyIdentityHalf) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", (const char *)(info.mKeyIdentityHalf->BytePtr())));
           }
-          if (!info.mKeyLockboxHalf.isEmpty()) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", info.mKeyLockboxHalf));
+          if (info.mKeyLockboxHalf) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", (const char *)(info.mKeyLockboxHalf->BytePtr())));
           }
           if (!info.mHash.isEmpty()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("hash", info.mHash));
@@ -1663,8 +1663,15 @@ namespace hookflash
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
           info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
-          info.mKeyIdentityHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyIdentityHalf"));
-          info.mKeyLockboxHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyLockboxHalf"));
+          String identityHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyIdentityHalf"));
+          String lockboxHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyLockboxHalf"));
+
+          if (identityHalf.hasData()) {
+            info.mKeyIdentityHalf = stack::IHelper::convertToBuffer(identityHalf);
+          }
+          if (lockboxHalf.hasData()) {
+            info.mKeyLockboxHalf = stack::IHelper::convertToBuffer(lockboxHalf);
+          }
           info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
 
           try {

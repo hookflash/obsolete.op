@@ -75,7 +75,12 @@ namespace hookflash
               while (namespaceEl) {
                 String namespaceURL = IMessageHelper::getAttributeID(namespaceEl);
                 if (namespaceURL.hasData()) {
-                  NameValuePairList values;
+                  NameValueMap values;
+
+                  String updated = IMessageHelper::getAttribute(namespaceEl, "updated");
+                  if (updated.hasData()) {
+                    values["$updated"] = updated;
+                  }
 
                   ElementPtr childEl = namespaceEl->getFirstChildElement();
                   while (childEl) {
@@ -85,7 +90,7 @@ namespace hookflash
 
                     if ((name.hasData()) &&
                         (value.hasData())) {
-                      values.push_back(NameValuePair(name, value));
+                      values[name] = value;
                     }
                   }
 
