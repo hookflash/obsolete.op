@@ -39,6 +39,7 @@
 #include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -56,6 +57,8 @@ namespace hookflash
       using message::identity::IdentityLookupUpdateResultPtr;
       using message::identity::IdentitySignResult;
       using message::identity::IdentitySignResultPtr;
+      using message::identity_lookup::IdentityLookupResult;
+      using message::identity_lookup::IdentityLookupResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -71,8 +74,10 @@ namespace hookflash
         const IServiceIdentitySessionForServiceLockbox &forPeerContact() const {return *this;}
 
         static ServiceIdentitySessionPtr reload(
+                                                IServiceLockboxSessionPtr existingLockbox,
                                                 BootstrappedNetworkPtr network,
-                                                const char *identityURI
+                                                const char *identityURI,
+                                                const char *reloginKey
                                                 );
 
         virtual PUID getID() const = 0;
@@ -86,7 +91,7 @@ namespace hookflash
         virtual bool isShutdown() const = 0;
 
         virtual IdentityInfo getIdentityInfo() const = 0;
-        virtual SecureByteBlockPtr getPrivatePeerFileSecret() const = 0;
+        virtual LockboxInfo getLockboxInfo() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -119,7 +124,8 @@ namespace hookflash
                                      public IBootstrappedNetworkDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
-                                     public IMessageMonitorResultDelegate<IdentitySignResult>
+                                     public IMessageMonitorResultDelegate<IdentitySignResult>,
+                                     public IMessageMonitorResultDelegate<IdentityLookupResult>
       {
       public:
         friend interaction IServiceIdentitySessionFactory;
@@ -130,8 +136,9 @@ namespace hookflash
       protected:
         ServiceIdentitySession(
                                IMessageQueuePtr queue,
-                               IServiceLockboxSessionPtr existingLockbox,
-                               BootstrappedNetworkPtr network,
+                               ServiceLockboxSessionPtr existingLockbox,
+                               BootstrappedNetworkPtr identityNetwork,
+                               BootstrappedNetworkPtr providerNetwork,
                                IServiceIdentitySessionDelegatePtr delegate,
                                const char *outerFrameURLUponReload
                                );
@@ -203,8 +210,6 @@ namespace hookflash
         virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
 
-        virtual void forceLoginToContinue();
-
         virtual void cancel();
 
         //---------------------------------------------------------------------
@@ -222,7 +227,8 @@ namespace hookflash
         static ServiceIdentitySessionPtr reload(
                                                 IServiceLockboxSessionPtr existingLockbox,
                                                 BootstrappedNetworkPtr network,
-                                                const char *identityURI
+                                                const char *identityURI,
+                                                const char *reloginKey
                                                 );
 
         // (duplicate) virtual PUID getID() const;
@@ -236,7 +242,7 @@ namespace hookflash
         virtual bool isShutdown() const;
 
         virtual IdentityInfo getIdentityInfo() const;
-        virtual SecureByteBlockPtr getPrivatePeerFileSecret() const;
+        virtual LockboxInfo getLockboxInfo() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -300,6 +306,22 @@ namespace hookflash
                                                              message::MessageResultPtr result
                                                              );
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        IdentityLookupResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             IdentityLookupResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -313,11 +335,19 @@ namespace hookflash
         virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         void step();
-        bool stepLoginStart();
-        bool stepBrowserWinodw();
-        bool stepLoginComplete();
-        bool stepAssociate();
+
+        bool stepBootstrapper();
+        bool stepLoadBrowserWindow();
+        bool stepMakeBrowserWindowVisible();
+        bool stepIdentityAccessStartNotification();
+        bool stepIdentityAccessCompleteNotification();
+        bool stepLockboxAssociation();
+        bool stepIdentityLookup();
+        bool stepLockboxReady();
+        bool stepLockboxUpdate();
+        bool stepLookupUpdate();
         bool stepSign();
+        bool stepAllRequestsCompleted();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
@@ -335,46 +365,45 @@ namespace hookflash
 
         IServiceIdentitySessionDelegatePtr mDelegate;
         ServiceLockboxSessionWeakPtr mAssociatedLockbox;
-//        bool mKillAssociation;
+        bool mKillAssociation;
 
-        BootstrappedNetworkPtr mBootstrappedNetwork;
+        BootstrappedNetworkPtr mIdentityBootstrappedNetwork;
+        BootstrappedNetworkPtr mProviderBootstrappedNetwork;
+        BootstrappedNetworkPtr mActiveBootstrappedNetwork;
 
-//        IMessageMonitorPtr mLoginStartMonitor;
-//        IMessageMonitorPtr mLoginCompleteMonitor;
-//        IMessageMonitorPtr mAssociateMonitor;
-//        IMessageMonitorPtr mSignMonitor;
-//
+        IMessageMonitorPtr mIdentityAccessLockboxUpdateMonitor;
+        IMessageMonitorPtr mIdentityLookupUpdateMonitor;
+        IMessageMonitorPtr mIdentitySignMonitor;
+        IMessageMonitorPtr mIdentityLookupMonitor;
+
         SessionStates mCurrentState;
         SessionStates mLastReportedState;
 
         WORD mLastError;
         String mLastErrorReason;
-//
-//        bool mLoadedLoginURL;
-//        bool mBrowserWindowVisible;
-//        bool mBrowserRedirectionComplete;
-//
-//        String mClientLoginSecret;
-//
-//        String mClientToken;
-//        String mServerToken;
-//
-//        bool mNeedsBrowserWindowVisible;
-//        bool mNotificationSentToInnerBrowserWindow;
-//
-//        String mRedirectAfterLoginCompleteURL;
-//        String mIdentityLoginURL;
-//        String mIdentityLoginCompleteURL;
-//        Time mIdentityLoginExpires;
-//
-//        SecureByteBlockPtr mPrivatePeerFileSecret;
-//        IdentityInfo mIdentityInfo;
-//
-//        ElementPtr mSignedIdentityBundleEl;
-//        bool mSignedIdentityBundleValidityChecked;
-//        bool mDownloadedSignedIdentityBundle;
-//
-//        DocumentList mPendingMessagesToDeliver;
+
+        IdentityInfo mIdentityInfo;
+        LockboxInfo mLockboxInfo;
+
+        bool mBrowserWindowReady;
+        bool mBrowserWindowVisible;
+        bool mBrowserWindowClosed;
+
+        bool mNeedsBrowserWindowVisible;
+
+        bool mIdentityAccessStartNotificationSent;
+        bool mLockboxUpdated;
+        bool mIdentityLookupUpdated;
+        IdentityInfo mPreviousLookupInfo;
+
+        String mOuterFrameURLUponReload;
+        String mInnerFrameURL;
+
+        ElementPtr mSignedIdentityBundleVerfiedEl;
+        ElementPtr mSignedIdentityBundleUncheckedEl;
+        ElementPtr mSignedIdentityBundleOldEl;
+
+        DocumentList mPendingMessagesToDeliver;
       };
 
       //-----------------------------------------------------------------------
@@ -415,7 +444,8 @@ namespace hookflash
         static ServiceIdentitySessionPtr reload(
                                                 IServiceLockboxSessionPtr existingLockbox,
                                                 BootstrappedNetworkPtr network,
-                                                const char *identityURI
+                                                const char *identityURI,
+                                                const char *reloginKey
                                                 );
       };
     }

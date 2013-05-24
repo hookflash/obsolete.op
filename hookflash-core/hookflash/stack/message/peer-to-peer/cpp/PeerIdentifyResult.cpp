@@ -65,6 +65,7 @@ namespace hookflash
 
           ret->mDomain = request->domain();
           ret->mID = request->messageID();
+          ret->mAppID = request->appID();
 
           return ret;
         }

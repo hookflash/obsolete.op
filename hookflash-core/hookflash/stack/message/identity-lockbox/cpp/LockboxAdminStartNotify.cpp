@@ -116,11 +116,7 @@ namespace hookflash
 
           LockboxInfo lockboxInfo;
 
-          AgentInfo agentInfo;
-          agentInfo.mUserAgent = IStackForInternal::userAgent();
-          agentInfo.mName = IStackForInternal::appName();
-          agentInfo.mImageURL = IStackForInternal::appImageURL();
-
+          AgentInfo agentInfo = IStackForInternal::agentInfo();
           agentInfo.mergeFrom(mAgentInfo, true);
 
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;

@@ -76,6 +76,9 @@ namespace hookflash
           // mAccessToken
           // mAccessSecret
 
+          const AgentInfo &agentInfo() const              {return mAgentInfo;}
+          void agentInfo(const AgentInfo &val)            {mAgentInfo = val;}
+
           const IdentityInfo &identityInfo() const        {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)      {mIdentityInfo = val;}
 
@@ -88,6 +91,7 @@ namespace hookflash
         protected:
           LockboxAccessRequest();
 
+          AgentInfo mAgentInfo;
           IdentityInfo mIdentityInfo;
           String mGrantID;
           LockboxInfo mLockboxInfo;

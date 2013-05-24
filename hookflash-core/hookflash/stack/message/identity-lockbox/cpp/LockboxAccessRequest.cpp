@@ -31,6 +31,7 @@
 
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IPeerFiles.h>
 #include <hookflash/stack/IPeerFilePrivate.h>
@@ -53,6 +54,7 @@ namespace hookflash
       {
         using zsLib::Seconds;
         using internal::MessageHelper;
+        using stack::internal::IStackForInternal;
 
         //---------------------------------------------------------------------
         LockboxAccessRequestPtr LockboxAccessRequest::convert(MessagePtr message)
@@ -89,6 +91,9 @@ namespace hookflash
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
 
+          AgentInfo agentInfo = IStackForInternal::agentInfo();
+          mAgentInfo.mergeFrom(agentInfo, false);
+
           String clientNonce = IHelper::randomString(32);
           IdentityInfo identityInfo;
 
@@ -115,6 +120,10 @@ namespace hookflash
 
           if (mGrantID.hasData()) {
             root->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
+          }
+
+          if (mAgentInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
           }
 
           if (lockboxInfo.hasData()) {

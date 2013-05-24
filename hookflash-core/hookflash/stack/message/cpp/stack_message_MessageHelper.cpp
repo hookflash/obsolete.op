@@ -496,6 +496,10 @@ namespace hookflash
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(identity.mAccessSecretProofExpires)));
           }
 
+          if (!identity.mReloginKey.isEmpty()) {
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("reloginKey", identity.mReloginKey));
+          }
+
           if (!identity.mBase.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("base", identity.mBase));
           }
@@ -630,6 +634,9 @@ namespace hookflash
           }
           if (info.mImageURL.hasData()) {
             agentEl->adoptAsLastChild(IMessageHelper::createElementWithText("image", info.mImageURL));
+          }
+          if (info.mAgentURL.hasData()) {
+            agentEl->adoptAsLastChild(IMessageHelper::createElementWithText("url", info.mAgentURL));
           }
 
           return agentEl;
@@ -1588,6 +1595,8 @@ namespace hookflash
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
           info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
+          info.mReloginKey = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("reloginKey"));
+
           info.mBase = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("base"));
           info.mURI = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("uri"));
           info.mProvider = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("provider"));
@@ -1676,7 +1685,8 @@ namespace hookflash
           info.mUserAgent = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("userAgent"));
           info.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
           info.mImageURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("image"));
-          
+          info.mAgentURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("url"));
+
           return info;
         }
 

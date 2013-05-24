@@ -36,11 +36,11 @@
 #include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/stack/IMessageSource.h>
 #include <hookflash/stack/IServiceLockbox.h>
-#include <hookflash/stack/message/peer-contact/PeerContactLoginResult.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileGetResult.h>
-#include <hookflash/stack/message/peer-contact/PrivatePeerFileSetResult.h>
-#include <hookflash/stack/message/peer-contact/PeerContactIdentityAssociateResult.h>
-#include <hookflash/stack/message/peer-contact/PeerContactServicesGetResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
+
 #include <hookflash/stack/IServiceSalt.h>
 
 #include <zsLib/MessageQueueAssociator.h>
@@ -53,16 +53,14 @@ namespace hookflash
   {
     namespace internal
     {
-      using message::peer_contact::PeerContactLoginResult;
-      using message::peer_contact::PeerContactLoginResultPtr;
-      using message::peer_contact::PrivatePeerFileGetResult;
-      using message::peer_contact::PrivatePeerFileGetResultPtr;
-      using message::peer_contact::PrivatePeerFileSetResult;
-      using message::peer_contact::PrivatePeerFileSetResultPtr;
-      using message::peer_contact::PeerContactIdentityAssociateResult;
-      using message::peer_contact::PeerContactIdentityAssociateResultPtr;
-      using message::peer_contact::PeerContactServicesGetResult;
-      using message::peer_contact::PeerContactServicesGetResultPtr;
+      using message::identity_lockbox::LockboxAccessResult;
+      using message::identity_lockbox::LockboxAccessResultPtr;
+      using message::identity_lockbox::LockboxIdentitiesUpdateResult;
+      using message::identity_lockbox::LockboxIdentitiesUpdateResultPtr;
+      using message::identity_lockbox::LockboxContentGetResult;
+      using message::identity_lockbox::LockboxContentGetResultPtr;
+      using message::identity_lockbox::LockboxContentSetResult;
+      using message::identity_lockbox::LockboxContentSetResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -78,9 +76,9 @@ namespace hookflash
         const IServiceLockboxSessionForAccount &forAccount() const {return *this;}
 
         virtual IServiceLockboxSession::SessionStates getState(
-                                                                   WORD *lastErrorCode = NULL,
-                                                                   String *lastErrorReason = NULL
-                                                                   ) const = 0;
+                                                               WORD *lastErrorCode = NULL,
+                                                               String *lastErrorReason = NULL
+                                                               ) const = 0;
 
         virtual IPeerFilesPtr getPeerFiles() const = 0;
 
@@ -108,11 +106,15 @@ namespace hookflash
         const IServiceLockboxSessionForServiceIdentity &forServiceIdentity() const {return *this;}
 
         virtual IServiceLockboxSession::SessionStates getState(
-                                                                   WORD *lastErrorCode = NULL,
-                                                                   String *lastErrorReason = NULL
-                                                                   ) const = 0;
+                                                               WORD *lastErrorCode = NULL,
+                                                               String *lastErrorReason = NULL
+                                                               ) const = 0;
 
         virtual IPeerFilesPtr getPeerFiles() const = 0;
+
+        virtual LockboxInfo getLockboxInfo() const = 0;
+        virtual IdentityInfo getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const = 0;
+        virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const = 0;
 
         virtual void notifyStateChanged() = 0;
       };
@@ -147,11 +149,10 @@ namespace hookflash
                                         public IServiceLockboxSessionAsync,
                                         public IBootstrappedNetworkDelegate,
                                         public IServiceSaltFetchSignedSaltQueryDelegate,
-                                        public IMessageMonitorResultDelegate<PeerContactLoginResult>,
-                                        public IMessageMonitorResultDelegate<PrivatePeerFileGetResult>,
-                                        public IMessageMonitorResultDelegate<PrivatePeerFileSetResult>,
-                                        public IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>,
-                                        public IMessageMonitorResultDelegate<PeerContactServicesGetResult>
+                                        public IMessageMonitorResultDelegate<LockboxAccessResult>,
+                                        public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
+                                        public IMessageMonitorResultDelegate<LockboxContentGetResult>,
+                                        public IMessageMonitorResultDelegate<LockboxContentSetResult>
       {
       public:
         friend interaction IServiceLockboxSessionFactory;
@@ -272,6 +273,10 @@ namespace hookflash
 
         // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
 
+        virtual LockboxInfo getLockboxInfo() const;
+        virtual IdentityInfo getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const;
+        virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const;
+
         virtual void notifyStateChanged();
 
         //---------------------------------------------------------------------
@@ -297,81 +302,65 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactLoginResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxAccessResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        PeerContactLoginResultPtr result
+                                                        LockboxAccessResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             PeerContactLoginResultPtr ignore, // will always be NULL
+                                                             LockboxAccessResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        PrivatePeerFileGetResultPtr result
+                                                        LockboxIdentitiesUpdateResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             PrivatePeerFileGetResultPtr ignore, // will always be NULL
+                                                             LockboxIdentitiesUpdateResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxContentGetResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        PrivatePeerFileSetResultPtr result
+                                                        LockboxContentGetResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             PrivatePeerFileSetResultPtr ignore, // will always be NULL
+                                                             LockboxContentGetResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxContentSetResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
                                                         IMessageMonitorPtr monitor,
-                                                        PeerContactServicesGetResultPtr result
+                                                        LockboxContentSetResultPtr result
                                                         );
 
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
-                                                             PeerContactServicesGetResultPtr ignore, // will always be NULL
-                                                             message::MessageResultPtr result
-                                                             );
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
-        #pragma mark
-
-        virtual bool handleMessageMonitorResultReceived(
-                                                        IMessageMonitorPtr monitor,
-                                                        PeerContactIdentityAssociateResultPtr result
-                                                        );
-
-        virtual bool handleMessageMonitorErrorResultReceived(
-                                                             IMessageMonitorPtr monitor,
-                                                             PeerContactIdentityAssociateResultPtr ignore, // will always be NULL
+                                                             LockboxContentSetResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 

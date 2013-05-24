@@ -32,11 +32,13 @@
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
 #include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowResult.h>
 #include <hookflash/stack/message/identity/IdentityAccessStartNotify.h>
 #include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
 #include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
 #include <hookflash/stack/message/identity/IdentityLookupUpdateRequest.h>
 #include <hookflash/stack/message/identity/IdentitySignRequest.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Helper.h>
 #include <hookflash/stack/IHelper.h>
@@ -55,6 +57,8 @@
 
 #include <boost/regex.hpp>
 
+#define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
+
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
 
@@ -72,6 +76,8 @@ namespace hookflash
 
       using message::identity::IdentityAccessWindowRequest;
       using message::identity::IdentityAccessWindowRequestPtr;
+      using message::identity::IdentityAccessWindowResult;
+      using message::identity::IdentityAccessWindowResultPtr;
       using message::identity::IdentityAccessStartNotify;
       using message::identity::IdentityAccessStartNotifyPtr;
       using message::identity::IdentityAccessCompleteNotify;
@@ -82,7 +88,45 @@ namespace hookflash
       using message::identity::IdentityLookupUpdateRequestPtr;
       using message::identity::IdentitySignRequest;
       using message::identity::IdentitySignRequestPtr;
+      using message::identity_lookup::IdentityLookupRequest;
+      using message::identity_lookup::IdentityLookupRequestPtr;
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      static char getSafeSplitChar(const String &identifier)
+      {
+        const char *testChars = ",; :./\\*#!$%&@?~+=-_|^<>[]{}()";
+
+        while (*testChars) {
+          if (String::npos == identifier.find(*testChars)) {
+            return *testChars;
+          }
+
+          ++testChars;
+        }
+
+        return 0;
+      }
+      
+      //-----------------------------------------------------------------------
+      static bool isSame(
+                         IPeerFilePublicPtr peerFilePublic1,
+                         IPeerFilePublicPtr peerFilePublic2
+                         )
+      {
+        if (!peerFilePublic1) return false;
+        if (!peerFilePublic2) return false;
+
+        return peerFilePublic1->getPeerURI() == peerFilePublic2->getPeerURI();
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -93,12 +137,13 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionForServiceLockbox::reload(
-                                                                                 IServiceLockboxSessionPtr lockbox,
+                                                                                 IServiceLockboxSessionPtr existingLockbox,
                                                                                  BootstrappedNetworkPtr network,
-                                                                                 const char *identityURI
+                                                                                 const char *identityURI,
+                                                                                 const char *reloginKey
                                                                                  )
       {
-        return IServiceIdentitySessionFactory::singleton().reload(lockbox, network, identityURI);
+        return IServiceIdentitySessionFactory::singleton().reload(existingLockbox, network, identityURI, reloginKey);
         return ServiceIdentitySessionPtr();
       }
 
@@ -113,30 +158,30 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceIdentitySession::ServiceIdentitySession(
                                                      IMessageQueuePtr queue,
-                                                     IServiceLockboxSessionPtr existingLockbox,
-                                                     BootstrappedNetworkPtr network,
+                                                     ServiceLockboxSessionPtr existingLockbox,
+                                                     BootstrappedNetworkPtr identityNetwork,
+                                                     BootstrappedNetworkPtr providerNetwork,
                                                      IServiceIdentitySessionDelegatePtr delegate,
-                                                     const char *redirectAfterLoginCompleteURL
+                                                     const char *outerFrameURLUponReload
                                                      ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceIdentitySessionDelegatePtr()),
         mAssociatedLockbox(existingLockbox),
-//        mKillAssociation(false),
-        mBootstrappedNetwork(network),
+        mKillAssociation(false),
+        mIdentityBootstrappedNetwork(identityNetwork),
+        mProviderBootstrappedNetwork(providerNetwork),
         mCurrentState(SessionState_Pending),
         mLastReportedState(SessionState_Pending),
         mLastError(0),
-//        mLoadedLoginURL(false),
-//        mBrowserWindowVisible(false),
-//        mBrowserRedirectionComplete(false),
-//        mClientLoginSecret(IHelper::randomString(32)),
-//        mClientToken(IHelper::randomString(32)),
-//        mNeedsBrowserWindowVisible(false),
-//        mNotificationSentToInnerBrowserWindow(false),
-//        mRedirectAfterLoginCompleteURL(redirectAfterLoginCompleteURL ? String(redirectAfterLoginCompleteURL) : String()),
-//        mSignedIdentityBundleValidityChecked(false),
-//        mDownloadedSignedIdentityBundle(false)
+        mOuterFrameURLUponReload(outerFrameURLUponReload),
+        mBrowserWindowReady(false),
+        mBrowserWindowVisible(false),
+        mBrowserWindowClosed(false),
+        mNeedsBrowserWindowVisible(false),
+        mIdentityAccessStartNotificationSent(false),
+        mLockboxUpdated(false),
+        mIdentityLookupUpdated(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -154,7 +199,15 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::init()
       {
-        IBootstrappedNetworkForServices::prepare(mBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
+        if (mIdentityBootstrappedNetwork) {
+          IBootstrappedNetworkForServices::prepare(mIdentityBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
+        }
+        if (mProviderBootstrappedNetwork) {
+          IBootstrappedNetworkForServices::prepare(mProviderBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
+        }
+
+        // one or the other must be valid or a login is not possible
+        ZS_THROW_BAD_STATE_IF((!mIdentityBootstrappedNetwork) && (!mProviderBootstrappedNetwork))
       }
 
       //-----------------------------------------------------------------------
@@ -182,12 +235,12 @@ namespace hookflash
       ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentity(
                                                                           IServiceLockboxSessionPtr existingLockbox,
                                                                           IServiceIdentitySessionDelegatePtr delegate,
-                                                                          const char *redirectAfterLoginCompleteURL,
+                                                                          const char *outerFrameURLUponReload,
                                                                           const char *identityURI,
                                                                           IServiceIdentityPtr provider
                                                                           )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
 
         if (!provider) {
@@ -202,15 +255,19 @@ namespace hookflash
           return ServiceIdentitySessionPtr();
         }
 
-        BootstrappedNetworkPtr network = BootstrappedNetwork::convert(provider);
-        if (!network) {
-          String domain;
-          String identifier;
-          IServiceIdentity::splitURI(identityURI, domain, identifier);
-          network = IBootstrappedNetworkForServices::prepare(domain);
+        BootstrappedNetworkPtr identityNetwork;
+        BootstrappedNetworkPtr providerNetwork = BootstrappedNetwork::convert(provider);
+
+        if (IServiceIdentity::isValid(identityURI)) {
+          if (!IServiceIdentity::isLegacy(identityURI)) {
+            String domain;
+            String identifier;
+            IServiceIdentity::splitURI(identityURI, domain, identifier);
+            identityNetwork = IBootstrappedNetworkForServices::prepare(domain);
+          }
         }
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), delegate, redirectAfterLoginCompleteURL));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), ServiceLockboxSession::convert(existingLockbox), identityNetwork, providerNetwork, delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
         if (IServiceIdentity::isValidBase(identityURI)) {
           pThis->mIdentityInfo.mBase = identityURI;
@@ -237,7 +294,7 @@ namespace hookflash
           return loginWithIdentity(existingLockbox, delegate, outerFrameURLUponReload, legacyIdentityBaseURI, provider);
         }
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), delegate, outerFrameURLUponReload));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), ServiceLockboxSession::convert(existingLockbox), BootstrappedNetworkPtr(), BootstrappedNetwork::convert(provider), delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -291,10 +348,10 @@ namespace hookflash
 
         BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, network, delegate, outerFrameURLUponReload));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), ServiceLockboxSession::convert(existingLockbox), network, BootstrappedNetworkPtr(), delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
         pThis->mIdentityInfo.mURI = identityURI;
-        pThis->mSignedIdentityBundleEl = signedIdentityBundleEl->clone()->toElement();
+        pThis->mSignedIdentityBundleUncheckedEl = signedIdentityBundleEl->clone()->toElement();
         pThis->init();
         return pThis;
       }
@@ -303,7 +360,10 @@ namespace hookflash
       IServiceIdentityPtr ServiceIdentitySession::getService() const
       {
         AutoRecursiveLock lock(getLock());
-        return mBootstrappedNetwork;
+        if (mIdentityBootstrappedNetwork) {
+          return mIdentityBootstrappedNetwork;
+        }
+        return mProviderBootstrappedNetwork;
       }
 
       //-----------------------------------------------------------------------
@@ -328,16 +388,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::attachDelegate(
                                                   IServiceIdentitySessionDelegatePtr delegate,
-                                                  const char *redirectAfterLoginCompleteURL
+                                                  const char *outerFrameURLUponReload
                                                   )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
 
         AutoRecursiveLock lock(getLock());
 
         mDelegate = IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate);
-        mRedirectAfterLoginCompleteURL = (redirectAfterLoginCompleteURL ? String(redirectAfterLoginCompleteURL) : String());
+        mOuterFrameURLUponReload = (outerFrameURLUponReload ? String(outerFrameURLUponReload) : String());
 
         try {
           if (mCurrentState != mLastReportedState) {
@@ -365,22 +425,27 @@ namespace hookflash
       String ServiceIdentitySession::getIdentityProviderDomain() const
       {
         AutoRecursiveLock lock(getLock());
-        return mBootstrappedNetwork->forServices().getDomain();
+        if (mIdentityBootstrappedNetwork) {
+          return mIdentityBootstrappedNetwork->forServices().getDomain();
+        }
+        return mProviderBootstrappedNetwork->forServices().getDomain();
       }
 
       //-----------------------------------------------------------------------
       ElementPtr ServiceIdentitySession::getSignedIdentityBundle() const
       {
         AutoRecursiveLock lock(getLock());
-        if (!mSignedIdentityBundleEl) return ElementPtr();
-        return mSignedIdentityBundleEl;
+        if (!mSignedIdentityBundleVerfiedEl) return ElementPtr();
+        return mSignedIdentityBundleVerfiedEl;
       }
 
       //-----------------------------------------------------------------------
       String ServiceIdentitySession::getInnerBrowserWindowFrameURL() const
       {
         AutoRecursiveLock lock(getLock());
-        return mIdentityLoginURL;
+        if (!mActiveBootstrappedNetwork) return String();
+
+        return mActiveBootstrappedNetwork->forServices().getServiceURI("identity", "identity-access-inner-frame");
       }
 
       //-----------------------------------------------------------------------
@@ -395,10 +460,10 @@ namespace hookflash
       void ServiceIdentitySession::notifyBrowserWindowClosed()
       {
         AutoRecursiveLock lock(getLock());
-//        mBrowserWindowVisible = true;
-//        step();
+        mBrowserWindowClosed = true;
+        step();
       }
-      
+
       //-----------------------------------------------------------------------
       DocumentPtr ServiceIdentitySession::getNextMessageForInnerBrowerWindowFrame()
       {
@@ -436,24 +501,47 @@ namespace hookflash
           return;
         }
 
-        IdentityLoginBrowserWindowControlNotifyPtr requestBrowserControl = IdentityLoginBrowserWindowControlNotify::convert(message);
-        if (requestBrowserControl) {
-          if (requestBrowserControl->hasAttribute(IdentityLoginBrowserWindowControlNotify::AttributeType_Visible)) {
-            if (requestBrowserControl->ready()) {
-              ZS_LOG_DEBUG(log("notifying browser window ready"))
-              mLoadedLoginURL = true;
-            }
-            if (requestBrowserControl->visible()) {
-              ZS_LOG_DEBUG(log("notifying browser window needs to be made visible"))
-              mNeedsBrowserWindowVisible = true;
-            }
-            IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IdentityAccessWindowRequestPtr windowRequest = IdentityAccessWindowRequest::convert(message);
+        if (windowRequest) {
+          // send a result immediately
+          IdentityAccessWindowResultPtr result = IdentityAccessWindowResult::create(windowRequest);
+          sendInnerWindowMessage(result);
+
+          if (windowRequest->ready()) {
+            ZS_LOG_DEBUG(log("notifying browser window ready"))
+            mBrowserWindowReady = true;
+          }
+
+          if (windowRequest->visible()) {
+            ZS_LOG_DEBUG(log("notifying browser window needs to be made visible"))
+            mNeedsBrowserWindowVisible = true;
+          }
+
+          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          return;
+        }
+
+        IdentityAccessCompleteNotifyPtr completeNotify = IdentityAccessCompleteNotify::convert(message);
+        if (completeNotify) {
+
+          const IdentityInfo &identityInfo = completeNotify->identityInfo();
+          const LockboxInfo &lockboxInfo = completeNotify->lockboxInfo();
+
+          ZS_LOG_DEBUG(log("received complete notification") + identityInfo.getDebugValueString() + lockboxInfo.getDebugValueString())
+
+          mIdentityInfo.mergeFrom(completeNotify->identityInfo(), true);
+          mLockboxInfo.mergeFrom(completeNotify->lockboxInfo(), true);
+
+          if ((mIdentityInfo.mAccessToken.isEmpty()) ||
+              (mIdentityInfo.mAccessSecret.isEmpty()) ||
+              (mIdentityInfo.mURI.isEmpty())) {
+            ZS_LOG_ERROR(Detail, log("failed to obtain access token/secret"))
+            setError(IHTTP::HTTPStatusCode_Forbidden, "Login via identity provider failed");
+            cancel();
             return;
           }
 
-          ZS_LOG_WARNING(Debug, log("browser window control request was not understood"))
-          MessageResultPtr result = MessageResult::create(requestBrowserControl, IHTTP::HTTPStatusCode_NotImplemented);
-          sendInnerWindowMessage(result);
+          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
           return;
         }
 
@@ -469,12 +557,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::forceLoginToContinue()
-      {
-        AutoRecursiveLock lock(getLock());
-      }
-
-      //-----------------------------------------------------------------------
       void ServiceIdentitySession::cancel()
       {
         AutoRecursiveLock lock(getLock());
@@ -486,24 +568,19 @@ namespace hookflash
 
         mPendingMessagesToDeliver.clear();
 
-        if (mLoginStartMonitor) {
-          mLoginStartMonitor->cancel();
-          mLoginStartMonitor.reset();
+        if (mIdentityAccessLockboxUpdateMonitor) {
+          mIdentityAccessLockboxUpdateMonitor->cancel();
+          mIdentityAccessLockboxUpdateMonitor.reset();
         }
 
-        if (mLoginCompleteMonitor) {
-          mLoginCompleteMonitor->cancel();
-          mLoginCompleteMonitor.reset();
+        if (mIdentityLookupUpdateMonitor) {
+          mIdentityLookupUpdateMonitor->cancel();
+          mIdentityLookupUpdateMonitor.reset();
         }
 
-        if (mAssociateMonitor) {
-          mAssociateMonitor->cancel();
-          mAssociateMonitor.reset();
-        }
-
-        if (mSignMonitor) {
-          mSignMonitor->cancel();
-          mSignMonitor.reset();
+        if (mIdentitySignMonitor) {
+          mIdentitySignMonitor->cancel();
+          mIdentitySignMonitor.reset();
         }
 
         setState(SessionState_Shutdown);
@@ -528,18 +605,31 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr ServiceIdentitySession::reload(
                                                                IServiceLockboxSessionPtr existingLockbox,
-                                                               BootstrappedNetworkPtr network,
-                                                               const char *identityURI
+                                                               BootstrappedNetworkPtr providerNetwork,
+                                                               const char *identityURI,
+                                                               const char *reloginKey
                                                                )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!lockbox)
-        ZS_THROW_INVALID_ARGUMENT_IF(!network)
+        ZS_THROW_INVALID_ARGUMENT_IF(!existingLockbox)
+        ZS_THROW_INVALID_ARGUMENT_IF(!providerNetwork)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), existingLockbox, BootstrappedNetwork::convert(provider), IServiceIdentitySessionDelegatePtr(), NULL));
+        BootstrappedNetworkPtr identityNetwork;
+
+        if (IServiceIdentity::isValid(identityURI)) {
+          if (!IServiceIdentity::isLegacy(identityURI)) {
+            String domain;
+            String identifier;
+            IServiceIdentity::splitURI(identityURI, domain, identifier);
+            identityNetwork = IBootstrappedNetworkForServices::prepare(domain);
+          }
+        }
+
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), ServiceLockboxSession::convert(existingLockbox), identityNetwork, providerNetwork, IServiceIdentitySessionDelegatePtr(), NULL));
         pThis->mThisWeak = pThis;
-        pThis->mAssociatedLockbox = lockbox;
+        pThis->mAssociatedLockbox = existingLockbox;
         pThis->mIdentityInfo.mURI = identityURI;
+        pThis->mIdentityInfo.mReloginKey = String(reloginKey);
         pThis->init();
         return pThis;
       }
@@ -558,8 +648,38 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
-        mAssociatedPeerContact.reset();
+
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("asssoication already killed"))
+          return;
+        }
+
+        mAssociatedLockbox.reset();
         mKillAssociation = true;
+
+        if (mIdentityAccessLockboxUpdateMonitor) {
+          mIdentityAccessLockboxUpdateMonitor->cancel();
+          mIdentityAccessLockboxUpdateMonitor.reset();
+        }
+
+        if (mIdentityLookupUpdateMonitor) {
+          mIdentityLookupUpdateMonitor->cancel();
+          mIdentityLookupUpdateMonitor.reset();
+        }
+
+        if (mIdentitySignMonitor) {
+          mIdentitySignMonitor->cancel();
+          mIdentitySignMonitor.reset();
+        }
+
+        if (mIdentityLookupMonitor) {
+          mIdentityLookupMonitor->cancel();
+          mIdentityLookupMonitor.reset();
+        }
+
+        mLockboxUpdated = false;
+        mIdentityLookupUpdated = false;
+
         IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
@@ -593,10 +713,10 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      SecureByteBlockPtr ServiceIdentitySession::getPrivatePeerFileSecret() const
+      LockboxInfo ServiceIdentitySession::getLockboxInfo() const
       {
         AutoRecursiveLock lock(getLock());
-        return mPrivatePeerFileSecret;
+        return mLockboxInfo;
       }
 
       //-----------------------------------------------------------------------
@@ -637,25 +757,29 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLoginStartResult>
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::handleMessageMonitorResultReceived(
                                                                       IMessageMonitorPtr monitor,
-                                                                      IdentityLoginStartResultPtr result
+                                                                      IdentityAccessLockboxUpdateResultPtr result
                                                                       )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginStartMonitor) {
+        if (monitor != mIdentityAccessLockboxUpdateMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
 
-        mLoginStartMonitor->cancel();
-        mLoginStartMonitor.reset();
+        mIdentityAccessLockboxUpdateMonitor->cancel();
+        mIdentityAccessLockboxUpdateMonitor.reset();
 
-        mServerToken = result->serverToken();
+        mLockboxUpdated = true;
+
+        ZS_LOG_DEBUG(log("identity access lockbox update complete"))
+
+/*        mServerToken = result->serverToken();
 
         if ("browser-window" != result->mode().mType) {
           ZS_LOG_WARNING(Detail, log("mode is not understood") + ", mode=" + result->mode().mType)
@@ -675,6 +799,8 @@ namespace hookflash
           cancel();
           return true;
         }
+ 
+ */
 
         step();
         return true;
@@ -683,19 +809,19 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
                                                                            IMessageMonitorPtr monitor,
-                                                                           IdentityLoginStartResultPtr ignore, // will always be NULL
+                                                                           IdentityAccessLockboxUpdateResultPtr ignore, // will always be NULL
                                                                            message::MessageResultPtr result
                                                                            )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginStartMonitor) {
+        if (monitor != mIdentityAccessLockboxUpdateMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
 
         setError(result->errorCode(), result->errorReason());
 
-        ZS_LOG_DEBUG(log("identity login start failed"))
+        ZS_LOG_ERROR(Detail, log("identity access lockbox update failed"))
 
         cancel();
         return true;
@@ -712,114 +838,19 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::handleMessageMonitorResultReceived(
                                                                       IMessageMonitorPtr monitor,
-                                                                      IdentityLoginCompleteResultPtr result
+                                                                      IdentityLookupUpdateResultPtr result
                                                                       )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
+        if (monitor != mIdentityLookupUpdateMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
 
-        mLoginCompleteMonitor->cancel();
-        mLoginCompleteMonitor.reset();
+        mIdentityLookupUpdateMonitor->cancel();
+        mIdentityLookupUpdateMonitor.reset();
 
-        mIdentityInfo.mergeFrom(result->identityInfo());
-
-        if (mIdentityInfo.mURIEncrypted.hasData())
-        {
-          // mURI
-          // key=hmac(<client-login-secret>, "identity:" + <client-token> + ":" + <server-token>)
-          // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
-
-          String uri = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mURIEncrypted)));
-
-          if (mIdentityInfo.mHash.hasData()) {
-            // validate against the hash
-            if (0 != IHelper::compare(*IHelper::convertFromHex(mIdentityInfo.mHash), *IHelper::hash(uri))) {
-              ZS_LOG_ERROR(Detail, log("URI decrypted did not match hash") + ", URI=" + uri + ", expecting=" + mIdentityInfo.mHash + ", calculated=" + IHelper::convertToHex(*IHelper::hash(uri)))
-              setError(IHTTP::HTTPStatusCode_Forbidden, "Identity URI returned from server does not match computed hash");
-              cancel();
-              return true;
-            }
-          }
-
-          if (!IServiceIdentity::isValid(uri)) {
-            ZS_LOG_ERROR(Detail, log("encrypted identity URI returned is not valid") + ", URI=" + uri)
-            setError(IHTTP::HTTPStatusCode_NotAcceptable, "Decrypted identity URI returned from server is not valid");
-            cancel();
-            return true;
-          }
-
-          mIdentityInfo.mURI = uri;
-        }
-
-        if (mIdentityInfo.mReloginAccessKeyEncrypted.hasData()) {
-          // mReloginAccessKey
-          // key = hmac(<client-login-secret>, "relogin-access-key:" + <client-token> + ":" + <server-token>)
-          // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "relogin-access-key:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
-
-          mIdentityInfo.mReloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mReloginAccessKeyEncrypted)));
-        }
-
-        // try to decrypt the identity secret
-        if ((mIdentityInfo.mSecretEncrypted.hasData()) &&
-            (mIdentityInfo.mSecretSalt.hasData()) &&
-            (mIdentityInfo.mSecretDecryptionKeyEncrypted.hasData()))
-        {
-          String secretDecryptionKey;
-
-          {
-            // secretDecryptionKey
-            // key=hmac(<client-login-secret>, "identity-secret-decryption-key:" + <client-token> + ":" + <server-token>)
-            // iv=hash(<client-token> + ":" + <server-token>)
-
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity-secret-decryption-key:" + mClientToken + ":" + mServerToken);
-            SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
-
-            secretDecryptionKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretDecryptionKeyEncrypted)));
-          }
-
-          {
-            // mSecret
-            // key = hmac(<identity-secret-decryption-key>, "identity-secret:" + base64(<identity-secret-salt>))
-            // iv=hash(base64(<identity-secret-salt>))
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(secretDecryptionKey), "identity-secret:" + mIdentityInfo.mSecretSalt);
-            SecureByteBlockPtr iv = IHelper::hash("", IHelper::HashAlgorthm_MD5);
-
-            mIdentityInfo.mSecret = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretEncrypted)));
-          }
-        }
-
-        if ((mIdentityInfo.mPrivatePeerFileSecretEncrypted.hasData()) &&
-            (mIdentityInfo.mPrivatePeerFileSalt.hasData()) &&
-            (mIdentityInfo.mSecret.hasData()))
-        {
-          // mPrivatePeerFileSecret
-          // key=hmac(<identity-secret>, "private-peer-file-secret:" + base64(<private-peer-file-salt>))
-          // iv=hash(base64(<private-peer-file-salt>))
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mSecret), "private-peer-file-secret:" + mIdentityInfo.mPrivatePeerFileSalt);
-          SecureByteBlockPtr iv = IHelper::hash(mIdentityInfo.mPrivatePeerFileSalt, IHelper::HashAlgorthm_MD5);
-
-          mPrivatePeerFileSecret = IHelper::makeBufferStringSafe(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mPrivatePeerFileSecretEncrypted)));
-        }
-
-        // should no longer just have a base
-        mIdentityInfo.mBase.clear();
-
-        if ((mIdentityInfo.mAccessToken.isEmpty()) ||
-            (mIdentityInfo.mAccessSecret.isEmpty()) ||
-            (mIdentityInfo.mURI.isEmpty()) ||
-            (mIdentityInfo.mSecret.isEmpty())) {
-          ZS_LOG_ERROR(Detail, log("missing information for login complete") + mIdentityInfo.getDebugValueString())
-          setError(IHTTP::HTTPStatusCode_PreconditionFailed, "Identity login complete result returned from server missing critical data");
-          cancel();
-          return true;
-        }
+        mIdentityLookupUpdated = true;
 
         step();
         return true;
@@ -828,12 +859,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
                                                                            IMessageMonitorPtr monitor,
-                                                                           IdentityLoginCompleteResultPtr ignore, // will always be NULL
+                                                                           IdentityLookupUpdateResultPtr ignore, // will always be NULL
                                                                            message::MessageResultPtr result
                                                                            )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
+        if (monitor != mIdentityLookupUpdateMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
@@ -841,61 +872,6 @@ namespace hookflash
         setError(result->errorCode(), result->errorReason());
 
         ZS_LOG_DEBUG(log("identity login complete failed"))
-
-        cancel();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAssociateResult>
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
-                                                                      IMessageMonitorPtr monitor,
-                                                                      IdentityAssociateResultPtr result
-                                                                      )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mAssociateMonitor) {
-          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
-          return false;
-        }
-
-        mAssociateMonitor->cancel();
-        mAssociateMonitor.reset();
-
-        if (mKillAssociation) {
-          ZS_LOG_DEBUG(log("association is gone now logging out of identity"))
-          cancel();
-          return true;
-        }
-
-        step();
-
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
-                                                                           IMessageMonitorPtr monitor,
-                                                                           IdentityAssociateResultPtr ignore, // will always be NULL
-                                                                           message::MessageResultPtr result
-                                                                           )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
-          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
-          return false;
-        }
-
-        setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_DEBUG(log("identity associate failed"))
 
         cancel();
         return true;
@@ -916,15 +892,23 @@ namespace hookflash
                                                                       )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
+        if (monitor != mIdentitySignMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
 
-        mSignedIdentityBundleEl = result->identityBundle();
-        if (mSignedIdentityBundleEl) {
-          mSignedIdentityBundleEl = mSignedIdentityBundleEl->clone()->toElement();
+        mSignedIdentityBundleUncheckedEl = result->identityBundle();
+
+        if (!mSignedIdentityBundleUncheckedEl) {
+          ZS_LOG_ERROR(Detail, log("failed to obtain a signed identity bundle"))
+          setError(IHTTP::HTTPStatusCode_CertError, "failed to obtain an identity bundle from the server");
+          cancel();
+          return true;
         }
+
+        mSignedIdentityBundleUncheckedEl = mSignedIdentityBundleUncheckedEl->clone()->toElement();
+
+        ZS_LOG_DEBUG(log("identity sign complete"))
 
         step();
         return true;
@@ -938,7 +922,7 @@ namespace hookflash
                                                                            )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mSignMonitor) {
+        if (monitor != mIdentitySignMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
@@ -951,6 +935,61 @@ namespace hookflash
         return true;
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentitySignResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
+                                                                      IMessageMonitorPtr monitor,
+                                                                      IdentityLookupResultPtr result
+                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mIdentityLookupMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        // possible the identity lookup will not return any result, so we need to remember that it did in fact complete
+        mPreviousLookupInfo.mURI = mIdentityInfo.mURI;
+
+        const IdentityInfoList &infos = result->identities();
+        if (infos.size() > 0) {
+          mPreviousLookupInfo.mergeFrom(infos.front(), true);
+        }
+
+        ZS_LOG_DEBUG(log("identity lookup (of self) complete"))
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
+                                                                           IMessageMonitorPtr monitor,
+                                                                           IdentityLookupResultPtr ignore, // will always be NULL
+                                                                           message::MessageResultPtr result
+                                                                           )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mIdentityLookupMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        setError(result->errorCode(), result->errorReason());
+
+        ZS_LOG_DEBUG(log("identity lookup failed"))
+
+        cancel();
+        return true;
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -978,27 +1017,25 @@ namespace hookflash
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("identity session id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                (mIdentityInfo.hasData() ? mIdentityInfo.getDebugValueString() : String()) +
-               IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
+               IBootstrappedNetwork::toDebugString(mIdentityBootstrappedNetwork) +
+               IBootstrappedNetwork::toDebugString(mProviderBootstrappedNetwork) +
+               Helper::getDebugValue("active boostrapper", (mActiveBootstrappedNetwork ? (mIdentityBootstrappedNetwork == mActiveBootstrappedNetwork ? String("identity") : String("provider")) : String()), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("reported", toString(mLastReportedState), firstTime) +
                Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               Helper::getDebugValue("loaded login url", mLoadedLoginURL ? String("true") : String(), firstTime) +
+               mIdentityInfo.getDebugValueString() +
+               Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("browser redirection complete", mBrowserRedirectionComplete ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("client login secret", mClientLoginSecret, firstTime) +
-               Helper::getDebugValue("client token", mClientToken, firstTime) +
-               Helper::getDebugValue("server token", mServerToken, firstTime) +
+               Helper::getDebugValue("browser closed", mBrowserWindowClosed ? String("true") : String(), firstTime) +
                Helper::getDebugValue("need browser window visible", mNeedsBrowserWindowVisible ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("notification sent", mNotificationSentToInnerBrowserWindow ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("redirection url", mRedirectAfterLoginCompleteURL, firstTime) +
-               Helper::getDebugValue("identity login url", mIdentityLoginURL, firstTime) +
-               Helper::getDebugValue("identity login complete url", mIdentityLoginCompleteURL, firstTime) +
-               Helper::getDebugValue("identity login expires", Time() != mIdentityLoginExpires ? IMessageHelper::timeToString(mIdentityLoginExpires) : String(), firstTime) +
-               Helper::getDebugValue("secret", mPrivatePeerFileSecret ? IHelper::convertToString(*mPrivatePeerFileSecret) : String(), firstTime) +
-               Helper::getDebugValue("bundle element", mSignedIdentityBundleEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("bundle checked", mSignedIdentityBundleValidityChecked ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("bundle downloaded", mDownloadedSignedIdentityBundle ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("identity access start notification sent", mIdentityAccessStartNotificationSent ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("lockbox updated", mLockboxUpdated ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
+               mPreviousLookupInfo.getDebugValueString() +
+               Helper::getDebugValue("signed element (verified)", mSignedIdentityBundleVerfiedEl ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("signed element (unchecked)", mSignedIdentityBundleUncheckedEl ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("signed element (old)", mSignedIdentityBundleOldEl ? String("true") : String(), firstTime) +
                Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 1 ? Stringize<size_t>(mPendingMessagesToDeliver.size()).string() : String(), firstTime);
       }
 
@@ -1015,15 +1052,30 @@ namespace hookflash
 
         if (!mDelegate) {
           ZS_LOG_DEBUG(log("step waiting for delegate to become attached"))
-          setState(SessionState_WaitingAttachment);
+          setState(SessionState_WaitingAttachmentOfDelegate);
           return;
         }
 
-        if (!stepLoginStart()) return;
-        if (!stepBrowserWinodw()) return;
-        if (!stepLoginComplete()) return;
-        if (!stepAssociate()) return;
+        if (!stepBootstrapper()) return;
+        if (!stepLoadBrowserWindow()) return;
+        if (!stepMakeBrowserWindowVisible()) return;
+        if (!stepIdentityAccessStartNotification()) return;
+        if (!stepIdentityAccessCompleteNotification()) return;
+        if (!stepIdentityAccessCompleteNotification()) return;
+        if (!stepLockboxAssociation()) return;
+        if (!stepIdentityLookup()) return;
+        if (!stepLockboxReady()) return;
+        if (!stepLockboxUpdate()) return;
+        if (!stepLookupUpdate()) return;
         if (!stepSign()) return;
+        if (!stepAllRequestsCompleted()) return;
+
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
+          setError(IHTTP::HTTPStatusCode_Gone, "assocation is now killed");
+          cancel();
+          return;
+        }
 
         // signal the object is ready
         setState(SessionState_Ready);
@@ -1032,298 +1084,550 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepLoginStart()
+      bool ServiceIdentitySession::stepBootstrapper()
       {
-        if (mServerToken.hasData()) {
-          ZS_LOG_DEBUG(log("step login start is done"))
+        if (mActiveBootstrappedNetwork) {
+          ZS_LOG_DEBUG(log("already have an active bootstrapper"))
           return true;
         }
 
-        if (mLoginStartMonitor) {
-          ZS_LOG_DEBUG(log("waiting for login start monitor"))
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
+          cancel();
           return false;
         }
 
-        if (!mBootstrappedNetwork->forServices().isPreparationComplete()) {
-          ZS_LOG_DEBUG(log("waiting for bootstrapper to complete"))
+        setState(SessionState_Pending);
+
+        if (mIdentityBootstrappedNetwork) {
+          if (!mIdentityBootstrappedNetwork->forServices().isPreparationComplete()) {
+            ZS_LOG_DEBUG(log("waiting for preparation of identity bootstrapper to complete"))
+            return false;
+          }
+
+          WORD errorCode = 0;
+          String reason;
+
+          if (mIdentityBootstrappedNetwork->forServices().wasSuccessful(&errorCode, &reason)) {
+            ZS_LOG_DEBUG(log("identity bootstrapper was successful thus using that as the active identity service"))
+            mActiveBootstrappedNetwork = mIdentityBootstrappedNetwork;
+            return true;
+          }
+
+          if (!mProviderBootstrappedNetwork) {
+            ZS_LOG_ERROR(Detail, log("bootstrapped network failed for identity and there is no provider identity service specified") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+
+            setError(errorCode, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        if (!mProviderBootstrappedNetwork) {
+          ZS_LOG_ERROR(Detail, log("provider domain not specified for identity thus identity lookup cannot complete"))
+          setError(IHTTP::HTTPStatusCode_BadGateway);
+          cancel();
+          return false;
+        }
+
+        if (!mProviderBootstrappedNetwork->forServices().isPreparationComplete()) {
+          ZS_LOG_DEBUG(log("waiting for preparation of provider bootstrapper to complete"))
           return false;
         }
 
         WORD errorCode = 0;
         String reason;
 
-        if (!mBootstrappedNetwork->forServices().wasSuccessful(&errorCode, &reason)) {
-          ZS_LOG_WARNING(Detail, log("login failed because of bootstrapper failure"))
-          setError(errorCode, reason);
+        if (mProviderBootstrappedNetwork->forServices().wasSuccessful(&errorCode, &reason)) {
+          ZS_LOG_DEBUG(log("provider bootstrapper was successful thus using that as the active identity service"))
+          mActiveBootstrappedNetwork = mProviderBootstrappedNetwork;
+          return true;
+        }
+
+        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for provider") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+
+        setError(errorCode, reason);
+        cancel();
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepLoadBrowserWindow()
+      {
+        if (mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("browser window is ready"))
+          return true;
+        }
+
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
           cancel();
           return false;
         }
 
-        mIdentityInfo.mProvider = mBootstrappedNetwork->forServices().getDomain();
+        String url = getInnerBrowserWindowFrameURL();
+        if (!url) {
+          ZS_LOG_ERROR(Detail, log("bootstrapper did not return a valid inner window frame URL"))
+          setError(IHTTP::HTTPStatusCode_NotFound);
+          cancel();
+          return false;
+        }
 
-        IdentityLoginStartRequestPtr request = IdentityLoginStartRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
-        request->clientToken(mClientToken);
+        setState(SessionState_WaitingForBrowserWindowToBeLoaded);
 
-        mLoginStartMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginStartResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-login-start", request);
-        setState(SessionState_Pending);
-
-        ZS_LOG_DEBUG(log("sending login start request"))
+        ZS_LOG_DEBUG(log("waiting for browser window to report it is loaded/ready"))
         return false;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepBrowserWinodw()
+      bool ServiceIdentitySession::stepMakeBrowserWindowVisible()
       {
-        if (!mLoadedLoginURL) {
-          setState(SessionState_WaitingForBrowserWindowToBeLoaded);
+        if (mBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("browser window is visible"))
+          return true;
+        }
+
+        if (!mNeedsBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("browser window was not requested to become visible"))
           return false;
         }
 
-        if ((mNeedsBrowserWindowVisible) &&
-            (!mBrowserWindowVisible)) {
-          setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
+          cancel();
           return false;
         }
 
-        // check to see if notification has been sent to inner browser window
-        if (!mNotificationSentToInnerBrowserWindow) {
-          IdentityLoginNotifyPtr request = IdentityLoginNotify::create();
-          request->domain(mBootstrappedNetwork->forServices().getDomain());
+        ZS_LOG_DEBUG(log("waiting for browser window to become visible"))
+        setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
+        return false;
+      }
 
-          request->identityInfo(mIdentityInfo);
-          request->clientToken(mClientToken);
-          request->serverToken(mServerToken);
-          request->browserVisibility(IdentityLoginNotify::BrowserVisibility_VisibleOnDemand);
-          request->postLoginRedirectURL(mRedirectAfterLoginCompleteURL);
-          request->clientLoginSecret(mClientLoginSecret);
-
-          sendInnerWindowMessage(request);
-
-          mNotificationSentToInnerBrowserWindow = true;
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepIdentityAccessStartNotification()
+      {
+        if (mIdentityAccessStartNotificationSent) {
+          ZS_LOG_DEBUG(log("identity access start notification already sent"))
+          return true;
         }
 
-        if (!mBrowserRedirectionComplete) {
-          setState(SessionState_WaitingForBrowserWindowToClose);
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
+          cancel();
           return false;
         }
 
-        ZS_LOG_DEBUG(log("step browser window is done"))
+        setState(SessionState_Pending);
+
+        // make sure the provider domain is set to the active bootstrapper for the identity
+        mIdentityInfo.mProvider = mActiveBootstrappedNetwork->forServices().getDomain();
+
+        IdentityAccessStartNotifyPtr request = IdentityAccessStartNotify::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->identityInfo(mIdentityInfo);
+
+        request->browserVisibility(IdentityAccessStartNotify::BrowserVisibility_VisibleOnDemand);
+        request->popup(false);
+
+        request->outerFrameURL(mOuterFrameURLUponReload);
+
+        sendInnerWindowMessage(request);
+
+        mIdentityAccessStartNotificationSent = true;
         return true;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepLoginComplete()
+      bool ServiceIdentitySession::stepIdentityAccessCompleteNotification()
       {
         if (mIdentityInfo.mAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("step login complete is done"))
+          ZS_LOG_DEBUG(log("idenity access complete notification received"))
           return true;
         }
 
-        if (mLoginCompleteMonitor) {
-          ZS_LOG_DEBUG(log("waiting for login complete monitor"))
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
+          cancel();
           return false;
         }
 
-        IdentityLoginCompleteRequestPtr request = IdentityLoginCompleteRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
-        request->clientToken(mClientToken);
-        request->serverToken(mServerToken);
-
-        mLoginCompleteMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginCompleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-login-complete", request);
         setState(SessionState_Pending);
 
-        ZS_LOG_DEBUG(log("sending login complete request"))
+        ZS_LOG_DEBUG(log("waiting for identity access complete notification"))
         return false;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepAssociate()
+      bool ServiceIdentitySession::stepLockboxAssociation()
       {
-//        if (mAssociateMonitor) {
-//          ZS_LOG_DEBUG(log("waiting for associate monitor to complete"))
-//          return false;
-//        }
-//
-//        if (mKillAssociation) {
-//          IdentityAssociateRequestPtr request = IdentityAssociateRequest::create();
-//          request->domain(mBootstrappedNetwork->forServices().getDomain());
-//
-//          request->identityInfo(mIdentityInfo);
-//
-//          mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginCompleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-//          mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-associate", request);
-//          ZS_LOG_DEBUG(log("removing association request"))
-//          return false;
-//        }
-//
-//        ServiceLockboxSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
-//        if (!associatedPeerContact) {
-//          setState(SessionState_WaitingAssociationToLockbox);
-//          ZS_LOG_DEBUG(log("waiting for identity to become associated to a peer contact"))
-//          return false;
-//        }
-//
-//        if (IServiceLockboxSession::SessionState_Shutdown == associatedPeerContact->forServiceIdentity().getState()) {
-//          ZS_LOG_WARNING(Detail, log("service peer contact session is shutdown thus identity must shutdown"))
-//          setError(IHTTP::HTTPStatusCode_ResetContent, "Peer contact assoicated with identity is already shutdown");
-//          cancel();
-//          return false;
-//        }
-//
-//        if (IServiceLockboxSession::SessionState_Ready != associatedPeerContact->forServiceIdentity().getState()) {
-//          setState(SessionState_Pending);
-//          ZS_LOG_DEBUG(log("waiting for service peer contact session state to be ready"))
-//          return false;
-//        }
-//
-//        IPeerFilesPtr peerFiles = associatedPeerContact->forServiceIdentity().getPeerFiles();
-//        IPeerFilePublicPtr peerFilePublic;
-//        if (peerFiles) {
-//          peerFilePublic = peerFiles->getPeerFilePublic();
-//        }
-//        if ((!peerFiles) ||
-//            (!peerFilePublic)) {
-//          ZS_LOG_ERROR(Detail, log("peer files must be valid if associatd peer contact is associated and ready"))
-//          setError(IHTTP::HTTPStatusCode_InternalServerError, "Peer files are not valid");
-//          cancel();
-//          return false;
-//        }
-//
-//        if (mIdentityInfo.mContactUserID.hasData()) {
-//          // check to see if it matches what we believe
-//          if (mIdentityInfo.mContactUserID != associatedPeerContact->forServiceIdentity().getContactUserID()) {
-//            ZS_LOG_WARNING(Detail, log("contact user ID changed") + IServiceLockboxSession::toDebugString(associatedPeerContact) + mIdentityInfo.getDebugValueString())
-//            goto not_same_contact;
-//          }
-//
-//          if (mIdentityInfo.mContact != peerFilePublic->getPeerURI()) {
-//            ZS_LOG_WARNING(Detail, log("peer URI changed") + IPeerFilePublic::toDebugString(peerFilePublic) + mIdentityInfo.getDebugValueString())
-//            goto not_same_contact;
-//          }
-//          goto same_contact;
-//
-//        not_same_contact:
-//          mIdentityInfo.mContactUserID.clear();
-//          mIdentityInfo.mContact.clear();
-//
-//        same_contact:
-//          ZS_LOG_DEBUG(log("contact matches?") + ", matches=" + (mIdentityInfo.mContactUserID.hasData() ? "true" : "false") + mIdentityInfo.getDebugValueString())
-//        }
-//
-//        if (mIdentityInfo.mContactUserID.hasData()) {
-//          ZS_LOG_DEBUG(log("step associate is done") + mIdentityInfo.getDebugValueString())
-//          return true;
-//        }
-//
-//        setState(SessionState_Pending);
-//
-//        mIdentityInfo.mContactUserID = associatedPeerContact->forServiceIdentity().getContactUserID();
-//        mIdentityInfo.mContact = peerFilePublic->getPeerURI();
-//
-//        if ((mIdentityInfo.mContactUserID.isEmpty()) ||
-//            (mIdentityInfo.mContact.isEmpty())) {
-//          ZS_LOG_ERROR(Detail, log("contact user ID and peer URI must be valid is peer contact is associated and ready"))
-//          setError(IHTTP::HTTPStatusCode_InternalServerError, "Missing critical information from associated peer contact");
-//          cancel();
-//        }
-//
-//        IdentityAssociateRequestPtr request = IdentityAssociateRequest::create();
-//        request->domain(mBootstrappedNetwork->forServices().getDomain());
-//
-//        request->identityInfo(mIdentityInfo);
-//        request->peerFiles(peerFiles);
-//
-//        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginCompleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-//        mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-associate", request);
-//        ZS_LOG_DEBUG(log("sending associate request"))
-//        return false;
+        if (mAssociatedLockbox.lock()) {
+          ZS_LOG_DEBUG(log("lockbox associated"))
+          return true;
+        }
+
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("do not need an association to the lockbox if association is being killed"))
+          return true;
+        }
+
+        setState(SessionState_WaitingForAssociationToLockbox);
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepIdentityLookup()
+      {
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("do not need to perform identity lookup when lockbox association is being killed"))
+          return true;
+        }
+
+        if (mPreviousLookupInfo.mURI.hasData()) {
+          ZS_LOG_DEBUG(log("identity lookup has already completed"))
+          return true;
+        }
+
+        if (mIdentityLookupMonitor) {
+          ZS_LOG_DEBUG(log("identity lookup already in progress (but not going to wait for it to complete to continue"))
+          return true;
+        }
+
+        IdentityLookupRequestPtr request = IdentityLookupRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+
+        IdentityLookupRequest::Provider provider;
+
+        String domain;
+        String id;
+
+        IServiceIdentity::splitURI(mIdentityInfo.mURI, domain, id);
+
+        provider.mBase = IServiceIdentity::joinURI(domain, NULL);
+        char safeChar[2];
+        safeChar[0] = getSafeSplitChar(id);;
+        safeChar[1] = 0;
+
+        provider.mSeparator = String(&(safeChar[0]));
+        provider.mIdentities = id;
+
+        IdentityLookupRequest::ProviderList providers;
+        providers.push_back(provider);
+
+        request->providers(providers);
+
+        mIdentityLookupMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity-lookup", "identity-lookup", request);
+
+        setState(SessionState_Pending);
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepLockboxReady()
+      {
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("do not need lockbox to be ready if association is being killed"))
+          return true;
+        }
+        
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) {
+          return stepLockboxAssociation();
+        }
+
+        WORD errorCode = 0;
+        String reason;
+        IServiceLockboxSession::SessionStates state = lockbox->forServiceIdentity().getState(&errorCode, &reason);
+
+        switch (state) {
+          case IServiceLockboxSession::SessionState_Pending:
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeLoaded:
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToClose: {
+            ZS_LOG_DEBUG(log("waiting for lockbox to ready"))
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_Ready: {
+            ZS_LOG_DEBUG(log("lockbox is ready"))
+            return true;
+          }
+          case IServiceLockboxSession::SessionState_Shutdown: {
+            ZS_LOG_ERROR(Detail, log("lockbox shutdown") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+
+            setError(errorCode, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("unknown lockbox state") + getDebugValueString())
+
+        ZS_THROW_BAD_STATE("unknown lockbox state")
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepLockboxUpdate()
+      {
+        if (mLockboxUpdated) {
+          ZS_LOG_DEBUG(log("lockbox update already complete"))
+          return true;
+        }
+
+        if (mIdentityAccessLockboxUpdateMonitor) {
+          ZS_LOG_DEBUG(log("lockbox update already in progress (but does not prevent other events from continuing"))
+          return true;
+        }
+
+        if (mKillAssociation) {
+          setState(SessionState_Pending);
+
+          IdentityAccessLockboxUpdateRequestPtr request = IdentityAccessLockboxUpdateRequest::create();
+          request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+          request->identityInfo(mIdentityInfo);
+
+          ZS_LOG_DEBUG(log("clearing lockbox information (but not preventing other requests from continuing)"))
+
+          mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
+
+          return true;
+        }
+
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) {
+          return stepLockboxAssociation();
+        }
+
+        setState(SessionState_Pending);
+
+        LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
+        if ((lockboxInfo.mDomain == mLockboxInfo.mDomain) &&
+            (lockboxInfo.mKeyIdentityHalf == mLockboxInfo.mKeyIdentityHalf)) {
+          ZS_LOG_DEBUG(log("lockbox info already updated correctly"))
+          mLockboxUpdated = true;
+          return true;
+        }
+
+        mLockboxInfo.mergeFrom(lockboxInfo, true);
+
+        IdentityAccessLockboxUpdateRequestPtr request = IdentityAccessLockboxUpdateRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->identityInfo(mIdentityInfo);
+        request->lockboxInfo(lockboxInfo);
+
+        ZS_LOG_DEBUG(log("updating lockbox information (but not preventing other requests from continuing)"))
+
+        mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepLookupUpdate()
+      {
+        if (mIdentityLookupUpdated) {
+          ZS_LOG_DEBUG(log("lookup already updated"))
+          return true;
+        }
+
+        if (mIdentityLookupUpdateMonitor) {
+          ZS_LOG_DEBUG(log("lookup update already in progress (but does not prevent other events from completing)"))
+          return true;
+        }
+
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("clearing identity lookup information (but not preventing other requests from continuing)"))
+
+          mIdentityInfo.mStableID.clear();
+          mIdentityInfo.mPeerFilePublic.reset();
+          mIdentityInfo.mPriority = 0;
+          mIdentityInfo.mWeight = 0;
+
+          IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
+          request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+          request->identityInfo(mIdentityInfo);
+
+          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
+
+          return true;
+        }
+
+        if (mPreviousLookupInfo.mURI.isEmpty()) {
+          ZS_LOG_DEBUG(log("waiting for identity lookup to complete (but will not prevent other events from completing)"))
+          return true;
+        }
+
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) {
+          return stepLockboxAssociation();
+        }
+
+        setState(SessionState_Pending);
+
+        IdentityInfo identityInfo = lockbox->forServiceIdentity().getIdentityInfoForIdentity(mThisWeak.lock());
+        mIdentityInfo.mergeFrom(identityInfo, true);
+
+        if ((identityInfo.mStableID == mPreviousLookupInfo.mStableID) &&
+            (isSame(identityInfo.mPeerFilePublic, mPreviousLookupInfo.mPeerFilePublic)) &&
+            (identityInfo.mPriority == mPreviousLookupInfo.mPriority) &&
+            (identityInfo.mWeight == mPreviousLookupInfo.mWeight)) {
+          ZS_LOG_DEBUG(log("identity information already up-to-date"))
+          mIdentityLookupUpdated = true;
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("updating identity lookup information (but not preventing other requests from continuing)"))
+
+        IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->identityInfo(mIdentityInfo);
+
+        mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
+
+        return true;
       }
 
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepSign()
       {
-        if (mSignMonitor) {
-          ZS_LOG_DEBUG(log("waiting for sign monitor to complete"))
-          return false;
-        }
-
-        if (!mSignedIdentityBundleValidityChecked) {
-          if (mSignedIdentityBundleEl) {
-
-            // figure out of the signed identity bundle still has enough life time left
-            try {
-              ElementPtr signatureEl;
-              ElementPtr signedEl = IHelper::getSignatureInfo(mSignedIdentityBundleEl, &signatureEl);
-
-              if (!mBootstrappedNetwork->forServices().isValidSignature(signedEl)) {
-                ZS_LOG_WARNING(Detail, log("bootstrapper reported signature as invalid"))
-                goto invalid_certificate;
-              }
-
-              Time created = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("created")->getTextDecoded());
-              Time expires = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("expires")->getTextDecoded());
-              Time now = zsLib::now();
-
-              if ((Time() == created) ||
-                  (Time() == expires) ||
-                  (created > expires) ||
-                  (now < created)) {
-                ZS_LOG_WARNING(Detail, log("certificate has invalid date range") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
-                goto invalid_certificate;
-              }
-
-              if (now > expires) {
-                ZS_LOG_WARNING(Detail, log("certificate has expired"))
-                goto invalid_certificate;
-              }
-
-              long durationFromCreated = (now - created).total_seconds();
-              long durationToTotal = (expires - created).total_seconds();
-
-              if ((durationFromCreated * 100) / durationToTotal > (100-HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED)) {
-                ZS_LOG_WARNING(Detail, log("resign identity required since certificate will expire soon") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
-                goto invalid_certificate;
-              }
-              mSignedIdentityBundleValidityChecked = true;
-              goto valid_certificate;
-            } catch(CheckFailed &) {
-              ZS_LOG_DEBUG(log("failed to obtain information from signature"))
-              goto invalid_certificate;
-            }
-
-          invalid_certificate:
-            mSignedIdentityBundleEl.reset();
-
-            if (mDownloadedSignedIdentityBundle) {
-              ZS_LOG_ERROR(Detail, log("download new certificate but the signature returned was not valid"))
-              setError(IHTTP::HTTPStatusCode_ServiceUnavailable, "Downloaded signed identity is not valid");
-              cancel();
-              return false;
-            }
-
-          valid_certificate:
-            ZS_LOG_DEBUG(log("certificate valid?") + ", valid=" + (mSignedIdentityBundleEl ? "true:" : "false"))
-          }
-        }
-
-        if (mSignedIdentityBundleEl) {
-          ZS_LOG_DEBUG(log("already downloaded valid certificate"))
+        if (mKillAssociation) {
+          ZS_LOG_DEBUG(log("no need to sign identity if the association is being killed"))
           return true;
         }
 
-        // need to obtain signed identity bundle, but only if peer contact has been associated...
-        IdentitySignRequestPtr request = IdentitySignRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
+        if (mSignedIdentityBundleVerfiedEl) {
+          ZS_LOG_DEBUG(log("identity bundle already verified"))
+          return true;
+        }
 
-        request->identityInfo(mIdentityInfo);
+        if (mIdentitySignMonitor) {
+          ZS_LOG_DEBUG(log("waiting for sign monitor to complete (but not preventing other requests from continuing)"))
+          return true;
+        }
 
-        mSignMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-sign", request);
-        ZS_LOG_DEBUG(log("sending sign request"))
-        return false;
+        setState(SessionState_Pending);
+
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) {
+          return stepLockboxAssociation();
+        }
+
+        if (!mSignedIdentityBundleUncheckedEl) {
+          // attempt to get a signed identity bundle from the lockbox
+          mSignedIdentityBundleUncheckedEl = lockbox->forServiceIdentity().getSignatureForIdentity(mThisWeak.lock());
+        }
+
+        if (!mSignedIdentityBundleUncheckedEl) {
+          // obtained a signed bundle since one is not found
+          IdentitySignRequestPtr request = IdentitySignRequest::create();
+          request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+          request->identityInfo(mIdentityInfo);
+
+          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-sign", request);
+
+          return true;
+        }
+
+        // scope: validate the identity bundle
+        {
+          // figure out of the signed identity bundle still has enough life time left
+          try {
+            ElementPtr signatureEl;
+            ElementPtr signedEl = IHelper::getSignatureInfo(mSignedIdentityBundleUncheckedEl, &signatureEl);
+
+            if (!mActiveBootstrappedNetwork->forServices().isValidSignature(signedEl)) {
+              ZS_LOG_WARNING(Detail, log("bootstrapper reported signature as invalid"))
+              goto invalid_certificate;
+            }
+
+            Time created = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("created")->getTextDecoded());
+            Time expires = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("expires")->getTextDecoded());
+            Time now = zsLib::now();
+
+            if ((Time() == created) ||
+                (Time() == expires) ||
+                (created > expires) ||
+                (now + Hours(HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS) < created)) {
+              ZS_LOG_WARNING(Detail, log("certificate has invalid date range") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
+              goto invalid_certificate;
+            }
+
+            if (now > expires) {
+              ZS_LOG_WARNING(Detail, log("certificate has expired"))
+              goto invalid_certificate;
+            }
+
+            long durationFromCreated = (now - created).total_seconds();
+            long durationToTotal = (expires - created).total_seconds();
+
+            if ((durationFromCreated * 100) / durationToTotal > (100-HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED)) {
+              ZS_LOG_WARNING(Detail, log("resign identity required since certificate will expire soon") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
+              goto invalid_certificate;
+            }
+
+            mSignedIdentityBundleVerfiedEl = mSignedIdentityBundleUncheckedEl;
+            goto valid_certificate;
+          } catch(CheckFailed &) {
+            ZS_LOG_DEBUG(log("failed to obtain information from signature"))
+            goto invalid_certificate;
+          }
+
+        invalid_certificate:
+          if (mSignedIdentityBundleOldEl) {
+            // already have an old bundle thus there is no point to trying again to download a new bundle
+            ZS_LOG_ERROR(Detail, log("download new certificate but the signature returned was not valid"))
+            setError(IHTTP::HTTPStatusCode_ServiceUnavailable, "downloaded signed identity is not valid");
+            cancel();
+            return false;
+          }
+
+          ZS_LOG_DEBUG(log("signed identity bundle did not pass validation check (will attempt to sign a new identity bundle)"))
+
+          mSignedIdentityBundleOldEl = mSignedIdentityBundleUncheckedEl;
+          mSignedIdentityBundleUncheckedEl.reset();
+
+          // try again shortly...
+          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          return true;
+
+        valid_certificate:
+          mSignedIdentityBundleVerfiedEl = mSignedIdentityBundleUncheckedEl;
+          ZS_LOG_DEBUG(log("identity signature is valid"))
+        }
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepAllRequestsCompleted()
+      {
+        if (!mLockboxUpdated) {
+          ZS_LOG_DEBUG(log("waiting for lockbox update to complete"))
+          return false;
+        }
+        if (!mIdentityLookupUpdated) {
+          ZS_LOG_DEBUG(log("waiting for identity lookup update to complete"))
+          return false;
+        }
+
+        if (!mKillAssociation) {
+          if (!mSignedIdentityBundleVerfiedEl) {
+            ZS_LOG_DEBUG(log("waiting to validate a signed identity bundle"))
+            return false;
+          }
+        }
+
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -1333,9 +1637,9 @@ namespace hookflash
           ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
           mCurrentState = state;
 
-          ServiceLockboxSessionPtr associatedPeerContact = mAssociatedPeerContact.lock();
-          if (associatedPeerContact) {
-            associatedPeerContact->forServiceIdentity().notifyStateChanged();
+          ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+          if (lockbox) {
+            lockbox->forServiceIdentity().notifyStateChanged();
           }
         }
 
@@ -1520,8 +1824,8 @@ namespace hookflash
                                      const char *inIdentifier
                                      )
     {
-      String domainOrType(inDomainOrType ? inDomainOrType : "");
-      String identifier(inIdentifier ? inIdentifier : "");
+      String domainOrType(inDomainOrType);
+      String identifier(inIdentifier);
 
       domainOrType.trim();
       identifier.trim();
@@ -1585,8 +1889,7 @@ namespace hookflash
         case SessionState_WaitingForBrowserWindowToBeLoaded:        return "Waiting for Browser Window to be Loaded";
         case SessionState_WaitingForBrowserWindowToBeMadeVisible:   return "Waiting for Browser Window to be Made Visible";
         case SessionState_WaitingForBrowserWindowToClose:           return "Waiting for Browser Window to Close";
-        case SessionState_WaitingLoginOrAssociationToLockbox:       return "Waiting Login or Association to Lockbox";
-        case SessionState_ReadyAsLoginNotNeeded:                    return "Ready as Login Not Needed";
+        case SessionState_WaitingForAssociationToLockbox:           return "Waiting for Association to Lockbox";
         case SessionState_Ready:                                    return "Ready";
         case SessionState_Shutdown:                                 return "Shutdown";
       }

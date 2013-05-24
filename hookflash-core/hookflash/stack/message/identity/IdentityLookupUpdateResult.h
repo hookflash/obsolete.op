@@ -55,9 +55,9 @@ namespace hookflash
           static IdentityLookupUpdateResultPtr convert(MessagePtr message);
 
           static IdentityLookupUpdateResultPtr create(
-                                                   ElementPtr root,
-                                                   IMessageSourcePtr messageSource
-                                                   );
+                                                      ElementPtr root,
+                                                      IMessageSourcePtr messageSource
+                                                      );
 
           virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityLookupUpdate;}
 

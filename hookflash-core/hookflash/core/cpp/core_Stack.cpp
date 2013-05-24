@@ -287,6 +287,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      const String &IStackForInternal::appURL()
+      {
+        return (Stack::singleton())->getAppURL();
+      }
+
+      //-----------------------------------------------------------------------
       const String &IStackForInternal::userAgent()
       {
         return (Stack::singleton())->getUserAgent();
@@ -396,6 +402,7 @@ namespace hookflash
                         const char *appID,
                         const char *appName,
                         const char *appImageURL,
+                        const char *appURL,
                         const char *userAgent,
                         const char *deviceID,
                         const char *os,
@@ -424,6 +431,9 @@ namespace hookflash
         if (appImageURL) {
           mAppImageURL = appImageURL;
         }
+        if (appURL) {
+          mAppURL = appURL;
+        }
         if (userAgent) {
           mUserAgent = String(userAgent);
         }
@@ -440,12 +450,13 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(mAppID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mAppName.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mAppImageURL.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppURL.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mUserAgent.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mOS.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mSystem.isEmpty())
 
-        stack::IStack::setup(mApplicationThreadQueue, mCoreThreadQueue, mServicesThreadQueue, mAppID, mAppName, mAppImageURL, mUserAgent, mDeviceID, mOS, mSystem);
+        stack::IStack::setup(mApplicationThreadQueue, mCoreThreadQueue, mServicesThreadQueue, mAppID, mAppName, mAppImageURL, mAppURL, mUserAgent, mDeviceID, mOS, mSystem);
       }
 
       //-----------------------------------------------------------------------

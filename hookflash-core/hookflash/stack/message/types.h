@@ -198,6 +198,8 @@ namespace hookflash
         String mAccessSecretProof;
         Time mAccessSecretProofExpires;
 
+        String mReloginKey;
+
         String mBase;
         String mURI;
         String mProvider;
@@ -277,6 +279,7 @@ namespace hookflash
         String mUserAgent;
         String mName;
         String mImageURL;
+        String mAgentURL;
 
         AgentInfo() {}
         bool hasData() const;

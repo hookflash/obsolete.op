@@ -751,10 +751,11 @@ namespace hookflash
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::relogin(
                                                                         IServiceLockboxSessionPtr existingLockbox,
                                                                         BootstrappedNetworkPtr network,
-                                                                        const char *identityURI
+                                                                        const char *identityURI,
+                                                                        const char *reloginKey
                                                                         )
       {
-        return ServiceIdentitySession::reload(existingLockbox, network, identityURI);
+        return ServiceIdentitySession::reload(existingLockbox, network, identityURI, reloginKey);
       }
 
       //-----------------------------------------------------------------------

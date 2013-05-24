@@ -54,10 +54,7 @@ namespace hookflash
         public:
           static IdentityAccessWindowResultPtr convert(MessagePtr message);
 
-          static IdentityAccessWindowResultPtr create(
-                                                      ElementPtr root,
-                                                      IMessageSourcePtr messageSource
-                                                      );
+          static IdentityAccessWindowResultPtr create(IdentityAccessWindowRequestPtr request);
 
           virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessWindow;}
 

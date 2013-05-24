@@ -30,6 +30,7 @@
  */
 
 #include <hookflash/stack/message/identity/IdentityAccessWindowResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -57,13 +58,12 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        IdentityAccessWindowResultPtr IdentityAccessWindowResult::create(
-                                                                         ElementPtr root,
-                                                                         IMessageSourcePtr messageSource
-                                                                         )
+        IdentityAccessWindowResultPtr IdentityAccessWindowResult::create(IdentityAccessWindowRequestPtr request)
         {
           IdentityAccessWindowResultPtr ret(new IdentityAccessWindowResult);
-          IMessageHelper::fill(*ret, root, messageSource);
+          ret->mDomain = request->domain();
+          ret->mID = request->messageID();
+          ret->mAppID = request->appID();
           return ret;
         }
 

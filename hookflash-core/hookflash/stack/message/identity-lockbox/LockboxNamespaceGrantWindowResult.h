@@ -54,10 +54,7 @@ namespace hookflash
         public:
           static LockboxNamespaceGrantWindowResultPtr convert(MessagePtr message);
 
-          static LockboxNamespaceGrantWindowResultPtr create(
-                                                             ElementPtr root,
-                                                             IMessageSourcePtr messageSource
-                                                             );
+          static LockboxNamespaceGrantWindowResultPtr create(LockboxNamespaceGrantWindowRequestPtr request);
 
           virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantWindow;}
 

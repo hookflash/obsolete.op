@@ -59,6 +59,7 @@ namespace hookflash
                          const char *appID,       // organization assigned ID for the application e.g. "com.xyz123.app1"
                          const char *appName,     // a branded human readable application name, e.g. "Hookflash"
                          const char *appImageURL, // an HTTPS downloadable branded image for the application
+                         const char *appURL,       // an HTTPS URL webpage / website that offers more information about application
                          const char *userAgent,   // e.g. "hookflash/1.0.1001a (iOS/iPad)"
                          const char *deviceID,    // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
                          const char *os,          // e.g. "iOS 5.0.3

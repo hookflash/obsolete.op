@@ -113,12 +113,9 @@ namespace hookflash
           identityInfo.mBase = mIdentityInfo.mBase;
           identityInfo.mURI = mIdentityInfo.mURI;
           identityInfo.mProvider = mIdentityInfo.mProvider;
+          identityInfo.mReloginKey = mIdentityInfo.mReloginKey;
 
-          AgentInfo agentInfo;
-          agentInfo.mUserAgent = IStackForInternal::userAgent();
-          agentInfo.mName = IStackForInternal::appName();
-          agentInfo.mImageURL = IStackForInternal::appImageURL();
-
+          AgentInfo agentInfo = IStackForInternal::agentInfo();
           agentInfo.mergeFrom(mAgentInfo, true);
 
           if (identityInfo.mURI.hasData()) {

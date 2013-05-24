@@ -119,6 +119,11 @@ namespace hookflash
                                         message::MessagePtr message
                                         ) = 0;
 
+        virtual String getServiceURI(
+                                     const char *serviceType,
+                                     const char *serviceMethodName
+                                     ) const = 0;
+
         virtual bool isValidSignature(ElementPtr signedElement) const = 0;
 
         virtual bool isValidSignature(
@@ -347,6 +352,11 @@ namespace hookflash
         //                                             );
 
         // (duplicate) virtual bool isValidSignature(ElementPtr signedElement) const;
+
+        virtual String getServiceURI(
+                                     const char *serviceType,
+                                     const char *serviceMethodName
+                                     ) const = 0;
 
         virtual bool isValidSignature(
                                       const String &id,

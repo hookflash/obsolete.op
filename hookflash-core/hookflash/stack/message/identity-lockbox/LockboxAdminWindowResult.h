@@ -54,10 +54,7 @@ namespace hookflash
         public:
           static LockboxAdminWindowResultPtr convert(MessagePtr message);
 
-          static LockboxAdminWindowResultPtr create(
-                                                   ElementPtr root,
-                                                   IMessageSourcePtr messageSource
-                                                   );
+          static LockboxAdminWindowResultPtr create(LockboxAdminWindowRequestPtr request);
 
           virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminWindow;}
 

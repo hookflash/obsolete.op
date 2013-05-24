@@ -450,6 +450,22 @@ namespace hookflash
       #pragma mark BootstrappedNetwork => IBootstrappedNetworkForCertificateServiceValidationQuery
       #pragma mark
 
+      //-----------------------------------------------------------------------
+      String BootstrappedNetwork::getServiceURI(
+                                                const char *serviceType,
+                                                const char *serviceMethodName
+                                                ) const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mCompleted) return String();
+
+        const Service::Method *service = findServiceMethod(serviceType, serviceMethodName);
+        if (!service) return String();
+
+        return service->mURI;
+      }
+
+      //-----------------------------------------------------------------------
       bool BootstrappedNetwork::isValidSignature(
                                                  const String &id,
                                                  const String &domain,

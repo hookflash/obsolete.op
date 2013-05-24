@@ -237,6 +237,8 @@ namespace hookflash
                 (mAccessSecretProof.hasData()) ||
                 (Time() != mAccessSecretProofExpires) ||
 
+                (mReloginKey.hasData()) ||
+
                 (mBase.hasData()) ||
                 (mURI.hasData()) ||
                 (mProvider.hasData()) ||
@@ -268,6 +270,7 @@ namespace hookflash
                Helper::getDebugValue("access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime) +
                Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("relogin key", mReloginKey, firstTime) +
                Helper::getDebugValue("identity base", mBase, firstTime) +
                Helper::getDebugValue("identity", mURI, firstTime) +
                Helper::getDebugValue("identity provider", mProvider, firstTime) +
@@ -368,6 +371,8 @@ namespace hookflash
         merge(mAccessSecretProof, source.mAccessSecretProof, overwriteExisting);
         merge(mAccessSecretProofExpires, source.mAccessSecretProofExpires, overwriteExisting);
 
+        merge(mReloginKey, source.mReloginKey, overwriteExisting);
+
         merge(mBase, source.mBase, overwriteExisting);
         merge(mURI, source.mURI, overwriteExisting);
         merge(mProvider, source.mProvider, overwriteExisting);
@@ -466,7 +471,8 @@ namespace hookflash
       {
         return ((mUserAgent.hasData()) ||
                 (mName.hasData()) ||
-                (mImageURL.hasData()));
+                (mImageURL.hasData()) ||
+                (mAgentURL.hasData()));
       }
 
       //-----------------------------------------------------------------------
@@ -475,7 +481,8 @@ namespace hookflash
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("user agent", mUserAgent, firstTime) +
                Helper::getDebugValue("name", mName, firstTime) +
-               Helper::getDebugValue("image url", mImageURL, firstTime);
+               Helper::getDebugValue("image url", mImageURL, firstTime) +
+               Helper::getDebugValue("agent url", mAgentURL, firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -487,6 +494,7 @@ namespace hookflash
         merge(mUserAgent, source.mUserAgent, overwriteExisting);
         merge(mName, source.mName, overwriteExisting);
         merge(mImageURL, source.mImageURL, overwriteExisting);
+        merge(mAgentURL, source.mAgentURL, overwriteExisting);
       }
 
     }

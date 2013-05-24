@@ -128,6 +128,7 @@ namespace hookflash
                            const char *appID,
                            const char *appName,
                            const char *appImageURL,
+                           const char *appURL,
                            const char *userAgent,
                            const char *deviceID,
                            const char *os,
@@ -162,6 +163,7 @@ namespace hookflash
         virtual const String &getAppID() const {return mAppID;}
         virtual const String &getAppName() const {return mAppName;}
         virtual const String &getAppImageURL() const {return mAppImageURL;}
+        virtual const String &getAppURL() const {return mAppURL;}
         virtual const String &getUserAgent() const {return mUserAgent;}
         virtual const String &getDeviceID() const {return mDeviceID;}
         virtual const String &getOS() const {return mOS;}
@@ -209,6 +211,7 @@ namespace hookflash
         String mAppID;
         String mAppName;
         String mAppImageURL;
+        String mAppURL;
         String mUserAgent;
         String mDeviceID;
         String mOS;

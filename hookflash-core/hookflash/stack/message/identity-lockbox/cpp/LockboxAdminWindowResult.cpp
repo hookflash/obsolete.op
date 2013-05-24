@@ -30,6 +30,7 @@
  */
 
 #include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -57,14 +58,12 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowResultPtr LockboxAdminWindowResult::create(
-                                                                     ElementPtr root,
-                                                                     IMessageSourcePtr messageSource
-                                                                     )
+        LockboxAdminWindowResultPtr LockboxAdminWindowResult::create(LockboxAdminWindowRequestPtr request)
         {
           LockboxAdminWindowResultPtr ret(new LockboxAdminWindowResult);
-          IMessageHelper::fill(*ret, root, messageSource);
-
+          ret->mDomain = request->domain();
+          ret->mID = request->messageID();
+          ret->mAppID = request->appID();
           return ret;
         }
 

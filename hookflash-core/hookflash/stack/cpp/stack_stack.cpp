@@ -92,6 +92,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      const String &IStackForInternal::appURL()
+      {
+        return (Stack::singleton())->getAppURL();
+      }
+
+      //-----------------------------------------------------------------------
       const String &IStackForInternal::userAgent()
       {
         return (Stack::singleton())->getUserAgent();
@@ -113,6 +119,14 @@ namespace hookflash
       const String &IStackForInternal::system()
       {
         return (Stack::singleton())->getSystem();
+      }
+
+      //-----------------------------------------------------------------------
+      AgentInfo IStackForInternal::agentInfo()
+      {
+        AgentInfo info;
+        (Stack::singleton())->getAgentInfo(info);
+        return info;
       }
 
       //-----------------------------------------------------------------------
@@ -202,6 +216,7 @@ namespace hookflash
                         const char *appID,
                         const char *appName,
                         const char *appImageURL,
+                        const char *appURL,
                         const char *userAgent,
                         const char *deviceID,
                         const char *os,
@@ -231,6 +246,9 @@ namespace hookflash
         if (appImageURL) {
           mAppImageURL = appImageURL;
         }
+        if (appURL) {
+          mAppURL = appURL;
+        }
         if (deviceID) {
           mDeviceID = String(deviceID);
         }
@@ -250,6 +268,7 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(mAppID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mAppName.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mAppImageURL.isEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(mAppURL.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mUserAgent.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mDeviceID.isEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(mOS.isEmpty())
@@ -263,6 +282,15 @@ namespace hookflash
       #pragma mark
       #pragma mark Stack => IStackForInternal
       #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Stack::getAgentInfo(AgentInfo &result) const
+      {
+        result.mUserAgent = getUserAgent();
+        result.mName = getAppName();
+        result.mImageURL = getAppImageURL();
+        result.mAgentURL = getAppURL();
+      }
 
       //-----------------------------------------------------------------------
       IMessageQueuePtr Stack::queueDelegate() const
@@ -319,13 +347,14 @@ namespace hookflash
                        const char *appID,
                        const char *appName,
                        const char *appImageURL,
+                       const char *appURL,
                        const char *userAgent,
                        const char *deviceID,
                        const char *os,
                        const char *system
                        )
     {
-      return internal::Stack::singleton()->setup(defaultDelegateMessageQueue, stackMessageQueue, servicesQueue, appID, appName, appImageURL, userAgent, deviceID, os, system);
+      return internal::Stack::singleton()->setup(defaultDelegateMessageQueue, stackMessageQueue, servicesQueue, appID, appName, appImageURL, appURL, userAgent, deviceID, os, system);
     }
   }
 }
