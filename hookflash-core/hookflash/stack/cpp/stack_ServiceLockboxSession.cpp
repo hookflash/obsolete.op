@@ -1906,6 +1906,7 @@ namespace hookflash
         }
 
         ZS_LOG_DEBUG(log("associating and removing of identities completed") + ", updated=" + Stringize<size_t>(completedIdentities.size()).string() + ", removed=" + Stringize<size_t>(removedIdentities.size()).string())
+        return true;
       }
 
       //-----------------------------------------------------------------------
