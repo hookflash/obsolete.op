@@ -1781,7 +1781,7 @@ namespace hookflash
 
           if (ICall::CallState_Hold != mCurrentState) {
             // this call must be in focus...
-            ZS_LOG_DEBUG(log("setting focus to this call?") + "focus=" + (mediaHolding ? "false" : "true"))
+            ZS_LOG_DEBUG(log("setting focus to this call?") + ", focus=" + (mediaHolding ? "false" : "true"))
             ICallAsyncProxy::create(getMediaQueue(), mThisWeak.lock())->onSetFocus(!mediaHolding);
           } else {
             ZS_LOG_DEBUG(log("this call state is holding thus it should not have focus"))
