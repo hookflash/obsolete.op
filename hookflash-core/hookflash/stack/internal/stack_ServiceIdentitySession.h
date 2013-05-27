@@ -70,8 +70,10 @@ namespace hookflash
 
       interaction IServiceIdentitySessionForServiceLockbox
       {
-        IServiceIdentitySessionForServiceLockbox &forPeerContact() {return *this;}
-        const IServiceIdentitySessionForServiceLockbox &forPeerContact() const {return *this;}
+        typedef IServiceIdentitySession::SessionStates SessionStates;
+
+        IServiceIdentitySessionForServiceLockbox &forLockbox() {return *this;}
+        const IServiceIdentitySessionForServiceLockbox &forLockbox() const {return *this;}
 
         static ServiceIdentitySessionPtr reload(
                                                 IServiceLockboxSessionPtr existingLockbox,
@@ -81,6 +83,13 @@ namespace hookflash
                                                 );
 
         virtual PUID getID() const = 0;
+
+        virtual SessionStates getState(
+                                       WORD *outLastErrorCode = NULL,
+                                       String *outLastErrorReason = NULL
+                                       ) const = 0;
+
+        virtual ElementPtr getSignedIdentityBundle() const = 0;
 
         virtual void associate(ServiceLockboxSessionPtr lockbox) = 0;
         virtual void killAssociation(ServiceLockboxSessionPtr lockbox) = 0;
@@ -130,6 +139,8 @@ namespace hookflash
       public:
         friend interaction IServiceIdentitySessionFactory;
         friend interaction IServiceIdentitySession;
+
+        typedef IServiceIdentitySession::SessionStates SessionStates;
 
         typedef std::list<DocumentPtr> DocumentList;
 
@@ -232,6 +243,13 @@ namespace hookflash
                                                 );
 
         // (duplicate) virtual PUID getID() const;
+
+        // virtual SessionStates getState(
+        //                                WORD *outLastErrorCode,
+        //                                String *outLastErrorReason
+        //                                ) const;
+
+        // virtual ElementPtr getSignedIdentityBundle() const;
 
         virtual void associate(ServiceLockboxSessionPtr lockbox);
         virtual void killAssociation(ServiceLockboxSessionPtr lockbox);
@@ -348,6 +366,7 @@ namespace hookflash
         bool stepLookupUpdate();
         bool stepSign();
         bool stepAllRequestsCompleted();
+        bool stepCloseBrowserWindow();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);

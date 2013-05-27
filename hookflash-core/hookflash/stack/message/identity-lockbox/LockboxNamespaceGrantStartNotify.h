@@ -53,7 +53,7 @@ namespace hookflash
             AttributeType_AgentInfo,
             AttributeType_LockboxInfo,
             AttributeType_GrantID,
-            AttributeType_NamespaceURLs,
+            AttributeType_NamespaceInfos,
             AttributeType_BrowserVisibility,
             AttributeType_BrowserPopup,
             AttributeType_OuterFrameURL,
@@ -69,9 +69,6 @@ namespace hookflash
           };
 
           static const char *toString(BrowserVisibilities visibility);
-
-          typedef String NamespaceURL;
-          typedef std::list<NamespaceURL> NamespaceURLList;
 
         public:
           static LockboxNamespaceGrantStartNotifyPtr convert(MessagePtr message);
@@ -95,8 +92,8 @@ namespace hookflash
           const String &grantID() const                     {return mGrantID;}
           void grantID(const String &val)                   {mGrantID = val;}
 
-          const NamespaceURLList &namespaceURLs() const     {return mNamespaceURLs;}
-          void namespaceURLs(const NamespaceURLList &val)   {mNamespaceURLs = val;}
+          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
+          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
 
           BrowserVisibilities browserVisibility() const     {return mVisibility;}
           void browserVisibility(BrowserVisibilities val)   {mVisibility = val;}
@@ -114,7 +111,7 @@ namespace hookflash
           LockboxInfo mLockboxInfo;
 
           String mGrantID;
-          NamespaceURLList mNamespaceURLs;
+          NamespaceInfoMap mNamespaceInfos;
 
           BrowserVisibilities mVisibility;
           int mPopup;

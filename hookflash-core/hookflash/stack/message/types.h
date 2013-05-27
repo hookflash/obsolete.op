@@ -290,7 +290,34 @@ namespace hookflash
                        bool overwriteExisting = true
                        );
       };
-      
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark NamespaceInfo
+      #pragma mark
+
+      struct NamespaceInfo
+      {
+        typedef String NamespaceURL;
+
+        NamespaceURL mURL;
+        Time mLastUpdated;
+
+        NamespaceInfo() {}
+        bool hasData() const;
+        String getDebugValueString(bool includeCommaPrefix = true) const;
+
+        void mergeFrom(
+                       const NamespaceInfo &source,
+                       bool overwriteExisting = true
+                       );
+      };
+
+      typedef std::map<NamespaceInfo::NamespaceURL, NamespaceInfo> NamespaceInfoMap;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

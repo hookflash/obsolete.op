@@ -100,6 +100,9 @@ namespace hookflash
                                        ElementPtr signedSaltBundleEl
                                        )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!password)
+        ZS_THROW_INVALID_ARGUMENT_IF(!signedSaltBundleEl)
+
         PeerFilesPtr pThis(new PeerFiles);
         pThis->mThisWeak = pThis;
 
@@ -116,6 +119,9 @@ namespace hookflash
                                               ElementPtr privatePeerRootElement
                                               )
       {
+        if (!password) return PeerFilesPtr();
+        if (!privatePeerRootElement)return PeerFilesPtr();
+
         PeerFilesPtr pThis(new PeerFiles);
         pThis->mThisWeak = pThis;
 

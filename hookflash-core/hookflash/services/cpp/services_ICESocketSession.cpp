@@ -449,7 +449,7 @@ namespace hookflash
         }
 
         if (mAliveCheckRequester) {
-          ZS_LOG_DEBUG(log("cancelling current alive check requster"))
+          ZS_LOG_DEBUG(log("cancelling current alive check requester"))
           mAliveCheckRequester->cancel();
           mAliveCheckRequester.reset();
         }

@@ -94,7 +94,7 @@ namespace hookflash
             case AttributeType_AgentInfo:         return mAgentInfo.hasData();
             case AttributeType_LockboxInfo:       return mLockboxInfo.hasData();
             case AttributeType_GrantID:           return mGrantID.hasData();
-            case AttributeType_NamespaceURLs:     return (mNamespaceURLs.size() > 0);
+            case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
             case AttributeType_BrowserVisibility: return (BrowserVisibility_NA != mVisibility);
             case AttributeType_BrowserPopup:      return (mPopup >= 0);
             case AttributeType_OuterFrameURL:     return mOuterFrameURL.hasData();
@@ -138,10 +138,10 @@ namespace hookflash
 
             ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
 
-            for (NamespaceURLList::iterator iter = mNamespaceURLs.begin(); iter != mNamespaceURLs.end(); ++iter)
+            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
             {
-              const NamespaceURL &namespaceURL = (*iter);
-              namespacesEl->adoptAsLastChild(IMessageHelper::createElementWithID("namespace", namespaceURL));
+              const NamespaceInfo &namespaceInfo = (*iter).second;
+              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
             }
 
             if (namespacesEl->hasChildren()) {

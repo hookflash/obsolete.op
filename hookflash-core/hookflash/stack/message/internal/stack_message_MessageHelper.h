@@ -65,6 +65,7 @@ namespace hookflash
                                           );
           static ElementPtr createElement(const LockboxInfo &info);
           static ElementPtr createElement(const AgentInfo &info);
+          static ElementPtr createElement(const NamespaceInfo &info);
 
           static ElementPtr createElement(
                                           const PublishToRelationshipsMap &relationships,

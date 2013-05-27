@@ -55,14 +55,6 @@ namespace hookflash
             AttributeType_Identities,
           };
 
-          struct NamespaceInfo
-          {
-            String mURL;
-            Time mLastUpdated;
-          };
-
-          typedef std::list<NamespaceInfo> NamespaceInfoList;
-
         public:
           static LockboxAccessResultPtr convert(MessagePtr message);
 
@@ -83,8 +75,8 @@ namespace hookflash
           const String &grantID() const                     {return mGrantID;}
           void grantID(const String &val)                   {mGrantID = val;}
 
-          const NamespaceInfoList &namespaceInfos() const   {return mNamespaceInfos;}
-          void namespaceInfos(const NamespaceInfoList &val) {mNamespaceInfos = val;}
+          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
+          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
 
           const IdentityInfoList &identities() const        {return mIdentities;}
           void identities(const IdentityInfoList &val)      {mIdentities = val;}
@@ -95,7 +87,7 @@ namespace hookflash
           LockboxInfo mLockboxInfo;
 
           String mGrantID;
-          NamespaceInfoList mNamespaceInfos;
+          NamespaceInfoMap mNamespaceInfos;
 
           IdentityInfoList mIdentities;
         };

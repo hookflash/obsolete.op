@@ -40,6 +40,7 @@
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
+#include <hookflash/stack/message/peer/PeerServicesGetResult.h>
 
 #include <hookflash/stack/IServiceSalt.h>
 
@@ -61,6 +62,8 @@ namespace hookflash
       using message::identity_lockbox::LockboxContentGetResultPtr;
       using message::identity_lockbox::LockboxContentSetResult;
       using message::identity_lockbox::LockboxContentSetResultPtr;
+      using message::peer::PeerServicesGetResult;
+      using message::peer::PeerServicesGetResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -124,10 +127,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceLockboxSessionAsync
+      #pragma mark IServiceLockboxSessionAsyncDelegate
       #pragma mark
 
-      interaction IServiceLockboxSessionAsync
+      interaction IServiceLockboxSessionAsyncDelegate
       {
         virtual void onStep() = 0;
       };
@@ -146,13 +149,14 @@ namespace hookflash
                                         public IMessageSource,
                                         public IServiceLockboxSessionForAccount,
                                         public IServiceLockboxSessionForServiceIdentity,
-                                        public IServiceLockboxSessionAsync,
+                                        public IServiceLockboxSessionAsyncDelegate,
                                         public IBootstrappedNetworkDelegate,
                                         public IServiceSaltFetchSignedSaltQueryDelegate,
                                         public IMessageMonitorResultDelegate<LockboxAccessResult>,
                                         public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
                                         public IMessageMonitorResultDelegate<LockboxContentGetResult>,
-                                        public IMessageMonitorResultDelegate<LockboxContentSetResult>
+                                        public IMessageMonitorResultDelegate<LockboxContentSetResult>,
+                                        public IMessageMonitorResultDelegate<PeerServicesGetResult>
       {
       public:
         friend interaction IServiceLockboxSessionFactory;
@@ -160,6 +164,10 @@ namespace hookflash
 
         typedef PUID ServiceIdentitySessionID;
         typedef std::map<ServiceIdentitySessionID, ServiceIdentitySessionPtr> ServiceIdentitySessionMap;
+
+        typedef std::list<DocumentPtr> DocumentList;
+
+        typedef LockboxContentGetResult::NamespaceURLNameValueMap NamespaceURLNameValueMap;
 
       protected:
         ServiceLockboxSession(
@@ -195,6 +203,7 @@ namespace hookflash
                                                 IServiceLockboxSessionDelegatePtr delegate,
                                                 IServiceLockboxPtr serviceLockbox,
                                                 const char *lockboxAccountID,
+                                                const char *lockboxGrantID,
                                                 const char *identityHalfLockboxKey,
                                                 const char *lockboxHalfLockboxKey
                                                 );
@@ -211,6 +220,7 @@ namespace hookflash
         virtual IPeerFilesPtr getPeerFiles() const;
 
         virtual String getLockboxAccountID() const;
+        virtual String getLockboxGrantID() const;
         virtual void getLockboxKey(
                                    SecureByteBlockPtr &outIdentityHalf,
                                    SecureByteBlockPtr &outLockboxHalf
@@ -281,7 +291,7 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsync
+        #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsyncDelegate
         #pragma mark
 
         virtual void onStep();
@@ -364,6 +374,22 @@ namespace hookflash
                                                              message::MessageResultPtr result
                                                              );
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerServicesGetResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        PeerServicesGetResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             PeerServicesGetResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -378,10 +404,24 @@ namespace hookflash
         bool isShutdown() const {return SessionState_Shutdown == mCurrentState;}
 
         void step();
-        bool stepLogin();
-        bool stepPeerFiles();
-        bool stepServices();
-        bool stepAssociate();
+        bool stepBootstrapper();
+        bool stepIdentityLogin();
+        bool stepLockboxAccess();
+        bool stepLoadGrantWindow();
+        bool stepMakeGrantWindowVisible();
+        bool stepSendLockboxNamespaceGrantStartNotification();
+        bool stepWaitForPermission();
+        bool stepCloseBrowserWindow();
+        bool stepContentGet();
+        bool stepPreparePeerFiles();
+        bool stepUploadPeerFiles();
+        bool stepServicesGet();
+        bool stepLoginIdentityBecomeAssociated();
+        bool stepConvertFromServerToRealIdentities();
+        bool stepPruneDuplicatePendingIdentities();
+        bool stepPruneShutdownIdentities();
+        bool stepPendingAssociationAndRemoval();
+
         void postStep();
 
         void clearShutdown(ServiceIdentitySessionMap &identities) const;
@@ -392,6 +432,24 @@ namespace hookflash
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
+        void sendInnerWindowMessage(MessagePtr message);
+        String getContent(
+                          const char *namespaceURL,
+                          const char *valueName
+                          ) const;
+        String getRawContent(
+                             const char *namespaceURL,
+                             const char *valueName
+                             ) const;
+        void setContent(
+                        const char *namespaceURL,
+                        const char *valueName,
+                        const char *value
+                        );
+        void clearContent(
+                          const char *namespaceURL,
+                          const char *valueName
+                          );
 
       protected:
         //---------------------------------------------------------------------
@@ -408,38 +466,50 @@ namespace hookflash
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
 
-//        IMessageMonitorPtr mLoginMonitor;
-//        IMessageMonitorPtr mPeerFilesGetMonitor;
-//        IMessageMonitorPtr mPeerFilesSetMonitor;
-//        IMessageMonitorPtr mServicesMonitor;
-//        IMessageMonitorPtr mAssociateMonitor;
+        IMessageMonitorPtr mLockboxAccessMonitor;
+        IMessageMonitorPtr mLockboxIdentitiesUpdateMonitor;
+        IMessageMonitorPtr mLockboxContentGetMonitor;
+        IMessageMonitorPtr mLockboxContentSetMonitor;
+        IMessageMonitorPtr mPeerServicesGetMonitor;
 
         SessionStates mCurrentState;
 
         WORD mLastError;
         String mLastErrorReason;
 
+        String mGrantID;
         LockboxInfo mLockboxInfo;
 
         ServiceIdentitySessionPtr mLoginIdentity;
 
         IPeerFilesPtr mPeerFiles;
 
-//        String mContactUserID;
-//        String mContactAccessToken;
-//        String mContactAccessSecret;
-//        Time mContactAccessExpires;
-//
-//        bool mRegeneratePeerFiles;
-//
-//        IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
-//        ServiceTypeMap mServicesByType;
-//
-//        ServiceIdentitySessionMap mAssociatedIdentities;
-//        SecureByteBlockPtr mLastNotificationHash;
-//
-//        ServiceIdentitySessionMap mPendingUpdateIdentities;
-//        ServiceIdentitySessionMap mPendingRemoveIdentities;
+        bool mBrowserWindowReady;
+        bool mBrowserWindowVisible;
+        bool mBrowserWindowClosed;
+
+        bool mNeedsBrowserWindowVisible;
+
+        bool mHasPermissions;
+        bool mLockboxNamespaceGrantStartNotificationSent;
+
+        bool mPeerFilesNeedUpload;
+        bool mLoginIdentitySetToBecomeAssociated;
+
+        IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
+        ServiceTypeMap mServicesByType;
+
+        IdentityInfoList mServerIdentities;
+
+        ServiceIdentitySessionMap mAssociatedIdentities;
+        SecureByteBlockPtr mLastNotificationHash;
+
+        ServiceIdentitySessionMap mPendingUpdateIdentities;
+        ServiceIdentitySessionMap mPendingRemoveIdentities;
+
+        DocumentList mPendingMessagesToDeliver;
+
+        NamespaceURLNameValueMap mContent;
       };
 
       //-----------------------------------------------------------------------
@@ -464,6 +534,7 @@ namespace hookflash
                                                  IServiceLockboxSessionDelegatePtr delegate,
                                                  IServiceLockboxPtr serviceLockbox,
                                                  const char *lockboxAccountID,
+                                                 const char *lockboxGrantID,
                                                  const char *identityHalfLockboxKey,
                                                  const char *lockboxHalfLockboxKey
                                                  );
@@ -473,6 +544,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceLockboxSessionAsync)
+ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceLockboxSessionAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

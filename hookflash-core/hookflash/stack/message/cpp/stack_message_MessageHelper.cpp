@@ -270,9 +270,9 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ElementPtr IMessageHelper::createElementWithTextAndJSONEncode(
-                                                                      const String &elName,
-                                                                      const String &textVal
-                                                                      )
+                                                                    const String &elName,
+                                                                    const String &textVal
+                                                                    )
       {
         ElementPtr tmp = Element::create(elName);
         if (textVal.isEmpty()) return tmp;
@@ -642,6 +642,21 @@ namespace hookflash
           return agentEl;
         }
         
+        //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(const NamespaceInfo &info)
+        {
+          ElementPtr namespaceEl = Element::create("namespace");
+
+          if (info.mURL.hasData()) {
+            namespaceEl->setAttribute("id", info.mURL);
+          }
+          if (Time() != info.mLastUpdated) {
+            namespaceEl->setAttribute("updated", timeToString(info.mLastUpdated));
+          }
+
+          return namespaceEl;
+        }
+
         //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(
                                                 const PublishToRelationshipsMap &relationships,

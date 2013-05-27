@@ -1080,6 +1080,7 @@ namespace hookflash
         if (!stepLookupUpdate()) return;
         if (!stepSign()) return;
         if (!stepAllRequestsCompleted()) return;
+        if (!stepCloseBrowserWindow()) return;
 
         if (mKillAssociation) {
           ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
@@ -1435,7 +1436,7 @@ namespace hookflash
         ZS_LOG_DEBUG(log("updating lockbox information (but not preventing other requests from continuing)"))
 
         mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
+        sendInnerWindowMessage(request);
 
         return true;
       }
@@ -1641,6 +1642,20 @@ namespace hookflash
         return true;
       }
 
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepCloseBrowserWindow()
+      {
+        if (mBrowserWindowClosed) {
+          ZS_LOG_DEBUG(log("browser window is closed"))
+        }
+
+        ZS_LOG_DEBUG(log("waiting for browser window to close"))
+
+        setState(SessionState_WaitingForBrowserWindowToClose);
+
+        return false;
+      }
+      
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::setState(SessionStates state)
       {

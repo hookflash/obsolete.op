@@ -73,9 +73,11 @@ namespace hookflash
             if (namespacesEl) {
               ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
               while (namespaceEl) {
-                String namespaceURL = IMessageHelper::getAttributeID(namespaceEl);
-                if (namespaceURL.hasData()) {
-                  ret->mNamespaceURLs.push_back(namespaceURL);
+                NamespaceInfo info;
+                info.mURL = IMessageHelper::getAttributeID(namespaceEl);
+                info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttribute(namespaceEl, "updated"));
+                if (info.mURL.hasData()) {
+                  ret->mNamespaceInfos[info.mURL] = info;
                 }
                 namespaceEl = namespaceEl->findNextSiblingElement("namespace");
               }
@@ -91,7 +93,7 @@ namespace hookflash
           switch (type)
           {
             case AttributeType_GrantID:               return mGrantID.hasData();
-            case AttributeType_NamespaceURLs:         return (mNamespaceURLs.size() > 0);
+            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
             default:                                  break;
           }
           return false;

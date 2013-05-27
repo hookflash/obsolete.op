@@ -507,6 +507,38 @@ namespace hookflash
         merge(mAgentURL, source.mAgentURL, overwriteExisting);
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::NamespaceInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool NamespaceInfo::hasData() const
+      {
+        return ((mURL.hasData()) ||
+                (Time() != mLastUpdated));
+      }
+
+      //-----------------------------------------------------------------------
+      String NamespaceInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("namespace url", mURL, firstTime) +
+               Helper::getDebugValue("last updated", Time() != mLastUpdated ? IMessageHelper::timeToString(mLastUpdated) : String(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void NamespaceInfo::mergeFrom(
+                                    const NamespaceInfo &source,
+                                    bool overwriteExisting
+                                    )
+      {
+        merge(mURL, source.mURL, overwriteExisting);
+        merge(mLastUpdated, source.mLastUpdated, overwriteExisting);
+      }
     }
   }
 }

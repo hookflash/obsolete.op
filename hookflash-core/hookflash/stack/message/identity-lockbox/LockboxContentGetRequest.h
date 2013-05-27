@@ -52,11 +52,8 @@ namespace hookflash
           {
             AttributeType_LockboxInfo,
             AttributeType_GrantID,
-            AttributeType_NamespaceURLs,
+            AttributeType_NamespaceInfos,
           };
-
-          typedef String NamespaceURL;
-          typedef std::list<NamespaceURL> NamespaceURLList;
 
         public:
           static LockboxContentGetRequestPtr convert(MessagePtr message);
@@ -65,20 +62,20 @@ namespace hookflash
 
           virtual DocumentPtr encode();
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxContentGet;}
+          virtual Methods method() const                    {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxContentGet;}
 
-          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentityLockbox::singleton();}
+          virtual IMessageFactoryPtr factory() const        {return MessageFactoryIdentityLockbox::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
-          void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
+          const LockboxInfo &lockboxInfo() const            {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)          {mLockboxInfo = val;}
 
-          const String &grantID() const                   {return mGrantID;}
-          void grantID(const String &val)                 {mGrantID = val;}
+          const String &grantID() const                     {return mGrantID;}
+          void grantID(const String &val)                   {mGrantID = val;}
 
-          const NamespaceURLList &namespaceURLs() const   {return mNamespaceURLs;}
-          void namespaceURLs(const NamespaceURLList &val) {mNamespaceURLs = val;}
+          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
+          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
 
         protected:
           LockboxContentGetRequest();
@@ -86,7 +83,7 @@ namespace hookflash
           LockboxInfo mLockboxInfo;
 
           String mGrantID;
-          NamespaceURLList mNamespaceURLs;
+          NamespaceInfoMap mNamespaceInfos;
         };
       }
     }

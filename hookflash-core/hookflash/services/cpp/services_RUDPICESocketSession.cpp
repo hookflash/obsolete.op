@@ -430,7 +430,7 @@ namespace hookflash
                                                                           const String &remoteUsernameFrag
                                                                           )
       {
-        // next we ignore all responses/error responses because they would have been handled by a requster
+        // next we ignore all responses/error responses because they would have been handled by a requester
         if ((STUNPacket::Class_Response == stun->mClass) ||
             (STUNPacket::Class_ErrorResponse == stun->mClass)) {
           ZS_LOG_TRACE(log("this is a response which would be handled from requester, thus ignoring"))

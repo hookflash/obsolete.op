@@ -787,11 +787,12 @@ namespace hookflash
                                                                       IServiceLockboxSessionDelegatePtr delegate,
                                                                       IServiceLockboxPtr serviceLockbox,
                                                                       const char *lockboxAccountID,
+                                                                      const char *lockboxGrantID,
                                                                       const char *identityHalfLockboxKey,
                                                                       const char *lockboxHalfLockboxKey
                                                                       )
       {
-        return ServiceLockboxSession::relogin(delegate, serviceLockbox, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+        return ServiceLockboxSession::relogin(delegate, serviceLockbox, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
       }
 
       //-----------------------------------------------------------------------

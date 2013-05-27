@@ -34,10 +34,12 @@
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantStartNotify.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
+#include <hookflash/stack/message/peer/PeerServicesGetRequest.h>
 
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Account.h>
@@ -59,8 +61,16 @@
 #define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #include <cryptopp/md5.h>
 
-#define HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS (60*2)
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS (60*2)
 
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION (80)
+
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE "https://openpeer.org/permission/identity-signatures"
+
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME "privatePeerFileSecret"
+#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME "privatePeerFile"
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -82,6 +92,8 @@ namespace hookflash
       using message::identity_lockbox::LockboxIdentitiesUpdateRequestPtr;
       using message::identity_lockbox::LockboxNamespaceGrantWindowRequest;
       using message::identity_lockbox::LockboxNamespaceGrantWindowRequestPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantWindowResult;
+      using message::identity_lockbox::LockboxNamespaceGrantWindowResultPtr;
       using message::identity_lockbox::LockboxNamespaceGrantStartNotify;
       using message::identity_lockbox::LockboxNamespaceGrantStartNotifyPtr;
       using message::identity_lockbox::LockboxNamespaceGrantCompleteNotify;
@@ -90,6 +102,85 @@ namespace hookflash
       using message::identity_lockbox::LockboxContentGetRequestPtr;
       using message::identity_lockbox::LockboxContentSetRequest;
       using message::identity_lockbox::LockboxContentSetRequestPtr;
+      using message::peer::PeerServicesGetRequest;
+      using message::peer::PeerServicesGetRequestPtr;
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      // RETURNS: returns NULL if no permissions missing or the string
+      //          of the missing permissions URL
+      static const char *hasPermissions(const NamespaceInfoMap &infos)
+      {
+        static const char *gPermissions[] = {
+          HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE,
+          HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE,
+          HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE,
+          NULL
+        };
+
+        for (int index = 0; NULL != gPermissions[index]; ++index)
+        {
+          NamespaceInfoMap::const_iterator found = infos.find(gPermissions[index]);
+          if (found == infos.end()) {
+            return gPermissions[index];
+          }
+        }
+
+        return NULL;
+      }
+
+      //-----------------------------------------------------------------------
+      static void getNamespaces(NamespaceInfoMap &outNamespaces)
+      {
+        while (true)
+        {
+          const char *missing = hasPermissions(outNamespaces);
+          if (NULL == missing) break;
+
+          NamespaceInfo info;
+          info.mURL = missing;
+          outNamespaces[info.mURL] = info;
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      static SecureByteBlockPtr combineKey(
+                                           const SecureByteBlockPtr &part1Str,
+                                           const SecureByteBlockPtr &part2Str
+                                           )
+      {
+        if (!part1Str) return SecureByteBlockPtr();
+        if (!part2Str) return SecureByteBlockPtr();
+
+        SecureByteBlockPtr part1 = IHelper::convertFromBase64((const char *) part1Str->BytePtr());
+        SecureByteBlockPtr part2 = IHelper::convertFromBase64((const char *) part2Str->BytePtr());
+
+        if ((!part1) || (!part2)) return SecureByteBlockPtr();
+
+        if ((part1->SizeInBytes()) || (part2->SizeInBytes())) return SecureByteBlockPtr();
+
+        SecureByteBlockPtr buffer(new SecureByteBlock);
+        buffer->CleanNew(part1->SizeInBytes());
+
+        BYTE *dest = buffer->BytePtr();
+        const BYTE *src1 = part1->BytePtr();
+        const BYTE *src2 = part2->BytePtr();
+        SecureByteBlock::size_type length = part1->SizeInBytes();
+
+        for (; 0 != length; --length)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        return buffer;
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -110,7 +201,15 @@ namespace hookflash
         mDelegate(delegate ? IServiceLockboxSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceLockboxSessionDelegatePtr()),
         mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
-        mLastError(0)
+        mLastError(0),
+        mBrowserWindowReady(false),
+        mBrowserWindowVisible(false),
+        mBrowserWindowClosed(false),
+        mNeedsBrowserWindowVisible(false),
+        mHasPermissions(false),
+        mLockboxNamespaceGrantStartNotificationSent(false),
+        mPeerFilesNeedUpload(false),
+        mLoginIdentitySetToBecomeAssociated(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -161,6 +260,7 @@ namespace hookflash
       {
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
         pThis->mThisWeak = pThis;
+        pThis->mGrantID = IHelper::randomString(32);
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->init();
         return pThis;
@@ -171,18 +271,21 @@ namespace hookflash
                                                               IServiceLockboxSessionDelegatePtr delegate,
                                                               IServiceLockboxPtr serviceLockbox,
                                                               const char *lockboxAccountID,
+                                                              const char *lockboxGrantID,
                                                               const char *identityHalfLockboxKey,
                                                               const char *lockboxHalfLockboxKey
                                                               )
       {
         ZS_THROW_BAD_STATE_IF(!delegate)
         ZS_THROW_BAD_STATE_IF(!lockboxAccountID)
+        ZS_THROW_BAD_STATE_IF(!lockboxGrantID)
         ZS_THROW_BAD_STATE_IF(!identityHalfLockboxKey)
         ZS_THROW_BAD_STATE_IF(!lockboxHalfLockboxKey)
 
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
         pThis->mThisWeak = pThis;
-        pThis->mLockboxInfo.mAccountID = lockboxAccountID;
+        pThis->mGrantID = String(lockboxGrantID);
+        pThis->mLockboxInfo.mAccountID = String(lockboxAccountID);
         pThis->mLockboxInfo.mKeyIdentityHalf = IHelper::convertToBuffer(identityHalfLockboxKey);
         pThis->mLockboxInfo.mKeyLockboxHalf = IHelper::convertToBuffer(lockboxHalfLockboxKey);
         pThis->init();
@@ -196,8 +299,6 @@ namespace hookflash
         AutoRecursiveLock lock(getLock());
         return mBootstrappedNetwork;
       }
-
-#if 0
 
       //-----------------------------------------------------------------------
       IServiceLockboxSession::SessionStates ServiceLockboxSession::getState(
@@ -226,6 +327,13 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      String ServiceLockboxSession::getLockboxGrantID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mGrantID;
+      }
+
+      //-----------------------------------------------------------------------
       void ServiceLockboxSession::getLockboxKey(
                                                 SecureByteBlockPtr &outIdentityHalf,
                                                 SecureByteBlockPtr &outLockboxHalf
@@ -233,8 +341,9 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        outIdentityHalf = stack::IHelper::convertToBuffer(mLockboxInfo.mKeyIdentityHalf);
-        outLockboxHalf = stack::IHelper::convertToBuffer(mLockboxInfo.mKeyLockboxHalf);
+        // make a copy
+        outIdentityHalf = stack::IHelper::convertToBuffer((const char *) mLockboxInfo.mKeyIdentityHalf->BytePtr());
+        outLockboxHalf = stack::IHelper::convertToBuffer((const char *) mLockboxInfo.mKeyLockboxHalf->BytePtr());
       }
 
       //-----------------------------------------------------------------------
@@ -265,41 +374,127 @@ namespace hookflash
         for (ServiceIdentitySessionList::const_iterator iter = identitiesToAssociate.begin(); iter != identitiesToAssociate.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = ServiceIdentitySession::convert(*iter);
-          session->forPeerContact().associate(mThisWeak.lock());
-          mPendingUpdateIdentities[session->forPeerContact().getID()] = session;
+          session->forLockbox().associate(mThisWeak.lock());
+          mPendingUpdateIdentities[session->forLockbox().getID()] = session;
         }
         for (ServiceIdentitySessionList::const_iterator iter = identitiesToRemove.begin(); iter != identitiesToRemove.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = ServiceIdentitySession::convert(*iter);
-          mPendingRemoveIdentities[session->forPeerContact().getID()] = session;
+          mPendingRemoveIdentities[session->forLockbox().getID()] = session;
         }
         // handle the association now (but do it asynchronously)
-        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
       String ServiceLockboxSession::getInnerBrowserWindowFrameURL() const
       {
+        AutoRecursiveLock lock(getLock());
+        if (!mBootstrappedNetwork) return String();
+        return mBootstrappedNetwork->forServices().getServiceURI("identity-lockbox", "lockbox-namespace-grant-inner-frame");
       }
-      
+
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::notifyBrowserWindowVisible()
       {
+        AutoRecursiveLock lock(getLock());
+        mBrowserWindowVisible = true;
       }
 
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::notifyBrowserWindowClosed()
       {
+        AutoRecursiveLock lock(getLock());
+        mBrowserWindowClosed = true;
       }
       
       //-----------------------------------------------------------------------
       DocumentPtr ServiceLockboxSession::getNextMessageForInnerBrowerWindowFrame()
       {
+        AutoRecursiveLock lock(getLock());
+        if (mPendingMessagesToDeliver.size() < 1) return DocumentPtr();
+
+        DocumentPtr result = mPendingMessagesToDeliver.front();
+        mPendingMessagesToDeliver.pop_front();
+
+        if (mDelegate) {
+          if (mPendingMessagesToDeliver.size() > 0) {
+            try {
+              mDelegate->onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
+            } catch (IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
+              ZS_LOG_WARNING(Detail, log("delegate gone"))
+            }
+          }
+        }
+
+        return result;
       }
 
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
       {
+        MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
+        if (IMessageMonitor::handleMessageReceived(message)) {
+          ZS_LOG_DEBUG(log("message handled via message monitor"))
+          return;
+        }
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot handle message when shutdown"))
+          return;
+        }
+
+        LockboxNamespaceGrantWindowRequestPtr windowRequest = LockboxNamespaceGrantWindowRequest::convert(message);
+        if (windowRequest) {
+          // send a result immediately
+          LockboxNamespaceGrantWindowResultPtr result = LockboxNamespaceGrantWindowResult::create(windowRequest);
+          sendInnerWindowMessage(result);
+
+          if (windowRequest->ready()) {
+            ZS_LOG_DEBUG(log("notifying browser window ready"))
+            mBrowserWindowReady = true;
+          }
+
+          if (windowRequest->visible()) {
+            ZS_LOG_DEBUG(log("notifying browser window needs to be made visible"))
+            mNeedsBrowserWindowVisible = true;
+          }
+
+          IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          return;
+        }
+
+        LockboxNamespaceGrantCompleteNotifyPtr completeNotify = LockboxNamespaceGrantCompleteNotify::convert(message);
+        if (completeNotify) {
+
+          const NamespaceInfoMap &infos = completeNotify->namespaceInfos();
+
+          const char *missingPermission = hasPermissions(infos);
+
+          mHasPermissions = (NULL == missingPermission);
+
+          if (!mHasPermissions) {
+            ZS_LOG_ERROR(Detail, log("user did not grant needed permission") + ", missing permission=" + missingPermission)
+            setError(IHTTP::HTTPStatusCode_Forbidden, (String("user did not grant permissions needed to access lockbox, missing=") + missingPermission).c_str());
+            cancel();
+            return;
+          }
+
+          IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          return;
+        }
+
+        if ((message->isRequest()) ||
+            (message->isNotify())) {
+          ZS_LOG_WARNING(Debug, log("request was not understood"))
+          MessageResultPtr result = MessageResult::create(message, IHTTP::HTTPStatusCode_NotImplemented);
+          sendInnerWindowMessage(result);
+          return;
+        }
+        
+        ZS_LOG_WARNING(Detail, log("message result ignored since it was not monitored"))
       }
 
       //-----------------------------------------------------------------------
@@ -312,25 +507,25 @@ namespace hookflash
           return;
         }
 
-        if (mLoginMonitor) {
-          mLoginMonitor->cancel();
-          mLoginMonitor.reset();
+        if (mLockboxAccessMonitor) {
+          mLockboxAccessMonitor->cancel();
+          mLockboxAccessMonitor.reset();
         }
-        if (mPeerFilesGetMonitor) {
-          mPeerFilesGetMonitor->cancel();
-          mPeerFilesGetMonitor.reset();
+        if (mLockboxIdentitiesUpdateMonitor) {
+          mLockboxIdentitiesUpdateMonitor->cancel();
+          mLockboxIdentitiesUpdateMonitor.reset();
         }
-        if (mPeerFilesSetMonitor) {
-          mPeerFilesSetMonitor->cancel();
-          mPeerFilesSetMonitor.reset();
+        if (mLockboxContentGetMonitor) {
+          mLockboxContentGetMonitor->cancel();
+          mLockboxContentGetMonitor.reset();
         }
-        if (mServicesMonitor) {
-          mServicesMonitor->cancel();
-          mServicesMonitor.reset();
+        if (mLockboxContentSetMonitor) {
+          mLockboxContentSetMonitor->cancel();
+          mLockboxContentSetMonitor.reset();
         }
-        if (mAssociateMonitor) {
-          mAssociateMonitor->cancel();
-          mAssociateMonitor.reset();
+        if (mPeerServicesGetMonitor) {
+          mPeerServicesGetMonitor->cancel();
+          mPeerServicesGetMonitor.reset();
         }
 
         if (mSaltQuery) {
@@ -343,26 +538,26 @@ namespace hookflash
         mAccount.reset();
 
         if (mLoginIdentity) {
-          mLoginIdentity->forPeerContact().notifyStateChanged();
+          mLoginIdentity->forLockbox().notifyStateChanged();
           mLoginIdentity.reset();
         }
 
         for (ServiceIdentitySessionMap::iterator iter = mAssociatedIdentities.begin(); iter != mAssociatedIdentities.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = (*iter).second;
-          session->forPeerContact().notifyStateChanged();
+          session->forLockbox().notifyStateChanged();
         }
 
         for (ServiceIdentitySessionMap::iterator iter = mPendingUpdateIdentities.begin(); iter != mPendingUpdateIdentities.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = (*iter).second;
-          session->forPeerContact().notifyStateChanged();
+          session->forLockbox().notifyStateChanged();
         }
 
         for (ServiceIdentitySessionMap::iterator iter = mPendingUpdateIdentities.begin(); iter != mPendingUpdateIdentities.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = (*iter).second;
-          session->forPeerContact().notifyStateChanged();
+          session->forLockbox().notifyStateChanged();
         }
 
         mAssociatedIdentities.clear();
@@ -434,11 +629,78 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      LockboxInfo ServiceLockboxSession::getLockboxInfo() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mLockboxInfo;
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityInfo ServiceLockboxSession::getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        IdentityInfo info;
+
+        if ((mLockboxInfo.mAccountID.hasData()) &&
+            (mBootstrappedNetwork)) {
+          info.mStableID = IHelper::convertToHex(*IHelper::hash(String("stable-id:") + mBootstrappedNetwork->forServices().getDomain() + ":" + mLockboxInfo.mAccountID));
+        }
+
+        if (mPeerFiles) {
+          info.mPeerFilePublic = mPeerFiles->getPeerFilePublic();
+        }
+
+        WORD priority = 0;
+
+        for (ServiceIdentitySessionMap::const_iterator iter = mAssociatedIdentities.begin(); iter != mAssociatedIdentities.end(); ++iter)
+        {
+          const ServiceIdentitySessionPtr &identity = (*iter).second;
+
+          if (identity->forLockbox().getID() == session->forLockbox().getID()) {
+            break;
+          }
+
+          ++priority;
+        }
+
+        info.mPriority = priority;
+
+        return info;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr ServiceLockboxSession::getSignatureForIdentity(ServiceIdentitySessionPtr session) const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        IdentityInfo info = session->forLockbox().getIdentityInfo();
+
+        String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + info.mURI + ":" + info.mProvider));
+
+        String signatureStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+
+        if (signatureStr.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("no signture present for identity yet (probably okay)") + info.getDebugValueString())
+          return ElementPtr();
+        }
+
+        DocumentPtr doc = Document::createFromParsedJSON(signatureStr);
+        if (!doc) {
+          ZS_LOG_WARNING(Detail, log("failed to parse signature for identity)") + ", data to parse=" + signatureStr + info.getDebugValueString())
+          return ElementPtr();
+        }
+
+        ZS_LOG_DEBUG(log("found signature for identity") + info.getDebugValueString() + ", signature=" + signatureStr)
+        return doc->getFirstChildElement();
+      }
+
+      //-----------------------------------------------------------------------
       void ServiceLockboxSession::notifyStateChanged()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -446,7 +708,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsync
+      #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsyncDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -454,7 +716,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))
-        IServiceLockboxSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -496,39 +758,27 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<IdentityLoginStartResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxAccessResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorResultReceived(
-                                                                         IMessageMonitorPtr monitor,
-                                                                         PeerContactLoginResultPtr result
-                                                                         )
+                                                                     IMessageMonitorPtr monitor,
+                                                                     LockboxAccessResultPtr result
+                                                                     )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginMonitor) {
+        if (monitor != mLockboxAccessMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
 
-        mLoginMonitor->cancel();
-        mLoginMonitor.reset();
+        mLockboxAccessMonitor->cancel();
+        mLockboxAccessMonitor.reset();
 
-        mContactUserID = result->contactUserID();
-        mContactAccessToken = result->contactAccessToken();
-        mContactAccessSecret = result->contactAccessSecret();
-        mContactAccessExpires = result->contactAccessExpires();
+        mHasPermissions = hasPermissions(result->namespaceInfos());
 
-        mRegeneratePeerFiles = result->peerFilesRegenerate();
-
-        if ((mContactUserID.isEmpty()) ||
-            (mContactAccessSecret.isEmpty()) ||
-            (mContactAccessSecret.isEmpty())) {
-          ZS_LOG_ERROR(Detail, log("login result missing information") + getDebugValueString())
-          setError(IHTTP::HTTPStatusCode_PreconditionFailed, "Login result from server missing critical data");
-          cancel();
-          return true;
-        }
+        mServerIdentities = result->identities();
 
         step();
 
@@ -537,21 +787,20 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
-                                                                              IMessageMonitorPtr monitor,
-                                                                              PeerContactLoginResultPtr ignore, // will always be NULL
-                                                                              message::MessageResultPtr result
-                                                                              )
+                                                                          IMessageMonitorPtr monitor,
+                                                                          LockboxAccessResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginMonitor) {
+        if (monitor != mLockboxAccessMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
 
+        ZS_LOG_WARNING(Detail, log("lockbox access failed"))
+
         setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_WARNING(Detail, log("peer contact login failed"))
-
         cancel();
         return true;
       }
@@ -561,139 +810,186 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileGetResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxAccessResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorResultReceived(
-                                                                         IMessageMonitorPtr monitor,
-                                                                         PrivatePeerFileGetResultPtr result
-                                                                         )
+                                                                     IMessageMonitorPtr monitor,
+                                                                     LockboxIdentitiesUpdateResultPtr result
+                                                                     )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mPeerFilesGetMonitor) {
+        if (monitor != mLockboxIdentitiesUpdateMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
 
-        mPeerFilesGetMonitor->cancel();
-        mPeerFilesGetMonitor.reset();
+        mLockboxIdentitiesUpdateMonitor->cancel();
+        mLockboxIdentitiesUpdateMonitor.reset();
 
-        ElementPtr privatePeer = result->privatePeer();
-        if (!privatePeer) {
-          ZS_LOG_ERROR(Detail, log("server failed to return a private peer file when fetched"))
-          setError(IHTTP::HTTPStatusCode_PreconditionFailed, "Server failed to return private peer file");
-          cancel();
-          return false;
-        }
-
-        SecureByteBlockPtr privatePeerSecret;
-
-        if (mLoginIdentity) {
-          privatePeerSecret = mLoginIdentity->forPeerContact().getPrivatePeerFileSecret();
-          if (privatePeerSecret) {
-            mPeerFiles = IPeerFiles::loadFromElement((const char *)((const BYTE *)(*privatePeerSecret)), privatePeer);
-          }
-        }
+        mServerIdentities = result->identities();
 
         step();
+
         return true;
       }
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
-                                                                              IMessageMonitorPtr monitor,
-                                                                              PrivatePeerFileGetResultPtr ignore, // will always be NULL
-                                                                              message::MessageResultPtr result
-                                                                              )
+                                                                          IMessageMonitorPtr monitor,
+                                                                          LockboxIdentitiesUpdateResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
       {
         AutoRecursiveLock lock(getLock());
-
-        if (monitor != mPeerFilesGetMonitor) {
+        if (monitor != mLockboxIdentitiesUpdateMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
 
-        mPeerFilesGetMonitor->cancel();
-        mPeerFilesGetMonitor.reset();
-
-        ZS_LOG_WARNING(Detail, log("peer files get failed thus will regenerate new peer files") + Message::toDebugString(result))
-
-        mRegeneratePeerFiles = true;
-
-        step();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PrivatePeerFileSetResult>
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
-                                                                         IMessageMonitorPtr monitor,
-                                                                         PrivatePeerFileSetResultPtr result
-                                                                         )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mPeerFilesSetMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
-        }
-        mPeerFilesSetMonitor->cancel();
-        mPeerFilesSetMonitor.reset();
-        step();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
-                                                                              IMessageMonitorPtr monitor,
-                                                                              PrivatePeerFileSetResultPtr ignore, // will always be NULL
-                                                                              message::MessageResultPtr result
-                                                                              )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mPeerFilesSetMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
-        }
+        ZS_LOG_WARNING(Detail, log("identities update failed"))
 
         setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_WARNING(Detail, log("private peer file set failed"))
-
         cancel();
         return true;
       }
-
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactServicesGetResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxContentGetResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorResultReceived(
-                                                                         IMessageMonitorPtr monitor,
-                                                                         PeerContactServicesGetResultPtr result
-                                                                         )
+                                                                     IMessageMonitorPtr monitor,
+                                                                     LockboxContentGetResultPtr result
+                                                                     )
       {
+        typedef LockboxContentGetResult::NameValueMap NameValueMap;
+
         AutoRecursiveLock lock(getLock());
-        if (monitor != mServicesMonitor) {
+        if (monitor != mLockboxContentGetMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
 
-        mServicesMonitor->cancel();
-        mServicesMonitor.reset();
-        
+        mLockboxContentGetMonitor->cancel();
+        mLockboxContentGetMonitor.reset();
+
+        ZS_LOG_DEBUG(log("content get completed"))
+
+        mContent = result->namespaceURLNameValues();
+
+        // add some bogus content just to ensure there is some values in the map
+        if (mContent.size() < 1) {
+          NameValueMap values;
+          mContent["bogus"] = values;
+        }
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
+                                                                          IMessageMonitorPtr monitor,
+                                                                          LockboxContentGetResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mLockboxContentGetMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        ZS_LOG_WARNING(Detail, log("content get failed"))
+
+        setError(result->errorCode(), result->errorReason());
+        cancel();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxContentSetResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
+                                                                     IMessageMonitorPtr monitor,
+                                                                     LockboxContentSetResultPtr result
+                                                                     )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mLockboxContentSetMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        mLockboxContentSetMonitor->cancel();
+        mLockboxContentSetMonitor.reset();
+
+        ZS_LOG_DEBUG(log("content set completed"))
+
+        mPeerFilesNeedUpload = false;
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
+                                                                          IMessageMonitorPtr monitor,
+                                                                          LockboxContentSetResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mLockboxContentSetMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        ZS_LOG_WARNING(Detail, log("content set failed"))
+
+        setError(result->errorCode(), result->errorReason());
+        cancel();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerServicesGetResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
+                                                                     IMessageMonitorPtr monitor,
+                                                                     PeerServicesGetResultPtr result
+                                                                     )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mPeerServicesGetMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        mPeerServicesGetMonitor->cancel();
+        mPeerServicesGetMonitor.reset();
+
+        ZS_LOG_DEBUG(log("peer services get completed"))
+
         mServicesByType = result->servicesByType();
         if (mServicesByType.size() < 1) {
           // make sure to add at least one bogus service so we know this request completed
@@ -710,205 +1006,20 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
-                                                                              IMessageMonitorPtr monitor,
-                                                                              PeerContactServicesGetResultPtr ignore, // will always be NULL
-                                                                              message::MessageResultPtr result
-                                                                              )
+                                                                          IMessageMonitorPtr monitor,
+                                                                          PeerServicesGetResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mServicesMonitor) {
+        if (monitor != mPeerServicesGetMonitor) {
           ZS_LOG_DEBUG(log("notified about obsolete monitor"))
           return false;
         }
+
+        ZS_LOG_WARNING(Detail, log("peer services get failed"))
 
         setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_WARNING(Detail, log("peer contact services get failed"))
-
-        cancel();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
-                                                                         IMessageMonitorPtr monitor,
-                                                                         PeerContactIdentityAssociateResultPtr result
-                                                                         )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mAssociateMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
-        }
-
-        mAssociateMonitor->cancel();
-        mAssociateMonitor.reset();
-
-        MessagePtr originalMessage = monitor->getMonitoredMessage();
-        PeerContactIdentityAssociateRequestPtr originalRequest = PeerContactIdentityAssociateRequest::convert(originalMessage);
-        ZS_THROW_BAD_STATE_IF(!originalRequest)
-
-        IdentityInfoList originalIdentityInfoList = originalRequest->identities();
-        const IdentityInfoList resultIdentityInfoList = result->identities();
-
-        for (IdentityInfoList::const_iterator outerIter = resultIdentityInfoList.begin(); outerIter != resultIdentityInfoList.end(); ++outerIter)
-        {
-          const IdentityInfo &outerInfo = (*outerIter);
-
-          for (IdentityInfoList::iterator iter = originalIdentityInfoList.begin(); iter != originalIdentityInfoList.end();)
-          {
-            IdentityInfoList::iterator current = iter;
-            ++iter;
-
-            IdentityInfo &info = (*current);
-
-            if (IdentityInfo::Disposition_Remove != info.mDisposition) continue;
-            if (outerInfo.mHash != IHelper::convertToHex(*IHelper::hash(info.mURI))) continue;
-            if (outerInfo.mProvider != info.mProvider) continue;
-
-            ZS_LOG_WARNING(Detail, log("asked to remove identity association but server failed to remove (thus must try again)"))
-            originalIdentityInfoList.erase(current);
-          }
-        }
-
-        for (IdentityInfoList::const_iterator iter = originalIdentityInfoList.begin(); iter != originalIdentityInfoList.end(); ++iter)
-        {
-          const IdentityInfo &info = (*iter);
-          switch (info.mDisposition) {
-            case IdentityInfo::Disposition_NA:      break;
-            case IdentityInfo::Disposition_Update:
-            {
-              bool found = false;
-              // if this was on the pending list the move it to the associated list
-              for (ServiceIdentitySessionMap::iterator iter = mPendingUpdateIdentities.begin(); iter != mPendingUpdateIdentities.end();)
-              {
-                ServiceIdentitySessionMap::iterator current = iter;
-                ++iter;
-
-                ServiceIdentitySessionPtr session = ((*current).second);
-                IdentityInfo sessionInfo = session->forPeerContact().getIdentityInfo();
-
-                if (IHelper::convertToHex(*IHelper::hash(sessionInfo.mURI)) != info.mHash) continue;
-                if (sessionInfo.mProvider != info.mProvider) continue;
-
-                session->forPeerContact().notifyStateChanged();
-
-                mAssociatedIdentities[session->forPeerContact().getID()] = session;
-                mPendingUpdateIdentities.erase(current);
-                found = true;
-                break;
-              }
-
-              if (found) break;
-
-              for (ServiceIdentitySessionMap::iterator iter = mAssociatedIdentities.begin(); iter != mAssociatedIdentities.end();)
-              {
-                ServiceIdentitySessionMap::iterator current = iter;
-                ++iter;
-
-                ServiceIdentitySessionPtr session = ((*current).second);
-                IdentityInfo sessionInfo = session->forPeerContact().getIdentityInfo();
-
-                if (IHelper::convertToHex(*IHelper::hash(sessionInfo.mURI)) != info.mHash) continue;
-                if (sessionInfo.mProvider != info.mProvider) continue;
-
-                session->forPeerContact().notifyStateChanged();
-
-                found = true;
-                break;
-              }
-
-              if (found) {
-                ZS_LOG_DEBUG(log("already know about this identity thus no reason to create a new identity"))
-                break;
-              }
-
-              ZS_LOG_DEBUG(log("thus identity is not known, attempt to load it"))
-
-              IPeerFilePrivatePtr peerFilePrivate;
-              if (mPeerFiles ) {
-                peerFilePrivate = mPeerFiles->getPeerFilePrivate();
-              }
-
-              ZS_LOG_DEBUG(log("need to create identity session") + info.getDebugValueString())
-
-              if ((info.mHash.hasData()) &&
-                  (info.mProvider.hasData()) &&
-                  (info.mSecretSalt.hasData()) &&
-                  (info.mReloginAccessKeyEncrypted.hasData()) &&
-                  (peerFilePrivate)) {
-
-                BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(info.mProvider);
-
-                SecureByteBlockPtr password = peerFilePrivate->getPassword();
-
-                SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*password))), "relogin:" + info.mHash);
-                SecureByteBlockPtr iv = IHelper::hash(info.mSecretSalt + ":" + IHelper::convertToBase64(*peerFilePrivate->getSalt()));
-
-                // key = hmac(<private-peer-file-secret>, "relogin:" + hash(<identity>))
-                // iv=hash(base64(<identity-secret-salt>) + ":" + base64(<private-peer-file-salt>))
-
-                String reloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(info.mReloginAccessKeyEncrypted)));
-
-                ZS_LOG_DEBUG(log("creating new identity session") + ", relogin access key=" + reloginAccessKey + info.getDebugValueString())
-
-                ServiceIdentitySessionPtr session = IServiceIdentitySessionForServiceLockbox::relogin(network, reloginAccessKey);
-                mAssociatedIdentities[session->forPeerContact().getID()] = session;
-                session->forPeerContact().associate(mThisWeak.lock());
-              } else {
-                ZS_LOG_WARNING(Detail, log("could not create session as data is missing"))
-              }
-
-              // IdentityInfo members expecting to be returned:
-              //
-              // mURI (if known)
-              // mHash
-              // mProvider
-              // mReloginAccessKeyEncrypted
-
-              break;
-            }
-            case IdentityInfo::Disposition_Remove:
-            {
-              // this identity was requested to be removed
-              handleRemoveDisposition(info, mAssociatedIdentities);
-              handleRemoveDisposition(info, mPendingUpdateIdentities);
-              handleRemoveDisposition(info, mPendingRemoveIdentities);
-              break;
-            }
-          }
-        }
-
-        step();
-
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
-                                                                              IMessageMonitorPtr monitor,
-                                                                              PeerContactIdentityAssociateResultPtr ignore, // will always be NULL
-                                                                              message::MessageResultPtr result
-                                                                              )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mAssociateMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
-        }
-
-        setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_WARNING(Detail, log("associate failed"))
-
         cancel();
         return true;
       }
@@ -938,18 +1049,15 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer contact session id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("lockbox id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
+               Helper::getDebugValue("grant ID", mGrantID, firstTime) +
+               mLockboxInfo.getDebugValueString() +
                IPeerFiles::toDebugString(mPeerFiles) +
-               Helper::getDebugValue("idenitty", mLoginIdentity ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("contact user ID", mContactUserID, firstTime) +
-               Helper::getDebugValue("contact access token", mContactAccessToken, firstTime) +
-               Helper::getDebugValue("contact access secret", mContactAccessSecret, firstTime) +
-               Helper::getDebugValue("contact access expires", Time() != mContactAccessExpires ? IMessageHelper::timeToString(mContactAccessExpires) : String(), firstTime) +
-               Helper::getDebugValue("regenerate", mRegeneratePeerFiles ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("login identity", mLoginIdentity ? String("true") : String(), firstTime) +
                Helper::getDebugValue("services by type", mServicesByType.size() > 0 ? Stringize<size_t>(mServicesByType.size()).string() : String(), firstTime) +
                Helper::getDebugValue("associated identities", mAssociatedIdentities.size() > 0 ? Stringize<size_t>(mAssociatedIdentities.size()).string() : String(), firstTime) +
                Helper::getDebugValue("last notification hash", mLastNotificationHash ? IHelper::convertToHex(*mLastNotificationHash) : String(), firstTime) +
@@ -966,298 +1074,838 @@ namespace hookflash
           return;
         }
 
-        if (!stepLogin()) goto post_step;
-        if (!stepPeerFiles()) goto post_step;
-        if (!stepServices()) goto post_step;
-        if (!stepAssociate()) goto post_step;
+        if (!stepBootstrapper()) goto post_step;
+        if (!stepIdentityLogin()) goto post_step;
+        if (!stepLockboxAccess()) goto post_step;
+        if (!stepIdentityLogin()) goto post_step;
+        if (!stepLoadGrantWindow()) goto post_step;
+        if (!stepMakeGrantWindowVisible()) goto post_step;
+        if (!stepSendLockboxNamespaceGrantStartNotification()) goto post_step;
+        if (!stepWaitForPermission()) goto post_step;
+        if (!stepCloseBrowserWindow()) goto post_step;
+        if (!stepContentGet()) goto post_step;
+        if (!stepPreparePeerFiles()) goto post_step;
+        if (!stepUploadPeerFiles()) goto post_step;
+        if (!stepServicesGet()) goto post_step;
 
         setState(SessionState_Ready);
+
+        if (!stepLoginIdentityBecomeAssociated()) goto post_step;
+        if (!stepConvertFromServerToRealIdentities()) goto post_step;
+        if (!stepPruneDuplicatePendingIdentities()) goto post_step;
+        if (!stepPruneShutdownIdentities()) goto post_step;
+        if (!stepPendingAssociationAndRemoval()) goto post_step;
 
       post_step:
         postStep();
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepLogin()
+      bool ServiceLockboxSession::stepBootstrapper()
       {
-        if (mLoginMonitor) {
-          ZS_LOG_DEBUG(log("waiting for login monitor"))
-          return false;
-        }
-
-        if (mContactAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("login step is done"))
-          return true;
-        }
-
         if (!mBootstrappedNetwork->forServices().isPreparationComplete()) {
-          ZS_LOG_DEBUG(log("waiting for bootstrapper to complete"))
-          return false;;
+          setState(SessionState_Pending);
+
+          ZS_LOG_DEBUG(log("waiting for preparation of lockbox bootstrapper to complete"))
+          return false;
         }
 
         WORD errorCode = 0;
         String reason;
 
-        if (!mBootstrappedNetwork->forServices().wasSuccessful(&errorCode, &reason)) {
-          ZS_LOG_WARNING(Detail, log("login failed because of bootstrapper failure"))
+        if (mBootstrappedNetwork->forServices().wasSuccessful(&errorCode, &reason)) {
+          ZS_LOG_DEBUG(log("lockbox bootstrapper was successful"))
+          return true;
+        }
+
+        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for lockbox") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+
+        setError(errorCode, reason);
+        cancel();
+        return false;
+      }
+      
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepIdentityLogin()
+      {
+        if (!mLoginIdentity) {
+          ZS_LOG_DEBUG(log("no identity being logged in"))
+          return true;
+        }
+
+        if (mLoginIdentity->forLockbox().isShutdown()) {
+          WORD errorCode = 0;
+          String reason;
+
+          mLoginIdentity->forLockbox().getState(&errorCode, &reason);
+
+          if (0 == errorCode) {
+            errorCode = IHTTP::HTTPStatusCode_ClientClosedRequest;
+          }
+
+          ZS_LOG_WARNING(Detail, log("shutting down lockbox because identity login is shutdown"))
           setError(errorCode, reason);
-          cancel();
-          return false;
+          return true;
         }
 
-        IdentityInfo identityInfo;
-
-        if (!mPeerFiles) {
-          // not attempting to login via peer files, need to make sure identity is already logged in...
-          ZS_THROW_BAD_STATE_IF(!mLoginIdentity)
-
-          if (!mLoginIdentity->forPeerContact().isLoginComplete()) {
-            ZS_LOG_DEBUG(log("waiting for identity login to complete"))
-            return false;
-          }
-
-          identityInfo = mLoginIdentity->forPeerContact().getIdentityInfo();
-
-          if (mLoginIdentity->forPeerContact().isShutdown()) {
-            ZS_LOG_WARNING(Detail, log("identity being used to login is shutdown"))
-            setError(IHTTP::HTTPStatusCode_ClientClosedRequest, "Identity used for login already shutdown");
-            return false;
-          }
-
-          mLoginIdentity->forPeerContact().associate(mThisWeak.lock());
+        if (mLoginIdentity->forLockbox().isLoginComplete()) {
+          ZS_LOG_DEBUG(log("identity login is complete"))
+          return true;
         }
 
-        PeerContactLoginRequestPtr request = PeerContactLoginRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
+        ZS_LOG_DEBUG(log("waiting for login to complete"))
 
-        request->identityInfo(identityInfo);
-        request->peerFiles(mPeerFiles);
-
-        mLoginMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactLoginResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-login", request);
-
-        ZS_LOG_DEBUG(log("sending login request"))
+        setState(SessionState_Pending);
         return false;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepPeerFiles()
+      bool ServiceLockboxSession::stepLockboxAccess()
       {
-        if ((mPeerFilesGetMonitor) ||
-            (mPeerFilesSetMonitor)) {
-          ZS_LOG_DEBUG(log("waiting for peer files request to complete"))
+        if (mLockboxAccessMonitor) {
+          ZS_LOG_DEBUG(log("waiting for lockbox access monitor to compelte"))
           return false;
         }
 
-        if (!mRegeneratePeerFiles) {
-          // check to see if peer files are already associated to identity
-          if (mLoginIdentity) {
-            IdentityInfo identityInfo = mLoginIdentity->forPeerContact().getIdentityInfo();
-            SecureByteBlockPtr privatePeerSecret = mLoginIdentity->forPeerContact().getPrivatePeerFileSecret();
+        if (mLockboxInfo.mAccessToken.hasData()) {
+          ZS_LOG_DEBUG(log("already have a lockbox access key"))
+          return true;
+        }
 
-            if ((identityInfo.mContact.hasData()) &&
-                (privatePeerSecret)) {
-              // should be able to fetch private peer since we know the secret...
-              PrivatePeerFileGetRequestPtr request = PrivatePeerFileGetRequest::create();
-              request->domain(mBootstrappedNetwork->forServices().getDomain());
+        setState(SessionState_Pending);
 
-              request->contactAccessToken(mContactAccessToken);
-              request->contactAccessSecret(mContactAccessSecret);
+        LockboxAccessRequestPtr request = LockboxAccessRequest::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
 
-              String proof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*privatePeerSecret))), "proof:" + identityInfo.mContact));
+        if (mLoginIdentity) {
+          IdentityInfo identityInfo = mLoginIdentity->forLockbox().getIdentityInfo();
+          request->identityInfo(identityInfo);
+        }
+        request->grantID(mGrantID);
+        request->lockboxInfo(mLockboxInfo);
 
-              request->privatePeerFileSecretProof(proof);
+        mLockboxAccessMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-access", request);
 
-              mPeerFilesGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PrivatePeerFileGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-              mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "private-peer-file-get", request);
+        return false;
+      }
 
-              ZS_LOG_DEBUG(log("sending private peer file get request"))
-              return false;
-            }
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepLoadGrantWindow()
+      {
+        if (mHasPermissions) {
+          ZS_LOG_DEBUG(log("already have permission"))
+          return true;
+        }
 
-            ZS_LOG_DEBUG(log("cannot download peer information as peer contact information is not associated to account"))
-            //mRegeneratePeerFiles = true;
+        if (mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("grant window is ready"))
+          return true;
+        }
+
+        setState(SessionState_WaitingForBrowserWindowToBeLoaded);
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepMakeGrantWindowVisible()
+      {
+        if (mHasPermissions) {
+          ZS_LOG_DEBUG(log("already have permission"))
+          return true;
+        }
+
+        if (!mNeedsBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("browser window does not need to be visible"))
+          return true;
+        }
+
+        if (mBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("grant window is visible"))
+          return true;
+        }
+
+        setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepSendLockboxNamespaceGrantStartNotification()
+      {
+        if (mHasPermissions) {
+          ZS_LOG_DEBUG(log("already have permission"))
+          return true;
+        }
+
+        if (mLockboxNamespaceGrantStartNotificationSent) {
+          ZS_LOG_DEBUG(log("browser window namespace grant start notification already sent"))
+          return true;
+        }
+
+        setState(SessionState_Pending);
+
+        LockboxNamespaceGrantStartNotifyPtr request = LockboxNamespaceGrantStartNotify::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
+
+        request->lockboxInfo(mLockboxInfo);
+        request->popup(false);
+        request->browserVisibility(LockboxNamespaceGrantStartNotify::BrowserVisibility_VisibleOnDemand);
+
+        NamespaceInfoMap namespaces;
+        getNamespaces(namespaces);
+
+        request->grantID(mGrantID);
+        request->namespaceURLs(namespaces);
+
+        mLockboxNamespaceGrantStartNotificationSent = true;
+
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepWaitForPermission()
+      {
+        if (mHasPermissions) {
+          ZS_LOG_DEBUG(log("already have permission required"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("waiting for permission to be granted to the lockbox namespaces"))
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepCloseBrowserWindow()
+      {
+        if (!mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("did not use browser window to obtain permission (thus no need to wait for browser window to close)"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("waiting for browser window to close"))
+        setState(SessionState_WaitingForBrowserWindowToClose);
+
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepContentGet()
+      {
+        if (mLockboxContentGetMonitor) {
+          ZS_LOG_DEBUG(log("waiting for content get to complete"))
+          return false;
+        }
+
+        if (mContent.size() > 0) {
+          ZS_LOG_DEBUG(log("content has been obtained already"))
+          return true;
+        }
+
+        setState(SessionState_Pending);
+
+        LockboxContentGetRequestPtr request = LockboxContentGetRequest::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
+
+        NamespaceInfoMap namespaces;
+        getNamespaces(namespaces);
+
+        request->lockboxInfo(mLockboxInfo);
+        request->grantID(mGrantID);
+        request->namespaceInfos(namespaces);
+
+        mLockboxContentGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-get", request);
+
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepPreparePeerFiles()
+      {
+        if (mPeerFiles) {
+          ZS_LOG_DEBUG(log("peer files already created/loaded"))
+          return true;
+        }
+
+        if (mSaltQuery) {
+          if (!mSaltQuery->isComplete()) {
+            ZS_LOG_DEBUG(log("waiting for salt query to complete"))
+            return false;
+          }
+
+          WORD errorCode = 0;
+          String reason;
+          if (!mSaltQuery->wasSuccessful(&errorCode, &reason)) {
+            ZS_LOG_ERROR(Detail, log("failed to fetch signed salt") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+            setError(errorCode, reason);
+            cancel();
+            return false;
           }
         }
 
-        if (!mPeerFiles) {
-          mRegeneratePeerFiles = true;
+        setState(SessionState_Pending);
+
+        String privatePeerSecretStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+        String privatePeerFileStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
+
+        if ((privatePeerSecretStr.hasData()) &&
+            (privatePeerFileStr.hasData())) {
+          // attempt to load the private peer file data
+          DocumentPtr doc = Document::createFromParsedJSON(privatePeerFileStr);
+          if (doc) {
+            mPeerFiles = IPeerFiles::loadFromElement(privatePeerFileStr, doc->getFirstChildElement());
+            if (!mPeerFiles) {
+              ZS_LOG_WARNING(Detail, log("peer files failed to load (will generate new peer files)"))
+            }
+          }
         }
 
-        if (!mRegeneratePeerFiles) {
-          ZS_LOG_DEBUG(log("step peer files is done"))
-          return true;
+        if (mPeerFiles) {
+          ZS_LOG_DEBUG(log("peer files successfully loaded"))
+
+          IPeerFilePublicPtr peerFilePublic = mPeerFiles->getPeerFilePublic();
+          ZS_THROW_BAD_STATE_IF(!peerFilePublic)
+
+          Time created = peerFilePublic->getCreated();
+          Time expires = peerFilePublic->getExpires();
+
+          Time now = zsLib::now();
+
+          if (now > expires) {
+            ZS_LOG_WARNING(Detail, log("peer file expired") + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            mPeerFiles.reset();
+          }
+
+          Duration totalLifetime = (expires - created);
+          Duration lifeConsumed (now - created);
+
+          if (((lifeConsumed.seconds() * 100) / totalLifetime.seconds()) > HOOKFLASH_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION) {
+            ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + Stringize<Duration::sec_type>(lifeConsumed.seconds()).string() + ", " + Stringize<Duration::sec_type>(totalLifetime.seconds()).string() + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            mPeerFiles.reset();
+          }
+
+          if (mPeerFiles) {
+            ZS_LOG_DEBUG(log("peer files are still valid"))
+            return true;
+          }
+
+          ZS_LOG_DEBUG(log("peer files will be regenerated"))
+
+          // erase out the current peer file information if it exists from memory (prevents them from becoming reloaded / retested later)
+          clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+          clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
         }
 
         if (!mSaltQuery) {
-          mSaltQuery = IServiceSaltFetchSignedSaltQuery::fetchSignedSalt(mThisWeak.lock(), IServiceSalt::createServiceSaltFrom(mBootstrappedNetwork), 1);
-        }
+          IServiceSaltPtr saltService = IServiceSalt::createServiceSaltFrom(mBootstrappedNetwork);
+          mSaltQuery = IServiceSaltFetchSignedSaltQuery::fetchSignedSalt(mThisWeak.lock(), saltService);
 
-        if (!mSaltQuery->isComplete()) {
-          ZS_LOG_DEBUG(log("waiting for salt service query to complete"))
+          ZS_LOG_DEBUG(log("waiting for signed salt query to complete"))
           return false;
         }
 
-        WORD errorCode = 0;
-        String errorReason;
-
-        if (!mSaltQuery->wasSuccessful(&errorCode, &errorReason)) {
-          ZS_LOG_WARNING(Detail, log("salt service reported an error"))
-          setError(errorCode, errorReason);
+        ElementPtr signedSaltEl = mSaltQuery->getNextSignedSalt();
+        if (!signedSaltEl) {
+          ZS_LOG_ERROR(Detail, log("failed to obtain signed salt from salt query"))
+          setError(IHTTP::HTTPStatusCode_PreconditionFailed, "signed salt query was successful but failed to obtain signed salt");
           cancel();
           return false;
         }
 
-        ElementPtr signedSaltBundle = mSaltQuery->getNextSignedSalt();
-        if (!signedSaltBundle) {
-          ZS_LOG_ERROR(Detail, log("salt service failed to return salt"))
-          setError(IHTTP::HTTPStatusCode_NoContent, "Salt service failed to return signed salt");
-          cancel();
-          return false;
-        }
+        ZS_LOG_DEBUG(log("generating peer files (may take a while)..."))
+        setState(SessionState_PendingPeerFilesGeneration);
 
-        mPeerFiles = IPeerFiles::generate(IHelper::randomString(64), signedSaltBundle);
+        mPeerFiles = IPeerFiles::generate(IHelper::randomString(64), signedSaltEl);
         if (!mPeerFiles) {
           ZS_LOG_ERROR(Detail, log("failed to generate peer files"))
-          setError(IHTTP::HTTPStatusCode_InternalServerError, "Failed to generate peer files");
+          setError(IHTTP::HTTPStatusCode_InternalServerError, "failed to generate peer files");
           cancel();
           return false;
         }
 
-        mSaltQuery->cancel();
-        mSaltQuery.reset();
+        ZS_LOG_DEBUG(log("peer files were generated"))
+        setState(SessionState_Pending);
 
-        mRegeneratePeerFiles = false;
+        IPeerFilePrivatePtr peerFilePrivate = mPeerFiles->getPeerFilePrivate();
+        ZS_THROW_BAD_STATE_IF(!peerFilePrivate)
 
-        PrivatePeerFileSetRequestPtr request = PrivatePeerFileSetRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
+        SecureByteBlockPtr peerFileSecret = peerFilePrivate->getPassword();
+        ZS_THROW_BAD_STATE_IF(!peerFileSecret)
 
-        request->contactAccessToken(mContactAccessToken);
-        request->contactAccessSecret(mContactAccessSecret);
-        request->peerFiles(mPeerFiles);
+        ElementPtr peerFileEl = peerFilePrivate->saveToElement();
+        ZS_THROW_BAD_STATE_IF(!peerFileEl)
 
-        mPeerFilesSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PrivatePeerFileSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "private-peer-file-set", request);
+        GeneratorPtr generator = Generator::createJSONGenerator();
+        boost::shared_array<char> output = generator->write(peerFileEl);
 
-        ZS_LOG_DEBUG(log("sending private peer file set request"))
-        return false;
+        privatePeerFileStr = output.get();
+
+        setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME, IHelper::convertToString(*peerFileSecret));
+        setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME, privatePeerFileStr);
+
+        mPeerFilesNeedUpload = true;
+        return true;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepServices()
+      bool ServiceLockboxSession::stepUploadPeerFiles()
       {
-        if (mServicesMonitor) {
-          ZS_LOG_DEBUG(log("waiting for services monitor to complete"))
-          return false;
-        }
-        if (mServicesByType.size() > 0) {
-          ZS_LOG_DEBUG(log("services step has completed"))
+        typedef LockboxContentSetRequest::NamespaceURLNameValueMap NamespaceURLValueMap;
+        typedef LockboxContentSetRequest::NameValueMap NamespaceValueMap;
+
+        if (!mPeerFilesNeedUpload) {
+          ZS_LOG_DEBUG(log("peer files do not need uploading"))
           return true;
         }
 
-        PeerContactServicesGetRequestPtr request = PeerContactServicesGetRequest::create();
+        if (mLockboxContentSetMonitor) {
+          ZS_LOG_DEBUG(log("waiting for content set monitor to complete"))
+          return false;
+        }
+
+        setState(SessionState_Pending);
+
+        LockboxContentSetRequestPtr request = LockboxContentSetRequest::create();
         request->domain(mBootstrappedNetwork->forServices().getDomain());
 
-        request->contactAccessToken(mContactAccessToken);
-        request->contactAccessSecret(mContactAccessSecret);
+        request->lockboxInfo(mLockboxInfo);
+        request->grantID(mGrantID);
 
-        mServicesMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactServicesGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-services-get", request);
+        NamespaceValueMap values;
+        values[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME] = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+        values[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME] = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
 
-        ZS_LOG_DEBUG(log("sending private peer file set request"))
+        NamespaceURLValueMap namespaces;
+        namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE] = values;
+
+        request->namespaceURLNameValues(namespaces);
+
+        mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
+
         return false;
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepAssociate()
+      bool ServiceLockboxSession::stepServicesGet()
       {
-        if (mAssociateMonitor) {
-          ZS_LOG_DEBUG(log("waiting for associate monitor to complete"))
+        if (mServicesByType.size() > 0) {
+          ZS_LOG_DEBUG(log("already download services"))
+          return true;
+        }
+
+        if (mPeerServicesGetMonitor) {
+          ZS_LOG_DEBUG(log("waiting for services get to complete"))
           return false;
         }
 
-        if (mLoginIdentity) {
-          mAssociatedIdentities[mLoginIdentity->forPeerContact().getID()] = mLoginIdentity;
+        setState(SessionState_Pending);
 
-          mLoginIdentity.reset();
+        ZS_LOG_DEBUG(log("requestion information about the peer services available"))
 
-          PeerContactIdentityAssociateRequestPtr request = PeerContactIdentityAssociateRequest::create();
-          request->domain(mBootstrappedNetwork->forServices().getDomain());
+        PeerServicesGetRequestPtr request = PeerServicesGetRequest::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
 
-          request->contactAccessToken(mContactAccessToken);
-          request->contactAccessSecret(mContactAccessSecret);
-          request->peerFiles(mPeerFiles);
+        request->lockboxInfo(mLockboxInfo);
 
-          mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-          mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-identity-associate", request);
-          ZS_LOG_DEBUG(log("sending original associate request to fetch current associations"))
-          return false;
+        mPeerServicesGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerServicesGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("peer", "peer-services-get", request);
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepLoginIdentityBecomeAssociated()
+      {
+        if (!mLoginIdentity) {
+          ZS_LOG_DEBUG(log("did not login with a login identity (thus no need to force it to associate)"))
+          return true;
         }
 
-        clearShutdown(mAssociatedIdentities);
-        clearShutdown(mPendingUpdateIdentities);
-        clearShutdown(mPendingRemoveIdentities);
+        if (mLoginIdentitySetToBecomeAssociated) {
+          ZS_LOG_DEBUG(log("login identity is already set to become associated"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("login identity will become associated identity") + IServiceIdentitySession::toDebugString(mLoginIdentity))
+
+        mLoginIdentitySetToBecomeAssociated = true;
+
+        for (ServiceIdentitySessionMap::iterator associatedIter = mAssociatedIdentities.begin(); associatedIter != mAssociatedIdentities.end(); ++associatedIter)
+        {
+          ServiceIdentitySessionPtr &identity = (*associatedIter).second;
+          if (identity->forLockbox().getID() == mLoginIdentity->forLockbox().getID()) {
+            ZS_LOG_DEBUG(log("login identity is already associated"))
+            return true;
+          }
+        }
+
+        for (ServiceIdentitySessionMap::iterator pendingIter = mPendingUpdateIdentities.begin(); pendingIter != mPendingUpdateIdentities.end(); ++pendingIter)
+        {
+          ServiceIdentitySessionPtr &identity = (*pendingIter).second;
+          if (identity->forLockbox().getID() == mLoginIdentity->forLockbox().getID()) {
+            ZS_LOG_DEBUG(log("login identity is already in pending list"))
+            return true;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("adding login identity to the pending list so that it will become associated (if it is not already known by the server)"))
+        mPendingUpdateIdentities[mLoginIdentity->forLockbox().getID()] = mLoginIdentity;
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepConvertFromServerToRealIdentities()
+      {
+        if (mServerIdentities.size() < 1) {
+          ZS_LOG_DEBUG(log("no server identities that need to be converted to identities"))
+          return true;
+        }
+
+        for (IdentityInfoList::iterator iter = mServerIdentities.begin(); iter != mServerIdentities.end();)
+        {
+          IdentityInfoList::iterator current = iter;
+          ++iter;
+
+          IdentityInfo &info = (*current);
+
+          bool foundMatch = false;
+
+          for (ServiceIdentitySessionMap::iterator assocIter = mAssociatedIdentities.begin(); assocIter != mAssociatedIdentities.end(); ++assocIter)
+          {
+            ServiceIdentitySessionPtr &identitySession = (*assocIter).second;
+            IdentityInfo associatedInfo = identitySession->forLockbox().getIdentityInfo();
+
+            if ((info.mURI == associatedInfo.mURI) &&
+                (info.mProvider == associatedInfo.mProvider)) {
+              // found an existing match...
+              ZS_LOG_DEBUG(log("found a match to a previously associated identity") + ", uri=" + info.mURI + ", provider=" + info.mProvider)
+              foundMatch = true;
+              break;
+            }
+          }
+
+          if (foundMatch) continue;
+
+          for (ServiceIdentitySessionMap::iterator pendingIter = mPendingUpdateIdentities.begin(); pendingIter != mPendingUpdateIdentities.end(); )
+          {
+            ServiceIdentitySessionMap::iterator pendingCurrentIter = pendingIter;
+            ++pendingIter;
+
+            ServiceIdentitySessionPtr &identitySession = (*pendingCurrentIter).second;
+            IdentityInfo pendingInfo = identitySession->forLockbox().getIdentityInfo();
+
+            if ((info.mURI == pendingInfo.mURI) &&
+                (info.mProvider == pendingInfo.mProvider)) {
+              // found an existing match...
+              ZS_LOG_DEBUG(log("found a match to a pending identity (moving pending identity to associated identity)") + ", uri=" + info.mURI + ", provider=" + info.mProvider)
+
+              // move the pending identity to the actual identity rather than creating a new identity
+              mAssociatedIdentities[identitySession->forLockbox().getID()] = identitySession;
+
+              foundMatch = true;
+              break;
+            }
+          }
+
+          if (foundMatch) continue;
+
+          // no match to an existing identity, attempt a relogin
+          String domain;
+          String id;
+          IServiceIdentity::splitURI(info.mURI, domain, id);
+
+          BootstrappedNetworkPtr network = mBootstrappedNetwork;
+          if (domain != info.mProvider) {
+            // not using the lockbox provider, instead using the provider specified
+            network = BootstrappedNetwork::convert(IBootstrappedNetwork::prepare(info.mProvider));
+          }
+
+          String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + info.mURI + ":" + info.mProvider));
+
+          String reloginKey = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+
+          ZS_LOG_DEBUG(log("reloading identity") + ", identity uri=" + info.mURI + ", provider=" + info.mProvider + ", relogin key=" + reloginKey)
+
+          ServiceIdentitySessionPtr identitySession = IServiceIdentitySessionForServiceLockbox::reload(mThisWeak.lock(), network, info.mURI, reloginKey);
+          mAssociatedIdentities[identitySession->forLockbox().getID()] = identitySession;
+        }
+
+        // all server identities should now be processed or matched
+        mServerIdentities.clear();
+
+        ZS_LOG_DEBUG(log("finished moving server identity to associated identities"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepPruneDuplicatePendingIdentities()
+      {
+        if (mPendingUpdateIdentities.size() < 1) {
+          ZS_LOG_DEBUG(log("no identities pending update"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("checking if any pending identities that are already associated that need to be pruned"))
+
+        for (ServiceIdentitySessionMap::iterator assocIter = mAssociatedIdentities.begin(); assocIter != mAssociatedIdentities.end(); ++assocIter)
+        {
+          ServiceIdentitySessionPtr &identitySession = (*assocIter).second;
+          IdentityInfo associatedInfo = identitySession->forLockbox().getIdentityInfo();
+
+          for (ServiceIdentitySessionMap::iterator pendingUpdateIter = mPendingUpdateIdentities.begin(); pendingUpdateIter != mPendingUpdateIdentities.end();)
+          {
+            ServiceIdentitySessionMap::iterator pendingUpdateCurrentIter = pendingUpdateIter;
+            ++pendingUpdateIter;
+
+            ServiceIdentitySessionPtr &pendingIdentity = (*pendingUpdateCurrentIter).second;
+
+            IdentityInfo pendingUpdateInfo = pendingIdentity->forLockbox().getIdentityInfo();
+            if ((pendingUpdateInfo.mURI == associatedInfo.mURI) &&
+                (pendingUpdateInfo.mProvider = associatedInfo.mProvider)) {
+              ZS_LOG_DEBUG(log("identity pending update is actually already associated so remove it from the pending list (thus will prune this identity)") + ", uri=" + associatedInfo.mURI + ", provider=" + associatedInfo.mProvider)
+              mPendingUpdateIdentities.erase(pendingUpdateCurrentIter);
+              continue;
+            }
+          }
+        }
+
+        ZS_LOG_DEBUG(log("finished pruning duplicate pending identities"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepPruneShutdownIdentities()
+      {
+        ZS_LOG_DEBUG(log("pruning shutdown identities"))
+
+        for (ServiceIdentitySessionMap::iterator pendingUpdateIter = mPendingUpdateIdentities.begin(); pendingUpdateIter != mPendingUpdateIdentities.end();)
+        {
+          ServiceIdentitySessionMap::iterator pendingUpdateCurrentIter = pendingUpdateIter;
+          ++pendingUpdateIter;
+
+          ServiceIdentitySessionPtr &pendingUpdateIdentity = (*pendingUpdateCurrentIter).second;
+          if (!pendingUpdateIdentity->forLockbox().isShutdown()) continue;
+
+          // cannot associate an identity that shutdown
+          ZS_LOG_WARNING(Detail, log("pending identity shutdown unexpectedly") + IServiceIdentitySession::toDebugString(pendingUpdateIdentity));
+          mPendingUpdateIdentities.erase(pendingUpdateCurrentIter);
+        }
+
+        ZS_LOG_DEBUG(log("pruning of shutdown identities complete"))
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepPendingAssociationAndRemoval()
+      {
+        typedef LockboxContentSetRequest::NameValueMap NameValueMap;
+        typedef LockboxContentSetRequest::NamespaceURLNameValueMap NamespaceURLNameValueMap;
+
+        if ((mLockboxIdentitiesUpdateMonitor) ||
+            (mLockboxContentSetMonitor)) {
+          ZS_LOG_DEBUG(log("waiting for identities association or content set to complete before attempting to associate identities"))
+          return false;
+        }
 
         if ((mPendingUpdateIdentities.size() < 1) &&
             (mPendingRemoveIdentities.size() < 1)) {
-          ZS_LOG_DEBUG(log("no pending identities thus associate is done"))
+          ZS_LOG_DEBUG(log("no identities are pending addition or removal"))
           return true;
         }
 
-        IdentityInfoList identities;
+        NameValueMap reloginValues;
+        NameValueMap signatureValues;
 
-        for (ServiceIdentitySessionMap::iterator iter = mPendingUpdateIdentities.begin(); iter != mPendingUpdateIdentities.end(); ++iter)
+        ServiceIdentitySessionMap removedIdentities;
+        ServiceIdentitySessionMap completedIdentities;
+
+        for (ServiceIdentitySessionMap::iterator pendingRemovalIter = mPendingRemoveIdentities.begin(); pendingRemovalIter != mPendingRemoveIdentities.end();)
         {
-          ServiceIdentitySessionPtr session = (*iter).second;
+          ServiceIdentitySessionMap::iterator pendingRemovalCurrentIter = pendingRemovalIter;
+          ++pendingRemovalIter;
 
-          if (!session->forPeerContact().isLoginComplete()) {
-            ZS_LOG_DEBUG(log("session not ready for association"))
-            continue;
+          ServiceIdentitySessionPtr &pendingRemovalIdentity = (*pendingRemovalCurrentIter).second;
+          IdentityInfo pendingRemovalIdentityInfo = pendingRemovalIdentity->forLockbox().getIdentityInfo();
+
+          ZS_LOG_DEBUG(log("checking if identity to be removed is in the udpate list") + IServiceIdentitySession::toDebugString(pendingRemovalIdentity))
+
+          for (ServiceIdentitySessionMap::iterator pendingUpdateIter = mPendingUpdateIdentities.begin(); pendingUpdateIter != mPendingUpdateIdentities.end(); )
+          {
+            ServiceIdentitySessionMap::iterator pendingUpdateCurrentIter = pendingUpdateIter;
+            ++pendingUpdateIter;
+
+            ServiceIdentitySessionPtr &pendingUpdateIdentity = (*pendingUpdateCurrentIter).second;
+
+            if (pendingUpdateIdentity->forLockbox().getID() == pendingRemovalIdentity->forLockbox().getID()) {
+              ZS_LOG_DEBUG(log("identity being removed is in the pending list (thus will remove it from pending list)") + IServiceIdentitySession::toDebugString(pendingRemovalIdentity))
+
+              mPendingUpdateIdentities.erase(pendingUpdateCurrentIter);
+              continue;
+            }
           }
 
-          IdentityInfo info = session->forPeerContact().getIdentityInfo();
-          if ((info.mURI.isEmpty()) ||
-              (info.mProvider.isEmpty()) ||
-              (info.mSecretSalt.isEmpty())) {
-            ZS_LOG_WARNING(Detail, log("session should be ready for association but it's not"))
-            continue;
+          bool foundMatch = false;
+
+          for (ServiceIdentitySessionMap::iterator associatedIter = mAssociatedIdentities.begin(); associatedIter != mAssociatedIdentities.end();)
+          {
+            ServiceIdentitySessionMap::iterator associatedCurrentIter = associatedIter;
+            ++associatedIter;
+
+            ServiceIdentitySessionPtr &associatedIdentity = (*associatedCurrentIter).second;
+
+            if (associatedIdentity->forLockbox().getID() != pendingRemovalIdentity->forLockbox().getID()) continue;
+
+            foundMatch = true;
+
+            ZS_LOG_DEBUG(log("killing association to the associated identity") + IServiceIdentitySession::toDebugString(pendingRemovalIdentity))
+
+            // clear relogin key (if present)
+            {
+              String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
+              reloginValues[hash] = "-";
+              clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+            }
+
+            // clear signature (if present)
+            {
+              String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
+              signatureValues[hash] = "-";
+              clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+            }
+
+            removedIdentities[pendingRemovalIdentity->forLockbox().getID()] = pendingRemovalIdentity;
+
+            // force the identity to disassociate from the lockbox
+            pendingRemovalIdentity->forLockbox().killAssociation(mThisWeak.lock());
+
+            mAssociatedIdentities.erase(associatedCurrentIter);
+            mPendingRemoveIdentities.erase(pendingRemovalCurrentIter);
           }
 
-          info.mDisposition = IdentityInfo::Disposition_Update;
-          identities.push_back(info);
+          if (foundMatch) continue;
+
+          ZS_LOG_DEBUG(log("killing identity that was never associated") + IServiceIdentitySession::toDebugString(pendingRemovalIdentity))
+
+          mPendingRemoveIdentities.erase(pendingRemovalCurrentIter);
         }
 
-        for (ServiceIdentitySessionMap::iterator iter = mPendingRemoveIdentities.begin(); iter != mPendingRemoveIdentities.end(); ++iter)
+        for (ServiceIdentitySessionMap::iterator pendingUpdateIter = mPendingUpdateIdentities.begin(); pendingUpdateIter != mPendingUpdateIdentities.end();)
         {
-          ServiceIdentitySessionPtr session = (*iter).second;
+          ServiceIdentitySessionMap::iterator pendingUpdateCurrentIter = pendingUpdateIter;
+          ++pendingUpdateIter;
 
-          IdentityInfo info = session->forPeerContact().getIdentityInfo();
-          if ((info.mURI.isEmpty()) ||
-              (info.mProvider.isEmpty())) {
-            ZS_LOG_DEBUG(log("session is not ready to be removed"))
+          ServiceIdentitySessionPtr &pendingUpdateIdentity = (*pendingUpdateCurrentIter).second;
+
+          if (!pendingUpdateIdentity->forLockbox().isLoginComplete()) continue;
+
+          ElementPtr signatureEl = pendingUpdateIdentity->forLockbox().getSignedIdentityBundle();
+          if (!signatureEl) {
+            ZS_LOG_DEBUG(log("identity may be logged in but the signature is not ready (must wait for signature to be prepared)"))
             continue;
           }
 
-          info.mDisposition = IdentityInfo::Disposition_Update;
-          identities.push_back(info);
+          ZS_LOG_DEBUG(log("pending identity is now logged in (thus can cause the association)") + IServiceIdentitySession::toDebugString(pendingUpdateIdentity))
+          completedIdentities[pendingUpdateIdentity->forLockbox().getID()] = pendingUpdateIdentity;
+
+          IdentityInfo info = pendingUpdateIdentity->forLockbox().getIdentityInfo();
+          if (info.mReloginKey.hasData()) {
+            String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + info.mURI + ":" + info.mProvider));
+
+            setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash, info.mReloginKey);
+            String rawValue = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+            reloginValues[hash] = rawValue;
+          }
+
+          // prepare signature
+          {
+            String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + info.mURI + ":" + info.mProvider));
+
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(signatureEl);
+
+            String signatureStr((const char *) output.get());
+
+            setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash, signatureStr);
+            String rawValue = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+            signatureValues[hash] = rawValue;
+          }
         }
 
-        if (identities.size() < 1) {
-          ZS_LOG_DEBUG(log("no identities ready for association"))
-          return false;
+        NamespaceURLNameValueMap namespaces;
+
+        if (reloginValues.size() > 0) {
+          ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + Stringize<size_t>(reloginValues.size()).string())
+          namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
+        }
+        if (signatureValues.size() > 0) {
+          ZS_LOG_DEBUG(log("contains signature values to update") + "values=" + Stringize<size_t>(signatureValues.size()).string())
+          namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE] = signatureValues;
         }
 
-        PeerContactIdentityAssociateRequestPtr request = PeerContactIdentityAssociateRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
+        if (namespaces.size() > 0) {
+          ZS_LOG_DEBUG(log("sending content set request"))
 
-        request->contactAccessToken(mContactAccessToken);
-        request->contactAccessSecret(mContactAccessSecret);
+          LockboxContentSetRequestPtr request = LockboxContentSetRequest::create();
+          request->domain(mBootstrappedNetwork->forServices().getDomain());
+          request->lockboxInfo(mLockboxInfo);
+          request->grantID(mGrantID);
 
-        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-associate", request);
+          request->namespaceURLNameValues(namespaces);
 
-        ZS_LOG_DEBUG(log("sending peer associate request"))
-        return false;
+          mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+          mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
+        }
+
+        if ((removedIdentities.size() > 0) ||
+            (completedIdentities.size() > 0))
+        {
+          IdentityInfoList removeInfos;
+          IdentityInfoList updateInfos;
+
+          for (ServiceIdentitySessionMap::iterator iter = removedIdentities.begin(); iter != removedIdentities.end(); ++iter)
+          {
+            ServiceIdentitySessionPtr &identity = (*iter).second;
+
+            IdentityInfo info = identity->forLockbox().getIdentityInfo();
+
+            if ((info.mURI.hasData()) &&
+                (info.mProvider.hasData())) {
+              ZS_LOG_DEBUG(log("adding identity to request removal list") + info.getDebugValueString())
+              removeInfos.push_back(info);
+            }
+          }
+
+          for (ServiceIdentitySessionMap::iterator iter = completedIdentities.begin(); iter != completedIdentities.end(); ++iter)
+          {
+            ServiceIdentitySessionPtr &identity = (*iter).second;
+
+            IdentityInfo info = identity->forLockbox().getIdentityInfo();
+
+            ZS_LOG_DEBUG(log("adding identity to request update list") + info.getDebugValueString())
+            updateInfos.push_back(info);
+          }
+
+          if ((removeInfos.size() > 0) &&
+              (updateInfos.size() > 0)) {
+
+            ZS_LOG_DEBUG(log("sending update identities request"))
+
+            LockboxIdentitiesUpdateRequestPtr request = LockboxIdentitiesUpdateRequest::create();
+            request->domain(mBootstrappedNetwork->forServices().getDomain());
+            request->lockboxInfo(mLockboxInfo);
+            request->identitiesToUpdate(updateInfos);
+            request->identitiesToRemove(removeInfos);
+
+            mLockboxIdentitiesUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+            mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-identities-update", request);
+
+            // NOTE: It's entirely possible the associate request can fail. Unfortunately, there is very little that can be done upon failure. The user will have to take some responsibility to keep their identities associated.
+          }
+        }
+
+        ZS_LOG_DEBUG(log("associating and removing of identities completed") + ", updated=" + Stringize<size_t>(completedIdentities.size()).string() + ", removed=" + Stringize<size_t>(removedIdentities.size()).string())
       }
 
       //-----------------------------------------------------------------------
@@ -1292,45 +1940,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void ServiceLockboxSession::clearShutdown(ServiceIdentitySessionMap &identities) const
-      {
-        // clear out any identities that are shutdown...
-        for (ServiceIdentitySessionMap::iterator iter = identities.begin(); iter != identities.end(); )
-        {
-          ServiceIdentitySessionMap::iterator current = iter;
-          ++iter;
-
-          ServiceIdentitySessionPtr session = (*current).second;
-          if (!session->forPeerContact().isShutdown()) continue;
-
-          identities.erase(current);
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void ServiceLockboxSession::handleRemoveDisposition(
-                                                          const IdentityInfo &info,
-                                                          ServiceIdentitySessionMap &sessions
-                                                          ) const
-      {
-        for (ServiceIdentitySessionMap::iterator iter = sessions.begin(); iter != sessions.end();)
-        {
-          ServiceIdentitySessionMap::iterator current = iter;
-          ++iter;
-
-          ServiceIdentitySessionPtr session = ((*current).second);
-          IdentityInfo sessionInfo = session->forPeerContact().getIdentityInfo();
-
-          if (sessionInfo.mURI != info.mURI) continue;
-          if (sessionInfo.mProvider != info.mProvider) continue;
-
-          session->forPeerContact().killAssociation(mThisWeak.lock());
-
-          sessions.erase(current);
-        }
-      }
-
-      //-----------------------------------------------------------------------
       void ServiceLockboxSession::setState(SessionStates state)
       {
         if (state == mCurrentState) return;
@@ -1339,7 +1948,7 @@ namespace hookflash
         mCurrentState = state;
 
         if (mLoginIdentity) {
-          mLoginIdentity->forPeerContact().notifyStateChanged();
+          mLoginIdentity->forLockbox().notifyStateChanged();
         }
 
         AccountPtr account = mAccount.lock();
@@ -1378,10 +1987,203 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      void ServiceLockboxSession::sendInnerWindowMessage(MessagePtr message)
+      {
+        DocumentPtr doc = message->encode();
+        mPendingMessagesToDeliver.push_back(doc);
+
+        if (1 != mPendingMessagesToDeliver.size()) {
+          ZS_LOG_DEBUG(log("already had previous messages to deliver, no need to send another notification"))
+          return;
+        }
+
+        ServiceLockboxSessionPtr pThis = mThisWeak.lock();
+
+        if ((pThis) &&
+            (mDelegate)) {
+          try {
+            ZS_LOG_DEBUG(log("attempting to notify of message to browser window needing to be delivered"))
+            mDelegate->onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(pThis);
+          } catch(IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
+            ZS_LOG_WARNING(Detail, log("delegate gone"))
+          }
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      String ServiceLockboxSession::getContent(
+                                               const char *namespaceURL,
+                                               const char *valueName
+                                               ) const
+      {
+        typedef LockboxContentGetResult::NameValueMap NameValueMap;
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
+
+        NamespaceURLNameValueMap::const_iterator found = mContent.find(namespaceURL);
+        if (found == mContent.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return String();
+        }
+
+        const NameValueMap &values = (*found).second;
+
+        NameValueMap::const_iterator foundValue = values.find(valueName);
+        if (foundValue == values.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace value") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return String();
+        }
+
+        const String &value = (*foundValue).second;
+
+        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyLockboxHalf, mLockboxInfo.mKeyLockboxHalf);
+        if (!combinedKey) {
+          ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
+          return String();
+        }
+
+        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str());
+        SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
+
+        SecureByteBlockPtr dataToConvert = IHelper::convertFromBase64(value);
+        if (!dataToConvert) {
+          ZS_LOG_WARNING(Detail, log("failed to decode data from base64") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          return String();
+        }
+
+        SecureByteBlockPtr result = IHelper::decrypt(*key, *iv, *dataToConvert);
+        if (!result) {
+          ZS_LOG_WARNING(Detail, log("failed to decrypt value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          return String();
+        }
+
+        String output = IHelper::convertToString(*result);
+
+        ZS_LOG_TRACE(log("obtained content") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value)
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      String ServiceLockboxSession::getRawContent(
+                                                  const char *namespaceURL,
+                                                  const char *valueName
+                                                  ) const
+      {
+        typedef LockboxContentGetResult::NameValueMap NameValueMap;
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
+
+        NamespaceURLNameValueMap::const_iterator found = mContent.find(namespaceURL);
+        if (found == mContent.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return String();
+        }
+
+        const NameValueMap &values = (*found).second;
+
+        NameValueMap::const_iterator foundValue = values.find(valueName);
+        if (foundValue == values.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace value") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return String();
+        }
+
+        const String &value = (*foundValue).second;
+
+        ZS_LOG_TRACE(log("found raw content value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", raw value=" + value)
+        return value;
+      }
+      
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::setContent(
+                                             const char *namespaceURL,
+                                             const char *valueName,
+                                             const char *value
+                                             )
+      {
+        typedef LockboxContentGetResult::NameValueMap NameValueMap;
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
+
+        NamespaceURLNameValueMap::iterator found = mContent.find(namespaceURL);
+        if (found == mContent.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+
+          NameValueMap empty;
+          mContent[namespaceURL] = empty;
+          found = mContent.find(namespaceURL);
+
+          ZS_THROW_BAD_STATE_IF(found == mContent.end())
+        }
+
+        NameValueMap &values = (*found).second;
+
+        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyLockboxHalf, mLockboxInfo.mKeyLockboxHalf);
+        if (!combinedKey) {
+          ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
+          return;
+        }
+
+        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str());
+        SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
+
+        SecureByteBlockPtr dataToConvert = IHelper::convertToBuffer(value);
+        if (!dataToConvert) {
+          ZS_LOG_WARNING(Detail, log("failed to prepare data to convert") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          return;
+        }
+
+        SecureByteBlockPtr result = IHelper::encrypt(*key, *iv, *dataToConvert);
+        if (!result) {
+          ZS_LOG_WARNING(Detail, log("failed to decrypt value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          return;
+        }
+
+        String encodedValue = IHelper::convertToBase64(*result);
+        if (encodedValue.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("failed to encode encrypted to base64") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          return;
+        }
+
+        ZS_LOG_TRACE(log("content was set") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value)
+        values[valueName] = encodedValue;
+      }
+      
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::clearContent(
+                                               const char *namespaceURL,
+                                               const char *valueName
+                                               )
+      {
+        typedef LockboxContentGetResult::NameValueMap NameValueMap;
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
+        ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
+
+        NamespaceURLNameValueMap::iterator found = mContent.find(namespaceURL);
+        if (found == mContent.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return;
+        }
+
+        NameValueMap &values = (*found).second;
+
+        NameValueMap::iterator foundValue = values.find(valueName);
+        if (foundValue == values.end()) {
+          ZS_LOG_WARNING(Detail, log("content does not contain namespace value") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          return;
+        }
+
+        ZS_LOG_TRACE(log("content value cleared") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+        values.erase(foundValue);
+      }
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-#endif //0
+      //-----------------------------------------------------------------------
     }
 
     //-------------------------------------------------------------------------
@@ -1407,6 +2209,7 @@ namespace hookflash
       switch (state)
       {
         case SessionState_Pending:                                return "Pending";
+        case SessionState_PendingPeerFilesGeneration:             return "Pending Peer File Generation";
         case SessionState_WaitingForBrowserWindowToBeLoaded:      return "Waiting for Browser Window to be Loaded";
         case SessionState_WaitingForBrowserWindowToBeMadeVisible: return "Waiting for Browser Window to be Made Visible";
         case SessionState_WaitingForBrowserWindowToClose:         return "Waiting for Browser Window to Close";
@@ -1437,11 +2240,12 @@ namespace hookflash
                                                               IServiceLockboxSessionDelegatePtr delegate,
                                                               IServiceLockboxPtr serviceLockbox,
                                                               const char *lockboxAccountID,
+                                                              const char *lockboxGrantID,
                                                               const char *identityHalfLockboxKey,
                                                               const char *lockboxHalfLockboxKey
                                                               )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
     }
 
   }

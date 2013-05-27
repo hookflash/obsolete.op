@@ -337,7 +337,7 @@ namespace hookflash
           // first thing to check is if this is a response to an outstanding request
           if (ISTUNRequesterManager::handleSTUNPacket(remote, stun)) return;
 
-          // next we ignore all responses/error responses because they would have been handled by a requster
+          // next we ignore all responses/error responses because they would have been handled by a requester
           if ((STUNPacket::Class_Response == stun->mClass) ||
               (STUNPacket::Class_ErrorResponse == stun->mClass)) return;
 

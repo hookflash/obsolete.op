@@ -113,10 +113,10 @@ namespace hookflash
 
             ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
 
-            for (NamespaceURLList::iterator iter = mNamespaceURLs.begin(); iter != mNamespaceURLs.end(); ++iter)
+            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
             {
-              const NamespaceURL &namespaceURL = (*iter);
-              namespacesEl->adoptAsLastChild(IMessageHelper::createElementWithID("namespace", namespaceURL));
+              const NamespaceInfo &namespaceInfo = (*iter).second;
+              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
             }
 
             if (namespacesEl->hasChildren()) {

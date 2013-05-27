@@ -68,6 +68,7 @@ namespace hookflash
       enum SessionStates
       {
         SessionState_Pending,
+        SessionState_PendingPeerFilesGeneration,
         SessionState_WaitingForBrowserWindowToBeLoaded,
         SessionState_WaitingForBrowserWindowToBeMadeVisible,
         SessionState_WaitingForBrowserWindowToClose,
@@ -88,6 +89,7 @@ namespace hookflash
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr serviceLockbox,
                                                const char *lockboxAccountID,
+                                               const char *lockboxGrantID,
                                                const char *identityHalfLockboxKey,
                                                const char *lockboxHalfLockboxKey
                                                );

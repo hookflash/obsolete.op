@@ -214,10 +214,10 @@ namespace hookflash
       typedef boost::shared_ptr<ServiceLockboxSession> ServiceLockboxSessionPtr;
       typedef boost::weak_ptr<ServiceLockboxSession> ServiceLockboxSessionWeakPtr;
 
-      class IServiceLockboxSessionAsync;
-      typedef boost::shared_ptr<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncPtr;
-      typedef boost::weak_ptr<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncWeakPtr;
-      typedef zsLib::Proxy<IServiceLockboxSessionAsync> IServiceLockboxSessionAsyncProxy;
+      class IServiceLockboxSessionAsyncDelegate;
+      typedef boost::shared_ptr<IServiceLockboxSessionAsyncDelegate> IServiceLockboxSessionAsyncDelegatePtr;
+      typedef boost::weak_ptr<IServiceLockboxSessionAsyncDelegate> IServiceLockboxSessionAsyncDelegateWeakPtr;
+      typedef zsLib::Proxy<IServiceLockboxSessionAsyncDelegate> IServiceLockboxSessionAsyncDelegateProxy;
 
       class ServiceSaltFetchSignedSaltQuery;
       typedef boost::shared_ptr<ServiceSaltFetchSignedSaltQuery> ServiceSaltFetchSignedSaltQueryPtr;

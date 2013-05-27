@@ -79,7 +79,7 @@ namespace hookflash
                 info.mURL = IMessageHelper::getAttributeID(namespaceEl);
                 info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttributeID(namespaceEl));
                 if (info.mURL.hasData()) {
-                  ret->mNamespaceInfos.push_back(info);
+                  ret->mNamespaceInfos[info.mURL] = info;
                 }
                 namespaceEl = namespaceEl->findNextSiblingElement("namespace");
               }
