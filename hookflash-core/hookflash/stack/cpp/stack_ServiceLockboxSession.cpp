@@ -2110,7 +2110,7 @@ namespace hookflash
           return String();
         }
 
-        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str());
+        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
         SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertFromBase64(value);
@@ -2193,7 +2193,7 @@ namespace hookflash
           return;
         }
 
-        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str());
+        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
         SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertToBuffer(value);
