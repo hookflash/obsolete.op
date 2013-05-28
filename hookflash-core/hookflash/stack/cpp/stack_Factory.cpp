@@ -776,10 +776,11 @@ namespace hookflash
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::login(
                                                                     IServiceLockboxSessionDelegatePtr delegate,
                                                                     IServiceLockboxPtr ServiceLockbox,
-                                                                    IServiceIdentitySessionPtr identitySession
+                                                                    IServiceIdentitySessionPtr identitySession,
+                                                                    bool forceNewAccount
                                                                     )
       {
-        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession);
+        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession, forceNewAccount);
       }
 
       //-----------------------------------------------------------------------

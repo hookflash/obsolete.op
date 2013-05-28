@@ -82,7 +82,8 @@ namespace hookflash
       static IServiceLockboxSessionPtr login(
                                              IServiceLockboxSessionDelegatePtr delegate,
                                              IServiceLockboxPtr ServiceLockbox,
-                                             IServiceIdentitySessionPtr identitySession
+                                             IServiceIdentitySessionPtr identitySession,
+                                             bool forceNewAccount = false
                                              );
 
       static IServiceLockboxSessionPtr relogin(

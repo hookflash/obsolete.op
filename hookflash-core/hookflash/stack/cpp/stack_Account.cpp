@@ -1770,6 +1770,7 @@ namespace hookflash
         IServiceLockboxSession::SessionStates state = mPeerContactSession->forAccount().getState();
         switch (state) {
           case IServiceLockboxSession::SessionState_Pending:
+          case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration:
           {
             ZS_LOG_DEBUG(log("contact session pending"))
             return false;

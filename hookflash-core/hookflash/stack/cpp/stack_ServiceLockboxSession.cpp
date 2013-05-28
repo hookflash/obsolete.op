@@ -174,12 +174,41 @@ namespace hookflash
         const BYTE *src2 = part2->BytePtr();
         SecureByteBlock::size_type length = part1->SizeInBytes();
 
-        for (; 0 != length; --length)
+        for (; 0 != length; --length, ++dest, ++src1, ++src2)
         {
           *dest = (*src1) ^ (*src2);
         }
 
         return buffer;
+      }
+
+      //-----------------------------------------------------------------------
+      static void splitKey(
+                           const SecureByteBlock &key,
+                           SecureByteBlockPtr &part1Str,
+                           SecureByteBlockPtr &part2Str
+                           )
+      {
+        if (key.size() < 1) return;
+
+        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes());
+
+        SecureByteBlockPtr final(new SecureByteBlock);
+        final->CleanNew(key.SizeInBytes());
+
+        BYTE *dest = final->BytePtr();
+        const BYTE *source = key.BytePtr();
+        const BYTE *random = randomData->BytePtr();
+
+        SecureByteBlock::size_type length = final->SizeInBytes();
+        for (; length > 0; --length, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        // set the output split key into the base 64 values
+        part1Str = IHelper::convertToBuffer(IHelper::convertToBase64(*randomData));
+        part2Str = IHelper::convertToBuffer(IHelper::convertToBase64(*final));
       }
 
       //-----------------------------------------------------------------------
@@ -209,7 +238,8 @@ namespace hookflash
         mHasPermissions(false),
         mLockboxNamespaceGrantStartNotificationSent(false),
         mPeerFilesNeedUpload(false),
-        mLoginIdentitySetToBecomeAssociated(false)
+        mLoginIdentitySetToBecomeAssociated(false),
+        mForceNewAccount(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -255,13 +285,15 @@ namespace hookflash
       ServiceLockboxSessionPtr ServiceLockboxSession::login(
                                                             IServiceLockboxSessionDelegatePtr delegate,
                                                             IServiceLockboxPtr serviceLockbox,
-                                                            IServiceIdentitySessionPtr identitySession
+                                                            IServiceIdentitySessionPtr identitySession,
+                                                            bool forceNewAccount
                                                             )
       {
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
         pThis->mThisWeak = pThis;
         pThis->mGrantID = IHelper::randomString(32);
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
+        pThis->mForceNewAccount = forceNewAccount;
         pThis->init();
         return pThis;
       }
@@ -288,6 +320,11 @@ namespace hookflash
         pThis->mLockboxInfo.mAccountID = String(lockboxAccountID);
         pThis->mLockboxInfo.mKeyIdentityHalf = IHelper::convertToBuffer(identityHalfLockboxKey);
         pThis->mLockboxInfo.mKeyLockboxHalf = IHelper::convertToBuffer(lockboxHalfLockboxKey);
+
+        if ((pThis->mLockboxInfo.mKeyIdentityHalf) &&
+            (pThis->mLockboxInfo.mKeyLockboxHalf)) {
+          pThis->mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combineKey(pThis->mLockboxInfo.mKeyIdentityHalf, pThis->mLockboxInfo.mKeyLockboxHalf))));
+        }
         pThis->init();
         return pThis;
         return ServiceLockboxSessionPtr();
@@ -1180,6 +1217,35 @@ namespace hookflash
         if (mLoginIdentity) {
           IdentityInfo identityInfo = mLoginIdentity->forLockbox().getIdentityInfo();
           request->identityInfo(identityInfo);
+
+          LockboxInfo lockboxInfo = mLoginIdentity->forLockbox().getLockboxInfo();
+          mLockboxInfo.mergeFrom(lockboxInfo);
+
+          if (mForceNewAccount) {
+            ZS_LOG_DEBUG(log("forcing a new lockbox account to be created for the identity"))
+            mLockboxInfo.mResetFlag = true;
+            mForceNewAccount = false;
+          }
+
+          if (lockboxInfo.mResetFlag) {
+            // when reseting the account, all of these values need to become wiped out
+            mLockboxInfo.mAccountID.clear();
+            mLockboxInfo.mKeyLockboxHalf.reset();
+            mLockboxInfo.mKeyIdentityHalf.reset();
+            mLockboxInfo.mHash.clear();
+          }
+
+          if (!mLockboxInfo.mKeyIdentityHalf) {
+            SecureByteBlockPtr newKey = stack::IHelper::random(32);
+            splitKey(*newKey, mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+
+            ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
+          }
+
+          if ((mLockboxInfo.mKeyIdentityHalf) &&
+              (mLockboxInfo.mKeyLockboxHalf)) {
+            mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf))));
+          }
         }
         request->grantID(mGrantID);
         request->lockboxInfo(mLockboxInfo);
@@ -2228,12 +2294,13 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IServiceLockboxSessionPtr IServiceLockboxSession::login(
-                                                                    IServiceLockboxSessionDelegatePtr delegate,
-                                                                    IServiceLockboxPtr ServiceLockbox,
-                                                                    IServiceIdentitySessionPtr identitySession
-                                                                    )
+                                                            IServiceLockboxSessionDelegatePtr delegate,
+                                                            IServiceLockboxPtr ServiceLockbox,
+                                                            IServiceIdentitySessionPtr identitySession,
+                                                            bool forceNewAccount
+                                                            )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().login(delegate, ServiceLockbox, identitySession);
+      return internal::IServiceLockboxSessionFactory::singleton().login(delegate, ServiceLockbox, identitySession, forceNewAccount);
     }
 
     //-------------------------------------------------------------------------

@@ -276,7 +276,7 @@ namespace hookflash
         queue.CopyTo(decoder);
         decoder.MessageEnd();
 
-        size_t outputLengthInBytes = outputQueue->CurrentSize();
+        SecureByteBlock::size_type outputLengthInBytes = (SecureByteBlock::size_type)outputQueue->CurrentSize();
         output->CleanNew(outputLengthInBytes);
 
         outputQueue->Get(*output, outputLengthInBytes);

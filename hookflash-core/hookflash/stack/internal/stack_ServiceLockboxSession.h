@@ -196,7 +196,8 @@ namespace hookflash
         static ServiceLockboxSessionPtr login(
                                               IServiceLockboxSessionDelegatePtr delegate,
                                               IServiceLockboxPtr serviceLockbox,
-                                              IServiceIdentitySessionPtr identitySession
+                                              IServiceIdentitySessionPtr identitySession,
+                                              bool forceNewAccount = false
                                               );
 
         static ServiceLockboxSessionPtr relogin(
@@ -496,6 +497,8 @@ namespace hookflash
         bool mPeerFilesNeedUpload;
         bool mLoginIdentitySetToBecomeAssociated;
 
+        bool mForceNewAccount;
+
         IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
         ServiceTypeMap mServicesByType;
 
@@ -527,7 +530,8 @@ namespace hookflash
         virtual ServiceLockboxSessionPtr login(
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr ServiceLockbox,
-                                               IServiceIdentitySessionPtr identitySession
+                                               IServiceIdentitySessionPtr identitySession,
+                                               bool forceNewAccount = false
                                                );
         
         virtual ServiceLockboxSessionPtr relogin(
