@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		005F60B61756B7DB00BC3DD6 /* core_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */; };
 		0063C11516CA9B6A00E6DB4D /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5716CA9B6900E6DB4D /* core.cpp */; };
 		0063C11616CA9B6A00E6DB4D /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5816CA9B6900E6DB4D /* core_Account.cpp */; };
 		0063C11716CA9B6A00E6DB4D /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5916CA9B6900E6DB4D /* core_Call.cpp */; };
 		0063C11816CA9B6A00E6DB4D /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */; };
 		0063C11916CA9B6A00E6DB4D /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */; };
-		0063C11A16CA9B6A00E6DB4D /* core_ContactPeerFilePublicLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5C16CA9B6900E6DB4D /* core_ContactPeerFilePublicLookup.cpp */; };
 		0063C11B16CA9B6A00E6DB4D /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */; };
 		0063C11C16CA9B6A00E6DB4D /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */; };
 		0063C11D16CA9B6A00E6DB4D /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */; };
@@ -40,6 +40,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		005F60B41756B7C500BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
+		005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Cache.cpp; sourceTree = "<group>"; };
+		005F60B71756B7E300BC3DD6 /* core_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_Cache.h; sourceTree = "<group>"; };
 		0063BF4216CA9B2F00E6DB4D /* libhfcore_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063BF5516CA9B6900E6DB4D /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
 		0063BF5716CA9B6900E6DB4D /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
@@ -47,7 +50,6 @@
 		0063BF5916CA9B6900E6DB4D /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Call.cpp; sourceTree = "<group>"; };
 		0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_CallTransport.cpp; sourceTree = "<group>"; };
 		0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Contact.cpp; sourceTree = "<group>"; };
-		0063BF5C16CA9B6900E6DB4D /* core_ContactPeerFilePublicLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ContactPeerFilePublicLookup.cpp; sourceTree = "<group>"; };
 		0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThread.cpp; sourceTree = "<group>"; };
 		0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
 		0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
@@ -63,7 +65,6 @@
 		0063BF6916CA9B6900E6DB4D /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAccount.h; sourceTree = "<group>"; };
 		0063BF6A16CA9B6900E6DB4D /* ICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICall.h; sourceTree = "<group>"; };
 		0063BF6B16CA9B6900E6DB4D /* IContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IContact.h; sourceTree = "<group>"; };
-		0063BF6C16CA9B6900E6DB4D /* IContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
 		0063BF6D16CA9B6900E6DB4D /* IConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IConversationThread.h; sourceTree = "<group>"; };
 		0063BF6E16CA9B6900E6DB4D /* IHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IHelper.h; sourceTree = "<group>"; };
 		0063BF6F16CA9B6900E6DB4D /* IIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIdentity.h; sourceTree = "<group>"; };
@@ -75,7 +76,6 @@
 		0063BF7616CA9B6900E6DB4D /* core_Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Call.h; sourceTree = "<group>"; };
 		0063BF7716CA9B6900E6DB4D /* core_CallTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_CallTransport.h; sourceTree = "<group>"; };
 		0063BF7816CA9B6900E6DB4D /* core_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Contact.h; sourceTree = "<group>"; };
-		0063BF7916CA9B6900E6DB4D /* core_ContactPeerFilePublicLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ContactPeerFilePublicLookup.h; sourceTree = "<group>"; };
 		0063BF7A16CA9B6900E6DB4D /* core_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThread.h; sourceTree = "<group>"; };
 		0063BF7B16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
 		0063BF7C16CA9B6900E6DB4D /* core_ConversationThreadHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadHost.h; sourceTree = "<group>"; };
@@ -137,9 +137,9 @@
 				0063BF8F16CA9B6900E6DB4D /* types.h */,
 				0063BF5516CA9B6900E6DB4D /* core.h */,
 				0063BF6916CA9B6900E6DB4D /* IAccount.h */,
+				005F60B41756B7C500BC3DD6 /* ICache.h */,
 				0063BF6A16CA9B6900E6DB4D /* ICall.h */,
 				0063BF6B16CA9B6900E6DB4D /* IContact.h */,
-				0063BF6C16CA9B6900E6DB4D /* IContactPeerFilePublicLookup.h */,
 				0063BF6D16CA9B6900E6DB4D /* IConversationThread.h */,
 				0063BF6E16CA9B6900E6DB4D /* IHelper.h */,
 				0063BF6F16CA9B6900E6DB4D /* IIdentity.h */,
@@ -156,10 +156,10 @@
 			children = (
 				0063BF5716CA9B6900E6DB4D /* core.cpp */,
 				0063BF5816CA9B6900E6DB4D /* core_Account.cpp */,
+				005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */,
 				0063BF5916CA9B6900E6DB4D /* core_Call.cpp */,
 				0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */,
 				0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */,
-				0063BF5C16CA9B6900E6DB4D /* core_ContactPeerFilePublicLookup.cpp */,
 				0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */,
 				0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */,
 				0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */,
@@ -182,10 +182,10 @@
 				0063BF8616CA9B6900E6DB4D /* types.h */,
 				0063BF7416CA9B6900E6DB4D /* core.h */,
 				0063BF7516CA9B6900E6DB4D /* core_Account.h */,
+				005F60B71756B7E300BC3DD6 /* core_Cache.h */,
 				0063BF7616CA9B6900E6DB4D /* core_Call.h */,
 				0063BF7716CA9B6900E6DB4D /* core_CallTransport.h */,
 				0063BF7816CA9B6900E6DB4D /* core_Contact.h */,
-				0063BF7916CA9B6900E6DB4D /* core_ContactPeerFilePublicLookup.h */,
 				0063BF7A16CA9B6900E6DB4D /* core_ConversationThread.h */,
 				0063BF7B16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.h */,
 				0063BF7C16CA9B6900E6DB4D /* core_ConversationThreadHost.h */,
@@ -258,7 +258,6 @@
 				0063C11716CA9B6A00E6DB4D /* core_Call.cpp in Sources */,
 				0063C11816CA9B6A00E6DB4D /* core_CallTransport.cpp in Sources */,
 				0063C11916CA9B6A00E6DB4D /* core_Contact.cpp in Sources */,
-				0063C11A16CA9B6A00E6DB4D /* core_ContactPeerFilePublicLookup.cpp in Sources */,
 				0063C11B16CA9B6A00E6DB4D /* core_ConversationThread.cpp in Sources */,
 				0063C11C16CA9B6A00E6DB4D /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
 				0063C11D16CA9B6A00E6DB4D /* core_ConversationThreadHost.cpp in Sources */,
@@ -271,6 +270,7 @@
 				0063C12416CA9B6A00E6DB4D /* core_Logger.cpp in Sources */,
 				0063C12516CA9B6A00E6DB4D /* core_MediaEngine.cpp in Sources */,
 				0063C12616CA9B6A00E6DB4D /* core_Stack.cpp in Sources */,
+				005F60B61756B7DB00BC3DD6 /* core_Cache.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +417,7 @@
 				0063BF5216CA9B2F00E6DB4D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -13,6 +13,7 @@
 		0051C4741745D15A0095FD98 /* LockboxAdminWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C4701745D15A0095FD98 /* LockboxAdminWindowResult.cpp */; };
 		0051C4751745D15A0095FD98 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C4711745D15A0095FD98 /* LockboxNamespaceGrantWindowRequest.cpp */; };
 		0051C4761745D15A0095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C4721745D15A0095FD98 /* LockboxNamespaceGrantWindowResult.cpp */; };
+		005F60B31756B07700BC3DD6 /* stack_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60B21756B07700BC3DD6 /* stack_Cache.cpp */; };
 		0063BB6A16CA92D000E6DB4D /* stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA0D16CA92CF00E6DB4D /* stack.cpp */; };
 		0063BB6B16CA92D000E6DB4D /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA0E16CA92CF00E6DB4D /* stack_Account.cpp */; };
 		0063BB6C16CA92D000E6DB4D /* stack_AccountFinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA0F16CA92CF00E6DB4D /* stack_AccountFinder.cpp */; };
@@ -147,6 +148,10 @@
 		0051C4701745D15A0095FD98 /* LockboxAdminWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowResult.cpp; sourceTree = "<group>"; };
 		0051C4711745D15A0095FD98 /* LockboxNamespaceGrantWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowRequest.cpp; sourceTree = "<group>"; };
 		0051C4721745D15A0095FD98 /* LockboxNamespaceGrantWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowResult.cpp; sourceTree = "<group>"; };
+		005F60AF1756B03200BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
+		005F60B01756B04F00BC3DD6 /* stack_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Cache.h; sourceTree = "<group>"; };
+		005F60B11756B04F00BC3DD6 /* stack_ServiceLockboxSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceLockboxSession.h; sourceTree = "<group>"; };
+		005F60B21756B07700BC3DD6 /* stack_Cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Cache.cpp; sourceTree = "<group>"; };
 		0063B94916CA91F000E6DB4D /* libhfstack_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfstack_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063BA0D16CA92CF00E6DB4D /* stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack.cpp; sourceTree = "<group>"; };
 		0063BA0E16CA92CF00E6DB4D /* stack_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Account.cpp; sourceTree = "<group>"; };
@@ -208,7 +213,6 @@
 		0063BA4816CA92CF00E6DB4D /* stack_RSAPublicKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_RSAPublicKey.h; sourceTree = "<group>"; };
 		0063BA4916CA92CF00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceCertificatesValidateQuery.h; sourceTree = "<group>"; };
 		0063BA4A16CA92CF00E6DB4D /* stack_ServiceIdentitySession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceIdentitySession.h; sourceTree = "<group>"; };
-		0063BA4B16CA92CF00E6DB4D /* stack_ServicePeerContactSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServicePeerContactSession.h; sourceTree = "<group>"; };
 		0063BA4C16CA92CF00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_ServiceSaltFetchSignedSaltQuery.h; sourceTree = "<group>"; };
 		0063BA4D16CA92CF00E6DB4D /* stack_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_Stack.h; sourceTree = "<group>"; };
 		0063BA4E16CA92CF00E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
@@ -442,6 +446,7 @@
 				0063BB1316CA92D000E6DB4D /* stack.h */,
 				0063BA2916CA92CF00E6DB4D /* IAccount.h */,
 				0063BA2A16CA92CF00E6DB4D /* IBootstrappedNetwork.h */,
+				005F60AF1756B03200BC3DD6 /* ICache.h */,
 				0063BA2B16CA92CF00E6DB4D /* IDiff.h */,
 				0063BA2C16CA92CF00E6DB4D /* IHelper.h */,
 				0063BA2D16CA92CF00E6DB4D /* ILocation.h */,
@@ -476,6 +481,7 @@
 				0063BA1016CA92CF00E6DB4D /* stack_AccountPeerLocation.cpp */,
 				0063BA1116CA92CF00E6DB4D /* stack_BootstrappedNetwork.cpp */,
 				0063BA1216CA92CF00E6DB4D /* stack_BootstrappedNetworkManager.cpp */,
+				005F60B21756B07700BC3DD6 /* stack_Cache.cpp */,
 				0063BA1316CA92CF00E6DB4D /* stack_Diff.cpp */,
 				0063BA1416CA92CF00E6DB4D /* stack_Factory.cpp */,
 				0063BA1516CA92CF00E6DB4D /* stack_Helper.cpp */,
@@ -512,6 +518,7 @@
 				0063BA3516CA92CF00E6DB4D /* stack_AccountPeerLocation.h */,
 				0063BA3616CA92CF00E6DB4D /* stack_BootstrappedNetwork.h */,
 				0063BA3716CA92CF00E6DB4D /* stack_BootstrappedNetworkManager.h */,
+				005F60B01756B04F00BC3DD6 /* stack_Cache.h */,
 				0063BA3816CA92CF00E6DB4D /* stack_Diff.h */,
 				0063BA3916CA92CF00E6DB4D /* stack_Factory.h */,
 				0063BA3A16CA92CF00E6DB4D /* stack_Helper.h */,
@@ -531,7 +538,7 @@
 				0063BA4816CA92CF00E6DB4D /* stack_RSAPublicKey.h */,
 				0063BA4916CA92CF00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */,
 				0063BA4A16CA92CF00E6DB4D /* stack_ServiceIdentitySession.h */,
-				0063BA4B16CA92CF00E6DB4D /* stack_ServicePeerContactSession.h */,
+				005F60B11756B04F00BC3DD6 /* stack_ServiceLockboxSession.h */,
 				0063BA4C16CA92CF00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */,
 				0063BA4D16CA92CF00E6DB4D /* stack_Stack.h */,
 			);
@@ -1077,6 +1084,7 @@
 				0051C4741745D15A0095FD98 /* LockboxAdminWindowResult.cpp in Sources */,
 				0051C4751745D15A0095FD98 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */,
 				0051C4761745D15A0095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */,
+				005F60B31756B07700BC3DD6 /* stack_Cache.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
