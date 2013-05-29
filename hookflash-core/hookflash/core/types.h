@@ -69,6 +69,14 @@ namespace hookflash
     typedef boost::weak_ptr<IAccountDelegate> IAccountDelegateWeakPtr;
     typedef zsLib::Proxy<IAccountDelegate> IAccountDelegateProxy;
 
+    interaction ICache;
+    typedef boost::shared_ptr<ICache> ICachePtr;
+    typedef boost::weak_ptr<ICache> ICacheWeakPtr;
+
+    interaction ICacheDelegate;
+    typedef boost::shared_ptr<ICacheDelegate> ICacheDelegatePtr;
+    typedef boost::weak_ptr<ICacheDelegate> ICacheDelegateWeakPtr;
+
     interaction ICall;
     typedef boost::shared_ptr<ICall> ICallPtr;
     typedef boost::weak_ptr<ICall> ICallWeakPtr;
@@ -77,6 +85,10 @@ namespace hookflash
     typedef boost::shared_ptr<ICallDelegate> ICallDelegatePtr;
     typedef boost::weak_ptr<ICallDelegate> ICallDelegateWeakPtr;
     typedef zsLib::Proxy<ICallDelegate> ICallDelegateProxy;
+
+    interaction ICacheDelegate;
+    typedef boost::shared_ptr<ICallDelegate> ICallDelegatePtr;
+    typedef boost::weak_ptr<ICallDelegate> ICallDelegateWeakPtr;
 
     interaction ILoggerDelegate;
     typedef boost::shared_ptr<ILoggerDelegate> ILoggerDelegatePtr;
@@ -177,7 +189,7 @@ namespace hookflash
       IContactPtr mContact;
 
       String mIdentityURI;
-      String mUserID;
+      String mStableID;
 
       WORD mPriority;
       WORD mWeight;

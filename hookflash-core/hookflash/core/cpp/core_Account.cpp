@@ -47,6 +47,7 @@
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
+#include <zsLib/XML.h>
 
 #define HOOKFLASH_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS (60*3)
 
@@ -60,6 +61,7 @@ namespace hookflash
     namespace internal
     {
       using zsLib::Stringize;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -106,7 +108,8 @@ namespace hookflash
         mConversationThreadDelegate(IConversationThreadDelegateProxy::createWeak(IStackForInternal::queueApplication(), conversationThreadDelegate)),
         mCallDelegate(ICallDelegateProxy::createWeak(IStackForInternal::queueApplication(), callDelegate)),
         mCurrentState(AccountState_Pending),
-        mLastErrorCode(0)
+        mLastErrorCode(0),
+        mLockboxForceCreateNewAccount(false)
       {
         ZS_LOG_BASIC(log("created"))
       }
@@ -154,16 +157,20 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *peerContactServiceDomain,
-                                IIdentityPtr inIdentity
+                                const char *lockboxOuterFrameURLUponReload,
+                                const char *lockboxServiceDomain,
+                                const char *lockboxGrantID,
+                                bool forceCreateNewLockboxAccount
                                 )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!inIdentity)
+        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxOuterFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxServiceDomain)
+        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxGrantID)
 
         AccountPtr pThis(new Account(IStackForInternal::queueCore(), delegate, conversationThreadDelegate, callDelegate));
         pThis->mThisWeak = pThis;
 
-        String domain(peerContactServiceDomain ? String(peerContactServiceDomain) : String());
+        String domain(lockboxServiceDomain);
 
         IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
         if (!network) {
@@ -171,13 +178,12 @@ namespace hookflash
           return AccountPtr();
         }
 
-        IServiceLockboxPtr ServiceLockbox = IServiceLockbox::createServiceLockboxFrom(network);
-        ZS_THROW_BAD_STATE_IF(!ServiceLockbox)
+        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(network);
+        ZS_THROW_BAD_STATE_IF(!pThis->mLockboxService)
 
-        IdentityPtr identity = Identity::convert(inIdentity);
-
-        pThis->mIdentities[identity->forAccount().getSession()->getID()] = identity;
-        pThis->mPeerContactSession = IServiceLockboxSession::login(pThis, ServiceLockbox, identity->forAccount().getSession());
+        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
+        pThis->mLockboxGrantID = String(lockboxGrantID);
+        pThis->mLockboxForceCreateNewAccount = forceCreateNewLockboxAccount;
 
         pThis->init();
         return pThis;
@@ -188,22 +194,53 @@ namespace hookflash
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  ElementPtr peerFilePrivateEl,
-                                  const char *peerFilePrivateSecret
+                                  const char *lockboxOuterFrameURLUponReload,
+                                  ElementPtr reloginInformation
                                   )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxOuterFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!reloginInformation)
+
         AccountPtr pThis(new Account(IStackForInternal::queueCore(), delegate, conversationThreadDelegate, callDelegate));
         pThis->mThisWeak = pThis;
+        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
 
-        IPeerFilesPtr peerFiles = IPeerFiles::loadFromElement(peerFilePrivateSecret, peerFilePrivateEl);
-        if (!peerFiles) {
-          ZS_LOG_ERROR(Detail, pThis->log("peer files failed to load"))
+        String domain;
+        String accountID;
+        String grantID;
+        String keyIdentityHalf;
+        String keyLockboxHalf;
+
+        try {
+          domain = reloginInformation->findFirstChildElementChecked("domain")->getTextDecoded();
+          accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
+          grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
+          keyIdentityHalf = reloginInformation->findFirstChildElementChecked("keyIdentityHalf")->getTextDecoded();
+          keyLockboxHalf = reloginInformation->findFirstChildElementChecked("keyLockboxHalf")->getTextDecoded();
+        } catch (CheckFailed &) {
           return AccountPtr();
         }
 
-        pThis->mPeerContactSession = IServiceLockboxSession::relogin(pThis, peerFiles);
+        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
+        if (!network) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + domain)
+          return AccountPtr();
+        }
 
+        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(network);
+        ZS_THROW_BAD_STATE_IF(!pThis->mLockboxService)
+
+        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
+        pThis->mLockboxGrantID = grantID;
+        pThis->mLockboxForceCreateNewAccount = false;
+
+        pThis->mLockboxSession = IServiceLockboxSession::relogin(pThis, pThis->mLockboxService, lockboxOuterFrameURLUponReload, accountID, grantID, keyIdentityHalf, keyLockboxHalf);
         pThis->init();
+
+        if (!pThis->mLockboxSession) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to create lockbox session from relogin information"))
+          return AccountPtr();
+        }
         return pThis;
       }
 
@@ -221,13 +258,6 @@ namespace hookflash
         ZS_LOG_DEBUG(log("getting account state") + getDebugValueString())
 
         return mCurrentState;
-      }
-
-      //-----------------------------------------------------------------------
-      String Account::getUserID() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mPeerContactSession->getContactUserID();
       }
 
       //-----------------------------------------------------------------------
@@ -258,7 +288,9 @@ namespace hookflash
       ElementPtr Account::savePeerFilePrivate() const
       {
         AutoRecursiveLock lock(getLock());
-        IPeerFilesPtr peerFiles = mPeerContactSession->getPeerFiles();
+        if (!mLockboxSession) return ElementPtr();
+
+        IPeerFilesPtr peerFiles = mLockboxSession->getPeerFiles();
         if (!peerFiles) {
           ZS_LOG_WARNING(Detail, log("peer files are not available") + getDebugValueString())
           return ElementPtr();
@@ -271,7 +303,9 @@ namespace hookflash
       SecureByteBlockPtr Account::getPeerFilePrivateSecret() const
       {
         AutoRecursiveLock lock(getLock());
-        IPeerFilesPtr peerFiles = mPeerContactSession->getPeerFiles();
+        if (!mLockboxSession) return SecureByteBlockPtr();
+
+        IPeerFilesPtr peerFiles = mLockboxSession->getPeerFiles();
         if (!peerFiles) {
           ZS_LOG_WARNING(Detail, log("peer files are not available") + getDebugValueString())
           return SecureByteBlockPtr();
@@ -294,7 +328,7 @@ namespace hookflash
           return result;
         }
 
-        ServiceIdentitySessionListPtr identities = mPeerContactSession->getAssociatedIdentities();
+        ServiceIdentitySessionListPtr identities = mLockboxSession->getAssociatedIdentities();
         ZS_THROW_BAD_STATE_IF(!identities)
 
         for (ServiceIdentitySessionList::iterator iter = identities->begin(); iter != identities->end(); ++iter)
@@ -317,10 +351,7 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Account::associateIdentities(
-                                        const IdentityList &identitiesToAssociate,
-                                        const IdentityList &identitiesToRemove
-                                        )
+      void Account::removeIdentities(const IdentityList &identitiesToRemove)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -330,22 +361,86 @@ namespace hookflash
           return;
         }
 
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return;
+        }
+
         ServiceIdentitySessionList add;
         ServiceIdentitySessionList remove;
 
-        for (IdentityList::const_iterator iter = identitiesToAssociate.begin(); iter != identitiesToAssociate.end(); ++iter)
-        {
-          IdentityPtr identity = Identity::convert(*iter);
-          mIdentities[identity->forAccount().getSession()->getID()] = identity;
-          add.push_back(identity->forAccount().getSession());
-        }
         for (IdentityList::const_iterator iter = identitiesToRemove.begin(); iter != identitiesToRemove.end(); ++iter)
         {
           IdentityPtr identity = Identity::convert(*iter);
           mIdentities[identity->forAccount().getSession()->getID()] = identity;
           remove.push_back(identity->forAccount().getSession());
         }
-        mPeerContactSession->associateIdentities(add, remove);
+
+        mLockboxSession->associateIdentities(add, remove);
+      }
+
+      //-----------------------------------------------------------------------
+      String Account::getInnerBrowserWindowFrameURL() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return String();
+        }
+        return mLockboxSession->getInnerBrowserWindowFrameURL();
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::notifyBrowserWindowVisible()
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return;
+        }
+        mLockboxSession->notifyBrowserWindowVisible();
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::notifyBrowserWindowClosed()
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return;
+        }
+        mLockboxSession->notifyBrowserWindowClosed();
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr Account::getNextMessageForInnerBrowerWindowFrame()
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return ElementPtr();
+        }
+        DocumentPtr doc = mLockboxSession->getNextMessageForInnerBrowerWindowFrame();
+        if (!doc) {
+          ZS_LOG_WARNING(Detail, log("lockbox has no message pending for inner browser window frame"))
+          return ElementPtr();
+        }
+        return doc->getFirstChildElement();
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::handleMessageFromInnerBrowserWindowFrame(ElementPtr unparsedMessage)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!unparsedMessage)
+
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
+          return;
+        }
+        DocumentPtr doc = Document::create();
+        doc->adoptAsLastChild(unparsedMessage);
+        mLockboxSession->handleMessageFromInnerBrowserWindowFrame(doc);
       }
 
       //-----------------------------------------------------------------------
@@ -485,7 +580,12 @@ namespace hookflash
       IPeerFilesPtr Account::getPeerFiles() const
       {
         AutoRecursiveLock lock(mLock);
-        return mPeerContactSession->getPeerFiles();
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("lockbox is not created yet thus peer files are not available yet"))
+          return IPeerFilesPtr();
+        }
+
+        return mLockboxSession->getPeerFiles();
       }
 
       //-----------------------------------------------------------------------
@@ -545,14 +645,49 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark Account => IAccountForIdentity
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark Account => IAccountForIdentityLookup
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServiceLockboxSessionPtr Account::getPeerContactSession() const
+      stack::IServiceLockboxSessionPtr Account::getLockboxSession() const
       {
         AutoRecursiveLock lock(mLock);
-        return mPeerContactSession;
+        return mLockboxSession;
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::associateIdentity(IdentityPtr identity)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!identity)
+
+        ZS_LOG_DEBUG(log("associating identity to account/lockbox"))
+
+        AutoRecursiveLock lock(mLock);
+
+        mIdentities[identity->forAccount().getSession()->getID()] = identity;
+
+        if (!mLockboxSession) {
+          ZS_LOG_DEBUG(log("creating lockbox session"))
+          mLockboxSession = IServiceLockboxSession::login(mThisWeak.lock(), mLockboxService, identity->forAccount().getSession(), mLockboxOuterFrameURLUponReload, mLockboxGrantID, mLockboxForceCreateNewAccount);
+        } else {
+          ZS_LOG_DEBUG(log("associating to existing lockbox session"))
+          ServiceIdentitySessionList add;
+          ServiceIdentitySessionList remove;
+
+          add.push_back(identity->forAccount().getSession());
+
+          mLockboxSession->associateIdentities(add, remove);
+        }
+
+        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -723,7 +858,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
 
-        if (session != mPeerContactSession) {
+        if (session != mLockboxSession) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete peer contact session"))
           return;
         }
@@ -874,9 +1009,13 @@ namespace hookflash
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("error code", 0 != mLastErrorCode ? Stringize<typeof(mLastErrorCode)>(mLastErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               IContact::toDebugString(mSelfContact) +
                stack::IAccount::toDebugString(mStackAccount) +
+               stack::IServiceLockboxSession::toDebugString(mLockboxSession) +
+               Helper::getDebugValue("lockbox outer frame URL upon reload", mLockboxOuterFrameURLUponReload, firstTime) +
+               Helper::getDebugValue("lockbox grant ID", mLockboxGrantID, firstTime) +
+               Helper::getDebugValue("force new lockbox account", mLockboxForceCreateNewAccount ? String("true") : String(), firstTime) +
                stack::IPeerSubscription::toDebugString(mPeerSubscription) +
+               IContact::toDebugString(mSelfContact) +
                Helper::getDebugValue("identities", mIdentities.size() > 0 ? Stringize<size_t>(mIdentities.size()).string() : String(), firstTime) +
                Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<size_t>(mContacts.size()).string() : String(), firstTime) +
                Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? Stringize<size_t>(mConversationThreads.size()).string() : String(), firstTime);
@@ -927,7 +1066,9 @@ namespace hookflash
 
         setState(AccountState_Shutdown);
 
-        mPeerContactSession->cancel();  // do not reset
+        if (mLockboxSession) {
+          mLockboxSession->cancel();  // do not reset
+        }
 
         mGracefulShutdownReference.reset();
 
@@ -953,7 +1094,8 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
-        if (!stepPeerContactSession()) return;
+        if (!stepLoginIdentityAssociated()) return;
+        if (!stepLockboxSession()) return;
         if (!stepStackAccount()) return;
         if (!stepSelfContact()) return;
         if (!stepCallTransportSetup()) return;
@@ -967,34 +1109,81 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool Account::stepPeerContactSession()
+      bool Account::stepLoginIdentityAssociated()
+      {
+        if (mLockboxSession) {
+          ZS_LOG_DEBUG(log("lockbox is already created thus login identity associate is not needed"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("waiting for account to be associated to an identity"))
+
+        setState(AccountState_WaitingForAssociationToIdentity);
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool Account::stepLockboxSession()
       {
         WORD errorCode = 0;
         String reason;
 
-        IServiceLockboxSession::SessionStates state = mPeerContactSession->getState(&errorCode, &reason);
+        IServiceLockboxSession::SessionStates state = mLockboxSession->getState(&errorCode, &reason);
 
-        if (IServiceLockboxSession::SessionState_Ready == state) {
-          ZS_LOG_DEBUG(log("step peer contact completed"))
-          return true;
+        switch (state) {
+          case IServiceLockboxSession::SessionState_Pending:
+          {
+            ZS_LOG_DEBUG(log("lockbox is pending"))
+            setState(AccountState_Pending);
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration:
+          {
+            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
+            setState(AccountState_PendingPeerFilesGeneration);
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeLoaded:
+          {
+            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
+            setState(AccountState_WaitingForBrowserWindowToBeLoaded);
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
+          {
+            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
+            setState(AccountState_WaitingForBrowserWindowToBeMadeVisible);
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToClose:
+          {
+            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
+            setState(AccountState_WaitingForBrowserWindowToClose);
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_Ready: {
+            ZS_LOG_DEBUG(log("lockbox session is ready"))
+            return true;
+          }
+          case IServiceLockboxSession::SessionState_Shutdown:  {
+            ZS_LOG_ERROR(Detail, log("lockbox session shutdown"))
+            setError(errorCode, reason);
+            cancel();
+            return false;
+          }
         }
 
-        if (IServiceLockboxSession::SessionState_Shutdown == state) {
-          ZS_LOG_ERROR(Detail, log("peer contact session shutdown"))
-          setError(errorCode, reason);
-          cancel();
-          return false;
-        }
-
-        ZS_LOG_DEBUG(log("waiting for peer contact session to be ready"))
+        ZS_LOG_DEBUG(log("waiting for lockbox session to be ready"))
         return false;
       }
 
       //-----------------------------------------------------------------------
       bool Account::stepStackAccount()
       {
+        ZS_THROW_BAD_STATE_IF(!mLockboxSession)
+
         if (!mStackAccount) {
-          mStackAccount = stack::IAccount::create(mThisWeak.lock(), mPeerContactSession);
+          mStackAccount = stack::IAccount::create(mThisWeak.lock(), mLockboxSession);
         }
 
         WORD errorCode = 0;
@@ -1035,7 +1224,7 @@ namespace hookflash
           return false;
         }
 
-        mSelfContact = IContactForAccount::createFromPeer(mThisWeak.lock(), selfLocation->getPeer(), mPeerContactSession->getContactUserID());
+        mSelfContact = IContactForAccount::createFromPeer(mThisWeak.lock(), selfLocation->getPeer(), mLockboxSession->getStableID());
         ZS_THROW_BAD_STATE_IF(!mSelfContact)
         return true;
       }
@@ -2032,11 +2221,13 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *peerContactServiceDomain,
-                                IIdentityPtr identity
+                                const char *outerFrameURLUponReload,
+                                const char *lockboxServiceDomain,
+                                const char *lockboxGrantID,
+                                bool forceCreateNewLockboxAccount
                                 )
     {
-      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, peerContactServiceDomain, identity);
+      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, lockboxServiceDomain, lockboxGrantID, forceCreateNewLockboxAccount);
     }
 
     //-------------------------------------------------------------------------
@@ -2044,11 +2235,11 @@ namespace hookflash
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  ElementPtr peerFilePrivateEl,
-                                  const char *peerFilePrivateSecret
+                                  const char *outerFrameURLUponReload,
+                                  ElementPtr reloginInformation
                                   )
     {
-      return internal::IAccountFactory::singleton().relogin(delegate, conversationThreadDelegate, callDelegate, peerFilePrivateEl, peerFilePrivateSecret);
+      return internal::IAccountFactory::singleton().relogin(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, reloginInformation);
     }
   }
 }

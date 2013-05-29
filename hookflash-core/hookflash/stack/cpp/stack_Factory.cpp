@@ -777,23 +777,26 @@ namespace hookflash
                                                                     IServiceLockboxSessionDelegatePtr delegate,
                                                                     IServiceLockboxPtr ServiceLockbox,
                                                                     IServiceIdentitySessionPtr identitySession,
+                                                                    const char *outerFrameURLUponReload,
+                                                                    const char *grantID,
                                                                     bool forceNewAccount
                                                                     )
       {
-        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession, forceNewAccount);
+        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession, outerFrameURLUponReload, grantID, forceNewAccount);
       }
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::relogin(
                                                                       IServiceLockboxSessionDelegatePtr delegate,
                                                                       IServiceLockboxPtr serviceLockbox,
+                                                                      const char *outerFrameURLUponReload,
                                                                       const char *lockboxAccountID,
                                                                       const char *lockboxGrantID,
                                                                       const char *identityHalfLockboxKey,
                                                                       const char *lockboxHalfLockboxKey
                                                                       )
       {
-        return ServiceLockboxSession::relogin(delegate, serviceLockbox, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+        return ServiceLockboxSession::relogin(delegate, serviceLockbox, outerFrameURLUponReload, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
       }
 
       //-----------------------------------------------------------------------

@@ -58,33 +58,13 @@ namespace hookflash
         static ContactPtr createFromPeer(
                                          AccountPtr account,
                                          IPeerPtr peer,
-                                         const char *userIDIfKnown = NULL
+                                         const char *stableIDIfKnown = NULL
                                          );
 
         virtual String getPeerURI() const = 0;
         virtual IPeerPtr getPeer() const = 0;
 
         virtual IPeerFilePublicPtr getPeerFilePublic() const = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IContactForContactPeerFilePublicLookup
-      #pragma mark
-
-      interaction IContactForContactPeerFilePublicLookup
-      {
-        IContactForContactPeerFilePublicLookup &forContactPeerFilePublicLookup() {return *this;}
-        const IContactForContactPeerFilePublicLookup &forContactPeerFilePublicLookup() const {return *this;}
-
-        virtual String getFindSecret() const = 0;
-
-        virtual IPeerPtr getPeer() const = 0;
-
-        virtual void setPeerFilePublic(IPeerFilePublicPtr peerFile) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -145,12 +125,11 @@ namespace hookflash
         IContactForIdentityLookup &forIdentityLookup() {return *this;}
         const IContactForIdentityLookup &forIdentityLookup() const {return *this;}
 
-        static ContactPtr createFromPeerURI(
-                                            AccountPtr account,
-                                            const char *peerURI,
-                                            const char *findSecret,
-                                            const char *userID
-                                            );
+        static ContactPtr createFromPeerFilePublic(
+                                                   IAccountPtr account,
+                                                   IPeerFilePublicPtr peerFilePublic,
+                                                   const char *stableIDIfKnown = NULL // (if known)
+                                                   );
       };
 
       //-----------------------------------------------------------------------
@@ -164,9 +143,9 @@ namespace hookflash
       class Contact : public Noop,
                       public IContact,
                       public IContactForAccount,
-                      public IContactForContactPeerFilePublicLookup,
                       public IContactForConversationThread,
-                      public IContactForCall
+                      public IContactForCall,
+                      public IContactForIdentityLookup
       {
       public:
         friend interaction IContactFactory;
@@ -195,16 +174,8 @@ namespace hookflash
         static ContactPtr createFromPeerFilePublic(
                                                    IAccountPtr account,
                                                    ElementPtr peerFilePublicEl,
-                                                   const char *previousStableUniqueID = NULL // (if known)
+                                                   const char *stableIDIfKnown = NULL // (if known)
                                                    );
-
-        static ContactPtr createFromPeerURI(
-                                            IAccountPtr account,
-                                            const char *peerURI,
-                                            const char *findSecret,
-                                            const char *inStableID,
-                                            const char *inUserID
-                                            );
 
         static IContactPtr getForSelf(IAccountPtr account);
 
@@ -241,24 +212,13 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Contact => IContactForContactPeerFilePublicLookup
-        #pragma mark
-
-        // (duplicate) virtual String getFindSecret() const;
-
-        // (duplicate) virtual IPeerPtr getPeer() const;
-
-        virtual void setPeerFilePublic(IPeerFilePublicPtr peerFile);
-
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark Contact => IContactForConversationThread
         #pragma mark
 
         static ContactPtr createFromPeerFilePublic(
                                                    AccountPtr account,
                                                    IPeerFilePublicPtr publicPeerFile,
-                                                   const char *previousStableUniqueID = NULL // (if known)
+                                                   const char *stableIDIfKnown = NULL // (if known)
                                                    );
 
         // (duplicate) virtual String getPeerURI() const;
@@ -277,6 +237,17 @@ namespace hookflash
 
         // (duplicate) virtual String getPeerURI() const;
         // (duplicate) virtual IPeerPtr getPeer() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Contact => IContactForIdentityLookup
+        #pragma mark
+
+        // (duplicate) static ContactPtr createFromPeerFilePublic(
+        //                                                        IAccountPtr account,
+        //                                                        IPeerFilePublicPtr peerFilePublic,
+        //                                                        const char *stableIDIfKnown = NULL // (if known)
+        //                                                        );
 
       private:
         //---------------------------------------------------------------------
@@ -302,8 +273,7 @@ namespace hookflash
         AccountWeakPtr mAccount;
 
         IPeerPtr mPeer;
-        String mUserID;
-        mutable String mCalculatedUniqueID;
+        String mStableID;
 
         String mFindSecret;
       };
@@ -320,19 +290,17 @@ namespace hookflash
       {
         static IContactFactory &singleton();
 
-        virtual ContactPtr createFromPeerURI(
-                                             IAccountPtr account,
-                                             const char *peerURI,
-                                             const char *findSecret,
-                                             const char *inStableID,
-                                             const char *inUserID
-                                             );
-
         virtual ContactPtr createFromPeer(
                                           AccountPtr account,
                                           IPeerPtr peer,
                                           const char *userIDIfKnown = NULL
                                           );
+
+        virtual ContactPtr createFromPeerFilePublic(
+                                                    IAccountPtr account,
+                                                    ElementPtr peerFilePublicEl,
+                                                    const char *stableIDIfKnown = NULL // (if known)
+                                                    );
 
         virtual ContactPtr createFromPeerFilePublic(
                                                     AccountPtr account,

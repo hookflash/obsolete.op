@@ -102,8 +102,17 @@ namespace hookflash
 
         virtual IMessageFactoryPtr factory() const  {return IMessageFactoryPtr();}
 
+        virtual ElementPtr creationElement() const  {return mCreationElement;}
+        virtual void creationElement(ElementPtr el) {mCreationElement = el;}
+
+        virtual IMessageSourcePtr creationSource() const      {return mCreationSource;}
+        virtual void creationSource(IMessageSourcePtr source) {mCreationSource = source;}
+
       protected:
         Message();
+
+        ElementPtr mCreationElement;
+        IMessageSourcePtr mCreationSource;
 
         String mDomain;
         String mAppID;

@@ -103,10 +103,11 @@ namespace hookflash
         static String toDebugString(IIdentityPtr identity, bool includeCommaPrefix = true);
 
         static IdentityPtr login(
+                                 IAccountPtr account,
                                  IIdentityDelegatePtr delegate,
-                                 const char *redirectAfterLoginCompleteURL,
+                                 const char *outerFrameURLUponReload,
                                  const char *identityURI_or_identityBaseURI,
-                                 const char *identityProviderDomain = NULL // needed if identity is a legacy type
+                                 const char *identityProviderDomain
                                  );
 
         virtual IdentityStates getState(
@@ -116,22 +117,20 @@ namespace hookflash
 
         virtual PUID getID() const {return mID;}
 
-        virtual bool isAttached() const;
-        virtual void attach(
-                            const char *redirectAfterLoginCompleteURL,
-                            IIdentityDelegatePtr delegate
-                            );
+        virtual bool isDelegateAttached() const;
+        virtual void attachDelegate(
+                                    IIdentityDelegatePtr delegate,
+                                    const char *outerFrameURLUponReload
+                                    );
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
-        virtual String getIdentityReloginAccessKey() const;
         virtual ElementPtr getSignedIdentityBundle() const;
 
-        virtual String getIdentityLoginURL() const;
-        virtual Time getLoginExpires() const;
+        virtual String getInnerBrowserWindowFrameURL() const;
 
         virtual void notifyBrowserWindowVisible();
-        virtual void notifyLoginCompleteBrowserWindowRedirection();
+        virtual void notifyBrowserWindowClosed();
 
         virtual ElementPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr message);
@@ -198,10 +197,11 @@ namespace hookflash
         static IIdentityFactory &singleton();
 
         virtual IdentityPtr login(
+                                  IAccountPtr account,
                                   IIdentityDelegatePtr delegate,
-                                  const char *redirectAfterLoginCompleteURL,
+                                  const char *outerFrameURLUponReload,
                                   const char *identityURI_or_identityBaseURI,
-                                  const char *identityProviderDomain = NULL // needed if identity is a legacy type
+                                  const char *identityProviderDomain
                                   );
 
         virtual IdentityPtr createFromExistingSession(IServiceIdentitySessionPtr session);

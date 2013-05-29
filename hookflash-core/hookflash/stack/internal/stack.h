@@ -33,6 +33,7 @@
 
 #include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/internal/stack_Account.h>
+#include <hookflash/stack/internal/stack_Cache.h>
 #include <hookflash/stack/internal/stack_Diff.h>
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_BootstrappedNetworkManager.h>

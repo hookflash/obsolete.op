@@ -50,6 +50,11 @@ namespace hookflash
       enum AccountStates
       {
         AccountState_Pending,
+        AccountState_PendingPeerFilesGeneration,
+        AccountState_WaitingForAssociationToIdentity,
+        AccountState_WaitingForBrowserWindowToBeLoaded,
+        AccountState_WaitingForBrowserWindowToBeMadeVisible,
+        AccountState_WaitingForBrowserWindowToClose,
         AccountState_Ready,
         AccountState_ShuttingDown,
         AccountState_Shutdown,
@@ -63,15 +68,18 @@ namespace hookflash
                                IAccountDelegatePtr delegate,
                                IConversationThreadDelegatePtr conversationThreadDelegate,
                                ICallDelegatePtr callDelegate,
-                               const char *peerContactServiceDomain,
-                               IIdentityPtr identity
+                               const char *lockboxOuterFrameURLUponReload,
+                               const char *lockboxServiceDomain,
+                               const char *lockboxGrantID,
+                               bool forceCreateNewLockboxAccount = false
                                );
+
       static IAccountPtr relogin(
                                  IAccountDelegatePtr delegate,
                                  IConversationThreadDelegatePtr conversationThreadDelegate,
                                  ICallDelegatePtr callDelegate,
-                                 ElementPtr peerFilePrivateEl,
-                                 const char *peerFilePrivateSecret
+                                 const char *lockboxOuterFrameURLUponReload,
+                                 ElementPtr reloginInformation
                                  );
 
       virtual PUID getID() const = 0;
@@ -81,7 +89,8 @@ namespace hookflash
                                      String *outErrorReason
                                      ) const = 0;
 
-      virtual String getUserID() const = 0;
+      virtual ElementPtr getReloginInformation() const = 0;   // NOTE: will return ElementPtr() is relogin information is not available yet
+
       virtual String getLocationID() const = 0;
 
       virtual void shutdown() = 0;
@@ -90,10 +99,15 @@ namespace hookflash
       virtual SecureByteBlockPtr getPeerFilePrivateSecret() const = 0;
 
       virtual IdentityListPtr getAssociatedIdentities() const = 0;
-      virtual void associateIdentities(
-                                       const IdentityList &identitiesToAssociate,
-                                       const IdentityList &identitiesToRemove
-                                       ) = 0;
+      virtual void removeIdentities(const IdentityList &identitiesToRemove) = 0;
+
+      virtual String getInnerBrowserWindowFrameURL() const = 0;
+
+      virtual void notifyBrowserWindowVisible() = 0;
+      virtual void notifyBrowserWindowClosed() = 0;
+
+      virtual ElementPtr getNextMessageForInnerBrowerWindowFrame() = 0;
+      virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr unparsedMessage) = 0;
     };
 
     //-------------------------------------------------------------------------

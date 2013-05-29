@@ -59,7 +59,7 @@ namespace hookflash
     {
       return ((mContact) ||
               (mIdentityURI.hasData()) ||
-              (mUserID.hasData()) ||
+              (mStableID.hasData()) ||
               (0 != mPriority) ||
               (0 != mWeight) ||
               (Time() != mLastUpdated) ||

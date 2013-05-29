@@ -52,7 +52,8 @@ namespace hookflash
       static IIdentityLookupPtr create(
                                        IAccountPtr account,
                                        IIdentityLookupDelegatePtr delegate,
-                                       const IdentityURIList &identityURIs
+                                       const IdentityURIList &identityURIs,
+                                       const char *identityServiceDomain
                                        );
 
       virtual PUID getID() const = 0;

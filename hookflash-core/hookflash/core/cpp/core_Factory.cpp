@@ -104,11 +104,13 @@ namespace hookflash
                                         IAccountDelegatePtr delegate,
                                         IConversationThreadDelegatePtr conversationThreadDelegate,
                                         ICallDelegatePtr callDelegate,
-                                        const char *peerContactServiceDomain,
-                                        IIdentityPtr identity
+                                        const char *outerFrameURLUponReload,
+                                        const char *lockboxServiceDomain,
+                                        const char *lockboxGrantID,
+                                        bool forceCreateNewLockboxAccount
                                         )
       {
-        return Account::login(delegate, conversationThreadDelegate, callDelegate, peerContactServiceDomain, identity);
+        return Account::login(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, lockboxServiceDomain, lockboxGrantID, forceCreateNewLockboxAccount);
       }
 
       //-----------------------------------------------------------------------
@@ -116,11 +118,11 @@ namespace hookflash
                                           IAccountDelegatePtr delegate,
                                           IConversationThreadDelegatePtr conversationThreadDelegate,
                                           ICallDelegatePtr callDelegate,
-                                          ElementPtr peerFilePrivateEl,
-                                          const char *peerFilePrivateSecret
+                                          const char *outerFrameURLUponReload,
+                                          ElementPtr reloginInformation
                                           )
       {
-        return Account::relogin(delegate, conversationThreadDelegate, callDelegate, peerFilePrivateEl, peerFilePrivateSecret);
+        return Account::relogin(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, reloginInformation);
       }
 
       //-----------------------------------------------------------------------
@@ -199,58 +201,33 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      ContactPtr IContactFactory::createFromPeerURI(
-                                                    IAccountPtr account,
-                                                    const char *peerURI,
-                                                    const char *findSecret,
-                                                    const char *inStableID,
-                                                    const char *inUserID
-                                                    )
-      {
-        return Contact::createFromPeerURI(account, peerURI, findSecret, inStableID, inUserID);
-      }
-
-      //-----------------------------------------------------------------------
       ContactPtr IContactFactory::createFromPeer(
                                                  AccountPtr account,
                                                  IPeerPtr peer,
-                                                 const char *userIDIfKnown
+                                                 const char *stableIDIfKnown
                                                  )
       {
-        return Contact::createFromPeer(account, peer, userIDIfKnown);
+        return Contact::createFromPeer(account, peer, stableIDIfKnown);
+      }
+
+      //-----------------------------------------------------------------------
+      ContactPtr IContactFactory::createFromPeerFilePublic(
+                                                           IAccountPtr account,
+                                                           ElementPtr peerFilePublicEl,
+                                                           const char *stableIDIfKnown
+                                                           )
+      {
+        return Contact::createFromPeerFilePublic(account, peerFilePublicEl, stableIDIfKnown);
       }
 
       //-----------------------------------------------------------------------
       ContactPtr IContactFactory::createFromPeerFilePublic(
                                                            AccountPtr account,
                                                            IPeerFilePublicPtr peerFilePublic,
-                                                           const char *previousStableUniqueID
+                                                           const char *stableIDIfKnown
                                                            )
       {
-        return Contact::createFromPeerFilePublic(account, peerFilePublic, previousStableUniqueID);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IContactPeerFilePublicLookupFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IContactPeerFilePublicLookupFactory &IContactPeerFilePublicLookupFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      ContactPeerFilePublicLookupPtr IContactPeerFilePublicLookupFactory::create(
-                                                                                 IContactPeerFilePublicLookupDelegatePtr delegate,
-                                                                                 const ContactList &contacts
-                                                                                 )
-      {
-        return ContactPeerFilePublicLookup::create(delegate, contacts);
+        return Contact::createFromPeerFilePublic(account, peerFilePublic, stableIDIfKnown);
       }
 
       //-----------------------------------------------------------------------
@@ -373,13 +350,14 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       IdentityPtr IIdentityFactory::login(
+                                          IAccountPtr account,
                                           IIdentityDelegatePtr delegate,
-                                          const char *redirectAfterLoginCompleteURL,
+                                          const char *outerFrameURLUponReload,
                                           const char *identityURI_or_identityBaseURI,
                                           const char *identityProviderDomain
                                           )
       {
-        return Identity::login(delegate, redirectAfterLoginCompleteURL, identityURI_or_identityBaseURI, identityProviderDomain);
+        return Identity::login(account, delegate, outerFrameURLUponReload, identityURI_or_identityBaseURI, identityProviderDomain);
       }
 
       //-----------------------------------------------------------------------
@@ -404,12 +382,13 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       IdentityLookupPtr IIdentityLookupFactory::create(
-                                                      IAccountPtr account,
-                                                      IIdentityLookupDelegatePtr delegate,
-                                                      const IdentityURIList &identityURIs
-                                                      )
+                                                       IAccountPtr account,
+                                                       IIdentityLookupDelegatePtr delegate,
+                                                       const IdentityURIList &identityURIs,
+                                                       const char *identityServiceDomain
+                                                       )
       {
-        return IdentityLookup::create(account, delegate, identityURIs);
+        return IdentityLookup::create(account, delegate, identityURIs, identityServiceDomain);
       }
 
       //-----------------------------------------------------------------------

@@ -72,6 +72,7 @@ namespace hookflash
         static const String &appID();
         static const String &appName();
         static const String &appImageURL();
+        static const String &appURL();
         static const String &userAgent();
         static const String &deviceID();
         static const String &os();

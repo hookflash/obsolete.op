@@ -220,7 +220,6 @@ namespace hookflash
           bool foundHandler = false;
 
           try {
-
             message = MessageResult::createOnlyIfError(root);
             if (message) return message;
 
@@ -239,24 +238,32 @@ namespace hookflash
           } catch (CheckFailed &) {
           }
 
-          if (message) return message;
+          if (!message) {
+            switch (msgType) {
+              case Message::MessageType_Invalid:  break;
+              case Message::MessageType_Request:
+              case Message::MessageType_Notify:
+              {
+                ZS_LOG_WARNING(Detail, log("message request or notify was not understood so generating generic message"))
+                MessageFactoryUnknownPtr unknown = MessageFactoryUnknown::create(handlerStr, IMessageHelper::getAttribute(root, "method"), (foundHandler ? MessageFactoryUnknown::Method_NotParsed : MessageFactoryUnknown::Method_Unknown));
+                message = unknown->create(root, messageSource);
+                break;
+              }
+              case Message::MessageType_Result:
+              {
+                ZS_LOG_WARNING(Detail, log("message result received but was not understood, converting to an error message"))
+                ErrorCodes error = (foundHandler ? ErrorCode_NotParsed : ErrorCode_Unknown);
+                message = MessageResult::create(root, error, toString(error));
+                break;
+              }
+              case Message::MessageType_Reply:  break;
+            }
+          }
 
-          switch (msgType) {
-            case Message::MessageType_Invalid:  break;
-            case Message::MessageType_Request:
-            case Message::MessageType_Notify:
-            {
-              ZS_LOG_WARNING(Detail, log("message request or notify was not understood so generating generic message"))
-              MessageFactoryUnknownPtr unknown = MessageFactoryUnknown::create(handlerStr, IMessageHelper::getAttribute(root, "method"), (foundHandler ? MessageFactoryUnknown::Method_NotParsed : MessageFactoryUnknown::Method_Unknown));
-              return unknown->create(root, messageSource);
-            }
-            case Message::MessageType_Result:
-            {
-              ZS_LOG_WARNING(Detail, log("message result received but was not understood, converting to an error message"))
-              ErrorCodes error = (foundHandler ? ErrorCode_NotParsed : ErrorCode_Unknown);
-              return MessageResult::create(root, error, toString(error));
-            }
-            case Message::MessageType_Reply:  break;
+          if (message) {
+            message->creationElement(root);
+            message->creationSource(messageSource);
+            return message;
           }
 
           ZS_LOG_WARNING(Detail, log("cannot generate message for unknown reply"))

@@ -31,6 +31,7 @@
 
 #include <hookflash/core/internal/core_Identity.h>
 #include <hookflash/core/internal/core_Stack.h>
+#include <hookflash/core/internal/core_Account.h>
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IHelper.h>
@@ -65,14 +66,14 @@ namespace hookflash
       {
         switch (state)
         {
-          case IIdentity::IdentityState_Pending:                                  return IServiceIdentitySession::SessionState_Pending;
-          case IIdentity::IdentityState_WaitingAttachment:                        return IServiceIdentitySession::SessionState_WaitingAttachment;
-          case IIdentity::IdentityState_WaitingToLoadBrowserWindow:               return IServiceIdentitySession::SessionState_WaitingToLoadBrowserWindow;
-          case IIdentity::IdentityState_WaitingToMakeBrowserWindowVisible:        return IServiceIdentitySession::SessionState_WaitingToMakeBrowserWindowVisible;
-          case IIdentity::IdentityState_WaitingLoginCompleteBrowserRedirection:   return IServiceIdentitySession::SessionState_WaitingLoginCompleteBrowserRedirection;
-          case IIdentity::IdentityState_WaitingAssociation:                       return IServiceIdentitySession::SessionState_WaitingAssociation;
-          case IIdentity::IdentityState_Ready:                                    return IServiceIdentitySession::SessionState_Ready;
-          case IIdentity::IdentityState_Shutdown:                                 return IServiceIdentitySession::SessionState_Shutdown;
+          case IIdentity::IdentityState_Pending:                                return IServiceIdentitySession::SessionState_Pending;
+          case IIdentity::IdentityState_PendingAssociation:                     return IServiceIdentitySession::SessionState_WaitingForAssociationToLockbox;
+          case IIdentity::IdentityState_WaitingAttachmentOfDelegate:            return IServiceIdentitySession::SessionState_WaitingAttachmentOfDelegate;
+          case IIdentity::IdentityState_WaitingForBrowserWindowToBeLoaded:      return IServiceIdentitySession::SessionState_WaitingForBrowserWindowToBeLoaded;
+          case IIdentity::IdentityState_WaitingForBrowserWindowToBeMadeVisible: return IServiceIdentitySession::SessionState_WaitingForBrowserWindowToBeMadeVisible;
+          case IIdentity::IdentityState_WaitingForBrowserWindowToClose:         return IServiceIdentitySession::SessionState_WaitingForBrowserWindowToClose;
+          case IIdentity::IdentityState_Ready:                                  return IServiceIdentitySession::SessionState_Ready;
+          case IIdentity::IdentityState_Shutdown:                               return IServiceIdentitySession::SessionState_Shutdown;
         }
 
         return IServiceIdentitySession::SessionState_Pending;
@@ -84,11 +85,11 @@ namespace hookflash
         switch (state)
         {
           case IServiceIdentitySession::SessionState_Pending:                                 return IIdentity::IdentityState_Pending;
-          case IServiceIdentitySession::SessionState_WaitingAttachment:                       return IIdentity::IdentityState_WaitingAttachment;
-          case IServiceIdentitySession::SessionState_WaitingToLoadBrowserWindow:              return IIdentity::IdentityState_WaitingToLoadBrowserWindow;
-          case IServiceIdentitySession::SessionState_WaitingToMakeBrowserWindowVisible:       return IIdentity::IdentityState_WaitingToMakeBrowserWindowVisible;
-          case IServiceIdentitySession::SessionState_WaitingLoginCompleteBrowserRedirection:  return IIdentity::IdentityState_WaitingLoginCompleteBrowserRedirection;
-          case IServiceIdentitySession::SessionState_WaitingAssociation:                      return IIdentity::IdentityState_WaitingAssociation;
+          case IServiceIdentitySession::SessionState_WaitingForAssociationToLockbox:          return IIdentity::IdentityState_PendingAssociation;
+          case IServiceIdentitySession::SessionState_WaitingAttachmentOfDelegate:             return IIdentity::IdentityState_WaitingAttachmentOfDelegate;
+          case IServiceIdentitySession::SessionState_WaitingForBrowserWindowToBeLoaded:       return IIdentity::IdentityState_WaitingForBrowserWindowToBeLoaded;
+          case IServiceIdentitySession::SessionState_WaitingForBrowserWindowToBeMadeVisible:  return IIdentity::IdentityState_WaitingForBrowserWindowToBeMadeVisible;
+          case IServiceIdentitySession::SessionState_WaitingForBrowserWindowToClose:          return IIdentity::IdentityState_WaitingForBrowserWindowToClose;
           case IServiceIdentitySession::SessionState_Ready:                                   return IIdentity::IdentityState_Ready;
           case IServiceIdentitySession::SessionState_Shutdown:                                return IIdentity::IdentityState_Shutdown;
         }
@@ -164,61 +165,57 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       IdentityPtr Identity::login(
+                                  IAccountPtr inAccount,
                                   IIdentityDelegatePtr delegate,
-                                  const char *redirectAfterLoginCompleteURL,
-                                  const char *inIdentityURI_or_identityBaseURI,
-                                  const char *inIdentityProviderDomain
+                                  const char *outerFrameURLUponReload,
+                                  const char *identityURI_or_identityBaseURI,
+                                  const char *identityProviderDomain
                                   )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
-        ZS_THROW_INVALID_ARGUMENT_IF((!inIdentityURI_or_identityBaseURI) && (!inIdentityProviderDomain))
+        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityURI_or_identityBaseURI)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityProviderDomain)
+
+        AccountPtr account = Account::convert(inAccount);
 
         IdentityPtr pThis(new Identity(IStackForInternal::queueCore()));
         pThis->mThisWeak = pThis;
         pThis->mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
 
-        String identity(inIdentityURI_or_identityBaseURI ? String(inIdentityURI_or_identityBaseURI) : String());
-        String domain(inIdentityProviderDomain ? String(inIdentityProviderDomain) : String());
+        String identity(identityURI_or_identityBaseURI);
+        String domain(identityProviderDomain);
 
-        if (domain.hasData()) {
-          if (!stack::IHelper::isValidDomain(domain)) {
-            ZS_LOG_ERROR(Detail, pThis->log("domain specified was not valid") + ", domain=" + domain)
-            return IdentityPtr();
-          }
-        }
-
-        if (IServiceIdentity::isLegacy(identity)) {
-          if (domain.isEmpty()) {
-            ZS_LOG_ERROR(Detail, pThis->log("domain for legacy identity is required") + ", identity=" + identity)
-            return IdentityPtr();
-          }
-        }
+        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(domain))
 
         IServiceIdentityPtr provider;
-        if (domain.hasData()) {
-          ZS_LOG_DEBUG(pThis->log("preparing bootstrapped network domain") + ", identity=" + identity + ", domain=" + domain)
-          IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
-          if (!network) {
-            ZS_LOG_ERROR(Detail, pThis->log("bootstrapper failed for domain specified") + ", identity=" + identity + ", domain=" + domain)
-            return IdentityPtr();
-          }
-          provider = IServiceIdentity::createServiceIdentityFrom(network);
-          ZS_THROW_BAD_STATE_IF(!provider)
+        ZS_LOG_DEBUG(pThis->log("preparing bootstrapped network domain") + ", identity=" + identity + ", domain=" + domain)
+
+        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
+        if (!network) {
+          ZS_LOG_ERROR(Detail, pThis->log("bootstrapper failed for domain specified") + ", identity=" + identity + ", domain=" + domain)
+          return IdentityPtr();
         }
+
+        provider = IServiceIdentity::createServiceIdentityFrom(network);
+        ZS_THROW_BAD_STATE_IF(!provider)
+
+        IServiceLockboxSessionPtr lockbox = account->forIdentity().getLockboxSession();
 
         if (IServiceIdentity::isValid(identity)) {
           // this is a fully validated identity scenario
-          pThis->mSession = IServiceIdentitySession::loginWithIdentity(pThis, redirectAfterLoginCompleteURL, identity, provider);
+          pThis->mSession = IServiceIdentitySession::loginWithIdentity(lockbox, pThis, outerFrameURLUponReload, identityURI_or_identityBaseURI, provider);
         } else {
           if (!IServiceIdentity::isValidBase(identity)) {
             ZS_LOG_ERROR(Detail, pThis->log("identit specified is not valid") + ", identity=" + identity + ", domain=" + domain)
             return IdentityPtr();
           }
-          pThis->mSession->loginWithIdentityTBD(pThis, redirectAfterLoginCompleteURL, provider, identity);
+          pThis->mSession->loginWithIdentityProvider(lockbox, pThis, outerFrameURLUponReload, provider, identity);
         }
 
         pThis->init();
+        account->forIdentity().associateIdentity(pThis);
 
         return pThis;
       }
@@ -233,22 +230,22 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool Identity::isAttached() const
+      bool Identity::isDelegateAttached() const
       {
-        return mSession->isAttached();
+        return mSession->isDelegateAttached();
       }
 
       //-----------------------------------------------------------------------
-      void Identity::attach(
-                            const char *redirectAfterLoginCompleteURL,
-                            IIdentityDelegatePtr delegate
-                            )
+      void Identity::attachDelegate(
+                                    IIdentityDelegatePtr delegate,
+                                    const char *outerFrameURLUponReload
+                                    )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!redirectAfterLoginCompleteURL)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
 
         mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
-        mSession->attach(redirectAfterLoginCompleteURL, mThisWeak.lock());
+        mSession->attachDelegate(mThisWeak.lock(), outerFrameURLUponReload);
       }
 
       //-----------------------------------------------------------------------
@@ -264,12 +261,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String Identity::getIdentityReloginAccessKey() const
-      {
-        return mSession->getIdentityReloginAccessKey();
-      }
-
-      //-----------------------------------------------------------------------
       ElementPtr Identity::getSignedIdentityBundle() const
       {
         ElementPtr bundleEl = mSession->getSignedIdentityBundle();
@@ -277,15 +268,9 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String Identity::getIdentityLoginURL() const
+      String Identity::getInnerBrowserWindowFrameURL() const
       {
-        return mSession->getIdentityLoginURL();
-      }
-
-      //-----------------------------------------------------------------------
-      Time Identity::getLoginExpires() const
-      {
-        return mSession->getLoginExpires();
+        return mSession->getInnerBrowserWindowFrameURL();
       }
 
       //-----------------------------------------------------------------------
@@ -295,9 +280,9 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Identity::notifyLoginCompleteBrowserWindowRedirection()
+      void Identity::notifyBrowserWindowClosed()
       {
-        mSession->notifyLoginCompleteBrowserWindowRedirection();
+        mSession->notifyBrowserWindowClosed();
       }
 
       //-----------------------------------------------------------------------
@@ -392,7 +377,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String Identity::log(const char *message) const
       {
-        return String("Identity [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Identity [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -429,13 +414,14 @@ namespace hookflash
 
     //-------------------------------------------------------------------------
     IIdentityPtr IIdentity::login(
+                                  IAccountPtr account,
                                   IIdentityDelegatePtr delegate,
-                                  const char *redirectAfterLoginCompleteURL,
+                                  const char *outerFrameURLUponReload,
                                   const char *identityURI_or_identityBaseURI,
                                   const char *identityProviderDomain
                                   )
     {
-      return internal::IIdentityFactory::singleton().login(delegate, redirectAfterLoginCompleteURL, identityURI_or_identityBaseURI, identityProviderDomain);
+      return internal::IIdentityFactory::singleton().login(account, delegate, outerFrameURLUponReload, identityURI_or_identityBaseURI, identityProviderDomain);
     }
 
     //-------------------------------------------------------------------------

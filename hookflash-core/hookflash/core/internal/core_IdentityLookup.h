@@ -92,7 +92,8 @@ namespace hookflash
         IdentityLookup(
                        IMessageQueuePtr queue,
                        AccountPtr account,
-                       IIdentityLookupDelegatePtr delegate
+                       IIdentityLookupDelegatePtr delegate,
+                       const char *identityServiceDomain
                        );
         
         IdentityLookup(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -115,7 +116,8 @@ namespace hookflash
         static IdentityLookupPtr create(
                                         IAccountPtr account,
                                         IIdentityLookupDelegatePtr delegate,
-                                        const IdentityURIList &identityURIs
+                                        const IdentityURIList &identityURIs,
+                                        const char *identityServiceDomain
                                         );
 
         virtual PUID getID() const {return mID;}
@@ -190,6 +192,8 @@ namespace hookflash
         WORD mErrorCode;
         String mErrorReason;
 
+        String mIdentityServiceDomain;
+
         BootstrappedNetworkMap mBootstrappedNetworks;
         MonitorMap mMonitors;
 
@@ -217,7 +221,8 @@ namespace hookflash
         virtual IdentityLookupPtr create(
                                          IAccountPtr account,
                                          IIdentityLookupDelegatePtr delegate,
-                                         const IdentityURIList &identityURIs
+                                         const IdentityURIList &identityURIs,
+                                         const char *identityServiceDomain
                                          );
       };
     }

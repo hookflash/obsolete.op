@@ -83,12 +83,15 @@ namespace hookflash
                                              IServiceLockboxSessionDelegatePtr delegate,
                                              IServiceLockboxPtr ServiceLockbox,
                                              IServiceIdentitySessionPtr identitySession,
+                                             const char *outerFrameURLUponReload,
+                                             const char *lockboxGrantID,
                                              bool forceNewAccount = false
                                              );
 
       static IServiceLockboxSessionPtr relogin(
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr serviceLockbox,
+                                               const char *outerFrameURLUponReload,
                                                const char *lockboxAccountID,
                                                const char *lockboxGrantID,
                                                const char *identityHalfLockboxKey,
@@ -106,7 +109,10 @@ namespace hookflash
 
       virtual IPeerFilesPtr getPeerFiles() const = 0;
 
-      virtual String getLockboxAccountID() const = 0;
+      virtual String getAccountID() const = 0;
+      virtual String getDomain() const = 0;
+      virtual String getStableID() const = 0;
+
       virtual void getLockboxKey(
                                  SecureByteBlockPtr &outIdentityHalf,
                                  SecureByteBlockPtr &outLockboxHalf

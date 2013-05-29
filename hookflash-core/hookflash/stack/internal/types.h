@@ -132,6 +132,10 @@ namespace hookflash
       typedef boost::shared_ptr<ServiceCertificatesValidateQuery> ServiceCertificatesValidateQueryPtr;
       typedef boost::weak_ptr<ServiceCertificatesValidateQuery> ServiceCertificatesValidateQueryWeakPtr;
 
+      class Cache;
+      typedef boost::shared_ptr<Cache> CachePtr;
+      typedef boost::weak_ptr<Cache> CacheWeakPtr;
+
       class Diff;
       typedef boost::shared_ptr<Diff> DiffPtr;
       typedef boost::weak_ptr<Diff> DiffWeakPtr;

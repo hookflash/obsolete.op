@@ -143,6 +143,24 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountForIdentity
+      #pragma mark
+
+      interaction IAccountForIdentity
+      {
+        IAccountForIdentity &forIdentity() {return *this;}
+        const IAccountForIdentity &forIdentity() const {return *this;}
+
+        virtual stack::IServiceLockboxSessionPtr getLockboxSession() const = 0;
+
+        virtual void associateIdentity(IdentityPtr identity) = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountForIdentityLookup
       #pragma mark
 
@@ -154,8 +172,6 @@ namespace hookflash
         virtual RecursiveLock &getLock() const = 0;
 
         virtual ContactPtr findContact(const char *peerURI) const = 0;
-
-        virtual IServiceLockboxSessionPtr getPeerContactSession() const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -185,6 +201,7 @@ namespace hookflash
                       public IAccountForCall,
                       public IAccountForContact,
                       public IAccountForConversationThread,
+                      public IAccountForIdentity,
                       public IAccountForIdentityLookup,
                       public ICallTransportDelegate,
                       public stack::IAccountDelegate,
@@ -253,15 +270,17 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *peerContactServiceDomain,
-                                IIdentityPtr identity
+                                const char *lockboxOuterFrameURLUponReload,
+                                const char *lockboxServiceDomain,
+                                const char *lockboxGrantID,
+                                bool forceCreateNewLockboxAccount = false
                                 );
         static AccountPtr relogin(
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  ElementPtr peerFilePrivateEl,
-                                  const char *peerFilePrivateSecret
+                                  const char *lockboxOuterFrameURLUponReload,
+                                  ElementPtr reloginInformation
                                   );
 
         virtual PUID getID() const {return mID;}
@@ -271,7 +290,8 @@ namespace hookflash
                                        String *outErrorReason
                                        ) const;
 
-        virtual String getUserID() const;
+        virtual ElementPtr getReloginInformation() const;
+
         virtual String getLocationID() const;
 
         virtual void shutdown();
@@ -280,10 +300,15 @@ namespace hookflash
         virtual SecureByteBlockPtr getPeerFilePrivateSecret() const;
 
         virtual IdentityListPtr getAssociatedIdentities() const;
-        virtual void associateIdentities(
-                                         const IdentityList &identitiesToAssociate,
-                                         const IdentityList &identitiesToRemove
-                                         );
+        virtual void removeIdentities(const IdentityList &identitiesToRemove);
+
+        virtual String getInnerBrowserWindowFrameURL() const;
+
+        virtual void notifyBrowserWindowVisible();
+        virtual void notifyBrowserWindowClosed();
+
+        virtual ElementPtr getNextMessageForInnerBrowerWindowFrame();
+        virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr unparsedMessage);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -344,14 +369,21 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark Account => IAccountForIdentity
+        #pragma mark
+
+        virtual stack::IServiceLockboxSessionPtr getLockboxSession() const;
+
+        virtual void associateIdentity(IdentityPtr identity);
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark Account => IAccountForIdentityLookup
         #pragma mark
 
         // (duplicate) virtual RecursiveLock &getLock() const;
 
         // (duplicate) virtual ContactPtr findContact(const char *peerURI) const;
-
-        virtual IServiceLockboxSessionPtr getPeerContactSession() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -408,6 +440,8 @@ namespace hookflash
                                                              );
         virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
 
+        virtual void onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session);
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Account => IAccountAsyncDelegate
@@ -457,8 +491,9 @@ namespace hookflash
         void cancel();
 
         void step();
+        bool stepLoginIdentityAssociated();
+        bool stepLockboxSession();
         bool stepStackAccount();
-        bool stepPeerContactSession();
         bool stepSelfContact();
         bool stepCallTransportSetup();
         bool stepSubscribersPermissionDocument();
@@ -798,7 +833,12 @@ namespace hookflash
         ICallDelegatePtr mCallDelegate;
 
         stack::IAccountPtr mStackAccount;
-        IServiceLockboxSessionPtr mPeerContactSession;
+
+        IServiceLockboxSessionPtr mLockboxSession;
+        IServiceLockboxPtr mLockboxService;
+        String mLockboxOuterFrameURLUponReload;
+        String mLockboxGrantID;
+        bool mLockboxForceCreateNewAccount;
 
         mutable IdentityMap mIdentities;
 
@@ -832,15 +872,17 @@ namespace hookflash
                                  IAccountDelegatePtr delegate,
                                  IConversationThreadDelegatePtr conversationThreadDelegate,
                                  ICallDelegatePtr callDelegate,
-                                 const char *peerContactServiceDomain,
-                                 IIdentityPtr identity
+                                 const char *lockboxOuterFrameURLUponReload,
+                                 const char *lockboxServiceDomain,
+                                 const char *lockboxGrantID,
+                                 bool forceCreateNewLockboxAccount = false
                                  );
         virtual AccountPtr relogin(
                                    IAccountDelegatePtr delegate,
                                    IConversationThreadDelegatePtr conversationThreadDelegate,
                                    ICallDelegatePtr callDelegate,
-                                   ElementPtr peerFilePrivateEl,
-                                   const char *peerFilePrivateSecret
+                                   const char *lockboxOuterFrameURLUponReload,
+                                   ElementPtr reloginInformation
                                    );
       };
 

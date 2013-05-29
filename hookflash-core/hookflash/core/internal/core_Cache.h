@@ -31,8 +31,9 @@
 
 #pragma once
 
+#include <hookflash/core/ICache.h>
+#include <hookflash/stack/ICache.h>
 #include <hookflash/core/internal/types.h>
-#include <hookflash/core/internal/core.h>
 
 namespace hookflash
 {
@@ -45,41 +46,77 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Factory
+      #pragma mark Cache
       #pragma mark
 
-      class Factory : public IAccountFactory,
-                      public ICallFactory,
-                      public ICallTransportFactory,
-                      public IContactFactory,
-                      public IConversationThreadFactory,
-                      public IConversationThreadDocumentFetcherFactory,
-                      public IConversationThreadHostFactory,
-                      public IConversationThreadSlaveFactory,
-                      public IIdentityFactory,
-                      public IIdentityLookupFactory,
-                      public IMediaEngineFactory
+      class Cache : public ICache,
+                    public stack::ICacheDelegate
       {
       public:
-        static void override(FactoryPtr override);
+        friend interaction ICache;
 
-        static FactoryPtr &singleton();
+      protected:
+        Cache();
+
+      public:
+        ~Cache();
+
+      protected:
+        static CachePtr convert(ICachePtr cache);
+
+        static CachePtr create();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Cache => ICache
+        #pragma mark
+
+        static void setup(ICacheDelegatePtr delegate);
+
+        static CachePtr singleton();
+
+        virtual String fetch(const char *cookieNamePath) const;
+        virtual void store(
+                           const char *cookieNamePath,
+                           Time expires,
+                           const char *str
+                           );
+        virtual void clear(const char *cookieNamePath);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Cache => stack::ICacheDelegate
+        #pragma mark
+
+        virtual String fetch(const char *cookieNamePath);
+
+        // (duplicate) virtual void store(
+        //                                const char *cookieNamePath,
+        //                                Time expires
+        //                                ) = 0;
+
+        // (duplicate) virtual void clear(const char *cookieNamePath) = 0;
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Cache => (internal)
+        #pragma mark
+
+        String log(const char *message) const;
+
+        void actualSetup(ICacheDelegatePtr delegate);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Factory => (internal)
+        #pragma mark Cache => (data)
         #pragma mark
 
-        static FactoryPtr create();
+        mutable RecursiveLock mLock;
+        PUID mID;
+        CacheWeakPtr mThisWeak;
 
-      protected:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Factory => (data)
-        #pragma mark
-
-        FactoryPtr mOverride;
+        ICacheDelegatePtr mDelegate;
       };
     }
   }

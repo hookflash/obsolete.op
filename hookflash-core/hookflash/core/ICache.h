@@ -42,29 +42,22 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IContactPeerFilePublicLookup
+    #pragma mark ICache
     #pragma mark
 
-    interaction IContactPeerFilePublicLookup
+    interaction ICache
     {
-      static String toDebugString(IContactPeerFilePublicLookupPtr lookup, bool includeCommaPrefix = true);
+      static void setup(ICacheDelegatePtr delegate);
 
-      static IContactPeerFilePublicLookupPtr create(
-                                                    IContactPeerFilePublicLookupDelegatePtr delegate,
-                                                    const ContactList &contacts
-                                                    );
+      static ICachePtr singleton();
 
-      virtual PUID getID() const = 0;
-
-      virtual bool isComplete() const = 0;
-      virtual bool wasSuccessful(
-                                 WORD *outErrorCode,
-                                 String *outErrorReason
-                                 ) const = 0;
-
-      virtual void cancel() = 0;
-
-      virtual ContactListPtr getContacts() const = 0;
+      virtual String fetch(const char *cookieNamePath) const = 0;
+      virtual void store(
+                         const char *cookieNamePath,
+                         Time expires,
+                         const char *str
+                         ) = 0;
+      virtual void clear(const char *cookieNamePath) = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -72,17 +65,22 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IContactPeerFilePublicLookupDelegate
+    #pragma mark ICacheDelegate
     #pragma mark
 
-    interaction IContactPeerFilePublicLookupDelegate
+    interaction ICacheDelegate
     {
-      virtual void onContactPeerFilePublicLookupCompleted(IContactPeerFilePublicLookupPtr lookup) = 0;
+      // WARNING: These methods are called synchronously from any thread
+      //          and must NOT block on any kind of lock that might be
+      //          blocked calling inside to the SDK (directly or indirectly).
+
+      virtual String fetch(const char *cookieNamePath) = 0;
+      virtual void store(
+                         const char *cookieNamePath,
+                         Time expires,
+                         const char *str
+                         ) = 0;
+      virtual void clear(const char *cookieNamePath) = 0;
     };
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::IContactPeerFilePublicLookupDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IContactPeerFilePublicLookupPtr, IContactPeerFilePublicLookupPtr)
-ZS_DECLARE_PROXY_METHOD_1(onContactPeerFilePublicLookupCompleted, IContactPeerFilePublicLookupPtr)
-ZS_DECLARE_PROXY_END()

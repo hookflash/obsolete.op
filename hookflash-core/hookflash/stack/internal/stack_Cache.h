@@ -31,12 +31,12 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/internal/core.h>
+#include <hookflash/stack/ICache.h>
+#include <hookflash/stack/internal/types.h>
 
 namespace hookflash
 {
-  namespace core
+  namespace stack
   {
     namespace internal
     {
@@ -45,41 +45,85 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Factory
+      #pragma mark ICacheForServices
       #pragma mark
 
-      class Factory : public IAccountFactory,
-                      public ICallFactory,
-                      public ICallTransportFactory,
-                      public IContactFactory,
-                      public IConversationThreadFactory,
-                      public IConversationThreadDocumentFetcherFactory,
-                      public IConversationThreadHostFactory,
-                      public IConversationThreadSlaveFactory,
-                      public IIdentityFactory,
-                      public IIdentityLookupFactory,
-                      public IMediaEngineFactory
+      interaction ICacheForServices
+      {
+        static bool handledFromCache(
+                                     const char *cookieNamePath,
+                                     message::MessagePtr originalMessage
+                                     );
+
+        static void storeMessage(
+                                 const char *cookieNamePath,
+                                 Time expires,
+                                 message::MessagePtr originalMessage
+                                 );
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Cache
+      #pragma mark
+
+      class Cache : public ICache
       {
       public:
-        static void override(FactoryPtr override);
+        friend interaction ICache;
 
-        static FactoryPtr &singleton();
+      protected:
+        Cache();
+
+      public:
+        ~Cache();
+
+      protected:
+        static CachePtr convert(ICachePtr cache);
+
+        static CachePtr create();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Cache => ICache
+        #pragma mark
+
+        static void setup(ICacheDelegatePtr delegate);
+
+        static CachePtr singleton();
+
+        virtual String fetch(const char *cookieNamePath) const;
+        virtual void store(
+                           const char *cookieNamePath,
+                           Time expires,
+                           const char *str
+                           );
+        virtual void clear(const char *cookieNamePath);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Factory => (internal)
+        #pragma mark Cache => (internal)
         #pragma mark
 
-        static FactoryPtr create();
+        String log(const char *message) const;
+
+        void actualSetup(ICacheDelegatePtr delegate);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Factory => (data)
+        #pragma mark Cache => (data)
         #pragma mark
 
-        FactoryPtr mOverride;
+        mutable RecursiveLock mLock;
+        PUID mID;
+        CacheWeakPtr mThisWeak;
+
+        ICacheDelegatePtr mDelegate;
       };
     }
   }

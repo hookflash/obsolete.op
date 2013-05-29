@@ -34,6 +34,7 @@
 #include <hookflash/stack/types.h>
 #include <hookflash/stack/IAccount.h>
 #include <hookflash/stack/IBootstrappedNetwork.h>
+#include <hookflash/stack/ICache.h>
 #include <hookflash/stack/IDiff.h>
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/ILocation.h>

@@ -144,19 +144,19 @@ namespace hookflash
       #pragma mark
 
       class ServiceLockboxSession : public Noop,
-                                        public zsLib::MessageQueueAssociator,
-                                        public IServiceLockboxSession,
-                                        public IMessageSource,
-                                        public IServiceLockboxSessionForAccount,
-                                        public IServiceLockboxSessionForServiceIdentity,
-                                        public IServiceLockboxSessionAsyncDelegate,
-                                        public IBootstrappedNetworkDelegate,
-                                        public IServiceSaltFetchSignedSaltQueryDelegate,
-                                        public IMessageMonitorResultDelegate<LockboxAccessResult>,
-                                        public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
-                                        public IMessageMonitorResultDelegate<LockboxContentGetResult>,
-                                        public IMessageMonitorResultDelegate<LockboxContentSetResult>,
-                                        public IMessageMonitorResultDelegate<PeerServicesGetResult>
+                                    public zsLib::MessageQueueAssociator,
+                                    public IServiceLockboxSession,
+                                    public IMessageSource,
+                                    public IServiceLockboxSessionForAccount,
+                                    public IServiceLockboxSessionForServiceIdentity,
+                                    public IServiceLockboxSessionAsyncDelegate,
+                                    public IBootstrappedNetworkDelegate,
+                                    public IServiceSaltFetchSignedSaltQueryDelegate,
+                                    public IMessageMonitorResultDelegate<LockboxAccessResult>,
+                                    public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
+                                    public IMessageMonitorResultDelegate<LockboxContentGetResult>,
+                                    public IMessageMonitorResultDelegate<LockboxContentSetResult>,
+                                    public IMessageMonitorResultDelegate<PeerServicesGetResult>
       {
       public:
         friend interaction IServiceLockboxSessionFactory;
@@ -173,7 +173,8 @@ namespace hookflash
         ServiceLockboxSession(
                               IMessageQueuePtr queue,
                               BootstrappedNetworkPtr network,
-                              IServiceLockboxSessionDelegatePtr delegate
+                              IServiceLockboxSessionDelegatePtr delegate,
+                              const char *outerFrameURLUponReload
                               );
         
         ServiceLockboxSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -197,12 +198,15 @@ namespace hookflash
                                               IServiceLockboxSessionDelegatePtr delegate,
                                               IServiceLockboxPtr serviceLockbox,
                                               IServiceIdentitySessionPtr identitySession,
+                                              const char *outerFrameURLUponReload,
+                                              const char *grantID,
                                               bool forceNewAccount = false
                                               );
 
         static ServiceLockboxSessionPtr relogin(
                                                 IServiceLockboxSessionDelegatePtr delegate,
                                                 IServiceLockboxPtr serviceLockbox,
+                                                const char *outerFrameURLUponReload,
                                                 const char *lockboxAccountID,
                                                 const char *lockboxGrantID,
                                                 const char *identityHalfLockboxKey,
@@ -220,8 +224,10 @@ namespace hookflash
 
         virtual IPeerFilesPtr getPeerFiles() const;
 
-        virtual String getLockboxAccountID() const;
-        virtual String getLockboxGrantID() const;
+        virtual String getAccountID() const;
+        virtual String getDomain() const;
+        virtual String getStableID() const;
+
         virtual void getLockboxKey(
                                    SecureByteBlockPtr &outIdentityHalf,
                                    SecureByteBlockPtr &outLockboxHalf
@@ -478,6 +484,8 @@ namespace hookflash
         WORD mLastError;
         String mLastErrorReason;
 
+        String mOuterFrameURLUponReload;
+
         String mGrantID;
         LockboxInfo mLockboxInfo;
 
@@ -531,12 +539,15 @@ namespace hookflash
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr ServiceLockbox,
                                                IServiceIdentitySessionPtr identitySession,
+                                               const char *outerFrameURLUponReload,
+                                               const char *grantID,
                                                bool forceNewAccount = false
                                                );
         
         virtual ServiceLockboxSessionPtr relogin(
                                                  IServiceLockboxSessionDelegatePtr delegate,
                                                  IServiceLockboxPtr serviceLockbox,
+                                                 const char *outerFrameURLUponReload,
                                                  const char *lockboxAccountID,
                                                  const char *lockboxGrantID,
                                                  const char *identityHalfLockboxKey,

@@ -50,11 +50,11 @@ namespace hookflash
       enum IdentityStates
       {
         IdentityState_Pending,
-        IdentityState_WaitingAttachment,
-        IdentityState_WaitingToLoadBrowserWindow,
-        IdentityState_WaitingToMakeBrowserWindowVisible,
-        IdentityState_WaitingLoginCompleteBrowserRedirection,
-        IdentityState_WaitingAssociation,
+        IdentityState_PendingAssociation,
+        IdentityState_WaitingAttachmentOfDelegate,
+        IdentityState_WaitingForBrowserWindowToBeLoaded,
+        IdentityState_WaitingForBrowserWindowToBeMadeVisible,
+        IdentityState_WaitingForBrowserWindowToClose,
         IdentityState_Ready,
         IdentityState_Shutdown,
       };
@@ -64,10 +64,11 @@ namespace hookflash
       static String toDebugString(IIdentityPtr identity, bool includeCommaPrefix = true);
 
       static IIdentityPtr login(
+                                IAccountPtr account,
                                 IIdentityDelegatePtr delegate,
-                                const char *redirectAfterLoginCompleteURL,
+                                const char *outerFrameURLUponReload,
                                 const char *identityURI_or_identityBaseURI,
-                                const char *identityProviderDomain = NULL // needed if identity is a legacy type
+                                const char *identityProviderDomain // used when identity URI is of legacy or oauth-type
                                 );
 
       virtual IdentityStates getState(
@@ -77,22 +78,20 @@ namespace hookflash
 
       virtual PUID getID() const = 0;
 
-      virtual bool isAttached() const = 0;
-      virtual void attach(
-                          const char *redirectAfterLoginCompleteURL,
-                          IIdentityDelegatePtr delegate
-                          ) = 0;
+      virtual bool isDelegateAttached() const = 0;
+      virtual void attachDelegate(
+                                  IIdentityDelegatePtr delegate,
+                                  const char *outerFrameURLUponReload
+                                  ) = 0;
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
-      virtual String getIdentityReloginAccessKey() const = 0;
       virtual ElementPtr getSignedIdentityBundle() const = 0;
 
-      virtual String getIdentityLoginURL() const = 0;
-      virtual Time getLoginExpires() const = 0;
+      virtual String getInnerBrowserWindowFrameURL() const = 0;
 
       virtual void notifyBrowserWindowVisible() = 0;
-      virtual void notifyLoginCompleteBrowserWindowRedirection() = 0;
+      virtual void notifyBrowserWindowClosed() = 0;
 
       virtual ElementPtr getNextMessageForInnerBrowerWindowFrame() = 0;
       virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr message) = 0;

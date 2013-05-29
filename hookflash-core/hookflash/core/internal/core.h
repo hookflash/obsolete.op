@@ -32,10 +32,10 @@
 #pragma once
 
 #include <hookflash/core/internal/core_Account.h>
+#include <hookflash/core/internal/core_Cache.h>
 #include <hookflash/core/internal/core_Call.h>
 #include <hookflash/core/internal/core_CallTransport.h>
 #include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_ContactPeerFilePublicLookup.h>
 #include <hookflash/core/internal/core_ConversationThread.h>
 #include <hookflash/core/internal/core_ConversationThreadHost.h>
 #include <hookflash/core/internal/core_ConversationThreadSlave.h>

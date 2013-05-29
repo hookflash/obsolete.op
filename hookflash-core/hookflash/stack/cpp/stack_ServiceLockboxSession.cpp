@@ -223,7 +223,8 @@ namespace hookflash
       ServiceLockboxSession::ServiceLockboxSession(
                                                    IMessageQueuePtr queue,
                                                    BootstrappedNetworkPtr network,
-                                                   IServiceLockboxSessionDelegatePtr delegate
+                                                   IServiceLockboxSessionDelegatePtr delegate,
+                                                   const char *outerFrameURLUponReload
                                                    ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
@@ -231,6 +232,7 @@ namespace hookflash
         mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
         mLastError(0),
+        mOuterFrameURLUponReload(outerFrameURLUponReload),
         mBrowserWindowReady(false),
         mBrowserWindowVisible(false),
         mBrowserWindowClosed(false),
@@ -286,12 +288,19 @@ namespace hookflash
                                                             IServiceLockboxSessionDelegatePtr delegate,
                                                             IServiceLockboxPtr serviceLockbox,
                                                             IServiceIdentitySessionPtr identitySession,
+                                                            const char *outerFrameURLUponReload,
+                                                            const char *grantID,
                                                             bool forceNewAccount
                                                             )
       {
-        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
+        ZS_THROW_INVALID_ARGUMENT_IF(!serviceLockbox)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identitySession)
+        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!grantID)
+
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
-        pThis->mGrantID = IHelper::randomString(32);
+        pThis->mGrantID = grantID;
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->mForceNewAccount = forceNewAccount;
         pThis->init();
@@ -302,6 +311,7 @@ namespace hookflash
       ServiceLockboxSessionPtr ServiceLockboxSession::relogin(
                                                               IServiceLockboxSessionDelegatePtr delegate,
                                                               IServiceLockboxPtr serviceLockbox,
+                                                              const char *outerFrameURLUponReload,
                                                               const char *lockboxAccountID,
                                                               const char *lockboxGrantID,
                                                               const char *identityHalfLockboxKey,
@@ -314,7 +324,7 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!identityHalfLockboxKey)
         ZS_THROW_BAD_STATE_IF(!lockboxHalfLockboxKey)
 
-        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate));
+        ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
         pThis->mGrantID = String(lockboxGrantID);
         pThis->mLockboxInfo.mAccountID = String(lockboxAccountID);
@@ -357,17 +367,29 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String ServiceLockboxSession::getLockboxAccountID() const
+      String ServiceLockboxSession::getAccountID() const
       {
         AutoRecursiveLock lock(getLock());
         return mLockboxInfo.mAccountID;
       }
 
       //-----------------------------------------------------------------------
-      String ServiceLockboxSession::getLockboxGrantID() const
+      String ServiceLockboxSession::getDomain() const
       {
         AutoRecursiveLock lock(getLock());
-        return mGrantID;
+        if (!mBootstrappedNetwork) return String();
+        return mBootstrappedNetwork->forServices().getDomain();
+      }
+
+      //-----------------------------------------------------------------------
+      String ServiceLockboxSession::getStableID() const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (mLockboxInfo.mAccountID.isEmpty()) return String();
+        if (!mBootstrappedNetwork) return String();
+
+        return IHelper::convertToHex(*IHelper::hash(String("stable-id:") + mBootstrappedNetwork->forServices().getDomain() + ":" + mLockboxInfo.mAccountID));
       }
 
       //-----------------------------------------------------------------------
@@ -679,10 +701,7 @@ namespace hookflash
 
         IdentityInfo info;
 
-        if ((mLockboxInfo.mAccountID.hasData()) &&
-            (mBootstrappedNetwork)) {
-          info.mStableID = IHelper::convertToHex(*IHelper::hash(String("stable-id:") + mBootstrappedNetwork->forServices().getDomain() + ":" + mLockboxInfo.mAccountID));
-        }
+        info.mStableID = getStableID();
 
         if (mPeerFiles) {
           info.mPeerFilePublic = mPeerFiles->getPeerFilePublic();
@@ -812,6 +831,9 @@ namespace hookflash
 
         mLockboxAccessMonitor->cancel();
         mLockboxAccessMonitor.reset();
+
+        LockboxInfo info = result->lockboxInfo();
+        mLockboxInfo.mergeFrom(info, true);
 
         mHasPermissions = hasPermissions(result->namespaceInfos());
 
@@ -1221,6 +1243,13 @@ namespace hookflash
           LockboxInfo lockboxInfo = mLoginIdentity->forLockbox().getLockboxInfo();
           mLockboxInfo.mergeFrom(lockboxInfo);
 
+          if (mBootstrappedNetwork->forServices().getDomain() != mLockboxInfo.mDomain) {
+            ZS_LOG_DEBUG(log("default bootstrapper is not to be used for this lockbox as an altenative lockbox must be used thus preparing replacement bootstrapper"))
+
+            mBootstrappedNetwork = BootstrappedNetwork::convert(IBootstrappedNetwork::prepare(mLockboxInfo.mDomain, mThisWeak.lock()));
+            return false;
+          }
+
           if (mForceNewAccount) {
             ZS_LOG_DEBUG(log("forcing a new lockbox account to be created for the identity"))
             mLockboxInfo.mResetFlag = true;
@@ -1247,6 +1276,9 @@ namespace hookflash
             mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf))));
           }
         }
+
+        mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();
+
         request->grantID(mGrantID);
         request->lockboxInfo(mLockboxInfo);
 
@@ -1313,6 +1345,7 @@ namespace hookflash
         LockboxNamespaceGrantStartNotifyPtr request = LockboxNamespaceGrantStartNotify::create();
         request->domain(mBootstrappedNetwork->forServices().getDomain());
 
+        request->outerFrameURL(mOuterFrameURLUponReload);
         request->lockboxInfo(mLockboxInfo);
         request->popup(false);
         request->browserVisibility(LockboxNamespaceGrantStartNotify::BrowserVisibility_VisibleOnDemand);
@@ -2297,23 +2330,26 @@ namespace hookflash
                                                             IServiceLockboxSessionDelegatePtr delegate,
                                                             IServiceLockboxPtr ServiceLockbox,
                                                             IServiceIdentitySessionPtr identitySession,
+                                                            const char *outerFrameURLUponReload,
+                                                            const char *grantID,
                                                             bool forceNewAccount
                                                             )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().login(delegate, ServiceLockbox, identitySession, forceNewAccount);
+      return internal::IServiceLockboxSessionFactory::singleton().login(delegate, ServiceLockbox, identitySession, outerFrameURLUponReload, grantID, forceNewAccount);
     }
 
     //-------------------------------------------------------------------------
     IServiceLockboxSessionPtr IServiceLockboxSession::relogin(
                                                               IServiceLockboxSessionDelegatePtr delegate,
                                                               IServiceLockboxPtr serviceLockbox,
+                                                              const char *outerFrameURLUponReload,
                                                               const char *lockboxAccountID,
                                                               const char *lockboxGrantID,
                                                               const char *identityHalfLockboxKey,
                                                               const char *lockboxHalfLockboxKey
                                                               )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, outerFrameURLUponReload, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
     }
 
   }

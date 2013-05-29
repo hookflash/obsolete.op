@@ -138,6 +138,10 @@ namespace hookflash
       typedef boost::weak_ptr<IAccountAsyncDelegate> IAccountAsyncDelegateWeakPtr;
       typedef zsLib::Proxy<IAccountAsyncDelegate> IAccountAsyncDelegateProxy;
 
+      class Cache;
+      typedef boost::shared_ptr<Cache> CachePtr;
+      typedef boost::weak_ptr<Cache> CacheWeakPtr;
+
       class Call;
       typedef boost::shared_ptr<Call> CallPtr;
       typedef boost::weak_ptr<Call> CallWeakPtr;

@@ -36,6 +36,7 @@
 #include <hookflash/core/internal/core_Contact.h>
 
 #include <hookflash/stack/IServiceIdentity.h>
+#include <hookflash/stack/IPeerFilePublic.h>
 
 #include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
 
@@ -97,13 +98,15 @@ namespace hookflash
       IdentityLookup::IdentityLookup(
                                      IMessageQueuePtr queue,
                                      AccountPtr account,
-                                     IIdentityLookupDelegatePtr delegate
+                                     IIdentityLookupDelegatePtr delegate,
+                                     const char *identityServiceDomain
                                      ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mAccount(account),
         mDelegate(IIdentityLookupDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate)),
-        mErrorCode(0)
+        mErrorCode(0),
+        mIdentityServiceDomain(identityServiceDomain)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -132,14 +135,7 @@ namespace hookflash
           }
 
           if (IServiceIdentity::isLegacy(identityURI)) {
-            IServiceLockboxSessionPtr peerContact = mAccount->forIdentityLookup().getPeerContactSession();
-            ZS_THROW_BAD_STATE_IF(!peerContact)
-
-            IBootstrappedNetworkPtr network = peerContact->getService()->getBootstrappedNetwork();
-            ZS_THROW_BAD_STATE_IF(!network)
-
-            prepareIdentity(network->getDomain(), domain, identifier);
-
+            prepareIdentity(mIdentityServiceDomain, domain, identifier);
           } else {
             prepareIdentity(domain, domain, identifier);
           }
@@ -224,13 +220,17 @@ namespace hookflash
       IdentityLookupPtr IdentityLookup::create(
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
-                                               const IdentityURIList &identityURIs
+                                               const IdentityURIList &identityURIs,
+                                               const char *identityServiceDomain
                                                )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityServiceDomain)
 
-        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate));
+        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(identityServiceDomain))
+
+        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain));
         pThis->mThisWeak = pThis;
         pThis->init(identityURIs);
         return pThis;
@@ -425,17 +425,17 @@ namespace hookflash
         {
           const IdentityInfo &resultInfo = (*iter);
 
-          if (!IPeer::isValid(resultInfo.mContact)) {
+          if (!resultInfo.mPeerFilePublic) {
             ZS_LOG_WARNING(Detail, log("peer URI found in result not valid") + resultInfo.getDebugValueString())
             continue;
           }
 
           IdentityLookupInfo info;
-          ContactPtr contact = mAccount->forIdentityLookup().findContact(resultInfo.mContact);
+          ContactPtr contact = mAccount->forIdentityLookup().findContact(resultInfo.mPeerFilePublic->getPeerURI());
 
           if (!contact) {
             // attempt to create a contact
-            info.mContact = IContactForIdentityLookup::createFromPeerURI(mAccount, resultInfo.mContact, resultInfo.mContactFindSecret, resultInfo.mContactUserID);
+            info.mContact = IContactForIdentityLookup::createFromPeerFilePublic(mAccount, resultInfo.mPeerFilePublic, resultInfo.mStableID);
             if (!info.mContact) {
               ZS_LOG_WARNING(Detail, log("failed to create contact based on identity") + resultInfo.getDebugValueString())
               continue;
@@ -447,7 +447,7 @@ namespace hookflash
           }
 
           info.mIdentityURI = resultInfo.mURI;
-          info.mUserID = resultInfo.mContactUserID;
+          info.mStableID = resultInfo.mStableID;
 
           info.mPriority = resultInfo.mPriority;
           info.mWeight = resultInfo.mWeight;
@@ -523,6 +523,7 @@ namespace hookflash
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
+               Helper::getDebugValue("identity service domain", mIdentityServiceDomain, firstTime) +
                Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? Stringize<size_t>(mBootstrappedNetworks.size()).string() : String(), firstTime) +
                Helper::getDebugValue("monitors", mMonitors.size() > 0 ? Stringize<size_t>(mMonitors.size()).string() : String(), firstTime) +
                Helper::getDebugValue("type identifiers", mDomainOrLegacyTypeIdentifiers.size() > 0 ? Stringize<size_t>(mDomainOrLegacyTypeIdentifiers.size()).string() : String(), firstTime) +
@@ -651,10 +652,11 @@ namespace hookflash
     IIdentityLookupPtr IIdentityLookup::create(
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
-                                               const IdentityURIList &identityURIs
+                                               const IdentityURIList &identityURIs,
+                                               const char *identityServiceDomain
                                                )
     {
-      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs);
+      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs, identityServiceDomain);
     }
 
     //-------------------------------------------------------------------------

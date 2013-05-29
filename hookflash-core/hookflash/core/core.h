@@ -33,10 +33,10 @@
 
 #include <hookflash/core/types.h>
 #include <hookflash/core/IAccount.h>
+#include <hookflash/core/ICache.h>
 #include <hookflash/core/ICall.h>
 #include <hookflash/core/IConversationThread.h>
 #include <hookflash/core/IContact.h>
-#include <hookflash/core/IContactPeerFilePublicLookup.h>
 #include <hookflash/core/IHelper.h>
 #include <hookflash/core/IIdentity.h>
 #include <hookflash/core/IIdentityLookup.h>

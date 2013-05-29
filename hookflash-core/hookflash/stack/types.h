@@ -124,6 +124,14 @@ namespace hookflash
     typedef boost::weak_ptr<IBootstrappedNetworkDelegate> IBootstrappedNetworkDelegateWeakPtr;
     typedef zsLib::Proxy<IBootstrappedNetworkDelegate> IBootstrappedNetworkDelegateProxy;
 
+    interaction ICache;
+    typedef boost::shared_ptr<ICache> ICachePtr;
+    typedef boost::weak_ptr<ICache> ICacheWeakPtr;
+
+    interaction ICacheDelegate;
+    typedef boost::shared_ptr<ICacheDelegate> ICacheDelegatePtr;
+    typedef boost::weak_ptr<ICacheDelegate> ICacheDelegateWeakPtr;
+
     interaction IDiff;
     typedef boost::shared_ptr<IDiff> IDiffPtr;
     typedef boost::weak_ptr<IDiff> IDiffWeakPtr;
