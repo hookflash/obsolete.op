@@ -189,6 +189,7 @@ namespace hookflash
       IContactPtr mContact;
 
       String mIdentityURI;
+      String mIdentityProvider;
       String mStableID;
 
       WORD mPriority;

@@ -38,6 +38,7 @@
 #include <hookflash/stack/IServiceIdentity.h>
 #include <hookflash/stack/IPeerFilePublic.h>
 
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
 
 #include <zsLib/Stringize.h>
@@ -59,6 +60,8 @@ namespace hookflash
 
       using stack::message::IdentityInfoList;
       using stack::message::IdentityInfo;
+      using stack::message::identity_lookup::IdentityLookupCheckRequest;
+      using stack::message::identity_lookup::IdentityLookupCheckRequestPtr;
       using stack::message::identity_lookup::IdentityLookupRequest;
       using stack::message::identity_lookup::IdentityLookupRequestPtr;
 
@@ -99,14 +102,16 @@ namespace hookflash
                                      IMessageQueuePtr queue,
                                      AccountPtr account,
                                      IIdentityLookupDelegatePtr delegate,
-                                     const char *identityServiceDomain
+                                     const char *identityServiceDomain,
+                                     bool checkForUpdatesOnly
                                      ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mAccount(account),
         mDelegate(IIdentityLookupDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate)),
         mErrorCode(0),
-        mIdentityServiceDomain(identityServiceDomain)
+        mIdentityServiceDomain(identityServiceDomain),
+        mCheckForUpdatesOnly(checkForUpdatesOnly)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -221,7 +226,8 @@ namespace hookflash
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
                                                const IdentityURIList &identityURIs,
-                                               const char *identityServiceDomain
+                                               const char *identityServiceDomain,
+                                               bool checkForUpdatesOnly
                                                )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
@@ -230,7 +236,7 @@ namespace hookflash
 
         ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(identityServiceDomain))
 
-        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain));
+        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain, checkForUpdatesOnly));
         pThis->mThisWeak = pThis;
         pThis->init(identityURIs);
         return pThis;
@@ -336,8 +342,8 @@ namespace hookflash
           return;
         }
 
-        typedef IdentityLookupRequest::Provider Provider;
-        typedef IdentityLookupRequest::ProviderList ProviderList;
+        typedef IdentityLookupCheckRequest::Provider Provider;
+        typedef IdentityLookupCheckRequest::ProviderList ProviderList;
 
         ProviderList providers;
 
@@ -374,12 +380,23 @@ namespace hookflash
         }
 
         if (providers.size() > 0) {
-          // let's issue a request to discover these identities
-          IdentityLookupRequestPtr request = IdentityLookupRequest::create();
-          request->domain(networkDomain);
-          request->providers(providers);
+          IMessageMonitorPtr monitor;
 
-          IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+          if (mCheckForUpdatesOnly) {
+            // let's issue a request to discover these identities
+            IdentityLookupCheckRequestPtr request = IdentityLookupCheckRequest::create();
+            request->domain(networkDomain);
+            request->providers(providers);
+
+            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+          } else {
+            // let's issue a request to discover these identities
+            IdentityLookupRequestPtr request = IdentityLookupRequest::create();
+            request->domain(networkDomain);
+            request->providers(providers);
+
+            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+          }
 
           if (!monitor) {
             ZS_LOG_ERROR(Detail, log("failed to create monitor for request"))
@@ -395,6 +412,75 @@ namespace hookflash
         step();
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IdentityLookup => IMessageMonitorResultDelegate<IdentityLookupCheckResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool IdentityLookup::handleMessageMonitorResultReceived(
+                                                              IMessageMonitorPtr monitor,
+                                                              IdentityLookupCheckResultPtr result
+                                                              )
+      {
+        AutoRecursiveLock lock(getLock());
+
+        MonitorMap::iterator found = mMonitors.find(monitor->getID());
+        if (found == mMonitors.end()) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete monitor") + IMessageMonitor::toDebugString(monitor))
+          return false;
+        }
+
+        mMonitors.erase(found);
+
+        const IdentityInfoList &resultInfos = result->identities();
+
+        for (IdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
+        {
+          const IdentityInfo &resultInfo = (*iter);
+
+          if (!resultInfo.mPeerFilePublic) {
+            ZS_LOG_WARNING(Detail, log("peer URI found in result not valid") + resultInfo.getDebugValueString())
+            continue;
+          }
+
+          IdentityLookupInfo info;
+
+          info.mIdentityURI = resultInfo.mURI;
+          info.mIdentityProvider = resultInfo.mProvider;
+
+          mResults.push_back(info);
+        }
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool IdentityLookup::handleMessageMonitorErrorResultReceived(
+                                                                   IMessageMonitorPtr monitor,
+                                                                   IdentityLookupCheckResultPtr ignore, // will always be NULL
+                                                                   MessageResultPtr result
+                                                                   )
+      {
+        AutoRecursiveLock lock(getLock());
+
+        MonitorMap::iterator found = mMonitors.find(monitor->getID());
+        if (found == mMonitors.end()) {
+          ZS_LOG_WARNING(Detail, log("notified about failure for obsolete monitor") + IMessageMonitor::toDebugString(monitor))
+          return false;
+        }
+
+        mMonitors.erase(found);
+
+        setError(result->errorCode(), result->errorReason());
+        step();
+        return true;
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -447,6 +533,7 @@ namespace hookflash
           }
 
           info.mIdentityURI = resultInfo.mURI;
+          info.mIdentityProvider = resultInfo.mProvider;
           info.mStableID = resultInfo.mStableID;
 
           info.mPriority = resultInfo.mPriority;
@@ -523,6 +610,7 @@ namespace hookflash
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
+               Helper::getDebugValue("check updates only", mCheckForUpdatesOnly ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity service domain", mIdentityServiceDomain, firstTime) +
                Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? Stringize<size_t>(mBootstrappedNetworks.size()).string() : String(), firstTime) +
                Helper::getDebugValue("monitors", mMonitors.size() > 0 ? Stringize<size_t>(mMonitors.size()).string() : String(), firstTime) +
@@ -653,10 +741,11 @@ namespace hookflash
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
                                                const IdentityURIList &identityURIs,
-                                               const char *identityServiceDomain
+                                               const char *identityServiceDomain,
+                                               bool checkForUpdatesOnly
                                                )
     {
-      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs, identityServiceDomain);
+      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs, identityServiceDomain, checkForUpdatesOnly);
     }
 
     //-------------------------------------------------------------------------

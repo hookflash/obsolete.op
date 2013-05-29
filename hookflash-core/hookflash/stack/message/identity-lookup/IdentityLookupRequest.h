@@ -33,6 +33,7 @@
 
 #include <hookflash/stack/message/MessageRequest.h>
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
 
 #include <utility>
 #include <list>
@@ -53,13 +54,8 @@ namespace hookflash
             AttributeType_Providers,
           };
 
-          struct Provider
-          {
-            String mBase;
-            String mSeparator;
-            String mIdentities;
-          };
-          typedef std::list<Provider> ProviderList;
+          typedef IdentityLookupCheckRequest::Provider Provider;
+          typedef IdentityLookupCheckRequest::ProviderList ProviderList;
 
         public:
           static IdentityLookupRequestPtr convert(MessagePtr message);

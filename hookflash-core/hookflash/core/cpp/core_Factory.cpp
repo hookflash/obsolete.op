@@ -385,10 +385,11 @@ namespace hookflash
                                                        IAccountPtr account,
                                                        IIdentityLookupDelegatePtr delegate,
                                                        const IdentityURIList &identityURIs,
-                                                       const char *identityServiceDomain
+                                                       const char *identityServiceDomain,
+                                                       bool checkForUpdatesOnly
                                                        )
       {
-        return IdentityLookup::create(account, delegate, identityURIs, identityServiceDomain);
+        return IdentityLookup::create(account, delegate, identityURIs, identityServiceDomain, checkForUpdatesOnly);
       }
 
       //-----------------------------------------------------------------------

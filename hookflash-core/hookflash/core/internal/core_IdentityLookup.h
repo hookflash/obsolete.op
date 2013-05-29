@@ -36,6 +36,7 @@
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IMessageMonitor.h>
+#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
@@ -49,6 +50,8 @@ namespace hookflash
       using stack::IMessageMonitorPtr;
       using stack::IMessageMonitorResultDelegate;
       using stack::message::MessageResultPtr;
+      using stack::message::identity_lookup::IdentityLookupCheckResult;
+      using stack::message::identity_lookup::IdentityLookupCheckResultPtr;
       using stack::message::identity_lookup::IdentityLookupResult;
       using stack::message::identity_lookup::IdentityLookupResultPtr;
 
@@ -64,6 +67,7 @@ namespace hookflash
                              public MessageQueueAssociator,
                              public IIdentityLookup,
                              public IBootstrappedNetworkDelegate,
+                             public IMessageMonitorResultDelegate<IdentityLookupCheckResult>,
                              public IMessageMonitorResultDelegate<IdentityLookupResult>
       {
       public:
@@ -93,7 +97,8 @@ namespace hookflash
                        IMessageQueuePtr queue,
                        AccountPtr account,
                        IIdentityLookupDelegatePtr delegate,
-                       const char *identityServiceDomain
+                       const char *identityServiceDomain,
+                       bool checkForUpdatesOnly
                        );
         
         IdentityLookup(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -117,7 +122,8 @@ namespace hookflash
                                         IAccountPtr account,
                                         IIdentityLookupDelegatePtr delegate,
                                         const IdentityURIList &identityURIs,
-                                        const char *identityServiceDomain
+                                        const char *identityServiceDomain,
+                                        bool checkForUpdatesOnly
                                         );
 
         virtual PUID getID() const {return mID;}
@@ -138,6 +144,22 @@ namespace hookflash
         #pragma mark
 
         virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Identity => IMessageMonitorResultDelegate<IdentityLookupCheckResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        IdentityLookupCheckResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             IdentityLookupCheckResultPtr ignore, // will always be NULL
+                                                             MessageResultPtr result
+                                                             );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -192,6 +214,7 @@ namespace hookflash
         WORD mErrorCode;
         String mErrorReason;
 
+        bool mCheckForUpdatesOnly;
         String mIdentityServiceDomain;
 
         BootstrappedNetworkMap mBootstrappedNetworks;
@@ -222,7 +245,8 @@ namespace hookflash
                                          IAccountPtr account,
                                          IIdentityLookupDelegatePtr delegate,
                                          const IdentityURIList &identityURIs,
-                                         const char *identityServiceDomain
+                                         const char *identityServiceDomain,
+                                         bool checkForUpdatesOnly
                                          );
       };
     }

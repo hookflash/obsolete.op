@@ -53,7 +53,8 @@ namespace hookflash
                                        IAccountPtr account,
                                        IIdentityLookupDelegatePtr delegate,
                                        const IdentityURIList &identityURIs,
-                                       const char *identityServiceDomain
+                                       const char *identityServiceDomain,
+                                       bool checkForUpdatesOnly
                                        );
 
       virtual PUID getID() const = 0;
