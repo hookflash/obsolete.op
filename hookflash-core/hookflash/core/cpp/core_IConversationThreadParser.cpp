@@ -115,6 +115,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      static ElementPtr createElementWithNumber(const char *elementName, const char *number)
+      {
+        return IMessageHelper::createElementWithNumber(elementName ? String(elementName) : String(), number ? String(number) : String());
+      }
+
+      //-----------------------------------------------------------------------
       static ElementPtr createElementWithText(const char *inElementName, const char *inID, const char *inText)
       {
         ElementPtr el = createElementWithText(inElementName, inText);
@@ -126,6 +132,18 @@ namespace hookflash
         return el;
       }
 
+      //-----------------------------------------------------------------------
+      static ElementPtr createElementWithNumber(const char *inElementName, const char *inID, const char *inNumber)
+      {
+        ElementPtr el = createElementWithNumber(inElementName, inNumber);
+
+        String id(inID ? String(inID) : String());
+        if (id.isEmpty()) return el;
+
+        el->setAttribute("id", id);
+        return el;
+      }
+      
       //-----------------------------------------------------------------------
       static ElementPtr createElementWithTextAndJSONEncode(const char *inElementName, const char *inText)
       {
@@ -278,7 +296,7 @@ namespace hookflash
         ElementPtr messageBundleEl = Element::create("messageBundle");
         ElementPtr messageEl = createElement("message", messageID);
         ElementPtr fromEl = createElement("from", fromPeerURI);
-        ElementPtr sentEl = createElementWithText("sent", Stringize<Time>(sent).string());
+        ElementPtr sentEl = createElementWithNumber("sent", IMessageHelper::timeToString(sent));
         ElementPtr mimeTypeEl = createElementWithText("mimeType", mimeType);
         ElementPtr bodyEl = createElementWithTextAndJSONEncode("body", body);
 
@@ -317,18 +335,25 @@ namespace hookflash
           pThis->mFromPeerURI = fromEl->getAttributeValue("id");
           pThis->mMimeType = mimeTypeEl->getText();
           pThis->mBody = bodyEl->getTextDecoded();
-          pThis->mSent = Numeric<Time>(sentEl->getText());
+          pThis->mSent = IMessageHelper::stringToTime(sentEl->getText());
           pThis->mBundleEl = messageBundleEl;
         } catch (CheckFailed &) {
           ZS_LOG_ERROR(Detail, "message bundle XML parse element check failure")
           return MessagePtr();
-        } catch (Numeric<Time>::ValueOutOfRange &) {
+        }
+
+        if (Time() == pThis->mSent) {
           ZS_LOG_ERROR(Detail, "message bundle value out of range parse error")
           return MessagePtr();
         }
-
-        if (pThis->mMessageID.size() < 1) return MessagePtr();
-        if (pThis->mFromPeerURI.size() < 1) return MessagePtr();
+        if (pThis->mMessageID.size() < 1) {
+          ZS_LOG_ERROR(Detail, "message id missing")
+          return MessagePtr();
+        }
+        if (pThis->mFromPeerURI.size() < 1) {
+          ZS_LOG_ERROR(Detail, "missing peer URI")
+          return MessagePtr();
+        }
 
         return pThis;
       }
@@ -412,7 +437,7 @@ namespace hookflash
         {
           const String &messageID = (*iter).first;
           const Time &time = (*iter).second;
-          ElementPtr receiptEl = createElementWithText("receipt", messageID, Stringize<Time>(time).string());
+          ElementPtr receiptEl = createElementWithNumber("receipt", messageID, IMessageHelper::timeToString(time));
           receiptsEl->adoptAsLastChild(receiptEl);
         }
 
@@ -437,7 +462,12 @@ namespace hookflash
             String id = receiptEl->getAttributeValue("id");
             String timeStr = receiptEl->getText();
             ZS_LOG_TRACE(String("Parsing receipt") + ", receipt ID=" + id + ", acknowledged at=" + timeStr)
-            Time time = Numeric<Time>(timeStr);
+            Time time = IMessageHelper::stringToTime(timeStr);
+
+            if (Time() == time) {
+              ZS_LOG_ERROR(Detail, "message receipt parse time invalid")
+              return MessageReceiptsPtr();
+            }
 
             pThis->mReceipts[id] = time;
             ZS_LOG_TRACE(String("Found receipt") + ", receipt ID=" + id + ", acknowledged at=" + Stringize<Time>(time).string())
@@ -447,9 +477,6 @@ namespace hookflash
         } catch(CheckFailed &) {
           return MessageReceiptsPtr();
         } catch (Numeric<UINT>::ValueOutOfRange &) {
-          ZS_LOG_ERROR(Detail, "message receipt parse value out of range")
-          return MessageReceiptsPtr();
-        } catch (Numeric<Time>::ValueOutOfRange &) {
           ZS_LOG_ERROR(Detail, "message receipt parse value out of range")
           return MessageReceiptsPtr();
         }
@@ -1390,7 +1417,7 @@ namespace hookflash
         ElementPtr replacesEl = createElement("replaces", replaces);
         ElementPtr stateEl = createElementWithText("state", toString(state));
         ElementPtr topicEl = createElementWithTextAndJSONEncode("topic", pThis->mTopic);
-        ElementPtr createdEl = createElementWithText("created", Stringize<Time>(pThis->mCreated).string());
+        ElementPtr createdEl = createElementWithNumber("created", IMessageHelper::timeToString(pThis->mCreated));
 
         detailsEl->adoptAsLastChild(threadBaseEl);
         detailsEl->adoptAsLastChild(threadHostEl);
@@ -1426,14 +1453,15 @@ namespace hookflash
           state.trim();
           pThis->mState = toConversationThreadState(state);
           pThis->mTopic = detailsEl->findFirstChildElementChecked("topic")->getTextDecoded();
-          pThis->mCreated = Numeric<Time>(detailsEl->findFirstChildElementChecked("created")->getText());
+          pThis->mCreated = IMessageHelper::stringToTime(detailsEl->findFirstChildElementChecked("created")->getText());
+          if (Time() == pThis->mCreated) {
+            ZS_LOG_ERROR(Detail, "details parse time value not valid")
+            return DetailsPtr();
+          }
         } catch(CheckFailed &) {
           ZS_LOG_ERROR(Detail, "details XML element parse check failed")
           return DetailsPtr();
         } catch (Numeric<UINT>::ValueOutOfRange &) {
-          ZS_LOG_ERROR(Detail, "details parse value out of range")
-          return DetailsPtr();
-        } catch (Numeric<Time>::ValueOutOfRange &) {
           ZS_LOG_ERROR(Detail, "details parse value out of range")
           return DetailsPtr();
         }
@@ -2345,7 +2373,7 @@ namespace hookflash
             if (mPermissionPublication) {
               mPermissionPublication->update(relationships);
             } else {
-              mPermissionPublication = IPublication::create(mPermissionPublication->getCreatorLocation(), mPermissionPublication->getName(), "text/x-xml-openpeer-permissions", relationships, publishEmptyRelationships, mPermissionPublication->getPublishedLocation());
+              mPermissionPublication = IPublication::create(mPermissionPublication->getCreatorLocation(), mPermissionPublication->getName(), "text/x-json-openpeer-permissions", relationships, publishEmptyRelationships, mPermissionPublication->getPublishedLocation());
             }
           }
         }

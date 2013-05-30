@@ -18,7 +18,7 @@
 #include <Windows.h>  // FILETIME
 #include <WinSock.h>  // timeval
 #include <MMSystem.h>  // timeGetTime
-#elif ((defined WEBRTC_LINUX) || (defined WEBRTC_MAC))
+#elif ((defined WEBRTC_LINUX) || (defined WEBRTC_MAC) || (defined WEBRTC_QNX))
 #include <sys/time.h>  // gettimeofday
 #include <time.h>
 #endif
@@ -121,7 +121,7 @@ bool StringCompare(const char* str1, const char* str2,
                    const uint32_t length) {
   return (_strnicmp(str1, str2, length) == 0) ? true : false;
 }
-#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 bool StringCompare(const char* str1, const char* str2,
                    const uint32_t length) {
   return (strncasecmp(str1, str2, length) == 0) ? true : false;

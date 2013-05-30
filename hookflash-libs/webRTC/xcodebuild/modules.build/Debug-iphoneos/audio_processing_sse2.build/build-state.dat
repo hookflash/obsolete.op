@@ -1,249 +1,0 @@
-Taudio_processing_sse2
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/audio_processing/aec/aec_core.h
-c00000000516570640000000000000E6E
-t1365602404
-s3694
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/audio_processing/aec/aec_core_internal.h
-c00000000516570640000000000000EAA
-t1365602404
-s3754
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/audio_processing/aec/aec_rdft.h
-c00000000516570640000000000000788
-t1365602404
-s1928
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/audio_processing/utility/ring_buffer.h
-c000000005165706500000000000009EF
-t1365602405
-s2543
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/typedefs.h
-c000000005165706B0000000000000DD4
-t1365602411
-s3540
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_processing_sse2.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/audio_processing_sse2.LinkFileList
-c0000000051658E30000000000000014E
-t1365610032
-s334
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-c00000000516570640000000000004282
-t1365602404
-s17026
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-c0000000051657064000000000000502A
-t1365602404
-s20522
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb6bcd6aed515b741^569ad8aed515b741^---0#1#0#--18"Check dependencies36"995B11FA-F8DA-4F54-B713-F294A9340D6F-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387306926.844820
-e387306928.113464
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oclang: warning: argument unused during compilation: '-msse2'
-oIn file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:17:
-o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"
-o#error "SSE2 instruction set not enabled"
-o ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:48:13: error: unknown type name '__m128'
-o      const __m128 xfBuf_re = _mm_loadu_ps(&aec->xfBuf[0][xPos + j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:48:31: warning: implicit declaration of function '_mm_loadu_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o      const __m128 xfBuf_re = _mm_loadu_ps(&aec->xfBuf[0][xPos + j]);
-o                              ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:49:13: error: unknown type name '__m128'
-o      const __m128 xfBuf_im = _mm_loadu_ps(&aec->xfBuf[1][xPos + j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:50:13: error: unknown type name '__m128'
-o      const __m128 wfBuf_re = _mm_loadu_ps(&aec->wfBuf[0][pos + j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:51:13: error: unknown type name '__m128'
-o      const __m128 wfBuf_im = _mm_loadu_ps(&aec->wfBuf[1][pos + j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:52:13: error: unknown type name '__m128'
-o      const __m128 yf_re = _mm_loadu_ps(&yf[0][j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:53:13: error: unknown type name '__m128'
-o      const __m128 yf_im = _mm_loadu_ps(&yf[1][j]);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:54:13: error: unknown type name '__m128'
-o      const __m128 a = _mm_mul_ps(xfBuf_re, wfBuf_re);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:54:24: warning: implicit declaration of function '_mm_mul_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o      const __m128 a = _mm_mul_ps(xfBuf_re, wfBuf_re);
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:55:13: error: unknown type name '__m128'
-o      const __m128 b = _mm_mul_ps(xfBuf_im, wfBuf_im);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:56:13: error: unknown type name '__m128'
-o      const __m128 c = _mm_mul_ps(xfBuf_re, wfBuf_im);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:57:13: error: unknown type name '__m128'
-o      const __m128 d = _mm_mul_ps(xfBuf_im, wfBuf_re);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:58:13: error: unknown type name '__m128'
-o      const __m128 e = _mm_sub_ps(a, b);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:58:24: warning: implicit declaration of function '_mm_sub_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o      const __m128 e = _mm_sub_ps(a, b);
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:59:13: error: unknown type name '__m128'
-o      const __m128 f = _mm_add_ps(c, d);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:59:24: warning: implicit declaration of function '_mm_add_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o      const __m128 f = _mm_add_ps(c, d);
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:60:13: error: unknown type name '__m128'
-o      const __m128 g = _mm_add_ps(yf_re, e);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:61:13: error: unknown type name '__m128'
-o      const __m128 h = _mm_add_ps(yf_im, f);
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:62:7: warning: implicit declaration of function '_mm_storeu_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o      _mm_storeu_ps(&yf[0][j], g);
-o      ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:77:9: error: unknown type name '__m128'
-o  const __m128 k1e_10f = _mm_set1_ps(1e-10f);
-o        ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:77:26: warning: implicit declaration of function '_mm_set1_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o  const __m128 k1e_10f = _mm_set1_ps(1e-10f);
-o                         ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:78:9: error: unknown type name '__m128'
-o  const __m128 kThresh = _mm_set1_ps(aec->errThresh);
-o        ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:79:9: error: unknown type name '__m128'
-o  const __m128 kMu = _mm_set1_ps(aec->mu);
-o        ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:84:11: error: unknown type name '__m128'
-o    const __m128 xPow = _mm_loadu_ps(&aec->xPow[i]);
-o          ^
-ofatal error: too many errors emitted, stopping now [-ferror-limit=]
-o6 warnings and 20 errors generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.cfaecd8aed515b741^36721db0d515b741^-5795"clang: warning: argument unused during compilation: '-msse2'In file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:17:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"#error "SSE2 instruction set not enabled" ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:48:13: error: unknown type name '__m128'      const __m128 xfBuf_re = _mm_loadu_ps(&aec->xfBuf[0][xPos + j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:48:31: warning: implicit declaration of function '_mm_loadu_ps' is invalid in C99 [-Wimplicit-function-declaration]      const __m128 xfBuf_re = _mm_loadu_ps(&aec->xfBuf[0][xPos + j]);                              ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:49:13: error: unknown type name '__m128'      const __m128 xfBuf_im = _mm_loadu_ps(&aec->xfBuf[1][xPos + j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:50:13: error: unknown type name '__m128'      const __m128 wfBuf_re = _mm_loadu_ps(&aec->wfBuf[0][pos + j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:51:13: error: unknown type name '__m128'      const __m128 wfBuf_im = _mm_loadu_ps(&aec->wfBuf[1][pos + j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:52:13: error: unknown type name '__m128'      const __m128 yf_re = _mm_loadu_ps(&yf[0][j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:53:13: error: unknown type name '__m128'      const __m128 yf_im = _mm_loadu_ps(&yf[1][j]);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:54:13: error: unknown type name '__m128'      const __m128 a = _mm_mul_ps(xfBuf_re, wfBuf_re);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:54:24: warning: implicit declaration of function '_mm_mul_ps' is invalid in C99 [-Wimplicit-function-declaration]      const __m128 a = _mm_mul_ps(xfBuf_re, wfBuf_re);                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:55:13: error: unknown type name '__m128'      const __m128 b = _mm_mul_ps(xfBuf_im, wfBuf_im);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:56:13: error: unknown type name '__m128'      const __m128 c = _mm_mul_ps(xfBuf_re, wfBuf_im);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:57:13: error: unknown type name '__m128'      const __m128 d = _mm_mul_ps(xfBuf_im, wfBuf_re);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:58:13: error: unknown type name '__m128'      const __m128 e = _mm_sub_ps(a, b);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:58:24: warning: implicit declaration of function '_mm_sub_ps' is invalid in C99 [-Wimplicit-function-declaration]      const __m128 e = _mm_sub_ps(a, b);                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:59:13: error: unknown type name '__m128'      const __m128 f = _mm_add_ps(c, d);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:59:24: warning: implicit declaration of function '_mm_add_ps' is invalid in C99 [-Wimplicit-function-declaration]      const __m128 f = _mm_add_ps(c, d);                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:60:13: error: unknown type name '__m128'      const __m128 g = _mm_add_ps(yf_re, e);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:61:13: error: unknown type name '__m128'      const __m128 h = _mm_add_ps(yf_im, f);            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:62:7: warning: implicit declaration of function '_mm_storeu_ps' is invalid in C99 [-Wimplicit-function-declaration]      _mm_storeu_ps(&yf[0][j], g);      ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:77:9: error: unknown type name '__m128'  const __m128 k1e_10f = _mm_set1_ps(1e-10f);        ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:77:26: warning: implicit declaration of function '_mm_set1_ps' is invalid in C99 [-Wimplicit-function-declaration]  const __m128 k1e_10f = _mm_set1_ps(1e-10f);                         ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:78:9: error: unknown type name '__m128'  const __m128 kThresh = _mm_set1_ps(aec->errThresh);        ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:79:9: error: unknown type name '__m128'  const __m128 kMu = _mm_set1_ps(aec->mu);        ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:84:11: error: unknown type name '__m128'    const __m128 xPow = _mm_loadu_ps(&aec->xPow[i]);          ^fatal error: too many errors emitted, stopping now [-ferror-limit=]6 warnings and 20 errors generated.26(36%IDEClangDiagnosticActivityLogMessage2@34""SSE2 instruction set not enabled"-387306928#18446744073709551615#0#1(2@118"In file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c:17:-387306928#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^16#9#16#9#559#0#30"Apple LLVM compiler 4.2 Notice--2#27"com.apple.dt.IDE.diagnostic3@132"file://localhost/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/4.2/include/emmintrin.h0000000000000000^27#1#27#1#1306#0#19"User Defined Issues--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^47#12#47#12#1373#0#11"Parse Issue--2@65"Implicit declaration of function '_mm_loadu_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^47#30#47#30#1391#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^48#12#48#12#1443#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^49#12#49#12#1513#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^50#12#50#12#1582#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^51#12#51#12#1651#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^52#12#52#12#1703#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^53#12#53#12#1755#0#11"Parse Issue--2@63"Implicit declaration of function '_mm_mul_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^53#23#53#23#1766#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^54#12#54#12#1810#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^55#12#55#12#1865#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^56#12#56#12#1920#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^57#12#57#12#1975#0#11"Parse Issue--2@63"Implicit declaration of function '_mm_sub_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^57#23#57#23#1986#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^58#12#58#12#2016#0#11"Parse Issue--2@63"Implicit declaration of function '_mm_add_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^58#23#58#23#2027#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^59#12#59#12#2057#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^60#12#60#12#2102#0#11"Parse Issue--2@66"Implicit declaration of function '_mm_storeu_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^61#6#61#6#2141#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^76#8#76#8#2680#0#11"Parse Issue--2@64"Implicit declaration of function '_mm_set1_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^76#25#76#25#2697#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^77#8#77#8#2726#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^78#8#78#8#2780#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^83#10#83#10#2914#0#11"Parse Issue--2@37"Too many errors emitted, stopping now-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic-29"Apple LLVM compiler 4.2 Error--0#0#0#-19%DVTDocumentLocation4@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^3140"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O1 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -msse2 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o36"94E301B4-B2D4-4935-95EB-4ED3F34750B1-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387306926.847471
-e387306928.106107
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oclang: warning: argument unused during compilation: '-msse2'
-oIn file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:13:
-o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"
-o#error "SSE2 instruction set not enabled"
-o ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:19:9: error: unknown type name '__m128'
-o  const __m128 mm_swap_sign = _mm_load_ps(k_swap_sign);
-o        ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:19:31: warning: implicit declaration of function '_mm_load_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o  const __m128 mm_swap_sign = _mm_load_ps(k_swap_sign);
-o                              ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:23:11: error: use of undeclared identifier '__m128'
-o          __m128 a00v   = _mm_loadu_ps(&a[j +  0]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:24:11: error: use of undeclared identifier '__m128'
-o          __m128 a04v   = _mm_loadu_ps(&a[j +  4]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:25:11: error: use of undeclared identifier '__m128'
-o          __m128 a08v   = _mm_loadu_ps(&a[j +  8]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:26:11: error: use of undeclared identifier '__m128'
-o          __m128 a12v   = _mm_loadu_ps(&a[j + 12]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:27:11: error: use of undeclared identifier '__m128'
-o          __m128 a01v   = _mm_shuffle_ps(a00v, a08v, _MM_SHUFFLE(1, 0, 1 ,0));
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:28:11: error: use of undeclared identifier '__m128'
-o          __m128 a23v   = _mm_shuffle_ps(a00v, a08v, _MM_SHUFFLE(3, 2, 3 ,2));
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:29:11: error: use of undeclared identifier '__m128'
-o          __m128 a45v   = _mm_shuffle_ps(a04v, a12v, _MM_SHUFFLE(1, 0, 1 ,0));
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:30:11: error: use of undeclared identifier '__m128'
-o          __m128 a67v   = _mm_shuffle_ps(a04v, a12v, _MM_SHUFFLE(3, 2, 3 ,2));
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:32:11: error: unknown type name '__m128'
-o    const __m128 wk1rv  = _mm_load_ps(&rdft_wk1r[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:33:11: error: unknown type name '__m128'
-o    const __m128 wk1iv  = _mm_load_ps(&rdft_wk1i[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:34:11: error: unknown type name '__m128'
-o    const __m128 wk2rv  = _mm_load_ps(&rdft_wk2r[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:35:11: error: unknown type name '__m128'
-o    const __m128 wk2iv  = _mm_load_ps(&rdft_wk2i[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:36:11: error: unknown type name '__m128'
-o    const __m128 wk3rv  = _mm_load_ps(&rdft_wk3r[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:37:11: error: unknown type name '__m128'
-o    const __m128 wk3iv  = _mm_load_ps(&rdft_wk3i[k2]);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:38:11: error: use of undeclared identifier '__m128'
-o          __m128 x0v    = _mm_add_ps(a01v, a23v);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:11: error: unknown type name '__m128'
-o    const __m128 x1v    = _mm_sub_ps(a01v, a23v);
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:27: warning: implicit declaration of function '_mm_sub_ps' is invalid in C99 [-Wimplicit-function-declaration]
-o    const __m128 x1v    = _mm_sub_ps(a01v, a23v);
-o                          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:38: error: use of undeclared identifier 'a01v'
-o    const __m128 x1v    = _mm_sub_ps(a01v, a23v);
-o                                     ^
-ofatal error: too many errors emitted, stopping now [-ferror-limit=]
-o2 warnings and 20 errors generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c4548d9aed515b741^30841cb0d515b741^-4902"clang: warning: argument unused during compilation: '-msse2'In file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:13:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"#error "SSE2 instruction set not enabled" ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:19:9: error: unknown type name '__m128'  const __m128 mm_swap_sign = _mm_load_ps(k_swap_sign);        ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:19:31: warning: implicit declaration of function '_mm_load_ps' is invalid in C99 [-Wimplicit-function-declaration]  const __m128 mm_swap_sign = _mm_load_ps(k_swap_sign);                              ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:23:11: error: use of undeclared identifier '__m128'          __m128 a00v   = _mm_loadu_ps(&a[j +  0]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:24:11: error: use of undeclared identifier '__m128'          __m128 a04v   = _mm_loadu_ps(&a[j +  4]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:25:11: error: use of undeclared identifier '__m128'          __m128 a08v   = _mm_loadu_ps(&a[j +  8]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:26:11: error: use of undeclared identifier '__m128'          __m128 a12v   = _mm_loadu_ps(&a[j + 12]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:27:11: error: use of undeclared identifier '__m128'          __m128 a01v   = _mm_shuffle_ps(a00v, a08v, _MM_SHUFFLE(1, 0, 1 ,0));          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:28:11: error: use of undeclared identifier '__m128'          __m128 a23v   = _mm_shuffle_ps(a00v, a08v, _MM_SHUFFLE(3, 2, 3 ,2));          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:29:11: error: use of undeclared identifier '__m128'          __m128 a45v   = _mm_shuffle_ps(a04v, a12v, _MM_SHUFFLE(1, 0, 1 ,0));          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:30:11: error: use of undeclared identifier '__m128'          __m128 a67v   = _mm_shuffle_ps(a04v, a12v, _MM_SHUFFLE(3, 2, 3 ,2));          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:32:11: error: unknown type name '__m128'    const __m128 wk1rv  = _mm_load_ps(&rdft_wk1r[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:33:11: error: unknown type name '__m128'    const __m128 wk1iv  = _mm_load_ps(&rdft_wk1i[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:34:11: error: unknown type name '__m128'    const __m128 wk2rv  = _mm_load_ps(&rdft_wk2r[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:35:11: error: unknown type name '__m128'    const __m128 wk2iv  = _mm_load_ps(&rdft_wk2i[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:36:11: error: unknown type name '__m128'    const __m128 wk3rv  = _mm_load_ps(&rdft_wk3r[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:37:11: error: unknown type name '__m128'    const __m128 wk3iv  = _mm_load_ps(&rdft_wk3i[k2]);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:38:11: error: use of undeclared identifier '__m128'          __m128 x0v    = _mm_add_ps(a01v, a23v);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:11: error: unknown type name '__m128'    const __m128 x1v    = _mm_sub_ps(a01v, a23v);          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:27: warning: implicit declaration of function '_mm_sub_ps' is invalid in C99 [-Wimplicit-function-declaration]    const __m128 x1v    = _mm_sub_ps(a01v, a23v);                          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:39:38: error: use of undeclared identifier 'a01v'    const __m128 x1v    = _mm_sub_ps(a01v, a23v);                                     ^fatal error: too many errors emitted, stopping now [-ferror-limit=]2 warnings and 20 errors generated.22(36%IDEClangDiagnosticActivityLogMessage2@34""SSE2 instruction set not enabled"-387306928#18446744073709551615#0#1(2@118"In file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c:13:-387306928#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^12#9#12#9#446#0#30"Apple LLVM compiler 4.2 Notice--2#27"com.apple.dt.IDE.diagnostic3@132"file://localhost/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/4.2/include/emmintrin.h0000000000000000^27#1#27#1#1306#0#19"User Defined Issues--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^18#8#18#8#596#0#11"Parse Issue--2@64"Implicit declaration of function '_mm_load_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^18#30#18#30#618#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^22#10#22#10#719#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^23#10#23#10#771#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^24#10#24#10#823#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^25#10#25#10#875#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^26#10#26#10#927#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^27#10#27#10#1006#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^28#10#28#10#1085#0#14"Semantic Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^29#10#29#10#1164#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^31#10#31#10#1244#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^32#10#32#10#1299#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^33#10#33#10#1354#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^34#10#34#10#1409#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^35#10#35#10#1464#0#11"Parse Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^36#10#36#10#1519#0#11"Parse Issue--2@37"Use of undeclared identifier '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^37#10#37#10#1574#0#14"Semantic Issue--2@26"Unknown type name '__m128'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^38#10#38#10#1624#0#11"Parse Issue--2@63"Implicit declaration of function '_mm_sub_ps' is invalid in C99-387306928#18446744073709551615#0#-1#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^38#26#38#26#1640#0#14"Semantic Issue--2@35"Use of undeclared identifier 'a01v'-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic3@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^38#37#38#37#1651#0#14"Semantic Issue--2@37"Too many errors emitted, stopping now-387306928#18446744073709551615#0#-2#27"com.apple.dt.IDE.diagnostic-29"Apple LLVM compiler 4.2 Error--0#0#0#-19%DVTDocumentLocation4@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^3140"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O1 -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -msse2 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o36"5288CDD1-4D71-4AD2-997F-DE5BEA64015B-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_processing_sse2.a normal armv7
-r0
-

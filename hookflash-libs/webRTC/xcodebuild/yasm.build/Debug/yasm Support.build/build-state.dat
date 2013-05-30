@@ -1,247 +1,0 @@
-Tyasm Support
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "Action \"generate_nasm_macros\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh"
-cPhaseScriptExecution "Action \"generate_nasm_version\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh"
-cPhaseScriptExecution "Action \"generate_win64_gas\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh"
-cPhaseScriptExecution "Action \"generate_win64_nasm\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh"
-cPhaseScriptExecution "Action \"generate_license\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh"
-cPhaseScriptExecution "Action \"generate_lc3b_token\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh"
-cPhaseScriptExecution "Action \"generate_module\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh"
-cPhaseScriptExecution "Rule \"generate_gperf\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh"
-cPhaseScriptExecution "Rule \"generate_re2c\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh"
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genmacro
-c0000000051682CE60000000000002584
-t1365781734
-s9604
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genmodule
-c0000000051682CE60000000000003878
-t1365781734
-s14456
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genstring
-c0000000051682CEE0000000000002524
-t1365781742
-s9508
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c
-c0000000051682CF80000000000014A2C
-t1365781752
-s84524
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/version.mac
-c0000000051682CFE0000000000000104
-t1365781758
-s260
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh
-c0000000051671D6500000000000000D6
-t1365712229
-s214
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh
-c0000000051671D65000000000000010E
-t1365712229
-s270
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh
-c0000000051671D650000000000000111
-t1365712229
-s273
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh
-c0000000051671D65000000000000010A
-t1365712229
-s266
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh
-c0000000051671D6500000000000000D5
-t1365712229
-s213
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh
-c0000000051671D65000000000000010B
-t1365712229
-s267
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh
-c0000000051671D6500000000000000DB
-t1365712229
-s219
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh
-c0000000051671D6500000000000000C8
-t1365712229
-s200
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh
-c0000000051671D6500000000000000C3
-t1365712229
-s195
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/lc3bid.c
-t1365712230
-s31539
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/license.c
-t1365712230
-s2671
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/module.c
-t1365712230
-s7950
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/nasm-macros.c
-t1365712229
-s2178
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/nasm-version.c
-t1365712229
-s407
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/win64-gas.c
-t1365712229
-s1403
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/win64-nasm.c
-t1365712229
-s1401
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/config/mac/Makefile
-c000000005165C62C0000000000036D43
-t1365624364
-s224579
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/COPYING
-c000000005165C62C000000000000083A
-t1365624364
-s2106
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/module.in
-c000000005165C62C0000000000001536
-t1365624364
-s5430
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/arch/lc3b/lc3bid.re
-c000000005165C62D0000000000003F65
-t1365624365
-s16229
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/objfmts/coff/win64-gas.mac
-c000000005165C62E00000000000003E7
-t1365624366
-s999
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/objfmts/coff/win64-nasm.mac
-c000000005165C62E0000000000000624
-t1365624366
-s1572
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/parsers/nasm/nasm-std.mac
-c000000005165C6300000000000000797
-t1365624368
-s1943
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies1310d7826418b741^a7cfda826418b741^---0#1#0#--18"Check dependencies36"5022E978-6B62-4CD1-879B-B28453B76CBD-
-
-CPhaseScriptExecution "Action \"generate_lc3b_token\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh"
-s387474564.566848
-e387474564.807516
-r1
-xPhaseScriptExecution
-xAction "generate_lc3b_token"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh
-onote: Generating yasm tokens for lc3b.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection54"Run custom shell script 'Action "generate_lc3b_token"'677d92846418b741^c590d0846418b741^-39"note: Generating yasm tokens for lc3b.1(21%IDEActivityLogMessage2@32"Generating yasm tokens for lc3b.-387474564#0#39#-0#--30"Shell Script Invocation Notice--0#0#0#--400"PhaseScriptExecution "Action \"generate_lc3b_token\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-DEA25709CE70D4B845C2C262.sh\""36"6F93F599-A561-42B1-908C-A4E60F6B1349-
-
-CPhaseScriptExecution "Action \"generate_license\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh"
-s387474563.836590
-e387474564.238916
-r1
-xPhaseScriptExecution
-xAction "generate_license"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh
-onote: Generating yasm embeddable license.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection51"Run custom shell script 'Action "generate_license"'3484d7836418b741^e55e48846418b741^-42"note: Generating yasm embeddable license.1(21%IDEActivityLogMessage2@35"Generating yasm embeddable license.-387474564#0#42#-0#--30"Shell Script Invocation Notice--0#0#0#--397"PhaseScriptExecution "Action \"generate_license\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-EA7C9BA8C1F7FF267024E4E8.sh\""36"3B8FB733-B53E-40DC-B7B4-15FB4E109384-
-
-CPhaseScriptExecution "Action \"generate_module\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh"
-s387474564.853455
-e387474565.014035
-r1
-xPhaseScriptExecution
-xAction "generate_module"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh
-onote: Generating yasm module information.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection50"Run custom shell script 'Action "generate_module"'2fc3db846418b741^f60706856418b741^-42"note: Generating yasm module information.1(21%IDEActivityLogMessage2@35"Generating yasm module information.-387474564#0#42#-0#--30"Shell Script Invocation Notice--0#0#0#--396"PhaseScriptExecution "Action \"generate_module\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-B81CB52F3E1AEFB26D03FCAC.sh\""36"9165223B-712B-4307-A237-8A5DF9DB7D54-
-
-CPhaseScriptExecution "Action \"generate_nasm_macros\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh"
-s387474562.855155
-e387474562.987920
-r1
-xPhaseScriptExecution
-xAction "generate_nasm_macros"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh
-onote: yasm genmacro for source/patched-yasm/modules/parsers/nasm/nasm-std.mac.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection55"Run custom shell script 'Action "generate_nasm_macros"'0b28dc826418b741^3947fd826418b741^-79"note: yasm genmacro for source/patched-yasm/modules/parsers/nasm/nasm-std.mac.1(21%IDEActivityLogMessage2@72"Yasm genmacro for source/patched-yasm/modules/parsers/nasm/nasm-std.mac.-387474562#0#79#-0#--30"Shell Script Invocation Notice--0#0#0#--401"PhaseScriptExecution "Action \"generate_nasm_macros\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-A2F567F018DD204B8BCFA437.sh\""36"283E2BB8-C821-4F6B-B020-DF53DE0DBC2A-
-
-CPhaseScriptExecution "Action \"generate_nasm_version\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh"
-s387474563.007041
-e387474563.089100
-r1
-xPhaseScriptExecution
-xAction "generate_nasm_version"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh
-onote: yasm genmacro for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/version.mac.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection56"Run custom shell script 'Action "generate_nasm_version"'68590b836418b741^a22517836418b741^-162"note: yasm genmacro for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/version.mac.1(21%IDEActivityLogMessage2@155"Yasm genmacro for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/version.mac.-387474563#0#162#-0#--30"Shell Script Invocation Notice--0#0#0#--402"PhaseScriptExecution "Action \"generate_nasm_version\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-3937A11BD5C42257B7C9B154.sh\""36"7658840F-2AEA-4812-AB90-1D1C7CA1BAFF-
-
-CPhaseScriptExecution "Action \"generate_win64_gas\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh"
-s387474563.099834
-e387474563.154224
-r1
-xPhaseScriptExecution
-xAction "generate_win64_gas"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh
-onote: yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-gas.mac.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection53"Run custom shell script 'Action "generate_win64_gas"'f5f31a836418b741^773129836418b741^-80"note: yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-gas.mac.1(21%IDEActivityLogMessage2@73"Yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-gas.mac.-387474563#0#80#-0#--30"Shell Script Invocation Notice--0#0#0#--399"PhaseScriptExecution "Action \"generate_win64_gas\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-4A871E15A1D6E4BDBBE87924.sh\""36"BDB2CBB6-7669-438E-B3DD-8A042B0AAF77-
-
-CPhaseScriptExecution "Action \"generate_win64_nasm\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh"
-s387474563.167957
-e387474563.271521
-r1
-xPhaseScriptExecution
-xAction "generate_win64_nasm"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh
-onote: yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-nasm.mac.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection54"Run custom shell script 'Action "generate_win64_nasm"'6d3c2c836418b741^537b51836418b741^-81"note: yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-nasm.mac.1(21%IDEActivityLogMessage2@74"Yasm genmacro for source/patched-yasm/modules/objfmts/coff/win64-nasm.mac.-387474563#0#81#-0#--30"Shell Script Invocation Notice--0#0#0#--400"PhaseScriptExecution "Action \"generate_win64_nasm\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-2A19B1011740A2642F60EA3E.sh\""36"806C4839-83A3-4AE9-86FE-B53412A973D2-
-
-CPhaseScriptExecution "Rule \"generate_gperf\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh"
-s387474565.038896
-e387474568.664724
-r1
-xPhaseScriptExecution
-xRule "generate_gperf"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh
-onote: yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf.
-onote: yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf.
-o"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_nasm.c"
-o"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_gas.c"
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection47"Run custom shell script 'Rule "generate_gperf"'d2350b856418b741^4a61aa886418b741^-1133"note: yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf.note: yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf."/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_nasm.c""/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_gas.c"4(21%IDEActivityLogMessage2@159"Yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf.-387474565#0#166#-0#--30"Shell Script Invocation Notice--2@158"Yasm gperf for /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf.-387474565#166#165#-0#--30"Shell Script Invocation Notice--2@402""/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_nasm.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_nasm.c"-387474565#331#402#-0#-----2@400""/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/DerivedSources/Debug/third_party/yasm/x86insn_gas.gperf" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/x86insn_gas.c"-387474565#733#400#-0#-----0#0#0#--393"PhaseScriptExecution "Rule \"generate_gperf\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-01D2B874063C3CD35D7BB021.sh\""36"36559583-63D7-4D38-8AA1-C59B1CE42FE1-
-
-CPhaseScriptExecution "Rule \"generate_re2c\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh"
-s387474568.678962
-e387474568.884300
-r1
-xPhaseScriptExecution
-xRule "generate_re2c"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh
-onote: yasm re2c for source/patched-yasm/modules/parsers/nasm/nasm-token.re.
-o"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/nasm-token.c" "source/patched-yasm/modules/parsers/nasm/nasm-token.re"
-onote: yasm re2c for source/patched-yasm/modules/parsers/gas/gas-token.re.
-o"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/gas-token.c" "source/patched-yasm/modules/parsers/gas/gas-token.re"
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection46"Run custom shell script 'Rule "generate_re2c"'7d22af886418b741^a9bdec886418b741^-775"note: yasm re2c for source/patched-yasm/modules/parsers/nasm/nasm-token.re."/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/nasm-token.c" "source/patched-yasm/modules/parsers/nasm/nasm-token.re"note: yasm re2c for source/patched-yasm/modules/parsers/gas/gas-token.re."/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/gas-token.c" "source/patched-yasm/modules/parsers/gas/gas-token.re"4(21%IDEActivityLogMessage2@69"Yasm re2c for source/patched-yasm/modules/parsers/nasm/nasm-token.re.-387474568#0#76#-0#--30"Shell Script Invocation Notice--2@314""/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/nasm-token.c" "source/patched-yasm/modules/parsers/nasm/nasm-token.re"-387474568#76#314#-0#-----2@67"Yasm re2c for source/patched-yasm/modules/parsers/gas/gas-token.re.-387474568#390#74#-0#--30"Shell Script Invocation Notice--2@311""/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/re2c" -b -o "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/DerivedSources/Debug/third_party/yasm/gas-token.c" "source/patched-yasm/modules/parsers/gas/gas-token.re"-387474568#464#311#-0#-----0#0#0#--392"PhaseScriptExecution "Rule \"generate_re2c\"" "../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/yasm Support.build/Script-78F98A3A8E7B6F2F3A9E27E4.sh\""36"73FE94F7-6AC1-4A2A-9D02-FBEE8A046033-
-

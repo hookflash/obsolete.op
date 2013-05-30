@@ -33,7 +33,7 @@ class SyncBuffer;
 // what the Merge class does.
 class Merge {
  public:
-  Merge(int fs_hz, size_t num_channels, Expand* expand, SyncBuffer* sync_buffer)
+  Merge(int fs_hz, std::size_t num_channels, Expand* expand, SyncBuffer* sync_buffer)
       : fs_hz_(fs_hz),
         fs_mult_(fs_hz_ / 8000),
         num_channels_(num_channels),
@@ -89,7 +89,7 @@ class Merge {
 
   const int fs_hz_;
   const int fs_mult_;  // fs_hz_ / 8000.
-  const size_t num_channels_;
+  const std::size_t num_channels_;
   const int timestamps_per_call_;
   Expand* expand_;
   SyncBuffer* sync_buffer_;

@@ -14,6 +14,7 @@
 			);
 			dependencies = (
 				205116DAABA7368D863D658D /* PBXTargetDependency */,
+				E9B88139BC3CB55F0B0A7E53 /* PBXTargetDependency */,
 			);
 			name = All;
 			productName = All;
@@ -38,6 +39,7 @@
 		19AB7DA43EDF4C7B51214245 /* scale_vector_FLP.c in Sources */ = {isa = PBXBuildFile; fileRef = A48A6DE4AFCBEA8DA56EFE61 /* scale_vector_FLP.c */; };
 		19DE1BA857469459A42B30BE /* decode_core.c in Sources */ = {isa = PBXBuildFile; fileRef = B15A74211ECAB7F06D40686D /* decode_core.c */; };
 		1B43ABC3F69091F1A65354E0 /* sort_FLP.c in Sources */ = {isa = PBXBuildFile; fileRef = 33DC2F51D79B4B6667F15997 /* sort_FLP.c */; };
+		1CF232A35E4DF8DF80308A03 /* opus_demo.c in Sources */ = {isa = PBXBuildFile; fileRef = 276A074F47CD15F3E92DF3C2 /* opus_demo.c */; };
 		1E6264ED79A12826F4F6123A /* gain_quant.c in Sources */ = {isa = PBXBuildFile; fileRef = A4579DFC74A10420AF9D16D8 /* gain_quant.c */; };
 		1E745F85324FE2A31139FC8B /* repacketizer.c in Sources */ = {isa = PBXBuildFile; fileRef = DC489B55CBE7FD944884C56D /* repacketizer.c */; };
 		214E1A5587B38FA3ED01C432 /* entcode.c in Sources */ = {isa = PBXBuildFile; fileRef = 61B29CD5A3A8A5784ABF1C5C /* entcode.c */; };
@@ -92,6 +94,7 @@
 		78E53359C06DD26E76FA3B28 /* quant_LTP_gains.c in Sources */ = {isa = PBXBuildFile; fileRef = B932F4B05EF4232D9A30727F /* quant_LTP_gains.c */; };
 		79A2863A6BDDA4A571F59CB2 /* CNG.c in Sources */ = {isa = PBXBuildFile; fileRef = 19D0459BD2F6BB8BE1CB26CF /* CNG.c */; };
 		7A6A605588288A3B9A34879A /* NLSF_unpack.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D183B4DA0057453516CB1CC /* NLSF_unpack.c */; };
+		7AB813C8A05595126694E8E2 /* libopus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60561485D25DA098AD994844 /* libopus.a */; };
 		7CF4824CA5EA8E1AF55019AD /* control_codec.c in Sources */ = {isa = PBXBuildFile; fileRef = D37287BCF5A4A9EA19937570 /* control_codec.c */; };
 		7D3FFAED576FFC76D8A0BF82 /* check_control_input.c in Sources */ = {isa = PBXBuildFile; fileRef = AB25361B1EFCDE89203BC238 /* check_control_input.c */; };
 		810A6A0CF58C099B176337C4 /* shell_coder.c in Sources */ = {isa = PBXBuildFile; fileRef = A0CD4A027A5CD917B2C42AF1 /* shell_coder.c */; };
@@ -158,6 +161,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 87FEE7BA56569457CC835153;
 			remoteInfo = opus;
+		};
+		887B20252ED5362E03839675 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC914A09EEC6E2DAD78CC851 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 87FEE7BA56569457CC835153;
+			remoteInfo = opus;
+		};
+		C1BABB084164B184C56ABE81 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DC914A09EEC6E2DAD78CC851 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5EBC5B5A4C0CD8CC3B3152D5;
+			remoteInfo = opus_demo;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -291,6 +308,7 @@
 		99B7707EDAF55D35C2953CFB /* resampler_private_down_FIR.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = resampler_private_down_FIR.c; sourceTree = "<group>"; };
 		9CC00A559D29E011F1E499EF /* stereo_find_predictor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stereo_find_predictor.c; sourceTree = "<group>"; };
 		9DAD0A8FFE7E5452B4170250 /* sigm_Q15.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sigm_Q15.c; sourceTree = "<group>"; };
+		9DFE75782EC17D9FEBE674B8 /* opus_demo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = opus_demo; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F14868CFB2FD3E1AC9F8DA6 /* stereo_quant_pred.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stereo_quant_pred.c; sourceTree = "<group>"; };
 		A0CD4A027A5CD917B2C42AF1 /* shell_coder.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shell_coder.c; sourceTree = "<group>"; };
 		A3FC5B4094A583D731914E17 /* biquad_alt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = biquad_alt.c; sourceTree = "<group>"; };
@@ -393,6 +411,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CAA4603CC3BDB0E84F14B235 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AB813C8A05595126694E8E2 /* libopus.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -441,6 +467,7 @@
 			isa = PBXGroup;
 			children = (
 				60561485D25DA098AD994844 /* libopus.a */,
+				9DFE75782EC17D9FEBE674B8 /* opus_demo */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -699,6 +726,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5EBC5B5A4C0CD8CC3B3152D5 /* opus_demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 94FA4B4E937B020E4BC623D6 /* Build configuration list for PBXNativeTarget "opus_demo" */;
+			buildPhases = (
+				D8B60EFF7DA6257DBCA92D36 /* Sources */,
+				CAA4603CC3BDB0E84F14B235 /* Frameworks */,
+				7373CCD644CED003CA3DBE5A /* Postbuild "Change Mach-O Flags" */,
+				92902F5FEBA1B1C2E215F41A /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8ADF7675E841DF11C01544FD /* PBXTargetDependency */,
+			);
+			name = opus_demo;
+			productName = opus_demo;
+			productReference = 9DFE75782EC17D9FEBE674B8 /* opus_demo */;
+			productType = "com.apple.product-type.tool";
+		};
 		87FEE7BA56569457CC835153 /* opus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 89C0F8903091BB36321FD776 /* Build configuration list for PBXNativeTarget "opus" */;
@@ -736,9 +782,45 @@
 			targets = (
 				343C989E9B7FEAC47C6AF974 /* All */,
 				87FEE7BA56569457CC835153 /* opus */,
+				5EBC5B5A4C0CD8CC3B3152D5 /* opus_demo */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		7373CCD644CED003CA3DBE5A /* Postbuild "Change Mach-O Flags" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Change Mach-O Flags\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../build/mac/change_mach_o_flags_from_xcode.sh\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		92902F5FEBA1B1C2E215F41A /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		03F9A0B67622A9FBF319933F /* Sources */ = {
@@ -876,6 +958,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D8B60EFF7DA6257DBCA92D36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CF232A35E4DF8DF80308A03 /* opus_demo.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -884,20 +974,212 @@
 			target = 87FEE7BA56569457CC835153 /* opus */;
 			targetProxy = 5E83DFCEB4FD496AD81028F5 /* PBXContainerItemProxy */;
 		};
+		8ADF7675E841DF11C01544FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 87FEE7BA56569457CC835153 /* opus */;
+			targetProxy = 887B20252ED5362E03839675 /* PBXContainerItemProxy */;
+		};
+		E9B88139BC3CB55F0B0A7E53 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5EBC5B5A4C0CD8CC3B3152D5 /* opus_demo */;
+			targetProxy = C1BABB084164B184C56ABE81 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1601517113833F27CC2BCBE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					src/celt,
+					src/silk,
+					src/include,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = opus_demo;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Debug;
+		};
+		406716716CE6C2B5AB5CB757 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					src/celt,
+					src/silk,
+					src/include,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = opus_demo;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wendif-labels",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
+				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
+			};
+			name = Release;
+		};
 		626275BF039DD3D1DEFF3861 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -911,14 +1193,10 @@
 		701C1D638BD19C45F47A6D6F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				SYMROOT = build;
 			};
 			name = Release;
 		};
@@ -926,6 +1204,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -933,6 +1212,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
@@ -941,15 +1221,33 @@
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"\"DISABLE_NACL\"",
 					"\"CHROMIUM_BUILD\"",
 					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
 					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"OPUS_BUILD\"",
 					"\"OPUS_EXPORT=\"",
 					"\"HAVE_LRINT\"",
@@ -961,7 +1259,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -970,19 +1268,27 @@
 					src/silk,
 					src/silk/float,
 				);
-				OTHER_CFLAGS = "";
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = opus;
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wendif-labels",
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -992,6 +1298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -999,6 +1306,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
@@ -1007,15 +1315,33 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"\"DISABLE_NACL\"",
 					"\"CHROMIUM_BUILD\"",
 					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
 					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"OPUS_BUILD\"",
 					"\"OPUS_EXPORT=\"",
 					"\"HAVE_LRINT\"",
@@ -1026,7 +1352,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1035,19 +1361,30 @@
 					src/silk,
 					src/silk/float,
 				);
-				OTHER_CFLAGS = "";
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = opus;
-				RUN_CLANG_STATIC_ANALYZER = NO;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wendif-labels",
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -1068,6 +1405,15 @@
 			buildConfigurations = (
 				8A5FA727D7E1ADA6276CBAF1 /* Debug */,
 				71BA1BAD494365D55D458DAE /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		94FA4B4E937B020E4BC623D6 /* Build configuration list for PBXNativeTarget "opus_demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1601517113833F27CC2BCBE9 /* Debug */,
+				406716716CE6C2B5AB5CB757 /* Release */,
 			);
 			defaultConfigurationIsVisible = 1;
 			defaultConfigurationName = Debug;

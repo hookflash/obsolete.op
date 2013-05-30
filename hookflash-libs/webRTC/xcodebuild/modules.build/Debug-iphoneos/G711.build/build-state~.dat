@@ -1,86 +1,0 @@
-TG711
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libG711.a normal armv7
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libG711.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/G711.LinkFileList
-c0000000051658DE40000000000000124
-t1365609956
-s292
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c
-c00000000516570550000000000000EC2
-t1365602389
-s3778
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c
-c000000005165705500000000000010C0
-t1365602389
-s4288
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciese6e64f64c515b741^8f375164c515b741^---0#1#0#--18"Check dependencies36"70DE5CED-FDE6-4D75-B320-090CFAEE00D4-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302756.607094
-e387302756.729098
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.cedba9b64c515b741^d40ebb64c515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c0000000000000000^3028"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o audio_coding/codecs/g711/g711.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/g711/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711.o36"836B8DEB-E054-4424-9222-A2798AD067A4-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302756.320265
-e387302756.604996
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection105"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.cdb4f5264c515b741^23f99a64c515b741^---0#0#0#-19%DVTDocumentLocation2@113"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c0000000000000000^3088"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o audio_coding/codecs/g711/g711_interface.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/g711/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/g711/g711_interface.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/g711_interface.o36"5A95C015-6027-48F9-89D3-D8C9B8416A2C-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libG711.a normal armv7
-s387302756.736562
-e387302756.862161
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libG711.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection62"Libtool ../../xcodebuild/Debug-iphoneos/libG711.a normal armv7925bbf64c515b741^4ed2dc64c515b741^---0#0#0#--947"Libtool ../../xcodebuild/Debug-iphoneos/libG711.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/G711.build/Objects-normal/armv7/G711.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libG711.a36"8F9C77D1-1866-486B-B8C5-EEBBFB7B5FBC-
-

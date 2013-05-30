@@ -104,6 +104,9 @@ void ViEAutoTest::PrintVideoCodec(const webrtc::VideoCodec videoCodec)
         case webrtc::kVideoCodecVP8:
             ViETest::Log("\tcodecType: VP8");
             break;
+        case webrtc::kVideoCodecH264:
+            ViETest::Log("\tcodecType: H264");
+            break;
         case webrtc::kVideoCodecI420:
             ViETest::Log("\tcodecType: I420");
             break;

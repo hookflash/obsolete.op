@@ -78,6 +78,7 @@ class AudioEventObserver: public AudioDeviceObserver
 public:
     virtual void OnErrorIsReported(const ErrorCode error);
     virtual void OnWarningIsReported(const WarningCode warning);
+  virtual void OnOutputAudioRouteChanged(const OutputAudioRoute audioRoute) {};
     AudioEventObserver(AudioDeviceModule* audioDevice);
     ~AudioEventObserver();
 public:

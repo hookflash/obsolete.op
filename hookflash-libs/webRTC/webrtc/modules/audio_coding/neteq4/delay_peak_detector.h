@@ -51,8 +51,8 @@ class DelayPeakDetector {
   virtual void IncrementCounter(int inc_ms);
 
  private:
-  static const size_t kMaxNumPeaks = 8;
-  static const size_t kMinPeaksToTrigger = 2;
+  static const std::size_t kMaxNumPeaks = 8;
+  static const std::size_t kMinPeaksToTrigger = 2;
   static const int kPeakHeightMs = 78;
   static const int kMaxPeakPeriodMs = 10000;
 

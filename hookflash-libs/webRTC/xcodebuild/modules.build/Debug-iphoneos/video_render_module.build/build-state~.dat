@@ -1,159 +1,0 @@
-Tvideo_render_module
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libvideo_render_module.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_module.LinkFileList
-c0000000051658E2D00000000000002B3
-t1365610029
-s691
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc
-c00000000516570690000000000001B06
-t1365602409
-s6918
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc
-c000000005165706A0000000000003086
-t1365602410
-s12422
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc
-c000000005165706A0000000000001696
-t1365602410
-s5782
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc
-c000000005165706A000000000000750F
-t1365602410
-s29967
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesd6e48dadc515b741^a6288fadc515b741^---0#1#0#--18"Check dependencies36"B034834A-9465-4229-9038-98FB4AE0E503-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302831.173740
-e387302832.092118
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection101"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cce7002dafc515b741^57b217b0c515b741^---0#0#0#-19%DVTDocumentLocation2@109"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc0000000000000000^3582"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o video_render/incoming_video_stream.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DWEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_render/include -Iinterface -Iutility/interface -Iaudio_coding/main/interface -I../common_video/interface -I../common_video/jpeg/include -I../common_video/libyuv/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/incoming_video_stream.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/incoming_video_stream.o36"65447317-8FB0-4C99-A740-46416E3FA7C1-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302831.101730
-e387302831.914167
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection115"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc13661aafc515b741^3509eaafc515b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc0000000000000000^3630"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o video_render/external/video_render_external_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DWEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_render/include -Iinterface -Iutility/interface -Iaudio_coding/main/interface -I../common_video/interface -I../common_video/jpeg/include -I../common_video/libyuv/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_external_impl.o36"A4F8C245-24B6-41BA-B4D4-D9559919CD15-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302831.945207
-e387302832.465021
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection99"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc488cf2afc515b741^362377b0c515b741^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc0000000000000000^3570"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o video_render/video_render_frames.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DWEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_render/include -Iinterface -Iutility/interface -Iaudio_coding/main/interface -I../common_video/interface -I../common_video/jpeg/include -I../common_video/libyuv/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_frames.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_frames.o36"F08A5B3D-F561-475B-98C4-F2F7F9D3C298-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302832.101944
-e387302832.774464
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:122:13: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?
-o            VideoRenderIPhoneImpl* ptrRenderer = new VideoRenderIPhoneImpl(_id, videoRenderType, window, _fullScreen);
-o            ^~~~~~~~~~~~~~~~~~~~~
-o            VideoRenderExternalImpl
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared here
-oclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback
-o      ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:122:54: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?
-o            VideoRenderIPhoneImpl* ptrRenderer = new VideoRenderIPhoneImpl(_id, videoRenderType, window, _fullScreen);
-o                                                     ^~~~~~~~~~~~~~~~~~~~~
-o                                                     VideoRenderExternalImpl
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared here
-oclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback
-o      ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:357:5: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?
-o    VideoRenderIPhoneImpl* ptrRenderer;
-o    ^~~~~~~~~~~~~~~~~~~~~
-o    VideoRenderExternalImpl
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared here
-oclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback
-o      ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:358:23: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?
-o    ptrRenderer = new VideoRenderIPhoneImpl(_id, kRenderiPhone, window, _fullScreen);
-o                      ^~~~~~~~~~~~~~~~~~~~~
-o                      VideoRenderExternalImpl
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared here
-oclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback
-o      ^
-o4 errors generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc2a701ab0c515b741^9087c6b0c515b741^-2457"/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:122:13: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?            VideoRenderIPhoneImpl* ptrRenderer = new VideoRenderIPhoneImpl(_id, videoRenderType, window, _fullScreen);            ^~~~~~~~~~~~~~~~~~~~~            VideoRenderExternalImpl/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared hereclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback      ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:122:54: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?            VideoRenderIPhoneImpl* ptrRenderer = new VideoRenderIPhoneImpl(_id, videoRenderType, window, _fullScreen);                                                     ^~~~~~~~~~~~~~~~~~~~~                                                     VideoRenderExternalImpl/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared hereclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback      ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:357:5: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?    VideoRenderIPhoneImpl* ptrRenderer;    ^~~~~~~~~~~~~~~~~~~~~    VideoRenderExternalImpl/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared hereclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback      ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc:358:23: error: unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?    ptrRenderer = new VideoRenderIPhoneImpl(_id, kRenderiPhone, window, _fullScreen);                      ^~~~~~~~~~~~~~~~~~~~~                      VideoRenderExternalImpl/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h:21:7: note: 'VideoRenderExternalImpl' declared hereclass VideoRenderExternalImpl: IVideoRender, public VideoRenderCallback      ^4 errors generated.4(36%IDEClangDiagnosticActivityLogMessage2@82"Unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?-387302832#18446744073709551615#0#1(2@39"'VideoRenderExternalImpl' declared here-387302832#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic23%DVTTextDocumentLocation3@122"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h0000000000000000^20#6#20#6#764#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^121#12#121#12#3773#0#14"Semantic Issue1(3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^121#12#121#33#3773#21#-2@82"Unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?-387302832#18446744073709551615#0#1(2@39"'VideoRenderExternalImpl' declared here-387302832#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@122"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h0000000000000000^20#6#20#6#764#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^121#53#121#53#3814#0#14"Semantic Issue1(3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^121#53#121#74#3814#21#-2@82"Unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?-387302832#18446744073709551615#0#1(2@39"'VideoRenderExternalImpl' declared here-387302832#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@122"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h0000000000000000^20#6#20#6#764#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^356#4#356#4#10200#0#14"Semantic Issue1(3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^356#4#356#25#10200#21#-2@82"Unknown type name 'VideoRenderIPhoneImpl'; did you mean 'VideoRenderExternalImpl'?-387302832#18446744073709551615#0#1(2@39"'VideoRenderExternalImpl' declared here-387302832#18446744073709551615#0#-0#27"com.apple.dt.IDE.diagnostic3@122"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/external/video_render_external_impl.h0000000000000000^20#6#20#6#764#0#14"Semantic Issue--2#27"com.apple.dt.IDE.diagnostic3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^357#22#357#22#10258#0#14"Semantic Issue1(3@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^357#22#357#43#10258#21#-0#0#0#-19%DVTDocumentLocation4@105"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc0000000000000000^3558"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o video_render/video_render_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -DWEBRTC_INCLUDE_INTERNAL_VIDEO_RENDER -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_render/include -Iinterface -Iutility/interface -Iaudio_coding/main/interface -I../common_video/interface -I../common_video/jpeg/include -I../common_video/libyuv/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_render/video_render_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_render_module.build/Objects-normal/armv7/video_render_impl.o36"F331BA41-8103-4FFB-B80B-1A75F0464B13-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libvideo_render_module.a normal armv7
-r0
-

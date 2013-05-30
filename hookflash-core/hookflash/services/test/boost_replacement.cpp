@@ -34,9 +34,13 @@
 
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
+#include <zsLib/Log.h>
 #include <hookflash/services/IHelper.h>
 
 #include <iostream>
+
+namespace hookflash { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
+
 
 
 typedef hookflash::services::IHelper IHelper;
@@ -76,7 +80,7 @@ namespace BoostReplacement
   
   void installLogger()
   {
-    std::cout << "INSTALLING LOGGER...\n\n";
+    BOOST_STDOUT() << "INSTALLING LOGGER...\n\n";
     IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
     IHelper::setLogLevel("hookflash_services", zsLib::Log::Trace);
 
@@ -92,12 +96,16 @@ namespace BoostReplacement
       IHelper::installTelnetLogger(HOOKFLASH_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
     }
 
-    std::cout << "INSTALLED LOGGER...\n\n";
+    if (HOOKFLASH_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
+      IHelper::installDebuggerLogger();
+    }
+
+    BOOST_STDOUT() << "INSTALLED LOGGER...\n\n";
   }
   
   void uninstallLogger()
   {
-    std::cout << "REMOVING LOGGER...\n\n";
+    BOOST_STDOUT() << "REMOVING LOGGER...\n\n";
 
     if (HOOKFLASH_SERVICE_TEST_USE_STDOUT_LOGGING) {
       IHelper::uninstallStdOutLogger();
@@ -108,15 +116,18 @@ namespace BoostReplacement
     if (HOOKFLASH_SERVICE_TEST_USE_TELNET_LOGGING) {
       IHelper::uninstallTelnetLogger();
     }
+    if (HOOKFLASH_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
+      IHelper::uninstallDebuggerLogger();
+    }
 
-    std::cout << "REMOVED LOGGER...\n\n";
+    BOOST_STDOUT() << "REMOVED LOGGER...\n\n";
   }
   
   void output()
   {
-    std::cout << "PASSED:       [" << BoostReplacement::getGlobalPassedVar() << "]\n";
+    BOOST_STDOUT() << "PASSED:       [" << BoostReplacement::getGlobalPassedVar() << "]\n";
     if (0 != BoostReplacement::getGlobalFailedVar()) {
-      std::cout << "***FAILED***: [" << BoostReplacement::getGlobalFailedVar() << "]\n";
+      BOOST_STDOUT() << "***FAILED***: [" << BoostReplacement::getGlobalFailedVar() << "]\n";
     }
   }
   

@@ -49,7 +49,7 @@ class Normal {
   // de-interleaving |input|. |last_mode| contains the mode used in the previous
   // GetAudio call (i.e., not the current one), and |external_mute_factor| is
   // a pointer to the mute factor in the NetEqImpl class.
-  int Process(const int16_t* input, size_t length,
+  int Process(const int16_t* input, std::size_t length,
               Modes last_mode,
               int16_t* external_mute_factor_array,
               AudioMultiVector<int16_t>* output);

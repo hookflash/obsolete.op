@@ -52,6 +52,23 @@ namespace zsLib
     static MessageQueueThreadPtr createBasic(const char *threadName = NULL, ThreadPriorities threadPriority = ThreadPriority_NormalPriority);
     static MessageQueueThreadPtr singletonUsingCurrentGUIThreadsMessageQueue();
   };
+
+#ifdef __QNX__
+
+  interaction IQtCrossThreadNotifierDelegate
+  {
+    virtual void processMessageFromThread() = 0;
+  };
+
+  interaction IQtCrossThreadNotifier
+  {
+    static boost::shared_ptr<IQtCrossThreadNotifier> createNotifier();
+
+    virtual void setDelegate(boost::shared_ptr<IQtCrossThreadNotifierDelegate> delegate) = 0;
+    virtual void notifyMessagePosted() = 0;
+  };
+
+#endif // __QNX__
 }
 
 #endif //ZSLIB_MESSAGEQUEUETHREAD_H_573a8d930ea451693ccd53632e481cb0

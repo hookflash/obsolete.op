@@ -98,7 +98,7 @@ void DelayPeakDetector::IncrementCounter(int inc_ms) {
 }
 
 bool DelayPeakDetector::CheckPeakConditions() {
-  size_t s = peak_history_.size();
+  std::size_t s = peak_history_.size();
   if (s >= kMinPeaksToTrigger &&
       peak_period_counter_ms_ <= 2 * MaxPeakPeriod()) {
     peak_found_ = true;

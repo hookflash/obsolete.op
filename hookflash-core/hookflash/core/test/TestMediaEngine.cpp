@@ -30,8 +30,13 @@
  */
 
 #include "TestMediaEngine.h"
+
 #include "config.h"
 #include "boost_replacement.h"
+
+#ifdef __QNX__
+extern char *__progname;
+#endif
 
 namespace hookflash { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_core_test) } } }
 
@@ -56,6 +61,26 @@ namespace hookflash
       #pragma mark
       #pragma mark TestMediaEngine
       #pragma mark
+
+	  //-----------------------------------------------------------------------
+	  TestMediaEngine::TestMediaEngine() :
+        MediaEngine(zsLib::Noop()),
+        mReceiverAddress("")
+	  {
+#ifdef __QNX__
+			slog2_buffer_set_config_t buffer_config;
+			slog2_buffer_t buffer_handle;
+			buffer_config.buffer_set_name = __progname;
+			buffer_config.num_buffers = 1;
+			buffer_config.verbosity_level = SLOG2_INFO;
+			buffer_config.buffer_config[0].buffer_name = "media_logger";
+			buffer_config.buffer_config[0].num_pages = 7;
+			if (-1 == slog2_register(&buffer_config, &buffer_handle, 0)) {
+			    fprintf(stderr, "Error registering slogger2 buffer!\n");
+			}
+			mBufferHandle = buffer_handle;
+#endif
+      }
       
       //-----------------------------------------------------------------------
       TestMediaEngine::~TestMediaEngine()
@@ -82,9 +107,9 @@ namespace hookflash
       void TestMediaEngine::setLogLevel()
       {
 #ifndef HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
+//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
 #else
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Debug);
+//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Debug);
 #endif
       }
       
@@ -203,7 +228,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void TestMediaEngine::Print(const webrtc::TraceLevel level, const char *traceString, const int length)
       {
+#ifndef __QNX__
         printf("%s\n", traceString);
+#else
+		slog2f(mBufferHandle, 0, SLOG2_INFO, "%s", traceString);
+#endif
+
         MediaEngine::Print(level, traceString, length);
       }
       

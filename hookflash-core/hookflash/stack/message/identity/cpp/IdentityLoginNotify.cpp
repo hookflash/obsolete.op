@@ -56,7 +56,7 @@ namespace hookflash
             case BrowserVisibility_NA:              return "";
 
             case BrowserVisibility_Hidden:          return "hidden";
-            case BrowserVisibility_Visible:         return "visbile";
+            case BrowserVisibility_Visible:         return "visible";
             case BrowserVisibility_VisibleOnDemand: return "visible-on-demand";
           }
           return "";
@@ -124,7 +124,8 @@ namespace hookflash
 
           if (hasAttribute(AttributeType_BrowserVisibility)) {
             ElementPtr browserEl = Element::create("browser");
-            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visbility", toString(mVisibility)));
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visibility", toString(mVisibility)));
+            root->adoptAsLastChild(browserEl);
           }
 
           if (hasAttribute(AttributeType_PostLoginRedirectURL)) {

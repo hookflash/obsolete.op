@@ -24,6 +24,11 @@
 
 #include <zsLib/types.h>
 #include <iostream>
+#include <sstream>
+
+#ifdef __QNX__
+#include <QDebug>
+#endif //__QNX__
 
 namespace BoostReplacement
 {
@@ -35,6 +40,12 @@ namespace BoostReplacement
   void output();
 }
 
+#ifdef __QNX__
+#define BOOST_STDOUT() (qDebug())
+#else
+#define BOOST_STDOUT() (std::cout)
+#endif //__QNX___
+
 #define BOOST_AUTO_TEST_SUITE(xParam) namespace xParam {
 
 #define BOOST_AUTO_TEST_SUITE_END() }
@@ -42,11 +53,11 @@ namespace BoostReplacement
 #define BOOST_AUTO_TEST_CASE(xTestCase) static struct Test_##xTestCase {   \
     Test_##xTestCase()                                              \
     {                                                               \
-      std::cout << "STARTING:     " #xTestCase "\n";                \
+      BOOST_STDOUT() << "STARTING:     " #xTestCase "\n";  \
       try                                                           \
       { test_func(); }                                              \
       catch(...)                                                    \
-      { std::cout << "***UNCAUGHT EXCEPTION IN***: " #xTestCase "\n"; BoostReplacement::failed(); }   \
+      { BOOST_STDOUT() << "***UNCAUGHT EXCEPTION IN***: " #xTestCase "\n"; BoostReplacement::failed(); }   \
       std::cout << "ENDING:       " #xTestCase "\n\n";              \
     }                                                               \
     void test_func();                                               \
@@ -57,15 +68,15 @@ namespace BoostReplacement
 #define BOOST_CHECK(xValue)                                           \
   {                                                                   \
     if (!(xValue))                                                    \
-    { std::cout << "***FAILED***: " #xValue "\n"; BoostReplacement::failed(); } \
-    else                                                                        \
-    { std::cout << "PASSED:       " #xValue "\n"; BoostReplacement::passed(); } \
+    { BOOST_STDOUT() << "***FAILED***: " #xValue "\n"; BoostReplacement::failed(); } \
+    else                                                                             \
+    { BOOST_STDOUT() << "PASSED:       " #xValue "\n"; BoostReplacement::passed(); } \
   }
 
 #define BOOST_EQUAL(xValue1, xValue2)                               \
   if (!((xValue1) == (xValue2)))                                    \
-  { std::cout << "***FAILED***: " #xValue1 " == " #xValue2 ", V1=" << (xValue1) << ", V2=" << (xValue2) << "\n"; BoostReplacement::failed(); }                   \
+  { std::stringstream sv1, sv2; sv1 << (xValue1); sv2 << (xValue2); BOOST_STDOUT() << "***FAILED***: " #xValue1 " == " #xValue2 ", V1=" << (sv1.str().c_str()) << ", V2=" << (sv2.str().c_str()) << "\n"; BoostReplacement::failed(); }                   \
   else                                                              \
-  { std::cout << "PASSED:       " #xValue1 " == " #xValue2 ", V1=" << (xValue1) << ", V2=" << (xValue2) << "\n"; BoostReplacement::passed(); }
+  { std::stringstream sv1, sv2; sv1 << (xValue1); sv2 << (xValue2); BOOST_STDOUT() << "PASSED:       " #xValue1 " == " #xValue2 ", V1=" << (sv1.str().c_str()) << ", V2=" << (sv2.str().c_str()) << "\n"; BoostReplacement::passed(); }
 
 #endif //BOOST_AUTO_TEST_SUITE

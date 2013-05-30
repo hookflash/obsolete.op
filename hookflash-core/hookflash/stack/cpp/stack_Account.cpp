@@ -365,6 +365,20 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      LocationPtr Account::getLocationForLocal() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mSelfLocation;
+      }
+
+      //-----------------------------------------------------------------------
+      LocationPtr Account::getLocationForFinder() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mFinderLocation;
+      }
+
+      //-----------------------------------------------------------------------
       void Account::notifyDestroyed(Location &location)
       {
         AutoRecursiveLock lock(getLock());
@@ -1064,16 +1078,16 @@ namespace hookflash
 
         LocationPtr location = peerLocation->forAccount().getLocation();
 
-        ZS_LOG_DEBUG(log("notified peer location is shutdown") + ILocation::toDebugString(location))
+        ZS_LOG_DEBUG(log("notified about peer location") + ILocation::toDebugString(location))
 
         PeerInfoMap::iterator found = mPeerInfos.find(location->forAccount().getPeerURI());
         if (found == mPeerInfos.end()) {
-          ZS_LOG_WARNING(Debug, log("notified peer location is shutdown but peer was not found"))
+          ZS_LOG_WARNING(Debug, log("notified peer location state changed but was not found but peer was not found"))
           return;
         }
 
         PeerInfoPtr &peerInfo = (*found).second;
-        PeerInfo::PeerLocationMap::iterator foundLocation = peerInfo->mLocations.find(location->forAccount().getPeerURI());
+        PeerInfo::PeerLocationMap::iterator foundLocation = peerInfo->mLocations.find(location->forAccount().getLocationID());
         if (foundLocation == peerInfo->mLocations.end()) {
           ZS_LOG_WARNING(Debug, log("could not find peer location") + PeerInfo::toDebugString(peerInfo) + ILocation::toDebugString(location))
           return;
@@ -1255,8 +1269,8 @@ namespace hookflash
           mFindersGetMonitor->cancel();
           mFindersGetMonitor.reset();
 
-          FindersGetResultPtr request = FindersGetResult::convert(message);
-          if (!request) {
+          FindersGetResultPtr result = FindersGetResult::convert(message);
+          if (!result) {
             MessageResultPtr result = MessageResult::convert(message);
             ZS_LOG_ERROR(Detail, log("finders get failed, will try later") + Message::toDebugString(message))
 
@@ -1265,7 +1279,7 @@ namespace hookflash
             return true;
           }
 
-          mAvailableFinders = request->finders();
+          mAvailableFinders = result->finders();
           if (mAvailableFinders.size() < 1) {
             ZS_LOG_ERROR(Detail, log("finders get failed to return any finders"))
             handleFinderRelatedFailure();
@@ -1354,7 +1368,7 @@ namespace hookflash
 
               LocationPtr location = Location::convert(locationInfo.mLocation);
 
-              const CandidateList &candidates = locationInfo.mCandidates;
+              CandidateList candidates = locationInfo.mCandidates;
               if (candidates.size() < 1) {
                 ZS_LOG_ERROR(Debug, log("receiced received a find reply but it did not contain any candidates (thus ignoring reply)") + PeerInfo::toDebugString(peerInfo))
                 return false;
@@ -1400,6 +1414,23 @@ namespace hookflash
 
                 // in this case not only was a location found but the request to find the location came back from the remote party with a reply but it's not sufficient reason
                 // to notify any subscribers since they only care when a connection is actually established.
+              }
+
+              PeerLocationFindRequestPtr request = PeerLocationFindRequest::convert(monitor->getMonitoredMessage());
+
+              SecureByteBlockPtr encryptionKey = request->peerSecret();
+
+              if (encryptionKey) {
+                ZS_LOG_DEBUG(log("decrypting candidate passwords sent from report party"))
+                for (CandidateList::iterator canIter = candidates.begin(); canIter != candidates.end(); ++canIter)
+                {
+                  Candidate &candidate = (*canIter);
+                  String originalPassword = candidate.mPassword;
+
+                  candidate.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(candidate.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(originalPassword)));
+
+                  ZS_LOG_DEBUG(log("decrypted password") + ", orginal=" + originalPassword + ", decrypted=" + candidate.mPassword)
+                }
               }
 
               peerLocation->forAccount().connectLocation(candidates, IICESocket::ICEControl_Controlling);
@@ -1805,7 +1836,7 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!peerFilePrivate)
 
         mSelfPeer = IPeerForAccount::create(mThisWeak.lock(), peerFilePublic);
-        mSelfLocation = ILocationForAccount::getForPeer(mSelfPeer, mLocationID);
+        mSelfLocation = ILocationForAccount::getForLocal(mThisWeak.lock());
         mFinderLocation = ILocationForAccount::getForFinder(mThisWeak.lock());
         return true;
       }
@@ -1959,9 +1990,10 @@ namespace hookflash
             // erase the peer now...
             ZS_LOG_DEBUG(log("no locations at this peer thus shutting down now") + PeerInfo::toDebugString(peerInfo))
             mPeerInfos.erase(current);
-          } else {
-            sendPeerKeepAlives(peerURI, peerInfo);
+            continue;
           }
+
+          sendPeerKeepAlives(peerURI, peerInfo);
 
           performPeerFind(peerURI, peerInfo);
         }
@@ -2214,6 +2246,7 @@ namespace hookflash
         }
 
         LocationInfoPtr locationInfo = getLocationInfo(mSelfLocation);
+        request->findPeer(peerInfo->mPeer);
         request->peerSecret(IHelper::random(32));
         request->excludeLocations(exclude);
         request->locationInfo(*locationInfo);
@@ -2299,7 +2332,7 @@ namespace hookflash
           }
 
           ZS_LOG_DEBUG(log("notifying subscription peer locations changed") + IPeerSubscription::toDebugString(subscription) + ", state=" + ILocation::toString(state) + ILocation::toDebugString(location))
-          subscription->forAccount().notifyLocationConnectionStateChanged(location, ILocation::LocationConnectionState_Disconnected);
+          subscription->forAccount().notifyLocationConnectionStateChanged(location, state);
         }
       }
 

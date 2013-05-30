@@ -40,7 +40,7 @@
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -184,9 +184,9 @@ namespace hookflash
           return false;
         }
 
-        const boost::regex e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
-        if (!boost::regex_match(peerURI, e)) {
-          ZS_LOG_WARNING(Detail, String("Peer [] peer URI is not valid, uri=") + peerURI)
+        zsLib::RegEx e("^peer:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/([a-f0-9][a-f0-9])+$");
+        if (!e.hasMatch(peerURI)) {
+          ZS_LOG_WARNING(Detail, String("Peer [] peer URI is not valid, uri=") + peerURI);
           return false;
         }
         return true;
@@ -265,14 +265,19 @@ namespace hookflash
         AutoRecursiveLock lock(pThis->getLock());
 
         // check if it already exists in the account
-        PeerPtr result = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
+        PeerPtr useThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
 
-        if ((pThis != result) &&
-            (peerFilePublic) &&
-            (!(result->mPeerFilePublic))) {
-          result->mPeerFilePublic = peerFilePublic;
+        if (!(useThis->mPeerFilePublic)) {
+          useThis->mPeerFilePublic = peerFilePublic;
         }
-        return result;
+
+        if (pThis != useThis) {
+          // do not inform account of destruction since it was not used
+          ZS_LOG_DEBUG(pThis->log("discarding object since one exists already"))
+          pThis->mAccount.reset();
+        }
+
+        return useThis;
       }
 
       //-----------------------------------------------------------------------
@@ -436,7 +441,7 @@ namespace hookflash
         if (!account) return PeerPtr();
         if (!peerURI) return PeerPtr();
 
-        if (isValid(peerURI)) {
+        if (!isValid(peerURI)) {
           ZS_LOG_DEBUG(String("Peer [] cannot create peer as URI is not valid, peer URI=") + peerURI)
           return PeerPtr();
         }
@@ -446,8 +451,13 @@ namespace hookflash
         pThis->init();
 
         // check if it already exists in the account
-        pThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
-        return pThis;
+        PeerPtr useThis = pThis->mAccount.lock()->forPeer().findExistingOrUse(pThis);
+        if (useThis != pThis) {
+          // do not inform account of destruction since it is not used
+          ZS_LOG_DEBUG(pThis->log("discarding object since one exists already"))
+          pThis->mAccount.reset();
+        }
+        return useThis;
       }
 
       //-----------------------------------------------------------------------
@@ -506,6 +516,7 @@ namespace hookflash
         case PeerFindState_Finding:   return "Finding";
         case PeerFindState_Completed: return "Complete";
       }
+      return "UNDEFINED";
     }
 
     //-------------------------------------------------------------------------

@@ -801,11 +801,11 @@ WebRtc_Word32 AudioDeviceIPhone::GetLoudspeakerStatus(bool &enabled) const {
     return 0;
 }
 
-WebRtc_Word32 AudioDeviceIPhone::GetOutputAudioRoute(OutputAudioRoute *route) const {
+WebRtc_Word32 AudioDeviceIPhone::GetOutputAudioRoute(OutputAudioRoute& route) const {
     WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id,
                  "AudioDeviceIPhone::GetOutputAudioRoute()");
 
-    *route = _outputAudioRoute;
+    route = _outputAudioRoute;
     return 0;
 }
 

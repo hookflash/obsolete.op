@@ -661,6 +661,8 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
+        ZS_LOG_DEBUG(log("cancel called"))
+
         HTTPQueryPtr pThis = mThisWeak.lock();
 
         HTTPPtr outer = mOuter.lock();
@@ -923,7 +925,12 @@ namespace hookflash
         mResultCode = result;
         if (0 == mResponseCode) {
           if (CURLE_OK != result) {
-            mResponseCode = HTTPStatusCode_ClientClosedRequest;
+            if (mCurl) {
+              mResponseCode = HTTPStatusCode_MethodFailure;
+            } else {
+              mResponseCode = HTTPStatusCode_ClientClosedRequest;
+            }
+            ZS_LOG_DEBUG(log("manually result error") + ", error=" + toString(toStatusCode(mResponseCode)))
           }
         }
 

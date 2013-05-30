@@ -78,7 +78,7 @@ int32_t Statistics::SetLastError(
 {
     CriticalSectionScoped cs(_critPtr);
     char traceMessage[KTraceMaxMessageSize];
-    assert(strlen(msg) < KTraceMaxMessageSize);
+    assert(std::strlen(msg) < KTraceMaxMessageSize);
     _lastError = error;
     sprintf(traceMessage, "%s (error=%d)", msg, error);
     WEBRTC_TRACE(level, kTraceVoice, VoEId(_instanceId,-1), "%s",

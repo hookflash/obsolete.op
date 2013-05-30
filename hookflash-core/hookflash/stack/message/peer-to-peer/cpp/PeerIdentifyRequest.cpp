@@ -153,7 +153,7 @@ namespace hookflash
               return PeerIdentifyRequestPtr();
             }
 
-            if (signaturePeer->forMessages().getID() == remotePeer->forMessages().getID()) {
+            if (signaturePeer->forMessages().getID() != remotePeer->forMessages().getID()) {
               ZS_LOG_WARNING(Detail, "PeerIdentifyRequest [] signature peer does not match identity peer, signature peer: " + IPeer::toDebugString(signaturePeer, false) + ", request peer: " + IPeer::toDebugString(remotePeer, false))
               return PeerIdentifyRequestPtr();
             }

@@ -398,6 +398,7 @@ namespace zsLib
                   continue;
                 }
               }
+              break;
             }
           }
         }

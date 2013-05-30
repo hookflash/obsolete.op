@@ -1,160 +1,0 @@
-Tvideo_coding_utility
-v5
-r1
-cCheck dependencies
-cCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a normal armv7
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a normal "armv7 armv7s"
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/video_coding_utility.LinkFileList
-c000000005168346E00000000000001B1
-t1365783662
-s433
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/video_coding_utility.LinkFileList
-c000000005168346E00000000000001B3
-t1365783662
-s435
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc
-c000000005165C64200000000000004CA
-t1365624386
-s1226
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc
-c000000005165C64200000000000028DC
-t1365624386
-s10460
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesc7d9a8ee6b18b741^74edcfee6b18b741^---0#1#0#--18"Check dependencies36"71E63B42-19B7-41D9-9237-1BF56237C85D-
-
-CCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387476462.813265
-e387476464.958923
-r1
-xCompileC
-x../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc8198d0ee6b18b741^2a90f5f06b18b741^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc0000000000000000^3727"CompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o exp_filter.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/include -I../../.. -I../../../.. -I../../../.. -I../../../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/exp_filter.o36"05F8FDD5-3BC5-47E2-8A51-2A40914D7261-
-
-CCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387476462.815326
-e387476464.947797
-r1
-xCompileC
-x../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc0212d1ee6b18b741^00acf2f06b18b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc0000000000000000^3745"CompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o frame_dropper.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/include -I../../.. -I../../../.. -I../../../.. -I../../../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/frame_dropper.o36"06129554-09EE-4D8E-AC51-CB133FFEF808-
-
-CCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387476464.949391
-e387476465.055739
-r1
-xCompileC
-x../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc
-xnormal
-xarmv7s
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.ccb267f3f06b18b741^84480ef16b18b741^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc0000000000000000^3734"CompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o exp_filter.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/include -I../../.. -I../../../.. -I../../../.. -I../../../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/exp_filter.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/exp_filter.o36"45E60F2D-6DEF-40DC-B1BD-4C87928F7881-
-
-CCompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387476464.960414
-e387476465.189216
-r1
-xCompileC
-x../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc
-xnormal
-xarmv7s
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc583bf6f06b18b741^518430f16b18b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc0000000000000000^3752"CompileC ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o frame_dropper.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/include -I../../.. -I../../../.. -I../../../.. -I../../../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/frame_dropper.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/frame_dropper.o36"74E5643B-1817-41C3-B40F-52F170F017F1-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a normal "armv7 armv7s"
-s387476465.230360
-e387476465.258516
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection176"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a7b323bf16b18b741^005342f16b18b741^---0#0#0#-19%DVTDocumentLocation2@168"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a000000000080d041^1025"CreateUniversalBinary ../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a36"6C4B131A-C067-4B19-A4F2-F4E0F0817E7B-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos/libvideo_coding_utility.a normal armv7
-r0
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a normal armv7
-s387476465.057314
-e387476465.093073
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection159"Libtool ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a normal armv786e20ef16b18b741^64e917f16b18b741^---0#0#0#--1330"Libtool ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/video_coding_utility.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7/libvideo_coding_utility.a36"96905AF5-413A-4185-ABAF-AB68B72D176A-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a normal armv7s
-s387476465.196449
-e387476465.223037
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection161"Libtool ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a normal armv7sc37f32f16b18b741^a12f39f16b18b741^---0#0#0#--1335"Libtool ../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/video_coding_utility.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/video_coding/utility/../../../../xcodebuild/video_coding_utility.build/Debug-iphoneos/video_coding_utility.build/Objects-normal/armv7s/libvideo_coding_utility.a36"6E1EC807-EFE7-4F81-8869-DC0C44CC435D-
-

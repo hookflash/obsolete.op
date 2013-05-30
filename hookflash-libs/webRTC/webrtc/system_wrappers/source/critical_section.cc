@@ -15,6 +15,10 @@
 #include "webrtc/system_wrappers/source/critical_section_posix.h"
 #endif
 
+#if defined(WEBRTC_QNX)
+#include "webrtc/system_wrappers/source/condition_variable_posix.h"
+#endif
+
 namespace webrtc {
 
 CriticalSectionWrapper* CriticalSectionWrapper::CreateCriticalSection() {
@@ -24,5 +28,11 @@ CriticalSectionWrapper* CriticalSectionWrapper::CreateCriticalSection() {
   return new CriticalSectionPosix();
 #endif
 }
+
+#if defined(WEBRTC_QNX)
+ConditionVariableWrapper* ConditionVariableWrapper::CreateConditionVariable() {
+  return ConditionVariablePosix::Create();
+}
+#endif
 
 } // namespace webrtc

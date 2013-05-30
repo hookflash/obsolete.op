@@ -12,6 +12,8 @@
 
 #if defined(_WIN32)
 #include <Windows.h>
+#elif defined(WEBRTC_QNX)
+#include <sys/syspage.h>
 #elif defined(WEBRTC_MAC)
 #include <sys/sysctl.h>
 #include <sys/types.h>
@@ -55,6 +57,10 @@ uint32_t CpuInfo::DetectNumberOfCores() {
                    "Failed to get number of cores");
       number_of_cores_ = 1;
     }
+#elif defined(WEBRTC_QNX)
+        number_of_cores_ = _syspage_ptr->num_cpu;
+        WEBRTC_TRACE(kTraceStateInfo, kTraceUtility, -1,
+        		"Available number of cores:%d", number_of_cores_);
 #else
     WEBRTC_TRACE(kTraceWarning, kTraceUtility, -1,
                  "No function to get number of cores");

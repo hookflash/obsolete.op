@@ -326,7 +326,7 @@ int AudioDecoderG722Stereo::Decode(const uint8_t* encoded, size_t encoded_len,
       // Interleave output.
       for (int k = decoded_len / 2; k < decoded_len; k++) {
           int16_t temp = decoded[k];
-          memmove(&decoded[2 * k - decoded_len + 2],
+          std::memmove(&decoded[2 * k - decoded_len + 2],
                   &decoded[2 * k - decoded_len + 1],
                   (decoded_len - k - 1) * sizeof(int16_t));
           decoded[2 * k - decoded_len + 1] = temp;
@@ -368,7 +368,7 @@ void AudioDecoderG722Stereo::SplitStereoPacket(const uint8_t* encoded,
   // where N is the total number of samples.
   for (size_t i = 0; i < encoded_len / 2; i++) {
     uint8_t right_byte = encoded_deinterleaved[i + 1];
-    memmove(&encoded_deinterleaved[i + 1], &encoded_deinterleaved[i + 2],
+    std::memmove(&encoded_deinterleaved[i + 1], &encoded_deinterleaved[i + 2],
             encoded_len - i - 2);
     encoded_deinterleaved[encoded_len - 1] = right_byte;
   }

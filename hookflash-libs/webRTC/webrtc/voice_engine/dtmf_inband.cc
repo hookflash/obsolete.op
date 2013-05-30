@@ -77,8 +77,8 @@ DtmfInband::DtmfInband(const int32_t id) :
     _playing(false),
     _delaySinceLastToneMS(1000)
 {
-    memset(_oldOutputLow, 0, sizeof(_oldOutputLow));
-    memset(_oldOutputHigh, 0, sizeof(_oldOutputHigh));
+	std::memset(_oldOutputLow, 0, sizeof(_oldOutputLow));
+	std::memset(_oldOutputHigh, 0, sizeof(_oldOutputHigh));
 }
 
 DtmfInband::~DtmfInband()

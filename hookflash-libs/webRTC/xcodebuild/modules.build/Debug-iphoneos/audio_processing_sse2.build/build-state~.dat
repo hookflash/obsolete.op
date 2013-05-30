@@ -1,80 +1,0 @@
-Taudio_processing_sse2
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_processing_sse2.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/audio_processing_sse2.LinkFileList
-c0000000051658E30000000000000014E
-t1365610032
-s334
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-c00000000516570640000000000004282
-t1365602404
-s17026
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-c0000000051657064000000000000502A
-t1365602404
-s20522
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies4b74c6b0c515b741^ea5ec7b0c515b741^---0#1#0#--18"Check dependencies36"037962BE-0A02-40EC-9AED-F11AE5E980E6-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302832.781406
-e387302832.914761
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oclang: error: argument unused during compilation: '-msse2'
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c855dc8b0c515b741^bd37eeb0c515b741^-59"clang: error: argument unused during compilation: '-msse2'-0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c0000000000000000^3148"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o audio_processing/aec/aec_core_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -msse2 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_core_sse2.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_core_sse2.o36"9733A1B9-45CD-4017-B450-E897BCA43658-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302832.783213
-e387302832.913483
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oclang: error: argument unused during compilation: '-msse2'
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c76e0c8b0c515b741^520eeeb0c515b741^-59"clang: error: argument unused during compilation: '-msse2'-0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c0000000000000000^3148"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o audio_processing/aec/aec_rdft_sse2.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -msse2 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_processing/aec/aec_rdft_sse2.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_processing_sse2.build/Objects-normal/armv7/aec_rdft_sse2.o36"46E59AC9-4EB3-4804-B874-50B94AAB1405-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_processing_sse2.a normal armv7
-r0
-

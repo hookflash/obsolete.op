@@ -30,6 +30,8 @@
 #include "bb_window_wrapper.h"
 #include "video_render.h"
 
+#include "zslib/RegEx.h"
+
 using namespace std;
 using namespace webrtc;
 
@@ -41,10 +43,38 @@ static screen_window_t vf_win = NULL;
 static const char vf_group[] = "viewfinder_window_group";
 const char* trace_file_name = "";
 
-
 //----------------------------------------------
 VideoRenderBlackBerry* blackberryRenderer;
+VideoRenderCallback* mainVideoCallback;
 webrtc::BlackberryWindowWrapper* wrapper;
+
+//----------------------------------------------
+// Callback class to be implemented by module user
+class CaptureTestCallback : public VideoCaptureDataCallback
+{
+public:
+  CaptureTestCallback() : _ptrCallback(NULL) {}
+
+  void SetVideoRenderCallback(VideoRenderCallback* callback) { _ptrCallback = callback; }
+
+  virtual void OnIncomingCapturedFrame(const WebRtc_Word32 id, VideoFrame& videoFrame, VideoCodecType codecType);
+  virtual void OnCaptureDelayChanged(const WebRtc_Word32 id, const WebRtc_Word32 delay);
+protected:
+  virtual ~CaptureTestCallback(){}
+  VideoRenderCallback* _ptrCallback;
+};
+
+void CaptureTestCallback::OnIncomingCapturedFrame(const WebRtc_Word32 id, VideoFrame& videoFrame, VideoCodecType codecType) {
+  if(_ptrCallback) {
+    _ptrCallback->RenderFrame(0, videoFrame);
+  }
+}
+void CaptureTestCallback::OnCaptureDelayChanged(const WebRtc_Word32 id, const WebRtc_Word32 delay) {
+}
+
+CaptureTestCallback* captureCallback;
+
+//----------------------------------------------
 
 bool test_thread(ThreadObj obj);
 
@@ -98,21 +128,25 @@ bool test_thread(ThreadObj obj)
     capability.maxFPS = 30;
     capability.rawType = kVideoUnknown;
 
-    capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
+   capture_module = videocapturemodule::VideoCaptureImpl::Create(0, unique_id);
 
-    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
-    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
+    captureCallback = new CaptureTestCallback();
+    captureCallback->SetVideoRenderCallback(mainVideoCallback);
+    capture_module->RegisterCaptureDataCallback(*captureCallback);
+
+//    render_module = VideoRender::CreateVideoRender(0, (void*) NULL /* pointer to platform specific window*/, false);
+//    render_module->AddIncomingRenderStream(0, 0, 0.0f, 0.0f, 1.0f, 1.0f);
 
     usleep(1000000);
 
     capture_module->StartCapture(capability);
-    render_module->StartRender(0);
+//    render_module->StartRender(0);
 
     usleep(10000000);
 
-    render_module->StopRender(0);
-    render_module->DeleteIncomingRenderStream(0);
-    VideoRender::DestroyVideoRender(render_module);
+//    render_module->StopRender(0);
+//    render_module->DeleteIncomingRenderStream(0);
+//    VideoRender::DestroyVideoRender(render_module);
     capture_module->StopCapture();
 
     Trace::ReturnTrace();
@@ -175,6 +209,9 @@ handle_navigator_event(bps_event_t *event) {
 
 void render()
 {
+  static int i = 0;
+  i++;
+  fprintf(stderr, "Render[%d]\n", i);
   wrapper->Render();
 }
 
@@ -204,6 +241,9 @@ handle_event()
 int
 main(int argc, char **argv)
 {
+    zsLib::RegEx regex("identity");
+    bool has = regex.hasMatch(zsLib::String("blahicdentityblah"));
+
     const int usage = SCREEN_USAGE_NATIVE;
 
     screen_window_t screen_win;
@@ -214,12 +254,12 @@ main(int argc, char **argv)
     screen_create_context(&screen_ctx, 0);
     screen_create_window(&screen_win, screen_ctx);
     screen_create_window_group(screen_win, vf_group);
+    /*
     screen_set_window_property_iv(screen_win, SCREEN_PROPERTY_USAGE, &usage);
     screen_create_window_buffers(screen_win, 1);
-
     screen_get_window_property_pv(screen_win, SCREEN_PROPERTY_RENDER_BUFFERS, (void **)&screen_buf);
     screen_get_window_property_iv(screen_win, SCREEN_PROPERTY_BUFFER_SIZE, rect+2);
-
+*/
 
     //---------------------------------------------------------------------------------------------------
     // The video window.
@@ -253,17 +293,17 @@ main(int argc, char **argv)
       (void*) wrapper,
       true);                      // Full screen
 
-    VideoRenderCallback* mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
+    mainVideoCallback = blackberryRenderer->AddIncomingRenderStream(1, 0, 0, 0, 480, 640);
 
 
-
+/*
 
     //---------------------------------------------------------------------------------------------------
-    /* Fill the screen buffer with blue */
+    // Fill the screen buffer with blue
     int attribs[] = { SCREEN_BLIT_COLOR, 0xff0000ff, SCREEN_BLIT_END };
     screen_fill(screen_ctx, screen_buf, attribs);
     screen_post_window(screen_win, screen_buf, 1, rect, 0);
-
+*/
     /* Signal bps library that navigator and screen events will be requested */
     bps_initialize();
     screen_request_events(screen_ctx);

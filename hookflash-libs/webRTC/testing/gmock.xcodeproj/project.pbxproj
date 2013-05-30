@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -235,7 +235,11 @@
 			};
 			buildConfigurationList = 51773DF26A35EC538EF3B52E /* Build configuration list for PBXProject "gmock" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 92A1E4C54675972522679D84;
 			projectDirPath = "";
 			projectRoot = "";
@@ -356,21 +360,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -390,10 +380,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Release;
 		};
@@ -463,18 +450,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -497,10 +472,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Debug;
 		};
@@ -515,9 +487,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -525,9 +497,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Release;
 		};
@@ -596,18 +568,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -630,10 +590,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Debug;
 		};
@@ -703,21 +660,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -737,10 +680,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
 			name = Release;
 		};

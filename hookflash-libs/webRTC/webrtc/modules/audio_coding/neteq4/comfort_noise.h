@@ -53,7 +53,7 @@ class ComfortNoise {
   // |output|. If this is the first in call after Reset (or first after creating
   // the object), it will also mix in comfort noise at the end of the
   // SyncBuffer object provided in the constructor.
-  int Generate(size_t requested_length, AudioMultiVector<int16_t>* output);
+  int Generate(std::size_t requested_length, AudioMultiVector<int16_t>* output);
 
   // Returns the last error code that was produced by the comfort noise
   // decoder. Returns 0 if no error has been encountered since the last reset.
@@ -62,7 +62,7 @@ class ComfortNoise {
  private:
   int fs_hz_;
   bool first_call_;
-  size_t overlap_length_;
+  std::size_t overlap_length_;
   DecoderDatabase* decoder_database_;
   SyncBuffer* sync_buffer_;
   int internal_error_code_;

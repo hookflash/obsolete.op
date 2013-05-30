@@ -31,7 +31,7 @@ class RandomVector {
 
   void Reset();
 
-  void Generate(size_t length, int16_t* output);
+  void Generate(std::size_t length, int16_t* output);
 
   void IncreaseSeedIncrement(int16_t increase_by);
 

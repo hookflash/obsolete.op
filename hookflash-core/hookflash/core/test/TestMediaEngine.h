@@ -31,6 +31,10 @@
 
 #pragma once
 
+#ifdef __QNX__
+#include <slog2.h>
+#endif
+
 #include "webrtc/test/channel_transport/include/channel_transport.h"
 #include "webrtc/system_wrappers/interface/scoped_ptr.h"
 
@@ -77,9 +81,7 @@ namespace hookflash
         #pragma mark
         
       protected:
-        TestMediaEngine() :
-          MediaEngine(zsLib::Noop()),
-          mReceiverAddress("") {}
+        TestMediaEngine();
         
       public:
         ~TestMediaEngine();
@@ -153,6 +155,9 @@ namespace hookflash
 
         String mReceiverAddress;
         zsLib::TimerPtr mVoiceStatisticsTimer;
+#ifdef __QNX__
+        slog2_buffer_t mBufferHandle;
+#endif
       };
       
       

@@ -1,115 +1,0 @@
-Tvideo_processing_sse2
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libvideo_processing_sse2.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/video_processing_sse2.LinkFileList
-c00000000516595BE00000000000000AF
-t1365611966
-s175
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc
-c00000000516570680000000000002FD0
-t1365602408
-s12240
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesea58c53ecd15b741^7f16c73ecd15b741^---0#1#0#--18"Check dependencies36"C72BBC5D-723C-4291-B34E-5E66FCC15DD5-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387304766.780607
-e387304768.002562
-r0
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-oIn file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:13:
-o/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"
-o#error "SSE2 instruction set not enabled"
-o ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:18:1: error: out-of-line definition of 'TemporalDiffMetric_SSE2' does not match any declaration in 'webrtc::VPMContentAnalysis'; did you mean 'TemporalDiffMetric_C'?
-oint32_t
-o^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis.h:54:13: note: 'TemporalDiffMetric_C' declared here
-o    int32_t TemporalDiffMetric_C();
-o            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:28:5: error: unknown type name '__m128i'
-o    __m128i sad_64   = _mm_setzero_si128();
-o    ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:28:24: error: use of undeclared identifier '_mm_setzero_si128'
-o    __m128i sad_64   = _mm_setzero_si128();
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:29:5: error: unknown type name '__m128i'
-o    __m128i sum_64   = _mm_setzero_si128();
-o    ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:29:24: error: use of undeclared identifier '_mm_setzero_si128'
-o    __m128i sum_64   = _mm_setzero_si128();
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:30:5: error: unknown type name '__m128i'
-o    __m128i sqsum_64 = _mm_setzero_si128();
-o    ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:30:24: error: use of undeclared identifier '_mm_setzero_si128'
-o    __m128i sqsum_64 = _mm_setzero_si128();
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:31:11: error: unknown type name '__m128i'
-o    const __m128i z  = _mm_setzero_si128();
-o          ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:31:24: error: use of undeclared identifier '_mm_setzero_si128'
-o    const __m128i z  = _mm_setzero_si128();
-o                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:35:9: error: unknown type name '__m128i'
-o        __m128i sqsum_32  = _mm_setzero_si128();
-o        ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:35:29: error: use of undeclared identifier '_mm_setzero_si128'
-o        __m128i sqsum_32  = _mm_setzero_si128();
-o                            ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:19: error: unknown type name '__m128i'
-o            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));
-o                  ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:48: error: use of undeclared identifier '__m128i'
-o            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));
-o                                               ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:56: error: expected expression
-o            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));
-o                                                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:19: error: unknown type name '__m128i'
-o            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));
-o                  ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:48: error: use of undeclared identifier '__m128i'
-o            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));
-o                                               ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:56: error: expected expression
-o            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));
-o                                                       ^
-o/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:63:19: error: unknown type name '__m128i'
-o            const __m128i olo = _mm_unpacklo_epi8(o,z);
-o                  ^
-ofatal error: too many errors emitted, stopping now [-ferror-limit=]
-o20 errors generated.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc0740c83ecd15b741^74f00040cd15b741^-4967"In file included from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:13:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/4.2/include/emmintrin.h:28:2: error: "SSE2 instruction set not enabled"#error "SSE2 instruction set not enabled" ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:18:1: error: out-of-line definition of 'TemporalDiffMetric_SSE2' does not match any declaration in 'webrtc::VPMContentAnalysis'; did you mean 'TemporalDiffMetric_C'?int32_t^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis.h:54:13: note: 'TemporalDiffMetric_C' declared here    int32_t TemporalDiffMetric_C();            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:28:5: error: unknown type name '__m128i'    __m128i sad_64   = _mm_setzero_si128();    ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:28:24: error: use of undeclared identifier '_mm_setzero_si128'    __m128i sad_64   = _mm_setzero_si128();                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:29:5: error: unknown type name '__m128i'    __m128i sum_64   = _mm_setzero_si128();    ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:29:24: error: use of undeclared identifier '_mm_setzero_si128'    __m128i sum_64   = _mm_setzero_si128();                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:30:5: error: unknown type name '__m128i'    __m128i sqsum_64 = _mm_setzero_si128();    ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:30:24: error: use of undeclared identifier '_mm_setzero_si128'    __m128i sqsum_64 = _mm_setzero_si128();                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:31:11: error: unknown type name '__m128i'    const __m128i z  = _mm_setzero_si128();          ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:31:24: error: use of undeclared identifier '_mm_setzero_si128'    const __m128i z  = _mm_setzero_si128();                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:35:9: error: unknown type name '__m128i'        __m128i sqsum_32  = _mm_setzero_si128();        ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:35:29: error: use of undeclared identifier '_mm_setzero_si128'        __m128i sqsum_32  = _mm_setzero_si128();                            ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:19: error: unknown type name '__m128i'            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));                  ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:48: error: use of undeclared identifier '__m128i'            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));                                               ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:50:56: error: expected expression            const __m128i o = _mm_loadu_si128((__m128i*)(lineO));                                                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:19: error: unknown type name '__m128i'            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));                  ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:48: error: use of undeclared identifier '__m128i'            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));                                               ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:51:56: error: expected expression            const __m128i p = _mm_loadu_si128((__m128i*)(lineP));                                                       ^/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc:63:19: error: unknown type name '__m128i'            const __m128i olo = _mm_unpacklo_epi8(o,z);                  ^fatal error: too many errors emitted, stopping now [-ferror-limit=]20 errors generated.-0#0#0#-19%DVTDocumentLocation2@125"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc0000000000000000^3425"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o video_processing/main/source/content_analysis_sse2.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ivideo_processing/main/interface -Iinterface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/video_processing/main/source/content_analysis_sse2.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/video_processing_sse2.build/Objects-normal/armv7/content_analysis_sse2.o36"6F08C95F-90D0-4BDF-85DB-622F2848A46C-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libvideo_processing_sse2.a normal armv7
-r0
-

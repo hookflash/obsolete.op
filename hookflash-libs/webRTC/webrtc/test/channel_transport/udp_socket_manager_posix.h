@@ -14,6 +14,10 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#ifdef WEBRTC_QNX
+#include <sys/select.h>
+#endif
+
 #include "webrtc/system_wrappers/interface/critical_section_wrapper.h"
 #include "webrtc/system_wrappers/interface/list_wrapper.h"
 #include "webrtc/system_wrappers/interface/map_wrapper.h"

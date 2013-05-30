@@ -27,6 +27,10 @@
 
 #include <pthread.h>
 
+#ifdef __QNX__
+#include <sys/time.h>
+#endif //
+
 namespace zsLib {ZS_DECLARE_SUBSYSTEM(zsLib)}
 
 namespace zsLib
@@ -57,6 +61,13 @@ namespace zsLib
     TimerMonitor::TimerMonitor() :
       mShouldShutdown(false)
     {
+#ifdef __QNX__
+      static pthread_cond_t defaultCondition = PTHREAD_COND_INITIALIZER;
+      static pthread_mutex_t defaultMutex = PTHREAD_MUTEX_INITIALIZER;
+
+      memcpy(&mCondition, &defaultCondition, sizeof(mCondition));
+      memcpy(&mMutex, &defaultMutex, sizeof(mMutex));
+#endif //__QNX__
       ZS_LOG_DEBUG("created")
     }
 
@@ -71,6 +82,11 @@ namespace zsLib
       mThisWeak.reset();
       ZS_LOG_DEBUG("destroyed")
       cancel();
+
+#ifdef __QNX__
+      pthread_cond_destroy(&mCondition);
+      pthread_mutex_destroy(&mMutex);
+#endif //__QNX__
     }
 
     //-------------------------------------------------------------------------
@@ -146,8 +162,42 @@ namespace zsLib
           duration = fireTimers();
         }
 
+#ifdef __QNX__
+        struct timeval tp;
+        struct timespec ts;
+        memset(&tp, 0, sizeof(tp));
+        memset(&ts, 0, sizeof(ts));
+
+        int rc =  gettimeofday(&tp, NULL);
+        ZS_THROW_BAD_STATE_IF(0 != rc)
+
+        // Convert from timeval to timespec
+        ts.tv_sec  = tp.tv_sec;
+        ts.tv_nsec = tp.tv_usec * 1000;
+
+        // add the time to expire from now
+        ts.tv_sec += duration.seconds();
+        ts.tv_nsec += ((duration - Seconds(duration.total_seconds()))).total_nanoseconds();
+
+        // this could have caused tv_nsec to wrapped above second mark since it started in absolute time since epoch
+        if (ts.tv_nsec >= (Seconds(1).total_nanoseconds())) {
+          Duration wrapSeconds = Seconds(ts.tv_nsec / (Seconds(1).total_nanoseconds()));
+          ts.tv_sec += wrapSeconds.total_seconds();
+          ts.tv_nsec -= wrapSeconds.total_nanoseconds();
+        }
+
+        rc = pthread_mutex_lock(&mMutex);
+        ZS_THROW_BAD_STATE_IF(0 != rc)
+
+        rc = pthread_cond_timedwait(&mCondition, &mMutex, &ts);
+        ZS_THROW_BAD_STATE_IF((0 != rc) && (ETIMEDOUT != rc))
+
+        rc = pthread_mutex_unlock(&mMutex);
+        ZS_THROW_BAD_STATE_IF(0 != rc)
+#else
         boost::unique_lock<boost::mutex> flagLock(mFlagLock);
         mFlagNotify.timed_wait<Duration>(flagLock, duration);
+#endif //__QNX__
 
         // notify all those timers needing to be notified
       } while (!shouldShutdown);
@@ -227,7 +277,19 @@ namespace zsLib
     //-------------------------------------------------------------------------
     void TimerMonitor::wakeUp()
     {
+#ifdef __QNX__
+      int rc = pthread_mutex_lock(&mMutex);
+      ZS_THROW_BAD_STATE_IF(0 != rc)
+
+      rc = pthread_cond_signal(&mCondition);
+      ZS_THROW_BAD_STATE_IF(0 != rc)
+
+      rc = pthread_mutex_unlock(&mMutex);
+      ZS_THROW_BAD_STATE_IF(0 != rc)
+
+#else
       mFlagNotify.notify_one();
+#endif //__QNX__
     }
   }
 }

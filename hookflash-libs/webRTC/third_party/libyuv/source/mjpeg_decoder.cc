@@ -249,7 +249,7 @@ bool MJpegDecoder::UnloadFrame() {
 static void CopyRows(uint8* source, int source_stride,
                      uint8* dest, int pixels, int numrows) {
   for (int i = 0; i < numrows; ++i) {
-    memcpy(dest, source, pixels);
+    std::memcpy(dest, source, pixels);
     dest += pixels;
     source += source_stride;
   }

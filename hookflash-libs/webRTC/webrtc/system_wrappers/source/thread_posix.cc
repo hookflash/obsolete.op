@@ -140,6 +140,10 @@ uint32_t ThreadWrapper::GetThreadId() {
   return static_cast<uint32_t>(syscall(__NR_gettid));
 #elif defined(WEBRTC_MAC) || defined(WEBRTC_IOS)
   return pthread_mach_thread_np(pthread_self());
+#elif defined(WEBRTC_QNX)
+  pthread_t threadId = pthread_self();
+  unsigned int uiThreadId = (unsigned int) threadId;
+  return uiThreadId;
 #else
   return reinterpret_cast<uint32_t>(pthread_self());
 #endif

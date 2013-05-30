@@ -52,7 +52,7 @@ class Atomic32 {
 
   // Checks if |_value| is 32bit aligned.
   inline bool Is32bitAligned() const {
-    return (reinterpret_cast<ptrdiff_t>(&value_) & 3) == 0;
+    return (reinterpret_cast<std::ptrdiff_t>(&value_) & 3) == 0;
   }
 
   DISALLOW_COPY_AND_ASSIGN(Atomic32);

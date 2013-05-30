@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -25,6 +25,7 @@
 		0CB718C0E0C2A1BA965AD04F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCE6E68126FFF99B7DA51A0 /* AudioToolbox.framework */; };
 		1003A07ADEA58C402B49FD09 /* libCNG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 483D11F95CC6B892D0ECB94A /* libCNG.a */; };
 		1100FBC77F8ED7C80BDAEE91 /* libG722.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 151B85E793D7D931F3074D36 /* libG722.a */; };
+		176B2FC895244E72E85CD758 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE13286CC006EAFC65C5B27F /* libvpx.a */; };
 		1992A7C194DE634A05666913 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3A19DC6820E510BE9E1C8C5 /* CoreAudio.framework */; };
 		1ABE5C06C18E7551671A9262 /* libsystem_wrappers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D8CB72097279A6B4FD4726E /* libsystem_wrappers.a */; };
 		1B1AAAB04E172CD34886D001 /* libpaced_sender.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3E16E0600706973096D761 /* libpaced_sender.a */; };
@@ -42,20 +43,16 @@
 		551081C84820ED2C24FD02F0 /* libremote_bitrate_estimator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B57F3AFB968BECE64F8A32EC /* libremote_bitrate_estimator.a */; };
 		57C92621A5D762604F696445 /* libvoice_engine_core.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 37D418B70B8CA6B96E8DF82C /* libvoice_engine_core.a */; };
 		6074E4C1F5E98F8F75C5EE83 /* libchannel_transport.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DDA8C85AA0F8D3DCAA7C4A4 /* libchannel_transport.a */; };
-		639E9CE17F009A0B3AD7542B /* libvpx_intrinsics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3AEADF717DD10EA1F9C8D4 /* libvpx_intrinsics.a */; };
 		7447E1AC8B24875FFD83F041 /* libwebrtc_vp8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 351D687706624E13D0E55F65 /* libwebrtc_vp8.a */; };
 		74E42C9B94E47FF6BD513DB7 /* libwebrtc_opus.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 887901D4688F131B6EAABD4B /* libwebrtc_opus.a */; };
 		77BB1E5158A96FB171A18E8F /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 729D909772DC19AB4959672A /* libgtest.a */; };
 		7B38DBF642A5F0043F904651 /* libaudio_coding_module.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93CB66EF534C6995CF4E8001 /* libaudio_coding_module.a */; };
 		7FAE6DBFF49220DD6BD6EB94 /* libaudio_device.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 83D34DFF3D7D48CA78A991B1 /* libaudio_device.a */; };
-		805F7ABE16B62581E85AF8BC /* libvpx_asm_offsets.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 886B7219A2D28CF9F714BDC1 /* libvpx_asm_offsets.a */; };
 		9305F6AFBFC9521567A39E28 /* audio_e2e_harness.cc in Sources */ = {isa = PBXBuildFile; fileRef = 01AC32D3B5B8FBEDDE7E5324 /* audio_e2e_harness.cc */; };
 		99D603357125638CA2B5A8CE /* libiSAC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E92104333525A6887E02B4C6 /* libiSAC.a */; };
 		9DDAA02969C1258410112D6C /* libsignal_processing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F6D6801816728775A913C4EC /* libsignal_processing.a */; };
 		A4E193B44C602B6F7397F3AD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DADDEE28F2362295B841D3B /* Foundation.framework */; };
-		B007068A1E1E13AF815C0219 /* libvpx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE13286CC006EAFC65C5B27F /* libvpx.a */; };
 		BBB61FA1B307DF5F4A90582C /* libiLBC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F696C1C02DB35FC6BCAAC10 /* libiLBC.a */; };
-		BD7193A15BF5E190F38EDB48 /* libvpx_asm_offsets_vp9.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D097A015EDC2DF972E5479E /* libvpx_asm_offsets_vp9.a */; };
 		BD95EA364FB50C4D7F83A62C /* libaudio_processing.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33F35D1EF3213A4BC631432 /* libaudio_processing.a */; };
 		C05797C2746753F204FFF1C5 /* libjpeg_turbo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 847A1C57B13E6B97B2257FC7 /* libjpeg_turbo.a */; };
 		C3D898A9305862BD1961FB5D /* libwebrtc_utility.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CADBFF29426F053C4A2CBF10 /* libwebrtc_utility.a */; };
@@ -190,13 +187,6 @@
 			remoteGlobalIDString = 7ED86EA10AB9167B12A639A4;
 			remoteInfo = audio_device_test_api;
 		};
-		255A096E9869B90001319E67 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 55BB19456F39761244CFCEEF;
-			remoteInfo = libvpx_intrinsics;
-		};
 		25D3CA16AD4803CF996A56AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DCF360529AEF5A31E76269C6 /* gtest.xcodeproj */;
@@ -217,13 +207,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 7B55B6203F5C2B47E025B9F4;
 			remoteInfo = system_wrappers;
-		};
-		2B81FC849544F4F07A753EE1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 794B0E898D711DFBDE541EED;
-			remoteInfo = libvpx_asm_offsets;
 		};
 		2E66C87AF982C281AB5DD760 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -491,20 +474,6 @@
 			remoteGlobalIDString = F0BCA25704FF04E96887FFD1;
 			remoteInfo = rtp_rtcp_unittests;
 		};
-		6A85FC744D45AB85299A6301 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E43B57D25171C0463E402714;
-			remoteInfo = libvpx_intrinsics;
-		};
-		6B9483080B6FEB31E8E76D38 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6502D155EC33DD3FF7912AB1;
-			remoteInfo = libvpx_asm_offsets_vpx_scale;
-		};
 		6BDA8A37B93B5E241B350C4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D3EA7379D94BD45428FC9F26 /* modules.xcodeproj */;
@@ -631,13 +600,6 @@
 			remoteGlobalIDString = D9D99D842F7FB769DDD6174C;
 			remoteInfo = G722;
 		};
-		8DD02221CCCE05AEDECA70A1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = C2301E44746385E443DBA0A7;
-			remoteInfo = simple_decoder;
-		};
 		8ECDAD73D2AAC5040024F89E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 06EA3CE3011D057237A82D59 /* channel_transport.xcodeproj */;
@@ -665,13 +627,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = A420ADA4E4BAB78F40B0C726;
 			remoteInfo = voice_engine_core;
-		};
-		91379A9EEDAB652C276CA57D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E7DFC4E4906E2536F9C6CA92;
-			remoteInfo = libvpx_asm_offsets;
 		};
 		923071BF9EBACA627707A656 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -757,13 +712,6 @@
 			remoteGlobalIDString = 45A3FBE9C64A8237A03DF703;
 			remoteInfo = PCM16B;
 		};
-		A35C7A12E14864EF2D04D7F1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FFCCC3386D9EC8CA029BAFCC;
-			remoteInfo = gen_asm_offsets_vp9;
-		};
 		A7420622BBFA9686002EC2B3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D3EA7379D94BD45428FC9F26 /* modules.xcodeproj */;
@@ -848,13 +796,6 @@
 			remoteGlobalIDString = 4C4087667062357B0DBB9779;
 			remoteInfo = libvpx;
 		};
-		BB0DDC8CDDF6B2F81A00ED90 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 4469B02D4E5EEDF6B01C2CE2;
-			remoteInfo = simple_encoder;
-		};
 		BB749BC35AA430AE84426812 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D3EA7379D94BD45428FC9F26 /* modules.xcodeproj */;
@@ -875,13 +816,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = F2FEE27975C2154230DA960B;
 			remoteInfo = audio_conference_mixer;
-		};
-		BFF5BD5466057D94641ACCA5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5876A6C37B387845C7DEB3B4;
-			remoteInfo = libvpx_asm_offsets_vp9;
 		};
 		C0C6FE518426C3E354507C47 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1072,13 +1006,6 @@
 			remoteGlobalIDString = 40EE4516C62B9AAA3BC9EE75;
 			remoteInfo = g711_test;
 		};
-		EC24CA4C4FA4D471985216E1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = A270F55489D4E3801CFE5F4C;
-			remoteInfo = libvpx_obj_int_extract;
-		};
 		EDDC079F2CE98E72CF3032F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D3EA7379D94BD45428FC9F26 /* modules.xcodeproj */;
@@ -1114,13 +1041,6 @@
 			remoteGlobalIDString = 1FFA4A8E13BC544339FDDE01;
 			remoteInfo = vad;
 		};
-		F986C39E87FA229441E8354D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6B41587A3A62DC548127DCE1;
-			remoteInfo = gen_asm_offsets_vp8;
-		};
 		FB5D596A7A328C05135A77A7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DCF360529AEF5A31E76269C6 /* gtest.xcodeproj */;
@@ -1155,13 +1075,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 2CBCEE36B75A103413E26CA2;
 			remoteInfo = paced_sender_unittests;
-		};
-		FCBD31E72B5C86C1ABF56ADB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 19680972E4A0CFF54A24AC18;
-			remoteInfo = libvpx_asm_offsets_vp9;
 		};
 		FD3380369349FE2671717866 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1249,10 +1162,7 @@
 				48C7003280F1B913986CE466 /* libyuv.a in Frameworks */,
 				CD864701FC68AF93708D8881 /* libvideo_coding_utility.a in Frameworks */,
 				7447E1AC8B24875FFD83F041 /* libwebrtc_vp8.a in Frameworks */,
-				B007068A1E1E13AF815C0219 /* libvpx.a in Frameworks */,
-				805F7ABE16B62581E85AF8BC /* libvpx_asm_offsets.a in Frameworks */,
-				639E9CE17F009A0B3AD7542B /* libvpx_intrinsics.a in Frameworks */,
-				BD7193A15BF5E190F38EDB48 /* libvpx_asm_offsets_vp9.a in Frameworks */,
+				176B2FC895244E72E85CD758 /* libvpx.a in Frameworks */,
 				7FAE6DBFF49220DD6BD6EB94 /* libaudio_device.a in Frameworks */,
 				F59E8310A9CBBC82378A181C /* libmedia_file.a in Frameworks */,
 				4E912D3932E55460BD5BEA49 /* librtp_rtcp.a in Frameworks */,
@@ -1299,6 +1209,14 @@
 				6347B690C3CB132A58C5056F /* vp8.xcodeproj */,
 			);
 			name = Projects;
+			sourceTree = "<group>";
+		};
+		1A996806010C219BD7D40E69 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE13286CC006EAFC65C5B27F /* libvpx.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		1D25DA6000A68AC85A9952D2 /* Products */ = {
@@ -1350,21 +1268,6 @@
 				C842AED7972DFAFB18FAA731 /* signal_processing_unittests */,
 				0C0B3403BBD78055D21EEC9C /* resampler_unittests */,
 				3FC4CBD74E0580DF28853B0E /* vad_unittests */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		3934B1CBA87049E6D59D9D40 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ACFEFB090262A20DEAF08547 /* libvpx_obj_int_extract */,
-				886B7219A2D28CF9F714BDC1 /* libvpx_asm_offsets.a */,
-				1D097A015EDC2DF972E5479E /* libvpx_asm_offsets_vp9.a */,
-				F7D6E3B37799566C7A75D1C6 /* libvpx_asm_offsets_vpx_scale.a */,
-				D8A4DFC867EA1872180C29A9 /* simple_encoder */,
-				808DBFCD8E4CE0260E12F7EC /* simple_decoder */,
-				EB3AEADF717DD10EA1F9C8D4 /* libvpx_intrinsics.a */,
-				FE13286CC006EAFC65C5B27F /* libvpx.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1612,11 +1515,6 @@
 				7F80F90CCB9A5D177F30B65F /* PBXTargetDependency */,
 				63E933BF8BE6C9E8531BCB9E /* PBXTargetDependency */,
 				8964654195A1F0E2AF6AD1D9 /* PBXTargetDependency */,
-				07E124EFC81A716BAEE01E53 /* PBXTargetDependency */,
-				85DC7F8A82BBB3BC16906D66 /* PBXTargetDependency */,
-				7136819E415E0497C90A678B /* PBXTargetDependency */,
-				769ACCFEBC8167EF7C5C73D1 /* PBXTargetDependency */,
-				15A7F1A0E12B580704969CCA /* PBXTargetDependency */,
 				76B3BFA9C104CB2C50E98D77 /* PBXTargetDependency */,
 				18C3F2DAA3A90785D6A0E025 /* PBXTargetDependency */,
 				CBE92EA5FA636A3A2B7C2C59 /* PBXTargetDependency */,
@@ -1638,7 +1536,11 @@
 			};
 			buildConfigurationList = 3AFDBDF4B5DE61F303705D6F /* Build configuration list for PBXProject "e2e_quality" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 00BE9A7726957B55AB046FD5;
 			projectDirPath = "";
 			projectReferences = (
@@ -1667,7 +1569,7 @@
 					ProjectRef = 67C1D4AAA37D6756BD2AAD95 /* libjpeg.xcodeproj */;
 				},
 				{
-					ProductGroup = 3934B1CBA87049E6D59D9D40 /* Products */;
+					ProductGroup = 1A996806010C219BD7D40E69 /* Products */;
 					ProjectRef = 825D4B67425021B4C765C2C4 /* libvpx.xcodeproj */;
 				},
 				{
@@ -1794,13 +1696,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = delay_test;
 			remoteRef = 4DDFE070BB6A44CF4D9CF498 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1D097A015EDC2DF972E5479E /* libvpx_asm_offsets_vp9.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libvpx_asm_offsets_vp9.a;
-			remoteRef = BFF5BD5466057D94641ACCA5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2132CDDE92763BE104D4C519 /* common_video_unittests */ = {
@@ -2104,13 +1999,6 @@
 			remoteRef = 18A401CC637A4C881490CBCF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		808DBFCD8E4CE0260E12F7EC /* simple_decoder */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = simple_decoder;
-			remoteRef = 8DD02221CCCE05AEDECA70A1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		80A9FE4C9AB4E7D0F6EBA400 /* audio_decoder_unittests */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -2158,13 +2046,6 @@
 			fileType = archive.ar;
 			path = libcommon_video.a;
 			remoteRef = 36D1B46800AFC995AD776D72 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		886B7219A2D28CF9F714BDC1 /* libvpx_asm_offsets.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libvpx_asm_offsets.a;
-			remoteRef = 91379A9EEDAB652C276CA57D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		887901D4688F131B6EAABD4B /* libwebrtc_opus.a */ = {
@@ -2242,13 +2123,6 @@
 			fileType = "compiled.mach-o.executable";
 			path = test_packet_masks_metrics;
 			remoteRef = 33C7D26D709086CA6514367C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ACFEFB090262A20DEAF08547 /* libvpx_obj_int_extract */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = libvpx_obj_int_extract;
-			remoteRef = EC24CA4C4FA4D471985216E1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		AD7E10FE82FA89EF1FF4CB7B /* librtp_rtcp.a */ = {
@@ -2398,13 +2272,6 @@
 			remoteRef = 84B7758AF4E34A45FE5FAEA9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D8A4DFC867EA1872180C29A9 /* simple_encoder */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = simple_encoder;
-			remoteRef = BB0DDC8CDDF6B2F81A00ED90 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		DB652DF5AE91C3BEEE8239BA /* libtest_framework.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2440,13 +2307,6 @@
 			remoteRef = 7593ECFBDD30E1C31295E86E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		EB3AEADF717DD10EA1F9C8D4 /* libvpx_intrinsics.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libvpx_intrinsics.a;
-			remoteRef = 6A85FC744D45AB85299A6301 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		EEA5A0028FC32018083B1ED9 /* media_file_unittests */ = {
 			isa = PBXReferenceProxy;
 			fileType = "compiled.mach-o.executable";
@@ -2466,13 +2326,6 @@
 			fileType = archive.ar;
 			path = libsignal_processing.a;
 			remoteRef = 87F5FF4E53033493E6317FD8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		F7D6E3B37799566C7A75D1C6 /* libvpx_asm_offsets_vpx_scale.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libvpx_asm_offsets_vpx_scale.a;
-			remoteRef = 6B9483080B6FEB31E8E76D38 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		F8C927EF5DC4BE83BC8D7C8C /* libmedia_file.a */ = {
@@ -2571,20 +2424,10 @@
 			name = audioproc_debug_proto;
 			targetProxy = 87D02C477B8EF6E4A5B39794 /* PBXContainerItemProxy */;
 		};
-		07E124EFC81A716BAEE01E53 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = gen_asm_offsets_vp8;
-			targetProxy = F986C39E87FA229441E8354D /* PBXContainerItemProxy */;
-		};
 		0F0E3685BCE7EF1852494D4E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = gtest_prod;
 			targetProxy = 80EBAE08BF9AE1D974C01F78 /* PBXContainerItemProxy */;
-		};
-		15A7F1A0E12B580704969CCA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libvpx_asm_offsets_vp9;
-			targetProxy = FCBD31E72B5C86C1ABF56ADB /* PBXContainerItemProxy */;
 		};
 		18C3F2DAA3A90785D6A0E025 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2646,16 +2489,6 @@
 			name = NetEq;
 			targetProxy = B8610B23E7D0AD8A4074D72F /* PBXContainerItemProxy */;
 		};
-		7136819E415E0497C90A678B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libvpx_intrinsics;
-			targetProxy = 255A096E9869B90001319E67 /* PBXContainerItemProxy */;
-		};
-		769ACCFEBC8167EF7C5C73D1 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = gen_asm_offsets_vp9;
-			targetProxy = A35C7A12E14864EF2D04D7F1 /* PBXContainerItemProxy */;
-		};
 		76B3BFA9C104CB2C50E98D77 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = audio_device;
@@ -2670,11 +2503,6 @@
 			isa = PBXTargetDependency;
 			name = opus;
 			targetProxy = C57ACE81AF63C58F0202A934 /* PBXContainerItemProxy */;
-		};
-		85DC7F8A82BBB3BC16906D66 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libvpx_asm_offsets;
-			targetProxy = 2B81FC849544F4F07A753EE1 /* PBXContainerItemProxy */;
 		};
 		864F0C51D2AC9149EFB82956 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2805,9 +2633,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -2904,6 +2732,7 @@
 				);
 				PRODUCT_NAME = audio_e2e_harness;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				SYMROOT = build;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -3023,6 +2852,7 @@
 				);
 				PRODUCT_NAME = audio_e2e_harness;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				SYMROOT = build;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -3045,9 +2875,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Release;
 		};

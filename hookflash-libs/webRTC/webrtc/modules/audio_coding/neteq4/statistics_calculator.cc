@@ -30,7 +30,7 @@ StatisticsCalculator::StatisticsCalculator()
       last_report_timestamp_(0),
       len_waiting_times_(0),
       next_waiting_time_index_(0) {
-  memset(waiting_times_, 0, kLenWaitingTimes * sizeof(waiting_times_[0]));
+	std::memset(waiting_times_, 0, kLenWaitingTimes * sizeof(waiting_times_[0]));
 }
 
 void StatisticsCalculator::Reset() {
@@ -48,7 +48,7 @@ void StatisticsCalculator::ResetMcu() {
 }
 
 void StatisticsCalculator::ResetWaitingTimeStatistics() {
-  memset(waiting_times_, 0, kLenWaitingTimes * sizeof(waiting_times_[0]));
+  std::memset(waiting_times_, 0, kLenWaitingTimes * sizeof(waiting_times_[0]));
   len_waiting_times_ = 0;
   next_waiting_time_index_ = 0;
 }

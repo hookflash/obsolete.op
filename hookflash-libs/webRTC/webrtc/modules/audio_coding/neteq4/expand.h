@@ -50,7 +50,7 @@ class Expand {
     assert(fs == 8000 || fs == 16000 || fs == 32000 || fs == 48000);
     assert(fs <= kMaxSampleRate);  // Should not be possible.
     assert(num_channels_ > 0);
-    memset(expand_lags_, 0, sizeof(expand_lags_));
+    std::memset(expand_lags_, 0, sizeof(expand_lags_));
     Reset();
   }
 
@@ -106,8 +106,8 @@ class Expand {
           current_voice_mix_factor(0),
           onset(false),
           mute_slope(0) {
-      memset(ar_filter, 0, sizeof(ar_filter));
-      memset(ar_filter_state, 0, sizeof(ar_filter_state));
+      std::memset(ar_filter, 0, sizeof(ar_filter));
+      std::memset(ar_filter_state, 0, sizeof(ar_filter_state));
     }
     int16_t mute_factor;
     int16_t ar_filter[kUnvoicedLpcOrder + 1];

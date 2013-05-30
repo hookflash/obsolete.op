@@ -261,7 +261,9 @@ namespace hookflash
         }
 
         GeneratorPtr generator = Generator::createJSONGenerator();
-        boost::shared_array<char> elementAsJSON = generator->write(elementToSign);
+
+        ElementPtr canonicalJSONEl = IHelper::cloneAsCanonicalJSON(elementToSign);
+        boost::shared_array<char> elementAsJSON = generator->write(canonicalJSONEl);
 
         SecureByteBlockPtr elementHash = IHelper::hash(elementAsJSON.get(), IHelper::HashAlgorthm_SHA1);
 
@@ -501,26 +503,10 @@ namespace hookflash
 
             sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
 
-            GeneratorPtr generator = Generator::createJSONGenerator();
-
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
 
             signElement(sectionEl, false, publicKey);
-
-            // calculate the contact ID/domain
-
-            ULONG length = 0;
-            boost::shared_array<char> sectionAsJSON = generator->write(sectionEl, &length);
-
-            SHA256 sha256;
-            SecureByteBlock bundleHash(sha256.DigestSize());
-
-            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
-            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
-            sha256.Final(bundleHash);
-
-            contactID = IHelper::convertToHex(bundleHash);
 
             ElementPtr domainEl;
             try {
@@ -538,6 +524,23 @@ namespace hookflash
               ZS_LOG_ERROR(Basic, log("domain from signed salt was empty"))
               return false;
             }
+
+            // calculate the contact ID/domain
+
+            GeneratorPtr generator = Generator::createJSONGenerator();
+
+            ULONG length = 0;
+            ElementPtr canoncialSectionBundleEl = IHelper::cloneAsCanonicalJSON(sectionBundleEl);
+            boost::shared_array<char> sectionAsJSON = generator->write(canoncialSectionBundleEl, &length);
+
+            SHA256 sha256;
+            SecureByteBlock bundleHash(sha256.DigestSize());
+
+            sha256.Update((const BYTE *)"contact:", strlen("contact:"));
+            sha256.Update((const BYTE *)sectionAsJSON.get(), length);
+            sha256.Final(bundleHash);
+
+            contactID = IHelper::convertToHex(bundleHash);
           }
 
           mPeerURI = IPeer::joinURI(domain, contactID);
@@ -595,7 +598,6 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-            contactID.toLower();
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
@@ -610,7 +612,7 @@ namespace hookflash
             ElementPtr sectionBundleEl = Element::create("sectionBundle");
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "B");
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
+            //sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
 
             SecureByteBlockPtr privateKey = mPrivateKey->save();
 
@@ -634,10 +636,6 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateKey", encryptedPrivateKey));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPeer", encryptedPublicPeer));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("encryptedPrivateData", encryptedPrivateData));
-
-            contactID.toLower();
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             privatePeerEl->adoptAsLastChild(sectionBundleEl);
@@ -743,6 +741,11 @@ namespace hookflash
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
 
+        
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+        return true;
+        
         ElementPtr sectionAEl = findSection("A");
         ElementPtr sectionBEl = findSection("B");
 

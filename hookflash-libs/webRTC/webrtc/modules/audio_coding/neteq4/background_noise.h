@@ -100,8 +100,8 @@ class BackgroundNoise {
       max_energy = 0;
       energy_update_threshold = 500000;
       low_energy_update_threshold = 0;
-      memset(filter_state, 0, sizeof(filter_state));
-      memset(filter, 0, sizeof(filter));
+      std::memset(filter_state, 0, sizeof(filter_state));
+      std::memset(filter, 0, sizeof(filter));
       filter[0] = 4096;
       mute_factor = 0,
       scale = 20000;

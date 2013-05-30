@@ -369,6 +369,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -376,6 +377,7 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
@@ -385,18 +387,35 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
-					"\"DISABLE_NACL\"",
 					"\"CHROMIUM_BUILD\"",
 					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
 					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"WEBRTC_LOGGING\"",
 					"\"WEBRTC_MAC\"",
-					"\"WEBRTC_IOS\"",
 					"\"WEBRTC_THREAD_RR\"",
 					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
 					"\"__STDC_CONSTANT_MACROS\"",
@@ -416,8 +435,19 @@
 					spreadsortlib,
 					../interface,
 				);
-				OTHER_CFLAGS = "";
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = system_wrappers;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				SYMROOT = build;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -426,10 +456,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
 				);
 			};
 			name = Debug;
@@ -438,6 +470,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -445,27 +478,45 @@
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_ENABLE_PASCAL_STRINGS = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_OBJC_CALL_CXX_CDTORS = YES;
-				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
-					"\"DISABLE_NACL\"",
 					"\"CHROMIUM_BUILD\"",
 					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
 					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"DISABLE_FTP_SUPPORT=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"WEBRTC_LOGGING\"",
 					"\"WEBRTC_MAC\"",
-					"\"WEBRTC_IOS\"",
 					"\"WEBRTC_THREAD_RR\"",
 					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
 					"\"__STDC_CONSTANT_MACROS\"",
@@ -487,8 +538,16 @@
 					spreadsortlib,
 					../interface,
 				);
-				OTHER_CFLAGS = "";
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = system_wrappers;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				SYMROOT = build;
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
 					"-Wall",
@@ -497,10 +556,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
 				);
 			};
 			name = Release;
@@ -508,28 +569,20 @@
 		4741D6AE0219603176598A6A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../../xcodebuild;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
 		FFCCEADFCFBC42C44EB6DCAF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../../xcodebuild;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "armv7 armv7s";
+				SYMROOT = build;
 			};
 			name = Release;
 		};

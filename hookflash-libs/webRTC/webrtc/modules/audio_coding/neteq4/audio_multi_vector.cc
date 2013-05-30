@@ -19,19 +19,19 @@
 namespace webrtc {
 
 template<typename T>
-AudioMultiVector<T>::AudioMultiVector(size_t N) {
+AudioMultiVector<T>::AudioMultiVector(std::size_t N) {
   assert(N > 0);
   if (N < 1) N = 1;
-  for (size_t n = 0; n < N; ++n) {
+  for (std::size_t n = 0; n < N; ++n) {
     channels_.push_back(new AudioVector<T>);
   }
 }
 
 template<typename T>
-AudioMultiVector<T>::AudioMultiVector(size_t N, size_t initial_size) {
+AudioMultiVector<T>::AudioMultiVector(std::size_t N, std::size_t initial_size) {
   assert(N > 0);
   if (N < 1) N = 1;
-  for (size_t n = 0; n < N; ++n) {
+  for (std::size_t n = 0; n < N; ++n) {
     channels_.push_back(new AudioVector<T>(initial_size));
   }
 }
@@ -47,14 +47,14 @@ AudioMultiVector<T>::~AudioMultiVector() {
 
 template<typename T>
 void AudioMultiVector<T>::Clear() {
-  for (size_t i = 0; i < Channels(); ++i) {
+  for (std::size_t i = 0; i < Channels(); ++i) {
     channels_[i]->Clear();
   }
 }
 
 template<typename T>
-void AudioMultiVector<T>::Zeros(size_t length) {
-  for (size_t i = 0; i < Channels(); ++i) {
+void AudioMultiVector<T>::Zeros(std::size_t length) {
+  for (std::size_t i = 0; i < Channels(); ++i) {
     channels_[i]->Clear();
     channels_[i]->Extend(length);
   }
@@ -63,7 +63,7 @@ void AudioMultiVector<T>::Zeros(size_t length) {
 template<typename T>
 void AudioMultiVector<T>::CopyFrom(AudioMultiVector<T>* copy_to) const {
   if (copy_to) {
-    for (size_t i = 0; i < Channels(); ++i) {
+    for (std::size_t i = 0; i < Channels(); ++i) {
       channels_[i]->CopyFrom(&(*copy_to)[i]);
     }
   }
@@ -71,15 +71,15 @@ void AudioMultiVector<T>::CopyFrom(AudioMultiVector<T>* copy_to) const {
 
 template<typename T>
 void AudioMultiVector<T>::PushBackInterleaved(const T* append_this,
-                                              size_t length) {
+		std::size_t length) {
   assert(length % Channels() == 0);
-  size_t length_per_channel = length / Channels();
+  std::size_t length_per_channel = length / Channels();
   T* temp_array = new T[length_per_channel];  // Intermediate storage.
-  for (size_t channel = 0; channel < Channels(); ++channel) {
+  for (std::size_t channel = 0; channel < Channels(); ++channel) {
     // Copy elements to |temp_array|.
     // Set |source_ptr| to first element of this channel.
     const T* source_ptr = &append_this[channel];
-    for (size_t i = 0; i < length_per_channel; ++i) {
+    for (std::size_t i = 0; i < length_per_channel; ++i) {
       temp_array[i] = *source_ptr;
       source_ptr += Channels();  // Jump to next element of this channel.
     }
@@ -92,7 +92,7 @@ template<typename T>
 void AudioMultiVector<T>::PushBack(const AudioMultiVector<T>& append_this) {
   assert(Channels() == append_this.Channels());
   if (Channels() == append_this.Channels()) {
-    for (size_t i = 0; i < Channels(); ++i) {
+    for (std::size_t i = 0; i < Channels(); ++i) {
       channels_[i]->PushBack(append_this[i]);
     }
   }
@@ -101,53 +101,53 @@ void AudioMultiVector<T>::PushBack(const AudioMultiVector<T>& append_this) {
 template<typename T>
 void AudioMultiVector<T>::PushBackFromIndex(
     const AudioMultiVector<T>& append_this,
-    size_t index) {
+    std::size_t index) {
   assert(index < append_this.Size());
   index = std::min(index, append_this.Size() - 1);
-  size_t length = append_this.Size() - index;
+  std::size_t length = append_this.Size() - index;
   assert(Channels() == append_this.Channels());
   if (Channels() == append_this.Channels()) {
-    for (size_t i = 0; i < Channels(); ++i) {
+    for (std::size_t i = 0; i < Channels(); ++i) {
       channels_[i]->PushBack(&append_this[i][index], length);
     }
   }
 }
 
 template<typename T>
-void AudioMultiVector<T>::PopFront(size_t length) {
-  for (size_t i = 0; i < Channels(); ++i) {
+void AudioMultiVector<T>::PopFront(std::size_t length) {
+  for (std::size_t i = 0; i < Channels(); ++i) {
     channels_[i]->PopFront(length);
   }
 }
 
 template<typename T>
-void AudioMultiVector<T>::PopBack(size_t length) {
-  for (size_t i = 0; i < Channels(); ++i) {
+void AudioMultiVector<T>::PopBack(std::size_t length) {
+  for (std::size_t i = 0; i < Channels(); ++i) {
     channels_[i]->PopBack(length);
   }
 }
 
 template<typename T>
-size_t AudioMultiVector<T>::ReadInterleaved(size_t length,
+std::size_t AudioMultiVector<T>::ReadInterleaved(std::size_t length,
                                             T* destination) const {
   return ReadInterleavedFromIndex(0, length, destination);
 }
 
 template<typename T>
-size_t AudioMultiVector<T>::ReadInterleavedFromIndex(size_t start_index,
-                                                     size_t length,
+std::size_t AudioMultiVector<T>::ReadInterleavedFromIndex(std::size_t start_index,
+                                                     std::size_t length,
                                                      T* destination) const {
   if (!destination) {
     return 0;
   }
-  size_t index = 0;  // Number of elements written to |destination| so far.
+  std::size_t index = 0;  // Number of elements written to |destination| so far.
   assert(start_index <= Size());
   start_index = std::min(start_index, Size());
   if (length + start_index > Size()) {
     length = Size() - start_index;
   }
-  for (size_t i = 0; i < length; ++i) {
-    for (size_t channel = 0; channel < Channels(); ++channel) {
+  for (std::size_t i = 0; i < length; ++i) {
+    for (std::size_t channel = 0; channel < Channels(); ++channel) {
       destination[index] = (*this)[channel][i + start_index];
       ++index;
     }
@@ -156,7 +156,7 @@ size_t AudioMultiVector<T>::ReadInterleavedFromIndex(size_t start_index,
 }
 
 template<typename T>
-size_t AudioMultiVector<T>::ReadInterleavedFromEnd(size_t length,
+std::size_t AudioMultiVector<T>::ReadInterleavedFromEnd(std::size_t length,
                                                    T* destination) const {
   length = std::min(length, Size());  // Cannot read more than Size() elements.
   return ReadInterleavedFromIndex(Size() - length, length, destination);
@@ -164,14 +164,14 @@ size_t AudioMultiVector<T>::ReadInterleavedFromEnd(size_t length,
 
 template<typename T>
 void AudioMultiVector<T>::OverwriteAt(const AudioMultiVector<T>& insert_this,
-                                      size_t length,
-                                      size_t position) {
+		std::size_t length,
+		std::size_t position) {
   assert(Channels() == insert_this.Channels());
   // Cap |length| at the length of |insert_this|.
   assert(length <= insert_this.Size());
   length = std::min(length, insert_this.Size());
   if (Channels() == insert_this.Channels()) {
-    for (size_t i = 0; i < Channels(); ++i) {
+    for (std::size_t i = 0; i < Channels(); ++i) {
       channels_[i]->OverwriteAt(&insert_this[i][0], length, position);
     }
   }
@@ -179,26 +179,26 @@ void AudioMultiVector<T>::OverwriteAt(const AudioMultiVector<T>& insert_this,
 
 template<typename T>
 void AudioMultiVector<T>::CrossFade(const AudioMultiVector<T>& append_this,
-                                    size_t fade_length) {
+		std::size_t fade_length) {
   assert(Channels() == append_this.Channels());
   if (Channels() == append_this.Channels()) {
-    for (size_t i = 0; i < Channels(); ++i) {
+    for (std::size_t i = 0; i < Channels(); ++i) {
       channels_[i]->CrossFade(append_this[i], fade_length);
     }
   }
 }
 
 template<typename T>
-size_t AudioMultiVector<T>::Size() const {
+std::size_t AudioMultiVector<T>::Size() const {
   assert(channels_[0]);
   return channels_[0]->Size();
 }
 
 template<typename T>
-void AudioMultiVector<T>::AssertSize(size_t required_size) {
+void AudioMultiVector<T>::AssertSize(std::size_t required_size) {
   if (Size() < required_size) {
-    size_t extend_length = required_size - Size();
-    for (size_t channel = 0; channel < Channels(); ++channel) {
+	  std::size_t extend_length = required_size - Size();
+    for (std::size_t channel = 0; channel < Channels(); ++channel) {
       channels_[channel]->Extend(extend_length);
     }
   }
@@ -211,12 +211,12 @@ bool AudioMultiVector<T>::Empty() const {
 }
 
 template<typename T>
-const AudioVector<T>& AudioMultiVector<T>::operator[](size_t index) const {
+const AudioVector<T>& AudioMultiVector<T>::operator[](std::size_t index) const {
   return *(channels_[index]);
 }
 
 template<typename T>
-AudioVector<T>& AudioMultiVector<T>::operator[](size_t index) {
+AudioVector<T>& AudioMultiVector<T>::operator[](std::size_t index) {
   return *(channels_[index]);
 }
 

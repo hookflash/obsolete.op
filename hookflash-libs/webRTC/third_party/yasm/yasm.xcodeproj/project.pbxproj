@@ -2077,9 +2077,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Release;
 		};
@@ -2146,18 +2146,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -2170,7 +2158,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genversion;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2252,18 +2239,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -2276,7 +2251,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = re2c;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2359,21 +2333,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -2383,7 +2343,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmodule;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2460,18 +2419,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -2481,7 +2428,6 @@
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = generate_files;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2563,21 +2509,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -2587,7 +2519,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genversion;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2669,21 +2600,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -2693,7 +2610,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genperf;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2716,7 +2632,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = All;
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -2778,28 +2693,13 @@
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = generate_files;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2881,21 +2781,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -2905,7 +2791,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmacro;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2987,18 +2872,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -3011,7 +2884,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmodule;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3093,18 +2965,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -3117,7 +2977,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmacro;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3199,21 +3058,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -3223,7 +3068,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = re2c;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3247,9 +3091,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -3257,7 +3101,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "yasm Support";
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -3327,21 +3170,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -3351,7 +3180,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = yasm;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3375,7 +3203,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "yasm Support";
-				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -3443,27 +3270,12 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
 				);
 				PRODUCT_NAME = genperf_libs;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3545,18 +3357,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -3569,7 +3369,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genperf;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3651,18 +3450,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -3675,7 +3462,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genstring;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3752,28 +3538,13 @@
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = config_sources;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3855,21 +3626,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -3879,7 +3636,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genstring;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3956,18 +3712,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -3977,7 +3721,6 @@
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = config_sources;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -4062,18 +3805,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -4086,7 +3817,6 @@
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = yasm;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -4170,18 +3900,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -4190,7 +3908,6 @@
 					"-std=gnu++11",
 				);
 				PRODUCT_NAME = genperf_libs;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -4213,7 +3930,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = All;
-				SDKROOT = macosx;
 			};
 			name = Debug;
 		};

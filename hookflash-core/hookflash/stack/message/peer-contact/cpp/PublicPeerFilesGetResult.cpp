@@ -68,11 +68,11 @@ namespace hookflash
           if (peersEl) {
             ElementPtr peerEl = peersEl->findFirstChildElement("peer");
             while (peerEl) {
-              IPeerFilePublicPtr peerFile = IPeerFilePublic::loadFromElement(peersEl);
+              IPeerFilePublicPtr peerFile = IPeerFilePublic::loadFromElement(peerEl);
               if (peerFile) {
                 ret->mPeerFiles.push_back(peerFile);
               }
-              peerEl = peersEl->findNextSiblingElement("peer");
+              peerEl = peerEl->findNextSiblingElement("peer");
             }
           }
 

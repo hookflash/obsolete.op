@@ -73,6 +73,7 @@ void RunTest(std::string out_path);
 class MyObserver : public VoiceEngineObserver {
  public:
    virtual void CallbackOnError(const int channel, const int err_code);
+   virtual void CallbackOnOutputAudioRouteChange(const OutputAudioRoute route) {}
 };
 
 void MyObserver::CallbackOnError(const int channel, const int err_code) {

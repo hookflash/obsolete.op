@@ -204,11 +204,11 @@ namespace zsLib
             }
 
             if (caseSensitive) {
-              beforeMatch = (currentName == prevName);
-              afterMatch = (currentName == nextName);
+              beforeMatch = (prevSibling) && (currentName == prevName);
+              afterMatch = (nextSibling) && (currentName == nextName);
             } else {
-              beforeMatch = (0 == currentName.compareNoCase(prevName));
-              afterMatch = (0 == currentName.compareNoCase(nextName));
+              beforeMatch = (prevSibling) && (0 == currentName.compareNoCase(prevName));
+              afterMatch = (nextSibling) && (0 == currentName.compareNoCase(nextName));
             }
           }
 
@@ -320,13 +320,35 @@ namespace zsLib
     {
     }
 
+    static bool objectObjectCheck(const NodePtr &onlyThisNode)
+    {
+      if (onlyThisNode->isDocument()) {
+        ElementPtr el = onlyThisNode->toDocument()->getFirstChildElement();
+        if (el) {
+          if (el->getValue().isEmpty()) {
+            return false;
+          }
+        }
+      }
+      if (onlyThisNode->isElement()) {
+        if (onlyThisNode->toElement()->getValue().isEmpty()) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     //-------------------------------------------------------------------------
     ULONG Generator::getOutputSize(const NodePtr &onlyThisNode) const
     {
       mGeneratorRoot = onlyThisNode;
       ULONG result = internal::Generator::getOutputSize(mThis.lock(), onlyThisNode);
+      bool objectOpen = objectObjectCheck(onlyThisNode);
+
       if (GeneratorMode_JSON == mGeneratorMode) {
-        result += strlen("{}"); // the opening and closing object brace
+        if (objectOpen) {
+          result += strlen("{}"); // the opening and closing object brace
+        }
       }
       mGeneratorRoot.reset();
       return result;
@@ -339,12 +361,20 @@ namespace zsLib
       mGeneratorRoot = onlyThisNode;
       boost::shared_array<char> buffer(new char[totalSize+1]);
       char *pos = buffer.get();
+      *pos = 0;
+
+      bool objectOpen = objectObjectCheck(onlyThisNode);
+
       if (GeneratorMode_JSON == mGeneratorMode) {
-        Generator::writeBuffer(pos, "{");
+        if (objectOpen) {
+          Generator::writeBuffer(pos, "{");
+        }
       }
       Generator::writeBuffer(mThis.lock(), onlyThisNode, pos);
       if (GeneratorMode_JSON == mGeneratorMode) {
-        Generator::writeBuffer(pos, "}");
+        if (objectOpen) {
+          Generator::writeBuffer(pos, "}");
+        }
       }
       *pos = 0;
       if (NULL != outLength)

@@ -116,7 +116,7 @@ namespace hookflash
             case Method_IdentityLoginNotify:                return "identity-login-notify";
             case Method_IdentityLoginBrowserWindowControl:  return "identity-login-browser-window-control";
             case Method_IdentityLoginComplete:              return "identity-login-complete";
-            case Method_IdentityAssociate:                  return "identity-login-associate";
+            case Method_IdentityAssociate:                  return "identity-associate";
             case Method_IdentitySign:                       return "identity-sign";
           }
           return "";

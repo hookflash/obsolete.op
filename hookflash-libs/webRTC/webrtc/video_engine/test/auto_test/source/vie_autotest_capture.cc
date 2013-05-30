@@ -68,6 +68,8 @@ class CaptureObserver : public webrtc::ViECaptureObserver {
       ViETest::Log("NoPictureAlarm CACleared.");
     }
   }
+  
+  virtual void FaceDetected(const int capture_id) {};
 
   webrtc::Brightness brightness_;
   webrtc::CaptureAlarm alarm_;

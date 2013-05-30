@@ -31,6 +31,10 @@
 #include <map>
 #include <list>
 
+#ifdef __QNX__
+#include <pthread.h>
+#endif //__QNX__
+
 
 namespace zsLib
 {
@@ -85,6 +89,11 @@ namespace zsLib
       typedef std::map<PUID, TimerWeakPtr> TimerMap;
 
       TimerMap mMonitoredTimers;
+
+#ifdef __QNX__
+      pthread_cond_t      mCondition;
+      pthread_mutex_t     mMutex;
+#endif //__QNX__
     };
   }
 }

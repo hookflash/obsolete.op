@@ -21,6 +21,7 @@
 #include <fcntl.h>
 #include <screen/screen.h>
 #include <slog2.h>
+#include <sys/time.h>
 
 #include "trace.h"
 #include "thread_wrapper.h"
@@ -36,6 +37,125 @@ static bool shutdown;
 const char* trace_file_name;
 
 bool test_thread(ThreadObj obj);
+
+struct AudioPacket
+{
+    WebRtc_UWord8 dataBuffer[4 * 960];
+    WebRtc_UWord16 nSamples;
+    WebRtc_UWord16 nBytesPerSample;
+    WebRtc_UWord8 nChannels;
+    WebRtc_UWord32 samplesPerSec;
+};
+
+class AudioTransportImpl: public AudioTransport
+{
+public:
+    virtual WebRtc_Word32
+        RecordedDataIsAvailable(const void* audioSamples,
+                                const WebRtc_UWord32 nSamples,
+                                const WebRtc_UWord8 nBytesPerSample,
+                                const WebRtc_UWord8 nChannels,
+                                const WebRtc_UWord32 samplesPerSec,
+                                const WebRtc_UWord32 totalDelayMS,
+                                const WebRtc_Word32 clockDrift,
+                                const WebRtc_UWord32 currentMicLevel,
+                                WebRtc_UWord32& newMicLevel);
+
+    virtual WebRtc_Word32 NeedMorePlayData(const WebRtc_UWord32 nSamples,
+                                           const WebRtc_UWord8 nBytesPerSample,
+                                           const WebRtc_UWord8 nChannels,
+                                           const WebRtc_UWord32 samplesPerSec,
+                                           void* audioSamples,
+                                           WebRtc_UWord32& nSamplesOut);
+
+    AudioTransportImpl(AudioDeviceModule* audioDevice);
+    ~AudioTransportImpl();
+
+public:
+private:
+    AudioDeviceModule* _audioDevice;
+
+    ListWrapper _audioList;
+};
+
+AudioTransportImpl::AudioTransportImpl(AudioDeviceModule* audioDevice) :
+    _audioDevice(audioDevice),
+    _audioList()
+{
+}
+
+AudioTransportImpl::~AudioTransportImpl()
+{
+    while (!_audioList.Empty())
+    {
+        ListItem* item = _audioList.First();
+        if (item)
+        {
+            AudioPacket* packet = static_cast<AudioPacket*> (item->GetItem());
+            if (packet)
+            {
+                delete packet;
+            }
+        }
+        _audioList.PopFront();
+    }
+}
+
+WebRtc_Word32 AudioTransportImpl::RecordedDataIsAvailable(
+    const void* audioSamples,
+    const WebRtc_UWord32 nSamples,
+    const WebRtc_UWord8 nBytesPerSample,
+    const WebRtc_UWord8 nChannels,
+    const WebRtc_UWord32 samplesPerSec,
+    const WebRtc_UWord32 totalDelayMS,
+    const WebRtc_Word32 clockDrift,
+    const WebRtc_UWord32 currentMicLevel,
+    WebRtc_UWord32& newMicLevel)
+{
+    if (_audioList.GetSize() < 15)
+    {
+        AudioPacket* packet = new AudioPacket();
+        memcpy(packet->dataBuffer, audioSamples, nSamples * nBytesPerSample);
+        packet->nSamples = (WebRtc_UWord16) nSamples;
+        packet->nBytesPerSample = nBytesPerSample;
+        packet->nChannels = nChannels;
+        packet->samplesPerSec = samplesPerSec;
+        _audioList.PushBack(packet);
+    }
+
+    return 0;
+}
+
+WebRtc_Word32 AudioTransportImpl::NeedMorePlayData(
+    const WebRtc_UWord32 nSamples,
+    const WebRtc_UWord8 nBytesPerSample,
+    const WebRtc_UWord8 nChannels,
+    const WebRtc_UWord32 samplesPerSec,
+    void* audioSamples,
+    WebRtc_UWord32& nSamplesOut)
+{
+	if (_audioList.Empty())
+	{
+		// use zero stuffing when not enough data
+		memset(audioSamples, 0, nBytesPerSample * nSamples);
+	} else
+	{
+		ListItem* item = _audioList.First();
+		AudioPacket* packet = static_cast<AudioPacket*> (item->GetItem());
+		if (packet)
+		{
+			memcpy(audioSamples, packet->dataBuffer, nBytesPerSample * nSamples);
+			nSamplesOut = nSamples;
+			delete packet;
+		}
+		_audioList.PopFront();
+	}
+
+    nSamplesOut = nSamples;
+
+    return 0;
+}
+
 
 int hookflash_test(const char* file_name)
 {
@@ -74,25 +194,38 @@ bool test_thread(ThreadObj obj)
 
     audioDevice = AudioDeviceModuleImpl::Create(1, AudioDeviceModule::kPlatformDefaultAudio);
 
+    audioDevice->AddRef();
+
+    AudioTransport* audioTransport = new AudioTransportImpl(audioDevice);
+
+    audioDevice->RegisterAudioCallback(audioTransport);
+
     audioDevice->Init();
 
-    audioDevice->SetRecordingDevice(AudioDeviceModule::kDefaultDevice);
-    audioDevice->SetPlayoutDevice(AudioDeviceModule::kDefaultDevice);
+    audioDevice->SetRecordingDevice(0);
+    audioDevice->SetPlayoutDevice(0);
 
     audioDevice->InitRecording();
     audioDevice->InitPlayout();
 
     audioDevice->StartRecording();
+    usleep(1000000);
     audioDevice->StartPlayout();
 
-    usleep(10000000);
+    usleep(20000000);
 
     audioDevice->StopRecording();
     audioDevice->StopPlayout();
 
+    audioDevice->RegisterAudioCallback(NULL);
+
     audioDevice->Terminate();
 
+    audioDevice->Release();
+
     Trace::ReturnTrace();
+
+    int i =0; i++;
 
     return 0;
 }

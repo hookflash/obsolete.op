@@ -1,157 +1,0 @@
-Tresampler
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a normal armv7
-cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a normal "armv7 armv7s"
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.LinkFileList
-c0000000051657E980000000000000147
-t1365606040
-s327
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.LinkFileList
-c0000000051657E980000000000000149
-t1365606040
-s329
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc
-c000000005165706B0000000000008AFA
-t1365602411
-s35578
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc
-c000000005165706B0000000000003AC8
-t1365602411
-s15048
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesf67b7618b615b741^0b5fcb18b615b741^---0#1#0#--18"Check dependencies36"420AA826-37B2-4060-91FA-A425574E6E62-
-
-CCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387298840.568014
-e387298842.475425
-r1
-xCompileC
-x../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc96ec9418b615b741^4be70f1bb615b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc0000000000000000^3857"CompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o resampler/resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iresampler/include -Isignal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.o36"07632CF4-4814-41AC-B28D-472F3403A0CA-
-
-CCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387298840.569393
-e387298842.093122
-r1
-xCompileC
-x../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.ccbfee9418b615b741^edba0f1bb615b741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc0000000000000000^3887"CompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o resampler/sinc_resampler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iresampler/include -Isignal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/sinc_resampler.o36"79D112EE-6120-4338-923B-8BB6F4E1D5BE-
-
-CCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387298842.098019
-e387298843.515827
-r1
-xCompileC
-x../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc
-xnormal
-xarmv7s
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection91"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc967b191ab615b741^1a15841bb615b741^---0#0#0#-19%DVTDocumentLocation2@99"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc0000000000000000^3864"CompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o resampler/resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iresampler/include -Isignal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/resampler.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.o36"9C868C36-39AB-41C4-BBBF-D76138772F7F-
-
-CCompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387298842.478502
-e387298843.511729
-r1
-xCompileC
-x../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc
-xnormal
-xarmv7s
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection96"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc82fe7a1ab615b741^8d41831bb615b741^---0#0#0#-19%DVTDocumentLocation2@104"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc0000000000000000^3894"CompileC ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o resampler/sinc_resampler.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iresampler/include -Isignal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -fno-strict-aliasing -fstack-protector-all -std=gnu++11 -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/resampler/sinc_resampler.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/sinc_resampler.o36"1DF96166-ABA5-414D-A2D4-FCCF3B955AC0-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a normal "armv7 armv7s"
-s387298843.856301
-e387298843.926131
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection131"Create universal binary /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.ac572db1bb615b741^3830ed1bb615b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a000000000080d041^807"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libresampler.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos/libresampler.a36"A99656B9-43B8-43DA-90B6-C74B8E930D37-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a normal armv7
-s387298843.513425
-e387298843.564209
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Libtool ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a normal armv7e3a9831bb615b741^338b901bb615b741^---0#0#0#--1104"Libtool ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/resampler.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7/libresampler.a36"998487D0-D367-4B8C-A19F-73D71E4C275C-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a normal armv7s
-s387298843.565722
-e387298843.594990
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection125"Libtool ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a normal armv7s990e911bb615b741^b475981bb615b741^---0#0#0#--1109"Libtool ../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a normal armv7s    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/resampler.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/common_audio/../../xcodebuild/common_audio.build/Debug-iphoneos/resampler.build/Objects-normal/armv7s/libresampler.a36"322402F9-BC55-4D83-B2CA-8B25E51632E9-
-

@@ -36,7 +36,7 @@ class TimeStretch {
     kError = -1
   };
 
-  TimeStretch(int sample_rate_hz, size_t num_channels,
+  TimeStretch(int sample_rate_hz, std::size_t num_channels,
               const BackgroundNoise& background_noise)
       : sample_rate_hz_(sample_rate_hz),
         fs_mult_(sample_rate_hz / 8000),
@@ -50,7 +50,7 @@ class TimeStretch {
            sample_rate_hz_ == 48000);
     assert(num_channels_ > 0);
     assert(static_cast<int>(master_channel_) < num_channels_);
-    memset(auto_correlation_, 0, sizeof(auto_correlation_));
+    std::memset(auto_correlation_, 0, sizeof(auto_correlation_));
   }
 
   virtual ~TimeStretch() {}
@@ -58,7 +58,7 @@ class TimeStretch {
   // This method performs the processing common to both Accelerate and
   // PreemptiveExpand.
   ReturnCodes Process(const int16_t* input,
-                      size_t input_len,
+		              std::size_t input_len,
                       AudioMultiVector<int16_t>* output,
                       int16_t* length_change_samples);
 
@@ -74,7 +74,7 @@ class TimeStretch {
   // if possible, performs the time-stretching. This method must be implemented
   // by the sub-classes.
   virtual ReturnCodes CheckCriteriaAndStretch(
-      const int16_t* input, int input_length, size_t peak_index,
+      const int16_t* input, int input_length, std::size_t peak_index,
       int16_t best_correlation, bool active_speech,
       AudioMultiVector<int16_t>* output) const = 0;
 
@@ -88,7 +88,7 @@ class TimeStretch {
   const int sample_rate_hz_;
   const int fs_mult_;  // Sample rate multiplier = sample_rate_hz_ / 8000.
   const int num_channels_;
-  const size_t master_channel_;
+  const std::size_t master_channel_;
   const BackgroundNoise& background_noise_;
   int16_t max_input_value_;
   int16_t downsampled_input_[kDownsampledLen];

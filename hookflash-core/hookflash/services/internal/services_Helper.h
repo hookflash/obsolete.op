@@ -55,6 +55,8 @@ namespace hookflash
       public:
         static RecursiveLock &getGlobalLock();
 
+        static String getDebugValue(const char *name, const String &value, bool &firstTime);
+
         static String randomString(UINT lengthInChars);
 
         static SecureByteBlockPtr random(UINT lengthInBytes);

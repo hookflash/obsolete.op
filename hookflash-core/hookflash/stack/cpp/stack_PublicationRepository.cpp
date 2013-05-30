@@ -41,6 +41,7 @@
 #include <hookflash/stack/IMessageIncoming.h>
 
 #include <hookflash/stack/message/IMessageHelper.h>
+#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
 #include <hookflash/stack/message/peer-common/PeerPublishResult.h>
 #include <hookflash/stack/message/peer-common/PeerGetRequest.h>
@@ -679,6 +680,11 @@ namespace hookflash
         LocationPtr location = Location::convert(messageIncoming->getLocation());
         message::MessagePtr message = messageIncoming->getMessage();
         ZS_LOG_TRACE(log("received notification of incoming message") + ", message ID=" + message->messageID() +  + ", type=" + message::Message::toString(message->messageType()) + ", method=" + message->methodAsString() + location->forRepo().getDebugValueString())
+
+        if (message->factory() != MessageFactoryPeerCommon::singleton()) {
+          ZS_LOG_DEBUG(log("reposity does not handle messages from non \"peer-common\" factories"))
+          return;
+        }
 
         AutoRecursiveLock lock(getLock());
         if (subscription != mPeerSubscription) {
@@ -2221,7 +2227,7 @@ namespace hookflash
                IPublication::toDebugString(mPublication) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
@@ -2503,7 +2509,7 @@ namespace hookflash
                IPublicationMetaData::toDebugString(mPublicationMetaData) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
                IPublication::toDebugString(mFetchedPublication);
       }
@@ -2766,7 +2772,7 @@ namespace hookflash
                IPublication::toDebugString(mPublication) +
                IMessageMonitor::toDebugString(mMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 
@@ -3653,7 +3659,7 @@ namespace hookflash
                IMessageMonitor::toDebugString(mMonitor) +
                IMessageMonitor::toDebugString(mCancelMonitor) +
                Helper::getDebugValue("succeeded", mSucceeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime);
+               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime);
       }
 

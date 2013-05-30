@@ -91,6 +91,8 @@ namespace hookflash
 
           String clientNonce = IHelper::randomString(32);
           String expires = IMessageHelper::timeToString(zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_IDENTITY_ASSOCIATE_EXPIRES_TIME_IN_SECONDS));
+          
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
 
           IdentityInfo info;
           info.mURI = mIdentityInfo.mURI;
@@ -98,10 +100,10 @@ namespace hookflash
           info.mAccessSecret = mIdentityInfo.mAccessSecret;
 
           if (info.mAccessSecret.hasData()) {
-            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
+            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-sign:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
             info.mAccessSecret.clear();
           }
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(expires);
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(expires);
 
           if (info.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(info));

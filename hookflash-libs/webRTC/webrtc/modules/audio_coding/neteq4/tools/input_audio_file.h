@@ -24,28 +24,28 @@ namespace test {
 class InputAudioFile {
  public:
   explicit InputAudioFile(const std::string file_name) {
-    fp_ = fopen(file_name.c_str(), "rb");
+    fp_ = std::fopen(file_name.c_str(), "rb");
   }
 
   virtual ~InputAudioFile() {
-    fclose(fp_);
+    std::fclose(fp_);
   }
 
   // Reads |samples| elements from source file to |destination|. Returns true
   // if the read was successful, otherwise false. If the file end is reached,
   // the file is rewound and reading continues from the beginning.
   // The output |destination| must have the capacity to hold |samples| elements.
-  bool Read(size_t samples, int16_t* destination);
+  bool Read(std::size_t samples, int16_t* destination);
 
   // Creates a multi-channel signal from a mono signal. Each sample is repeated
   // |channels| times to create an interleaved multi-channel signal where all
   // channels are identical. The output |destination| must have the capacity to
   // hold samples * channels elements.
-  static void DuplicateInterleaved(const int16_t* source, size_t samples,
-                                   size_t channels, int16_t* destination);
+  static void DuplicateInterleaved(const int16_t* source, std::size_t samples,
+		  std::size_t channels, int16_t* destination);
 
  private:
-  FILE* fp_;
+  std::FILE* fp_;
   DISALLOW_COPY_AND_ASSIGN(InputAudioFile);
 };
 

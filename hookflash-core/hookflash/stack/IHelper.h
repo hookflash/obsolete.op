@@ -106,10 +106,14 @@ namespace hookflash
 
       static String convertToHex(
                                  const BYTE *buffer,
-                                 ULONG bufferLengthInBytes
+                                 ULONG bufferLengthInBytes,
+                                 bool outputUpperCase = false
                                  );
 
-      static String convertToHex(SecureByteBlock &input);
+      static String convertToHex(
+                                 SecureByteBlock &input,
+                                 bool outputUpperCase = false
+                                 );
 
       static SecureByteBlockPtr convertFromHex(const String &input);
 
@@ -200,6 +204,8 @@ namespace hookflash
                                          String *outKeyDomain = NULL,
                                          String *outService = NULL
                                          );
+
+      static ElementPtr cloneAsCanonicalJSON(ElementPtr element);
 
       static bool isValidDomain(const char *domain);
 

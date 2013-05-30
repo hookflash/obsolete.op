@@ -306,6 +306,7 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-libs/webRTC",
 					"../../../../hookflash-libs/webRTC/webrtc",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
 					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
@@ -314,10 +315,9 @@
 					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
 					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -355,6 +355,7 @@
 					"../../../../hookflash-libs/zsLib",
 					"../../../../hookflash-libs/udns",
 					"../../../../hookflash-libs/cryptopp",
+					"../../../../hookflash-libs/webRTC",
 					"../../../../hookflash-libs/webRTC/webrtc",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
 					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
@@ -363,10 +364,9 @@
 					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
 					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/main/interface",
+					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
 					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc",
+					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -417,6 +417,7 @@
 				0063BBE416CA9A1600E6DB4D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

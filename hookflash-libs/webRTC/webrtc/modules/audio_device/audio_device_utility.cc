@@ -46,7 +46,7 @@ bool AudioDeviceUtility::StringCompare(
 
 }  // namespace webrtc
 
-#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 
 // ============================================================================
 //                                 Linux & Mac

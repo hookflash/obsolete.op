@@ -12,7 +12,7 @@
 
 #include <stdio.h>
 
-#ifndef WEBRTC_ANDROID
+#if !defined(WEBRTC_ANDROID) && !defined(WEBRTC_QNX)
 #include "gtest/gtest.h"
 #endif
 #include "webrtc/test/channel_transport/udp_transport.h"
@@ -29,7 +29,7 @@ VoiceChannelTransport::VoiceChannelTransport(VoENetwork* voe_network,
       voe_network_(voe_network) {
   uint8_t socket_threads = 1;
   socket_transport_ = UdpTransport::Create(channel, socket_threads);
-#ifndef WEBRTC_ANDROID
+#if !defined(WEBRTC_ANDROID) && !defined(WEBRTC_QNX)
   EXPECT_EQ(0, voe_network_->RegisterExternalTransport(channel,
                                                        *socket_transport_));
 #else
@@ -80,7 +80,7 @@ VideoChannelTransport::VideoChannelTransport(ViENetwork* vie_network,
       vie_network_(vie_network) {
   uint8_t socket_threads = 1;
   socket_transport_ = UdpTransport::Create(channel, socket_threads);
-#ifndef WEBRTC_ANDROID
+#if !defined(WEBRTC_ANDROID) && !defined(WEBRTC_QNX)
   EXPECT_EQ(0, vie_network_->RegisterSendTransport(channel,
                                                    *socket_transport_));
 #else

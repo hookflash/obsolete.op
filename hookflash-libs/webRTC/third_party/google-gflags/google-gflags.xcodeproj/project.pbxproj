@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -110,7 +110,11 @@
 			};
 			buildConfigurationList = 2C500AC69373DF21E853C901 /* Build configuration list for PBXProject "google-gflags" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 2783C0E14E25E84E14EC97A0;
 			projectDirPath = "";
 			projectRoot = "";
@@ -201,21 +205,7 @@
 				);
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
-					"-fno-strict-aliasing",
-				);
+				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(inherited)",
 					"-std=gnu++11",
@@ -234,11 +224,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-					"-Wheader-hygiene",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra -Wheader-hygiene";
 			};
 			name = Release;
 		};
@@ -246,9 +232,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -256,9 +242,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = iphoneos;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Release;
 		};
@@ -329,18 +315,6 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = (
-					"-Xclang",
-					"-load",
-					"-Xclang",
-					"/Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib",
-					"-Xclang",
-					"-add-plugin",
-					"-Xclang",
-					"find-bad-constructs",
-					"-Xclang",
-					"-plugin-arg-find-bad-constructs",
-					"-Xclang",
-					"skip-virtuals-in-implementations",
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
@@ -362,11 +336,7 @@
 					"-Wno-covered-switch-default",
 					"-Wno-undefined-internal",
 				);
-				WARNING_CFLAGS_excluded = (
-					"-Wall",
-					"-Wextra",
-					"-Wheader-hygiene",
-				);
+				WARNING_CFLAGS_excluded = "-Wall -Wextra -Wheader-hygiene";
 			};
 			name = Debug;
 		};

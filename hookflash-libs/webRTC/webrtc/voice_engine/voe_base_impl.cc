@@ -123,6 +123,21 @@ void VoEBaseImpl::OnWarningIsReported(const WarningCode warning)
         }
     }
 }
+  
+void VoEBaseImpl::OnOutputAudioRouteChanged(const OutputAudioRoute audioRoute)
+{
+    CriticalSectionScoped cs(&_callbackCritSect);
+    if (_voiceEngineObserver)
+    {
+        if (_voiceEngineObserverPtr)
+        {
+            WEBRTC_TRACE(kTraceInfo, kTraceVoice,
+                         VoEId(_shared->instance_id(), -1),
+                         "VoEBaseImpl::OnOutputAudioRouteChanged()");
+            _voiceEngineObserverPtr->CallbackOnOutputAudioRouteChange(audioRoute);
+        }
+    }
+}
 
 int32_t VoEBaseImpl::RecordedDataIsAvailable(
         const void* audioSamples,

@@ -29,7 +29,7 @@ class BackgroundNoise;
 // Accelerate are implemented.
 class Accelerate : public TimeStretch {
  public:
-  Accelerate(int sample_rate_hz, size_t num_channels,
+  Accelerate(int sample_rate_hz, std::size_t num_channels,
              const BackgroundNoise& background_noise)
       : TimeStretch(sample_rate_hz, num_channels, background_noise) {
   }
@@ -56,7 +56,7 @@ class Accelerate : public TimeStretch {
   // Checks the criteria for performing the time-stretching operation and,
   // if possible, performs the time-stretching.
   virtual ReturnCodes CheckCriteriaAndStretch(
-      const int16_t* input, int input_length, size_t peak_index,
+      const int16_t* input, int input_length, std::size_t peak_index,
       int16_t best_correlation, bool active_speech,
       AudioMultiVector<int16_t>* output) const;
 

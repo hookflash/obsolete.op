@@ -363,6 +363,7 @@ namespace hookflash
 
         RecursiveLock &getLock() const;
         RecursiveLock &getMediaLock() const;
+        RecursiveLock &getStepLock() const;
 
         IMessageQueuePtr getQueue() const {return mQueue;}
         IMessageQueuePtr getMediaQueue() const {return mMediaQueue;}
@@ -661,6 +662,8 @@ namespace hookflash
         mutable RecursiveLock mBogusLock;
         CallWeakPtr mThisWeak;
         CallPtr mGracefulShutdownReference;
+
+        mutable RecursiveLock mStepLock;
 
         IMessageQueuePtr mQueue;
         IMessageQueuePtr mMediaQueue;

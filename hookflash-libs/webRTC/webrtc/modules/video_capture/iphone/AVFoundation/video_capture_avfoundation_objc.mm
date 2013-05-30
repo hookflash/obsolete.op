@@ -214,15 +214,11 @@
     _faceDetection = faceDetection;
 
     NSString* systemVersion = [[UIDevice currentDevice] systemVersion];
-
     if ([systemVersion compare:@"5.0" options:NSNumericSearch] != NSOrderedAscending)
     {
-        //JAT
-//        _frameRate=1;
-        //ENdJAT
-        
         AVCaptureConnection* connection = [_captureDecompressedVideoOutput connectionWithMediaType:AVMediaTypeVideo];
         [connection setVideoMinFrameDuration:CMTimeMake(1, _frameRate)];
+        //[connection setVideoMaxFrameDuration:CMTimeMake(1, _frameRate)];
         [connection setVideoMaxFrameDuration:CMTimeMake(1, 1)];
     }
     else 
@@ -307,7 +303,8 @@
 - (NSNumber*)startCapture{
     
     NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
-    self.faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
+    if (_faceDetection)
+        self.faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
     
     webrtc::Trace::Add(webrtc::kTraceModuleCall, webrtc::kTraceVideoCapture, 0,
                  "%s:%d", __FUNCTION__, __LINE__);

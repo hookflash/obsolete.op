@@ -18,9 +18,9 @@ DtmfInbandQueue::DtmfInbandQueue(const int32_t id):
     _DtmfCritsect(*CriticalSectionWrapper::CreateCriticalSection()),
     _nextEmptyIndex(0)
 {
-    memset(_DtmfKey,0, sizeof(_DtmfKey));
-    memset(_DtmfLen,0, sizeof(_DtmfLen));
-    memset(_DtmfLevel,0, sizeof(_DtmfLevel));
+	std::memset(_DtmfKey,0, sizeof(_DtmfKey));
+	std::memset(_DtmfLen,0, sizeof(_DtmfLen));
+	std::memset(_DtmfLevel,0, sizeof(_DtmfLevel));
 }
 
 DtmfInbandQueue::~DtmfInbandQueue()
@@ -60,11 +60,11 @@ DtmfInbandQueue::NextDtmf(uint16_t* len, uint8_t* level)
     *len=_DtmfLen[0];
     *level=_DtmfLevel[0];
 
-    memmove(&(_DtmfKey[0]), &(_DtmfKey[1]),
+    std::memmove(&(_DtmfKey[0]), &(_DtmfKey[1]),
             _nextEmptyIndex*sizeof(uint8_t));
-    memmove(&(_DtmfLen[0]), &(_DtmfLen[1]),
+    std::memmove(&(_DtmfLen[0]), &(_DtmfLen[1]),
             _nextEmptyIndex*sizeof(uint16_t));
-    memmove(&(_DtmfLevel[0]), &(_DtmfLevel[1]),
+    std::memmove(&(_DtmfLevel[0]), &(_DtmfLevel[1]),
             _nextEmptyIndex*sizeof(uint8_t));
 
     _nextEmptyIndex--;

@@ -1,190 +1,0 @@
-Twebrtc_utility
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a normal armv7
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/webrtc_utility.LinkFileList
-c0000000051658E1700000000000003CF
-t1365610007
-s975
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc
-c00000000516570690000000000000CFF
-t1365602409
-s3327
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc
-c00000000516570690000000000000ED3
-t1365602409
-s3795
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc
-c000000005165706900000000000057B6
-t1365602409
-s22454
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc
-c00000000516570690000000000005E16
-t1365602409
-s24086
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc
-c0000000051657069000000000000135A
-t1365602409
-s4954
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc
-c00000000516570690000000000001B99
-t1365602409
-s7065
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb7ee1297c515b741^fbce1397c515b741^---0#1#0#--18"Check dependencies36"F7F1E6AA-5C71-488F-BE54-D9F3FE8A6C76-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302817.914549
-e387302818.549024
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection104"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc3485eaa1c515b741^3be08ea2c515b741^---0#0#0#-19%DVTDocumentLocation2@112"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc0000000000000000^3467"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o utility/source/audio_frame_operations.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/audio_frame_operations.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/audio_frame_operations.o36"45344D62-F7EA-45DD-863C-BFE7C321FE35-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302818.550544
-e387302818.960397
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection87"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cca25d8da2c515b741^83dcf5a2c515b741^---0#0#0#-19%DVTDocumentLocation2@95"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc0000000000000000^3365"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o utility/source/coder.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/coder.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/coder.o36"E408D23D-18F9-481C-96CF-630FEB097BFC-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302818.684465
-e387302819.190472
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.ccb894afa2c515b741^94c230a3c515b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc0000000000000000^3431"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o utility/source/file_player_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_player_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_player_impl.o36"1291F894-8C9A-47BF-BDE5-288A69435F1D-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302819.093973
-e387302819.738186
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.ccfd6818a3c515b741^450ebda3c515b741^---0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc0000000000000000^3443"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o utility/source/file_recorder_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/file_recorder_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/file_recorder_impl.o36"189E1532-940A-46D4-8B65-1B9E77DFB1D7-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302819.203042
-e387302819.458705
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection101"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc655134a3c515b741^e88775a3c515b741^---0#0#0#-19%DVTDocumentLocation2@109"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc0000000000000000^3449"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o utility/source/process_thread_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/process_thread_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/process_thread_impl.o36"03AC432D-CC3F-4785-B26F-E2F816C2A6F2-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302819.460246
-e387302819.631045
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection95"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc0f2976a3c515b741^c1a7a1a3c515b741^---0#0#0#-19%DVTDocumentLocation2@103"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc0000000000000000^3413"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o utility/source/rtp_dump_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iutility/interface -Iinterface -Imedia_file/interface -Iaudio_coding/main/interface -I../common_audio/resampler/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/utility/source/rtp_dump_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/rtp_dump_impl.o36"2A21F7F7-898B-4A8D-B755-11C83198AF2E-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a normal armv7
-s387302819.745554
-e387302819.785957
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection72"Libtool ../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a normal armv74d12bfa3c515b741^c251caa3c515b741^---0#0#0#--987"Libtool ../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/webrtc_utility.build/Objects-normal/armv7/webrtc_utility.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libwebrtc_utility.a36"CB622B5B-691E-47C0-9BA0-7264834746BA-
-

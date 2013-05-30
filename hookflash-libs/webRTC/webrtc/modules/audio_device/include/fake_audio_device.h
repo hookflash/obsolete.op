@@ -317,6 +317,10 @@ class FakeAudioDeviceModule : public AudioDeviceModule {
     assert(false);
     return 0;
   }
+  virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const {
+    assert(false);
+    return 0;
+  }
   virtual int32_t EnableBuiltInAEC(bool enable) {
     assert(false);
     return -1;

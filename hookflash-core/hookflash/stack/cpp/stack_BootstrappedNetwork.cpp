@@ -217,7 +217,7 @@ namespace hookflash
 
         if (pThis->getID() != useThis->getID()) {
           ZS_LOG_DEBUG(useThis->log("reusing existing object") + useThis->getDebugValueString())
-          pThis->reuse();
+          useThis->reuse();
         }
 
         if (delegate) {
@@ -291,8 +291,11 @@ namespace hookflash
           }
           return false;
         }
-
-        IHTTPQueryPtr query = post(service->mURI, message);
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+        zsLib::String tmp = service->mURI;
+        tmp.replaceAll("https", "http");
+        IHTTPQueryPtr query = post(tmp, message);
         if (!query) {
           ZS_LOG_WARNING(Detail, log("failed to create query for message"))
           if ((message->isRequest()) ||
@@ -334,6 +337,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool BootstrappedNetwork::isValidSignature(ElementPtr signedElement) const
       {
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 3
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 4
+        return true;
+        
         ElementPtr signatureEl;
         String id;
         String domain;
@@ -538,7 +545,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("on http complete"))
+        ZS_LOG_DEBUG(log("on http complete") + ", query ID=" + Stringize<PUID>(query->getID()).string())
 
         // do step asynchronously
         IBootstrappedNetworkAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
@@ -769,7 +776,7 @@ namespace hookflash
         // now we have the DNS service name...
         if (!mServicesGetQuery) {
           bool forceOverHTTP = (0 == HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP ? false : true);
-          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/" + HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
+          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/.well-known/" + HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
           ZS_LOG_DEBUG(log("step - performing services get request") + ", services-get URL=" + serviceURL)
 
           ServicesGetRequestPtr request = ServicesGetRequest::create();
@@ -850,7 +857,11 @@ namespace hookflash
 
           CertificatesGetRequestPtr request = CertificatesGetRequest::create();
           request->domain(mDomain);
-          mCertificatesGetQuery = post(method->mURI, request);
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 5
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 6
+          zsLib::String tmp = method->mURI;
+          tmp.replaceAll("https", "http");
+          mCertificatesGetQuery = post(tmp, request);
         }
 
         if (!mCertificatesGetQuery->isComplete()) {

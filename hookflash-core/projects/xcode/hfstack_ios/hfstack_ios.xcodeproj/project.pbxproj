@@ -329,7 +329,7 @@
 		0063BAE616CA92D000E6DB4D /* PublicPeerFilesGetRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicPeerFilesGetRequest.h; sourceTree = "<group>"; };
 		0063BAE716CA92D000E6DB4D /* PublicPeerFilesGetResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublicPeerFilesGetResult.h; sourceTree = "<group>"; };
 		0063BAEA16CA92D000E6DB4D /* MessageFactoryPeerFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryPeerFinder.cpp; sourceTree = "<group>"; };
-		0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeerLocationFindReply.cpp; sourceTree = "<group>"; };
+		0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PeerLocationFindReply.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BAEC16CA92D000E6DB4D /* PeerLocationFindRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeerLocationFindRequest.cpp; sourceTree = "<group>"; };
 		0063BAED16CA92D000E6DB4D /* PeerLocationFindResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeerLocationFindResult.cpp; sourceTree = "<group>"; };
 		0063BAEE16CA92D000E6DB4D /* SessionCreateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionCreateRequest.cpp; sourceTree = "<group>"; };
@@ -339,8 +339,8 @@
 		0063BAF216CA92D000E6DB4D /* SessionKeepAliveRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionKeepAliveRequest.cpp; sourceTree = "<group>"; };
 		0063BAF316CA92D000E6DB4D /* SessionKeepAliveResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionKeepAliveResult.cpp; sourceTree = "<group>"; };
 		0063BAF416CA92D000E6DB4D /* MessageFactoryPeerFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryPeerFinder.h; sourceTree = "<group>"; };
-		0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLocationFindReply.h; sourceTree = "<group>"; };
-		0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLocationFindRequest.h; sourceTree = "<group>"; };
+		0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindReply.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindRequest.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0063BAF716CA92D000E6DB4D /* PeerLocationFindResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLocationFindResult.h; sourceTree = "<group>"; };
 		0063BAF816CA92D000E6DB4D /* SessionCreateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionCreateRequest.h; sourceTree = "<group>"; };
 		0063BAF916CA92D000E6DB4D /* SessionCreateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionCreateResult.h; sourceTree = "<group>"; };
@@ -776,8 +776,8 @@
 			children = (
 				0063BAE916CA92D000E6DB4D /* cpp */,
 				0063BAF416CA92D000E6DB4D /* MessageFactoryPeerFinder.h */,
-				0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */,
 				0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */,
+				0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */,
 				0063BAF716CA92D000E6DB4D /* PeerLocationFindResult.h */,
 				0063BAF816CA92D000E6DB4D /* SessionCreateRequest.h */,
 				0063BAF916CA92D000E6DB4D /* SessionCreateResult.h */,
@@ -793,8 +793,8 @@
 			isa = PBXGroup;
 			children = (
 				0063BAEA16CA92D000E6DB4D /* MessageFactoryPeerFinder.cpp */,
-				0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */,
 				0063BAEC16CA92D000E6DB4D /* PeerLocationFindRequest.cpp */,
+				0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */,
 				0063BAED16CA92D000E6DB4D /* PeerLocationFindResult.cpp */,
 				0063BAEE16CA92D000E6DB4D /* SessionCreateRequest.cpp */,
 				0063BAEF16CA92D000E6DB4D /* SessionCreateResult.cpp */,
@@ -1086,6 +1086,7 @@
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1100,6 +1101,7 @@
 					"$(inherited)",
 					"../../../../hookflash-staging/iPhoneOS/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1125,6 +1127,7 @@
 				0063B95916CA91F000E6DB4D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,201 +1,0 @@
-Tgenperf_libs
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a normal armv7
-cCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a normal "armv7 armv7s"
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/genperf_libs.LinkFileList
-c0000000051671D3400000000000001E7
-t1365712180
-s487
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/genperf_libs.LinkFileList
-c0000000051671D3400000000000001EA
-t1365712180
-s490
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c
-c000000005165C62C0000000000002539
-t1365624364
-s9529
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c
-c000000005165C62C0000000000000CDA
-t1365624364
-s3290
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c
-c000000005165C62C0000000000000952
-t1365624364
-s2386
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies8b8812b45417b741^8f3414b45417b741^---0#1#0#--18"Check dependencies36"AEC8CE59-6875-41BC-BB91-F5C0859824D8-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387404980.082613
-e387404981.260447
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c8a9115b45417b741^98a747b55417b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c0000000000000000^3833"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o source/patched-yasm/libyasm/phash.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/phash.o36"9A00B6DE-7177-4F4B-8C02-D7EC256808F7-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387404980.082936
-e387404980.807228
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection115"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c7c9c15b45417b741^bebeceb45417b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c0000000000000000^3845"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o source/patched-yasm/libyasm/xmalloc.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xmalloc.o36"70B4B791-A136-46E6-A6B8-65BC33F63F10-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387404980.808930
-e387404981.354540
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection115"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c016dcfb45417b741^45da5ab55417b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c0000000000000000^3845"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o source/patched-yasm/libyasm/xstrdup.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/xstrdup.o36"1902027D-B9ED-41E5-B93D-8435F24432D5-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387404981.280302
-e387404981.899332
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c672648b55417b741^22e1e7b55417b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c0000000000000000^3840"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o source/patched-yasm/libyasm/phash.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/phash.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/phash.o36"DE6274BC-0EF8-4AE0-BACB-1D37A1BFD995-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387404981.356700
-e387404981.900102
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection115"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c0bb45bb55417b741^85e9e7b55417b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c0000000000000000^3852"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o source/patched-yasm/libyasm/xmalloc.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xmalloc.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xmalloc.o36"9CD5E4B6-6FEE-49C3-8C5E-AFF00CDE599F-
-
-CCompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387404981.908106
-e387404982.398495
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection115"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.cb8cde8b55417b741^ce3677b65417b741^---0#0#0#-19%DVTDocumentLocation2@123"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c0000000000000000^3852"CompileC ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o source/patched-yasm/libyasm/xstrdup.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DHAVE_CONFIG_H -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=6.1 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/libyasm/xstrdup.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/xstrdup.o36"DB3349E0-E08E-4916-A593-E7369EFC736B-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a normal "armv7 armv7s"
-s387404982.500456
-e387404982.550020
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection143"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.ae75680b65417b741^e02c8db65417b741^---0#0#0#-19%DVTDocumentLocation2@135"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a000000000080d041^845"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libgenperf_libs.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos/libgenperf_libs.a36"B3C90452-4615-4430-9EFA-4BA1C7734557-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a normal armv7
-s387404981.906986
-e387404981.940227
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection121"Libtool ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a normal armv71364e8b55417b741^2ac7f0b55417b741^---0#0#0#--1134"Libtool ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/genperf_libs.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7/libgenperf_libs.a36"206AC16F-8F93-4279-8187-0E7195D3A60B-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a normal armv7s
-s387404982.466755
-e387404982.491309
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection123"Libtool ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a normal armv7s4eb477b65417b741^50e07db65417b741^---0#0#0#--1139"Libtool ../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv IPHONEOS_DEPLOYMENT_TARGET 6.1    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/genperf_libs.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug-iphoneos/genperf_libs.build/Objects-normal/armv7s/libgenperf_libs.a36"3A7481DB-C18E-4675-9094-031B41FD1377-
-

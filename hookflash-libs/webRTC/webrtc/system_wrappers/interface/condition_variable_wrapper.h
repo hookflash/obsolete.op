@@ -20,6 +20,8 @@ class ConditionVariableWrapper {
   // Factory method, constructor disabled.
   static ConditionVariableWrapper* CreateConditionVariable();
 
+  static void Test();
+
   virtual ~ConditionVariableWrapper() {}
 
   // Calling thread will atomically release crit_sect and wait until next

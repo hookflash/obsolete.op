@@ -114,7 +114,7 @@ bool
 VCMRttFilter::JumpDetection(uint32_t rttMs)
 {
     double diffFromAvg = _avgRtt - rttMs;
-    if (abs(diffFromAvg) > _jumpStdDevs * sqrt(_varRtt))
+    if (std::abs(diffFromAvg) > _jumpStdDevs * std::sqrt(_varRtt))
     {
         int diffSign = (diffFromAvg >= 0) ? 1 : -1;
         int jumpCountSign = (_jumpCount >= 0) ? 1 : -1;
@@ -159,7 +159,7 @@ VCMRttFilter::JumpDetection(uint32_t rttMs)
 bool
 VCMRttFilter::DriftDetection(uint32_t rttMs)
 {
-    if (_maxRtt - _avgRtt > _driftStdDevs * sqrt(_varRtt))
+    if (_maxRtt - _avgRtt > _driftStdDevs * std::sqrt(_varRtt))
     {
         if (_driftCount < kMaxDriftJumpCount)
         {

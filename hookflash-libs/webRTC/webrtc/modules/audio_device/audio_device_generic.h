@@ -147,7 +147,7 @@ class AudioDeviceGeneric
     // Speaker audio routing (for mobile devices)
     virtual int32_t SetLoudspeakerStatus(bool enable);
     virtual int32_t GetLoudspeakerStatus(bool& enable) const;
-    virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const;
+    virtual int32_t GetOutputAudioRoute(OutputAudioRoute& route) const;
     
     // Reset Audio Device (for mobile devices)
     virtual int32_t ResetAudioDevice();
@@ -165,10 +165,12 @@ class AudioDeviceGeneric
 public:
     virtual bool PlayoutWarning() const = 0;
     virtual bool PlayoutError() const = 0;
+    virtual bool PlayoutRouteChanged() const;
     virtual bool RecordingWarning() const = 0;
     virtual bool RecordingError() const = 0;
     virtual void ClearPlayoutWarning() = 0;
     virtual void ClearPlayoutError() = 0;
+    virtual void ClearPlayoutRouteChanged();
     virtual void ClearRecordingWarning() = 0;
     virtual void ClearRecordingError() = 0;
 

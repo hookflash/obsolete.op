@@ -421,7 +421,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))
-        IServicePeerContactSessionAsyncProxy::create(mThisWeak.lock())->onStep();
+        step();
       }
 
       //-----------------------------------------------------------------------
@@ -1015,6 +1015,12 @@ namespace hookflash
           ZS_LOG_DEBUG(log("waiting for peer files request to complete"))
           return false;
         }
+        
+        if ((mPeerFiles) &&
+            (!mRegeneratePeerFiles)) {
+          ZS_LOG_DEBUG(log("already have peer files"))
+          return true;
+        }
 
         if (!mRegeneratePeerFiles) {
           // check to see if peer files are already associated to identity
@@ -1146,7 +1152,7 @@ namespace hookflash
         if (mLoginIdentity) {
           mAssociatedIdentities[mLoginIdentity->forPeerContact().getID()] = mLoginIdentity;
 
-          mLoginIdentity.reset();
+          
 
           PeerContactIdentityAssociateRequestPtr request = PeerContactIdentityAssociateRequest::create();
           request->domain(mBootstrappedNetwork->forServices().getDomain());
@@ -1154,6 +1160,16 @@ namespace hookflash
           request->contactAccessToken(mContactAccessToken);
           request->contactAccessSecret(mContactAccessSecret);
           request->peerFiles(mPeerFiles);
+          
+          IdentityInfo identityInfo = mLoginIdentity->forPeerContact().getIdentityInfo();
+          identityInfo.mDisposition = IdentityInfo::Disposition_Update;
+          IdentityInfoList identities;
+          identities.push_back(identityInfo);
+          request->identities(identities);
+          
+          
+          mLoginIdentity.reset();          
+          
 
           mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
           mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-identity-associate", request);
@@ -1221,7 +1237,7 @@ namespace hookflash
         request->contactAccessSecret(mContactAccessSecret);
 
         mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerContactIdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-associate", request);
+        mBootstrappedNetwork->forServices().sendServiceMessage("peer-contact", "peer-contact-identity-associate", request);
 
         ZS_LOG_DEBUG(log("sending peer associate request"))
         return false;

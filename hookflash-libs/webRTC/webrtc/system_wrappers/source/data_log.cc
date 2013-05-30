@@ -288,7 +288,7 @@ std::string DataLog::Combine(const std::string& table_name, int table_id) {
   ss >> number_suffix;
   combined_id += number_suffix;
   std::transform(combined_id.begin(), combined_id.end(), combined_id.begin(),
-                 ::tolower);
+                 std::tolower);
   return combined_id;
 }
 

@@ -18,7 +18,7 @@
 #if defined(_WIN32)
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <fcntl.h>
@@ -33,7 +33,7 @@
 #ifndef WEBRTC_IOS
 #include <net/if_arp.h>
 #endif
-#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 
 #if defined(WEBRTC_MAC)
 #include <ifaddrs.h>
@@ -51,7 +51,7 @@
 #include "webrtc/system_wrappers/interface/trace.h"
 #include "webrtc/test/channel_transport/udp_socket_manager_wrapper.h"
 
-#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 #define GetLastError() errno
 
 #define IFRSIZE ((int)(size * sizeof (struct ifreq)))
@@ -61,7 +61,7 @@
    (int)(nlh)->nlmsg_len >= (int)sizeof(struct nlmsghdr) &&             \
    (int)(nlh)->nlmsg_len <= (len))
 
-#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#endif // defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
 
 namespace webrtc {
 namespace test {
@@ -2330,7 +2330,7 @@ int32_t UdpTransport::InetPresentationToNumeric(int32_t af,
                                                 const char* src,
                                                 void* dst)
 {
-#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+#if defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
     const int32_t result = inet_pton(af, src, dst);
     return result > 0 ? 0 : -1;
 
@@ -2479,7 +2479,7 @@ int32_t UdpTransport::LocalHostAddressIPV6(char n_localIP[16])
     }
     freeifaddrs(ptrIfAddrsStart);
     return -1;
-#elif defined(WEBRTC_ANDROID)
+#elif defined(WEBRTC_ANDROID) || defined(WEBRTC_QNX)
     return -1;
 #else // WEBRTC_LINUX
     struct
@@ -2783,7 +2783,7 @@ int32_t UdpTransport::IPAddress(const SocketAddress& address,
     sourcePort = htons(source_port);
     return 0;
 
- #elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC)
+ #elif defined(WEBRTC_LINUX) || defined(WEBRTC_MAC) || defined(WEBRTC_QNX)
     int32_t ipFamily = address._sockaddr_storage.sin_family;
     const void* ptrNumericIP = NULL;
 

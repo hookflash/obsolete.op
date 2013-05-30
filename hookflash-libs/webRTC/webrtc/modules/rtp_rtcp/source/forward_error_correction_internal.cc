@@ -48,7 +48,7 @@ void FitSubMask(int numMaskBytes,
 {
     if (numMaskBytes == numSubMaskBytes)
     {
-        memcpy(packetMask, subMask, numRows * numSubMaskBytes);
+    	std::memcpy(packetMask, subMask, numRows * numSubMaskBytes);
     }
     else
     {

@@ -42,10 +42,10 @@ void RandomVector::Reset() {
   seed_increment_ = 1;
 }
 
-void RandomVector::Generate(size_t length, int16_t* output) {
-  for (size_t i = 0; i < length; i++) {
+void RandomVector::Generate(std::size_t length, int16_t* output) {
+  for (std::size_t i = 0; i < length; i++) {
     seed_ += seed_increment_;
-    size_t position = seed_ & (kRandomTableSize - 1);
+    std::size_t position = seed_ & (kRandomTableSize - 1);
     output[i] = kRandomTable[position];
   }
 }

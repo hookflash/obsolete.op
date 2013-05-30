@@ -42,7 +42,8 @@ namespace zsLib
     typedef boost::weak_ptr<MessageQueueThreadUsingBlackberryChannels> MessageQueueThreadUsingBlackberryChannelsWeakPtr;
 
     class MessageQueueThreadUsingBlackberryChannels : public MessageQueueThread,
-                                                                    public IMessageQueueNotify
+                                                      public IMessageQueueNotify,
+                                                      public IQtCrossThreadNotifierDelegate
     {
       friend class MessageQueueThreadUsingBlackberryChannelsWrapper;
 
@@ -62,9 +63,6 @@ namespace zsLib
 
       static MessageQueueThreadUsingBlackberryChannelsPtr singleton();
 
-      // The Blackberry specific static. The arg is a pointer to this. This static then calls the
-      static int channelExec(void* thisPtr);
-
       // IMessageQueue
       virtual void post(IMessageQueueMessagePtr message);
 
@@ -76,14 +74,17 @@ namespace zsLib
       // IMessageQueueThread
       virtual void waitForShutdown();
 
+      // IQtCrossThreadNotifierDelegate
+      virtual void processMessageFromThread();
+
     public:
       virtual void process();
 
     protected:
       mutable Lock mLock;
 
+      boost::shared_ptr<IQtCrossThreadNotifier> mCrossThreadNotifier;
       MessageQueuePtr mQueue;
-      int mChannelId;
     };
   }
 }

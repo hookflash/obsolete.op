@@ -1,227 +1,0 @@
-Tpaced_sender
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a normal armv7
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal "armv7 armv7s"
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/common_types.h
-c000000005165F28300000000000042FA
-t1365635715
-s17146
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/interface/module.h
-c000000005165C64000000000000007B9
-t1365624384
-s1977
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/modules/pacing/include/paced_sender.h
-c000000005165C6400000000000000F9B
-t1365624384
-s3995
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/critical_section_wrapper.h
-c000000005165C64300000000000006C7
-t1365624387
-s1735
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/scoped_ptr.h
-c000000005165C6430000000000001476
-t1365624387
-s5238
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/system_wrappers/interface/tick_util.h
-c000000005165C643000000000000283D
-t1365624387
-s10301
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a
-t1365710653
-s145072
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a
-t1365710586
-s72512
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.LinkFileList
-c00000000516716F600000000000000A9
-t1365710582
-s169
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o
-t1365710586
-s65596
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a
-t1365710589
-s72512
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.LinkFileList
-c00000000516716F600000000000000AA
-t1365710582
-s170
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o
-t1365710587
-s65596
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../typedefs.h
-c000000005165C6440000000000000DD4
-t1365624388
-s3540
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc
-c000000005165C640000000000000252F
-t1365624384
-s9519
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/common_types.h
-c000000005165706B000000000000422F
-t1365602411
-s16943
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/interface/module.h
-c000000005165706800000000000007B9
-t1365602408
-s1977
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/modules/pacing/include/paced_sender.h
-c00000000516570680000000000000F9B
-t1365602408
-s3995
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/critical_section_wrapper.h
-c000000005165704F00000000000006C7
-t1365602383
-s1735
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/scoped_ptr.h
-c000000005165704E0000000000001476
-t1365602382
-s5238
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/system_wrappers/interface/tick_util.h
-c000000005165704E000000000000283D
-t1365602382
-s10301
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a
-t1365610003
-s72464
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.LinkFileList
-c0000000051658E11000000000000009D
-t1365610001
-s157
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o
-t1365610002
-s65548
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../typedefs.h
-c000000005165706B0000000000000DD4
-t1365602411
-s3540
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc
-c0000000051657068000000000000252F
-t1365602408
-s9519
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesc0cfbc056818b741^1422d0056818b741^---0#1#0#--18"Check dependencies36"17B17C5A-6CCA-46F1-9493-BA59CBAE15B9-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387403384.899942
-e387403386.720182
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc8cbee6784e17b741^1c98b87a4e17b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc0000000000000000^3383"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o pacing/paced_sender.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ipacing/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o36"47964BA7-6B1E-41E1-AA6C-74BBE19AEFBC-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302802.311060
-e387302802.926262
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection86"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc7ff64f92c515b741^da39ed92c515b741^---0#0#0#-19%DVTDocumentLocation2@94"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc0000000000000000^3275"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o pacing/paced_sender.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ipacing/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/pacing/paced_sender.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.o36"1767D608-3866-41C8-AABD-A0B83D378CDD-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387403386.028474
-e387403387.819492
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc
-xnormal
-xarmv7s
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection98"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc8ca2077a4e17b741^87dfd17b4e17b741^---0#0#0#-19%DVTDocumentLocation2@106"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc0000000000000000^3390"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o pacing/paced_sender.cc normal armv7s c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7s -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Ipacing/include -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/pacing/paced_sender.cc -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.o36"2647A2AA-94AF-47CD-959B-11ED271D3D20-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal "armv7 armv7s"
-s387403453.576323
-e387403453.637522
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection141"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a352a94bd4e17b741^0f47a3bd4e17b741^---0#0#0#-19%DVTDocumentLocation2@133"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a0000000000000000^843"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a36"59BE0DF0-BABA-44F3-8FEB-017FBF06CE90-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a normal armv7
-s387403386.760919
-e387403386.783651
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection124"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a normal armv78a00c37a4e17b741^88bdc87a4e17b741^---0#0#0#--1135"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/libpaced_sender.a36"7062445F-8287-43E0-B726-CF4AA0FF58AF-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a normal armv7s
-s387403389.145909
-e387403389.183969
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection126"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a normal armv7s718f257d4e17b741^d9432f7d4e17b741^---0#0#0#--1140"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/paced_sender.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7s/libpaced_sender.a36"F5A96597-BC97-4A4D-8709-9A1E864E970D-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal armv7
-s387302803.603895
-e387302803.624096
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection70"Libtool ../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal armv718cd9a93c515b741^48c59f93c515b741^---0#0#0#--979"Libtool ../../xcodebuild/Debug-iphoneos/libpaced_sender.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/paced_sender.build/Objects-normal/armv7/paced_sender.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libpaced_sender.a36"D36DD6AA-FB4F-4BAD-A0C9-F4D733B9CF74-
-

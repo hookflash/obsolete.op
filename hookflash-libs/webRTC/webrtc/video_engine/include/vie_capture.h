@@ -35,6 +35,7 @@ struct CaptureCapability {
   VideoCodecType codecType;
   unsigned int expectedCaptureDelay;
   bool interlaced;
+  bool faceDetection;
   CaptureCapability() {
     width = 0;
     height = 0;
@@ -43,6 +44,7 @@ struct CaptureCapability {
     codecType = kVideoCodecUnknown;
     expectedCaptureDelay = 0;
     interlaced = false;
+    faceDetection = false;
   }
 };
 

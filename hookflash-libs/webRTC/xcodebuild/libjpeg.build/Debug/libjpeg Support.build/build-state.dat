@@ -1,25 +1,0 @@
-Tlibjpeg Support
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "Rule \"assemble\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh
-c0000000051671E5300000000000000D3
-t1365712467
-s211
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies9ca7de1f5717b741^45b7e61f5717b741^---0#1#0#--18"Check dependencies36"3B0CD0C7-79F7-4630-8344-9715359B03BA-
-
-CPhaseScriptExecution "Rule \"assemble\"" "/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"
-s387405599.875052
-e387405600.228073
-r1
-xPhaseScriptExecution
-xRule "assemble"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh
-omake: Nothing to be done for `all'.
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection41"Run custom shell script 'Rule "assemble"'fe63e11f5717b741^a5823a205717b741^-36"make: Nothing to be done for `all'.1(21%IDEActivityLogMessage2@36"make: Nothing to be done for `all'.-387405600#0#36#-0#-----0#0#0#--417"PhaseScriptExecution "Rule \"assemble\"" "../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo    /bin/sh -c "\"/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libjpeg_turbo/../../xcodebuild/libjpeg.build/Debug/libjpeg Support.build/Script-35BBE5B204A6B831544F965F.sh\""36"93BE7319-E0E7-49C7-A0FD-D3F3D042E2E0-
-

@@ -21,6 +21,10 @@
 #include "webrtc/modules/audio_processing/include/audio_processing.h"
 #include "webrtc/system_wrappers/interface/logging.h"
 
+#ifdef WEBRTC_QNX
+#define QNX
+#endif
+
 // ----------------------------------------------------------------------------
 //  Enumerators
 // ----------------------------------------------------------------------------
@@ -63,13 +67,13 @@ enum { kVoiceEngineVersionMaxMessageSize = 1024 };
 // Audio processing
 const NoiseSuppression::Level kDefaultNsMode = NoiseSuppression::kModerate;
 const GainControl::Mode kDefaultAgcMode =
-#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS)
+#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS) || defined(WEBRTC_QNX)
   GainControl::kAdaptiveDigital;
 #else
   GainControl::kAdaptiveAnalog;
 #endif
 const bool kDefaultAgcState =
-#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS)
+#if defined(WEBRTC_ANDROID) || defined(WEBRTC_IOS) || defined(WEBRTC_QNX)
   false;
 #else
   true;
@@ -253,7 +257,7 @@ inline int VoEChannelId(const int moduleId)
 
 // *** LINUX ***
 
-#ifdef WEBRTC_LINUX
+#if defined(WEBRTC_LINUX) || defined(WEBRTC_QNX)
 
 #include <pthread.h>
 #include <sys/types.h>

@@ -287,11 +287,18 @@ namespace hookflash
         }
 
       timed_out:
-        ZS_LOG_WARNING(Detail, log("request timed out") + ", on try number=" + Stringize<ULONG>(mTryNumber).string() + ", timeout duration=" + Stringize<Duration::tick_type>(totalTime.total_milliseconds()).string())
-        mSTUNRequest->log(Log::Trace, log("timed-out"));
-        try {
-          mDelegate->onSTUNRequesterTimedOut(mThisWeak.lock());
-        } catch(ISTUNDiscoveryDelegateProxy::Exceptions::DelegateGone &) {
+        {
+          AutoRecursiveLock lock(mLock);
+          ZS_LOG_WARNING(Detail, log("request timed out") + ", on try number=" + Stringize<ULONG>(mTryNumber).string() + ", timeout duration=" + Stringize<Duration::tick_type>(totalTime.total_milliseconds()).string())
+          if (mSTUNRequest) {
+            mSTUNRequest->log(Log::Trace, log("timed-out"));
+          }
+          try {
+            if (mDelegate) {
+              mDelegate->onSTUNRequesterTimedOut(mThisWeak.lock());
+            }
+          } catch(ISTUNDiscoveryDelegateProxy::Exceptions::DelegateGone &) {
+          }
         }
 
         internalCancel();

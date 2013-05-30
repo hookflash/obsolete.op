@@ -44,6 +44,9 @@
 #elif defined(WEBRTC_MAC)
     #include "audio_device_utility_mac.h"
     #include "audio_device_mac.h"
+#elif defined(WEBRTC_QNX)
+    #include "audio_device_utility_bb.h"
+    #include "audio_device_bb.h"
 #endif
 #include "audio_device_dummy.h"
 #include "audio_device_utility_dummy.h"
@@ -168,6 +171,9 @@ int32_t AudioDeviceModuleImpl::CheckPlatform()
 #elif defined(WEBRTC_MAC)
     platform = kPlatformMac;
     WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "current platform is MAC");
+#elif defined(WEBRTC_QNX)
+    platform = kPlatformBlackberry;
+    WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "current platform is QNX");
 #endif
 
     if (platform == kPlatformNotSupported)
@@ -375,6 +381,22 @@ int32_t AudioDeviceModuleImpl::CreatePlatformSpecificObjects()
     }
 #endif  // WEBRTC_MAC
 
+    // Create the *BlackBerry* implementation of the Audio Device
+    //
+#if defined(WEBRTC_QNX)
+    if (audioLayer == kPlatformDefaultAudio)
+    {
+        // Create *iPhone Audio* implementation
+        ptrAudioDevice = new AudioDeviceBB(Id());
+        WEBRTC_TRACE(kTraceInfo, kTraceAudioDevice, _id, "BlackBerry Audio APIs will be utilized");
+    }
+
+    if (ptrAudioDevice != NULL)
+    {
+        // Create the BlackBerry implementation of the Device Utility.
+        ptrAudioDeviceUtility = new AudioDeviceUtilityBB(Id());
+    }
+#endif   // #if defined(WEBRTC_QNX)
     // Create the *Dummy* implementation of the Audio Device
     // Available for all platforms
     //
@@ -516,6 +538,20 @@ int32_t AudioDeviceModuleImpl::Process()
             _ptrCbAudioDeviceObserver->OnErrorIsReported(AudioDeviceObserver::kPlayoutError);
         }
         _ptrAudioDevice->ClearPlayoutError();
+    }
+  
+    if (_ptrAudioDevice->PlayoutRouteChanged())
+    {
+        CriticalSectionScoped lock(&_critSectEventCb);
+        if (_ptrCbAudioDeviceObserver)
+        {
+          OutputAudioRoute outputRoute;
+          if (_ptrAudioDevice->GetOutputAudioRoute(outputRoute) != -1)
+          {
+            _ptrCbAudioDeviceObserver->OnOutputAudioRouteChanged(outputRoute);
+          }
+        }
+        _ptrAudioDevice->ClearPlayoutRouteChanged();
     }
 
     // kRecordingWarning
@@ -2014,12 +2050,16 @@ int32_t AudioDeviceModuleImpl::GetLoudspeakerStatus(bool* enabled) const
 
     return 0;
 }
+  
+// ----------------------------------------------------------------------------
+//  GetOutputAudioRoute
+// ----------------------------------------------------------------------------
 
 int32_t AudioDeviceModuleImpl::GetOutputAudioRoute(OutputAudioRoute* route) const
 {
     CHECK_INITIALIZED();
-        
-    if (_ptrAudioDevice->GetOutputAudioRoute(route) != 0)
+  
+    if (_ptrAudioDevice->GetOutputAudioRoute(*route) != 0)
     {
         return -1;
     }

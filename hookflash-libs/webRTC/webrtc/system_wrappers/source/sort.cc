@@ -231,10 +231,10 @@ inline int32_t TeardownKeySort(void* data,
   }
 
   for (uint32_t i = 0; i < num_of_elements; i++) {
-    memcpy(ptr_data_sorted + i * size_of_element, ptr_data +
+	  std::memcpy(ptr_data_sorted + i * size_of_element, ptr_data +
            ptr_sort_key[i].index_ * size_of_element, size_of_element);
   }
-  memcpy(ptr_data, ptr_data_sorted, num_of_elements * size_of_element);
+  std::memcpy(ptr_data, ptr_data_sorted, num_of_elements * size_of_element);
   delete[] ptr_sort_key;
   delete[] ptr_data_sorted;
   return 0;

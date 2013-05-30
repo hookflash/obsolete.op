@@ -1,256 +1,0 @@
-TCNG
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a normal armv7
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a normal "armv7 armv7s"
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../webrtc/common_audio/signal_processing/include/spl_inl.h
-c000000005165C63A0000000000000EC9
-t1365624378
-s3785
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a
-t1365710422
-s38768
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/CNG.LinkFileList
-c0000000051671652000000000000013E
-t1365710418
-s318
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o
-t1365624398
-s3444
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a
-t1365710421
-s19336
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o
-t1365624398
-s15228
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/CNG.LinkFileList
-c00000000516716520000000000000140
-t1365710418
-s320
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o
-t1365710422
-s3480
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a
-t1365710422
-s19384
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o
-t1365710421
-s15248
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../common_audio/signal_processing/include/signal_processing_library.h
-c000000005165C63A000000000000FE3F
-t1365624378
-s65087
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../typedefs.h
-c000000005165C6440000000000000DD4
-t1365624388
-s3540
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-c000000005165C63B00000000000004E7
-t1365624379
-s1255
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.h
-c000000005165C63B00000000000002F7
-t1365624379
-s759
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/include/webrtc_cng.h
-c000000005165C63B00000000000014EC
-t1365624379
-s5356
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-c000000005165C63B0000000000004AD2
-t1365624379
-s19154
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../webrtc/common_audio/signal_processing/include/spl_inl.h
-c000000005165706A0000000000000EC9
-t1365602410
-s3785
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a
-t1365609956
-s19336
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/CNG.LinkFileList
-c0000000051658DE20000000000000126
-t1365609954
-s294
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o
-t1365609956
-s3444
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o
-t1365609956
-s15228
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../common_audio/signal_processing/include/signal_processing_library.h
-c000000005165706A000000000000FE3F
-t1365602410
-s65087
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../typedefs.h
-c000000005165706B0000000000000DD4
-t1365602411
-s3540
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-c000000005165705500000000000004E7
-t1365602389
-s1255
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.h
-c000000005165705500000000000002F7
-t1365602389
-s759
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/include/webrtc_cng.h
-c000000005165705500000000000014EC
-t1365602389
-s5356
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-c00000000516570550000000000004AD2
-t1365602389
-s19154
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies4f574fd76718b741^bec157d76718b741^---0#1#0#--18"Check dependencies36"C2A22955-94B6-46EC-86A5-6D4BBC24C5C8-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-r0
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302756.136970
-e387302756.244294
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection102"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.cfa5e2364c515b741^622c3f64c515b741^---0#0#0#-19%DVTDocumentLocation2@110"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c0000000000000000^3111"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o audio_coding/codecs/cng/cng_helpfuns.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/cng_helpfuns.o36"422BD5E1-8118-44CC-B176-E677ABAFAFB9-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-r0
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387302755.777485
-e387302756.134864
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection100"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c745ec763c515b741^919a2264c515b741^---0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c0000000000000000^3099"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o audio_coding/codecs/cng/webrtc_cng.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/webrtc_cng.o36"7651900D-B07F-4B0B-9706-894ECA414290-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387403221.957823
-e387403222.197655
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c95b509d64d17b741^12853ad64d17b741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c0000000000000000^3226"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o audio_coding/codecs/cng/cng_helpfuns.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/cng_helpfuns.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/cng_helpfuns.o36"631B88F1-C467-4789-90CC-44AF7B0DE5CA-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387403221.275931
-e387403221.875996
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection112"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c8cf446d54d17b741^8d5fe0d54d17b741^---0#0#0#-19%DVTDocumentLocation2@120"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c0000000000000000^3214"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o audio_coding/codecs/cng/webrtc_cng.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_coding/codecs/cng/include -I../common_audio/signal_processing/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/cng/webrtc_cng.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/webrtc_cng.o36"619041CB-4E4E-4A10-8890-268A6EAC70BE-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a normal "armv7 armv7s"
-s387403222.275850
-e387403222.304400
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection132"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a8ecd46d64d17b741^2cf04dd64d17b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a0000000000000000^789"CreateUniversalBinary ../../xcodebuild/Debug-iphoneos/libCNG.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a36"D1DEF4B5-9DC6-4388-99DE-38362093F022-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a normal armv7
-s387403221.908089
-e387403221.946094
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection106"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a normal armv779b1e8d54d17b741^0b25f3d54d17b741^---0#0#0#--1081"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/CNG.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/libCNG.a36"DE530433-E637-4987-89B8-3B870B6AEFEF-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a normal armv7s
-s387403222.229983
-e387403222.268253
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a normal armv7sf8193bd64d17b741^c9c944d64d17b741^---0#0#0#--1086"Libtool ../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/CNG.LinkFileList -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7s/libCNG.a36"DE700531-92A2-4A85-9C51-63AD20E04D5D-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a normal armv7
-s387302756.251406
-e387302756.286693
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection61"Libtool ../../xcodebuild/Debug-iphoneos/libCNG.a normal armv7bd8e4064c515b741^dfa44964c515b741^---0#0#0#--943"Libtool ../../xcodebuild/Debug-iphoneos/libCNG.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/CNG.build/Objects-normal/armv7/CNG.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libCNG.a36"AE9DCAA0-F2DD-4C3A-B9B8-57106DEEDDFE-
-

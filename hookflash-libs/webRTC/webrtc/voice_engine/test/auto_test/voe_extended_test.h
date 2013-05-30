@@ -345,7 +345,10 @@ class AudioDeviceModuleImpl : public AudioDeviceModule {
   virtual int32_t GetLoudspeakerStatus(bool* enabled) const {
     return -1;
   }
-
+  virtual int32_t GetOutputAudioRoute(OutputAudioRoute* route) const {
+    return -1;
+  }
+  
  protected:
   AudioDeviceModuleImpl();
   ~AudioDeviceModuleImpl();
@@ -443,6 +446,7 @@ class VoEExtendedTest : public VoiceEngineObserver,
  protected:
   // from VoiceEngineObserver
   void CallbackOnError(const int errCode, const int channel);
+  void CallbackOnOutputAudioRouteChange(const OutputAudioRoute route) {}
   void CallbackOnTrace(const TraceLevel level, const char* message,
                        const int length);
 

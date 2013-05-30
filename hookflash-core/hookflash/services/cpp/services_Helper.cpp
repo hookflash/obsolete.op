@@ -47,6 +47,12 @@
 #include <pthread.h>
 #endif //ndef _WIN32
 
+#ifdef __QNX__
+#ifndef NDEBUG
+#include <QDebug>
+#endif //ndef NDEBUG
+#endif //__QNX__
+
 #include <boost/shared_array.hpp>
 
 namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
@@ -258,7 +264,8 @@ namespace hookflash
                                   CSTR inMessage,
                                   CSTR inFunction,
                                   CSTR inFilePath,
-                                  ULONG inLineNumber
+                                  ULONG inLineNumber,
+                                  bool eol = true
                                   )
       {
         const char *posBackslash = strrchr(inFilePath, '\\');
@@ -310,7 +317,7 @@ namespace hookflash
                       + HOOKFLASH_SERVICES_SEQUENCE_COLOUR_LINENUMBER + "(" + Stringize<ULONG>(inLineNumber).string() + ")"
                       + HOOKFLASH_SERVICES_SEQUENCE_COLOUR_RESET + " "
                       + HOOKFLASH_SERVICES_SEQUENCE_COLOUR_FUNCTION + "[" + inFunction + "]"
-                      + HOOKFLASH_SERVICES_SEQUENCE_COLOUR_RESET + "\n";
+                      + HOOKFLASH_SERVICES_SEQUENCE_COLOUR_RESET + (eol ? "\n" : "");
 
         return result;
       }
@@ -323,7 +330,8 @@ namespace hookflash
                                CSTR inMessage,
                                CSTR inFunction,
                                CSTR inFilePath,
-                               ULONG inLineNumber
+                               ULONG inLineNumber,
+                               bool eol = true
                                )
       {
         const char *posBackslash = strrchr(inFilePath, '\\');
@@ -353,7 +361,7 @@ namespace hookflash
           case Log::Fatal:           severity = "F:"; break;
         }
 
-        String result = current + " " + severity + " <"  + currentThreadIDAsString() + "> " + inMessage + " " + "@" + fileName + "(" + Stringize<ULONG>(inLineNumber).string() + ")" + " " + "[" + inFunction + "]" + "\n";
+        String result = current + " " + severity + " <"  + currentThreadIDAsString() + "> " + inMessage + " " + "@" + fileName + "(" + Stringize<ULONG>(inLineNumber).string() + ")" + " " + "[" + inFunction + "]" + (eol ? "\n" : "");
         return result;
       }
 
@@ -365,7 +373,8 @@ namespace hookflash
                                     CSTR inMessage,
                                     CSTR inFunction,
                                     CSTR inFilePath,
-                                    ULONG inLineNumber
+                                    ULONG inLineNumber,
+                                    bool eol = true
                                     )
       {
         std::string current = to_simple_string(zsLib::now()).substr(12);
@@ -378,7 +387,7 @@ namespace hookflash
           case Log::Fatal:           severity = "F:"; break;
         }
 
-        String result = String(inFilePath) +  "(" + Stringize<ULONG>(inLineNumber).string() + ") " + severity + current + " : <" + currentThreadIDAsString() + "> " + inMessage + "\n";
+        String result = String(inFilePath) +  "(" + Stringize<ULONG>(inLineNumber).string() + ") " + severity + current + " : <" + currentThreadIDAsString() + "> " + inMessage + (eol ? "\n" : "");
         return result;
       }
 
@@ -704,14 +713,14 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark WindowsDebuggerLogger
+      #pragma mark DebuggerLogger
       #pragma mark
 
-      class WindowsDebuggerLogger;
-      typedef boost::shared_ptr<WindowsDebuggerLogger> WindowsDebuggerLoggerPtr;
-      typedef boost::weak_ptr<WindowsDebuggerLogger> WindowsDebuggerLoggerWeakPtr;
+      class DebuggerLogger;
+      typedef boost::shared_ptr<DebuggerLogger> DebuggerLoggerPtr;
+      typedef boost::weak_ptr<DebuggerLogger> DebuggerLoggerWeakPtr;
 
-      class WindowsDebuggerLogger : public ILogDelegate
+      class DebuggerLogger : public ILogDelegate
       {
         //---------------------------------------------------------------------
         void init()
@@ -722,23 +731,23 @@ namespace hookflash
 
       public:
         //---------------------------------------------------------------------
-        WindowsDebuggerLogger() {}
+        DebuggerLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
 
         //---------------------------------------------------------------------
-        static WindowsDebuggerLoggerPtr create()
+        static DebuggerLoggerPtr create(bool colorizeOutput)
         {
-          WindowsDebuggerLoggerPtr pThis(new WindowsDebuggerLogger());
+          DebuggerLoggerPtr pThis(new DebuggerLogger(colorizeOutput));
           pThis->mThisWeak = pThis;
           pThis->init();
           return pThis;
         }
 
         //---------------------------------------------------------------------
-        static WindowsDebuggerLoggerPtr singleton(bool reset = false)
+        static DebuggerLoggerPtr singleton(bool colorizeOutput, bool reset = false)
         {
-#ifdef _WIN32
+#if (defined(_WIN32)) || ((defined(__QNX__) && (!defined(NDEBUG))))
           AutoRecursiveLock lock(Helper::getGlobalLock());
-          static WindowsDebuggerLoggerPtr logger = (reset ? WindowsDebuggerLoggerPtr() : WindowsDebuggerLogger::create());
+          static DebuggerLoggerPtr logger = (reset ? DebuggerLoggerPtr() : DebuggerLogger::create(colorizeOutput));
           if ((reset) &&
               (logger)) {
             LogPtr log = Log::singleton();
@@ -747,17 +756,17 @@ namespace hookflash
           }
           if ((!reset) &&
               (!logger)) {
-            logger = WindowsDebuggerLogger::create();
+            logger = DebuggerLogger::create(colorizeOutput);
           }
           return logger;
 #else
-          return WindowsDebuggerLoggerPtr();
+          return DebuggerLoggerPtr();
 #endif //_WIN32
         }
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark WindowsDebuggerLogger => ILogDelegate
+        #pragma mark DebuggerLogger => ILogDelegate
         #pragma mark
 
         //---------------------------------------------------------------------
@@ -777,6 +786,16 @@ namespace hookflash
                          ULONG inLineNumber
                          )
         {
+#ifdef __QNX__
+#ifndef NDEBUG
+          String output;
+          if (mColorizeOutput)
+            output = toColorString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber, false);
+          else
+            output = toBWString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber, false);
+          qDebug() << output.c_str();
+#endif //ndef NDEBUG
+#endif //__QNX__
 #ifdef _WIN32
           String output = toWindowsString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
           OutputDebugStringW(output.wstring().c_str());
@@ -786,10 +805,11 @@ namespace hookflash
       private:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark WindowsDebuggerLogger => (data)
+        #pragma mark DebuggerLogger => (data)
         #pragma mark
 
-        WindowsDebuggerLoggerWeakPtr mThisWeak;
+        DebuggerLoggerWeakPtr mThisWeak;
+        bool mColorizeOutput;
       };
 
       //-----------------------------------------------------------------------
@@ -864,7 +884,9 @@ namespace hookflash
           if (!mListenSocket) {
             mListenSocket = Socket::createTCP();
             try {
+#ifndef __QNX__
               mListenSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
             } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
             }
             mListenSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
@@ -1134,7 +1156,9 @@ namespace hookflash
               return;
 
             try {
+#ifndef __QNX__
               mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
             } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
             }
 
@@ -1340,7 +1364,9 @@ namespace hookflash
 
           mTelnetSocket = Socket::createTCP();
           try {
+#ifndef __QNX__
             mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
           } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
           }
           mTelnetSocket->setBlocking(false);
@@ -1492,6 +1518,17 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      String Helper::getDebugValue(const char *name, const String &value, bool &firstTime)
+      {
+        if (value.isEmpty()) return String();
+        if (firstTime) {
+          firstTime = false;
+          return String(name) + "=" + value;
+        }
+        return String(", ") + name + "=" + value;
+      }
+
+      //-----------------------------------------------------------------------
       String Helper::randomString(UINT lengthInChars)
       {
         static const char *randomCharArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -1604,9 +1641,9 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installWindowsDebuggerLogger()
+    void IHelper::installDebuggerLogger(bool colorizeOutput)
     {
-      internal::WindowsDebuggerLogger::singleton();
+      internal::DebuggerLogger::singleton(colorizeOutput);
     }
 
     //-------------------------------------------------------------------------
@@ -1634,9 +1671,9 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallWindowsDebuggerLogger()
+    void IHelper::uninstallDebuggerLogger()
     {
-      internal::WindowsDebuggerLogger::singleton(true);
+      internal::DebuggerLogger::singleton(false, true);
     }
 
     //-------------------------------------------------------------------------

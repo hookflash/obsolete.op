@@ -109,8 +109,8 @@ namespace hookflash
                                               );
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Install a logger to output to the windows debugger window.
-      static void installWindowsDebuggerLogger();
+      // PURPOSE: Install a logger to output to the debugger window.
+      static void installDebuggerLogger();
 
       //-----------------------------------------------------------------------
       // PURPOSE: Install a logger to monitor the functioning of the application

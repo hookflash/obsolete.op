@@ -60,6 +60,7 @@ namespace hookflash
     namespace message
     {
       using zsLib::DWORD;
+      using zsLib::QWORD;
       using zsLib::Stringize;
       using zsLib::Numeric;
 
@@ -157,10 +158,17 @@ namespace hookflash
         if (s.isEmpty()) return Time();
 
         try {
-          time_t epoch = Numeric<time_t>(s);
-          return zsLib::toTime(epoch);
+          time_t timestamp = Numeric<time_t>(s);
+          return zsLib::toTime(timestamp);
         } catch (Numeric<time_t>::ValueOutOfRange &) {
           ZS_LOG_WARNING(Detail, "unable to convert value to time_t, value=" + s)
+          try {
+            QWORD timestamp = Numeric<QWORD>(s);
+            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + Stringize<typeof(timestamp)>(timestamp).string())
+            return Time(boost::date_time::max_date_time);
+          } catch (Numeric<QWORD>::ValueOutOfRange &) {
+            ZS_LOG_WARNING(Detail, "even QWORD failed to convert value to max_date_time, value=" + s)
+          }
         }
         return Time();
       }
@@ -362,7 +370,7 @@ namespace hookflash
 
           ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
           candidateEl->adoptAsLastChild(ipEl);
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
+          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
 
           if (!candidate.mUsernameFrag.isEmpty())
           {
@@ -408,14 +416,14 @@ namespace hookflash
           ElementPtr locationEl = IMessageHelper::createElementWithID("location", location->forMessages().getLocationID());
           ElementPtr detailEl = IMessageHelper::createElement("details");
 
+          if (!locationInfo.mDeviceID.isEmpty()) {
+            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", locationInfo.mDeviceID));
+          }
+
           if (!locationInfo.mIPAddress.isAddressEmpty())
           {
             ElementPtr ipEl = IMessageHelper::createElementWithText("ip", locationInfo.mIPAddress.string(false));
             detailEl->adoptAsLastChild(ipEl);
-          }
-
-          if (!locationInfo.mDeviceID.isEmpty()) {
-            detailEl->adoptAsLastChild(IMessageHelper::createElementWithID("device", locationInfo.mDeviceID));
           }
 
           if (!locationInfo.mUserAgent.isEmpty())
@@ -480,7 +488,7 @@ namespace hookflash
           if (!identity.mAccessSecretProof.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", identity.mAccessSecretProof));
           }
-          if (Time() != identity.mAccessSecretExpires) {
+          if (Time() != identity.mAccessSecretProofExpires) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(identity.mAccessSecretProofExpires)));
           }
 
@@ -1156,7 +1164,7 @@ namespace hookflash
             Time expires;
             if (expiresEl) {
               String expiresStr = expiresEl->getText();
-              expires = Numeric<Time>(expiresStr);
+              expires = IMessageHelper::stringToTime(expiresStr);
             }
 
             String mimeType;
@@ -1274,7 +1282,6 @@ namespace hookflash
                                                                                         );
               outPublicationMetaData = metaData;
             }
-          } catch (Numeric<Time>::ValueOutOfRange &) {
           } catch (CheckFailed &) {
           }
         }
@@ -1440,9 +1447,12 @@ namespace hookflash
           if (pwd) ret.mPassword = IMessageHelper::getElementText(pwd);
           if (epwd) {
             if (encryptionKey) {
-              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(pwd))));
+              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(epwd))));
             } else {
               ret.mPassword = IMessageHelper::getElementText(epwd);
+              if (ret.mPassword.isEmpty()) {
+                ret.mPassword =IMessageHelper::getElementText(pwd);
+              }
             }
           }
           if (priority) {
@@ -1472,7 +1482,7 @@ namespace hookflash
 
           try
           {
-            ret.mPublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(IMessageHelper::getElementText(elem->findFirstChildElementChecked("key")->findFirstChildElementChecked("X509Data"))));
+            ret.mPublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(IMessageHelper::getElementText(elem->findFirstChildElementChecked("key")->findFirstChildElementChecked("x509Data"))));
             try {
               ret.mPriority = Numeric<WORD>(IMessageHelper::getElementText(elem->findFirstChildElementChecked("priority")));
             } catch(Numeric<WORD>::ValueOutOfRange &) {
@@ -1525,7 +1535,7 @@ namespace hookflash
         {
           IdentityInfo info;
 
-          if (elem) return info;
+          if (!elem) return info;
 
           info.mDisposition = IdentityInfo::toDisposition(elem->getAttributeValue("disposition"));
 
@@ -1541,6 +1551,7 @@ namespace hookflash
           info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
           info.mProvider = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("provider"));
 
+          info.mContactUserID = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactUserID"));
           info.mContact = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contact"));
           info.mContactFindSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("contactFindSecret"));
           info.mPrivatePeerFileSalt = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("privatePeerFileSalt"));

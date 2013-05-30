@@ -1,127 +1,0 @@
-Tgenversion
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion normal i386
-cPhaseScriptExecution "Postbuild \"Change Mach-O Flags\"" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh
-cPhaseScriptExecution "Postbuild \"Strip If Needed\"" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c000000005130312F00000000000000AA
-t1362112815
-s170
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion
-t1365712183
-s9416
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.LinkFileList
-c0000000051682CE8000000000000009A
-t1365781736
-s154
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.LinkFileList
-c0000000051671D34000000000000009C
-t1365712180
-s156
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.o
-t1365712182
-s6200
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh
-c0000000051671D340000000000000038
-t1365712180
-s56
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh
-c0000000051671D340000000000000049
-t1365712180
-s73
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/config/mac/config.h
-c000000005165C62C0000000000001214
-t1365624364
-s4628
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c
-c000000005165C6300000000000000B2B
-t1365624368
-s2859
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies04e730686418b741^0e13bd686418b741^---0#1#0#--18"Check dependencies36"8BFCD8B7-0C88-4D28-AF69-814326D6393C-
-
-CCompileC ../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler
-s387474537.382868
-e387474537.849353
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c
-xnormal
-xi386
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection132"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.cafb163696418b741^5e650d6a6418b741^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c0000000000000000^3592"CompileC ../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o source/patched-yasm/modules/preprocs/nasm/genversion.c normal i386 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fstrict-aliasing -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/DerivedSources/i386 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.o36"3C90A346-0866-4203-A2C9-A334A91C8A1A-
-
-CCompileC ../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler
-s387404981.941712
-e387404982.251818
-r1
-xCompileC
-x../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c
-xnormal
-xx86_64
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection132"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c0a69f1b55417b741^3ba840b65417b741^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c0000000000000000^3606"CompileC ../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.o source/patched-yasm/modules/preprocs/nasm/genversion.c normal x86_64 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv LANG en_US.US-ASCII    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -x c -arch x86_64 -fmessage-length=0 -std=c99 -Wno-trigraphs -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wnewline-eof -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_PEPPER_THREADING -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_HIDPI=1 -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_TASK_MANAGER=1 -DENABLE_EXTENSIONS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PLUGINS=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_AUTOMATION=1 -DENABLE_GOOGLE_NOW=1 -DENABLE_LANGUAGE_DETECTION=1 -DENABLE_PRINTING=1 -DENABLE_CAPTIVE_PORTAL_DETECTION=1 -DENABLE_APP_LIST=1 -DENABLE_MANAGED_USERS=1 -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fstrict-aliasing -Wdeprecated-declarations -mmacosx-version-min=10.6 -g -fvisibility=hidden -Wno-sign-conversion -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/include -Isource/config/mac -Isource/patched-yasm -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/DerivedSources/x86_64 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/DerivedSources -Wendif-labels -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-c++11-narrowing -Wno-reserved-user-defined-literal -Wno-char-subscripts -Wno-unused-function -Wno-covered-switch-default -Wno-undefined-internal -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -Xclang -load -Xclang /Users/johnny/Documents/IDG/webrtc/trunk/tools/clang/scripts/../../../third_party/llvm-build/Release+Asserts/lib/libFindBadConstructs.dylib -Xclang -add-plugin -Xclang find-bad-constructs -Xclang -plugin-arg-find-bad-constructs -Xclang skip-virtuals-in-implementations -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/source/patched-yasm/modules/preprocs/nasm/genversion.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.o36"132ED042-FD2C-4F5D-8A13-7AB5D982FA7F-
-
-CLd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion normal i386
-s387474538.033674
-e387474538.191825
-r1
-xLd
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion
-xnormal
-xi386
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Link /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion6ede086a6418b741^2f6f326a6418b741^---0#0#0#--947"Ld ../../xcodebuild/Debug/genversion normal i386    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/i386/genversion.LinkFileList -mmacosx-version-min=10.6 -Wl,-search_paths_first -Wl,-pie -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion36"9D0752E1-6D59-417B-A78E-052D7592B1E1-
-
-CLd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion normal x86_64
-s387404982.372890
-e387404982.488842
-r1
-xLd
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection108"Link /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversionb5a85fb65417b741^73497db65417b741^---0#0#0#--953"Ld ../../xcodebuild/Debug/genversion normal x86_64    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../third_party/llvm-build/Release+Asserts/bin/clang -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Objects-normal/x86_64/genversion.LinkFileList -mmacosx-version-min=10.6 -Wl,-search_paths_first -Wl,-pie -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/Debug/genversion36"095DA28E-AA11-44D4-A5E0-F78B995B47A4-
-
-CPhaseScriptExecution "Postbuild \"Change Mach-O Flags\"" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh
-s387474538.211613
-e387474538.766598
-r1
-xPhaseScriptExecution
-xPostbuild "Change Mach-O Flags"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection57"Run custom shell script 'Postbuild "Change Mach-O Flags"'d7a4376a6418b741^fcfcf36a6418b741^---0#0#0#--391"PhaseScriptExecution "Postbuild \"Change Mach-O Flags\"" ../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-CF996DEE93549490A49AE90E.sh36"ADAA2D3E-CA65-4C2F-98CD-0011ECBAD603-
-
-CPhaseScriptExecution "Postbuild \"Strip If Needed\"" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh
-s387474538.775380
-e387474538.901208
-r1
-xPhaseScriptExecution
-xPostbuild "Strip If Needed"
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection53"Run custom shell script 'Postbuild "Strip If Needed"'14ecc76a6418b741^5018f46a6418b741^---0#0#0#--387"PhaseScriptExecution "Postbuild \"Strip If Needed\"" ../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm    /bin/sh -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/yasm/../../xcodebuild/yasm.build/Debug/genversion.build/Script-86C7D43B641DD7FA312A063A.sh36"A1962501-47B4-4ECC-A42C-62D2CEB4A146-
-

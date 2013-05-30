@@ -92,7 +92,8 @@ public:
     // AudioDeviceObserver
     virtual void OnErrorIsReported(const ErrorCode error);
     virtual void OnWarningIsReported(const WarningCode warning);
-
+    virtual void OnOutputAudioRouteChanged(const OutputAudioRoute audioRoute);
+  
 protected:
     VoEBaseImpl(voe::SharedData* shared);
     virtual ~VoEBaseImpl();

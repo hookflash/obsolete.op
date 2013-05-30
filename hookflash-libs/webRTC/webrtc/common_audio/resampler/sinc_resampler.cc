@@ -158,9 +158,9 @@ void SincResampler::Initialize() {
   // r5_ size correct and at the end of the buffer.
   assert(r5_ + block_size_ == r1_ + buffer_size_);
 
-  memset(kernel_storage_.get(), 0,
+  std::memset(kernel_storage_.get(), 0,
          sizeof(*kernel_storage_.get()) * kKernelStorageSize);
-  memset(input_buffer_.get(), 0, sizeof(*input_buffer_.get()) * buffer_size_);
+  std::memset(input_buffer_.get(), 0, sizeof(*input_buffer_.get()) * buffer_size_);
 }
 
 void SincResampler::InitializeKernel() {
@@ -193,12 +193,12 @@ void SincResampler::InitializeKernel() {
       // Compute the sinc with offset.
       double s =
           sinc_scale_factor * M_PI * (i - kKernelSize / 2 - subsample_offset);
-      double sinc = (!s ? 1.0 : sin(s) / s) * sinc_scale_factor;
+      double sinc = (!s ? 1.0 : std::sin(s) / s) * sinc_scale_factor;
 
       // Compute Blackman window, matching the offset of the sinc().
       double x = (i - subsample_offset) / kKernelSize;
-      double window = kA0 - kA1 * cos(2.0 * M_PI * x) + kA2
-          * cos(4.0 * M_PI * x);
+      double window = kA0 - kA1 * std::cos(2.0 * M_PI * x) + kA2
+          * std::cos(4.0 * M_PI * x);
 
       // Window the sinc() function and store at the correct offset.
       kernel_storage_.get()[i + offset_idx * kKernelSize] = sinc * window;
@@ -251,8 +251,8 @@ void SincResampler::Resample(float* destination, int frames) {
 
     // Step (3) Copy r3_ to r1_ and r4_ to r2_.
     // This wraps the last input frames back to the start of the buffer.
-    memcpy(r1_, r3_, sizeof(*input_buffer_.get()) * (kKernelSize / 2));
-    memcpy(r2_, r4_, sizeof(*input_buffer_.get()) * (kKernelSize / 2));
+    std::memcpy(r1_, r3_, sizeof(*input_buffer_.get()) * (kKernelSize / 2));
+    std::memcpy(r2_, r4_, sizeof(*input_buffer_.get()) * (kKernelSize / 2));
 
     // Step (4)
     // Refresh the buffer with more input.
@@ -267,7 +267,7 @@ int SincResampler::ChunkSize() {
 void SincResampler::Flush() {
   virtual_source_idx_ = 0;
   buffer_primed_ = false;
-  memset(input_buffer_.get(), 0, sizeof(*input_buffer_.get()) * buffer_size_);
+  std::memset(input_buffer_.get(), 0, sizeof(*input_buffer_.get()) * buffer_size_);
 }
 
 float SincResampler::Convolve(const float* input_ptr, const float* k1,

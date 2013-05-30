@@ -53,10 +53,12 @@
 
 #include <zsLib/Stringize.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
+
+#define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -191,7 +193,7 @@ namespace hookflash
           }
         }
 
-        if ((!IServiceIdentity::isValid(identityURI)) ||
+        if ((!IServiceIdentity::isValid(identityURI)) &&
             (!IServiceIdentity::isValidBase(identityURI))) {
           ZS_LOG_ERROR(Detail, String("identity URI specified is not valid, uri=") + identityURI)
           return ServiceIdentitySessionPtr();
@@ -433,6 +435,12 @@ namespace hookflash
         DocumentPtr result = mPendingMessagesToDeliver.front();
         mPendingMessagesToDeliver.pop_front();
 
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(result);
+          ZS_LOG_TRACE(log("sending inner frame message") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         if (mDelegate) {
           if (mPendingMessagesToDeliver.size() > 0) {
             try {
@@ -448,6 +456,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
       {
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(unparsedMessage);
+          ZS_LOG_TRACE(log("handling message from inner frame") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
         if (IMessageMonitor::handleMessageReceived(message)) {
           ZS_LOG_DEBUG(log("message handled via message monitor"))
@@ -725,16 +739,22 @@ namespace hookflash
         mLoginCompleteMonitor.reset();
 
         mIdentityInfo.mergeFrom(result->identityInfo());
-
+#define IDENTITY_ENCRYPTION_TEMPORARILY_REMOVED_MUST_UNCOMMENT_TO_FIX 1
+#define IDENTITY_ENCRYPTION_TEMPORARILY_REMOVED_MUST_UNCOMMENT_TO_FIX 2
         if (mIdentityInfo.mURIEncrypted.hasData())
         {
           // mURI
           // key=hmac(<client-login-secret>, "identity:" + <client-token> + ":" + <server-token>)
           // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+          //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret,IHelper::HashAlgorthm_SHA256), "identity:" + mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_SHA256);
+          
+          //BYTE* keyB = key->BytePtr();
+          //SecureByteBlockPtr key = IHelper::hmac(mClientLoginSecret, "identity:" + mClientToken + ":" + mServerToken);
+          //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-          String uri = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mURIEncrypted)));
+          //String uri = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mURIEncrypted)));
+          //????????????????????? 1111111
+          String uri = mIdentityInfo.mURIEncrypted;
 
           if (mIdentityInfo.mHash.hasData()) {
             // validate against the hash
@@ -760,10 +780,12 @@ namespace hookflash
           // mReloginAccessKey
           // key = hmac(<client-login-secret>, "relogin-access-key:" + <client-token> + ":" + <server-token>)
           // iv=hash(<client-token> + ":" + <server-token>)
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "relogin-access-key:" + mClientToken + ":" + mServerToken);
-          SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+          //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "relogin-access-key:" + mClientToken + ":" + mServerToken);
+          //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-          mIdentityInfo.mReloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mReloginAccessKeyEncrypted)));
+          //mIdentityInfo.mReloginAccessKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mReloginAccessKeyEncrypted)));
+          //??????????????????? 22222222
+          mIdentityInfo.mReloginAccessKey = mIdentityInfo.mReloginAccessKeyEncrypted;
         }
 
         // try to decrypt the identity secret
@@ -778,20 +800,24 @@ namespace hookflash
             // key=hmac(<client-login-secret>, "identity-secret-decryption-key:" + <client-token> + ":" + <server-token>)
             // iv=hash(<client-token> + ":" + <server-token>)
 
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity-secret-decryption-key:" + mClientToken + ":" + mServerToken);
-            SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
+            //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mClientLoginSecret), "identity-secret-decryption-key:" + mClientToken + ":" + mServerToken);
+            //SecureByteBlockPtr iv = IHelper::hash(mClientToken + ":" + mServerToken, IHelper::HashAlgorthm_MD5);
 
-            secretDecryptionKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretDecryptionKeyEncrypted)));
+            //secretDecryptionKey = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretDecryptionKeyEncrypted)));
+            //??????????????? 33333333
+            secretDecryptionKey = mIdentityInfo.mSecretDecryptionKeyEncrypted;
           }
 
           {
             // mSecret
             // key = hmac(<identity-secret-decryption-key>, "identity-secret:" + base64(<identity-secret-salt>))
             // iv=hash(base64(<identity-secret-salt>))
-            SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(secretDecryptionKey), "identity-secret:" + mIdentityInfo.mSecretSalt);
-            SecureByteBlockPtr iv = IHelper::hash("", IHelper::HashAlgorthm_MD5);
+            //SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(secretDecryptionKey), "identity-secret:" + mIdentityInfo.mSecretSalt);
+            //SecureByteBlockPtr iv = IHelper::hash("", IHelper::HashAlgorthm_MD5);
 
-            mIdentityInfo.mSecret = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretEncrypted)));
+            //mIdentityInfo.mSecret = IHelper::convertToString(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mSecretEncrypted)));
+            //?????????? 44444444
+            mIdentityInfo.mSecret = mIdentityInfo.mSecretEncrypted;
           }
         }
 
@@ -799,13 +825,17 @@ namespace hookflash
             (mIdentityInfo.mPrivatePeerFileSalt.hasData()) &&
             (mIdentityInfo.mSecret.hasData()))
         {
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
           // mPrivatePeerFileSecret
           // key=hmac(<identity-secret>, "private-peer-file-secret:" + base64(<private-peer-file-salt>))
           // iv=hash(base64(<private-peer-file-salt>))
-          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mSecret), "private-peer-file-secret:" + mIdentityInfo.mPrivatePeerFileSalt);
-          SecureByteBlockPtr iv = IHelper::hash(mIdentityInfo.mPrivatePeerFileSalt, IHelper::HashAlgorthm_MD5);
-
-          mPrivatePeerFileSecret = IHelper::makeBufferStringSafe(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mPrivatePeerFileSecretEncrypted)));
+//          SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mSecret), "private-peer-file-secret:" + mIdentityInfo.mPrivatePeerFileSalt);
+//          SecureByteBlockPtr iv = IHelper::hash(mIdentityInfo.mPrivatePeerFileSalt, IHelper::HashAlgorthm_MD5);
+//
+//          mPrivatePeerFileSecret = IHelper::makeBufferStringSafe(*IHelper::decrypt(*key, *iv, *IHelper::convertFromBase64(mIdentityInfo.mPrivatePeerFileSecretEncrypted)));
+          
+          mPrivatePeerFileSecret = IHelper::convertToBuffer(mIdentityInfo.mPrivatePeerFileSecretEncrypted);
         }
 
         // should no longer just have a base
@@ -916,10 +946,13 @@ namespace hookflash
                                                                       )
       {
         AutoRecursiveLock lock(getLock());
-        if (monitor != mLoginCompleteMonitor) {
+        if (monitor != mSignMonitor) {
           ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
           return false;
         }
+        
+        mSignMonitor->cancel();
+        mSignMonitor.reset();
 
         mSignedIdentityBundleEl = result->identityBundle();
         if (mSignedIdentityBundleEl) {
@@ -1236,7 +1269,7 @@ namespace hookflash
         request->identityInfo(mIdentityInfo);
         request->peerFiles(peerFiles);
 
-        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLoginCompleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mAssociateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAssociateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-associate", request);
         ZS_LOG_DEBUG(log("sending associate request"))
         return false;
@@ -1270,7 +1303,7 @@ namespace hookflash
               if ((Time() == created) ||
                   (Time() == expires) ||
                   (created > expires) ||
-                  (now < created)) {
+                  (now + Hours(HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS) < created)) {
                 ZS_LOG_WARNING(Detail, log("certificate has invalid date range") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
                 goto invalid_certificate;
               }
@@ -1419,10 +1452,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
-      if (!boost::regex_match(identityURI, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
-        if (!boost::regex_match(identityURI, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
+      if (!e.hasMatch(identityURI)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
+        if (!e2.hasMatch(identityURI)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
           return false;
         }
@@ -1438,10 +1471,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
-      if (!boost::regex_match(identityBase, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
-        if (!boost::regex_match(identityBase, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
+      if (!e.hasMatch(identityBase)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
+        if (!e2.hasMatch(identityBase)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity base URI is not valid, uri=") + identityBase)
           return false;
         }
@@ -1457,8 +1490,8 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+      if (!e.hasMatch(identityURI)) {
         return false;
       }
       return true;
@@ -1479,8 +1512,8 @@ namespace hookflash
 
       // scope: check legacy identity
       {
-        const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-        if (boost::regex_match(identityURI, e)) {
+        zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+        if (e.hasMatch(identityURI)) {
 
           // find second colon
           size_t startPos = strlen("identity:");
@@ -1496,8 +1529,8 @@ namespace hookflash
         }
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
+      if (!e.hasMatch(identityURI)) {
         ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
         return false;
       }

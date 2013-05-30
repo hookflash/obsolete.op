@@ -33,12 +33,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1629462562" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1527717069" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.853680518" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
@@ -64,7 +67,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -99,12 +102,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.683395551" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.183515717" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.pie.1116974873" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
@@ -133,7 +139,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -170,12 +176,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1294155890" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1216544111" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.168428582" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
@@ -202,7 +211,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -239,12 +248,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1884017725" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1906461415" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.681089129" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
@@ -271,7 +283,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -306,15 +318,18 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.169027959" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.390662661" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.819073916" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.819073916" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-march=i686"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.800881411" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -337,7 +352,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -373,12 +388,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1097733117" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1743179127" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1669947202" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -402,7 +420,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -438,12 +456,15 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/source/spreadsortlib"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/source/spreadsortlib&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.880464623" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1994887571" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="WEBRTC_QNX"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.35127436" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -467,7 +488,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="system_wrappers/source/condition_variable.cc|system_wrappers/source/logging_unittest.cc|system_wrappers/source/thread_unittest.cc|system_wrappers/source/unittest_utilities_unittest.cc|system_wrappers/source/thread_posix_unittest.cc|system_wrappers/source/stringize_macros_unittest.cc|system_wrappers/source/event_tracer_unittest.cc|system_wrappers/source/critical_section_unittest.cc|system_wrappers/source/cpu_features_android.c|system_wrappers/source/condition_variable_unittest.cc|system_wrappers/source/condition_variable_native_win.cc|system_wrappers/source/condition_variable_event_win.cc|system_wrappers/source/aligned_malloc_unittest.cc|system_wrappers/source/android|system_wrappers/source/cpu_features_arm.c|system_wrappers/source/cpu_no_op.cc|system_wrappers/source/data_log_no_op.cc|system_wrappers/source/trace_impl_no_op.cc|system_wrappers/source/map_no_stl.cc|system_wrappers/source/list_stl.cc|system_wrappers/test|system_wrappers/source/list_unittest.cc|system_wrappers/source/trace_win.cc|system_wrappers/source/trace_unittest.cc|system_wrappers/source/thread_win.cc|system_wrappers/source/rw_lock_win.cc|system_wrappers/source/map_unittest.cc|system_wrappers/source/event_win.cc|system_wrappers/source/data_log_unittest.cc|system_wrappers/source/data_log_unittest_disabled.cc|system_wrappers/source/data_log_helpers_unittest.cc|system_wrappers/source/data_log_c_helpers_unittest.c|system_wrappers/source/critical_section_win.cc|system_wrappers/source/cpu_wrapper_unittest.cc|system_wrappers/source/cpu_win.cc|system_wrappers/source/cpu_mac.cc|system_wrappers/source/condition_variable_win.cc|system_wrappers/source/atomic32_win.cc|system_wrappers/source/atomic32_mac.cc|source/rw_lock_win.cc|source/list_stl.cc|source/cpu_wrapper_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

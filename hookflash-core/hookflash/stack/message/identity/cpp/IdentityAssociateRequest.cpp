@@ -103,15 +103,19 @@ namespace hookflash
 
           info.mSecret = mIdentityInfo.mSecret;
           info.mSecretSalt = mIdentityInfo.mSecretSalt;
-
-          info.mPriority = mIdentityInfo.mPriority;
-          info.mWeight = mIdentityInfo.mWeight;
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 1
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 2
+          info.mPriority = 1;//mIdentityInfo.mPriority;
+          info.mWeight = 3;//mIdentityInfo.mWeight;
 
           if (info.mAccessSecret.hasData()) {
-            info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 3
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 4
+            //info.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(info.mAccessSecret), "identity-associate:" + info.mURI + ":" + clientNonce + ":" + expires + ":" + info.mAccessToken));
+            info.mAccessSecretProof = info.mAccessSecret;
             info.mAccessSecret.clear();
           }
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(expires);
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(expires);
 
           IPeerFilePrivatePtr peerFilePrivate;
           IPeerFilePublicPtr peerFilePublic;
@@ -136,10 +140,14 @@ namespace hookflash
             if ((info.mSecret.hasData()) &&
                 (info.mSecretSalt.hasData()) &&
                 (peerSalt)) {
-              SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(info.mSecret), "private-peer-file-secret:" + peerSaltAsBase64 + ":" + info.mSecretSalt);
-              SecureByteBlockPtr iv = IHelper::hash(peerSaltAsBase64 + ":" + info.mSecretSalt, IHelper::HashAlgorthm_MD5);
-
-              info.mPrivatePeerFileSecretEncrypted = IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, *peerFilePrivate->getPassword(false)));
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 5
+#define MUST_REMOVE_SECURITY_HACK_ONLY_FOR_BB10_RELEASE_PURPOSES 6
+//              SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKey(info.mSecret), "private-peer-file-secret:" + peerSaltAsBase64 + ":" + info.mSecretSalt);
+//              SecureByteBlockPtr iv = IHelper::hash(peerSaltAsBase64 + ":" + info.mSecretSalt, IHelper::HashAlgorthm_MD5);
+//
+//              info.mPrivatePeerFileSecretEncrypted = IHelper::convertToBase64(*IHelper::encrypt(*key, *iv, *peerFilePrivate->getPassword(false)));
+              
+              info.mPrivatePeerFileSecretEncrypted = IHelper::convertToString((SecureByteBlock)*peerFilePrivate->getPassword(false).get());
             }
           }
 
@@ -152,6 +160,9 @@ namespace hookflash
               ElementPtr identityAssociateProofBundleEl = Element::create("identityAssociateProofBundle");
               ElementPtr identityAssociateProofEl = Element::create("identityAssociateProof");
               identityAssociateProofBundleEl->adoptAsLastChild(identityAssociateProofEl);
+              
+              identityAssociateProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+              
               identityAssociateProofEl->adoptAsLastChild(identityEl);
 
               ElementPtr peerEl = peerFilePublic->saveToElement();

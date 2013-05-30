@@ -155,7 +155,7 @@ namespace hookflash
                                                   const DialogPtr &remoteDialog
                                                   )
       {
-        return createForIncomingCall(inConversationThread, callerContact, remoteDialog);
+        return Call::createForIncomingCall(inConversationThread, callerContact, remoteDialog);
       }
 
       //-----------------------------------------------------------------------
@@ -228,6 +228,12 @@ namespace hookflash
                                                            )
       {
         return Contact::createFromPeerFilePublic(account, peerFilePublic, previousStableUniqueID);
+      }
+
+      //-----------------------------------------------------------------------
+      ContactPtr IContactFactory::getForSelf(IAccountPtr account)
+      {
+        return Contact::getForSelf(account);
       }
 
       //-----------------------------------------------------------------------

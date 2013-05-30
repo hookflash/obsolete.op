@@ -1242,17 +1242,17 @@ int32_t FuncTestManager::TestAudioTransport()
         EXPECT_EQ(0, audioDevice->InitPlayout());
         EXPECT_EQ(0, audioDevice->PlayoutSampleRate(&samplesPerSec));
         if (samplesPerSec == 48000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile48.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile48.c_str()));
         } else if (samplesPerSec == 44100 || samplesPerSec == 44000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile44.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile44.c_str()));
         } else if (samplesPerSec == 16000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile16.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile16.c_str()));
         } else if (samplesPerSec == 8000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile8.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile8.c_str()));
         } else {
             TEST_LOG("\nERROR: Sample rate (%u) is not supported!\n \n",
                      samplesPerSec);
@@ -1289,8 +1289,8 @@ int32_t FuncTestManager::TestAudioTransport()
             EXPECT_EQ(0, audioDevice->SetMicrophoneVolume(maxVolume));
         }
 
-        EXPECT_TRUE(audioDevice->StartRawInputFileRecording(
-            GetFilename(RecordedMicrophoneFile)) == 0);
+//        EXPECT_TRUE(audioDevice->StartRawInputFileRecording(
+//            GetFilename(RecordedMicrophoneFile)) == 0);
         EXPECT_EQ(0, audioDevice->RegisterAudioCallback(_audioTransport));
 
         EXPECT_EQ(0, audioDevice->InitRecording());
@@ -1328,8 +1328,8 @@ int32_t FuncTestManager::TestAudioTransport()
         // ==========================
         // Play out the recorded file
 
-        _audioTransport->SetFilePlayout(true,
-                                        GetFilename(RecordedMicrophoneFile));
+//        _audioTransport->SetFilePlayout(true,
+//                                        GetFilename(RecordedMicrophoneFile));
 
         EXPECT_EQ(0, audioDevice->RegisterAudioCallback(_audioTransport));
         EXPECT_EQ(0, audioDevice->PlayoutIsAvailable(&available));
@@ -1475,17 +1475,17 @@ int32_t FuncTestManager::TestSpeakerVolume()
         EXPECT_EQ(0, audioDevice->InitPlayout());
         EXPECT_EQ(0, audioDevice->PlayoutSampleRate(&samplesPerSec));
         if (48000 == samplesPerSec) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile48.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile48.c_str()));
         } else if (44100 == samplesPerSec || samplesPerSec == 44000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile44.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile44.c_str()));
         } else if (samplesPerSec == 16000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile16.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile16.c_str()));
         } else if (samplesPerSec == 8000) {
-            _audioTransport->SetFilePlayout(
-                true, GetResource(_playoutFile8.c_str()));
+//            _audioTransport->SetFilePlayout(
+//                true, GetResource(_playoutFile8.c_str()));
         } else {
             TEST_LOG("\nERROR: Sample rate (%d) is not supported!\n \n",
                      samplesPerSec);
@@ -2703,7 +2703,7 @@ int32_t FuncTestManager::TestAdvancedMBAPI()
         " from the loudspeaker.\n\
 > Press any key to stop...\n \n");
     PAUSE(DEFAULT_PAUSE_TIME);
-    EXPECT_EQ(0, audioDevice->GetLoudspeakerStatus(loudspeakerOn));
+    EXPECT_EQ(0, audioDevice->GetLoudspeakerStatus(&loudspeakerOn));
     EXPECT_TRUE(loudspeakerOn);
 
     TEST_LOG("Set to not use speaker\n");
@@ -2712,7 +2712,7 @@ int32_t FuncTestManager::TestAdvancedMBAPI()
         " from the loudspeaker.\n\
 > Press any key to stop...\n \n");
     PAUSE(DEFAULT_PAUSE_TIME);
-    EXPECT_EQ(0, audioDevice->GetLoudspeakerStatus(loudspeakerOn));
+    EXPECT_EQ(0, audioDevice->GetLoudspeakerStatus(&loudspeakerOn));
     EXPECT_FALSE(loudspeakerOn);
 #endif
 

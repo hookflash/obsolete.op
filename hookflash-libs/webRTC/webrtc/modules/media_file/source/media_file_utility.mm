@@ -312,6 +312,7 @@ WebRtc_Word32 ModuleFileUtility::InitMP4Writing(
 {
     _writing = false;
     
+#ifdef WEBRTC_IOS
     delete _mp4OutFile;
     _mp4OutFile = new MP4File( );
     
@@ -319,15 +320,20 @@ WebRtc_Word32 ModuleFileUtility::InitMP4Writing(
     {
         return -1;
     }
-    
+#endif
+  
     if(!videoOnly)
     {
+#ifdef WEBRTC_IOS
         if(_mp4OutFile->CreateAudioStream(audioCodecInst.plfreq, audioCodecInst.rate) != 0)
         {
             return -1;
         }
+#endif
     }
+#ifdef WEBRTC_IOS
     _mp4OutFile->Create(filename, saveVideoToLibrary);
+#endif
     _writing = true;
     return 0;
 }
@@ -339,10 +345,14 @@ WebRtc_Word32 ModuleFileUtility::WriteMP4AudioData(
 {
     if( _mp4OutFile != 0)
     {
+#ifdef WEBRTC_IOS
         return _mp4OutFile->WriteAudio(
            reinterpret_cast<const uint8_t*>(buffer),
            bufferLengthInBytes,
            timeStamp);
+#else
+        return 0;
+#endif
     }
     else
     {
@@ -358,10 +368,14 @@ WebRtc_Word32 ModuleFileUtility::WriteMP4VideoData(
 {
     if( _mp4OutFile != 0)
     {
+#ifdef WEBRTC_IOS
         return _mp4OutFile->WriteVideo(
            reinterpret_cast<const uint8_t*>(buffer),
            bufferLengthInBytes,
            timeStamp);
+#else
+        return 0;
+#endif
     }
     else
     {
@@ -375,8 +389,10 @@ WebRtc_Word32 ModuleFileUtility::CloseMP4File( )
 {
     if( _writing && _mp4OutFile)
     {
+#ifdef WEBRTC_IOS
         delete _mp4OutFile;
         _mp4OutFile = 0;
+#endif
     }
     return 0;
 }

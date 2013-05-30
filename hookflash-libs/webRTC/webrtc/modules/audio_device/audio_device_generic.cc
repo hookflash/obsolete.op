@@ -43,7 +43,7 @@ int32_t AudioDeviceGeneric::GetLoudspeakerStatus(bool& enable) const
     return -1;
 }
 
-int32_t AudioDeviceGeneric::GetOutputAudioRoute(OutputAudioRoute* route) const
+int32_t AudioDeviceGeneric::GetOutputAudioRoute(OutputAudioRoute& route) const
 {
     WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
         "Get output audio route status not supported on this platform");
@@ -77,6 +77,19 @@ bool AudioDeviceGeneric::BuiltInAECIsEnabled() const
     WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
         "Windows AEC not supported on this platform");
     return false;
+}
+  
+bool AudioDeviceGeneric::PlayoutRouteChanged() const
+{
+    WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
+                 "Playout Route Changed event not supported on this platform");
+    return -1;
+}
+  
+void AudioDeviceGeneric::ClearPlayoutRouteChanged()
+{
+    WEBRTC_TRACE(kTraceError, kTraceAudioDevice, -1,
+                 "Playout Route Changed event not supported on this platform");
 }
 
 }  // namespace webrtc

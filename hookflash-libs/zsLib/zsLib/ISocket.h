@@ -105,11 +105,7 @@ namespace zsLib
     struct SetOptionFlag {
       enum Options {
         NonBlocking          = FIONBIO,
-#if (defined _ANDROID || defined __QNX__)
-        IgnoreSigPipe        = MSG_NOSIGNAL,
-#else
-	IgnoreSigPipe        = SO_NOSIGPIPE,
-#endif // _ANDROID
+        IgnoreSigPipe        = SO_NOSIGPIPE,
         Broadcast            = SO_BROADCAST,
         Debug                = SO_DEBUG,
         DontRoute            = SO_DONTROUTE,

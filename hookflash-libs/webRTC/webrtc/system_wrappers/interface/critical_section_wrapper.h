@@ -21,6 +21,7 @@ class CriticalSectionWrapper {
  public:
   // Factory method, constructor disabled
   static CriticalSectionWrapper* CreateCriticalSection();
+  static void Test();
 
   virtual ~CriticalSectionWrapper() {}
 

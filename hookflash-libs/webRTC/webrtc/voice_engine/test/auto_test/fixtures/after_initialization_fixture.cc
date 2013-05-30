@@ -18,6 +18,7 @@ class TestErrorObserver : public webrtc::VoiceEngineObserver {
     ADD_FAILURE() << "Unexpected error on channel " << channel <<
         ": error code " << error_code;
   }
+  virtual void CallbackOnOutputAudioRouteChange(const webrtc::OutputAudioRoute route) {}
 };
 
 AfterInitializationFixture::AfterInitializationFixture()

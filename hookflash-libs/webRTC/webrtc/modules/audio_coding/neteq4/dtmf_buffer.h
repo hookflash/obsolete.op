@@ -82,7 +82,7 @@ class DtmfBuffer {
   virtual bool GetEvent(uint32_t current_timestamp, DtmfEvent* event);
 
   // Number of events in the buffer.
-  virtual size_t Length() const { return buffer_.size(); }
+  virtual std::size_t Length() const { return buffer_.size(); }
 
   virtual bool Empty() const { return buffer_.empty(); }
 

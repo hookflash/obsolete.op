@@ -175,7 +175,7 @@ public:
     // enable or disable loud speaker (for iphone only)
     virtual WebRtc_Word32 SetLoudspeakerStatus(bool enable);
     virtual WebRtc_Word32 GetLoudspeakerStatus(bool& enabled) const;
-    virtual WebRtc_Word32 GetOutputAudioRoute(OutputAudioRoute *route) const;
+    virtual WebRtc_Word32 GetOutputAudioRoute(OutputAudioRoute& route) const;
 
 private:
     void Lock() {

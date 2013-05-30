@@ -415,7 +415,7 @@ namespace hookflash
           for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter) {
             CandidatePairPtr &pairing = (*iter);
 
-            ZS_LOG_DEBUG(log("candidate pair") + ", local ip=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
+            ZS_LOG_DEBUG(log("candidate pair") + ", local ip=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag + ", password (local)=" + pairing->mLocal.mPassword + ", password (remote)=" + pairing->mRemote.mPassword)
           }
           ZS_LOG_DEBUG(log("--- ICE SESSION CANDIDATES END ---") + ", control=" + (mControl == IICESocket::ICEControl_Controlling ? "CONTROLLING" : "CONTROLLED"))
         }

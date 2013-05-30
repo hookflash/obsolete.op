@@ -26,6 +26,8 @@
 #endif
 
 namespace webrtc {
+  
+using namespace std;
 
 struct RTPHeader
 {

@@ -1,138 +1,0 @@
-Taudio_conference_mixer
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a normal armv7
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer.LinkFileList
-c0000000051658DFE00000000000002BB
-t1365609982
-s699
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o
-t2
-s0
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc
-c00000000516570630000000000009CE9
-t1365602403
-s40169
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc
-c00000000516570630000000000000C56
-t1365602403
-s3158
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc
-c00000000516570630000000000000728
-t1365602403
-s1832
-
-N/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc
-c00000000516570630000000000000CB9
-t1365602403
-s3257
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb115307ec515b741^d0b7317ec515b741^---0#1#0#--18"Check dependencies36"3B87FD5A-B4C9-40C3-9C93-FC46B191973F-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302792.695880
-e387302793.719409
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection124"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc967ab288c515b741^992ab889c515b741^---0#0#0#-19%DVTDocumentLocation2@132"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc0000000000000000^3578"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o audio_conference_mixer/source/audio_conference_mixer_impl.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_conference_mixer/interface -Iinterface -Iaudio_processing/include -Iutility/interface -Iaudio_coding/main/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_conference_mixer_impl.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer_impl.o36"AC7D728D-788D-476F-9DB6-EEC8A73FF711-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302792.269119
-e387302792.629480
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection120"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc1d3e4588c515b741^2425a188c515b741^---0#0#0#-19%DVTDocumentLocation2@128"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc0000000000000000^3554"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o audio_conference_mixer/source/audio_frame_manipulator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_conference_mixer/interface -Iinterface -Iaudio_processing/include -Iutility/interface -Iaudio_coding/main/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/audio_frame_manipulator.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_frame_manipulator.o36"CA99E814-397A-4FA6-BDCC-20E9A74AC6AF-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302792.630986
-e387302792.694362
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection112"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc37e2a188c515b741^61c1b188c515b741^---0#0#0#-19%DVTDocumentLocation2@120"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc0000000000000000^3506"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o audio_conference_mixer/source/level_indicator.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_conference_mixer/interface -Iinterface -Iaudio_processing/include -Iutility/interface -Iaudio_coding/main/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/level_indicator.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/level_indicator.o36"4E331AFE-73F7-4D9B-84CC-F8BC3241B557-
-
-CCompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s387302792.857444
-e387302793.014019
-r1
-xCompileC
-x../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc
-xnormal
-xarmv7
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection111"Compile /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.ccd509dc88c515b741^77ba0389c515b741^---0#0#0#-19%DVTDocumentLocation2@119"file://localhost/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc0000000000000000^3500"CompileC ../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o audio_conference_mixer/source/time_scheduler.cc normal armv7 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c++ -arch armv7 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"Unavailable(issue687)\"" -DDISABLE_NACL -DCHROMIUM_BUILD -DUSE_LIBJPEG_TURBO=1 -DENABLE_PEPPER_THREADING -DENABLE_INPUT_SPEECH -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_PLUGIN_INSTALLATION=1 -DDISABLE_FTP_SUPPORT=1 -DWEBRTC_LOGGING -DWEBRTC_MAC -DWEBRTC_IOS -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -fstrict-aliasing -Wdeprecated-declarations -Winvalid-offsetof -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -miphoneos-version-min=5.0 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/include -I.. -I../.. -I../.. -Iaudio_conference_mixer/interface -Iinterface -Iaudio_processing/include -Iutility/interface -Iaudio_coding/main/interface -I../system_wrappers/interface -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -F/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.d --serialize-diagnostics /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.dia -c /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/audio_conference_mixer/source/time_scheduler.cc -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/time_scheduler.o36"8218DF97-1BE7-40F7-9C75-6A586E706849-
-
-CLibtool /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a normal armv7
-s387302793.774539
-e387302793.801736
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Libtool ../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a normal armv78d80c689c515b741^f73ecd89c515b741^---0#0#0#--1019"Libtool ../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a normal armv7    cd /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules    setenv IPHONEOS_DEPLOYMENT_TARGET 5.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/modules.build/Debug-iphoneos/audio_conference_mixer.build/Objects-normal/armv7/audio_conference_mixer.LinkFileList -o /Users/johnny/Documents/IDG/webrtc/trunk/webrtc/modules/../../xcodebuild/Debug-iphoneos/libaudio_conference_mixer.a36"CBCFF414-6EAE-4B74-A01D-A5273A8FC3FC-
-

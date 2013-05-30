@@ -8,8 +8,6 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */
 
-#include "webrtc/system_wrappers/interface/condition_variable_wrapper.h"
-
 #if defined(_WIN32)
 #include <windows.h>
 #include "webrtc/system_wrappers/source/condition_variable_event_win.h"
@@ -20,7 +18,7 @@
 #endif
 
 namespace webrtc {
-
+#if !defined(WEBRTC_QNX)
 ConditionVariableWrapper* ConditionVariableWrapper::CreateConditionVariable() {
 #if defined(_WIN32)
   // Try to create native condition variable implementation.
@@ -37,5 +35,5 @@ ConditionVariableWrapper* ConditionVariableWrapper::CreateConditionVariable() {
   return NULL;
 #endif
 }
-
+#endif
 } // namespace webrtc

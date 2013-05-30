@@ -29,7 +29,7 @@ class BackgroundNoise;
 // PreemptiveExpand are implemented.
 class PreemptiveExpand : public TimeStretch {
  public:
-  PreemptiveExpand(int sample_rate_hz, size_t num_channels,
+  PreemptiveExpand(int sample_rate_hz, std::size_t num_channels,
                    const BackgroundNoise& background_noise)
       : TimeStretch(sample_rate_hz, num_channels, background_noise),
         old_data_length_per_channel_(-1),
@@ -59,7 +59,7 @@ class PreemptiveExpand : public TimeStretch {
   // Checks the criteria for performing the time-stretching operation and,
   // if possible, performs the time-stretching.
   virtual ReturnCodes CheckCriteriaAndStretch(
-      const int16_t *pw16_decoded, int len, size_t w16_bestIndex,
+      const int16_t *pw16_decoded, int len, std::size_t w16_bestIndex,
       int16_t w16_bestCorr, bool w16_VAD,
       AudioMultiVector<int16_t>* output) const;
 

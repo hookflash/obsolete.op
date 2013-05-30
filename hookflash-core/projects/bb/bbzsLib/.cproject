@@ -33,6 +33,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1831820744" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.2039383802" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -99,6 +100,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1465648189" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1398204673" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -170,6 +172,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1780283042" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.859802221" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -178,7 +181,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.1256418813" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.1377886794" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.1377886794" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.1703676472" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -239,6 +242,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.198169271" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.115042970" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -247,7 +251,7 @@
 								<option id="com.qnx.qcc.option.compiler.cppoptions.738810554" name="Preprocessor Options (-Wp,)" superClass="com.qnx.qcc.option.compiler.cppoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-Wno-unknown-pragmas -Wno-reorder -Wno-sign-compare"/>
 								</option>
-								<option id="com.qnx.qcc.option.compiler.ccoptions.452872434" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
+								<option id="com.qnx.qcc.option.compiler.ccoptions.452872434" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.2129287195" superClass="com.qnx.qcc.inputType.compiler"/>
@@ -306,6 +310,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1050101138" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1676127002" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -373,6 +378,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1985597250" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1552586231" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -438,6 +444,7 @@
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/zsLib"/>
 									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../hookflash-libs/bbBoost"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../hookflash-libs/pcre/PCRE&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1458970883" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.279398088" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">

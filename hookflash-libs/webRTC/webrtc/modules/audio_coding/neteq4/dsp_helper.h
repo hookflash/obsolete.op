@@ -54,22 +54,22 @@ class DspHelper {
   // |factor| is increased (additive) by the |increment| (in Q20), which can
   // be negative. Returns the scale factor after the last increment.
   static int RampSignal(const int16_t* input,
-                        size_t length,
+                        std::size_t length,
                         int factor,
                         int increment,
                         int16_t* output);
 
   // Same as above, but with the samples of |signal| being modified in-place.
   static int RampSignal(int16_t* signal,
-                        size_t length,
+                        std::size_t length,
                         int factor,
                         int increment);
 
   // Same as above, but processes |length| samples from |signal|, starting at
   // |start_index|.
   static int RampSignal(AudioMultiVector<int16_t>* signal,
-                        size_t start_index,
-                        size_t length,
+                        std::size_t start_index,
+                        std::size_t length,
                         int factor,
                         int increment);
 

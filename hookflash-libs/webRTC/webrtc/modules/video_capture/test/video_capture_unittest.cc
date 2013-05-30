@@ -269,6 +269,7 @@ class TestVideoCaptureFeedBack : public VideoCaptureFeedBack {
     CriticalSectionScoped cs(capture_cs_.get());
     alarm_ = reported_alarm;
   }
+  virtual void OnFaceDetected(const WebRtc_Word32 id) {};
   int frame_rate() {
     CriticalSectionScoped cs(capture_cs_.get());
     return frame_rate_;
