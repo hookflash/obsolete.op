@@ -80,8 +80,8 @@ namespace hookflash
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const String &requestfindProofBundleDigestValue() const         {return mRequestfindProofBundleDigestValue;}
-          void requestfindProofBundleDigestValue(const String &secret)    {mRequestfindProofBundleDigestValue = secret;}
+          const String &requestFindProofBundleDigestValue() const         {return mRequestfindProofBundleDigestValue;}
+          void requestFindProofBundleDigestValue(const String &secret)    {mRequestfindProofBundleDigestValue = secret;}
 
           const IPeerPtr &findPeer() const                                {return mFindPeer;}
           void findPeer(const IPeerPtr &peer)                             {mFindPeer = peer;}

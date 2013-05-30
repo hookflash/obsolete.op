@@ -55,12 +55,20 @@ namespace zsLib
 
   ULONG atomicIncrement(ULONG &value)
   {
+#ifdef __GNUC__
+    return __sync_add_and_fetch(&value, 1);
+#else
     return ++(*(boost::detail::atomic_count *)((LONG *)(&value)));
+#endif //__GNUC__
   }
 
   ULONG atomicDecrement(ULONG &value)
   {
+#ifdef __GNUC__
+    return __sync_sub_and_fetch(&value, 1);
+#else
     return --(*(boost::detail::atomic_count *)((LONG *)(&value)));
+#endif //__GNUC__
   }
 
   ULONG atomicGetValue(ULONG &value)
@@ -70,20 +78,20 @@ namespace zsLib
 
   DWORD atomicGetValue32(DWORD &value)
   {
-#ifdef __QNX__
-    return boost::interprocess::ipcdetail::atomic_read32((boost::uint32_t *)&value);
+#ifdef __GNUC__
+    return __sync_add_and_fetch(&value, 0);
 #else
     return boost::interprocess::detail::atomic_read32((boost::uint32_t *)&value);
-#endif
+#endif //__GNUC__
   }
 
   void atomicSetValue32(DWORD &value, DWORD newValue)
   {
-#ifdef __QNX__
-    boost::interprocess::ipcdetail::atomic_write32((boost::uint32_t *)&value, newValue);
+#ifdef __GNUC__
+    __sync_lock_test_and_set(&value, newValue);
 #else
-	boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
-#endif
+	  boost::interprocess::detail::atomic_write32((boost::uint32_t *)&value, newValue);
+#endif //__GNUC__
   }
 
   Time now()

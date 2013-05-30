@@ -167,7 +167,7 @@ namespace hookflash
         }
         bool sent = account->forMessageIncoming().send(mLocation, message);
         mResponseSent = mResponseSent ||  sent;
-        return send;
+        return sent;
       }
 
       //-----------------------------------------------------------------------

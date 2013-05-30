@@ -111,7 +111,8 @@ namespace hookflash
         mDelegate(IIdentityLookupDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate)),
         mErrorCode(0),
         mIdentityServiceDomain(identityServiceDomain),
-        mCheckForUpdatesOnly(checkForUpdatesOnly)
+        mCheckForUpdatesOnly(checkForUpdatesOnly),
+        mAlreadyIssuedForProviderDomain(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -119,6 +120,8 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void IdentityLookup::init(const IdentityURIList &identityURIs)
       {
+        AutoRecursiveLock lock(getLock());
+
         for (IdentityURIList::const_iterator iter = identityURIs.begin(); iter != identityURIs.end(); ++iter) {
           const IdentityURI &identityURI = (*iter);
 
@@ -179,6 +182,8 @@ namespace hookflash
 
             concat += safeChar + identifier;
           }
+
+          ZS_LOG_DEBUG(log("adding safe char for type") + ", type=" + type + ", safe char=" + (String() + safeChar))
 
           mSafeCharDomains[type] = String() + safeChar;
         }
@@ -324,22 +329,70 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("bootstrapped network prepared notification") + IBootstrappedNetwork::toDebugString(network))
 
-        String networkDomain = network->getDomain();
-
-        BootstrappedNetworkMap::iterator found = mBootstrappedNetworks.find(networkDomain);
+        BootstrappedNetworkMap::iterator found = mBootstrappedNetworks.find(network->getDomain());
         if (found == mBootstrappedNetworks.end()) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete bootstrapped network") + IBootstrappedNetwork::toDebugString(network))
           return;
         }
+
+        mBootstrappedNetworks.erase(found);
 
         WORD errorCode = 0;
         String errorResaon;
         bool success = network->wasSuccessful(&errorCode, &errorResaon);
         if (!success) {
           ZS_LOG_ERROR(Detail, log("bootstrapped network failed") + IBootstrappedNetwork::toDebugString(network))
-          setError(errorCode, errorResaon);
-          step();
-          return;
+
+          if (mIdentityServiceDomain == network->getDomain()) {
+            ZS_LOG_ERROR(Detail, log("cannot access peer contact service's identity lookup service") + ", provider domain=" + mIdentityServiceDomain)
+            setError(errorCode, errorResaon);
+            step();
+            return;
+          }
+
+          // see if there is already an attempt to use the bootstrapped network for the peer contact service's domain
+          BootstrappedNetworkMap::iterator foundProvider = mBootstrappedNetworks.find(mIdentityServiceDomain);
+          if (foundProvider == mBootstrappedNetworks.end()) {
+            IBootstrappedNetworkPtr providerNetwork = IBootstrappedNetwork::prepare(mIdentityServiceDomain, mThisWeak.lock());
+            if (!providerNetwork) {
+              ZS_LOG_ERROR(Detail, log("failed to create bootstrapper for domain") + ", domain=" + mIdentityServiceDomain)
+              setError(errorCode, errorResaon);
+              step();
+              return;
+            }
+
+            // bootstrapped network not prepared yet for this domain, attempt to prepare it now
+            mBootstrappedNetworks[mIdentityServiceDomain] = providerNetwork;
+
+            // delay handling this failure until later...
+            mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+            ZS_LOG_DETAIL(log("waiting to perform lookup on backup service peer contact's identity lookup service") + ", failed domain=" + network->getDomain() + ", backup=" + providerNetwork->getDomain())
+
+            // wait for the bootstrapped network to complete
+            return;
+          }
+
+          IBootstrappedNetworkPtr providerNetwork = (*foundProvider).second;
+          if (!providerNetwork->isPreparationComplete()) {
+            mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+            ZS_LOG_DETAIL(log("waiting to perform lookup on backup service peer contact's identity lookup service") + ", failed domain=" + network->getDomain() + ", backup=" + providerNetwork->getDomain())
+            return;
+          }
+
+          if (!providerNetwork->wasSuccessful(&errorCode, &errorResaon)) {
+            ZS_LOG_ERROR(Detail, log("failed to create bootstrapper for domain") + ", domain=" + mIdentityServiceDomain)
+            setError(errorCode, errorResaon);
+            step();
+            return;
+          }
+
+          // the domain lookuped was a failure but we can issue a request using the provider's network instead
+          mFailedBootstrappedNetworks[network->getDomain()] = true;
+
+          // pretend we are re-issuing a request from the provider domain
+          network = providerNetwork;
         }
 
         typedef IdentityLookupCheckRequest::Provider Provider;
@@ -353,7 +406,21 @@ namespace hookflash
           const String &type = (*iter).first;
           String &domain = (*iter).second;
 
-          if (networkDomain == domain) {
+          bool lookupThisDomain = (network->getDomain() == domain);
+
+          if (mIdentityServiceDomain == network->getDomain()) {
+            if (mAlreadyIssuedForProviderDomain)
+              lookupThisDomain = false; // don't issue unless this is for a failed domain
+
+            if (mFailedBootstrappedNetworks.find(domain) != mFailedBootstrappedNetworks.end()) {
+              ZS_LOG_DETAIL(log("performing lookup on failed domain") + ", failed domain=" + domain + ", lookup now done on domain=" + mIdentityServiceDomain)
+              lookupThisDomain = true;
+            }
+          }
+
+          if (lookupThisDomain) {
+            ZS_LOG_DEBUG(log("will perform lookup on type") + ", type=" + type)
+
             // this type uses this domain
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundConcat = mConcatDomains.find(type);
             IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafeChar = mSafeCharDomains.find(type);
@@ -365,7 +432,7 @@ namespace hookflash
             const String &splitChar = (*foundSafeChar).second;
 
             if (identifiers.isEmpty()) {
-              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + networkDomain + ", type=" + type)
+              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + network->getDomain() + ", type=" + type)
               continue;
             }
 
@@ -379,20 +446,25 @@ namespace hookflash
           }
         }
 
+        if (network->getDomain() == mIdentityServiceDomain)
+          mAlreadyIssuedForProviderDomain = true;
+
+        mFailedBootstrappedNetworks.clear();
+
         if (providers.size() > 0) {
           IMessageMonitorPtr monitor;
 
           if (mCheckForUpdatesOnly) {
             // let's issue a request to discover these identities
             IdentityLookupCheckRequestPtr request = IdentityLookupCheckRequest::create();
-            request->domain(networkDomain);
+            request->domain(network->getDomain());
             request->providers(providers);
 
             monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
           } else {
             // let's issue a request to discover these identities
             IdentityLookupRequestPtr request = IdentityLookupRequest::create();
-            request->domain(networkDomain);
+            request->domain(network->getDomain());
             request->providers(providers);
 
             monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
@@ -660,8 +732,9 @@ namespace hookflash
             mDomainOrLegacyTypeIdentifiers[type] = empty;
             found = mDomainOrLegacyTypeIdentifiers.find(type);
 
-            mConcatDomains[type] = String();
+            ZS_LOG_DEBUG(log("adding contact type") + ", type=" + type)
 
+            mConcatDomains[type] = String();
             mTypeToDomainMap[type] = domain;
           }
 

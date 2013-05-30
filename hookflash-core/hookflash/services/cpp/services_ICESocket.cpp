@@ -32,8 +32,8 @@
 #include <hookflash/services/internal/services_ICESocket.h>
 #include <hookflash/services/internal/services_ICESocketSession.h>
 #include <hookflash/services/internal/services_TURNSocket.h>
+#include <hookflash/services/internal/services_Helper.h>
 #include <hookflash/services/ISTUNRequesterManager.h>
-#include <hookflash/services/IHelper.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Numeric.h>
@@ -680,7 +680,7 @@ namespace hookflash
 #endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
           ULONG bytesSent = mUDPSocket->sendTo(destination, packet, packetLengthInBytes, &wouldBlock);
           bool sent = ((!wouldBlock) && (bytesSent == packetLengthInBytes));
-          if (!send) {
+          if (!sent) {
             ZS_LOG_WARNING(Debug, log("unable to send data on behalf of TURN as UDP socket did not send the data") + ", would block=" + (wouldBlock ? "true" : "false") + ", bytes sent=" + Stringize<ULONG>(bytesSent).string())
           }
           return sent;
@@ -1065,7 +1065,9 @@ namespace hookflash
           mUDPSocket->bind(any);
           mUDPSocket->setBlocking(false);
           try {
+#ifndef __QNX__
             mUDPSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
+#endif //ndef __QNX__
           } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
           }
           mUDPSocket->setDelegate(mThisWeak.lock());
@@ -1696,13 +1698,14 @@ namespace hookflash
     //-------------------------------------------------------------------------
     String IICESocket::Candidate::toDebugString(bool includeCommaPrefix) const
     {
-      return includeCommaPrefix ? String(", type=") : String("type=") + IICESocket::toString(mType) +
-             ", ip=" + mIPAddress.string() +
-             ", priority=" + Stringize<DWORD>(mPriority).string() +
-             ", preference=" + Stringize<WORD>(mLocalPreference).string() +
-             ", usernameFrag=" + mUsernameFrag +
-             ", password=" + mPassword +
-             ", protocol=" + mProtocol;
+      bool firstTime = !includeCommaPrefix;
+      return internal::Helper::getDebugValue("type", IICESocket::toString(mType), firstTime) +
+             internal::Helper::getDebugValue("ip", mIPAddress.string(), firstTime) +
+             internal::Helper::getDebugValue("priority", 0 != mPriority ? Stringize<DWORD>(mPriority).string() : String(), firstTime) +
+             internal::Helper::getDebugValue("preference", 0 != mLocalPreference ? Stringize<WORD>(mLocalPreference).string() : String(), firstTime) +
+             internal::Helper::getDebugValue("usernameFrag", mUsernameFrag, firstTime) +
+             internal::Helper::getDebugValue("password", mPassword, firstTime) +
+             internal::Helper::getDebugValue("protocol", mProtocol, firstTime);
     }
   }
 }

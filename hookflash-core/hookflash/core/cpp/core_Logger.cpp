@@ -241,9 +241,9 @@ namespace hookflash
     }
 
     //---------------------------------------------------------------------------
-    void ILogger::installWindowsDebuggerLogger()
+    void ILogger::installDebuggerLogger()
     {
-      services::IHelper::installWindowsDebuggerLogger();
+      services::IHelper::installDebuggerLogger();
     }
 
     //---------------------------------------------------------------------------

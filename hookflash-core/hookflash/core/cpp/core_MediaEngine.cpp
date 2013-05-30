@@ -42,7 +42,9 @@
 
 #include <video_capture_factory.h>
 
+#ifdef __APPLE__
 #include <TargetConditionals.h>
+#endif
 
 #define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
 //#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
@@ -140,8 +142,8 @@ namespace hookflash
         mVideoFile(NULL),
         mVideoEngineReady(false),
         mFaceDetection(false),
-        mIPhoneCaptureRenderView(NULL),
-        mIPhoneChannelRenderView(NULL),
+        mCaptureRenderView(NULL),
+        mChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
@@ -206,8 +208,8 @@ namespace hookflash
         mVideoFile(NULL),
         mVideoEngineReady(false),
         mFaceDetection(false),
-        mIPhoneCaptureRenderView(NULL),
-        mIPhoneChannelRenderView(NULL),
+        mCaptureRenderView(NULL),
+        mChannelRenderView(NULL),
         mRedirectVoiceTransport("voice"),
         mRedirectVideoTransport("video"),
         mLifetimeWantAudio(false),
@@ -224,6 +226,7 @@ namespace hookflash
         mLifetimeVideoRecordFile(""),
         mLifetimeSaveVideoToLibrary(false)
       {
+#ifdef TARGET_OS_IPHONE
         int name[] = {CTL_HW, HW_MACHINE};
         size_t size;
         sysctl(name, 2, NULL, &size, NULL, 0);
@@ -231,6 +234,7 @@ namespace hookflash
         sysctl(name, 2, machine, &size, NULL, 0);
         mMachineName = machine;
         free(machine);
+#endif
       }
 
       //-----------------------------------------------------------------------
@@ -560,7 +564,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void MediaEngine::setLogLevel()
       {
-        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
+//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Detail);
       }
 
       //---------------------------------------------------------------------
@@ -648,7 +652,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("set capture render view"))
 
-        mIPhoneCaptureRenderView = renderView;
+        mCaptureRenderView = renderView;
       }
 
       //-----------------------------------------------------------------------
@@ -658,7 +662,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("set channel render view"))
 
-        mIPhoneChannelRenderView = renderView;
+        mChannelRenderView = renderView;
       }
 
       //-----------------------------------------------------------------------
@@ -670,7 +674,6 @@ namespace hookflash
 
         webrtc::EcModes ecMode = getEcMode();
         if (ecMode == webrtc::kEcUnchanged) {
-          ZS_LOG_ERROR(Detail, log("machine name is not supported"))
           return;
         }
         mError = mVoiceAudioProcessing->SetEcStatus(enabled, ecMode);
@@ -1382,7 +1385,7 @@ namespace hookflash
 
           if (mLifetimeWantVideoChannel)
             mLifetimeWantVideoCapture = true;
-          else if (!mLifetimeContinuousVideoCapture)
+          else if (mLifetimeHasVideoChannel && !mLifetimeContinuousVideoCapture)
             mLifetimeWantVideoCapture = false;
           if (!mLifetimeWantVideoCapture)
             mLifetimeWantRecordVideoCapture = false;
@@ -1503,7 +1506,6 @@ namespace hookflash
 
           webrtc::EcModes ecMode = getEcMode();
           if (ecMode == webrtc::kEcUnchanged) {
-            ZS_LOG_ERROR(Detail, log("machine name is not supported"))
             return;
           }
           mError = mVoiceAudioProcessing->SetEcStatus(mEcEnabled, ecMode);
@@ -1534,12 +1536,13 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
             return;
           }
+#ifdef TARGET_OS_IPHONE
           mError = mVoiceHardware->SetLoudspeakerStatus(false);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
             return;
           }
-
+#endif
           webrtc::CodecInst cinst;
           memset(&cinst, 0, sizeof(webrtc::CodecInst));
           for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
@@ -1548,7 +1551,7 @@ namespace hookflash
               ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
               return;
             }
-  #ifdef HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
+#ifdef HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
             if (strcmp(cinst.plname, "ISAC") == 0) {
               strcpy(cinst.plname, "ISAC");
               cinst.pltype = 103;
@@ -1563,7 +1566,7 @@ namespace hookflash
               }
               break;
             }
-  #elif defined HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
+#elif defined HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
             if (strcmp(cinst.plname, "OPUS") == 0) {
               strcpy(cinst.plname, "OPUS");
               cinst.pltype = 110;
@@ -1578,7 +1581,7 @@ namespace hookflash
               }
               break;
             }
-  #endif
+#endif
           }
 
           webrtc::CodecInst cfinst;
@@ -1737,15 +1740,17 @@ namespace hookflash
             return;
           }
           
-#ifdef TARGET_OS_IPHONE
-          void *captureView = mIPhoneCaptureRenderView;
+#if defined(TARGET_OS_IPHONE) || defined(__QNX__)
+          void *captureView = mCaptureRenderView;
 #else
           void *captureView = NULL;
 #endif
+#ifndef __QNX__
           if (captureView == NULL) {
             ZS_LOG_ERROR(Detail, log("capture view is not set"))
             return;
           }
+#endif
           
           webrtc::VideoCaptureModule::DeviceInfo *devInfo = webrtc::VideoCaptureFactory::CreateDeviceInfo(0);
           if (devInfo == NULL) {
@@ -1783,6 +1788,7 @@ namespace hookflash
             return;
           }
           
+#ifdef TARGET_OS_IPHONE
           webrtc::CapturedFrameOrientation defaultOrientation;
           switch (mDefaultVideoOrientation) {
             case IMediaEngine::VideoOrientation_LandscapeLeft:
@@ -1815,6 +1821,9 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+#else
+          webrtc::RotateCapturedFrame orientation = webrtc::RotateCapturedFrame_0;
+#endif
           
           int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
           mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
@@ -1826,12 +1835,14 @@ namespace hookflash
           capability.height = height;
           capability.maxFPS = maxFramerate;
           capability.rawType = webrtc::kVideoI420;
+          capability.faceDetection = mFaceDetection;
           mError = mVideoCapture->StartCapture(mCaptureId, capability);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
-          
+
+#ifndef __QNX__
           mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
@@ -1844,6 +1855,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+#endif
         }
       }
       
@@ -1855,6 +1867,7 @@ namespace hookflash
           
           ZS_LOG_DEBUG(log("stop video capture"))
           
+#ifndef __QNX__
           mError = mVideoRender->StopRender(mCaptureId);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1865,6 +1878,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
             return;
           }
+#endif
           mError = mVideoCapture->StopCapture(mCaptureId);
           if (mError != 0) {
             ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
@@ -1891,8 +1905,8 @@ namespace hookflash
           
           ZS_LOG_DEBUG(log("start video channel"))
           
-#ifdef TARGET_OS_IPHONE
-          void *channelView = mIPhoneChannelRenderView;
+#if defined(TARGET_OS_IPHONE) || defined(__QNX__)
+          void *channelView = mChannelRenderView;
 #else
           void *channelView = NULL;
 #endif
@@ -1942,6 +1956,7 @@ namespace hookflash
             return;
           }
 
+#ifdef TARGET_OS_IPHONE
           OutputAudioRoute route;
           mError = mVoiceHardware->GetOutputAudioRoute(route);
           if (mError != 0) {
@@ -1956,6 +1971,7 @@ namespace hookflash
               return;
             }
           }
+#endif
 
           mError = mVideoRender->AddRenderer(mVideoChannel, channelView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
@@ -2027,7 +2043,6 @@ namespace hookflash
           AutoRecursiveLock lock(mLock);
 
           ZS_LOG_DEBUG(log("stop video channel"))
-
           
           mError = mVideoRender->StopRender(mVideoChannel);
           if (mError != 0) {
@@ -2206,9 +2221,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::getVideoCaptureParameters(webrtc::RotateCapturedFrame orientation, int& width, int& height, int& maxFramerate, int& maxBitrate)
       {
+#ifdef TARGET_OS_IPHONE
         String iPadString("iPad");
         String iPad2String("iPad2");
+        String iPadMiniString("iPad2,5");
         String iPad3String("iPad3");
+        String iPad4String("iPad3,4");
         String iPhoneString("iPhone");
         String iPhone4SString("iPhone4,1");
         String iPhone5String("iPhone5");
@@ -2241,7 +2259,7 @@ namespace hookflash
               height = 90;
               maxFramerate = 5;
               maxBitrate = 100;
-            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
               width = 480;
               height = 270;
               maxFramerate = 15;
@@ -2281,7 +2299,7 @@ namespace hookflash
               height = 160;
               maxFramerate = 5;
               maxBitrate = 100;
-            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
               width = 270;
               height = 480;
               maxFramerate = 15;
@@ -2323,6 +2341,21 @@ namespace hookflash
               height = 120;
               maxFramerate = 5;
               maxBitrate = 100;
+            } else if (mMachineName.compare(0, iPad4String.size(), iPad4String) >= 0) {
+              width = 320;
+              height = 180;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+              width = 320;
+              height = 240;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
+              width = 320;
+              height = 180;
+              maxFramerate = 15;
+              maxBitrate = 250;
             } else if (mMachineName.compare(0, iPadString.size(), iPadString) >= 0) {
               width = 320;
               height = 240;
@@ -2358,6 +2391,21 @@ namespace hookflash
               height = 160;
               maxFramerate = 5;
               maxBitrate = 100;
+            } else if (mMachineName.compare(0, iPad4String.size(), iPad4String) >= 0) {
+              width = 180;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPad3String.size(), iPad3String) >= 0) {
+              width = 240;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
+            } else if (mMachineName.compare(0, iPadMiniString.size(), iPadMiniString) >= 0) {
+              width = 180;
+              height = 320;
+              maxFramerate = 15;
+              maxBitrate = 250;
             } else if (mMachineName.compare(0, iPadString.size(), iPadString) >= 0) {
               width = 240;
               height = 320;
@@ -2372,6 +2420,12 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("camera type is not set"))
           return -1;
         }
+#else
+        width = 180;
+        height = 320;
+        maxFramerate = 15;
+        maxBitrate = 250;
+#endif
         return 0;
       }
       
@@ -2418,12 +2472,16 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::setVideoCodecParameters()
       {
+#ifdef TARGET_OS_IPHONE
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
           ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
           return mError;
         }
+#else
+        webrtc::RotateCapturedFrame orientation = webrtc::RotateCapturedFrame_0;
+#endif
         
         int width = 0, height = 0, maxFramerate = 0, maxBitrate = 0;
         mError = getVideoCaptureParameters(orientation, width, height, maxFramerate, maxBitrate);
@@ -2455,6 +2513,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       webrtc::EcModes MediaEngine::getEcMode()
       {
+#ifdef TARGET_OS_IPHONE
         String iPadString("iPad");
         String iPad2String("iPad2");
         String iPad3String("iPad3");
@@ -2484,6 +2543,11 @@ namespace hookflash
           ZS_LOG_ERROR(Detail, log("machine name is not supported"))
           return webrtc::kEcUnchanged;
         }
+#elif defined(__QNX__)
+        return webrtc::kEcAec;
+#else
+        return webrtc::kEcUnchanged;
+#endif
       }
 
       //-----------------------------------------------------------------------

@@ -1,18 +1,38 @@
 /*
- *  Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
- *
- *  Use of this source code is governed by a BSD-style license
- *  that can be found in the LICENSE file in the root of the source
- *  tree. An additional intellectual property rights grant can be found
- *  in the file PATENTS.  All contributing project authors may
- *  be found in the AUTHORS file in the root of the source tree.
+
+ Copyright (c) 2013, SMB Phone Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ The views and conclusions contained in the software and documentation are those
+ of the authors and should not be interpreted as representing official policies,
+ either expressed or implied, of the FreeBSD Project.
+
  */
-#if 0
+
 #include <sys/ioctl.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <linux/videodev2.h>
 #include <errno.h>
 #include <stdio.h>
 #include <sys/mman.h>
@@ -21,21 +41,140 @@
 #include <iostream>
 #include <new>
 
+#include "video_capture_bb.h"
+
 #include "ref_count.h"
 #include "trace.h"
 #include "thread_wrapper.h"
 #include "critical_section_wrapper.h"
-#include "video_capture_linux.h"
+#include "libyuv.h"
+
+//#define NEON_SCALING
 
 namespace webrtc
 {
 namespace videocapturemodule
 {
+
+CriticalSectionWrapper* capture_crit_sect;
+VideoCaptureModuleBB* video_capture_module;
+
+void viewfinder_callback(camera_handle_t camera_handle, camera_buffer_t* camera_buffer, void* arg)
+{
+    capture_crit_sect->Enter();
+
+    camera_frametype_t frame_type = camera_buffer->frametype;
+    uint64_t frame_size = camera_buffer->framesize;
+    uint8_t* frame_buffer = camera_buffer->framebuf;
+    uint64_t frame_meta_size = camera_buffer->framemetasize;
+    void* frame_meta = camera_buffer->framemeta;
+    int64_t frame_timestamp = camera_buffer->frametimestamp;
+    camera_frame_nv12_t frame_desc = camera_buffer->framedesc.nv12;
+
+    uint32_t height = frame_desc.height;
+    uint32_t width = frame_desc.width;
+    uint32_t stride = frame_desc.stride;
+    int64_t uv_offset = frame_desc.uv_offset;
+    int64_t uv_stride = frame_desc.uv_stride;
+
+    VideoCaptureCapability frame_info;
+#ifdef NEON_SCALING
+    frame_info.width = width >> 2;
+    frame_info.height = height >> 2;
+#else
+    frame_info.width = width;
+    frame_info.height = height;
+#endif
+    frame_info.rawType = kVideoI420;
+
+    WebRtc_Word32 output_buffer_size = width * height * 3 / 2;
+#ifdef NEON_SCALING
+    WebRtc_UWord8* output_buffer = NULL;
+#else
+    WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
+#endif
+
+    WebRtc_UWord8* source_data_y = frame_buffer;
+    WebRtc_UWord8* source_data_uv = frame_buffer + uv_offset;
+    WebRtc_UWord8* destination_data_y = output_buffer;
+    WebRtc_UWord8* destination_data_u = output_buffer + width * height;
+    WebRtc_UWord8* destination_data_v = output_buffer + width * height * 5 / 4;
+
+#ifdef NEON_SCALING
+    libyuv::ConvertNV12ToI420AndScaleFrameQuad(width, height, source_data_y, source_data_uv);
+#else
+    // Y
+    for (int i = 0; i < (int)height; i++)
+    {
+        memcpy(destination_data_y, source_data_y, stride);
+        source_data_y += stride;
+        destination_data_y += width;
+    }
+
+    // UV
+    // NV12 -> i420 conversion
+    for (int j = 0; j < (height >> 1); j++)
+    {
+        for (int i = 0; i < (width >> 1); i++)
+        {
+        	destination_data_u[i] = source_data_uv[2*i];
+        	destination_data_v[i] = source_data_uv[2*i+1];
+        }
+        source_data_uv += uv_stride;
+        destination_data_u += width >> 1;
+        destination_data_v += width >> 1;
+    }
+#endif
+
+#ifdef NEON_SCALING
+	video_capture_module->IncomingFrameBB((unsigned char*)source_data_y, output_buffer_size, frame_info);
+#else
+	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
+
+	free(output_buffer);
+#endif
+	capture_crit_sect->Leave();
+}
+
+void encoded_video_callback(camera_handle_t camera_handle, camera_buffer_t* camera_buffer, void* arg)
+{
+    capture_crit_sect->Enter();
+
+    camera_frametype_t frame_type = camera_buffer->frametype;
+    uint64_t frame_size = camera_buffer->framesize;
+    uint8_t* frame_buffer = camera_buffer->framebuf;
+    uint64_t frame_meta_size = camera_buffer->framemetasize;
+    void* frame_meta = camera_buffer->framemeta;
+    int64_t frame_timestamp = camera_buffer->frametimestamp;
+    camera_frame_compressedvideo_t frame_desc = camera_buffer->framedesc.compvid;
+
+    uint64_t bufsize = frame_desc.bufsize;
+    bool keyframe = frame_desc.keyframe;
+    uint64_t bitrate = frame_desc.bitrate;
+
+    VideoCaptureCapability frame_info;
+    frame_info.width = 240;
+    frame_info.height = 320;
+    frame_info.rawType = kVideoUnknown;
+    frame_info.codecType = kVideoCodecH264;
+
+    WebRtc_Word32 output_buffer_size = frame_size;
+    WebRtc_UWord8* output_buffer = (WebRtc_UWord8*)malloc(output_buffer_size);
+
+    memcpy(output_buffer, frame_buffer, frame_size);
+
+	video_capture_module->IncomingFrameBB((unsigned char*)output_buffer, output_buffer_size, frame_info);
+
+	free(output_buffer);
+
+	capture_crit_sect->Leave();
+}
+
 VideoCaptureModule* VideoCaptureImpl::Create(const WebRtc_Word32 id,
                                              const char* deviceUniqueId)
 {
-    RefCountImpl<videocapturemodule::VideoCaptureModuleV4L2>* implementation =
-        new RefCountImpl<videocapturemodule::VideoCaptureModuleV4L2>(id);
+    RefCountImpl<videocapturemodule::VideoCaptureModuleBB>* implementation =
+        new RefCountImpl<videocapturemodule::VideoCaptureModuleBB>(id);
 
     if (!implementation || implementation->Init(deviceUniqueId) != 0)
     {
@@ -46,23 +185,20 @@ VideoCaptureModule* VideoCaptureImpl::Create(const WebRtc_Word32 id,
     return implementation;
 }
 
-VideoCaptureModuleV4L2::VideoCaptureModuleV4L2(const WebRtc_Word32 id)
+VideoCaptureModuleBB::VideoCaptureModuleBB(const WebRtc_Word32 id)
     : VideoCaptureImpl(id), 
-      _captureThread(NULL),
-      _captureCritSect(CriticalSectionWrapper::CreateCriticalSection()),
-      _deviceId(-1), 
-      _deviceFd(-1),
-      _buffersAllocatedByDevice(-1),
+      _cameraHandle(CAMERA_HANDLE_INVALID),
       _currentWidth(-1), 
       _currentHeight(-1),
       _currentFrameRate(-1), 
       _captureStarted(false),
-      _captureVideoType(kVideoI420), 
-      _pool(NULL)
+      _captureVideoType(kVideoI420)
 {
+	video_capture_module = this;
+    capture_crit_sect = CriticalSectionWrapper::CreateCriticalSection();
 }
 
-WebRtc_Word32 VideoCaptureModuleV4L2::Init(const char* deviceUniqueIdUTF8)
+WebRtc_Word32 VideoCaptureModuleBB::Init(const char* deviceUniqueIdUTF8)
 {
     int len = strlen((const char*) deviceUniqueIdUTF8);
     _deviceUniqueId = new (std::nothrow) char[len + 1];
@@ -71,395 +207,103 @@ WebRtc_Word32 VideoCaptureModuleV4L2::Init(const char* deviceUniqueIdUTF8)
         memcpy(_deviceUniqueId, deviceUniqueIdUTF8, len + 1);
     }
 
-    int fd;
-    char device[32];
-    bool found = false;
+    camera_error_t error;
+    camera_handle_t cameraHandle;
 
-    /* detect /dev/video [0-63] entries */
-    int n;
-    for (n = 0; n < 64; n++)
+    error = camera_open(CAMERA_UNIT_FRONT,
+            CAMERA_MODE_RW,
+            &cameraHandle);
+    if (error != CAMERA_EOK)
     {
-        sprintf(device, "/dev/video%d", n);
-        if ((fd = open(device, O_RDONLY)) != -1)
-        {
-            // query device capabilities
-            struct v4l2_capability cap;
-            if (ioctl(fd, VIDIOC_QUERYCAP, &cap) == 0)
-            {
-                if (cap.bus_info[0] != 0)
-                {
-                    if (strncmp((const char*) cap.bus_info,
-                                (const char*) deviceUniqueIdUTF8,
-                                strlen((const char*) deviceUniqueIdUTF8)) == 0) //match with device id
-                    {
-                        close(fd);
-                        found = true;
-                        break; // fd matches with device unique id supplied
-                    }
-                }
-            }
-            close(fd); // close since this is not the matching device
-        }
-    }
-    if (!found)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "no matching device found");
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot open camera - error: %d", error);
         return -1;
     }
-    _deviceId = n; //store the device id
+
+    _cameraHandle = cameraHandle;
+
+    error = camera_set_video_property(cameraHandle,
+        CAMERA_IMGPROP_FRAMERATE, (double)15.0);
+    if (error != CAMERA_EOK)
+    {
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot set video properties - error: %d", error);
+        return -1;
+    }
+
     return 0;
 }
 
-VideoCaptureModuleV4L2::~VideoCaptureModuleV4L2()
+VideoCaptureModuleBB::~VideoCaptureModuleBB()
 {
     StopCapture();
-    if (_captureCritSect)
+    if (capture_crit_sect)
     {
-        delete _captureCritSect;
+        delete capture_crit_sect;
     }
-    if (_deviceFd != -1)
-      close(_deviceFd);
+    if (_cameraHandle != CAMERA_HANDLE_INVALID)
+    {
+        camera_error_t error;
+        error = camera_close(_cameraHandle);
+        if (error != CAMERA_EOK)
+            WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot close camera - error: %d", error);
+        _cameraHandle = CAMERA_HANDLE_INVALID;
+    }
 }
 
-WebRtc_Word32 VideoCaptureModuleV4L2::StartCapture(
+WebRtc_Word32 VideoCaptureModuleBB::StartCapture(
                                         const VideoCaptureCapability& capability)
 {
-    if (_captureStarted)
-    {
-        if (capability.width == _currentWidth &&
-            capability.height == _currentHeight &&
-            _captureVideoType == capability.rawType)
-        {
-            return 0;
-        }
-        else
-        {
-            StopCapture();
-        }
-    }
+    camera_error_t error;
 
-    CriticalSectionScoped cs(_captureCritSect);
-    //first open /dev/video device
-    char device[20];
-    sprintf(device, "/dev/video%d", (int) _deviceId);
-
-    if ((_deviceFd = open(device, O_RDWR | O_NONBLOCK, 0)) < 0)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "error in opening %s errono = %d", device, errno);
-        return -1;
-    }
-
-    // Supported video formats in preferred order.
-    // If the requested resolution is larger than VGA, we prefer MJPEG. Go for
-    // I420 otherwise.
-    const int nFormats = 3;
-    unsigned int fmts[nFormats];
-    if (capability.width > 640 || capability.height > 480) {
-        fmts[0] = V4L2_PIX_FMT_MJPEG;
-        fmts[1] = V4L2_PIX_FMT_YUV420;
-        fmts[2] = V4L2_PIX_FMT_YUYV;
-    } else {
-        fmts[0] = V4L2_PIX_FMT_YUV420;
-        fmts[1] = V4L2_PIX_FMT_YUYV;
-        fmts[2] = V4L2_PIX_FMT_MJPEG;
-    }
-
-    struct v4l2_format video_fmt;
-    memset(&video_fmt, 0, sizeof(struct v4l2_format));
-    video_fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    video_fmt.fmt.pix.sizeimage = 0;
-    video_fmt.fmt.pix.width = capability.width;
-    video_fmt.fmt.pix.height = capability.height;
-
-    bool formatMatch = false;
-    for (int i = 0; i < nFormats; i++)
-    {
-        video_fmt.fmt.pix.pixelformat = fmts[i];
-        if (ioctl(_deviceFd, VIDIOC_TRY_FMT, &video_fmt) < 0)
-        {
-            continue;
-        }
-        else
-        {
-            formatMatch = true;
-            break;
-        }
-    }
-    if (!formatMatch)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "no supporting video formats found");
-        return -1;
-    }
-
-    if (video_fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_YUYV)
-        _captureVideoType = kVideoYUY2;
-    else if (video_fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_YUV420)
-        _captureVideoType = kVideoI420;
-    else if (video_fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
-        _captureVideoType = kVideoMJPEG;
-
-    //set format and frame size now
-    if (ioctl(_deviceFd, VIDIOC_S_FMT, &video_fmt) < 0)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "error in VIDIOC_S_FMT, errno = %d", errno);
-        return -1;
-    }
-
-    // initialize current width and height
-    _currentWidth = video_fmt.fmt.pix.width;
-    _currentHeight = video_fmt.fmt.pix.height;
-    _captureDelay = 120;
-    // No way of knowing frame rate, make a guess.
-    if(_currentWidth >= 800 && _captureVideoType != kVideoMJPEG)
-      _currentFrameRate = 15;
-    else
-      _currentFrameRate = 30;
-
-    if (!AllocateVideoBuffers())
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "failed to allocate video capture buffers");
-        return -1;
-    }
-
-    //start capture thread;
-    if (!_captureThread)
-    {
-        _captureThread = ThreadWrapper::CreateThread(
-            VideoCaptureModuleV4L2::CaptureThread, this, kHighPriority);
-        unsigned int id;
-        _captureThread->Start(id);
-    }
-
-    // Needed to start UVC camera - from the uvcview application
-    enum v4l2_buf_type type;
-    type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (ioctl(_deviceFd, VIDIOC_STREAMON, &type) == -1)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                     "Failed to turn on stream");
+    error = camera_start_video_viewfinder(_cameraHandle,
+    		viewfinder_callback,
+            NULL,
+            NULL);
+    if (error != CAMERA_EOK) {
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot start video viewfinder - error: %d", error);
         return -1;
     }
 
     _captureStarted = true;
-    return 0;
-}
-
-WebRtc_Word32 VideoCaptureModuleV4L2::StopCapture()
-{
-    if (_captureThread)
-        _captureThread->SetNotAlive();// Make sure the capture thread stop stop using the critsect.
-
-
-    CriticalSectionScoped cs(_captureCritSect);
-
-    WEBRTC_TRACE(webrtc::kTraceInfo, webrtc::kTraceVideoCapture, -1, "StopCapture(), was running: %d",
-               _captureStarted);
-
-    if (!_captureStarted)
-    {
-        // we were not capturing!
-        return 0;
-    }
-
-    _captureStarted = false;
-
-    // stop the capture thread
-    // Delete capture update thread and event
-    if (_captureThread)
-    {
-        ThreadWrapper* temp = _captureThread;
-        _captureThread = NULL;
-        temp->SetNotAlive();
-        if (temp->Stop())
-        {
-            delete temp;
-        }
-    }
-
-    DeAllocateVideoBuffers();
-    close(_deviceFd);
-    _deviceFd = -1;
 
     return 0;
 }
 
-//critical section protected by the caller
-
-bool VideoCaptureModuleV4L2::AllocateVideoBuffers()
+WebRtc_Word32 VideoCaptureModuleBB::StopCapture()
 {
-    struct v4l2_requestbuffers rbuffer;
-    memset(&rbuffer, 0, sizeof(v4l2_requestbuffers));
+    camera_error_t error;
 
-    rbuffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    rbuffer.memory = V4L2_MEMORY_MMAP;
-    rbuffer.count = kNoOfV4L2Bufffers;
-
-    if (ioctl(_deviceFd, VIDIOC_REQBUFS, &rbuffer) < 0)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "Could not get buffers from device. errno = %d", errno);
-        return false;
+    error = camera_stop_video_viewfinder(_cameraHandle);
+    if (error != CAMERA_EOK) {
+        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id, "cannot stop video viewfinder - error: %d", error);
+        return -1;
     }
 
-    if (rbuffer.count > kNoOfV4L2Bufffers)
-        rbuffer.count = kNoOfV4L2Bufffers;
-
-    _buffersAllocatedByDevice = rbuffer.count;
-
-    //Map the buffers
-    _pool = new Buffer[rbuffer.count];
-
-    for (unsigned int i = 0; i < rbuffer.count; i++)
-    {
-        struct v4l2_buffer buffer;
-        memset(&buffer, 0, sizeof(v4l2_buffer));
-        buffer.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-        buffer.memory = V4L2_MEMORY_MMAP;
-        buffer.index = i;
-
-        if (ioctl(_deviceFd, VIDIOC_QUERYBUF, &buffer) < 0)
-        {
-            return false;
-        }
-
-        _pool[i].start = mmap(NULL, buffer.length, PROT_READ | PROT_WRITE, MAP_SHARED,
-                              _deviceFd, buffer.m.offset);
-
-        if (MAP_FAILED == _pool[i].start)
-        {
-            for (unsigned int j = 0; j < i; j++)
-                munmap(_pool[j].start, _pool[j].length);
-            return false;
-        }
-
-        _pool[i].length = buffer.length;
-
-        if (ioctl(_deviceFd, VIDIOC_QBUF, &buffer) < 0)
-        {
-            return false;
-        }
-    }
-    return true;
+    return 0;
 }
 
-bool VideoCaptureModuleV4L2::DeAllocateVideoBuffers()
-{
-    // unmap buffers
-    for (int i = 0; i < _buffersAllocatedByDevice; i++)
-        munmap(_pool[i].start, _pool[i].length);
-
-    delete[] _pool;
-
-    // turn off stream
-    enum v4l2_buf_type type;
-    type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-    if (ioctl(_deviceFd, VIDIOC_STREAMOFF, &type) < 0)
-    {
-        WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                   "VIDIOC_STREAMOFF error. errno: %d", errno);
-    }
-
-    return true;
-}
-
-bool VideoCaptureModuleV4L2::CaptureStarted()
+bool VideoCaptureModuleBB::CaptureStarted()
 {
     return _captureStarted;
 }
 
-bool VideoCaptureModuleV4L2::CaptureThread(void* obj)
-{
-    return static_cast<VideoCaptureModuleV4L2*> (obj)->CaptureProcess();
-}
-bool VideoCaptureModuleV4L2::CaptureProcess()
-{
-    int retVal = 0;
-    fd_set rSet;
-    struct timeval timeout;
-
-    _captureCritSect->Enter();
-    if (!_captureThread)
-    {
-        // terminating
-        _captureCritSect->Leave();
-        return false;
-    }
-
-    FD_ZERO(&rSet);
-    FD_SET(_deviceFd, &rSet);
-    timeout.tv_sec = 1;
-    timeout.tv_usec = 0;
-
-    retVal = select(_deviceFd + 1, &rSet, NULL, NULL, &timeout);
-    if (retVal < 0 && errno != EINTR) // continue if interrupted
-    {
-        // select failed
-        _captureCritSect->Leave();
-        return false;
-    }
-    else if (retVal == 0)
-    {
-        // select timed out
-        _captureCritSect->Leave();
-        return true;
-    }
-    else if (!FD_ISSET(_deviceFd, &rSet))
-    {
-        // not event on camera handle
-        _captureCritSect->Leave();
-        return true;
-    }
-
-    if (_captureStarted)
-    {
-        struct v4l2_buffer buf;
-        memset(&buf, 0, sizeof(struct v4l2_buffer));
-        buf.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
-        buf.memory = V4L2_MEMORY_MMAP;
-        // dequeue a buffer - repeat until dequeued properly!
-        while (ioctl(_deviceFd, VIDIOC_DQBUF, &buf) < 0)
-        {
-            if (errno != EINTR)
-            {
-                WEBRTC_TRACE(webrtc::kTraceError, webrtc::kTraceVideoCapture, _id,
-                           "could not sync on a buffer on device %s", strerror(errno));
-                _captureCritSect->Leave();
-                return true;
-            }
-        }
-        VideoCaptureCapability frameInfo;
-        frameInfo.width = _currentWidth;
-        frameInfo.height = _currentHeight;
-        frameInfo.rawType = _captureVideoType;
-
-        // convert to to I420 if needed
-        IncomingFrame((unsigned char*) _pool[buf.index].start,
-                      buf.bytesused, frameInfo);
-        // enqueue the buffer again
-        if (ioctl(_deviceFd, VIDIOC_QBUF, &buf) == -1)
-        {
-            WEBRTC_TRACE(webrtc::kTraceWarning, webrtc::kTraceVideoCapture, _id,
-                       "Failed to enqueue capture buffer");
-        }
-    }
-    _captureCritSect->Leave();
-    usleep(0);
-    return true;
-}
-
-WebRtc_Word32 VideoCaptureModuleV4L2::CaptureSettings(VideoCaptureCapability& settings)
+WebRtc_Word32 VideoCaptureModuleBB::CaptureSettings(VideoCaptureCapability& settings)
 {
     settings.width = _currentWidth;
     settings.height = _currentHeight;
     settings.maxFPS = _currentFrameRate;
-    settings.rawType=_captureVideoType;
+    settings.rawType = _captureVideoType;
 
     return 0;
 }
+
+WebRtc_Word32 VideoCaptureModuleBB::IncomingFrameBB(WebRtc_UWord8* videoFrame,
+		WebRtc_Word32 videoFrameLength,
+        const VideoCaptureCapability& frameInfo,
+        WebRtc_Word64 captureTime,
+        bool faceDetected)
+{
+	return IncomingFrame(videoFrame, videoFrameLength, frameInfo, captureTime, faceDetected);
+}
+
 } // namespace videocapturemodule
 } // namespace webrtc
-#endif

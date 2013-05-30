@@ -55,12 +55,14 @@
 
 #include <zsLib/Stringize.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 #define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
 
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
+
+#define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -249,7 +251,7 @@ namespace hookflash
           }
         }
 
-        if ((!IServiceIdentity::isValid(identityURI)) ||
+        if ((!IServiceIdentity::isValid(identityURI)) &&
             (!IServiceIdentity::isValidBase(identityURI))) {
           ZS_LOG_ERROR(Detail, String("identity URI specified is not valid, uri=") + identityURI)
           return ServiceIdentitySessionPtr();
@@ -473,6 +475,12 @@ namespace hookflash
         DocumentPtr result = mPendingMessagesToDeliver.front();
         mPendingMessagesToDeliver.pop_front();
 
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(result);
+          ZS_LOG_TRACE(log("sending inner frame message") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         if (mDelegate) {
           if (mPendingMessagesToDeliver.size() > 0) {
             try {
@@ -488,6 +496,12 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
       {
+        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> jsonText = generator->write(unparsedMessage);
+          ZS_LOG_TRACE(log("handling message from inner frame") + ", message=" + (CSTR)(jsonText.get()))
+        }
+
         MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
         if (IMessageMonitor::handleMessageReceived(message)) {
           ZS_LOG_DEBUG(log("message handled via message monitor"))
@@ -1358,6 +1372,7 @@ namespace hookflash
 
         switch (state) {
           case IServiceLockboxSession::SessionState_Pending:
+          case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration:
           case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeLoaded:
           case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
           case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToClose: {
@@ -1749,10 +1764,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
-      if (!boost::regex_match(identityURI, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
-        if (!boost::regex_match(identityURI, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.+$");
+      if (!e.hasMatch(identityURI)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:.+$");
+        if (!e2.hasMatch(identityURI)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
           return false;
         }
@@ -1768,10 +1783,10 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
-      if (!boost::regex_match(identityBase, e)) {
-        const boost::regex e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
-        if (!boost::regex_match(identityBase, e2)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/$");
+      if (!e.hasMatch(identityBase)) {
+        zsLib::RegEx e2("^identity:[a-zA-Z0-9\\-_]{0,61}:$");
+        if (!e2.hasMatch(identityBase)) {
           ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity base URI is not valid, uri=") + identityBase)
           return false;
         }
@@ -1787,8 +1802,8 @@ namespace hookflash
         return false;
       }
 
-      const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+      if (!e.hasMatch(identityURI)) {
         return false;
       }
       return true;
@@ -1809,8 +1824,8 @@ namespace hookflash
 
       // scope: check legacy identity
       {
-        const boost::regex e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
-        if (boost::regex_match(identityURI, e)) {
+        zsLib::RegEx e("^identity:[a-zA-Z0-9\\-_]{0,61}:.*$");
+        if (e.hasMatch(identityURI)) {
 
           // find second colon
           size_t startPos = strlen("identity:");
@@ -1826,8 +1841,8 @@ namespace hookflash
         }
       }
 
-      const boost::regex e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
-      if (!boost::regex_match(identityURI, e)) {
+      zsLib::RegEx e("^identity:\\/\\/([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}\\/.*$");
+      if (!e.hasMatch(identityURI)) {
         ZS_LOG_WARNING(Detail, String("ServiceIdentity [] identity URI is not valid, uri=") + identityURI)
         return false;
       }

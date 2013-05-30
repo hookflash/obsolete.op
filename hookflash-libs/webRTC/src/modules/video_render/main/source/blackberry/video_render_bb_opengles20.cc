@@ -13,20 +13,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+using namespace std;
 
 #include "video_render_bb_opengles20.h"
 
-//#define ANDROID_LOG
-
-#ifdef ANDROID_LOG
-#include <stdio.h>
-#include <android/log.h>
-
-#undef WEBRTC_TRACE
-#define WEBRTC_TRACE(a,b,c,...)  __android_log_print(ANDROID_LOG_DEBUG, "*WEBRTCN*", __VA_ARGS__)
-#else
 #include "trace.h"
-#endif
 
 namespace webrtc {
 
@@ -68,6 +61,7 @@ const char VideoRenderOpenGles20::g_fragmentShader[] = {
   "  gl_FragColor=vec4(r,g,b,1.0);\n"
   "}\n" };
 
+
 VideoRenderOpenGles20::VideoRenderOpenGles20(WebRtc_Word32 id) :
     _id(id),
     _textureWidth(-1),
@@ -88,11 +82,8 @@ VideoRenderOpenGles20::VideoRenderOpenGles20(WebRtc_Word32 id) :
 VideoRenderOpenGles20::~VideoRenderOpenGles20() {
 }
 
-WebRtc_Word32 VideoRenderOpenGles20::Setup(WebRtc_Word32 width,
-                                           WebRtc_Word32 height) {
-  WEBRTC_TRACE(kTraceDebug, kTraceVideoRenderer, _id,
-               "%s: width %d, height %d", __FUNCTION__, (int) width,
-               (int) height);
+WebRtc_Word32 VideoRenderOpenGles20::Setup() {
+  WEBRTC_TRACE(kTraceDebug, kTraceVideoRenderer, _id, "%s", __FUNCTION__);
 
   printGLString("Version", GL_VERSION);
   printGLString("Vendor", GL_VENDOR);
@@ -153,21 +144,19 @@ WebRtc_Word32 VideoRenderOpenGles20::Setup(WebRtc_Word32 width,
   glUseProgram(_program);
   int i = glGetUniformLocation(_program, "Ytex");
   checkGlError("glGetUniformLocation");
-  glUniform1i(i, 0); /* Bind Ytex to texture unit 0 */
+  glUniform1i(i, 0); // Bind Ytex to texture unit 0
   checkGlError("glUniform1i Ytex");
 
   i = glGetUniformLocation(_program, "Utex");
   checkGlError("glGetUniformLocation Utex");
-  glUniform1i(i, 1); /* Bind Utex to texture unit 1 */
+  glUniform1i(i, 1); // Bind Utex to texture unit 1
   checkGlError("glUniform1i Utex");
 
   i = glGetUniformLocation(_program, "Vtex");
   checkGlError("glGetUniformLocation");
-  glUniform1i(i, 2); /* Bind Vtex to texture unit 2 */
+  glUniform1i(i, 2); // Bind Vtex to texture unit 2
   checkGlError("glUniform1i");
 
-  glViewport(0, 0, width, height);
-  checkGlError("glViewport");
   return 0;
 }
 
@@ -215,25 +204,13 @@ WebRtc_Word32 VideoRenderOpenGles20::SetCoordinates(WebRtc_Word32 zOrder,
   return 0;
 }
 
-WebRtc_Word32 VideoRenderOpenGles20::Render(const VideoFrame& frameToRender) {
-
-  if (frameToRender.Length() == 0) {
-    return -1;
-  }
+WebRtc_Word32 VideoRenderOpenGles20::Render() {
 
   WEBRTC_TRACE(kTraceDebug, kTraceVideoRenderer, _id, "%s: id %d",
                __FUNCTION__, (int) _id);
 
   glUseProgram(_program);
   checkGlError("glUseProgram");
-
-  if (_textureWidth != (GLsizei) frameToRender.Width() ||
-      _textureHeight != (GLsizei) frameToRender.Height()) {
-    SetupTextures(frameToRender);
-  }
-  else {
-    UpdateTextures(frameToRender);
-  }
 
   glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, g_indices);
   checkGlError("glDrawArrays");
@@ -317,14 +294,10 @@ void VideoRenderOpenGles20::printGLString(const char *name, GLenum s) {
 }
 
 void VideoRenderOpenGles20::checkGlError(const char* op) {
-#ifdef ANDROID_LOG
   for (GLint error = glGetError(); error; error = glGetError()) {
     WEBRTC_TRACE(kTraceError, kTraceVideoRenderer, _id,
                  "after %s() glError (0x%x)\n", op, error);
   }
-#else
-  return;
-#endif
 }
 
 void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
@@ -347,6 +320,9 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
+
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0,
                GL_LUMINANCE, GL_UNSIGNED_BYTE,
                (const GLvoid*) frameToRender.Buffer());
@@ -361,6 +337,9 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
+
   const WebRtc_UWord8* uComponent = frameToRender.Buffer() + width * height;
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
                GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
@@ -371,8 +350,12 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
 
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+  glPixelStorei(GL_PACK_ALIGNMENT, 2);
+  glPixelStorei(GL_UNPACK_ALIGNMENT, 2);
 
   const WebRtc_UWord8* vComponent = uComponent + (width * height) / 4;
   glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
@@ -384,12 +367,21 @@ void VideoRenderOpenGles20::SetupTextures(const VideoFrame& frameToRender) {
 }
 
 void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
+
+  if (_textureWidth != (GLsizei) frameToRender.Width() ||
+      _textureHeight != (GLsizei) frameToRender.Height()) {
+    SetupTextures(frameToRender);
+  }
+
   const GLsizei width = frameToRender.Width();
   const GLsizei height = frameToRender.Height();
 
   GLuint currentTextureId = _textureIds[0]; // Y
   glActiveTexture( GL_TEXTURE0);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE,
+               (const GLvoid*) frameToRender.Buffer());
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_LUMINANCE,
                   GL_UNSIGNED_BYTE, (const GLvoid*) frameToRender.Buffer());
 
@@ -397,6 +389,8 @@ void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
   glActiveTexture( GL_TEXTURE1);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
   const WebRtc_UWord8* uComponent = frameToRender.Buffer() + width * height;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width / 2, height / 2,
                   GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) uComponent);
 
@@ -404,10 +398,11 @@ void VideoRenderOpenGles20::UpdateTextures(const VideoFrame& frameToRender) {
   glActiveTexture( GL_TEXTURE2);
   glBindTexture(GL_TEXTURE_2D, currentTextureId);
   const WebRtc_UWord8* vComponent = uComponent + (width * height) / 4;
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width / 2, height / 2, 0,
+               GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) vComponent);
   glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width / 2, height / 2,
                   GL_LUMINANCE, GL_UNSIGNED_BYTE, (const GLvoid*) vComponent);
   checkGlError("UpdateTextures");
-
 }
 
 }  // namespace webrtc

@@ -509,7 +509,7 @@ namespace hookflash
           return;
         }
 
-        ZS_LOG_DEBUG(log("setting shutdown reason") + reason)
+        ZS_LOG_DEBUG(log("setting shutdown reason") + ", reason=" + toString(reason))
         mShutdownReason = reason;
       }
 

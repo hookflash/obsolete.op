@@ -793,6 +793,7 @@ namespace hookflash
             return;
           }
 
+          // create and remember this contact for the future
           ContactPtr contact = IContactForAccount::createFromPeer(mThisWeak.lock(), peer);
 
           // attempt find once more as contact might now be registered
@@ -1287,7 +1288,7 @@ namespace hookflash
         ILocationPtr selfLocation = ILocation::getForLocal(mStackAccount);
 
         stack::IPublicationMetaData::PublishToRelationshipsMap empty;
-        mSubscribersPermissionDocument = stack::IPublication::create(selfLocation, "/threads/1.0/subscribers/permissions", "text/x-xml-openpeer-permissions", relationships, empty);
+        mSubscribersPermissionDocument = stack::IPublication::create(selfLocation, "/threads/1.0/subscribers/permissions", "text/x-json-openpeer-permissions", relationships, empty, selfLocation);
         if (!mSubscribersPermissionDocument) {
           ZS_LOG_ERROR(Detail, log("unable to create subscription permission document thus shutting down"))
           setError(IHTTP::HTTPStatusCode_InternalServerError, "Failed to create subscribers document");
@@ -1454,6 +1455,7 @@ namespace hookflash
 
           mPeerSubscriptionAutoCloseTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS), false);
         } else {
+          ZS_LOG_DEBUG(log("creating location subscription to location") + ILocation::toDebugString(peerLocation))
           mLocations[peerLocation->getLocationID()] = LocationSubscription::create(mThisWeak.lock(), peerLocation);
         }
 
@@ -2202,10 +2204,15 @@ namespace hookflash
     const char *IAccount::toString(AccountStates state)
     {
       switch (state) {
-        case AccountState_Pending:      return "Pending";
-        case AccountState_Ready:        return "Ready";
-        case AccountState_ShuttingDown: return "Shutting down";
-        case AccountState_Shutdown:     return "Shutdown";
+        case AccountState_Pending:                                return "Pending";
+        case AccountState_PendingPeerFilesGeneration:             return "Pending Peer File Generation";
+        case AccountState_WaitingForAssociationToIdentity:        return "Waiting for Association to Identity";
+        case AccountState_WaitingForBrowserWindowToBeLoaded:      return "Waiting for Browser Window to be Loaded";
+        case AccountState_WaitingForBrowserWindowToBeMadeVisible: return "Waiting for Browser Window to be made Visible";
+        case AccountState_WaitingForBrowserWindowToClose:         return "Waiting for Browser Window to Close";
+        case AccountState_Ready:                                  return "Ready";
+        case AccountState_ShuttingDown:                           return "Shutting down";
+        case AccountState_Shutdown:                               return "Shutdown";
       }
       return "UNDEFINED";
     }

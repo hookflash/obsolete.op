@@ -37,7 +37,7 @@
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 
-#include <boost/regex.hpp>
+#include <zsLib/RegEx.h>
 
 #include <cryptopp/modes.h>
 #include <cryptopp/hex.h>
@@ -246,12 +246,13 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String Helper::convertToHex(
                                   const BYTE *buffer,
-                                  ULONG bufferLengthInBytes
+                                  ULONG bufferLengthInBytes,
+                                  bool outputUpperCase
                                   )
       {
         String result;
 
-        HexEncoder encoder(new StringSink(result));
+        HexEncoder encoder(new StringSink(result), outputUpperCase);
         encoder.Put(buffer, bufferLengthInBytes);
         encoder.MessageEnd();
 
@@ -259,9 +260,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      String Helper::convertToHex(SecureByteBlock &input)
+      String Helper::convertToHex(
+                                  SecureByteBlock &input,
+                                  bool outputUpperCase
+                                  )
       {
-        return convertToHex(input, input.size());
+        return convertToHex(input, input.size(), outputUpperCase);
       }
 
       //-------------------------------------------------------------------------
@@ -535,11 +539,178 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      ElementPtr Helper::cloneAsCanonicalJSON(ElementPtr element)
+      {
+        if (!element) return element;
+
+        class Walker : public WalkSink
+        {
+        public:
+          Walker() {}
+
+          virtual bool onElementEnter(ElementPtr inElement)
+          {
+            typedef std::list<NodePtr> ChildrenList;
+            typedef std::list<AttributePtr> ChildrenAttributeList;
+
+            // sort the elements and "other" node types
+            {
+              ChildrenList children;
+
+              while (inElement->hasChildren()) {
+                NodePtr child = inElement->getFirstChild();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              NodePtr lastInsert;
+              bool insertedElement = false;
+              while (children.size() > 0)
+              {
+                NodePtr currentNode = children.front();
+                children.pop_front();
+
+                ElementPtr currentEl = (currentNode->isElement() ? currentNode->toElement() : ElementPtr());
+
+                if (!insertedElement) {
+                  inElement->adoptAsLastChild(currentNode);
+                  lastInsert = currentNode;
+                  insertedElement = true;
+                  continue;
+                }
+
+                if (!currentEl) {
+                  lastInsert->adoptAsNextSibling(currentNode);
+                  lastInsert = currentNode;
+                  continue;
+                }
+
+                insertedElement = true; // will have to be true now as this child is an element
+
+                String currentName = currentEl->getValue();
+
+                // I know this isn't optmized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                bool inserted = false;
+
+                ElementPtr childEl = inElement->getFirstChildElement();
+                while (childEl) {
+                  String childName = childEl->getValue();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    childEl->adoptAsPreviousSibling(currentEl);
+                    lastInsert = currentEl;
+                    inserted = true;
+                    break;
+                  }
+
+                  childEl = childEl->getNextSiblingElement();
+                }
+
+                if (inserted)
+                  continue;
+
+                inElement->adoptAsLastChild(currentEl);
+                lastInsert = currentEl;
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            // sort the attributes
+            {
+              ChildrenAttributeList children;
+
+              while (inElement->getFirstAttribute()) {
+                AttributePtr child = inElement->getFirstAttribute();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              while (children.size() > 0)
+              {
+                AttributePtr current = children.front();
+                children.pop_front();
+
+                // I know this isn't optimized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                AttributePtr child = inElement->getFirstAttribute();
+                if (!child) {
+                  inElement->setAttribute(current);
+                  continue;
+                }
+
+                bool inserted = false;
+                String currentName = current->getName();
+
+                while (child) {
+                  String childName = child->getName();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    child->adoptAsPreviousSibling(current);
+                    inserted = true;
+                    break;
+                  }
+
+                  NodePtr nextNode = child->getNextSibling();
+                  if (!nextNode) break;
+                  child = nextNode->toAttribute();
+                }
+
+                if (inserted)
+                  continue;
+
+                // there *MUST* be a last attribute or crash
+                inElement->getLastAttributeChecked()->adoptAsNextSibling(current);
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            return false;
+          }
+
+        private:
+        };
+
+        if (ZS_IS_LOGGING(Trace)) {
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- PRE-SORT  -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(element);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- PRE-SORT  -- ^^^^^^^^^^^^")
+        }
+        ElementPtr convertEl = element->clone()->toElement();
+
+        Node::FilterList filter;
+        filter.push_back(Node::NodeType::Element);
+        Walker walker;
+        convertEl->walk(walker, &filter);
+
+        if (ZS_IS_LOGGING(Trace)) {
+          // let's output some logging...
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- POST-SORT -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(convertEl);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- POST-SORT -- ^^^^^^^^^^^^")
+        }
+
+        return convertEl;
+      }
+
+      //-----------------------------------------------------------------------
       bool Helper::isValidDomain(const char *inDomain)
       {
         String domain(inDomain ? String(inDomain) : String());
-        const boost::regex e("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
-        if (!boost::regex_match(domain, e)) {
+        zsLib::RegEx regex("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
+        if (!regex.hasMatch(inDomain)) {
           ZS_LOG_WARNING(Detail, "Helper [] domain name is not valid, domain=" + domain)
           return false;
         }
@@ -716,16 +887,20 @@ namespace hookflash
     //-------------------------------------------------------------------------
     String IHelper::convertToHex(
                                  const BYTE *buffer,
-                                 ULONG bufferLengthInBytes
+                                 ULONG bufferLengthInBytes,
+                                 bool outputUpperCase
                                  )
     {
-      return internal::Helper::convertToHex(buffer, bufferLengthInBytes);
+      return internal::Helper::convertToHex(buffer, bufferLengthInBytes, outputUpperCase);
     }
 
     //-------------------------------------------------------------------------
-    String IHelper::convertToHex(SecureByteBlock &input)
+    String IHelper::convertToHex(
+                                 SecureByteBlock &input,
+                                 bool outputUpperCase
+                                 )
     {
-      return internal::Helper::convertToHex(input);
+      return internal::Helper::convertToHex(input, outputUpperCase);
     }
 
     //-------------------------------------------------------------------------
@@ -881,6 +1056,12 @@ namespace hookflash
     }
 
     //-------------------------------------------------------------------------
+    ElementPtr IHelper::cloneAsCanonicalJSON(ElementPtr element)
+    {
+      return internal::Helper::cloneAsCanonicalJSON(element);
+    }
+
+    //-------------------------------------------------------------------------
     bool IHelper::isValidDomain(const char *domain)
     {
       return internal::Helper::isValidDomain(domain);
@@ -893,7 +1074,7 @@ namespace hookflash
                         char splitChar
                         )
     {
-      return internal::Helper::split(input, outResult, splitChar);
+      internal::Helper::split(input, outResult, splitChar);
     }
 
     //-------------------------------------------------------------------------

@@ -848,6 +848,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      RecursiveLock &Call::getStepLock() const
+      {
+        return mStepLock;
+      }
+
+      //-----------------------------------------------------------------------
       String Call::log(const char *message) const
       {
         return String("Call [") + Stringize<PUID>(mID).string() + "] " + message;
@@ -1427,7 +1433,7 @@ namespace hookflash
             mCallLocations[locationID] = callLocation;
 
             if (mIncomingCall) {
-              ZS_LOG_DEBUG(log("incoming call must pick the remote location") + ", remote local ID=" + locationID)
+              ZS_LOG_DEBUG(log("incoming call must pick the remote location") + ", remote local ID=" + locationID + CallLocation::toDebugString(callLocation, true, false))
               // we *must* pick this location
               picked = callLocation;
             }
@@ -1576,10 +1582,10 @@ namespace hookflash
               ZS_LOG_WARNING(Detail, log("this non picked location closed the call"))
               mustRemove = true;
             }
-          } catch (Exceptions::IllegalState) {
+          } catch (Exceptions::IllegalState &) {
             ZS_LOG_DEBUG(log("remote call is not in a legal state"))
             mustRemove = true;
-          } catch (Exceptions::CallClosed) {
+          } catch (Exceptions::CallClosed &) {
             ZS_LOG_DEBUG(log("remote call is closed"))
             mustRemove = true;
           }
@@ -1618,8 +1624,10 @@ namespace hookflash
             case CallState_Inactive:
             case CallState_Hold:      {
               if (ICallLocation::CallLocationState_Ready == callLocation->getState()) {
+                ZS_LOG_DEBUG(log("picked location") + CallLocation::toDebugString(callLocation, true, false))
                 ioPicked = callLocation;
               }
+              break;
             }
             default: break;
           }
@@ -1773,7 +1781,7 @@ namespace hookflash
 
           if (ICall::CallState_Hold != mCurrentState) {
             // this call must be in focus...
-            ZS_LOG_DEBUG(log("setting focus to this call?") + "focus=" + (mediaHolding ? "false" : "true"))
+            ZS_LOG_DEBUG(log("setting focus to this call?") + ", focus=" + (mediaHolding ? "false" : "true"))
             ICallAsyncProxy::create(getMediaQueue(), mThisWeak.lock())->onSetFocus(!mediaHolding);
           } else {
             ZS_LOG_DEBUG(log("this call state is holding thus it should not have focus"))
@@ -1817,6 +1825,8 @@ namespace hookflash
       {
         typedef Dialog::DialogStates DialogStates;
 
+        AutoRecursiveLock lock(getStepLock());
+
         CallLocationPtr picked;
         CallLocationPtr early;
         bool mediaHolding = false;
@@ -1841,6 +1851,11 @@ namespace hookflash
             return;
           }
 
+          if (CallClosedReason_None != mClosedReason) {
+            ZS_LOG_WARNING(Detail, log("call close reason set thus call must be shutdown") + ", reason=" + ICall::toString(mClosedReason))
+            goto call_closed_exception;
+          }
+
           needCandidates = !mDialog;
         }
 
@@ -1853,6 +1868,8 @@ namespace hookflash
             ZS_LOG_DEBUG(log("waiting for media to be ready"))
             return;
           }
+
+          AutoRecursiveLock lock(getMediaLock());
 
           picked = mPickedLocation;
           early = mEarlyLocation;
@@ -1949,7 +1966,7 @@ namespace hookflash
             mEarlyLocation = early;
           }
           if ((picked) && (!mPickedLocation)) {
-            ZS_LOG_DEBUG(log("this call now has a picked location"))
+            ZS_LOG_DEBUG(log("this call now has a picked location") + CallLocation::toDebugString(picked, false, true))
             mPickedLocation = picked;
             mEarlyLocation.reset();
           }

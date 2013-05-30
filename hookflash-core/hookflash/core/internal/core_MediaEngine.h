@@ -51,7 +51,6 @@
 #include <vie_capture.h>
 #include <vie_codec.h>
 #include <vie_rtp_rtcp.h>
-#include <video_capture.h>
 #include <vie_file.h>
 
 namespace hookflash
@@ -407,8 +406,8 @@ namespace hookflash
         VideoRtpRtcp *mVideoRtpRtcp;
         VideoCodec *mVideoCodec;
         VideoFile *mVideoFile;
-        void *mIPhoneCaptureRenderView;
-        void *mIPhoneChannelRenderView;
+        void *mCaptureRenderView;
+        void *mChannelRenderView;
         bool mVideoEngineReady;
 
         RedirectTransport mRedirectVoiceTransport;

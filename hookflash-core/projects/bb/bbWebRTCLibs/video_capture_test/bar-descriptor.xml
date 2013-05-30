@@ -39,8 +39,8 @@
     </initialWindow>
     
     <!--  The category where the application appears. Either core.games or core.media. -->
-    <category>core.games</category>
-    <asset path="assets">assets</asset>
+    <category>core.media</category>
+    <permission>use_camera</permission>
     <asset path="icon.png">icon.png</asset>
     <configuration name="Device-Debug">
        <platformArchitecture>armle-v7</platformArchitecture>

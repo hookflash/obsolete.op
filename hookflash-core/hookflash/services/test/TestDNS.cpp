@@ -294,7 +294,7 @@ void doTestDNS()
   IDNSQueryPtr query10 = IDNS::lookupSRV(testObject, HOOKFLASH_SERVICE_TEST_DNS_ZONE, "sip", "udp");
   IDNSQueryPtr query11 = IDNS::lookupSRV(testObject, HOOKFLASH_SERVICE_TEST_DNS_ZONE, "stun", "udp");
 
-  std::cout << "WAITING:      Waiting for DNS lookup to resolve (max wait is 60 seconds).\n";
+  BOOST_STDOUT() << "WAITING:      Waiting for DNS lookup to resolve (max wait is 60 seconds).\n";
 
   ULONG expectingTotal = 0;
   expectingTotal += (query ? 1 : 0);
@@ -320,7 +320,7 @@ void doTestDNS()
       ULONG totalProcessed = matchingTotal = testObject->getTotalProcessed();
       if (totalProcessed != lastResolved) {
         lastResolved = totalProcessed;
-        std::cout << "WAITING:      [" << totalProcessed << "] Resolved ->  A [" << testObject->getTotalAProcessed() << "]  AAAA [" << testObject->getTotalAAAAProcessed() << "]   SRV [" << testObject->getTotalSRVProcessed() << "]  FAILED[" << testObject->getTotalFailed() << "]\n";
+        BOOST_STDOUT() << "WAITING:      [" << totalProcessed << "] Resolved ->  A [" << testObject->getTotalAProcessed() << "]  AAAA [" << testObject->getTotalAAAAProcessed() << "]   SRV [" << testObject->getTotalSRVProcessed() << "]  FAILED[" << testObject->getTotalFailed() << "]\n";
       }
       if (totalProcessed < expectingTotal) {
         ++totalWait;
@@ -333,7 +333,7 @@ void doTestDNS()
     BOOST_CHECK(totalWait < (60));
   }
 
-  std::cout << "WAITING:      All DNS queries have finished. Waiting for 'bogus' events to process (10 second wait).\n";
+  BOOST_STDOUT() << "WAITING:      All DNS queries have finished. Waiting for 'bogus' events to process (10 second wait).\n";
   boost::this_thread::sleep(zsLib::Seconds(10));
 
   BOOST_EQUAL(matchingTotal, testObject->getTotalProcessed());

@@ -73,8 +73,8 @@ namespace hookflash
           const SecureByteBlockPtr &peerSecret() const                  {return mPeerSecret;}
           void peerSecret(const SecureByteBlockPtr &secret)             {mPeerSecret = secret;}
 
-          const String &requestfindProofBundleDigestValue() const       {return mRequestfindProofBundleDigestValue;}
-          void requestfindProofBundleDigestValue(const String &secret)  {mRequestfindProofBundleDigestValue = secret;}
+          const String &requestFindProofBundleDigestValue() const       {return mRequestfindProofBundleDigestValue;}
+          void requestFindProofBundleDigestValue(const String &secret)  {mRequestfindProofBundleDigestValue = secret;}
 
           const LocationInfo &locationInfo() const                      {return mLocationInfo;}
           void locationInfo(const LocationInfo &location)               {mLocationInfo = location;}

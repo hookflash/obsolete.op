@@ -374,7 +374,7 @@ namespace hookflash
           Candidate nominatedRemote;
           bool hasCandidate = getNominatedCandidateInformation(nominatedLocal, nominatedRemote);
           if (!hasCandidate) {
-            ZS_LOG_WARNING(Debug, log("told is was connected but it has no nominations (session closed quickly??)") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
+            ZS_LOG_WARNING(Debug, log("told is was connected but it has no nominations (session closed quickly?)") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
             return;
           }
 

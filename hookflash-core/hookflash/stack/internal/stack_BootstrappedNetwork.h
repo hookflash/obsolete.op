@@ -48,7 +48,7 @@
 // set to 1 to force over HTTP instead of HTTPS
 #define HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP 0
 
-#define HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME "services-get"
+#define HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME "openpeer-services-get"
 
 namespace hookflash
 {

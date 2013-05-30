@@ -58,7 +58,7 @@ namespace hookflash
             case BrowserVisibility_NA:              return "";
 
             case BrowserVisibility_Hidden:          return "hidden";
-            case BrowserVisibility_Visible:         return "visbile";
+            case BrowserVisibility_Visible:         return "visible";
             case BrowserVisibility_VisibleOnDemand: return "visible-on-demand";
           }
           return "";

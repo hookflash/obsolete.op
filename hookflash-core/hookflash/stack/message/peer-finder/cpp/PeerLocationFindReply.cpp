@@ -103,7 +103,7 @@ namespace hookflash
               return PeerLocationFindReplyPtr();
             }
 
-            ret->mRequestfindProofBundleDigestValue = findProofEl->findFirstChildElementChecked("requestfindProofBundleDigestValue")->getText();
+            ret->mRequestfindProofBundleDigestValue = findProofEl->findFirstChildElementChecked("requestFindProofBundleDigestValue")->getText();
 
             ElementPtr routes = root->findFirstChildElement("routes");
             if (routes)
@@ -194,7 +194,7 @@ namespace hookflash
 
           if (hasAttribute(AttributeType_RequestfindProofBundleDigestValue))
           {
-            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("requestfindProofBundleDigestValue", mRequestfindProofBundleDigestValue));
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("requestFindProofBundleDigestValue", mRequestfindProofBundleDigestValue));
           }
 
           if (hasAttribute(AttributeType_LocationInfo))

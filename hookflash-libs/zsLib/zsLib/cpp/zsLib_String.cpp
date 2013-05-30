@@ -213,12 +213,46 @@ namespace zsLib
 
   void String::toLower()
   {
+#ifdef __QNX__
+    char *buffer = new char[length()+1];
+    memset(&(buffer[0]), 0, sizeof(char)*(length()+1));
+
+    const char *source = c_str();
+    char *dest = buffer;
+    for (; *source != '\0'; ++source, ++dest)
+    {
+      *dest = (char)tolower(*source);
+    }
+
+    (*this) = (const char *)buffer;
+
+    delete [] buffer;
+    buffer = NULL;
+#else
     boost::to_lower(*this);
+#endif //__QNX__
   }
 
   void String::toUpper()
   {
+#ifdef __QNX__
+    char *buffer = new char[length()+1];
+    memset(&(buffer[0]), 0, sizeof(char)*(length()+1));
+
+    const char *source = c_str();
+    char *dest = buffer;
+    for (; *source != '\0'; ++source, ++dest)
+    {
+      *dest = (char)toupper(*source);
+    }
+
+    (*this) = (const char *)buffer;
+
+    delete [] buffer;
+    buffer = NULL;
+#else
     boost::to_upper(*this);
+#endif //__QNX__
   }
 
   void String::trim(CSTR chars)

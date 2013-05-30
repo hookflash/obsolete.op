@@ -72,11 +72,11 @@ namespace hookflash
 
           ElementPtr browserEl = root->findFirstChildElement("browser");
           if (browserEl) {
-            String ready = IMessageHelper::getElementText(root->findFirstChildElement("ready"));
+            String ready = IMessageHelper::getElementText(browserEl->findFirstChildElement("ready"));
             if (!ready.isEmpty()) {
               ret->mReady = ("true" == ready ? 1 : 0);
             }
-            String visibility = IMessageHelper::getElementText(root->findFirstChildElement("visibility"));
+            String visibility = IMessageHelper::getElementText(browserEl->findFirstChildElement("visibility"));
             if (!visibility.isEmpty()) {
               ret->mVisible = ("true" == visibility ? 1 : 0);
             }

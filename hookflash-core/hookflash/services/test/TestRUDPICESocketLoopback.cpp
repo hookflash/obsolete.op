@@ -571,7 +571,7 @@ void doTestRUDPICESocketLoopback()
 
         if (lastFound != found) {
           lastFound = found;
-          std::cout << "FOUND:        [" << found << "].\n";
+          BOOST_STDOUT() << "FOUND:        [" << found << "].\n";
         }
       }
       BOOST_EQUAL(found, expecting);

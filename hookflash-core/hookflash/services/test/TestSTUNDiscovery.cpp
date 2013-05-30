@@ -242,7 +242,7 @@ void doTestSTUNDiscovery()
   TestSTUNDiscoveryCallbackPtr testObject = TestSTUNDiscoveryCallback::create(thread, 45123, HOOKFLASH_SERVICE_TEST_STUN_SERVER, true);
   TestSTUNDiscoveryCallbackPtr testObject2 = TestSTUNDiscoveryCallback::create(thread, 45127, HOOKFLASH_SERVICE_TEST_STUN_SERVER, false);
 
-  std::cout << "WAITING:      Waiting for STUN discovery to complete (max wait is 180 seconds).\n";
+  BOOST_STDOUT() << "WAITING:      Waiting for STUN discovery to complete (max wait is 180 seconds).\n";
 
   // check to see if all DNS routines have resolved
   {
@@ -274,7 +274,7 @@ void doTestSTUNDiscovery()
     BOOST_EQUAL(found, expecting);
   }
 
-  std::cout << "WAITING:      All STUN discoveries have finished. Waiting for 'bogus' events to process (10 second wait).\n";
+  BOOST_STDOUT() << "WAITING:      All STUN discoveries have finished. Waiting for 'bogus' events to process (10 second wait).\n";
   boost::this_thread::sleep(zsLib::Seconds(10));
 
   BOOST_CHECK(!testObject->getIP().isAddressEmpty());

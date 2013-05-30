@@ -33,8 +33,6 @@
 
 #include <hookflash/core/IContact.h>
 #include <hookflash/core/internal/types.h>
-//#include <hookflash/stack/types.h>
-//#include <hookflash/stack/message/types.h>
 
 namespace hookflash
 {
@@ -177,7 +175,7 @@ namespace hookflash
                                                    const char *stableIDIfKnown = NULL // (if known)
                                                    );
 
-        static IContactPtr getForSelf(IAccountPtr account);
+        static ContactPtr getForSelf(IAccountPtr account);
 
         virtual PUID getID() const {return  mID;}
 
@@ -307,6 +305,8 @@ namespace hookflash
                                                     IPeerFilePublicPtr publicPeerFile,
                                                     const char *previousStableUniqueID = NULL // (if known)
                                                     );
+
+        virtual ContactPtr getForSelf(IAccountPtr account);
       };
 
     }

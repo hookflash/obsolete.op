@@ -38,6 +38,7 @@
 		006681F916C9D65E00259F81 /* zsLib_XMLParserWarningTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006681B116C9D65E00259F81 /* zsLib_XMLParserWarningTypes.cpp */; };
 		006681FA16C9D65E00259F81 /* zsLib_XMLText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006681B216C9D65E00259F81 /* zsLib_XMLText.cpp */; };
 		006681FB16C9D65E00259F81 /* zsLib_XMLUnknown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006681B316C9D65E00259F81 /* zsLib_XMLUnknown.cpp */; };
+		87F09EEA171EE06E0045F6A6 /* zsLib_RegEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 87F09EE9171EE06E0045F6A6 /* zsLib_RegEx.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -125,6 +126,8 @@
 		006681DA16C9D65E00259F81 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		006681DB16C9D65E00259F81 /* XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XML.h; sourceTree = "<group>"; };
 		006681DC16C9D65E00259F81 /* zsLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zsLib.h; sourceTree = "<group>"; };
+		87F09EE8171EE05F0045F6A6 /* zsLib_RegEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zsLib_RegEx.h; sourceTree = "<group>"; };
+		87F09EE9171EE06E0045F6A6 /* zsLib_RegEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zsLib_RegEx.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -186,6 +189,7 @@
 		0066819416C9D65E00259F81 /* cpp */ = {
 			isa = PBXGroup;
 			children = (
+				87F09EE9171EE06E0045F6A6 /* zsLib_RegEx.cpp */,
 				0066819516C9D65E00259F81 /* zsLib.cpp */,
 				0066819616C9D65E00259F81 /* zsLib_Event.cpp */,
 				0066819716C9D65E00259F81 /* zsLib_helpers.cpp */,
@@ -224,6 +228,7 @@
 		006681B716C9D65E00259F81 /* internal */ = {
 			isa = PBXGroup;
 			children = (
+				87F09EE8171EE05F0045F6A6 /* zsLib_RegEx.h */,
 				006681B816C9D65E00259F81 /* boostTypes.h */,
 				006681B916C9D65E00259F81 /* types.h */,
 				006681BA16C9D65E00259F81 /* zsLib_Event.h */,
@@ -331,6 +336,7 @@
 				006681F916C9D65E00259F81 /* zsLib_XMLParserWarningTypes.cpp in Sources */,
 				006681FA16C9D65E00259F81 /* zsLib_XMLText.cpp in Sources */,
 				006681FB16C9D65E00259F81 /* zsLib_XMLUnknown.cpp in Sources */,
+				87F09EEA171EE06E0045F6A6 /* zsLib_RegEx.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +402,7 @@
 					"$(inherited)",
 					"../../../../../hookflash-staging/iPhoneOS/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -410,6 +417,7 @@
 					"$(inherited)",
 					"../../../../../hookflash-staging/iPhoneOS/include",
 				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

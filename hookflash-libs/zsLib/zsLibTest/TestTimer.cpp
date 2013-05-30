@@ -91,7 +91,7 @@ BOOST_AUTO_TEST_SUITE(zsLibTimer)
     BOOST_EQUAL(testObject3->mCount, 0);
     BOOST_EQUAL(testObject4->mCount, 1);
 
-    std::cout << "WAITING:      To ensure the timers have truly stopped firing events.\n";
+    BOOST_STDOUT() << "WAITING:      To ensure the timers have truly stopped firing events.\n";
     boost::this_thread::sleep(zsLib::Seconds(10));
 
     timer1.reset();

@@ -28,6 +28,8 @@ namespace zsLib {ZS_DECLARE_SUBSYSTEM(zsLib)}
 #pragma warning(push)
 #pragma warning(disable: 4290)
 
+#define ZSLIB_XML_UNKNOWN_ELEMENT_NAME_OUTPUT "unknown"
+
 namespace zsLib
 {
 
@@ -55,8 +57,6 @@ namespace zsLib
       //-----------------------------------------------------------------------
       ULONG Element::getOutputSizeXML(const GeneratorPtr &inGenerator) const
       {
-        ZS_THROW_INVALID_USAGE_IF(mName.isEmpty())
-
         class Walker : public WalkSink
         {
         public:
@@ -65,7 +65,11 @@ namespace zsLib
           virtual bool onElementEnter(ElementPtr inNode)
           {
             mResult += (ULONG)strlen("<");
-            mResult += inNode->mName.getLength();
+            if (inNode->getValue().isEmpty()) {
+              mResult += strlen(ZSLIB_XML_UNKNOWN_ELEMENT_NAME_OUTPUT);
+            } else {
+              mResult += inNode->mName.getLength();
+            }
 
             if (inNode->mFirstAttribute)
             {
@@ -88,7 +92,11 @@ namespace zsLib
               // inner content would go here
 
               mResult += (ULONG)strlen("</");
-              mResult += inNode->mName.getLength();
+              if (inNode->getValue().isEmpty()) {
+                mResult += strlen(ZSLIB_XML_UNKNOWN_ELEMENT_NAME_OUTPUT);
+              } else {
+                mResult += inNode->mName.getLength();
+              }
               mResult += (ULONG)strlen(">");
             }
             else
@@ -126,8 +134,6 @@ namespace zsLib
       //-----------------------------------------------------------------------
       void Element::writeBufferXML(const GeneratorPtr &inGenerator, char * &ioPos) const
       {
-        ZS_THROW_INVALID_USAGE_IF(mName.isEmpty())
-
         class Walker : public WalkSink
         {
         public:
@@ -139,7 +145,11 @@ namespace zsLib
           virtual bool onElementEnter(ElementPtr inNode)
           {
             Generator::writeBuffer(mPos, "<");
-            Generator::writeBuffer(mPos, inNode->mName);
+            if (inNode->getValue().isEmpty()) {
+              Generator::writeBuffer(mPos, ZSLIB_XML_UNKNOWN_ELEMENT_NAME_OUTPUT);
+            } else {
+              Generator::writeBuffer(mPos, inNode->mName);
+            }
 
             if (inNode->mFirstAttribute)
             {
@@ -172,7 +182,11 @@ namespace zsLib
 
             // put on the final end tag which won't know about
             Generator::writeBuffer(mPos, "</");
-            Generator::writeBuffer(mPos, inNode->mName);
+            if (inNode->getValue().isEmpty()) {
+              Generator::writeBuffer(mPos, ZSLIB_XML_UNKNOWN_ELEMENT_NAME_OUTPUT);
+            } else {
+              Generator::writeBuffer(mPos, inNode->mName);
+            }
             Generator::writeBuffer(mPos, ">");
             return false;
           }
@@ -202,8 +216,6 @@ namespace zsLib
       //-----------------------------------------------------------------------
       ULONG Element::getOutputSizeJSON(const GeneratorPtr &inGenerator) const
       {
-        ZS_THROW_INVALID_USAGE_IF(mName.isEmpty())
-
         class Walker : public WalkSink
         {
         public:
@@ -238,7 +250,12 @@ namespace zsLib
                     if (nextInList) {
                       mResult += strlen(",");
                     }
-                    mResult += strlen("\"\":[");
+
+                    if (el->getValue().isEmpty()) {
+                      mResult += strlen("[");
+                    } else {
+                      mResult += strlen("\"\":[");
+                    }
                     mResult += XML::Parser::convertToJSONEncoding(el->getValue()).getLength();
                     break;
                   }
@@ -344,8 +361,6 @@ namespace zsLib
       //-----------------------------------------------------------------------
       void Element::writeBufferJSON(const GeneratorPtr &inGenerator, char * &ioPos) const
       {
-        ZS_THROW_INVALID_USAGE_IF(mName.isEmpty())
-
         class Walker : public WalkSink
         {
         public:
@@ -382,9 +397,13 @@ namespace zsLib
                     if (nextInList) {
                       Generator::writeBuffer(mPos, ",");
                     }
-                    Generator::writeBuffer(mPos, "\"");
-                    Generator::writeBuffer(mPos, XML::Parser::convertToJSONEncoding(el->getValue()));
-                    Generator::writeBuffer(mPos, "\":[");
+                    if (el->getValue().isEmpty()) {
+                      Generator::writeBuffer(mPos, "[");
+                    } else {
+                      Generator::writeBuffer(mPos, "\"");
+                      Generator::writeBuffer(mPos, XML::Parser::convertToJSONEncoding(el->getValue()));
+                      Generator::writeBuffer(mPos, "\":[");
+                    }
                     break;
                   }
                   case Generator::GeneratorJSONELementArrayPositions_Middle:
