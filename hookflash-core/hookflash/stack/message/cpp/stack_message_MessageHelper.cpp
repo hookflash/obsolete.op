@@ -184,14 +184,14 @@ namespace hookflash
       //---------------------------------------------------------------------
       Time IMessageHelper::getAttributeEpoch(ElementPtr node)
       {
-        return IMessageHelper::stringToTime(IMessageHelper::getAttribute(node, "epoch"));
+        return IMessageHelper::stringToTime(IMessageHelper::getAttribute(node, "timestamp"));
       }
 
       //---------------------------------------------------------------------
       void IMessageHelper::setAttributeEpoch(ElementPtr elem, const Time &value)
       {
         if (Time() == value) return;
-        elem->setAttribute("epoch", timeToString(value), false);
+        elem->setAttribute("timestamp", timeToString(value), false);
       }
 
       //-----------------------------------------------------------------------
