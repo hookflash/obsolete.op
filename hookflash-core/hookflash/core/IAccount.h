@@ -128,6 +128,8 @@ namespace hookflash
                                          ) = 0;
 
       virtual void onAccountAssociatedIdentitiesChanged(IAccountPtr account) = 0;
+
+      virtual void onAccountPendingMessageForInnerBrowserWindowFrame(IAccountPtr account) = 0;
     };
   }
 }
@@ -137,4 +139,5 @@ ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IAccountPtr, IAccountPtr)
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IAccount::AccountStates, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountStateChanged, IAccountPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_1(onAccountAssociatedIdentitiesChanged, IAccountPtr)
+ZS_DECLARE_PROXY_METHOD_1(onAccountPendingMessageForInnerBrowserWindowFrame, IAccountPtr)
 ZS_DECLARE_PROXY_END()

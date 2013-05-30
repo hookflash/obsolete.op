@@ -54,7 +54,7 @@ namespace hookflash
                                        IIdentityLookupDelegatePtr delegate,
                                        const IdentityURIList &identityURIs,
                                        const char *identityServiceDomain,
-                                       bool checkForUpdatesOnly
+                                       bool checkForUpdatesOnly   // "true" is a "cheap" server operation; "false" is "expensive" server operation
                                        );
 
       virtual PUID getID() const = 0;

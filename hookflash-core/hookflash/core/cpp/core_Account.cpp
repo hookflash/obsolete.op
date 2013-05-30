@@ -882,6 +882,33 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      void Account::onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session)
+      {
+        AutoRecursiveLock lock(mLock);
+
+        if (session != mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete peer contact session"))
+          return;
+        }
+
+        if ((isShuttingDown()) ||
+            (isShutdown())) {
+          ZS_LOG_WARNING(Detail, log("notified of association change during shutdown"))
+          return;
+        }
+
+        ZS_THROW_BAD_STATE_IF(!mDelegate)
+
+        try {
+          mDelegate->onAccountPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
+        } catch(IAccountDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
+
+        step();
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
