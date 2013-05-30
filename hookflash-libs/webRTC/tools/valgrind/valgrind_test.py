@@ -201,9 +201,9 @@ class BaseTool(object):
 
     return 0
 
-  def Main(self, args, check_sanity):
+  def Main(self, args, check_sanity, min_runtime_in_seconds):
     """Call this to run through the whole process: Setup, Execute, Analyze"""
-    start = datetime.datetime.now()
+    start_time = datetime.datetime.now()
     retcode = -1
     if self.Setup(args):
       retcode = self.RunTestsAndAnalyze(check_sanity)
@@ -211,16 +211,22 @@ class BaseTool(object):
       self.Cleanup()
     else:
       logging.error("Setup failed")
-    end = datetime.datetime.now()
-    seconds = (end - start).seconds
-    hours = seconds / 3600
-    seconds = seconds % 3600
+    end_time = datetime.datetime.now()
+    runtime_in_seconds = (end_time - start_time).seconds
+    hours = runtime_in_seconds / 3600
+    seconds = runtime_in_seconds % 3600
     minutes = seconds / 60
     seconds = seconds % 60
     logging.info("elapsed time: %02d:%02d:%02d" % (hours, minutes, seconds))
+    if (min_runtime_in_seconds > 0 and
+        runtime_in_seconds < min_runtime_in_seconds):
+      logging.error("Layout tests finished too quickly. "
+                    "It should have taken at least %d seconds. "
+                    "Something went wrong?" % min_runtime_in_seconds)
+      retcode = -1
     return retcode
 
-  def Run(self, args, module):
+  def Run(self, args, module, min_runtime_in_seconds=0):
     MODULES_TO_SANITY_CHECK = ["base"]
 
     # TODO(timurrrr): this is a temporary workaround for http://crbug.com/47844
@@ -228,7 +234,7 @@ class BaseTool(object):
       MODULES_TO_SANITY_CHECK = []
 
     check_sanity = module in MODULES_TO_SANITY_CHECK
-    return self.Main(args, check_sanity)
+    return self.Main(args, check_sanity, min_runtime_in_seconds)
 
 
 class ValgrindTool(BaseTool):
@@ -260,7 +266,7 @@ class ValgrindTool(BaseTool):
                                  "running valgrind directly")
     parser.add_option("", "--indirect_webkit_layout", action="store_true",
                             default=False,
-                            help="set --wrapper rather than running valgrind "
+                            help="set --wrapper rather than running Dr. Memory "
                                  "directly.")
     parser.add_option("", "--trace_children", action="store_true",
                             default=False,
@@ -357,6 +363,10 @@ class ValgrindTool(BaseTool):
 
     if self._options.trace_children:
       proc += ["--trace-children=yes"]
+      proc += ["--trace-children-skip='*dbus-daemon*'"]
+      proc += ["--trace-children-skip='*dbus-launch*'"]
+      proc += ["--trace-children-skip='*perl*'"]
+      proc += ["--trace-children-skip='*python*'"]
 
     proc += self.ToolSpecificFlags()
     proc += self._tool_flags
@@ -381,15 +391,21 @@ class ValgrindTool(BaseTool):
     # Handle --indirect_webkit_layout separately.
     if self._options.indirect_webkit_layout:
       # Need to create the wrapper before modifying |proc|.
-      wrapper = self.CreateBrowserWrapper(proc)
+      wrapper = self.CreateBrowserWrapper(proc, webkit=True)
       proc = self._args
       proc.append("--wrapper")
       proc.append(wrapper)
       return proc
 
+    # Valgrind doesn't play nice with the Chrome sandbox.  Empty this env var
+    # set by runtest.py to disable the sandbox.
+    if os.environ.get("CHROME_DEVEL_SANDBOX", None):
+      logging.info("Removing CHROME_DEVEL_SANDBOX fron environment")
+      os.environ["CHROME_DEVEL_SANDBOX"] = ''
+
     if self._options.indirect:
       wrapper = self.CreateBrowserWrapper(proc)
-      os.putenv("BROWSER_WRAPPER", wrapper)
+      os.environ["BROWSER_WRAPPER"] = wrapper
       logging.info('export BROWSER_WRAPPER=' + wrapper)
       proc = []
     proc += self._args
@@ -399,7 +415,7 @@ class ValgrindTool(BaseTool):
     raise NotImplementedError, "This method should be implemented " \
                                "in the tool-specific subclass"
 
-  def CreateBrowserWrapper(self, proc):
+  def CreateBrowserWrapper(self, proc, webkit=False):
     """The program being run invokes Python or something else that can't stand
     to be valgrinded, and also invokes the Chrome browser. In this case, use a
     magic wrapper to only valgrind the Chrome browser. Build the wrapper here.
@@ -416,33 +432,26 @@ class ValgrindTool(BaseTool):
                                             text=True)
     f = os.fdopen(fd, "w")
     f.write('#!/bin/bash\n'
-            'echo "Started Valgrind wrapper for this test, PID=$$"\n')
+            'echo "Started Valgrind wrapper for this test, PID=$$" >&2\n')
 
-    # Try to get the test case name by looking at the program arguments.
-    # i.e. Chromium ui_tests and friends pass --test-name arg.
     f.write('DIR=`dirname $0`\n'
-            'FOUND_TESTNAME=0\n'
-            'TESTNAME_FILE=$DIR/testcase.$$.name\n'
-            'for arg in $@; do\n'
-            '  # TODO(timurrrr): this doesn\'t handle "--test-name Test.Name"\n'
-            '  if [[ "$arg" =~ --test-name=(.*) ]]; then\n'
-            '    echo ${BASH_REMATCH[1]} >$TESTNAME_FILE\n'
-            '    FOUND_TESTNAME=1\n'
-            '  fi\n'
-            'done\n\n')
+            'TESTNAME_FILE=$DIR/testcase.$$.name\n\n')
 
-    f.write('if [ "$FOUND_TESTNAME" = "1" ]; then\n'
-            '    %s "$@"\n'
-            'else\n' % command)
-    # Webkit layout_tests print out the test URL as the first line of stdout.
-    f.write('    %s "$@" | tee $DIR/test.$$.stdout\n'
-            '    EXITCODE=$PIPESTATUS\n'  # $? holds the tee's exit code
-            '    head -n 1 $DIR/test.$$.stdout |\n'
-            '      grep URL |\n'
-            '      sed "s/^.*third_party\/WebKit\/LayoutTests\///" '
-                       '>$TESTNAME_FILE\n'
-            '    exit $EXITCODE\n'
-            'fi\n' % command)
+    if webkit:
+      # Webkit layout_tests pass the URL as the first line of stdin.
+      f.write('tee $TESTNAME_FILE | %s "$@"\n' % command)
+    else:
+      # Try to get the test case name by looking at the program arguments.
+      # i.e. Chromium ui_tests used --test-name arg.
+      # TODO(timurrrr): This doesn't handle "--test-name Test.Name"
+      # TODO(timurrrr): ui_tests are dead. Where do we use the non-webkit
+      # wrapper now? browser_tests? What do they do?
+      f.write('for arg in $@\ndo\n'
+              '  if [[ "$arg" =~ --test-name=(.*) ]]\n  then\n'
+              '    echo ${BASH_REMATCH[1]} >$TESTNAME_FILE\n'
+              '  fi\n'
+              'done\n\n'
+              '%s "$@"\n' % command)
 
     f.close()
     os.chmod(indirect_fname, stat.S_IRUSR|stat.S_IXUSR)
@@ -474,6 +483,10 @@ class ValgrindTool(BaseTool):
         f = open(self.log_dir + ("/testcase.%d.name" % ppid))
         testcase_name = f.read().strip()
         f.close()
+        wk_layout_prefix="third_party/WebKit/LayoutTests/"
+        wk_prefix_at = testcase_name.rfind(wk_layout_prefix)
+        if wk_prefix_at != -1:
+          testcase_name = testcase_name[wk_prefix_at + len(wk_layout_prefix):]
       except IOError:
         pass
       print "====================================================="
@@ -731,6 +744,13 @@ class ThreadSanitizerWindows(ThreadSanitizerBase, PinTool):
 
 
   def ToolSpecificFlags(self):
+    add_env = {
+      "CHROME_ALLOCATOR" : "WINHEAP",
+    }
+    for k,v in add_env.iteritems():
+      logging.info("export %s=%s", k, v)
+      os.putenv(k, v)
+
     proc = ThreadSanitizerBase.ToolSpecificFlags(self)
     # On PIN, ThreadSanitizer has its own suppression mechanism
     # and --log-file flag which work exactly on Valgrind.
@@ -769,9 +789,10 @@ class DrMemory(BaseTool):
   It is not very mature at the moment, some things might not work properly.
   """
 
-  def __init__(self, full_mode):
+  def __init__(self, full_mode, pattern_mode):
     super(DrMemory, self).__init__()
     self.full_mode = full_mode
+    self.pattern_mode = pattern_mode
     self.RegisterOptionParserHook(DrMemory.ExtendOptionParser)
 
   def ToolName(self):
@@ -790,6 +811,10 @@ class DrMemory(BaseTool):
                       default=False,
                       help="set BROWSER_WRAPPER rather than "
                            "running Dr. Memory directly on the harness")
+    parser.add_option("", "--indirect_webkit_layout", action="store_true",
+                      default=False,
+                      help="set --wrapper rather than running valgrind "
+                      "directly.")
     parser.add_option("", "--use_debug", action="store_true",
                       default=False, dest="use_debug",
                       help="Run Dr. Memory debug build")
@@ -860,10 +885,14 @@ class DrMemory(BaseTool):
       logging.warning("WARNING: NOT USING SUPPRESSIONS!")
 
     # Un-comment to dump Dr.Memory events on error
-    #proc += ["-dr_ops", "-dumpcore_mask 0x8bff"]
+    #proc += ["-dr_ops", "-dumpcore_mask", "-dr_ops", "0x8bff"]
 
-    # Un-comment to debug Dr.Memory
-    #proc += ["-dr_ops", "-no_hide -msgbox_mask 15"]
+    # Un-comment and comment next line to debug Dr.Memory
+    #proc += ["-dr_ops", "-no_hide"]
+    #proc += ["-dr_ops", "-msgbox_mask", "-dr_ops", "15"]
+    #Proc += ["-dr_ops", "-stderr_mask", "-dr_ops", "15"]
+    # Ensure we see messages about Dr. Memory crashing!
+    proc += ["-dr_ops", "-stderr_mask", "-dr_ops", "12"]
 
     if self._options.use_debug:
       proc += ["-debug"]
@@ -902,13 +931,15 @@ class DrMemory(BaseTool):
     proc += ["-callstack_srcfile_prefix",
              "build\\src,chromium\\src,crt_build\\self_x86"]
     proc += ["-callstack_modname_hide",
-             "*.exe,chrome.dll"]
+             "*drmemory*,chrome.dll"]
 
     boring_callers = common.BoringCallers(mangled=False, use_re_wildcards=False)
     # TODO(timurrrr): In fact, we want "starting from .." instead of "below .."
     proc += ["-callstack_truncate_below", ",".join(boring_callers)]
 
-    if not self.full_mode:
+    if self.pattern_mode:
+      proc += ["-pattern", "0xf1fd", "-no_count_leaks", "-redzone_size", "0x20"]
+    elif not self.full_mode:
       proc += ["-light"]
 
     proc += self._tool_flags
@@ -919,13 +950,21 @@ class DrMemory(BaseTool):
     # Dr.Memory requires -- to separate tool flags from the executable name.
     proc += ["--"]
 
-    if self._options.indirect:
+    if self._options.indirect or self._options.indirect_webkit_layout:
       # TODO(timurrrr): reuse for TSan on Windows
       wrapper_path = os.path.join(self._source_dir,
                                   "tools", "valgrind", "browser_wrapper_win.py")
-      self.CreateBrowserWrapper(" ".join(["python", wrapper_path] + proc))
+      wrapper = " ".join(["python", wrapper_path] + proc)
+      self.CreateBrowserWrapper(wrapper)
       logging.info("browser wrapper = " + " ".join(proc))
-      proc = []
+      if self._options.indirect_webkit_layout:
+        proc = self._args
+        # Layout tests want forward slashes.
+        wrapper = wrapper.replace('\\', '/')
+        proc += ["--wrapper", wrapper]
+        return proc
+      else:
+        proc = []
 
     # Note that self._args begins with the name of the exe to be run.
     self._args[0] = common.NormalizeWindowsPath(self._args[0])
@@ -943,7 +982,7 @@ class DrMemory(BaseTool):
     analyzer = drmemory_analyze.DrMemoryAnalyzer()
 
     ret = 0
-    if not self._options.indirect:
+    if not self._options.indirect and not self._options.indirect_webkit_layout:
       filenames = glob.glob(self.log_dir + "/*/results.txt")
 
       ret = analyzer.Report(filenames, None, check_sanity)
@@ -1092,26 +1131,26 @@ class RaceVerifier(object):
   def ToolName(self):
     return "tsan"
 
-  def Main(self, args, check_sanity):
+  def Main(self, args, check_sanity, min_runtime_in_seconds):
     logging.info("Running a TSan + RaceVerifier test. For more information, " +
                  "see " + self.MORE_INFO_URL)
     cmd1 = self.RV1Factory()
-    ret = cmd1.Main(args, check_sanity)
+    ret = cmd1.Main(args, check_sanity, min_runtime_in_seconds)
     # Verify race reports, if there are any.
     if ret == -1:
       logging.info("Starting pass 2 of 2. Running the same binary in " +
                    "RaceVerifier mode to confirm possible race reports.")
       logging.info("For more information, see " + self.MORE_INFO_URL)
       cmd2 = self.RV2Factory()
-      ret = cmd2.Main(args, check_sanity)
+      ret = cmd2.Main(args, check_sanity, min_runtime_in_seconds)
     else:
       logging.info("No reports, skipping RaceVerifier second pass")
     logging.info("Please see " + self.MORE_INFO_URL + " for more information " +
                  "on RaceVerifier")
     return ret
 
-  def Run(self, args, module):
-   return self.Main(args, False)
+  def Run(self, args, module, min_runtime_in_seconds=0):
+   return self.Main(args, False, min_runtime_in_seconds)
 
 
 class EmbeddedTool(BaseTool):
@@ -1215,9 +1254,11 @@ class ToolFactory:
       # TODO(timurrrr): remove support for "drmemory" when buildbots are
       # switched to drmemory_light OR make drmemory==drmemory_full the default
       # mode when the tool is mature enough.
-      return DrMemory(False)
+      return DrMemory(False, False)
     if tool_name == "drmemory_full":
-      return DrMemory(True)
+      return DrMemory(True, False)
+    if tool_name == "drmemory_pattern":
+      return DrMemory(False, True)
     if tool_name == "tsan_rv":
       return RaceVerifier()
     if tool_name == "tsan_gcc":

@@ -73,7 +73,7 @@
 // This allows a user to use his own types in Google Test assertions by
 // overloading the << operator.
 //
-// util/gtl/stl_logging-inl.h overloads << for STL containers.  These
+// util/gtl/stl_logging.h overloads << for STL containers.  These
 // overloads cannot be defined in the std namespace, as that will be
 // undefined behavior.  Therefore, they are defined in the global
 // namespace instead.
@@ -163,8 +163,8 @@ char (&IsNullLiteralHelper(...))[2];  // NOLINT
 #endif  // GTEST_ELLIPSIS_NEEDS_POD_
 
 // Appends the user-supplied message to the Google-Test-generated message.
-GTEST_API_ String AppendUserMessage(const String& gtest_msg,
-                                    const Message& user_msg);
+GTEST_API_ std::string AppendUserMessage(
+    const std::string& gtest_msg, const Message& user_msg);
 
 // A helper class for creating scoped traces in user programs.
 class GTEST_API_ ScopedTrace {
@@ -185,7 +185,7 @@ class GTEST_API_ ScopedTrace {
                             // c'tor and d'tor.  Therefore it doesn't
                             // need to be used otherwise.
 
-// Converts a streamable value to a String.  A NULL pointer is
+// Converts a streamable value to an std::string.  A NULL pointer is
 // converted to "(null)".  When the input value is a ::string,
 // ::std::string, ::wstring, or ::std::wstring object, each NUL
 // character in it is replaced with "\\0".
@@ -193,68 +193,7 @@ class GTEST_API_ ScopedTrace {
 // to the definition of the Message class, required by the ARM
 // compiler.
 template <typename T>
-String StreamableToString(const T& streamable);
-
-// The Symbian compiler has a bug that prevents it from selecting the
-// correct overload of FormatForComparisonFailureMessage (see below)
-// unless we pass the first argument by reference.  If we do that,
-// however, Visual Age C++ 10.1 generates a compiler error.  Therefore
-// we only apply the work-around for Symbian.
-#if defined(__SYMBIAN32__)
-# define GTEST_CREF_WORKAROUND_ const&
-#else
-# define GTEST_CREF_WORKAROUND_
-#endif
-
-// When this operand is a const char* or char*, if the other operand
-// is a ::std::string or ::string, we print this operand as a C string
-// rather than a pointer (we do the same for wide strings); otherwise
-// we print it as a pointer to be safe.
-
-// This internal macro is used to avoid duplicated code.
-#define GTEST_FORMAT_IMPL_(operand2_type, operand1_printer)\
-inline String FormatForComparisonFailureMessage(\
-    operand2_type::value_type* GTEST_CREF_WORKAROUND_ str, \
-    const operand2_type& /*operand2*/) {\
-  return operand1_printer(str);\
-}\
-inline String FormatForComparisonFailureMessage(\
-    const operand2_type::value_type* GTEST_CREF_WORKAROUND_ str, \
-    const operand2_type& /*operand2*/) {\
-  return operand1_printer(str);\
-}
-
-GTEST_FORMAT_IMPL_(::std::string, String::ShowCStringQuoted)
-#if GTEST_HAS_STD_WSTRING
-GTEST_FORMAT_IMPL_(::std::wstring, String::ShowWideCStringQuoted)
-#endif  // GTEST_HAS_STD_WSTRING
-
-#if GTEST_HAS_GLOBAL_STRING
-GTEST_FORMAT_IMPL_(::string, String::ShowCStringQuoted)
-#endif  // GTEST_HAS_GLOBAL_STRING
-#if GTEST_HAS_GLOBAL_WSTRING
-GTEST_FORMAT_IMPL_(::wstring, String::ShowWideCStringQuoted)
-#endif  // GTEST_HAS_GLOBAL_WSTRING
-
-#undef GTEST_FORMAT_IMPL_
-
-// The next four overloads handle the case where the operand being
-// printed is a char/wchar_t pointer and the other operand is not a
-// string/wstring object.  In such cases, we just print the operand as
-// a pointer to be safe.
-#define GTEST_FORMAT_CHAR_PTR_IMPL_(CharType)                       \
-  template <typename T>                                             \
-  String FormatForComparisonFailureMessage(CharType* GTEST_CREF_WORKAROUND_ p, \
-                                           const T&) { \
-    return PrintToString(static_cast<const void*>(p));              \
-  }
-
-GTEST_FORMAT_CHAR_PTR_IMPL_(char)
-GTEST_FORMAT_CHAR_PTR_IMPL_(const char)
-GTEST_FORMAT_CHAR_PTR_IMPL_(wchar_t)
-GTEST_FORMAT_CHAR_PTR_IMPL_(const wchar_t)
-
-#undef GTEST_FORMAT_CHAR_PTR_IMPL_
+std::string StreamableToString(const T& streamable);
 
 // Constructs and returns the message for an equality assertion
 // (e.g. ASSERT_EQ, EXPECT_STREQ, etc) failure.
@@ -273,12 +212,12 @@ GTEST_FORMAT_CHAR_PTR_IMPL_(const wchar_t)
 // be inserted into the message.
 GTEST_API_ AssertionResult EqFailure(const char* expected_expression,
                                      const char* actual_expression,
-                                     const String& expected_value,
-                                     const String& actual_value,
+                                     const std::string& expected_value,
+                                     const std::string& actual_value,
                                      bool ignoring_case);
 
 // Constructs a failure message for Boolean assertions such as EXPECT_TRUE.
-GTEST_API_ String GetBoolAssertionFailureMessage(
+GTEST_API_ std::string GetBoolAssertionFailureMessage(
     const AssertionResult& assertion_result,
     const char* expression_text,
     const char* actual_predicate_value,
@@ -624,9 +563,9 @@ inline const char* SkipComma(const char* str) {
 
 // Returns the prefix of 'str' before the first comma in it; returns
 // the entire string if it contains no comma.
-inline String GetPrefixUntilComma(const char* str) {
+inline std::string GetPrefixUntilComma(const char* str) {
   const char* comma = strchr(str, ',');
-  return comma == NULL ? String(str) : String(str, comma - str);
+  return comma == NULL ? str : std::string(str, comma);
 }
 
 // TypeParameterizedTest<Fixture, TestSel, Types>::Register()
@@ -711,7 +650,7 @@ class TypeParameterizedTestCase<Fixture, Templates0, Types> {
 
 #endif  // GTEST_HAS_TYPED_TEST || GTEST_HAS_TYPED_TEST_P
 
-// Returns the current OS stack trace as a String.
+// Returns the current OS stack trace as an std::string.
 //
 // The maximum number of stack frames to be included is specified by
 // the gtest_stack_trace_depth flag.  The skip_count parameter
@@ -721,8 +660,8 @@ class TypeParameterizedTestCase<Fixture, Templates0, Types> {
 // For example, if Foo() calls Bar(), which in turn calls
 // GetCurrentOsStackTraceExceptTop(..., 1), Foo() will be included in
 // the trace but Bar() and GetCurrentOsStackTraceExceptTop() won't.
-GTEST_API_ String GetCurrentOsStackTraceExceptTop(UnitTest* unit_test,
-                                                  int skip_count);
+GTEST_API_ std::string GetCurrentOsStackTraceExceptTop(
+    UnitTest* unit_test, int skip_count);
 
 // Helpers for suppressing warnings on unreachable code or constant
 // condition.

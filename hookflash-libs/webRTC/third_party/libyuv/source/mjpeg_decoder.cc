@@ -19,11 +19,6 @@
 #include <climits>
 #include <cstring>
 
-// Blackberry requires std for memcpy.
-#ifdef __QNX__
-using namespace std;
-#endif
-
 #ifdef WIN32
 // jpeglib defines INT32 with a definition that conflicts with the one
 // in the Vista platforms SDK. By defining XMD_H, it skips its definition of
@@ -254,7 +249,7 @@ bool MJpegDecoder::UnloadFrame() {
 static void CopyRows(uint8* source, int source_stride,
                      uint8* dest, int pixels, int numrows) {
   for (int i = 0; i < numrows; ++i) {
-    memcpy(dest, source, pixels);
+    std::memcpy(dest, source, pixels);
     dest += pixels;
     source += source_stride;
   }

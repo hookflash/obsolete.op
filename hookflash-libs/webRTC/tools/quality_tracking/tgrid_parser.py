@@ -13,9 +13,8 @@
    Compatible with build bot 0.8.4 P1.
 """
 
-__author__ = 'phoglund@webrtc.org (Patrik Höglund)'
-
 import re
+import urllib
 
 
 # This is here to work around a buggy build bot status message which makes no
@@ -50,7 +49,7 @@ def _parse_builds(revision, html):
                            BB_084_P1_BUGGY_STATUS + ')'
                            '.*?</a>.*?</td>',
                            html, re.DOTALL):
-    revision_and_bot_name = revision + "--" + match.group(1)
+    revision_and_bot_name = revision + "--" + urllib.unquote(match.group(1))
     build_number_and_status = match.group(2) + "--" + _map_status(
                                                           match.group(3))
 
@@ -81,7 +80,7 @@ def parse_tgrid_page(html):
   """
   result = {}
 
-  for match in re.finditer('<td.*?class="sourcestamp">(\d+)  </td>(.*?)</tr>',
+  for match in re.finditer('<td.*?class="sourcestamp">(\d+).*?</td>(.*?)</tr>',
                            html, re.DOTALL):
     revision = match.group(1)
     builds_for_revision_html = match.group(2)

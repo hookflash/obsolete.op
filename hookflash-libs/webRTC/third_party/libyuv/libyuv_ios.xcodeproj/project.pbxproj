@@ -41,7 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		E2854D3E154CBD7A00902B40 /* libyuv_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libyuv_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2854D3E154CBD7A00902B40 /* libyuv.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libyuv.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		E2854D58154CBE5C00902B40 /* basic_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = basic_types.h; path = include/libyuv/basic_types.h; sourceTree = "<group>"; };
 		E2854D59154CBE5C00902B40 /* compare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = compare.h; path = include/libyuv/compare.h; sourceTree = "<group>"; };
 		E2854D5A154CBE5C00902B40 /* convert_from.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = convert_from.h; path = include/libyuv/convert_from.h; sourceTree = "<group>"; };
@@ -97,7 +97,7 @@
 		E2854D3F154CBD7A00902B40 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E2854D3E154CBD7A00902B40 /* libyuv_ios.a */,
+				E2854D3E154CBD7A00902B40 /* libyuv.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -184,9 +184,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E2854D3D154CBD7A00902B40 /* libyuv_ios */ = {
+		E2854D3D154CBD7A00902B40 /* libyuv */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E2854D4B154CBD7A00902B40 /* Build configuration list for PBXNativeTarget "libyuv_ios" */;
+			buildConfigurationList = E2854D4B154CBD7A00902B40 /* Build configuration list for PBXNativeTarget "libyuv" */;
 			buildPhases = (
 				E2854D3A154CBD7A00902B40 /* Sources */,
 				E2854D3B154CBD7A00902B40 /* Frameworks */,
@@ -196,9 +196,9 @@
 			);
 			dependencies = (
 			);
-			name = libyuv_ios;
-			productName = libyuv_ios;
-			productReference = E2854D3E154CBD7A00902B40 /* libyuv_ios.a */;
+			name = libyuv;
+			productName = libyuv;
+			productReference = E2854D3E154CBD7A00902B40 /* libyuv.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -209,7 +209,7 @@
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = E2854D38154CBD7A00902B40 /* Build configuration list for PBXProject "libyuv_ios" */;
+			buildConfigurationList = E2854D38154CBD7A00902B40 /* Build configuration list for PBXProject "libyuv" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -221,7 +221,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E2854D3D154CBD7A00902B40 /* libyuv_ios */,
+				E2854D3D154CBD7A00902B40 /* libyuv */,
 			);
 		};
 /* End PBXProject section */
@@ -298,7 +298,7 @@
 		E2854D4C154CBD7A00902B40 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/libyuv_ios.dst;
+				DSTROOT = /tmp/libyuv.dst;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -336,7 +336,7 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					.,
-					../libjpeg_turbo,
+					"../libturbojpeg-ios/libturbojpeg",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = (
@@ -344,7 +344,7 @@
 					"-fstack-protector-all",
 				);
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = yuv_ios;
+				PRODUCT_NAME = yuv;
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -352,7 +352,7 @@
 		E2854D4D154CBD7A00902B40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				DSTROOT = /tmp/libyuv_ios.dst;
+				DSTROOT = /tmp/libyuv.dst;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -392,12 +392,12 @@
 				HEADER_SEARCH_PATHS = (
 					include,
 					.,
-					../libjpeg_turbo,
+					"../libturbojpeg-ios/libturbojpeg",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
 				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = yuv_ios;
+				PRODUCT_NAME = yuv;
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -405,7 +405,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E2854D38154CBD7A00902B40 /* Build configuration list for PBXProject "libyuv_ios" */ = {
+		E2854D38154CBD7A00902B40 /* Build configuration list for PBXProject "libyuv" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2854D49154CBD7A00902B40 /* Debug */,
@@ -414,7 +414,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E2854D4B154CBD7A00902B40 /* Build configuration list for PBXNativeTarget "libyuv_ios" */ = {
+		E2854D4B154CBD7A00902B40 /* Build configuration list for PBXNativeTarget "libyuv" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E2854D4C154CBD7A00902B40 /* Debug */,

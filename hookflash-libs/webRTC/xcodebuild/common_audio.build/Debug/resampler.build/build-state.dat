@@ -1,80 +1,0 @@
-Tresampler
-v5
-r1
-cCheck dependencies
-cCompileC ../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a normal i386
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c00000000503F1B7700000000000000AA
-t1346313079
-s170
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a
-t1359554948
-s28152
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.LinkFileList
-c00000000510928CD0000000000000099
-t1359554765
-s153
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o
-t1359554926
-s27476
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../typedefs.h
-c00000000510902370000000000000B7E
-t1359544887
-s2942
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/include/resampler.h
-c00000000510902350000000000000BF7
-t1359544885
-s3063
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc
-c00000000510902350000000000008E5A
-t1359544885
-s36442
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/include/signal_processing_library.h
-c0000000051090235000000000000EE3B
-t1359544885
-s60987
-
-N/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/signal_processing/include/spl_inl.h
-c00000000510902350000000000000FE8
-t1359544885
-s4072
-
-CBuild AST from /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb341f20c61b9b641^74b7f70c61b9b641^---0#1#0#--18"Check dependencies36"76C87E84-A745-4517-8474-86E4DCCBB76F-
-
-CCompileC ../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler
-s381247725.705114
-e381247726.542186
-r1
-xCompileC
-x../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o
-x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc
-xnormal
-xi386
-xc++
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection93"Compile /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc8ba5b4ed60b9b641^42cf8aee60b9b641^---0#0#0#-19%DVTDocumentLocation2@101"file://localhost/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc0000000000000000^3344"CompileC ../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o resampler/resampler.cc normal i386 c++ com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv LANG en_US.US-ASCII    /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../third_party/llvm-build/Release+Asserts/bin/clang -x c++ -arch i386 -fmessage-length=0 -Wno-trigraphs -fno-exceptions -fno-rtti -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-return-type -Wno-non-virtual-dtor -Wno-overloaded-virtual -Wno-exit-time-destructors -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wno-unused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wnewline-eof -Wno-c++11-extensions "-DWEBRTC_SVNREVISION=\"2139M\"" -DCHROMIUM_BUILD -DENABLE_ONE_CLICK_SIGNIN -DENABLE_REMOTING=1 -DENABLE_WEBRTC=1 -DENABLE_P2P_APIS=1 -DENABLE_CONFIGURATION_POLICY -DENABLE_INPUT_SPEECH -DENABLE_NOTIFICATIONS -DENABLE_GPU=1 -DENABLE_EGLIMAGE=1 -DUSE_SKIA=1 -DENABLE_REGISTER_PROTOCOL_HANDLER=1 -DENABLE_TASK_MANAGER=1 -DENABLE_WEB_INTENTS=1 -DENABLE_PLUGIN_INSTALLATION=1 -DENABLE_PROTECTOR_SERVICE=1 -DENABLE_SESSION_SERVICE=1 -DENABLE_THEMES=1 -DENABLE_BACKGROUND=1 -DENABLE_PROMO_RESOURCE_SERVICE=1 -DENABLE_AUTOMATION=1 -DWEBRTC_MAC -DWEBRTC_MAC_INTEL -DWEBRTC_THREAD_RR -DWEBRTC_CLOCK_TYPE_REALTIME -D__STDC_FORMAT_MACROS -DDYNAMIC_ANNOTATIONS_ENABLED=1 -DWTF_USE_DYNAMIC_ANNOTATIONS=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -Wdeprecated-declarations -Winvalid-offsetof -mmacosx-version-min=10.6 -g -fvisibility=hidden -fvisibility-inlines-hidden -fno-threadsafe-statics -Wno-sign-conversion -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/include -I.. -I../.. -Iresampler/include -Isignal_processing/include -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/DerivedSources/i386 -I/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/DerivedSources -Wall -Wendif-labels -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Wheader-hygiene -Wno-char-subscripts -Wno-unused-function -Wno-unnamed-type-template-args -Wno-c++11-extensions -Wno-covered-switch-default -Wno-literal-conversion -F/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -fno-strict-aliasing -fstack-protector-all -MMD -MT dependencies -MF /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.d --serialize-diagnostics /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.dia -c /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/resampler/resampler.cc -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.o36"3AE30A95-A1B9-4DA5-8398-202393701AF2-
-
-CLibtool /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a normal i386
-s381247748.620441
-e381247748.803508
-r1
-xLibtool
-x/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a
-xnormal
-xi386
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection57"Libtool ../../xcodebuild/Debug/libresampler.a normal i3864be89e0461b9b641^d106d40461b9b641^---0#0#0#--769"Libtool ../../xcodebuild/Debug/libresampler.a normal i386    cd /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio    setenv MACOSX_DEPLOYMENT_TARGET 10.6    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only i386 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug -filelist /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/common_audio.build/Debug/resampler.build/Objects-normal/i386/resampler.LinkFileList -o /Users/morosev/Repos/OP/hookflash-libs/WebRTC/src/common_audio/../../xcodebuild/Debug/libresampler.a36"F68DFA38-89EC-4FE3-9BDB-3AE7DF3816F7-
-

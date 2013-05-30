@@ -35,6 +35,9 @@
 #include <slog2.h>
 #endif
 
+#include "webrtc/test/channel_transport/include/channel_transport.h"
+#include "webrtc/system_wrappers/interface/scoped_ptr.h"
+
 #include <hookflash/core/internal/core_MediaEngine.h>
 #include <hookflash/core/internal/core_Factory.h>
 
@@ -54,7 +57,10 @@ namespace hookflash
       class TestMediaEngineFactory;
       typedef boost::shared_ptr<TestMediaEngineFactory> TestMediaEngineFactoryPtr;
       typedef boost::weak_ptr<TestMediaEngineFactory> TestMediaEngineFactoryWeakPtr;
-      
+
+      typedef webrtc::test::VoiceChannelTransport VoiceChannelTransport;
+      typedef webrtc::test::VideoChannelTransport VideoChannelTransport;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -144,6 +150,9 @@ namespace hookflash
         virtual int setVideoTransportParameters();
         
       private:
+        webrtc::scoped_ptr<VoiceChannelTransport> voice_channel_transports_[32];
+        webrtc::scoped_ptr<VideoChannelTransport> video_channel_transports_[32];
+
         String mReceiverAddress;
         zsLib::TimerPtr mVoiceStatisticsTimer;
 #ifdef __QNX__

@@ -82,98 +82,98 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		028C9AC19E765DA475D39B4D /* bitvect.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A9FAD2C6B68CD859E0839A /* bitvect.c */; };
-		04EC1934753B000D87FB3140 /* gas-parse-intel.c in Sources */ = {isa = PBXBuildFile; fileRef = 339D05B8F88C59EBDDF77832 /* gas-parse-intel.c */; };
-		0D839A702B808B34E1F9A00D /* strsep.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A2FF5DB59ED7934BE9A95 /* strsep.c */; };
-		0EB8F4392609BD32E72DBA29 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 55E50814DD4011820AAED321 /* parser.c */; };
-		0EFD65D9A328DA0695541AD1 /* libgenperf_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 409E99D7C44751B2B82733E8 /* libgenperf_libs.a */; };
-		1018789BA6635BC32BB84E3F /* mbo_getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = E3F00D6C4EF12076D47C1906 /* mbo_getopt.c */; };
-		112F83EB9D5130C24DEE5DFF /* x86expr.c in Sources */ = {isa = PBXBuildFile; fileRef = D9C8E5E371995765847937B5 /* x86expr.c */; };
-		12C239D25AACF4BAFCFE6E0B /* errwarn.c in Sources */ = {isa = PBXBuildFile; fileRef = C0AC9055AE36F17E4B9B294E /* errwarn.c */; };
-		13368CC78818BCCDD560BABB /* linemap.c in Sources */ = {isa = PBXBuildFile; fileRef = B0B1D01BDCB2982CEED762C6 /* linemap.c */; };
-		15438837937C9EDE71738419 /* gas-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = AFE6F19D7EE83E3C3B923C78 /* gas-parse.c */; };
-		17BE0036DF9741BF964FC13D /* cpp-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = AB9614A8582481B81D7DCB52 /* cpp-preproc.c */; };
-		197FCCB1867E1790F6E2CEB3 /* x86id.c in Sources */ = {isa = PBXBuildFile; fileRef = 40A5B9A6C1E7488F91316DEB /* x86id.c */; };
-		1C6EF038C1F4C66EAE858CDF /* module.c in Sources */ = {isa = PBXBuildFile; fileRef = 81B018F26106BD9C53A5E4CB /* module.c */; };
-		1EFC4EA2960C8D4E6DBA20CD /* nasm-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D4620BCDA53E7FA8D3EDF5D /* nasm-parse.c */; };
-		204262C39B4F5740661C4A08 /* raw-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = C26FF8AC708250C874D2C962 /* raw-preproc.c */; };
-		22E8B95B8102DEF40B6822F9 /* x86cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 92EE4883450FBD5D92AD24DD /* x86cpu.c */; };
-		23D0F47C4A057FEEAA2AFA1F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6BC392242E4BEB5DBE0761E8 /* main.c */; };
-		25C8CC00D066E6EF266735C1 /* elf.c in Sources */ = {isa = PBXBuildFile; fileRef = 56DBF46970528DFDEA9F2370 /* elf.c */; };
-		26130C73847C57E3E389DB81 /* genperf.c in Sources */ = {isa = PBXBuildFile; fileRef = 40C72C34A9D8126230E47D67 /* genperf.c */; };
-		26F22F0EA10DE58AB88EAF1F /* nasm-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = 452E45B8F0A71F4CF58DA32A /* nasm-preproc.c */; };
-		27DFEE0DBA8919AA3167665A /* intnum.c in Sources */ = {isa = PBXBuildFile; fileRef = 84B826DD7CB72D13A1DFB44E /* intnum.c */; };
-		2905E38085B36B187246AEE8 /* cv-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = B54CCDF5EDAC20ECF619A26E /* cv-dbgfmt.c */; };
-		2BBA93ACEF6B7A6C02560D82 /* valparam.c in Sources */ = {isa = PBXBuildFile; fileRef = 02D3C46DF02365DD4CECBA97 /* valparam.c */; };
-		2ECC0953B9BA772EB21DBAAB /* yasm.c in Sources */ = {isa = PBXBuildFile; fileRef = 524B15FF11334C3E013E8E35 /* yasm.c */; };
-		30FD07AC549DE8EA859ED832 /* nasm-eval.c in Sources */ = {isa = PBXBuildFile; fileRef = 501BBB01880A87F741EE157E /* nasm-eval.c */; };
-		316056500FF927B4EEEB916A /* bc-reserve.c in Sources */ = {isa = PBXBuildFile; fileRef = B2880B2E174030B10F61FA79 /* bc-reserve.c */; };
-		3265FDC58119E0B8CFA47D1F /* xdf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 54B0CD6067E844EE9955383D /* xdf-objfmt.c */; };
-		33AC40CBCF6065245718B78A /* symrec.c in Sources */ = {isa = PBXBuildFile; fileRef = E6607C7C9A8B5148E8F62F0A /* symrec.c */; };
-		370DDD9D7CE336DEE4541D67 /* lc3barch.c in Sources */ = {isa = PBXBuildFile; fileRef = E93BA5E7311FE233AB66890D /* lc3barch.c */; };
-		372775ADBE2567397077443E /* genmacro.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216367E35688238D5A44621 /* genmacro.c */; };
-		3D96EC94DB725A67063983E0 /* bytecode.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EB59E2B6F4400708320676D /* bytecode.c */; };
-		3E33DD4091DB08EE894BF580 /* genstring.c in Sources */ = {isa = PBXBuildFile; fileRef = A085A33DF330A1C01DC45068 /* genstring.c */; };
-		3EA301CD2E41481E8AA10352 /* dwarf2-aranges.c in Sources */ = {isa = PBXBuildFile; fileRef = ED25CD889CDCF380D276386A /* dwarf2-aranges.c */; };
-		4590DC03EFE51AB7369DC329 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 25E57CC4D5BABE6C12981F8D /* md5.c */; };
-		4835EA6354FA6B064C1B2F63 /* genmodule.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F5649EFEE5CD0E677C50CE /* genmodule.c */; };
-		49195C32A6986B9E324390C1 /* gas-parser.c in Sources */ = {isa = PBXBuildFile; fileRef = A36525050CC3347329C9A238 /* gas-parser.c */; };
-		4A2E2A9A5BB061292F2D4103 /* assocdat.c in Sources */ = {isa = PBXBuildFile; fileRef = A6B2F0EBBAB76B935137ABA5 /* assocdat.c */; };
-		4CDE66568DD9E43DA5C9D00A /* elf-x86-x86.c in Sources */ = {isa = PBXBuildFile; fileRef = EB205FD6CA7837757DC6A5FE /* elf-x86-x86.c */; };
-		4F9F70BEFA8D0B5FC4CBDDD5 /* nasm-token.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F1D9B6634C3E14E6AF0883C /* nasm-token.c */; };
-		5506452B173316F7D9F92EAE /* floatnum.c in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8458FC176CBB2E21379F7 /* floatnum.c */; };
-		5FD5DF5F284C4DF29461F516 /* x86bc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C4916FA42C619E1E9AFF2F5 /* x86bc.c */; };
-		61917465FB640757F6302F3E /* cv-symline.c in Sources */ = {isa = PBXBuildFile; fileRef = 263711E0187CD487DCC8D2F1 /* cv-symline.c */; };
-		62471D93D46A1B909D58FBA7 /* strcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 198C5376AC425C607F0950D6 /* strcasecmp.c */; };
-		6DBDA867BFBA39DD99B85D88 /* win64-except.c in Sources */ = {isa = PBXBuildFile; fileRef = EDE5B570FF7CBDBE8129E26A /* win64-except.c */; };
-		71117D9BB4CA40D6325C46A0 /* x86regtmod.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F00AB71EEADCAFAD777250B /* x86regtmod.c */; };
-		74911ABBFEAC674758D6DE38 /* nasm-listfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 050FFC9C06B38C8CCD4320BB /* nasm-listfmt.c */; };
-		754F92CAC3995AC7655176E9 /* translate.c in Sources */ = {isa = PBXBuildFile; fileRef = F4A67B6129E9E505EB5F271E /* translate.c */; };
-		775398C41A7F8D094E047FD7 /* yasm-options.c in Sources */ = {isa = PBXBuildFile; fileRef = EEE528C9B9453F26DD11E756 /* yasm-options.c */; };
-		7BD7B565D421AC705A774323 /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = CD5159AD9E22D306FA6EC368 /* scanner.c */; };
-		7CAC7298862743BB4FF586C0 /* dbg-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA641173D2EA31C74F8920 /* dbg-objfmt.c */; };
-		8B0220B9BC055A7B886C8F75 /* nasm-macros.c in Sources */ = {isa = PBXBuildFile; fileRef = 51845BB2E35D8E840D3C0CFB /* nasm-macros.c */; };
-		8CFE431357C17178DA50BE50 /* perfect.c in Sources */ = {isa = PBXBuildFile; fileRef = E975CD4038EE70A287F1503E /* perfect.c */; };
-		9053EFEBFDF376E7B30BFE50 /* elf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B94D4FC9467A030946DCD0C /* elf-objfmt.c */; };
-		93525590B4B4FC04986B9AB1 /* stabs-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 68F84C76BC0A38A5475F6D3F /* stabs-dbgfmt.c */; };
-		9367D8D63448ED2F18B61949 /* substr.c in Sources */ = {isa = PBXBuildFile; fileRef = 751C3DDF4C497BC103D9D208 /* substr.c */; };
-		93EA72B5D5A5AF0738A6A0C4 /* hamt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D83DCD0615E92B310E42E /* hamt.c */; };
-		9807B240BB1BD28F6A928F76 /* libgenperf_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 409E99D7C44751B2B82733E8 /* libgenperf_libs.a */; };
-		9C3698387F89A05F1EFC29CB /* elf-x86-amd64.c in Sources */ = {isa = PBXBuildFile; fileRef = 340AF07FD7EA39C339885800 /* elf-x86-amd64.c */; };
-		9DC854C20E5D5A6B91586DC1 /* expr.c in Sources */ = {isa = PBXBuildFile; fileRef = 3438F7BD430BF21F79B535BA /* expr.c */; };
-		9EFBD3F190629CF3089791F2 /* bc-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 2FF509041F8DA35970163E05 /* bc-data.c */; };
-		A5927945FCA34293A6DD7EA7 /* bin-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 158CA9939723B87CC75893E8 /* bin-objfmt.c */; };
-		A787092D94F623565E35EFAF /* section.c in Sources */ = {isa = PBXBuildFile; fileRef = 8634C5281DBB30AE533BB800 /* section.c */; };
-		A90767FD2A4F249ED3828461 /* lc3bid.c in Sources */ = {isa = PBXBuildFile; fileRef = FE94CA9E4258ACE814CBBEAD /* lc3bid.c */; };
-		B0E8F3DFB9F0CAFA8D36C93E /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = C13FE5A413D1BCC4648205A8 /* actions.c */; };
-		B2301EE412962ECC909CE009 /* nasm-pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 41A1D9E1D0EDC65A8323EDAD /* nasm-pp.c */; };
-		B7DBCF5FA78654FD8858780F /* x86arch.c in Sources */ = {isa = PBXBuildFile; fileRef = C231B29CB7E7B522F2624B8F /* x86arch.c */; };
-		B890E3DF72ACDE3C73752F2C /* genversion.c in Sources */ = {isa = PBXBuildFile; fileRef = B686B3620355C78FF7676422 /* genversion.c */; };
-		BB69C9117DAC5FE04E306534 /* lc3bbc.c in Sources */ = {isa = PBXBuildFile; fileRef = 08F7587AF3F94967E5A96215 /* lc3bbc.c */; };
-		BBE8DD524413C6FFA48B3879 /* rdf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 852DB5FD8C1228617BFE101F /* rdf-objfmt.c */; };
-		BC1F6BF02458277594198927 /* dwarf2-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = E457553E005599E575518C70 /* dwarf2-dbgfmt.c */; };
-		C1A33DD46C036DF698203423 /* insn.c in Sources */ = {isa = PBXBuildFile; fileRef = 9389C26EE0ED42F26E960F54 /* insn.c */; };
-		C239580D4A4291EEEFE48E95 /* cv-type.c in Sources */ = {isa = PBXBuildFile; fileRef = 68575F2AB21EC1EDC3F2CD67 /* cv-type.c */; };
-		C75E6B6C3AA8D02C2BFD76A4 /* xstrdup.c in Sources */ = {isa = PBXBuildFile; fileRef = D9809C13F983B694951943A9 /* xstrdup.c */; };
-		C9126FB9EC14C6F4D343B320 /* inttree.c in Sources */ = {isa = PBXBuildFile; fileRef = A4351EAD8F173D68AB436F91 /* inttree.c */; };
-		C9912F3E55D7F23B6499F425 /* bc-org.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A4D6EC6C3080076AAE55428 /* bc-org.c */; };
-		C9B544DA9831FD50FDC5AB60 /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C9F50D28D191616BA320F4 /* file.c */; };
-		CA2B0761BF15F98E99191319 /* macho-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 9E80CEF5AC980975FC8C723E /* macho-objfmt.c */; };
-		CCFA3F9BE7FF18831C6491FB /* nasmlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6C4B17B0008FA61FA9D1253 /* nasmlib.c */; };
-		CD6FF4A9A88BD49CB393B092 /* coff-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 43B09CEFF6E6BCCFA32534F7 /* coff-objfmt.c */; };
-		CE9931B7F7464726339A270E /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = C177D25FA84F7D46E48884B7 /* value.c */; };
-		D1A53085A551937CDE025F9E /* null-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = E0C031DF96B3DCD738ACF0DD /* null-dbgfmt.c */; };
-		D4AFA15EDB291229EF1AE564 /* code.c in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6FCE5E495DB7311CDAAFF /* code.c */; };
-		D8F3028EDC64A43D247A49CC /* bc-align.c in Sources */ = {isa = PBXBuildFile; fileRef = B55084985449E10BFB43AA38 /* bc-align.c */; };
-		D9A2C3061FA38E7BAD01A2A2 /* dwarf2-info.c in Sources */ = {isa = PBXBuildFile; fileRef = 7230E4AB1E9C9AB68AEA82F4 /* dwarf2-info.c */; };
-		DA3FB2A19A2D28E35857DA50 /* xmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D0DE83895BFC87EB9B7F872 /* xmalloc.c */; };
-		DD1ADD4D852023D169BCA358 /* mergesort.c in Sources */ = {isa = PBXBuildFile; fileRef = 5267DE5BEC878CFC46ADEEC3 /* mergesort.c */; };
-		E0DFE0F966B66FF6F484121F /* phash.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A63C6BFF3A194EE86CBD8A7 /* phash.c */; };
-		E281E3D203CA9E59B387C8E9 /* gas-token.c in Sources */ = {isa = PBXBuildFile; fileRef = 555A052236AF314DE3C18B0A /* gas-token.c */; };
-		E5360BF6483FFB890B945F00 /* dwarf2-line.c in Sources */ = {isa = PBXBuildFile; fileRef = 875C178B7EB6FE5DFFBB607F /* dwarf2-line.c */; };
-		EA156FECE44FC3073CF5C25D /* dfa.c in Sources */ = {isa = PBXBuildFile; fileRef = 7DD8D0E4486E728EFD2DD2D4 /* dfa.c */; };
-		ECC47A20983B05E97A15A7B5 /* bc-incbin.c in Sources */ = {isa = PBXBuildFile; fileRef = A3F3F564629CBB58B30DFC23 /* bc-incbin.c */; };
-		F3E6D04DEAF30F88E44C2FC5 /* nasm-parser.c in Sources */ = {isa = PBXBuildFile; fileRef = E4040D975D3A4C87F937A8BF /* nasm-parser.c */; };
+		002746D6E953C508C54BE808 /* dbg-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 8AFA641173D2EA31C74F8920 /* dbg-objfmt.c */; };
+		04A84CA923E82A989EF2C502 /* bc-data.c in Sources */ = {isa = PBXBuildFile; fileRef = 2FF509041F8DA35970163E05 /* bc-data.c */; };
+		05E1053688DF3BE99753E839 /* win64-except.c in Sources */ = {isa = PBXBuildFile; fileRef = EDE5B570FF7CBDBE8129E26A /* win64-except.c */; };
+		066CA6AB8F7B083AA4050697 /* genmacro.c in Sources */ = {isa = PBXBuildFile; fileRef = 9216367E35688238D5A44621 /* genmacro.c */; };
+		069FE4EC4699C257250A5951 /* rdf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 852DB5FD8C1228617BFE101F /* rdf-objfmt.c */; };
+		09871DB036BF9BF0BDA037E3 /* nasm-macros.c in Sources */ = {isa = PBXBuildFile; fileRef = 51845BB2E35D8E840D3C0CFB /* nasm-macros.c */; };
+		09965609A71C5CF9182A8726 /* x86arch.c in Sources */ = {isa = PBXBuildFile; fileRef = C231B29CB7E7B522F2624B8F /* x86arch.c */; };
+		0D9D5781EF89863246A81F57 /* nasm-token.c in Sources */ = {isa = PBXBuildFile; fileRef = 0F1D9B6634C3E14E6AF0883C /* nasm-token.c */; };
+		0ED2E7A0FB38DEA86801F031 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6BC392242E4BEB5DBE0761E8 /* main.c */; };
+		14BF257F0B6604AF234D789B /* bitvect.c in Sources */ = {isa = PBXBuildFile; fileRef = 92A9FAD2C6B68CD859E0839A /* bitvect.c */; };
+		1501BECD3E1363A71F772472 /* raw-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = C26FF8AC708250C874D2C962 /* raw-preproc.c */; };
+		1529D07EB502161A983556D6 /* cv-symline.c in Sources */ = {isa = PBXBuildFile; fileRef = 263711E0187CD487DCC8D2F1 /* cv-symline.c */; };
+		1650D228E72675E730F4B15E /* x86cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = 92EE4883450FBD5D92AD24DD /* x86cpu.c */; };
+		1821BE0F86D8C67B3CD8144C /* nasmlib.c in Sources */ = {isa = PBXBuildFile; fileRef = A6C4B17B0008FA61FA9D1253 /* nasmlib.c */; };
+		1A8A47D4C31F01235079BCF5 /* macho-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 9E80CEF5AC980975FC8C723E /* macho-objfmt.c */; };
+		1B59ADDEF4F4351A274955D2 /* stabs-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 68F84C76BC0A38A5475F6D3F /* stabs-dbgfmt.c */; };
+		25DFC8227E96CBC4B5BA7FD7 /* xstrdup.c in Sources */ = {isa = PBXBuildFile; fileRef = D9809C13F983B694951943A9 /* xstrdup.c */; };
+		2A4929334DFF279392F723DF /* lc3barch.c in Sources */ = {isa = PBXBuildFile; fileRef = E93BA5E7311FE233AB66890D /* lc3barch.c */; };
+		2BB59703118AFFFFD4FDBAE6 /* intnum.c in Sources */ = {isa = PBXBuildFile; fileRef = 84B826DD7CB72D13A1DFB44E /* intnum.c */; };
+		2D0341DE238A2439BDFBD61B /* genperf.c in Sources */ = {isa = PBXBuildFile; fileRef = 40C72C34A9D8126230E47D67 /* genperf.c */; };
+		2D347F703A0121A95D6F50B9 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = 25E57CC4D5BABE6C12981F8D /* md5.c */; };
+		2D6D9226FAD88411895856DC /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 55E50814DD4011820AAED321 /* parser.c */; };
+		30ADC92336626E811B1F153B /* yasm-options.c in Sources */ = {isa = PBXBuildFile; fileRef = EEE528C9B9453F26DD11E756 /* yasm-options.c */; };
+		3310889F7811996774672732 /* x86bc.c in Sources */ = {isa = PBXBuildFile; fileRef = 3C4916FA42C619E1E9AFF2F5 /* x86bc.c */; };
+		396DF2CE09B98C2C2FD20528 /* mbo_getopt.c in Sources */ = {isa = PBXBuildFile; fileRef = E3F00D6C4EF12076D47C1906 /* mbo_getopt.c */; };
+		3C1BD25F44E4E08DC8640FE8 /* linemap.c in Sources */ = {isa = PBXBuildFile; fileRef = B0B1D01BDCB2982CEED762C6 /* linemap.c */; };
+		42520100E690F8AB78D3BE0D /* libgenperf_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 409E99D7C44751B2B82733E8 /* libgenperf_libs.a */; };
+		460AEB2A9663584A4D5EAA6D /* coff-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 43B09CEFF6E6BCCFA32534F7 /* coff-objfmt.c */; };
+		48E48E52BF98B5471C192DE0 /* nasm-pp.c in Sources */ = {isa = PBXBuildFile; fileRef = 41A1D9E1D0EDC65A8323EDAD /* nasm-pp.c */; };
+		4908C23FFBFB477764B18BC3 /* cpp-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = AB9614A8582481B81D7DCB52 /* cpp-preproc.c */; };
+		4CC7E94990E660065182F09D /* file.c in Sources */ = {isa = PBXBuildFile; fileRef = 35C9F50D28D191616BA320F4 /* file.c */; };
+		4D5A82CFF4DAD9FA55A1597F /* xdf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 54B0CD6067E844EE9955383D /* xdf-objfmt.c */; };
+		511F3D3F970B61FDC51F9DD9 /* genstring.c in Sources */ = {isa = PBXBuildFile; fileRef = A085A33DF330A1C01DC45068 /* genstring.c */; };
+		54007B4195CD00348B68AFE0 /* strcasecmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 198C5376AC425C607F0950D6 /* strcasecmp.c */; };
+		54BD27C11F09AFDAA3309EDD /* bin-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 158CA9939723B87CC75893E8 /* bin-objfmt.c */; };
+		596F90219FBD571B06570C40 /* inttree.c in Sources */ = {isa = PBXBuildFile; fileRef = A4351EAD8F173D68AB436F91 /* inttree.c */; };
+		59AA806338D35B785B49A908 /* bc-reserve.c in Sources */ = {isa = PBXBuildFile; fileRef = B2880B2E174030B10F61FA79 /* bc-reserve.c */; };
+		5A38A1C20E399B2313DC8324 /* code.c in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6FCE5E495DB7311CDAAFF /* code.c */; };
+		69E2E305F42B33857086E428 /* elf-objfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 5B94D4FC9467A030946DCD0C /* elf-objfmt.c */; };
+		6B3BCE6E138AEDBD92480EA4 /* nasm-eval.c in Sources */ = {isa = PBXBuildFile; fileRef = 501BBB01880A87F741EE157E /* nasm-eval.c */; };
+		6D0534958102B88A09024688 /* hamt.c in Sources */ = {isa = PBXBuildFile; fileRef = 3F1D83DCD0615E92B310E42E /* hamt.c */; };
+		70340FB5C6323095A3E4A45A /* scanner.c in Sources */ = {isa = PBXBuildFile; fileRef = CD5159AD9E22D306FA6EC368 /* scanner.c */; };
+		7135EB876468BDF8B461F0FD /* nasm-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 9D4620BCDA53E7FA8D3EDF5D /* nasm-parse.c */; };
+		7153F3AEE300223CBB13D71C /* substr.c in Sources */ = {isa = PBXBuildFile; fileRef = 751C3DDF4C497BC103D9D208 /* substr.c */; };
+		71CADFC21DA1C38AC5CDE300 /* dwarf2-line.c in Sources */ = {isa = PBXBuildFile; fileRef = 875C178B7EB6FE5DFFBB607F /* dwarf2-line.c */; };
+		72FF1B2138395E311C0DE112 /* gas-parse-intel.c in Sources */ = {isa = PBXBuildFile; fileRef = 339D05B8F88C59EBDDF77832 /* gas-parse-intel.c */; };
+		78D8579436421914582FEF93 /* yasm.c in Sources */ = {isa = PBXBuildFile; fileRef = 524B15FF11334C3E013E8E35 /* yasm.c */; };
+		7904DE4EA546D4A0BC42F624 /* lc3bbc.c in Sources */ = {isa = PBXBuildFile; fileRef = 08F7587AF3F94967E5A96215 /* lc3bbc.c */; };
+		7DA3D4B1738259B0BAB25C64 /* dwarf2-info.c in Sources */ = {isa = PBXBuildFile; fileRef = 7230E4AB1E9C9AB68AEA82F4 /* dwarf2-info.c */; };
+		819DFA17A04C12AB6E47E708 /* x86id.c in Sources */ = {isa = PBXBuildFile; fileRef = 40A5B9A6C1E7488F91316DEB /* x86id.c */; };
+		89F00D40B217EEC54A2A13B2 /* valparam.c in Sources */ = {isa = PBXBuildFile; fileRef = 02D3C46DF02365DD4CECBA97 /* valparam.c */; };
+		8DB2B1189C2403D5E51E7A7A /* cv-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = B54CCDF5EDAC20ECF619A26E /* cv-dbgfmt.c */; };
+		98FEFF0252D265EC4239772B /* gas-token.c in Sources */ = {isa = PBXBuildFile; fileRef = 555A052236AF314DE3C18B0A /* gas-token.c */; };
+		990F5738B6F761832FAD8DEA /* nasm-parser.c in Sources */ = {isa = PBXBuildFile; fileRef = E4040D975D3A4C87F937A8BF /* nasm-parser.c */; };
+		9A8242DB3D12A055DE554722 /* xmalloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 7D0DE83895BFC87EB9B7F872 /* xmalloc.c */; };
+		9D2E80F3DABD61F0FE28CE8A /* elf-x86-amd64.c in Sources */ = {isa = PBXBuildFile; fileRef = 340AF07FD7EA39C339885800 /* elf-x86-amd64.c */; };
+		A0074870B88F1F462C948343 /* x86regtmod.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F00AB71EEADCAFAD777250B /* x86regtmod.c */; };
+		A0AB9B98AB95B9A171F4E269 /* section.c in Sources */ = {isa = PBXBuildFile; fileRef = 8634C5281DBB30AE533BB800 /* section.c */; };
+		A405BC37EC8B9B23192C013C /* dwarf2-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = E457553E005599E575518C70 /* dwarf2-dbgfmt.c */; };
+		A84AB260B096AEA095CF316B /* module.c in Sources */ = {isa = PBXBuildFile; fileRef = 81B018F26106BD9C53A5E4CB /* module.c */; };
+		AD168E682E676561E8699B4B /* null-dbgfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = E0C031DF96B3DCD738ACF0DD /* null-dbgfmt.c */; };
+		AD64A38FE35CF78B88BF0154 /* nasm-preproc.c in Sources */ = {isa = PBXBuildFile; fileRef = 452E45B8F0A71F4CF58DA32A /* nasm-preproc.c */; };
+		AE3BFE24FD3BD0E89C16FB94 /* translate.c in Sources */ = {isa = PBXBuildFile; fileRef = F4A67B6129E9E505EB5F271E /* translate.c */; };
+		B25D95585EB55EDA108EB58B /* strsep.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F5A2FF5DB59ED7934BE9A95 /* strsep.c */; };
+		B679C51E6B9AEF41982D9573 /* dwarf2-aranges.c in Sources */ = {isa = PBXBuildFile; fileRef = ED25CD889CDCF380D276386A /* dwarf2-aranges.c */; };
+		B688214CF5EE29F54A95E11E /* assocdat.c in Sources */ = {isa = PBXBuildFile; fileRef = A6B2F0EBBAB76B935137ABA5 /* assocdat.c */; };
+		B6BB21E8C36087539818FD07 /* genmodule.c in Sources */ = {isa = PBXBuildFile; fileRef = 14F5649EFEE5CD0E677C50CE /* genmodule.c */; };
+		B809FE6CFF7ED588D19FD536 /* elf-x86-x86.c in Sources */ = {isa = PBXBuildFile; fileRef = EB205FD6CA7837757DC6A5FE /* elf-x86-x86.c */; };
+		BAC078B781A3F9D667B5B307 /* nasm-listfmt.c in Sources */ = {isa = PBXBuildFile; fileRef = 050FFC9C06B38C8CCD4320BB /* nasm-listfmt.c */; };
+		BC70326CCA8CEC27254F59D5 /* cv-type.c in Sources */ = {isa = PBXBuildFile; fileRef = 68575F2AB21EC1EDC3F2CD67 /* cv-type.c */; };
+		BE987F29ED090426427B8B60 /* mergesort.c in Sources */ = {isa = PBXBuildFile; fileRef = 5267DE5BEC878CFC46ADEEC3 /* mergesort.c */; };
+		C31D7A702DA9F516CF33C76E /* gas-parse.c in Sources */ = {isa = PBXBuildFile; fileRef = AFE6F19D7EE83E3C3B923C78 /* gas-parse.c */; };
+		C9B8FC56954E6B2BFC9F82A5 /* symrec.c in Sources */ = {isa = PBXBuildFile; fileRef = E6607C7C9A8B5148E8F62F0A /* symrec.c */; };
+		CF630A5A684ABB2513FA24B0 /* actions.c in Sources */ = {isa = PBXBuildFile; fileRef = C13FE5A413D1BCC4648205A8 /* actions.c */; };
+		CFE2D3C909ABD3B84523F4C7 /* genversion.c in Sources */ = {isa = PBXBuildFile; fileRef = B686B3620355C78FF7676422 /* genversion.c */; };
+		D32CEBBEB17BD8A34D47322C /* insn.c in Sources */ = {isa = PBXBuildFile; fileRef = 9389C26EE0ED42F26E960F54 /* insn.c */; };
+		D3AAD2128302CC31E297C0CF /* floatnum.c in Sources */ = {isa = PBXBuildFile; fileRef = 5EC8458FC176CBB2E21379F7 /* floatnum.c */; };
+		D7194F15BAAA1C235C312E7C /* libgenperf_libs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 409E99D7C44751B2B82733E8 /* libgenperf_libs.a */; };
+		D8FFB7470821129A6B5E2EEE /* dfa.c in Sources */ = {isa = PBXBuildFile; fileRef = 7DD8D0E4486E728EFD2DD2D4 /* dfa.c */; };
+		DBF5BDA7D0F8016C9DD32E43 /* expr.c in Sources */ = {isa = PBXBuildFile; fileRef = 3438F7BD430BF21F79B535BA /* expr.c */; };
+		E3127B744441393CB91FABBA /* x86expr.c in Sources */ = {isa = PBXBuildFile; fileRef = D9C8E5E371995765847937B5 /* x86expr.c */; };
+		E41D7FB962BD75F5F129D744 /* value.c in Sources */ = {isa = PBXBuildFile; fileRef = C177D25FA84F7D46E48884B7 /* value.c */; };
+		E6B7FD1DC24FD92F56A263D9 /* bc-align.c in Sources */ = {isa = PBXBuildFile; fileRef = B55084985449E10BFB43AA38 /* bc-align.c */; };
+		EC1D90C164C5967C36637994 /* phash.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A63C6BFF3A194EE86CBD8A7 /* phash.c */; };
+		EF30F662D1E88B501FE9C2A1 /* perfect.c in Sources */ = {isa = PBXBuildFile; fileRef = E975CD4038EE70A287F1503E /* perfect.c */; };
+		F0E5AA49FB6AF7BDAD7658F3 /* elf.c in Sources */ = {isa = PBXBuildFile; fileRef = 56DBF46970528DFDEA9F2370 /* elf.c */; };
+		F52FAB6AC6263A1A6DF5DFAD /* lc3bid.c in Sources */ = {isa = PBXBuildFile; fileRef = FE94CA9E4258ACE814CBBEAD /* lc3bid.c */; };
+		F61BB8183ADE2391E76DD33A /* bytecode.c in Sources */ = {isa = PBXBuildFile; fileRef = 6EB59E2B6F4400708320676D /* bytecode.c */; };
+		F6CDED1EAC551B82707C2DFB /* errwarn.c in Sources */ = {isa = PBXBuildFile; fileRef = C0AC9055AE36F17E4B9B294E /* errwarn.c */; };
+		F73B2EE250F932926E5603B6 /* gas-parser.c in Sources */ = {isa = PBXBuildFile; fileRef = A36525050CC3347329C9A238 /* gas-parser.c */; };
+		FB290E2D0B8BCC40BCFD5C7F /* bc-incbin.c in Sources */ = {isa = PBXBuildFile; fileRef = A3F3F564629CBB58B30DFC23 /* bc-incbin.c */; };
+		FFB674E8BCC42A7A010F4D6E /* bc-org.c in Sources */ = {isa = PBXBuildFile; fileRef = 4A4D6EC6C3080076AAE55428 /* bc-org.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,7 +447,6 @@
 		14F5649EFEE5CD0E677C50CE /* genmodule.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = genmodule.c; sourceTree = "<group>"; };
 		15742B18944650B25B975636 /* version.mac */ = {isa = PBXFileReference; lastKnownFileType = text; path = version.mac; sourceTree = "<group>"; };
 		158CA9939723B87CC75893E8 /* bin-objfmt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "bin-objfmt.c"; sourceTree = "<group>"; };
-		173053A320B83CD40AC4486D /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../src/supplement.gypi; sourceTree = "<group>"; };
 		198C5376AC425C607F0950D6 /* strcasecmp.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = strcasecmp.c; sourceTree = "<group>"; };
 		19FC5DDBA87B5064601ECBE9 /* x86insn_nasm.gperf */ = {isa = PBXFileReference; lastKnownFileType = text; path = x86insn_nasm.gperf; sourceTree = "<group>"; };
 		1CD3105B0CC6850951ACB14C /* yasm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = yasm; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -500,6 +499,7 @@
 		6EB59E2B6F4400708320676D /* bytecode.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bytecode.c; sourceTree = "<group>"; };
 		7230E4AB1E9C9AB68AEA82F4 /* dwarf2-info.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "dwarf2-info.c"; sourceTree = "<group>"; };
 		73705F5003D3FFF2573126AC /* license.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = license.c; sourceTree = "<group>"; };
+		73EE245097C46BD10B71B614 /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../webrtc/supplement.gypi; sourceTree = "<group>"; };
 		751C3DDF4C497BC103D9D208 /* substr.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = substr.c; sourceTree = "<group>"; };
 		786F34EA687342F63850182C /* x86regtmod.gperf */ = {isa = PBXFileReference; lastKnownFileType = text; path = x86regtmod.gperf; sourceTree = "<group>"; };
 		7D0DE83895BFC87EB9B7F872 /* xmalloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = xmalloc.c; sourceTree = "<group>"; };
@@ -606,7 +606,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9807B240BB1BD28F6A928F76 /* libgenperf_libs.a in Frameworks */,
+				42520100E690F8AB78D3BE0D /* libgenperf_libs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,206 +628,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EFD65D9A328DA0695541AD1 /* libgenperf_libs.a in Frameworks */,
+				D7194F15BAAA1C235C312E7C /* libgenperf_libs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		09AC19F86FCF3CBE2C3F2891 /* frontends/yasm */ = {
+		10F6203AD72097F90A8EF500 /* cpp */ = {
 			isa = PBXGroup;
 			children = (
-				EEE528C9B9453F26DD11E756 /* yasm-options.c */,
-				524B15FF11334C3E013E8E35 /* yasm.c */,
+				AB9614A8582481B81D7DCB52 /* cpp-preproc.c */,
 			);
-			path = frontends/yasm;
+			path = cpp;
 			sourceTree = "<group>";
 		};
-		12E2A34287E7148C08E7E1EE /* xdf */ = {
-			isa = PBXGroup;
-			children = (
-				54B0CD6067E844EE9955383D /* xdf-objfmt.c */,
-			);
-			path = xdf;
-			sourceTree = "<group>";
-		};
-		16B9D137DD2A9BFB30D17548 /* Build */ = {
-			isa = PBXGroup;
-			children = (
-				4529943D6B71E123C0C5625D /* common.gypi */,
-				85BBB38F8C9EA7D6E106EBC0 /* filename_rules.gypi */,
-				DCFF2C8286DA15D138489DB5 /* release.gypi */,
-				387DF109F572F92ECA1EF42B /* release_defaults.gypi */,
-				AB128738A2A3A4DA21F8D557 /* release_impl.gypi */,
-				259EE8265A8CB99C2C20A544 /* release_impl_official.gypi */,
-				173053A320B83CD40AC4486D /* supplement.gypi */,
-				915804D39D9CA64DFDA3D3B2 /* yasm.gyp */,
-			);
-			name = Build;
-			sourceTree = "<group>";
-		};
-		1B809C89B4E81C268AFEBFDD /* bin */ = {
-			isa = PBXGroup;
-			children = (
-				158CA9939723B87CC75893E8 /* bin-objfmt.c */,
-			);
-			path = bin;
-			sourceTree = "<group>";
-		};
-		1C170F77EC9CB393ACA534A9 /* tools */ = {
-			isa = PBXGroup;
-			children = (
-				FDD8393B5A6ED38EB8C6581D /* genmacro */,
-				94DED7E3C09F1994E0A74D68 /* genperf */,
-				865272EA4297BC154A5F904F /* re2c */,
-			);
-			path = tools;
-			sourceTree = "<group>";
-		};
-		1C3753B87A0086A9EF126384 /* SHARED_INTERMEDIATE_DIR */ = {
-			isa = PBXGroup;
-			children = (
-				15742B18944650B25B975636 /* version.mac */,
-				92EE4883450FBD5D92AD24DD /* x86cpu.c */,
-				ADE64189B30660C41E148D27 /* x86insn_gas.gperf */,
-				19FC5DDBA87B5064601ECBE9 /* x86insn_nasm.gperf */,
-				B0ED03C224298DF739204A5F /* x86insns.c */,
-				4F00AB71EEADCAFAD777250B /* x86regtmod.c */,
-			);
-			name = SHARED_INTERMEDIATE_DIR;
-			path = third_party/yasm;
-			sourceTree = SHARED_INTERMEDIATE_DIR;
-		};
-		2125D992A10C6B271433CC07 /* preprocs */ = {
-			isa = PBXGroup;
-			children = (
-				7F9EEA9C5FFECEE1491D0F9B /* cpp */,
-				8D531A946D64083A707E6F0A /* nasm */,
-				5565FF6530BC97CECFACCB5C /* raw */,
-			);
-			path = preprocs;
-			sourceTree = "<group>";
-		};
-		219C0699B962D26F194A376B /* dbgfmts */ = {
-			isa = PBXGroup;
-			children = (
-				74D4F4AFFAE466027647C82B /* codeview */,
-				EFC49A55A02EAF92122A9ED1 /* dwarf2 */,
-				71FC1B53F775A2FDDD2D7063 /* null */,
-				4362D2328403184EB111E5CF /* stabs */,
-			);
-			path = dbgfmts;
-			sourceTree = "<group>";
-		};
-		3944595888D5FAAA961727ED /* rdf */ = {
-			isa = PBXGroup;
-			children = (
-				852DB5FD8C1228617BFE101F /* rdf-objfmt.c */,
-			);
-			path = rdf;
-			sourceTree = "<group>";
-		};
-		41CAA1392BE9C262063FC7D4 /* objfmts */ = {
-			isa = PBXGroup;
-			children = (
-				1B809C89B4E81C268AFEBFDD /* bin */,
-				4FA507D8D8A6EA2FED702EC8 /* coff */,
-				C5CA66827D6DB6E6AB980CA2 /* dbg */,
-				F8208CE99D56B925331902E8 /* elf */,
-				9C30B0942B61019D5A33E573 /* macho */,
-				3944595888D5FAAA961727ED /* rdf */,
-				12E2A34287E7148C08E7E1EE /* xdf */,
-			);
-			path = objfmts;
-			sourceTree = "<group>";
-		};
-		4362D2328403184EB111E5CF /* stabs */ = {
-			isa = PBXGroup;
-			children = (
-				68F84C76BC0A38A5475F6D3F /* stabs-dbgfmt.c */,
-			);
-			path = stabs;
-			sourceTree = "<group>";
-		};
-		4CC37567DBDCD8AF51B6F4C4 /* gas */ = {
-			isa = PBXGroup;
-			children = (
-				339D05B8F88C59EBDDF77832 /* gas-parse-intel.c */,
-				AFE6F19D7EE83E3C3B923C78 /* gas-parse.c */,
-				A36525050CC3347329C9A238 /* gas-parser.c */,
-				440F8CE2FF0449367615DF01 /* gas-token.re */,
-			);
-			path = gas;
-			sourceTree = "<group>";
-		};
-		4FA507D8D8A6EA2FED702EC8 /* coff */ = {
-			isa = PBXGroup;
-			children = (
-				43B09CEFF6E6BCCFA32534F7 /* coff-objfmt.c */,
-				EDE5B570FF7CBDBE8129E26A /* win64-except.c */,
-				D2C860F63B1E84993D334F2A /* win64-gas.mac */,
-				20246648AD6CDCE2A691C3E2 /* win64-nasm.mac */,
-			);
-			path = coff;
-			sourceTree = "<group>";
-		};
-		52447E8BDDE1575DBA94603E /* source */ = {
-			isa = PBXGroup;
-			children = (
-				C0A57D2B83C0F080E713E731 /* config/mac */,
-				84F33B6DFFB5E87FCA7090CB /* patched-yasm */,
-			);
-			path = source;
-			sourceTree = "<group>";
-		};
-		52F6A4EF8373637553A359F8 /* nasm */ = {
-			isa = PBXGroup;
-			children = (
-				9D4620BCDA53E7FA8D3EDF5D /* nasm-parse.c */,
-				E4040D975D3A4C87F937A8BF /* nasm-parser.c */,
-				9F6FEA53A904C53DBE24516D /* nasm-std.mac */,
-				2DB63686FCE0090876F6CE7C /* nasm-token.re */,
-			);
-			path = nasm;
-			sourceTree = "<group>";
-		};
-		5565FF6530BC97CECFACCB5C /* raw */ = {
-			isa = PBXGroup;
-			children = (
-				C26FF8AC708250C874D2C962 /* raw-preproc.c */,
-			);
-			path = raw;
-			sourceTree = "<group>";
-		};
-		557649C0555B09E129410C3A /* BUILT_PRODUCTS_DIR */ = {
-			isa = PBXGroup;
-			children = (
-				33358FD75E30942556DB76CA /* genperf */,
-				FBB4FC48B048FADBB9F12B9F /* re2c */,
-			);
-			name = BUILT_PRODUCTS_DIR;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		71FC1B53F775A2FDDD2D7063 /* null */ = {
-			isa = PBXGroup;
-			children = (
-				E0C031DF96B3DCD738ACF0DD /* null-dbgfmt.c */,
-			);
-			path = null;
-			sourceTree = "<group>";
-		};
-		74D4F4AFFAE466027647C82B /* codeview */ = {
-			isa = PBXGroup;
-			children = (
-				B54CCDF5EDAC20ECF619A26E /* cv-dbgfmt.c */,
-				263711E0187CD487DCC8D2F1 /* cv-symline.c */,
-				68575F2AB21EC1EDC3F2CD67 /* cv-type.c */,
-			);
-			path = codeview;
-			sourceTree = "<group>";
-		};
-		7AB0421C8150E9901086AD0F /* lc3b */ = {
+		1B1634A9E97180AFEA5A91CE /* lc3b */ = {
 			isa = PBXGroup;
 			children = (
 				E93BA5E7311FE233AB66890D /* lc3barch.c */,
@@ -837,28 +653,33 @@
 			path = lc3b;
 			sourceTree = "<group>";
 		};
-		7F9EEA9C5FFECEE1491D0F9B /* cpp */ = {
+		1C224112647F600BBA59E531 /* nasm */ = {
 			isa = PBXGroup;
 			children = (
-				AB9614A8582481B81D7DCB52 /* cpp-preproc.c */,
+				B686B3620355C78FF7676422 /* genversion.c */,
+				501BBB01880A87F741EE157E /* nasm-eval.c */,
+				41A1D9E1D0EDC65A8323EDAD /* nasm-pp.c */,
+				452E45B8F0A71F4CF58DA32A /* nasm-preproc.c */,
+				A6C4B17B0008FA61FA9D1253 /* nasmlib.c */,
 			);
-			path = cpp;
+			path = nasm;
 			sourceTree = "<group>";
 		};
-		84F33B6DFFB5E87FCA7090CB /* patched-yasm */ = {
+		20A937E508FC21DB1D928E0F /* objfmts */ = {
 			isa = PBXGroup;
 			children = (
-				09AC19F86FCF3CBE2C3F2891 /* frontends/yasm */,
-				E346D3DA51D26BF2D2E11AF1 /* libyasm */,
-				F48BA43212208174807318D1 /* modules */,
-				1C170F77EC9CB393ACA534A9 /* tools */,
-				F21FE5F84E9D629EF0873709 /* COPYING */,
-				A085A33DF330A1C01DC45068 /* genstring.c */,
+				656AE678D362717674F41CE7 /* bin */,
+				B586B28537DABFE849BA88D0 /* coff */,
+				FAEC45572A2EF1A5B200136B /* dbg */,
+				710F17C2F4A73EE9444E9B93 /* elf */,
+				8DAB2AA2C1151FF7EB32068D /* macho */,
+				A7DDB2C9109EA7E845B04FFD /* rdf */,
+				D9B844ED83643E95084C39D4 /* xdf */,
 			);
-			path = "patched-yasm";
+			path = objfmts;
 			sourceTree = "<group>";
 		};
-		865272EA4297BC154A5F904F /* re2c */ = {
+		2B4D931517918D95134B664E /* re2c */ = {
 			isa = PBXGroup;
 			children = (
 				C13FE5A413D1BCC4648205A8 /* actions.c */,
@@ -874,19 +695,105 @@
 			path = re2c;
 			sourceTree = "<group>";
 		};
-		8D531A946D64083A707E6F0A /* nasm */ = {
+		320D54725D1BB94DCAADC570 /* codeview */ = {
 			isa = PBXGroup;
 			children = (
-				B686B3620355C78FF7676422 /* genversion.c */,
-				501BBB01880A87F741EE157E /* nasm-eval.c */,
-				41A1D9E1D0EDC65A8323EDAD /* nasm-pp.c */,
-				452E45B8F0A71F4CF58DA32A /* nasm-preproc.c */,
-				A6C4B17B0008FA61FA9D1253 /* nasmlib.c */,
+				B54CCDF5EDAC20ECF619A26E /* cv-dbgfmt.c */,
+				263711E0187CD487DCC8D2F1 /* cv-symline.c */,
+				68575F2AB21EC1EDC3F2CD67 /* cv-type.c */,
 			);
-			path = nasm;
+			path = codeview;
 			sourceTree = "<group>";
 		};
-		94DED7E3C09F1994E0A74D68 /* genperf */ = {
+		367DB114D83129B065B484D4 /* parsers */ = {
+			isa = PBXGroup;
+			children = (
+				BA01FAB9F494FC23BB9ED871 /* gas */,
+				E2DA991A1ACD096E9B4E1DCD /* nasm */,
+			);
+			path = parsers;
+			sourceTree = "<group>";
+		};
+		3B84753D13A3BA42D066C412 /* genmacro */ = {
+			isa = PBXGroup;
+			children = (
+				9216367E35688238D5A44621 /* genmacro.c */,
+			);
+			path = genmacro;
+			sourceTree = "<group>";
+		};
+		40BA47C6217FB48BB03ACED4 /* null */ = {
+			isa = PBXGroup;
+			children = (
+				E0C031DF96B3DCD738ACF0DD /* null-dbgfmt.c */,
+			);
+			path = null;
+			sourceTree = "<group>";
+		};
+		43AF2977A35BD1589F3D2356 /* SHARED_INTERMEDIATE_DIR */ = {
+			isa = PBXGroup;
+			children = (
+				15742B18944650B25B975636 /* version.mac */,
+				92EE4883450FBD5D92AD24DD /* x86cpu.c */,
+				ADE64189B30660C41E148D27 /* x86insn_gas.gperf */,
+				19FC5DDBA87B5064601ECBE9 /* x86insn_nasm.gperf */,
+				B0ED03C224298DF739204A5F /* x86insns.c */,
+				4F00AB71EEADCAFAD777250B /* x86regtmod.c */,
+			);
+			name = SHARED_INTERMEDIATE_DIR;
+			path = third_party/yasm;
+			sourceTree = SHARED_INTERMEDIATE_DIR;
+		};
+		4802FF6B03F14C7DB42AF8E1 /* Intermediates */ = {
+			isa = PBXGroup;
+			children = (
+				AF81A7178F97F0DE62706C55 /* INTERMEDIATE_DIR */,
+				43AF2977A35BD1589F3D2356 /* SHARED_INTERMEDIATE_DIR */,
+			);
+			name = Intermediates;
+			sourceTree = "<group>";
+		};
+		480E56B6DDB3C926D662041A /* dwarf2 */ = {
+			isa = PBXGroup;
+			children = (
+				ED25CD889CDCF380D276386A /* dwarf2-aranges.c */,
+				E457553E005599E575518C70 /* dwarf2-dbgfmt.c */,
+				7230E4AB1E9C9AB68AEA82F4 /* dwarf2-info.c */,
+				875C178B7EB6FE5DFFBB607F /* dwarf2-line.c */,
+			);
+			path = dwarf2;
+			sourceTree = "<group>";
+		};
+		4B3DF413A31AEDAE97740927 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				FBD41DC38DA7F837D744E4AD /* config/mac */,
+				F99A1591D4C729119D58F2BD /* patched-yasm */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		4C806E2F835069605E2BD4E7 /* preprocs */ = {
+			isa = PBXGroup;
+			children = (
+				10F6203AD72097F90A8EF500 /* cpp */,
+				1C224112647F600BBA59E531 /* nasm */,
+				C92A03AC984A825F88F767E7 /* raw */,
+			);
+			path = preprocs;
+			sourceTree = "<group>";
+		};
+		5281420DAD64AB55D213328E = {
+			isa = PBXGroup;
+			children = (
+				B83B75F20DE5CD2C305112F6 /* Source */,
+				4802FF6B03F14C7DB42AF8E1 /* Intermediates */,
+				6AB082A455E625BBED63AF41 /* Products */,
+				71ED53716F9F66CAA564C040 /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		5B4820C115992791011D3674 /* genperf */ = {
 			isa = PBXGroup;
 			children = (
 				40C72C34A9D8126230E47D67 /* genperf.c */,
@@ -895,7 +802,131 @@
 			path = genperf;
 			sourceTree = "<group>";
 		};
-		9B9197AC4364E263794EE346 /* INTERMEDIATE_DIR */ = {
+		5FEA31AB55C211BE0315492E /* stabs */ = {
+			isa = PBXGroup;
+			children = (
+				68F84C76BC0A38A5475F6D3F /* stabs-dbgfmt.c */,
+			);
+			path = stabs;
+			sourceTree = "<group>";
+		};
+		64C060AB3ACBD91768A3FD96 /* arch */ = {
+			isa = PBXGroup;
+			children = (
+				1B1634A9E97180AFEA5A91CE /* lc3b */,
+				D9E0BB109D403B3BA5E6AFEB /* x86 */,
+			);
+			path = arch;
+			sourceTree = "<group>";
+		};
+		656AE678D362717674F41CE7 /* bin */ = {
+			isa = PBXGroup;
+			children = (
+				158CA9939723B87CC75893E8 /* bin-objfmt.c */,
+			);
+			path = bin;
+			sourceTree = "<group>";
+		};
+		6AAD8034231834A7AC751DFF /* frontends/yasm */ = {
+			isa = PBXGroup;
+			children = (
+				EEE528C9B9453F26DD11E756 /* yasm-options.c */,
+				524B15FF11334C3E013E8E35 /* yasm.c */,
+			);
+			path = frontends/yasm;
+			sourceTree = "<group>";
+		};
+		6AB082A455E625BBED63AF41 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1CD3105B0CC6850951ACB14C /* yasm */,
+				409E99D7C44751B2B82733E8 /* libgenperf_libs.a */,
+				D0186125C0873AF692668790 /* genstring */,
+				9E47A5965BD0DCF7DB42B8FC /* genperf */,
+				9DB2EAA39B6DA45B284428F1 /* genmacro */,
+				D3015B86C15A40ADD0F626C4 /* genversion */,
+				0AA7991A727CAC4C9F3E7817 /* re2c */,
+				4BE5C0FF1EE57DDD7E318BD3 /* genmodule */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		710F17C2F4A73EE9444E9B93 /* elf */ = {
+			isa = PBXGroup;
+			children = (
+				5B94D4FC9467A030946DCD0C /* elf-objfmt.c */,
+				340AF07FD7EA39C339885800 /* elf-x86-amd64.c */,
+				EB205FD6CA7837757DC6A5FE /* elf-x86-x86.c */,
+				56DBF46970528DFDEA9F2370 /* elf.c */,
+			);
+			path = elf;
+			sourceTree = "<group>";
+		};
+		71ED53716F9F66CAA564C040 /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				4529943D6B71E123C0C5625D /* common.gypi */,
+				85BBB38F8C9EA7D6E106EBC0 /* filename_rules.gypi */,
+				DCFF2C8286DA15D138489DB5 /* release.gypi */,
+				387DF109F572F92ECA1EF42B /* release_defaults.gypi */,
+				AB128738A2A3A4DA21F8D557 /* release_impl.gypi */,
+				259EE8265A8CB99C2C20A544 /* release_impl_official.gypi */,
+				73EE245097C46BD10B71B614 /* supplement.gypi */,
+				915804D39D9CA64DFDA3D3B2 /* yasm.gyp */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		7DA139F87B7E53D850555A3D /* modules */ = {
+			isa = PBXGroup;
+			children = (
+				64C060AB3ACBD91768A3FD96 /* arch */,
+				A760494101195FC9F9F9938A /* dbgfmts */,
+				D567F3245344BD1584F0F8F4 /* listfmts/nasm */,
+				20A937E508FC21DB1D928E0F /* objfmts */,
+				367DB114D83129B065B484D4 /* parsers */,
+				4C806E2F835069605E2BD4E7 /* preprocs */,
+			);
+			path = modules;
+			sourceTree = "<group>";
+		};
+		8DAB2AA2C1151FF7EB32068D /* macho */ = {
+			isa = PBXGroup;
+			children = (
+				9E80CEF5AC980975FC8C723E /* macho-objfmt.c */,
+			);
+			path = macho;
+			sourceTree = "<group>";
+		};
+		A6AE9BF50A6962819BFAEC58 /* BUILT_PRODUCTS_DIR */ = {
+			isa = PBXGroup;
+			children = (
+				33358FD75E30942556DB76CA /* genperf */,
+				FBB4FC48B048FADBB9F12B9F /* re2c */,
+			);
+			name = BUILT_PRODUCTS_DIR;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		A760494101195FC9F9F9938A /* dbgfmts */ = {
+			isa = PBXGroup;
+			children = (
+				320D54725D1BB94DCAADC570 /* codeview */,
+				480E56B6DDB3C926D662041A /* dwarf2 */,
+				40BA47C6217FB48BB03ACED4 /* null */,
+				5FEA31AB55C211BE0315492E /* stabs */,
+			);
+			path = dbgfmts;
+			sourceTree = "<group>";
+		};
+		A7DDB2C9109EA7E845B04FFD /* rdf */ = {
+			isa = PBXGroup;
+			children = (
+				852DB5FD8C1228617BFE101F /* rdf-objfmt.c */,
+			);
+			path = rdf;
+			sourceTree = "<group>";
+		};
+		AF81A7178F97F0DE62706C55 /* INTERMEDIATE_DIR */ = {
 			isa = PBXGroup;
 			children = (
 				555A052236AF314DE3C18B0A /* gas-token.c */,
@@ -914,7 +945,46 @@
 			path = third_party/yasm;
 			sourceTree = INTERMEDIATE_DIR;
 		};
-		9BB5D578A33945CEC3548F51 /* listfmts/nasm */ = {
+		B586B28537DABFE849BA88D0 /* coff */ = {
+			isa = PBXGroup;
+			children = (
+				43B09CEFF6E6BCCFA32534F7 /* coff-objfmt.c */,
+				EDE5B570FF7CBDBE8129E26A /* win64-except.c */,
+				D2C860F63B1E84993D334F2A /* win64-gas.mac */,
+				20246648AD6CDCE2A691C3E2 /* win64-nasm.mac */,
+			);
+			path = coff;
+			sourceTree = "<group>";
+		};
+		B83B75F20DE5CD2C305112F6 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				A6AE9BF50A6962819BFAEC58 /* BUILT_PRODUCTS_DIR */,
+				4B3DF413A31AEDAE97740927 /* source */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		BA01FAB9F494FC23BB9ED871 /* gas */ = {
+			isa = PBXGroup;
+			children = (
+				339D05B8F88C59EBDDF77832 /* gas-parse-intel.c */,
+				AFE6F19D7EE83E3C3B923C78 /* gas-parse.c */,
+				A36525050CC3347329C9A238 /* gas-parser.c */,
+				440F8CE2FF0449367615DF01 /* gas-token.re */,
+			);
+			path = gas;
+			sourceTree = "<group>";
+		};
+		C92A03AC984A825F88F767E7 /* raw */ = {
+			isa = PBXGroup;
+			children = (
+				C26FF8AC708250C874D2C962 /* raw-preproc.c */,
+			);
+			path = raw;
+			sourceTree = "<group>";
+		};
+		D567F3245344BD1584F0F8F4 /* listfmts/nasm */ = {
 			isa = PBXGroup;
 			children = (
 				050FFC9C06B38C8CCD4320BB /* nasm-listfmt.c */,
@@ -922,85 +992,29 @@
 			path = listfmts/nasm;
 			sourceTree = "<group>";
 		};
-		9BE111ECDABCF7E8656638C4 /* Products */ = {
+		D9B844ED83643E95084C39D4 /* xdf */ = {
 			isa = PBXGroup;
 			children = (
-				1CD3105B0CC6850951ACB14C /* yasm */,
-				409E99D7C44751B2B82733E8 /* libgenperf_libs.a */,
-				D0186125C0873AF692668790 /* genstring */,
-				9E47A5965BD0DCF7DB42B8FC /* genperf */,
-				9DB2EAA39B6DA45B284428F1 /* genmacro */,
-				D3015B86C15A40ADD0F626C4 /* genversion */,
-				0AA7991A727CAC4C9F3E7817 /* re2c */,
-				4BE5C0FF1EE57DDD7E318BD3 /* genmodule */,
+				54B0CD6067E844EE9955383D /* xdf-objfmt.c */,
 			);
-			name = Products;
+			path = xdf;
 			sourceTree = "<group>";
 		};
-		9C30B0942B61019D5A33E573 /* macho */ = {
+		D9E0BB109D403B3BA5E6AFEB /* x86 */ = {
 			isa = PBXGroup;
 			children = (
-				9E80CEF5AC980975FC8C723E /* macho-objfmt.c */,
+				F3CFA27CC5E9C020058CDF1D /* gen_x86_insn.py */,
+				C231B29CB7E7B522F2624B8F /* x86arch.c */,
+				3C4916FA42C619E1E9AFF2F5 /* x86bc.c */,
+				523897DD723EE2D02EE610B0 /* x86cpu.gperf */,
+				D9C8E5E371995765847937B5 /* x86expr.c */,
+				40A5B9A6C1E7488F91316DEB /* x86id.c */,
+				786F34EA687342F63850182C /* x86regtmod.gperf */,
 			);
-			path = macho;
+			path = x86;
 			sourceTree = "<group>";
 		};
-		AC950B1C73B5758FB005C3AB /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				557649C0555B09E129410C3A /* BUILT_PRODUCTS_DIR */,
-				52447E8BDDE1575DBA94603E /* source */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
-		C0A57D2B83C0F080E713E731 /* config/mac */ = {
-			isa = PBXGroup;
-			children = (
-				F56FDE862F41858ADB9045E8 /* Makefile */,
-				45037C7D0B6645F0D073D998 /* config.h */,
-				D925CE06FB00341D320E3094 /* libyasm-stdint.h */,
-			);
-			path = config/mac;
-			sourceTree = "<group>";
-		};
-		C5CA66827D6DB6E6AB980CA2 /* dbg */ = {
-			isa = PBXGroup;
-			children = (
-				8AFA641173D2EA31C74F8920 /* dbg-objfmt.c */,
-			);
-			path = dbg;
-			sourceTree = "<group>";
-		};
-		CAE3733C84ED86452D2EEF59 /* Intermediates */ = {
-			isa = PBXGroup;
-			children = (
-				9B9197AC4364E263794EE346 /* INTERMEDIATE_DIR */,
-				1C3753B87A0086A9EF126384 /* SHARED_INTERMEDIATE_DIR */,
-			);
-			name = Intermediates;
-			sourceTree = "<group>";
-		};
-		CF3EB8EAB1B66BF58774CD40 = {
-			isa = PBXGroup;
-			children = (
-				AC950B1C73B5758FB005C3AB /* Source */,
-				CAE3733C84ED86452D2EEF59 /* Intermediates */,
-				9BE111ECDABCF7E8656638C4 /* Products */,
-				16B9D137DD2A9BFB30D17548 /* Build */,
-			);
-			sourceTree = "<group>";
-		};
-		E2BAC33EA2A694D3EE9D0C20 /* parsers */ = {
-			isa = PBXGroup;
-			children = (
-				4CC37567DBDCD8AF51B6F4C4 /* gas */,
-				52F6A4EF8373637553A359F8 /* nasm */,
-			);
-			path = parsers;
-			sourceTree = "<group>";
-		};
-		E346D3DA51D26BF2D2E11AF1 /* libyasm */ = {
+		E1B4D61AB205F7039E6670F1 /* libyasm */ = {
 			isa = PBXGroup;
 			children = (
 				A6B2F0EBBAB76B935137ABA5 /* assocdat.c */,
@@ -1037,70 +1051,56 @@
 			path = libyasm;
 			sourceTree = "<group>";
 		};
-		E4184DB932C16659F45C47EB /* arch */ = {
+		E2DA991A1ACD096E9B4E1DCD /* nasm */ = {
 			isa = PBXGroup;
 			children = (
-				7AB0421C8150E9901086AD0F /* lc3b */,
-				FF18F0BF77E371EFC4DF4F77 /* x86 */,
+				9D4620BCDA53E7FA8D3EDF5D /* nasm-parse.c */,
+				E4040D975D3A4C87F937A8BF /* nasm-parser.c */,
+				9F6FEA53A904C53DBE24516D /* nasm-std.mac */,
+				2DB63686FCE0090876F6CE7C /* nasm-token.re */,
 			);
-			path = arch;
+			path = nasm;
 			sourceTree = "<group>";
 		};
-		EFC49A55A02EAF92122A9ED1 /* dwarf2 */ = {
+		F32683D287B4A33D0E7007C4 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				ED25CD889CDCF380D276386A /* dwarf2-aranges.c */,
-				E457553E005599E575518C70 /* dwarf2-dbgfmt.c */,
-				7230E4AB1E9C9AB68AEA82F4 /* dwarf2-info.c */,
-				875C178B7EB6FE5DFFBB607F /* dwarf2-line.c */,
+				3B84753D13A3BA42D066C412 /* genmacro */,
+				5B4820C115992791011D3674 /* genperf */,
+				2B4D931517918D95134B664E /* re2c */,
 			);
-			path = dwarf2;
+			path = tools;
 			sourceTree = "<group>";
 		};
-		F48BA43212208174807318D1 /* modules */ = {
+		F99A1591D4C729119D58F2BD /* patched-yasm */ = {
 			isa = PBXGroup;
 			children = (
-				E4184DB932C16659F45C47EB /* arch */,
-				219C0699B962D26F194A376B /* dbgfmts */,
-				9BB5D578A33945CEC3548F51 /* listfmts/nasm */,
-				41CAA1392BE9C262063FC7D4 /* objfmts */,
-				E2BAC33EA2A694D3EE9D0C20 /* parsers */,
-				2125D992A10C6B271433CC07 /* preprocs */,
+				6AAD8034231834A7AC751DFF /* frontends/yasm */,
+				E1B4D61AB205F7039E6670F1 /* libyasm */,
+				7DA139F87B7E53D850555A3D /* modules */,
+				F32683D287B4A33D0E7007C4 /* tools */,
+				F21FE5F84E9D629EF0873709 /* COPYING */,
+				A085A33DF330A1C01DC45068 /* genstring.c */,
 			);
-			path = modules;
+			path = "patched-yasm";
 			sourceTree = "<group>";
 		};
-		F8208CE99D56B925331902E8 /* elf */ = {
+		FAEC45572A2EF1A5B200136B /* dbg */ = {
 			isa = PBXGroup;
 			children = (
-				5B94D4FC9467A030946DCD0C /* elf-objfmt.c */,
-				340AF07FD7EA39C339885800 /* elf-x86-amd64.c */,
-				EB205FD6CA7837757DC6A5FE /* elf-x86-x86.c */,
-				56DBF46970528DFDEA9F2370 /* elf.c */,
+				8AFA641173D2EA31C74F8920 /* dbg-objfmt.c */,
 			);
-			path = elf;
+			path = dbg;
 			sourceTree = "<group>";
 		};
-		FDD8393B5A6ED38EB8C6581D /* genmacro */ = {
+		FBD41DC38DA7F837D744E4AD /* config/mac */ = {
 			isa = PBXGroup;
 			children = (
-				9216367E35688238D5A44621 /* genmacro.c */,
+				F56FDE862F41858ADB9045E8 /* Makefile */,
+				45037C7D0B6645F0D073D998 /* config.h */,
+				D925CE06FB00341D320E3094 /* libyasm-stdint.h */,
 			);
-			path = genmacro;
-			sourceTree = "<group>";
-		};
-		FF18F0BF77E371EFC4DF4F77 /* x86 */ = {
-			isa = PBXGroup;
-			children = (
-				F3CFA27CC5E9C020058CDF1D /* gen_x86_insn.py */,
-				C231B29CB7E7B522F2624B8F /* x86arch.c */,
-				3C4916FA42C619E1E9AFF2F5 /* x86bc.c */,
-				523897DD723EE2D02EE610B0 /* x86cpu.gperf */,
-				D9C8E5E371995765847937B5 /* x86expr.c */,
-				40A5B9A6C1E7488F91316DEB /* x86id.c */,
-				786F34EA687342F63850182C /* x86regtmod.gperf */,
-			);
-			path = x86;
+			path = config/mac;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1280,7 +1280,7 @@
 			knownRegions = (
 				en,
 			);
-			mainGroup = CF3EB8EAB1B66BF58774CD40;
+			mainGroup = 5281420DAD64AB55D213328E;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -1740,7 +1740,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				372775ADBE2567397077443E /* genmacro.c in Sources */,
+				066CA6AB8F7B083AA4050697 /* genmacro.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1748,7 +1748,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4835EA6354FA6B064C1B2F63 /* genmodule.c in Sources */,
+				B6BB21E8C36087539818FD07 /* genmodule.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1756,78 +1756,78 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8B0220B9BC055A7B886C8F75 /* nasm-macros.c in Sources */,
-				A90767FD2A4F249ED3828461 /* lc3bid.c in Sources */,
-				1C6EF038C1F4C66EAE858CDF /* module.c in Sources */,
-				E281E3D203CA9E59B387C8E9 /* gas-token.c in Sources */,
-				4F9F70BEFA8D0B5FC4CBDDD5 /* nasm-token.c in Sources */,
-				775398C41A7F8D094E047FD7 /* yasm-options.c in Sources */,
-				2ECC0953B9BA772EB21DBAAB /* yasm.c in Sources */,
-				4A2E2A9A5BB061292F2D4103 /* assocdat.c in Sources */,
-				D8F3028EDC64A43D247A49CC /* bc-align.c in Sources */,
-				9EFBD3F190629CF3089791F2 /* bc-data.c in Sources */,
-				ECC47A20983B05E97A15A7B5 /* bc-incbin.c in Sources */,
-				C9912F3E55D7F23B6499F425 /* bc-org.c in Sources */,
-				316056500FF927B4EEEB916A /* bc-reserve.c in Sources */,
-				028C9AC19E765DA475D39B4D /* bitvect.c in Sources */,
-				3D96EC94DB725A67063983E0 /* bytecode.c in Sources */,
-				12C239D25AACF4BAFCFE6E0B /* errwarn.c in Sources */,
-				9DC854C20E5D5A6B91586DC1 /* expr.c in Sources */,
-				C9B544DA9831FD50FDC5AB60 /* file.c in Sources */,
-				5506452B173316F7D9F92EAE /* floatnum.c in Sources */,
-				93EA72B5D5A5AF0738A6A0C4 /* hamt.c in Sources */,
-				C1A33DD46C036DF698203423 /* insn.c in Sources */,
-				27DFEE0DBA8919AA3167665A /* intnum.c in Sources */,
-				C9126FB9EC14C6F4D343B320 /* inttree.c in Sources */,
-				13368CC78818BCCDD560BABB /* linemap.c in Sources */,
-				4590DC03EFE51AB7369DC329 /* md5.c in Sources */,
-				DD1ADD4D852023D169BCA358 /* mergesort.c in Sources */,
-				A787092D94F623565E35EFAF /* section.c in Sources */,
-				62471D93D46A1B909D58FBA7 /* strcasecmp.c in Sources */,
-				0D839A702B808B34E1F9A00D /* strsep.c in Sources */,
-				33AC40CBCF6065245718B78A /* symrec.c in Sources */,
-				2BBA93ACEF6B7A6C02560D82 /* valparam.c in Sources */,
-				CE9931B7F7464726339A270E /* value.c in Sources */,
-				370DDD9D7CE336DEE4541D67 /* lc3barch.c in Sources */,
-				BB69C9117DAC5FE04E306534 /* lc3bbc.c in Sources */,
-				B7DBCF5FA78654FD8858780F /* x86arch.c in Sources */,
-				5FD5DF5F284C4DF29461F516 /* x86bc.c in Sources */,
-				112F83EB9D5130C24DEE5DFF /* x86expr.c in Sources */,
-				197FCCB1867E1790F6E2CEB3 /* x86id.c in Sources */,
-				2905E38085B36B187246AEE8 /* cv-dbgfmt.c in Sources */,
-				61917465FB640757F6302F3E /* cv-symline.c in Sources */,
-				C239580D4A4291EEEFE48E95 /* cv-type.c in Sources */,
-				3EA301CD2E41481E8AA10352 /* dwarf2-aranges.c in Sources */,
-				BC1F6BF02458277594198927 /* dwarf2-dbgfmt.c in Sources */,
-				D9A2C3061FA38E7BAD01A2A2 /* dwarf2-info.c in Sources */,
-				E5360BF6483FFB890B945F00 /* dwarf2-line.c in Sources */,
-				D1A53085A551937CDE025F9E /* null-dbgfmt.c in Sources */,
-				93525590B4B4FC04986B9AB1 /* stabs-dbgfmt.c in Sources */,
-				74911ABBFEAC674758D6DE38 /* nasm-listfmt.c in Sources */,
-				A5927945FCA34293A6DD7EA7 /* bin-objfmt.c in Sources */,
-				CD6FF4A9A88BD49CB393B092 /* coff-objfmt.c in Sources */,
-				6DBDA867BFBA39DD99B85D88 /* win64-except.c in Sources */,
-				7CAC7298862743BB4FF586C0 /* dbg-objfmt.c in Sources */,
-				9053EFEBFDF376E7B30BFE50 /* elf-objfmt.c in Sources */,
-				9C3698387F89A05F1EFC29CB /* elf-x86-amd64.c in Sources */,
-				4CDE66568DD9E43DA5C9D00A /* elf-x86-x86.c in Sources */,
-				25C8CC00D066E6EF266735C1 /* elf.c in Sources */,
-				CA2B0761BF15F98E99191319 /* macho-objfmt.c in Sources */,
-				BBE8DD524413C6FFA48B3879 /* rdf-objfmt.c in Sources */,
-				3265FDC58119E0B8CFA47D1F /* xdf-objfmt.c in Sources */,
-				15438837937C9EDE71738419 /* gas-parse.c in Sources */,
-				04EC1934753B000D87FB3140 /* gas-parse-intel.c in Sources */,
-				49195C32A6986B9E324390C1 /* gas-parser.c in Sources */,
-				1EFC4EA2960C8D4E6DBA20CD /* nasm-parse.c in Sources */,
-				F3E6D04DEAF30F88E44C2FC5 /* nasm-parser.c in Sources */,
-				17BE0036DF9741BF964FC13D /* cpp-preproc.c in Sources */,
-				30FD07AC549DE8EA859ED832 /* nasm-eval.c in Sources */,
-				B2301EE412962ECC909CE009 /* nasm-pp.c in Sources */,
-				26F22F0EA10DE58AB88EAF1F /* nasm-preproc.c in Sources */,
-				CCFA3F9BE7FF18831C6491FB /* nasmlib.c in Sources */,
-				204262C39B4F5740661C4A08 /* raw-preproc.c in Sources */,
-				22E8B95B8102DEF40B6822F9 /* x86cpu.c in Sources */,
-				71117D9BB4CA40D6325C46A0 /* x86regtmod.c in Sources */,
+				09871DB036BF9BF0BDA037E3 /* nasm-macros.c in Sources */,
+				F52FAB6AC6263A1A6DF5DFAD /* lc3bid.c in Sources */,
+				A84AB260B096AEA095CF316B /* module.c in Sources */,
+				98FEFF0252D265EC4239772B /* gas-token.c in Sources */,
+				0D9D5781EF89863246A81F57 /* nasm-token.c in Sources */,
+				30ADC92336626E811B1F153B /* yasm-options.c in Sources */,
+				78D8579436421914582FEF93 /* yasm.c in Sources */,
+				B688214CF5EE29F54A95E11E /* assocdat.c in Sources */,
+				E6B7FD1DC24FD92F56A263D9 /* bc-align.c in Sources */,
+				04A84CA923E82A989EF2C502 /* bc-data.c in Sources */,
+				FB290E2D0B8BCC40BCFD5C7F /* bc-incbin.c in Sources */,
+				FFB674E8BCC42A7A010F4D6E /* bc-org.c in Sources */,
+				59AA806338D35B785B49A908 /* bc-reserve.c in Sources */,
+				14BF257F0B6604AF234D789B /* bitvect.c in Sources */,
+				F61BB8183ADE2391E76DD33A /* bytecode.c in Sources */,
+				F6CDED1EAC551B82707C2DFB /* errwarn.c in Sources */,
+				DBF5BDA7D0F8016C9DD32E43 /* expr.c in Sources */,
+				4CC7E94990E660065182F09D /* file.c in Sources */,
+				D3AAD2128302CC31E297C0CF /* floatnum.c in Sources */,
+				6D0534958102B88A09024688 /* hamt.c in Sources */,
+				D32CEBBEB17BD8A34D47322C /* insn.c in Sources */,
+				2BB59703118AFFFFD4FDBAE6 /* intnum.c in Sources */,
+				596F90219FBD571B06570C40 /* inttree.c in Sources */,
+				3C1BD25F44E4E08DC8640FE8 /* linemap.c in Sources */,
+				2D347F703A0121A95D6F50B9 /* md5.c in Sources */,
+				BE987F29ED090426427B8B60 /* mergesort.c in Sources */,
+				A0AB9B98AB95B9A171F4E269 /* section.c in Sources */,
+				54007B4195CD00348B68AFE0 /* strcasecmp.c in Sources */,
+				B25D95585EB55EDA108EB58B /* strsep.c in Sources */,
+				C9B8FC56954E6B2BFC9F82A5 /* symrec.c in Sources */,
+				89F00D40B217EEC54A2A13B2 /* valparam.c in Sources */,
+				E41D7FB962BD75F5F129D744 /* value.c in Sources */,
+				2A4929334DFF279392F723DF /* lc3barch.c in Sources */,
+				7904DE4EA546D4A0BC42F624 /* lc3bbc.c in Sources */,
+				09965609A71C5CF9182A8726 /* x86arch.c in Sources */,
+				3310889F7811996774672732 /* x86bc.c in Sources */,
+				E3127B744441393CB91FABBA /* x86expr.c in Sources */,
+				819DFA17A04C12AB6E47E708 /* x86id.c in Sources */,
+				8DB2B1189C2403D5E51E7A7A /* cv-dbgfmt.c in Sources */,
+				1529D07EB502161A983556D6 /* cv-symline.c in Sources */,
+				BC70326CCA8CEC27254F59D5 /* cv-type.c in Sources */,
+				B679C51E6B9AEF41982D9573 /* dwarf2-aranges.c in Sources */,
+				A405BC37EC8B9B23192C013C /* dwarf2-dbgfmt.c in Sources */,
+				7DA3D4B1738259B0BAB25C64 /* dwarf2-info.c in Sources */,
+				71CADFC21DA1C38AC5CDE300 /* dwarf2-line.c in Sources */,
+				AD168E682E676561E8699B4B /* null-dbgfmt.c in Sources */,
+				1B59ADDEF4F4351A274955D2 /* stabs-dbgfmt.c in Sources */,
+				BAC078B781A3F9D667B5B307 /* nasm-listfmt.c in Sources */,
+				54BD27C11F09AFDAA3309EDD /* bin-objfmt.c in Sources */,
+				460AEB2A9663584A4D5EAA6D /* coff-objfmt.c in Sources */,
+				05E1053688DF3BE99753E839 /* win64-except.c in Sources */,
+				002746D6E953C508C54BE808 /* dbg-objfmt.c in Sources */,
+				69E2E305F42B33857086E428 /* elf-objfmt.c in Sources */,
+				9D2E80F3DABD61F0FE28CE8A /* elf-x86-amd64.c in Sources */,
+				B809FE6CFF7ED588D19FD536 /* elf-x86-x86.c in Sources */,
+				F0E5AA49FB6AF7BDAD7658F3 /* elf.c in Sources */,
+				1A8A47D4C31F01235079BCF5 /* macho-objfmt.c in Sources */,
+				069FE4EC4699C257250A5951 /* rdf-objfmt.c in Sources */,
+				4D5A82CFF4DAD9FA55A1597F /* xdf-objfmt.c in Sources */,
+				C31D7A702DA9F516CF33C76E /* gas-parse.c in Sources */,
+				72FF1B2138395E311C0DE112 /* gas-parse-intel.c in Sources */,
+				F73B2EE250F932926E5603B6 /* gas-parser.c in Sources */,
+				7135EB876468BDF8B461F0FD /* nasm-parse.c in Sources */,
+				990F5738B6F761832FAD8DEA /* nasm-parser.c in Sources */,
+				4908C23FFBFB477764B18BC3 /* cpp-preproc.c in Sources */,
+				6B3BCE6E138AEDBD92480EA4 /* nasm-eval.c in Sources */,
+				48E48E52BF98B5471C192DE0 /* nasm-pp.c in Sources */,
+				AD64A38FE35CF78B88BF0154 /* nasm-preproc.c in Sources */,
+				1821BE0F86D8C67B3CD8144C /* nasmlib.c in Sources */,
+				1501BECD3E1363A71F772472 /* raw-preproc.c in Sources */,
+				1650D228E72675E730F4B15E /* x86cpu.c in Sources */,
+				A0074870B88F1F462C948343 /* x86regtmod.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1835,7 +1835,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E33DD4091DB08EE894BF580 /* genstring.c in Sources */,
+				511F3D3F970B61FDC51F9DD9 /* genstring.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1843,8 +1843,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				26130C73847C57E3E389DB81 /* genperf.c in Sources */,
-				8CFE431357C17178DA50BE50 /* perfect.c in Sources */,
+				2D0341DE238A2439BDFBD61B /* genperf.c in Sources */,
+				EF30F662D1E88B501FE9C2A1 /* perfect.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1852,7 +1852,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B890E3DF72ACDE3C73752F2C /* genversion.c in Sources */,
+				CFE2D3C909ABD3B84523F4C7 /* genversion.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1860,9 +1860,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0DFE0F966B66FF6F484121F /* phash.c in Sources */,
-				DA3FB2A19A2D28E35857DA50 /* xmalloc.c in Sources */,
-				C75E6B6C3AA8D02C2BFD76A4 /* xstrdup.c in Sources */,
+				EC1D90C164C5967C36637994 /* phash.c in Sources */,
+				9A8242DB3D12A055DE554722 /* xmalloc.c in Sources */,
+				25DFC8227E96CBC4B5BA7FD7 /* xstrdup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1870,15 +1870,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23D0F47C4A057FEEAA2AFA1F /* main.c in Sources */,
-				D4AFA15EDB291229EF1AE564 /* code.c in Sources */,
-				EA156FECE44FC3073CF5C25D /* dfa.c in Sources */,
-				0EB8F4392609BD32E72DBA29 /* parser.c in Sources */,
-				B0E8F3DFB9F0CAFA8D36C93E /* actions.c in Sources */,
-				7BD7B565D421AC705A774323 /* scanner.c in Sources */,
-				1018789BA6635BC32BB84E3F /* mbo_getopt.c in Sources */,
-				9367D8D63448ED2F18B61949 /* substr.c in Sources */,
-				754F92CAC3995AC7655176E9 /* translate.c in Sources */,
+				0ED2E7A0FB38DEA86801F031 /* main.c in Sources */,
+				5A38A1C20E399B2313DC8324 /* code.c in Sources */,
+				D8FFB7470821129A6B5E2EEE /* dfa.c in Sources */,
+				2D6D9226FAD88411895856DC /* parser.c in Sources */,
+				CF630A5A684ABB2513FA24B0 /* actions.c in Sources */,
+				70340FB5C6323095A3E4A45A /* scanner.c in Sources */,
+				396DF2CE09B98C2C2FD20528 /* mbo_getopt.c in Sources */,
+				7153F3AEE300223CBB13D71C /* substr.c in Sources */,
+				AE3BFE24FD3BD0E89C16FB94 /* translate.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2077,9 +2077,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Release;
 		};
@@ -2088,7 +2088,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2103,32 +2105,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2141,12 +2149,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genversion;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2154,12 +2165,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2170,7 +2181,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2185,32 +2198,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2223,12 +2242,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = re2c;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2236,12 +2258,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 					"-Wno-switch",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
@@ -2253,7 +2275,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2268,33 +2292,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2304,12 +2334,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmodule;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2317,12 +2350,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2333,7 +2366,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -2347,32 +2382,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
@@ -2380,6 +2421,10 @@
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = generate_files;
@@ -2390,12 +2435,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2406,7 +2451,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2421,33 +2468,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2457,12 +2510,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genversion;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2470,12 +2526,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2486,7 +2542,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2501,33 +2559,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2537,12 +2601,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genperf;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2550,12 +2617,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2573,7 +2640,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -2587,38 +2656,48 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = generate_files;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
@@ -2628,12 +2707,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2644,7 +2723,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2659,33 +2740,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2695,12 +2782,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmacro;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2708,12 +2798,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2724,7 +2814,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2739,32 +2831,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2777,12 +2875,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmodule;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2790,12 +2891,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2806,7 +2907,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2821,32 +2924,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2859,12 +2968,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genmacro;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2872,12 +2984,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -2888,7 +3000,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -2903,33 +3017,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -2939,12 +3059,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = re2c;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -2952,12 +3075,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 					"-Wno-switch",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
@@ -2968,9 +3091,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
-				SYMROOT = ../../xcodebuild;
+				SYMROOT = build;
 			};
 			name = Debug;
 		};
@@ -2986,7 +3109,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3001,26 +3126,32 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"HAVE_CONFIG_H\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
@@ -3028,7 +3159,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3040,12 +3171,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = yasm;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3053,12 +3187,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 					"-Wno-incompatible-pointer-types",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
@@ -3077,7 +3211,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3092,26 +3228,32 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"HAVE_CONFIG_H\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
@@ -3119,7 +3261,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3129,8 +3271,11 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = genperf_libs;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3138,12 +3283,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3154,7 +3299,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3169,32 +3316,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3207,12 +3360,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genperf;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3220,12 +3376,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3236,7 +3392,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3251,32 +3409,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3289,12 +3453,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genstring;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3302,12 +3469,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3318,7 +3485,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3332,38 +3501,48 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = config_sources;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
@@ -3373,12 +3552,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3389,7 +3568,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				DEAD_CODE_STRIPPING = YES;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3404,33 +3585,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"NDEBUG\"",
 					"\"NVALGRIND\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3440,12 +3627,15 @@
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = genstring;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3453,12 +3643,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3469,7 +3659,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_CW_ASM_SYNTAX = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -3483,32 +3675,38 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				LDPLUSPLUS = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang++";
@@ -3516,6 +3714,10 @@
 				OTHER_CFLAGS = (
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
 				);
 				OTHER_LDFLAGS = "-Wl,-search_paths_first";
 				PRODUCT_NAME = config_sources;
@@ -3526,12 +3728,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};
@@ -3542,7 +3744,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = "";
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3557,33 +3761,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"HAVE_CONFIG_H\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3598,12 +3808,15 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
 					"-Wl,-pie",
 				);
 				PRODUCT_NAME = yasm;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3611,12 +3824,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 					"-Wno-incompatible-pointer-types",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
@@ -3628,7 +3841,9 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "$(SOURCE_ROOT)/../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
 				COPY_PHASE_STRIP = NO;
 				EXECUTABLE_PREFIX = lib;
 				GCC_CW_ASM_SYNTAX = NO;
@@ -3643,33 +3858,39 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
 					"\"ENABLE_ONE_CLICK_SIGNIN\"",
 					"\"ENABLE_REMOTING=1\"",
 					"\"ENABLE_WEBRTC=1\"",
-					"\"ENABLE_P2P_APIS=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
 					"\"ENABLE_CONFIGURATION_POLICY\"",
 					"\"ENABLE_INPUT_SPEECH\"",
 					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
 					"\"ENABLE_GPU=1\"",
 					"\"ENABLE_EGLIMAGE=1\"",
 					"\"USE_SKIA=1\"",
-					"\"ENABLE_REGISTER_PROTOCOL_HANDLER=1\"",
 					"\"ENABLE_TASK_MANAGER=1\"",
-					"\"ENABLE_WEB_INTENTS=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
 					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
-					"\"ENABLE_PROTECTOR_SERVICE=1\"",
+					"\"ENABLE_PLUGINS=1\"",
 					"\"ENABLE_SESSION_SERVICE=1\"",
 					"\"ENABLE_THEMES=1\"",
 					"\"ENABLE_BACKGROUND=1\"",
-					"\"ENABLE_PROMO_RESOURCE_SERVICE=1\"",
 					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
 					"\"HAVE_CONFIG_H\"",
 					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
 					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				GCC_THREADSAFE_STATICS = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -3682,8 +3903,11 @@
 					"-fno-strict-aliasing",
 					"-fstack-protector-all",
 				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
 				PRODUCT_NAME = genperf_libs;
-				SDKROOT = macosx;
 				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
 				USE_HEADERMAP = NO;
 				WARNING_CFLAGS = (
@@ -3691,12 +3915,12 @@
 					"-Wno-unused-parameter",
 					"-Wno-missing-field-initializers",
 					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
 					"-Wno-char-subscripts",
 					"-Wno-unused-function",
-					"-Wno-unnamed-type-template-args",
-					"-Wno-c++11-extensions",
 					"-Wno-covered-switch-default",
-					"-Wno-literal-conversion",
+					"-Wno-undefined-internal",
 				);
 				WARNING_CFLAGS_excluded = "-Wall -Wextra";
 			};

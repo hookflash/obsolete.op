@@ -9,8 +9,12 @@
         'pkg-config': './pkg-config-wrapper "<(sysroot)" "<(target_arch)"',
       }, {
         'pkg-config': 'pkg-config'
-      }]
+      }],
     ],
+
+    'linux_link_libgps%': 0,
+    'linux_link_libpci%': 0,
+    'linux_link_libspeechd%': 0,
   },
   'conditions': [
     [ 'os_posix==1 and OS!="mac"', {
@@ -90,8 +94,98 @@
             }],
           ],
         },
+        {
+          'target_name': 'gdk',
+          'type': 'none',
+          'conditions': [
+            ['_toolset=="target"', {
+              'direct_dependent_settings': {
+                'cflags': [
+                  '<!@(<(pkg-config) --cflags gdk-2.0)',
+                ],
+              },
+              'link_settings': {
+                'ldflags': [
+                  '<!@(<(pkg-config) --libs-only-L --libs-only-other gdk-2.0)',
+                ],
+                'libraries': [
+                  '<!@(<(pkg-config) --libs-only-l gdk-2.0)',
+                ],
+              },
+            }],
+          ],
+        },
       ],  # targets
-    }]  # chromeos==0
+    }],
+    ['linux_use_libgps==1', {
+      'targets': [
+        {
+          'target_name': 'libgps',
+          'type': 'static_library',
+          'dependencies': [
+            '../../base/base.gyp:base',
+          ],
+          'all_dependent_settings': {
+            'defines': [
+              'USE_LIBGPS',
+            ],
+            'include_dirs': [
+              '<(SHARED_INTERMEDIATE_DIR)',
+            ],
+            'conditions': [
+              ['linux_link_libgps==1', {
+                'cflags': [
+                  '<!@(<(pkg-config) --cflags libgps)',
+                ],
+                'link_settings': {
+                  'ldflags': [
+                    '<!@(<(pkg-config) --libs-only-L --libs-only-other libgps)',
+                  ],
+                  'libraries': [
+                    '<!@(<(pkg-config) --libs-only-l libgps)',
+                  ],
+                }
+              }],
+            ],
+          },
+          'hard_dependency': 1,
+          'actions': [
+            {
+              'variables': {
+                'output_h': '<(SHARED_INTERMEDIATE_DIR)/library_loaders/libgps.h',
+                'output_cc': '<(INTERMEDIATE_DIR)/libgps_loader.cc',
+                'generator': '../../tools/generate_library_loader/generate_library_loader.py',
+              },
+              'action_name': 'generate_libgps_loader',
+              'inputs': [
+                '<(generator)',
+              ],
+              'outputs': [
+                '<(output_h)',
+                '<(output_cc)',
+              ],
+              'action': ['python',
+                         '<(generator)',
+                         '--name', 'LibGpsLoader',
+                         '--output-h', '<(output_h)',
+                         '--output-cc', '<(output_cc)',
+                         '--header', '<gps.h>',
+                         '--bundled-header', '"third_party/gpsd/release-3.1/gps.h"',
+                         '--link-directly=<(linux_link_libgps)',
+                         'gps_open',
+                         'gps_close',
+                         'gps_read',
+                         # We don't use gps_shm_read() directly, just to make
+                         # sure that libgps has the shared memory support.
+                         'gps_shm_read',
+              ],
+              'message': 'Generating libgps library loader.',
+              'process_outputs_as_sources': 1,
+            },
+          ],
+        },
+      ],
+    }],
   ],  # conditions
   'targets': [
     {
@@ -194,27 +288,6 @@
       ],
     },
     {
-      'target_name': 'gdk',
-      'type': 'none',
-      'conditions': [
-        ['_toolset=="target"', {
-          'direct_dependent_settings': {
-            'cflags': [
-              '<!@(<(pkg-config) --cflags gdk-2.0)',
-            ],
-          },
-          'link_settings': {
-            'ldflags': [
-              '<!@(<(pkg-config) --libs-only-L --libs-only-other gdk-2.0)',
-            ],
-            'libraries': [
-              '<!@(<(pkg-config) --libs-only-l gdk-2.0)',
-            ],
-          },
-        }],
-      ],
-    },
-    {
       'target_name': 'gconf',
       'type': 'none',
       'conditions': [
@@ -240,9 +313,15 @@
     },
     {
       'target_name': 'gio',
-      'type': 'none',
+      'type': 'static_library',
       'conditions': [
         ['use_gio==1 and _toolset=="target"', {
+          'dependencies': [
+            '../../base/base.gyp:base',
+          ],
+          'cflags': [
+            '<!@(<(pkg-config) --cflags gio-2.0)',
+          ],
           'direct_dependent_settings': {
             'cflags': [
               '<!@(<(pkg-config) --cflags gio-2.0)',
@@ -250,10 +329,8 @@
             'defines': [
               'USE_GIO',
             ],
-            'conditions': [
-              ['linux_link_gsettings==0', {
-                'defines': ['DLOPEN_GSETTINGS'],
-              }],
+            'include_dirs': [
+              '<(SHARED_INTERMEDIATE_DIR)',
             ],
           },
           'link_settings': {
@@ -271,7 +348,165 @@
               }],
             ],
           },
+          'hard_dependency': 1,
+          'actions': [
+            {
+              'variables': {
+                'output_h': '<(SHARED_INTERMEDIATE_DIR)/library_loaders/libgio.h',
+                'output_cc': '<(INTERMEDIATE_DIR)/libgio_loader.cc',
+                'generator': '../../tools/generate_library_loader/generate_library_loader.py',
+              },
+              'action_name': 'generate_libgio_loader',
+              'inputs': [
+                '<(generator)',
+              ],
+              'outputs': [
+                '<(output_h)',
+                '<(output_cc)',
+              ],
+              'action': ['python',
+                         '<(generator)',
+                         '--name', 'LibGioLoader',
+                         '--output-h', '<(output_h)',
+                         '--output-cc', '<(output_cc)',
+                         '--header', '<gio/gio.h>',
+                         # TODO(phajdan.jr): This will no longer be needed
+                         # after switch to Precise, http://crbug.com/158577 .
+                         '--bundled-header', '"build/linux/gsettings.h"',
+                         '--link-directly=<(linux_link_gsettings)',
+                         'g_settings_new',
+                         'g_settings_get_child',
+                         'g_settings_get_string',
+                         'g_settings_get_boolean',
+                         'g_settings_get_int',
+                         'g_settings_get_strv',
+                         'g_settings_list_schemas',
+              ],
+              'message': 'Generating libgio library loader.',
+              'process_outputs_as_sources': 1,
+            },
+          ],
         }],
+      ],
+    },
+    {
+      'target_name': 'libpci',
+      'type': 'static_library',
+      'cflags': [
+        '<!@(<(pkg-config) --cflags libpci)',
+      ],
+      'dependencies': [
+        '../../base/base.gyp:base',
+      ],
+      'direct_dependent_settings': {
+        'include_dirs': [
+          '<(SHARED_INTERMEDIATE_DIR)',
+        ],
+        'conditions': [
+          ['linux_link_libpci==1', {
+            'link_settings': {
+              'ldflags': [
+                '<!@(<(pkg-config) --libs-only-L --libs-only-other libpci)',
+              ],
+              'libraries': [
+                '<!@(<(pkg-config) --libs-only-l libpci)',
+              ],
+            }
+          }],
+        ],
+      },
+      'hard_dependency': 1,
+      'actions': [
+        {
+          'variables': {
+            'output_h': '<(SHARED_INTERMEDIATE_DIR)/library_loaders/libpci.h',
+            'output_cc': '<(INTERMEDIATE_DIR)/libpci_loader.cc',
+            'generator': '../../tools/generate_library_loader/generate_library_loader.py',
+          },
+          'action_name': 'generate_libpci_loader',
+          'inputs': [
+            '<(generator)',
+          ],
+          'outputs': [
+            '<(output_h)',
+            '<(output_cc)',
+          ],
+          'action': ['python',
+                     '<(generator)',
+                     '--name', 'LibPciLoader',
+                     '--output-h', '<(output_h)',
+                     '--output-cc', '<(output_cc)',
+                     '--header', '<pci/pci.h>',
+                     # TODO(phajdan.jr): Report problem to pciutils project
+                     # and get it fixed so that we don't need --use-extern-c.
+                     '--use-extern-c',
+                     '--link-directly=<(linux_link_libpci)',
+                     'pci_alloc',
+                     'pci_init',
+                     'pci_cleanup',
+                     'pci_scan_bus',
+                     'pci_fill_info',
+                     'pci_lookup_name',
+          ],
+          'message': 'Generating libpci library loader.',
+          'process_outputs_as_sources': 1,
+        },
+      ],
+    },
+    {
+      'target_name': 'libspeechd',
+      'type': 'static_library',
+      'dependencies': [
+        '../../base/base.gyp:base',
+      ],
+      'direct_dependent_settings': {
+        'include_dirs': [
+          '<(SHARED_INTERMEDIATE_DIR)',
+        ],
+        'conditions': [
+          ['linux_link_libspeechd==1', {
+            'link_settings': {
+              'libraries': [
+                '-lspeechd',
+              ],
+            }
+          }],
+        ],
+      },
+      'hard_dependency': 1,
+      'actions': [
+        {
+          'variables': {
+            'output_h': '<(SHARED_INTERMEDIATE_DIR)/library_loaders/libspeechd.h',
+            'output_cc': '<(INTERMEDIATE_DIR)/libspeechd_loader.cc',
+            'generator': '../../tools/generate_library_loader/generate_library_loader.py',
+          },
+          'action_name': 'generate_libspeechd_loader',
+          'inputs': [
+            '<(generator)',
+          ],
+          'outputs': [
+            '<(output_h)',
+            '<(output_cc)',
+          ],
+          'action': ['python',
+                     '<(generator)',
+                     '--name', 'LibSpeechdLoader',
+                     '--output-h', '<(output_h)',
+                     '--output-cc', '<(output_cc)',
+                     '--header', '<libspeechd.h>',
+                     '--link-directly=<(linux_link_libspeechd)',
+                     'spd_open',
+                     'spd_say',
+                     'spd_stop',
+                     'spd_close',
+                     'spd_set_notification_on',
+                     'spd_set_voice_rate',
+                     'spd_set_voice_pitch',
+          ],
+          'message': 'Generating libspeechd library loader.',
+          'process_outputs_as_sources': 1,
+        },
       ],
     },
     {
@@ -477,24 +712,6 @@
       },
     },
     {
-      # TODO(satorux): Remove this once dbus-glib clients are gone.
-      'target_name': 'dbus-glib',
-      'type': 'none',
-      'direct_dependent_settings': {
-        'cflags': [
-          '<!@(<(pkg-config) --cflags dbus-glib-1)',
-        ],
-      },
-      'link_settings': {
-        'ldflags': [
-          '<!@(<(pkg-config) --libs-only-L --libs-only-other dbus-glib-1)',
-        ],
-        'libraries': [
-          '<!@(<(pkg-config) --libs-only-l dbus-glib-1)',
-        ],
-      },
-    },
-    {
       'target_name': 'glib',
       'type': 'none',
       'toolsets': ['host', 'target'],
@@ -582,31 +799,6 @@
           '-lresolv',
         ],
       },
-    },
-    {
-      'target_name': 'ibus',
-      'type': 'none',
-      'conditions': [
-        ['use_ibus==1', {
-          'variables': {
-            'ibus_min_version': '1.3.99.20110425',
-          },
-          'direct_dependent_settings': {
-            'defines': ['HAVE_IBUS=1'],
-            'cflags': [
-              '<!@(<(pkg-config) --cflags "ibus-1.0 >= <(ibus_min_version)")',
-            ],
-          },
-          'link_settings': {
-            'ldflags': [
-              '<!@(<(pkg-config) --libs-only-L --libs-only-other "ibus-1.0 >= <(ibus_min_version)")',
-            ],
-            'libraries': [
-              '<!@(<(pkg-config) --libs-only-l "ibus-1.0 >= <(ibus_min_version)")',
-            ],
-          },
-        }],
-      ],
     },
     {
       'target_name': 'udev',

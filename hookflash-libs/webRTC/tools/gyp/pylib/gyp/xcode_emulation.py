@@ -15,6 +15,10 @@ import shlex
 class XcodeSettings(object):
   """A class that understands the gyp 'xcode_settings' object."""
 
+  # Computed lazily by _GetSdkBaseDir(). Shared by all XcodeSettings, so cached
+  # at class-level for efficiency.
+  _sdk_base_dir = None
+
   def __init__(self, spec):
     self.spec = spec
 
@@ -32,9 +36,6 @@ class XcodeSettings(object):
 
     # Used by _AdjustLibrary to match .a and .dylib entries in libraries.
     self.library_re = re.compile(r'^lib([^/]+)\.(a|dylib)$')
-
-    # Computed lazily by _GetSdkBaseDir().
-    self.sdk_base_dir = None
 
   def _Settings(self):
     assert self.configname
@@ -222,7 +223,7 @@ class XcodeSettings(object):
     """Returns the root of the 'Developer' directory. On Xcode 4.2 and prior,
     this is usually just /Developer. Xcode 4.3 moved that folder into the Xcode
     bundle."""
-    if not self.sdk_base_dir:
+    if not XcodeSettings._sdk_base_dir:
       import subprocess
       job = subprocess.Popen(['xcode-select', '-print-path'],
                              stdout=subprocess.PIPE,
@@ -235,16 +236,17 @@ class XcodeSettings(object):
       xcode43_sdk_path = os.path.join(
           out.rstrip(), 'Platforms/MacOSX.platform/Developer/SDKs')
       if os.path.isdir(xcode43_sdk_path):
-        self.sdk_base_dir = xcode43_sdk_path
+        XcodeSettings._sdk_base_dir = xcode43_sdk_path
       else:
-        self.sdk_base_dir = os.path.join(out.rstrip(), 'SDKs')
-    return self.sdk_base_dir
+        XcodeSettings._sdk_base_dir = os.path.join(out.rstrip(), 'SDKs')
+    return XcodeSettings._sdk_base_dir
 
   def _SdkPath(self):
     sdk_root = self.GetPerTargetSetting('SDKROOT', default='macosx10.5')
     if sdk_root.startswith('macosx'):
-      sdk_root = 'MacOSX' + sdk_root[len('macosx'):]
-    return os.path.join(self._GetSdkBaseDir(), '%s.sdk' % sdk_root)
+      return os.path.join(self._GetSdkBaseDir(),
+                          'MacOSX' + sdk_root[len('macosx'):] + '.sdk')
+    return sdk_root
 
   def GetCflags(self, configname):
     """Returns flags that need to be added to .c, .cc, .m, and .mm
@@ -306,7 +308,6 @@ class XcodeSettings(object):
       self._WarnUnimplemented('COPY_PHASE_STRIP')
     self._WarnUnimplemented('GCC_DEBUGGING_SYMBOLS')
     self._WarnUnimplemented('GCC_ENABLE_OBJC_EXCEPTIONS')
-    self._WarnUnimplemented('GCC_ENABLE_OBJC_GC')
 
     # TODO: This is exported correctly, but assigning to it is not supported.
     self._WarnUnimplemented('MACH_O_TYPE')
@@ -330,13 +331,12 @@ class XcodeSettings(object):
       if self._Test('GCC_ENABLE_SSE42_EXTENSIONS', 'YES', default='NO'):
         cflags.append('-msse4.2')
 
-    cflags += self._Settings().get('OTHER_CFLAGS', [])
     cflags += self._Settings().get('WARNING_CFLAGS', [])
 
     config = self.spec['configurations'][self.configname]
     framework_dirs = config.get('mac_framework_dirs', [])
     for directory in framework_dirs:
-      cflags.append('-F ' + directory.replace('$(SDKROOT)', sdk_root))
+      cflags.append('-F' + directory.replace('$(SDKROOT)', sdk_root))
 
     self.configname = None
     return cflags
@@ -346,6 +346,7 @@ class XcodeSettings(object):
     self.configname = configname
     cflags_c = []
     self._Appendf(cflags_c, 'GCC_C_LANGUAGE_STANDARD', '-std=%s')
+    cflags_c += self._Settings().get('OTHER_CFLAGS', [])
     self.configname = None
     return cflags_c
 
@@ -361,19 +362,46 @@ class XcodeSettings(object):
       cflags_cc.append('-fvisibility-inlines-hidden')
     if self._Test('GCC_THREADSAFE_STATICS', 'NO', default='YES'):
       cflags_cc.append('-fno-threadsafe-statics')
+    if self._Test('GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO', 'NO', default='YES'):
+      cflags_cc.append('-Wno-invalid-offsetof')
+
+    other_ccflags = []
+
+    for flag in self._Settings().get('OTHER_CPLUSPLUSFLAGS', ['$(inherited)']):
+      # TODO: More general variable expansion. Missing in many other places too.
+      if flag in ('$inherited', '$(inherited)', '${inherited}'):
+        flag = '$OTHER_CFLAGS'
+      if flag in ('$OTHER_CFLAGS', '$(OTHER_CFLAGS)', '${OTHER_CFLAGS}'):
+        other_ccflags += self._Settings().get('OTHER_CFLAGS', [])
+      else:
+        other_ccflags.append(flag)
+    cflags_cc += other_ccflags
+
     self.configname = None
     return cflags_cc
+
+  def _AddObjectiveCGarbageCollectionFlags(self, flags):
+    gc_policy = self._Settings().get('GCC_ENABLE_OBJC_GC', 'unsupported')
+    if gc_policy == 'supported':
+      flags.append('-fobjc-gc')
+    elif gc_policy == 'required':
+      flags.append('-fobjc-gc-only')
 
   def GetCflagsObjC(self, configname):
     """Returns flags that need to be added to .m compilations."""
     self.configname = configname
+    cflags_objc = []
+
+    self._AddObjectiveCGarbageCollectionFlags(cflags_objc)
+
     self.configname = None
-    return []
+    return cflags_objc
 
   def GetCflagsObjCC(self, configname):
     """Returns flags that need to be added to .mm compilations."""
     self.configname = configname
     cflags_objcc = []
+    self._AddObjectiveCGarbageCollectionFlags(cflags_objcc)
     if self._Test('GCC_OBJC_CALL_CXX_CDTORS', 'YES', default='NO'):
       cflags_objcc.append('-fobjc-call-cxx-cdtors')
     self.configname = None
@@ -523,8 +551,32 @@ class XcodeSettings(object):
     if install_name:
       ldflags.append('-install_name ' + install_name.replace(' ', r'\ '))
 
+    for rpath in self._Settings().get('LD_RUNPATH_SEARCH_PATHS', []):
+      ldflags.append('-Wl,-rpath,' + rpath)
+
+    config = self.spec['configurations'][self.configname]
+    framework_dirs = config.get('mac_framework_dirs', [])
+    for directory in framework_dirs:
+      ldflags.append('-F' + directory.replace('$(SDKROOT)', self._SdkPath()))
+
     self.configname = None
     return ldflags
+
+  def GetLibtoolflags(self, configname):
+    """Returns flags that need to be passed to the static linker.
+
+    Args:
+        configname: The name of the configuration to get ld flags for.
+    """
+    self.configname = configname
+    libtoolflags = []
+
+    for libtoolflag in self._Settings().get('OTHER_LDFLAGS', []):
+      libtoolflags.append(libtoolflag)
+    # TODO(thakis): ARCHS?
+
+    self.configname = None
+    return libtoolflags
 
   def GetPerTargetSettings(self):
     """Gets a list of all the per-target settings. This will only fetch keys
@@ -725,7 +777,7 @@ class MacPrefixHeader(object):
         result.append((source, obj, self._Gch(lang)))
     return result
 
-  def GetGchBuildCommands(self):
+  def GetPchBuildCommands(self):
     """Returns [(path_to_gch, language_flag, language, header)].
     |path_to_gch| and |header| are relative to the build directory.
     """
@@ -853,7 +905,7 @@ def GetMacInfoPlist(product_dir, xcode_settings, gyp_path_to_build_path):
   return info_plist, dest_plist, defines, extra_env
 
 
-def GetXcodeEnv(xcode_settings, built_products_dir, srcroot, configuration,
+def _GetXcodeEnv(xcode_settings, built_products_dir, srcroot, configuration,
                 additional_settings=None):
   """Return the environment variables that Xcode would set. See
   http://developer.apple.com/library/mac/#documentation/DeveloperTools/Reference/XcodeBuildSettingRef/1-Build_Setting_Reference/build_setting_ref.html#//apple_ref/doc/uid/TP40003931-CH3-SW153
@@ -887,6 +939,11 @@ def GetXcodeEnv(xcode_settings, built_products_dir, srcroot, configuration,
     'TARGET_BUILD_DIR' : built_products_dir,
     'TEMP_DIR' : '${TMPDIR}',
   }
+  if xcode_settings.GetPerTargetSetting('SDKROOT'):
+    env['SDKROOT'] = xcode_settings._SdkPath()
+  else:
+    env['SDKROOT'] = ''
+
   if spec['type'] in (
       'executable', 'static_library', 'shared_library', 'loadable_module'):
     env['EXECUTABLE_NAME'] = xcode_settings.GetExecutableName()
@@ -945,17 +1002,17 @@ def _NormalizeEnvVarReferences(str):
 
 def ExpandEnvVars(string, expansions):
   """Expands ${VARIABLES}, $(VARIABLES), and $VARIABLES in string per the
-  expansions dict. If the variable expands to something that references
+  expansions list. If the variable expands to something that references
   another variable, this variable is expanded as well if it's in env --
   until no variables present in env are left."""
-  for k in reversed(TopologicallySortedEnvVarKeys(expansions)):
-    string = string.replace('${' + k + '}', expansions[k])
-    string = string.replace('$(' + k + ')', expansions[k])
-    string = string.replace('$' + k, expansions[k])
+  for k, v in reversed(expansions):
+    string = string.replace('${' + k + '}', v)
+    string = string.replace('$(' + k + ')', v)
+    string = string.replace('$' + k, v)
   return string
 
 
-def TopologicallySortedEnvVarKeys(env):
+def _TopologicallySortedEnvVarKeys(env):
   """Takes a dict |env| whose values are strings that can refer to other keys,
   for example env['foo'] = '$(bar) and $(baz)'. Returns a list L of all keys of
   env such that key2 is after key1 in L if env[key2] refers to env[key1].
@@ -966,60 +1023,34 @@ def TopologicallySortedEnvVarKeys(env):
   # order is important. Below is the logic to compute the dependency graph
   # and sort it.
   regex = re.compile(r'\$\{([a-zA-Z0-9\-_]+)\}')
-
-  # First sort the list of keys.
-  key_list = sorted(env.keys())
-
-  # Phase 1: Create a set of edges of (DEPENDEE, DEPENDER) where in the graph,
-  # DEPENDEE -> DEPENDER. Also create sets of dependers and dependees.
-  edges = set()
-  dependees = set()
-  dependers = set()
-  for k in key_list:
-    matches = regex.findall(env[k])
-    if not len(matches):
-      continue
-
-    depends_on_other_var = False
+  def GetEdges(node):
+    # Use a definition of edges such that user_of_variable -> used_varible.
+    # This happens to be easier in this case, since a variable's
+    # definition contains all variables it references in a single string.
+    # We can then reverse the result of the topological sort at the end.
+    # Since: reverse(topsort(DAG)) = topsort(reverse_edges(DAG))
+    matches = set([v for v in regex.findall(env[node]) if v in env])
     for dependee in matches:
       assert '${' not in dependee, 'Nested variables not supported: ' + dependee
-      if dependee in env:
-        edges.add((dependee, k))
-        dependees.add(dependee)
-        depends_on_other_var = True
-    if depends_on_other_var:
-      dependers.add(k)
+    return matches
 
-  # Phase 2: Create a list of graph nodes with no incoming edges.
-  sorted_nodes = []
-  edgeless_nodes = dependees - dependers
+  try:
+    # Topologically sort, and then reverse, because we used an edge definition
+    # that's inverted from the expected result of this function (see comment
+    # above).
+    order = gyp.common.TopologicallySorted(env.keys(), GetEdges)
+    order.reverse()
+    return order
+  except gyp.common.CycleError, e:
+    raise Exception(
+        'Xcode environment variables are cyclically dependent: ' + str(e.nodes))
 
-  # Phase 3: Perform Kahn topological sort.
-  while len(edgeless_nodes):
-    # Find a node with no incoming edges, add it to the sorted list, and
-    # remove it from the list of nodes that aren't part of the graph.
-    node = edgeless_nodes.pop()
-    sorted_nodes.append(node)
-    key_list.remove(node)
 
-    # Find all the edges between |node| and other nodes.
-    edges_to_node = [e for e in edges if e[0] == node]
-    for edge in edges_to_node:
-      edges.remove(edge)
-      # If the node connected to |node| by |edge| has no other incoming edges,
-      # add it to |edgeless_nodes|.
-      if not len([e for e in edges if e[1] == edge[1]]):
-        edgeless_nodes.add(edge[1])
-
-  # Any remaining edges indicate a cycle.
-  if len(edges):
-    raise Exception('Xcode environment variables are cyclically dependent: ' +
-        str(edges))
-
-  # Append the "nodes" not in the graph to those that were just sorted.
-  sorted_nodes.extend(key_list)
-
-  return sorted_nodes
+def GetSortedXcodeEnv(xcode_settings, built_products_dir, srcroot,
+                      configuration, additional_settings=None):
+  env = _GetXcodeEnv(xcode_settings, built_products_dir, srcroot, configuration,
+                    additional_settings)
+  return [(key, env[key]) for key in _TopologicallySortedEnvVarKeys(env)]
 
 
 def GetSpecPostbuildCommands(spec, quiet=False):
