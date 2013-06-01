@@ -8,14 +8,18 @@
 # Do NOT CHANGE this if you don't know what you're doing -- see
 # https://code.google.com/p/chromium/wiki/UpdatingClang
 # Reverting problematic clang rolls is safe, though.
-CLANG_REVISION=154450
+CLANG_REVISION=174491
+# ASan Mac builders are pinned to this revision, see http://crbug.com/170629.
+CLANG_ASAN_MAC_REVISION=170392
 
 THIS_DIR="$(dirname "${0}")"
 LLVM_DIR="${THIS_DIR}/../../../third_party/llvm"
 LLVM_BUILD_DIR="${LLVM_DIR}/../llvm-build"
 LLVM_BOOTSTRAP_DIR="${LLVM_DIR}/../llvm-bootstrap"
 CLANG_DIR="${LLVM_DIR}/tools/clang"
+CLANG_TOOLS_EXTRA_DIR="${CLANG_DIR}/tools/extra"
 COMPILER_RT_DIR="${LLVM_DIR}/projects/compiler-rt"
+ANDROID_NDK_DIR="${LLVM_DIR}/../android_tools/ndk"
 STAMP_FILE="${LLVM_BUILD_DIR}/cr_build_revision"
 
 # ${A:-a} returns $A if it's set, a else.
@@ -31,6 +35,13 @@ force_local_build=
 mac_only=
 run_tests=
 bootstrap=
+with_android=yes
+is_asan_mac_builder=
+with_tools_extra=
+if [[ "${OS}" = "Darwin" ]]; then
+  with_android=
+fi
+
 while [[ $# > 0 ]]; do
   case $1 in
     --bootstrap)
@@ -45,23 +56,62 @@ while [[ $# > 0 ]]; do
     --run-tests)
       run_tests=yes
       ;;
+    --without-android)
+      with_android=
+      ;;
+    --is-asan-mac-builder)
+      is_asan_mac_builder=yes
+      ;;
+    --with-tools-extra)
+      with_tools_extra=yes
+      ;;
     --help)
       echo "usage: $0 [--force-local-build] [--mac-only] [--run-tests] "
       echo "--bootstrap: First build clang with CC, then with itself."
       echo "--force-local-build: Don't try to download prebuilt binaries."
       echo "--mac-only: Do initial download only on Mac systems."
       echo "--run-tests: Run tests after building. Only for local builds."
+      echo "--without-android: Don't build ASan Android runtime library."
+      echo "--is-asan-mac-builder: Use older Clang to build ASan on Mac."
+      echo "--with-tools-extra: Also build the clang-tools-extra repository."
       exit 1
       ;;
   esac
   shift
 done
 
+# Are we on a Chrome buildbot running ASan?
+function on_asan_mac_host {
+  HOST="$(uname -n)"
+  # Chrome Mac ASan Builder.
+  if [[ "${HOST}" == "vm633-m1.golo.chromium.org" ]]; then
+    return 0
+  fi
+  # Chrome Mac ASan LKGR.
+  if [[ "${HOST}" == "mini11-a1.golo.chromium.org" ]]; then
+    return 0
+  fi
+  # mac_asan trybots.
+  for num in $(seq 600 655)
+  do
+    if [[ "${HOST}" == "vm${num}-m4.golo.chromium.org" ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+# Use older Clang for ASan Mac builds. See http://crbug.com/170629.
+if [[ -n is_asan_mac_builder ]] || on_asan_mac_host; then
+  CLANG_REVISION=${CLANG_ASAN_MAC_REVISION}
+fi
+
 # --mac-only prevents the initial download on non-mac systems, but if clang has
 # already been downloaded in the past, this script keeps it up to date even if
 # --mac-only is passed in and the system isn't a mac. People who don't like this
 # can just delete their third_party/llvm-build directory.
 if [[ -n "$mac_only" ]] && [[ "${OS}" != "Darwin" ]] &&
+    [[ ! ( "$GYP_DEFINES" =~ .*(clang|tsan|asan)=1.* ) ]] &&
     ! [[ -d "${LLVM_BUILD_DIR}" ]]; then
   exit 0
 fi
@@ -145,6 +195,7 @@ for CONFIG in Debug Release; do
     echo "Clobbering ${CONFIG} PCH and .o files for ninja build"
     find "${MAKE_DIR}/${CONFIG}/obj" -name '*.gch' -exec rm {} +
     find "${MAKE_DIR}/${CONFIG}/obj" -name '*.o' -exec rm {} +
+    find "${MAKE_DIR}/${CONFIG}/obj" -name '*.o.d' -exec rm {} +
   fi
 
   if [[ "${OS}" = "Darwin" ]]; then
@@ -154,6 +205,16 @@ for CONFIG in Debug Release; do
     fi
   fi
 done
+
+# Clobber NaCl toolchain stamp files, see http://crbug.com/159793
+if [[ -d "${MAKE_DIR}" ]]; then
+  find "${MAKE_DIR}" -name 'stamp.untar' -exec rm {} +
+fi
+if [[ "${OS}" = "Darwin" ]]; then
+  if [[ -d "${XCODEBUILD_DIR}" ]]; then
+    find "${XCODEBUILD_DIR}" -name 'stamp.untar' -exec rm {} +
+  fi
+fi
 
 if [[ -z "$force_local_build" ]]; then
   # Check if there's a prebuilt binary and if so just fetch that. That's faster,
@@ -190,6 +251,15 @@ if [[ -z "$force_local_build" ]]; then
   fi
 fi
 
+if [[ -n "${with_android}" ]] && ! [[ -d "${ANDROID_NDK_DIR}" ]]; then
+  echo "Android NDK not found at ${ANDROID_NDK_DIR}"
+  echo "The Android NDK is needed to build a Clang whose -fsanitize=address"
+  echo "works on Android. See "
+  echo "http://code.google.com/p/chromium/wiki/AndroidBuildInstructions for how"
+  echo "to install the NDK, or pass --without-android."
+  exit 1
+fi
+
 echo Getting LLVM r"${CLANG_REVISION}" in "${LLVM_DIR}"
 if ! svn co --force "${LLVM_REPO_URL}/llvm/trunk@${CLANG_REVISION}" \
                     "${LLVM_DIR}"; then
@@ -204,6 +274,15 @@ svn co --force "${LLVM_REPO_URL}/cfe/trunk@${CLANG_REVISION}" "${CLANG_DIR}"
 echo Getting compiler-rt r"${CLANG_REVISION}" in "${COMPILER_RT_DIR}"
 svn co --force "${LLVM_REPO_URL}/compiler-rt/trunk@${CLANG_REVISION}" \
                "${COMPILER_RT_DIR}"
+
+if [[ -n "${with_tools_extra}" ]]; then
+  echo Getting clang-tools-extra r"${CLANG_REVISION}" in \
+       "${CLANG_TOOLS_EXTRA_DIR}"
+  svn co --force "${LLVM_REPO_URL}/clang-tools-extra/trunk@${CLANG_REVISION}" \
+                 "${CLANG_TOOLS_EXTRA_DIR}"
+else
+  rm -rf "${CLANG_TOOLS_EXTRA_DIR}"
+fi
 
 # Echo all commands.
 set -x
@@ -260,21 +339,48 @@ fi
 MACOSX_DEPLOYMENT_TARGET=10.5 make -j"${NUM_JOBS}"
 cd -
 
-# Build plugin.
-# Copy it into the clang tree and use clang's build system to compile the
-# plugin.
-PLUGIN_SRC_DIR="${THIS_DIR}/../plugins"
-PLUGIN_DST_DIR="${LLVM_DIR}/tools/clang/tools/chrome-plugin"
-PLUGIN_BUILD_DIR="${LLVM_BUILD_DIR}/tools/clang/tools/chrome-plugin"
-rm -rf "${PLUGIN_DST_DIR}"
-cp -R "${PLUGIN_SRC_DIR}" "${PLUGIN_DST_DIR}"
-rm -rf "${PLUGIN_BUILD_DIR}"
-mkdir -p "${PLUGIN_BUILD_DIR}"
-cp "${PLUGIN_SRC_DIR}/Makefile" "${PLUGIN_BUILD_DIR}"
-MACOSX_DEPLOYMENT_TARGET=10.5 make -j"${NUM_JOBS}" -C "${PLUGIN_BUILD_DIR}"
+if [[ -n "${with_android}" ]]; then
+  # Make a standalone Android toolchain.
+  ${ANDROID_NDK_DIR}/build/tools/make-standalone-toolchain.sh \
+      --platform=android-9 \
+      --install-dir="${LLVM_BUILD_DIR}/android-toolchain"
+
+  # Fixup mismatching version numbers in android-ndk-r8b.
+  # TODO: This will be fixed in the next NDK, remove this when that ships.
+  TC="${LLVM_BUILD_DIR}/android-toolchain"
+  if [[ -d "${TC}/lib/gcc/arm-linux-androideabi/4.6.x-google" ]]; then
+    mv "${TC}/lib/gcc/arm-linux-androideabi/4.6.x-google" \
+        "${TC}/lib/gcc/arm-linux-androideabi/4.6"
+    mv "${TC}/libexec/gcc/arm-linux-androideabi/4.6.x-google" \
+        "${TC}/libexec/gcc/arm-linux-androideabi/4.6"
+  fi
+
+  # Build ASan runtime for Android.
+  cd "${LLVM_BUILD_DIR}"
+  make -C tools/clang/runtime/ LLVM_ANDROID_TOOLCHAIN_DIR="../../../../${TC}"
+  cd -
+fi
+
+# Build Chrome-specific clang tools. Paths in this list should be relative to
+# tools/clang.
+CHROME_TOOL_DIRS="plugins"
+# For each tool directory, copy it into the clang tree and use clang's build
+# system to compile it.
+for CHROME_TOOL_DIR in ${CHROME_TOOL_DIRS}; do
+  TOOL_SRC_DIR="${THIS_DIR}/../${CHROME_TOOL_DIR}"
+  TOOL_DST_DIR="${LLVM_DIR}/tools/clang/tools/chrome-${CHROME_TOOL_DIR}"
+  TOOL_BUILD_DIR="${LLVM_BUILD_DIR}/tools/clang/tools/chrome-${CHROME_TOOL_DIR}"
+  rm -rf "${TOOL_DST_DIR}"
+  cp -R "${TOOL_SRC_DIR}" "${TOOL_DST_DIR}"
+  rm -rf "${TOOL_BUILD_DIR}"
+  mkdir -p "${TOOL_BUILD_DIR}"
+  cp "${TOOL_SRC_DIR}/Makefile" "${TOOL_BUILD_DIR}"
+  MACOSX_DEPLOYMENT_TARGET=10.5 make -j"${NUM_JOBS}" -C "${TOOL_BUILD_DIR}"
+done
 
 if [[ -n "$run_tests" ]]; then
   # Run a few tests.
+  PLUGIN_SRC_DIR="${THIS_DIR}/../plugins"
   "${PLUGIN_SRC_DIR}/tests/test.sh" "${LLVM_BUILD_DIR}/Release+Asserts"
   cd "${LLVM_BUILD_DIR}"
   make check-all

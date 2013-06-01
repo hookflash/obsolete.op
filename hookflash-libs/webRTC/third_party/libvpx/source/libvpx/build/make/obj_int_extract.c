@@ -213,12 +213,8 @@ bail:
 }
 
 #elif defined(__ELF__)
-
-#ifdef __QNX__
-#include <sys/elf.h>
-#else
 #include "elf.h"
-#endif // __QNX__
+
 #define COPY_STRUCT(dst, buf, ofst, sz) do {\
         if(ofst + sizeof((*(dst))) > sz) goto bail;\
         memcpy(dst, buf+ofst, sizeof((*(dst))));\

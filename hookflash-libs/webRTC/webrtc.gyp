@@ -1,4 +1,4 @@
-# Copyright (c) 2011 The WebRTC project authors. All Rights Reserved.
+# Copyright (c) 2012 The WebRTC project authors. All Rights Reserved.
 #
 # Use of this source code is governed by a BSD-style license
 # that can be found in the LICENSE file in the root of the source
@@ -7,23 +7,37 @@
 # be found in the AUTHORS file in the root of the source tree.
 
 {
-  'includes': [ 'src/build/common.gypi', ],
+  'includes': ['webrtc/build/common.gypi',],
+  'variables': {
+    'webrtc_all_dependencies': [
+      'webrtc/common_audio/common_audio.gyp:*',
+      'webrtc/common_video/common_video.gyp:*',
+      'webrtc/modules/modules.gyp:*',
+      'webrtc/system_wrappers/source/system_wrappers.gyp:*',
+      'webrtc/video_engine/video_engine.gyp:*',
+      'webrtc/voice_engine/voice_engine.gyp:*',
+      '<(webrtc_vp8_dir)/vp8.gyp:*',
+    ],
+  },
   'targets': [
     {
       'target_name': 'All',
       'type': 'none',
       'dependencies': [
-        'src/common_audio/common_audio.gyp:*',
-        'src/common_video/common_video.gyp:*',
-        'src/modules/modules.gyp:*',
-        'src/system_wrappers/source/system_wrappers.gyp:*',
-        'src/video_engine/video_engine.gyp:*',
-        'src/voice_engine/voice_engine.gyp:*',
-        'test/metrics.gyp:*',
-        'test/test.gyp:*',
+        '<@(webrtc_all_dependencies)',
+      ],
+      'conditions': [
+        ['include_tests==1', {
+          'dependencies': [
+            'webrtc/system_wrappers/source/system_wrappers_tests.gyp:*',
+            'webrtc/test/channel_transport.gyp:*',
+            'webrtc/test/metrics.gyp:*',
+            'webrtc/test/test.gyp:*',
+            'webrtc/tools/tools.gyp:*',
+            'tools/e2e_quality/e2e_quality.gyp:*',
+          ],
+        }],
       ],
     },
   ],
-  'conditions': [
-  ],  # conditions
 }

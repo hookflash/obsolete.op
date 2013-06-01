@@ -1,0 +1,861 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		FA2EEDEA96323499AE234AE6 /* Run system_wrappers_unittests */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FA12C47F12555F54A68E60FB /* Build configuration list for PBXAggregateTarget "Run system_wrappers_unittests" */;
+			buildPhases = (
+				86280069AB2F5854394E00FE /* ShellScript */,
+			);
+			dependencies = (
+				9F8ED63C42F54F229AB90E6D /* PBXTargetDependency */,
+			);
+			name = "Run system_wrappers_unittests";
+			productName = system_wrappers_unittests;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		0E069E547A82E2C4E9E3246C /* list_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 984CFD366DFB67D25195F228 /* list_unittest.cc */; };
+		19ECEFE587B550D7CA954572 /* event_tracer_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1CAEA814AA538DD55575EEDA /* event_tracer_unittest.cc */; };
+		1CA0AA8E520DC16AE6DFA804 /* libgmock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C2F0F4918CEBC4D74562DA0 /* libgmock.a */; };
+		20A6B716A3991AD8E8E662A0 /* map_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = E6055BD2F25E4139C1AFF602 /* map_unittest.cc */; };
+		296C26CD9F2B01E588E6A989 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4777F073A71CB6CC3734F0DE /* Foundation.framework */; };
+		2C9000354239A5663A9D1F93 /* data_log_unittest_disabled.cc in Sources */ = {isa = PBXBuildFile; fileRef = 2413A2FBDC9E5D97B83DF20C /* data_log_unittest_disabled.cc */; };
+		331B169EF3BDC922C715045D /* critical_section_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = AA0160856106BC0CBFF936D9 /* critical_section_unittest.cc */; };
+		3385AEE1DB1030884B23FD66 /* data_log_helpers_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = BF11F61B360C1535EAF9960B /* data_log_helpers_unittest.cc */; };
+		39464E1EFDCEE098D581856D /* logging_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = C742BF68AD2A0817FB4F66B4 /* logging_unittest.cc */; };
+		3B3467BA276477BF00126B8C /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46C75DB7C7A7A1A804C1B8B /* ApplicationServices.framework */; };
+		3EDA765CDAC2B5A98D552626 /* condition_variable_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 6AA3A9E965ECF787BDFCAC5B /* condition_variable_unittest.cc */; };
+		4902296ED363C6C807845A0A /* stringize_macros_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1FEB8C67E06B947AE523C772 /* stringize_macros_unittest.cc */; };
+		494B624E0FB9426B9EA9A19A /* libtest_support.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DBBB4C4DC8911C2B7A021198 /* libtest_support.a */; };
+		4A76D2BEB8C6685AC13B08EE /* thread_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 73DADF72EB02E1392D080B8A /* thread_unittest.cc */; };
+		57495ED413207220E9A258B8 /* unittest_utilities_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 52E5E1704ECCEAD5BBB8C261 /* unittest_utilities_unittest.cc */; };
+		5DCB462E0CEC7FDB363135CC /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B5A22EACBFF15F1B108FFBC /* libgtest.a */; };
+		86828FCBE5267AE8F1AC8861 /* thread_posix_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = FB552AAA2707CC6FBF93F58A /* thread_posix_unittest.cc */; };
+		88776CA6F8F843D73BAADCBA /* libsystem_wrappers.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CD1A91FE19B7829C1F8C6B6A /* libsystem_wrappers.a */; };
+		9F19D3C03BC2482E997AEB2E /* aligned_malloc_unittest.cc in Sources */ = {isa = PBXBuildFile; fileRef = 34E0DA394B835CEF90F30FF9 /* aligned_malloc_unittest.cc */; };
+		E99C055E5E017999D8F86FFC /* libtest_support_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 07E359B6C25535E85B6BA479 /* libtest_support_main.a */; };
+		F680F65F0196732F87D4994E /* data_log_c_helpers_unittest.c in Sources */ = {isa = PBXBuildFile; fileRef = A8A48B72B512222FAF5BB959 /* data_log_c_helpers_unittest.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03AB5751343DAAA48C72B5B5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CCAC1D500579CCE4A4B3DF89;
+			remoteInfo = gmock;
+		};
+		05D0774C304AF476377080F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 16FE1B8019413384C8E03D7E;
+			remoteInfo = test_support_main;
+		};
+		2CB3626BD3BEC46AEE3B929D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 524A47A4F4774335D3C86B18 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 691F5FB95B7099F7FC42A1BE;
+			remoteInfo = system_wrappers_unittests;
+		};
+		363BC0A137971931EF5E32BC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 047880FF10396F6860BD2A6C;
+			remoteInfo = gmock_main;
+		};
+		542C9E88B6EE302812205ED8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A2B4C84AC75257D0E9A8ED5D /* system_wrappers.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7B55B6203F5C2B47E025B9F4;
+			remoteInfo = system_wrappers;
+		};
+		57130E40F9AF367094F98EC6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 203C595AB0E93BB1CB960E12;
+			remoteInfo = gtest;
+		};
+		8363F5491DF5A9C8D8670DDE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A2B4C84AC75257D0E9A8ED5D /* system_wrappers.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 455BC70E81E4CAFA527F91CD;
+			remoteInfo = system_wrappers;
+		};
+		8AB0003293FDA46E7FFE35E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D22CB0E3E1C7BFFE5177D82E;
+			remoteInfo = gtest_main;
+		};
+		8F25A9974502B344EFC6B42D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 2999131A71FAFE50515AD0ED;
+			remoteInfo = gtest_prod;
+		};
+		9B1F214531C68759CF30166A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6D06A7880BDFE0FFA2C61254;
+			remoteInfo = test_support;
+		};
+		9FF445F44FAA6D0285698952 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 677AFFE3717A006BFE45BC10;
+			remoteInfo = test_support_main;
+		};
+		AD79663ECFE99CF3D88793B4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F53C51184A2F821FEADA91FE;
+			remoteInfo = gmock;
+		};
+		B1118B78247823855E431281 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DBF867C58B0D54B446EE992E;
+			remoteInfo = test_support_unittests;
+		};
+		B94426C8A1C700B8BB252651 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E995122D09A9871204CAFD1C;
+			remoteInfo = test_support;
+		};
+		C6A1E3D44D025CA2D66E2995 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 58925005EF1178950853E046 /* test.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CAB9AF170D41231F3FCF62DA;
+			remoteInfo = test_support_main_threaded_mac;
+		};
+		CD207CE7CD888FD912D408D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E0B3F1FB50FAAB76B5E11021;
+			remoteInfo = gtest;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1CAEA814AA538DD55575EEDA /* event_tracer_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = event_tracer_unittest.cc; sourceTree = "<group>"; };
+		1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = gmock.xcodeproj; path = ../../../testing/gmock.xcodeproj; sourceTree = SOURCE_ROOT; };
+		1FEB8C67E06B947AE523C772 /* stringize_macros_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = stringize_macros_unittest.cc; sourceTree = "<group>"; };
+		2413A2FBDC9E5D97B83DF20C /* data_log_unittest_disabled.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = data_log_unittest_disabled.cc; sourceTree = "<group>"; };
+		2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = gtest.xcodeproj; path = ../../../testing/gtest.xcodeproj; sourceTree = SOURCE_ROOT; };
+		34E0DA394B835CEF90F30FF9 /* aligned_malloc_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = aligned_malloc_unittest.cc; sourceTree = "<group>"; };
+		4573C7F6DAFE8F95D07483E6 /* system_wrappers_unittests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = system_wrappers_unittests; sourceTree = BUILT_PRODUCTS_DIR; };
+		4777F073A71CB6CC3734F0DE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		52E5E1704ECCEAD5BBB8C261 /* unittest_utilities_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = unittest_utilities_unittest.cc; sourceTree = "<group>"; };
+		58925005EF1178950853E046 /* test.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = test.xcodeproj; path = ../../test/test.xcodeproj; sourceTree = SOURCE_ROOT; };
+		6AA3A9E965ECF787BDFCAC5B /* condition_variable_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = condition_variable_unittest.cc; sourceTree = "<group>"; };
+		6E49E6305E9C83F56178CEEF /* supplement.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = supplement.gypi; path = ../../supplement.gypi; sourceTree = "<group>"; };
+		73A086E66FCB593898B84042 /* release_defaults.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_defaults.gypi; path = ../../../build/internal/release_defaults.gypi; sourceTree = "<group>"; };
+		73DADF72EB02E1392D080B8A /* thread_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = thread_unittest.cc; sourceTree = "<group>"; };
+		8912D07CF664CA0B2CB81EC3 /* release_impl.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl.gypi; path = ../../../build/internal/release_impl.gypi; sourceTree = "<group>"; };
+		984CFD366DFB67D25195F228 /* list_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = list_unittest.cc; sourceTree = "<group>"; };
+		9B62BA4BAA21CC649346FD67 /* release_impl_official.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release_impl_official.gypi; path = ../../../build/internal/release_impl_official.gypi; sourceTree = "<group>"; };
+		A2B4C84AC75257D0E9A8ED5D /* system_wrappers.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = system_wrappers.xcodeproj; sourceTree = SOURCE_ROOT; };
+		A8A48B72B512222FAF5BB959 /* data_log_c_helpers_unittest.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = data_log_c_helpers_unittest.c; sourceTree = "<group>"; };
+		A8C7C01FCC3E634F34E0DF4B /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../../build/common.gypi; sourceTree = "<group>"; };
+		AA0160856106BC0CBFF936D9 /* critical_section_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = critical_section_unittest.cc; sourceTree = "<group>"; };
+		BF11F61B360C1535EAF9960B /* data_log_helpers_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = data_log_helpers_unittest.cc; sourceTree = "<group>"; };
+		BF7827A9003F64FB12C5D6D4 /* data_log_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = data_log_unittest.cc; sourceTree = "<group>"; };
+		C51749FCE670B2A5F7B17509 /* common.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = common.gypi; path = ../../build/common.gypi; sourceTree = "<group>"; };
+		C742BF68AD2A0817FB4F66B4 /* logging_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = logging_unittest.cc; sourceTree = "<group>"; };
+		CBFB4E0A217F60D69CAD70E1 /* filename_rules.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = filename_rules.gypi; path = ../../../build/filename_rules.gypi; sourceTree = "<group>"; };
+		CCAF3705098001C9E164360E /* system_wrappers_tests.gyp */ = {isa = PBXFileReference; lastKnownFileType = text; path = system_wrappers_tests.gyp; sourceTree = "<group>"; };
+		E46C75DB7C7A7A1A804C1B8B /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		E6055BD2F25E4139C1AFF602 /* map_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = map_unittest.cc; sourceTree = "<group>"; };
+		E6899CE1B680D0E038EBFD57 /* data_log_c_helpers_unittest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = data_log_c_helpers_unittest.h; sourceTree = "<group>"; };
+		F7A2B59E3506AE3F2334D57D /* release.gypi */ = {isa = PBXFileReference; lastKnownFileType = text; name = release.gypi; path = ../../../build/release.gypi; sourceTree = "<group>"; };
+		FB552AAA2707CC6FBF93F58A /* thread_posix_unittest.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = thread_posix_unittest.cc; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C6A9755410BB9FA9DA8D8E41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5DCB462E0CEC7FDB363135CC /* libgtest.a in Frameworks */,
+				88776CA6F8F843D73BAADCBA /* libsystem_wrappers.a in Frameworks */,
+				E99C055E5E017999D8F86FFC /* libtest_support_main.a in Frameworks */,
+				494B624E0FB9426B9EA9A19A /* libtest_support.a in Frameworks */,
+				1CA0AA8E520DC16AE6DFA804 /* libgmock.a in Frameworks */,
+				296C26CD9F2B01E588E6A989 /* Foundation.framework in Frameworks */,
+				3B3467BA276477BF00126B8C /* ApplicationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0CF4DC00B7A6ECE3FC18797E /* Build */ = {
+			isa = PBXGroup;
+			children = (
+				A8C7C01FCC3E634F34E0DF4B /* common.gypi */,
+				C51749FCE670B2A5F7B17509 /* common.gypi */,
+				CBFB4E0A217F60D69CAD70E1 /* filename_rules.gypi */,
+				F7A2B59E3506AE3F2334D57D /* release.gypi */,
+				73A086E66FCB593898B84042 /* release_defaults.gypi */,
+				8912D07CF664CA0B2CB81EC3 /* release_impl.gypi */,
+				9B62BA4BAA21CC649346FD67 /* release_impl_official.gypi */,
+				6E49E6305E9C83F56178CEEF /* supplement.gypi */,
+				CCAF3705098001C9E164360E /* system_wrappers_tests.gyp */,
+			);
+			name = Build;
+			sourceTree = "<group>";
+		};
+		116190AE093679C33118ED72 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4573C7F6DAFE8F95D07483E6 /* system_wrappers_unittests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		211A0448EE90FE1E33A1D0F4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B5A22EACBFF15F1B108FFBC /* libgtest.a */,
+				C94E7BD03636308AA16C0A1D /* libgtest_main.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		23972972910600857E7FF29E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DBBB4C4DC8911C2B7A021198 /* libtest_support.a */,
+				07E359B6C25535E85B6BA479 /* libtest_support_main.a */,
+				CF8360FC06119BB68DDF3F22 /* libtest_support_main_threaded_mac.a */,
+				C9C9A0687C8B73154F4780FC /* test_support_unittests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40E4A892AB948BADE1A84BA7 = {
+			isa = PBXGroup;
+			children = (
+				E88CF473EB01A1B9114B6E86 /* Source */,
+				D49A458A06C45BAA820A6F7E /* Projects */,
+				DD71BD83850294C9AD8D69E0 /* Frameworks */,
+				116190AE093679C33118ED72 /* Products */,
+				0CF4DC00B7A6ECE3FC18797E /* Build */,
+			);
+			sourceTree = "<group>";
+		};
+		72DC4553B0B075A11F2426E5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5C2F0F4918CEBC4D74562DA0 /* libgmock.a */,
+				89590FC402F26FC7BAF5F0A4 /* libgmock_main.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D148B5555329B70FA56D5AB9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD1A91FE19B7829C1F8C6B6A /* libsystem_wrappers.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D49A458A06C45BAA820A6F7E /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */,
+				2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */,
+				A2B4C84AC75257D0E9A8ED5D /* system_wrappers.xcodeproj */,
+				58925005EF1178950853E046 /* test.xcodeproj */,
+			);
+			name = Projects;
+			sourceTree = "<group>";
+		};
+		DD71BD83850294C9AD8D69E0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E46C75DB7C7A7A1A804C1B8B /* ApplicationServices.framework */,
+				4777F073A71CB6CC3734F0DE /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E88CF473EB01A1B9114B6E86 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				34E0DA394B835CEF90F30FF9 /* aligned_malloc_unittest.cc */,
+				6AA3A9E965ECF787BDFCAC5B /* condition_variable_unittest.cc */,
+				AA0160856106BC0CBFF936D9 /* critical_section_unittest.cc */,
+				A8A48B72B512222FAF5BB959 /* data_log_c_helpers_unittest.c */,
+				E6899CE1B680D0E038EBFD57 /* data_log_c_helpers_unittest.h */,
+				BF11F61B360C1535EAF9960B /* data_log_helpers_unittest.cc */,
+				BF7827A9003F64FB12C5D6D4 /* data_log_unittest.cc */,
+				2413A2FBDC9E5D97B83DF20C /* data_log_unittest_disabled.cc */,
+				1CAEA814AA538DD55575EEDA /* event_tracer_unittest.cc */,
+				984CFD366DFB67D25195F228 /* list_unittest.cc */,
+				C742BF68AD2A0817FB4F66B4 /* logging_unittest.cc */,
+				E6055BD2F25E4139C1AFF602 /* map_unittest.cc */,
+				1FEB8C67E06B947AE523C772 /* stringize_macros_unittest.cc */,
+				FB552AAA2707CC6FBF93F58A /* thread_posix_unittest.cc */,
+				73DADF72EB02E1392D080B8A /* thread_unittest.cc */,
+				52E5E1704ECCEAD5BBB8C261 /* unittest_utilities_unittest.cc */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		691F5FB95B7099F7FC42A1BE /* system_wrappers_unittests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 57F24AFEEEB7B2FDA42B4903 /* Build configuration list for PBXNativeTarget "system_wrappers_unittests" */;
+			buildPhases = (
+				0A23023376BEE7F88DCB0F01 /* Sources */,
+				C6A9755410BB9FA9DA8D8E41 /* Frameworks */,
+				F8A6E41BAE934089CE8E0726 /* Postbuild "Change Mach-O Flags" */,
+				F6E6EEFD8CE8811C6B42EE6D /* Postbuild "Strip If Needed" */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8F20F0E63BF8C54975A049ED /* PBXTargetDependency */,
+				F336F16798CA0185C40E0562 /* PBXTargetDependency */,
+				E87B3787272EB7B1D6843CC7 /* PBXTargetDependency */,
+				AD00073A898BE563F22B5179 /* PBXTargetDependency */,
+				225A0F52C31F2AA3DE48DD2A /* PBXTargetDependency */,
+				3414156FC5089D6E243F1DB0 /* PBXTargetDependency */,
+			);
+			name = system_wrappers_unittests;
+			productName = system_wrappers_unittests;
+			productReference = 4573C7F6DAFE8F95D07483E6 /* system_wrappers_unittests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		524A47A4F4774335D3C86B18 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+			};
+			buildConfigurationList = 7711D132D719AECA99F3C30B /* Build configuration list for PBXProject "system_wrappers_tests" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 40E4A892AB948BADE1A84BA7;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 72DC4553B0B075A11F2426E5 /* Products */;
+					ProjectRef = 1EE5484F19D50D523A2D50B3 /* gmock.xcodeproj */;
+				},
+				{
+					ProductGroup = 211A0448EE90FE1E33A1D0F4 /* Products */;
+					ProjectRef = 2B07F2251E7D0989F67BCD2F /* gtest.xcodeproj */;
+				},
+				{
+					ProductGroup = D148B5555329B70FA56D5AB9 /* Products */;
+					ProjectRef = A2B4C84AC75257D0E9A8ED5D /* system_wrappers.xcodeproj */;
+				},
+				{
+					ProductGroup = 23972972910600857E7FF29E /* Products */;
+					ProjectRef = 58925005EF1178950853E046 /* test.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				691F5FB95B7099F7FC42A1BE /* system_wrappers_unittests */,
+				FA2EEDEA96323499AE234AE6 /* Run system_wrappers_unittests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		07E359B6C25535E85B6BA479 /* libtest_support_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_support_main.a;
+			remoteRef = 9FF445F44FAA6D0285698952 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		2B5A22EACBFF15F1B108FFBC /* libgtest.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest.a;
+			remoteRef = CD207CE7CD888FD912D408D3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5C2F0F4918CEBC4D74562DA0 /* libgmock.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgmock.a;
+			remoteRef = 03AB5751343DAAA48C72B5B5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		89590FC402F26FC7BAF5F0A4 /* libgmock_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgmock_main.a;
+			remoteRef = 363BC0A137971931EF5E32BC /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C94E7BD03636308AA16C0A1D /* libgtest_main.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgtest_main.a;
+			remoteRef = 8AB0003293FDA46E7FFE35E0 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		C9C9A0687C8B73154F4780FC /* test_support_unittests */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = test_support_unittests;
+			remoteRef = B1118B78247823855E431281 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD1A91FE19B7829C1F8C6B6A /* libsystem_wrappers.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsystem_wrappers.a;
+			remoteRef = 542C9E88B6EE302812205ED8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CF8360FC06119BB68DDF3F22 /* libtest_support_main_threaded_mac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_support_main_threaded_mac.a;
+			remoteRef = C6A1E3D44D025CA2D66E2995 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DBBB4C4DC8911C2B7A021198 /* libtest_support.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtest_support.a;
+			remoteRef = B94426C8A1C700B8BB252651 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		86280069AB2F5854394E00FE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec python -c \"import fcntl, subprocess, sys\nfile = open('$TMPDIR/GYP_serialize_test_runs', 'a')\nfcntl.flock(file.fileno(), fcntl.LOCK_EX)\nsys.exit(subprocess.call(sys.argv[1:]))\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}\"\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		F6E6EEFD8CE8811C6B42EE6D /* Postbuild "Strip If Needed" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Strip If Needed\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../build/mac/strip_from_xcode\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+		F8A6E41BAE934089CE8E0726 /* Postbuild "Change Mach-O Flags" */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(EXECUTABLE_PATH)",
+			);
+			name = "Postbuild \"Change Mach-O Flags\"";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "exec ../../../build/mac/change_mach_o_flags_from_xcode.sh\nexit 1\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0A23023376BEE7F88DCB0F01 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F19D3C03BC2482E997AEB2E /* aligned_malloc_unittest.cc in Sources */,
+				3EDA765CDAC2B5A98D552626 /* condition_variable_unittest.cc in Sources */,
+				331B169EF3BDC922C715045D /* critical_section_unittest.cc in Sources */,
+				19ECEFE587B550D7CA954572 /* event_tracer_unittest.cc in Sources */,
+				0E069E547A82E2C4E9E3246C /* list_unittest.cc in Sources */,
+				39464E1EFDCEE098D581856D /* logging_unittest.cc in Sources */,
+				20A6B716A3991AD8E8E662A0 /* map_unittest.cc in Sources */,
+				2C9000354239A5663A9D1F93 /* data_log_unittest_disabled.cc in Sources */,
+				3385AEE1DB1030884B23FD66 /* data_log_helpers_unittest.cc in Sources */,
+				F680F65F0196732F87D4994E /* data_log_c_helpers_unittest.c in Sources */,
+				4902296ED363C6C807845A0A /* stringize_macros_unittest.cc in Sources */,
+				4A76D2BEB8C6685AC13B08EE /* thread_unittest.cc in Sources */,
+				86828FCBE5267AE8F1AC8861 /* thread_posix_unittest.cc in Sources */,
+				57495ED413207220E9A258B8 /* unittest_utilities_unittest.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		225A0F52C31F2AA3DE48DD2A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = test_support;
+			targetProxy = 9B1F214531C68759CF30166A /* PBXContainerItemProxy */;
+		};
+		3414156FC5089D6E243F1DB0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gmock;
+			targetProxy = AD79663ECFE99CF3D88793B4 /* PBXContainerItemProxy */;
+		};
+		8F20F0E63BF8C54975A049ED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gtest;
+			targetProxy = 57130E40F9AF367094F98EC6 /* PBXContainerItemProxy */;
+		};
+		9F8ED63C42F54F229AB90E6D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 691F5FB95B7099F7FC42A1BE /* system_wrappers_unittests */;
+			targetProxy = 2CB3626BD3BEC46AEE3B929D /* PBXContainerItemProxy */;
+		};
+		AD00073A898BE563F22B5179 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = gtest_prod;
+			targetProxy = 8F25A9974502B344EFC6B42D /* PBXContainerItemProxy */;
+		};
+		E87B3787272EB7B1D6843CC7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = test_support_main;
+			targetProxy = 05D0774C304AF476377080F1 /* PBXContainerItemProxy */;
+		};
+		F336F16798CA0185C40E0562 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = system_wrappers;
+			targetProxy = 8363F5491DF5A9C8D8670DDE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		13E08135571C98B9B4A5F625 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = system_wrappers_unittests;
+			};
+			name = Debug;
+		};
+		29F0C36D10700B0446D99ED6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.7;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = build;
+			};
+			name = Release;
+		};
+		34BB53E38D1ABCD594B01348 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = system_wrappers_unittests;
+			};
+			name = Release;
+		};
+		4E72C112EDCB35810977E09E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				DEAD_CODE_STRIPPING = YES;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
+					"\"WEBRTC_LOGGING\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"UNIT_TEST\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"__STDC_CONSTANT_MACROS\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"NDEBUG\"",
+					"\"NVALGRIND\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=0\"",
+					"\"_FORTIFY_SOURCE=2\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../..,
+					../../..,
+					../../..,
+					../../test,
+					../../../testing/gtest/include,
+					../interface,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = "-fno-strict-aliasing";
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = system_wrappers_unittests;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
+				);
+			};
+			name = Release;
+		};
+		652A591A07AD54E9B1B9E92E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INTERMEDIATE_DIR = "$(PROJECT_DERIVED_FILE_DIR)/$(CONFIGURATION)";
+				SDKROOT = macosx10.7;
+				SHARED_INTERMEDIATE_DIR = "$(SYMROOT)/DerivedSources/$(CONFIGURATION)";
+				SYMROOT = build;
+			};
+			name = Debug;
+		};
+		8EE580494ECB72D5B332E975 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_CXX0X_EXTENSIONS = NO;
+				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
+				COPY_PHASE_STRIP = NO;
+				EXECUTABLE_PREFIX = "";
+				GCC_CW_ASM_SYNTAX = NO;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_PASCAL_STRINGS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OBJC_CALL_CXX_CDTORS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"\"WEBRTC_SVNREVISION=\\\"Unavailable(issue687)\\\"\"",
+					"\"CHROMIUM_BUILD\"",
+					"\"USE_LIBJPEG_TURBO=1\"",
+					"\"ENABLE_ONE_CLICK_SIGNIN\"",
+					"\"ENABLE_REMOTING=1\"",
+					"\"ENABLE_WEBRTC=1\"",
+					"\"ENABLE_PEPPER_THREADING\"",
+					"\"ENABLE_CONFIGURATION_POLICY\"",
+					"\"ENABLE_INPUT_SPEECH\"",
+					"\"ENABLE_NOTIFICATIONS\"",
+					"\"ENABLE_HIDPI=1\"",
+					"\"ENABLE_GPU=1\"",
+					"\"ENABLE_EGLIMAGE=1\"",
+					"\"USE_SKIA=1\"",
+					"\"ENABLE_TASK_MANAGER=1\"",
+					"\"ENABLE_EXTENSIONS=1\"",
+					"\"ENABLE_PLUGIN_INSTALLATION=1\"",
+					"\"ENABLE_PLUGINS=1\"",
+					"\"ENABLE_SESSION_SERVICE=1\"",
+					"\"ENABLE_THEMES=1\"",
+					"\"ENABLE_BACKGROUND=1\"",
+					"\"ENABLE_AUTOMATION=1\"",
+					"\"ENABLE_GOOGLE_NOW=1\"",
+					"\"ENABLE_LANGUAGE_DETECTION=1\"",
+					"\"ENABLE_PRINTING=1\"",
+					"\"ENABLE_CAPTIVE_PORTAL_DETECTION=1\"",
+					"\"ENABLE_APP_LIST=1\"",
+					"\"ENABLE_MANAGED_USERS=1\"",
+					"\"WEBRTC_LOGGING\"",
+					"\"WEBRTC_MAC\"",
+					"\"WEBRTC_THREAD_RR\"",
+					"\"WEBRTC_CLOCK_TYPE_REALTIME\"",
+					"\"UNIT_TEST\"",
+					"\"GTEST_HAS_RTTI=0\"",
+					"\"__STDC_CONSTANT_MACROS\"",
+					"\"__STDC_FORMAT_MACROS\"",
+					"\"DYNAMIC_ANNOTATIONS_ENABLED=1\"",
+					"\"WTF_USE_DYNAMIC_ANNOTATIONS=1\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THREADSAFE_STATICS = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				HEADER_SEARCH_PATHS = (
+					../..,
+					../../..,
+					../../..,
+					../../test,
+					../../../testing/gtest/include,
+					../interface,
+				);
+				LDPLUSPLUS = "$(SOURCE_ROOT)/../../../third_party/llvm-build/Release+Asserts/bin/clang++";
+				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/System/Library/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				OTHER_CFLAGS = (
+					"-fno-strict-aliasing",
+					"-fstack-protector-all",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(inherited)",
+					"-std=gnu++11",
+				);
+				OTHER_LDFLAGS = (
+					"-Wl,-search_paths_first",
+					"-Wl,-pie",
+				);
+				PRODUCT_NAME = system_wrappers_unittests;
+				SHARED_PRECOMPS_DIR = "$(CONFIGURATION_BUILD_DIR)/SharedPrecompiledHeaders";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wendif-labels",
+					"-Wextra",
+					"-Wno-unused-parameter",
+					"-Wno-missing-field-initializers",
+					"-Wheader-hygiene",
+					"-Wno-c++11-narrowing",
+					"-Wno-reserved-user-defined-literal",
+					"-Wno-char-subscripts",
+					"-Wno-unused-function",
+					"-Wno-covered-switch-default",
+					"-Wno-undefined-internal",
+				);
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		57F24AFEEEB7B2FDA42B4903 /* Build configuration list for PBXNativeTarget "system_wrappers_unittests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8EE580494ECB72D5B332E975 /* Debug */,
+				4E72C112EDCB35810977E09E /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		7711D132D719AECA99F3C30B /* Build configuration list for PBXProject "system_wrappers_tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				652A591A07AD54E9B1B9E92E /* Debug */,
+				29F0C36D10700B0446D99ED6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+		FA12C47F12555F54A68E60FB /* Build configuration list for PBXAggregateTarget "Run system_wrappers_unittests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				13E08135571C98B9B4A5F625 /* Debug */,
+				34BB53E38D1ABCD594B01348 /* Release */,
+			);
+			defaultConfigurationIsVisible = 1;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 524A47A4F4774335D3C86B18 /* Project object */;
+}

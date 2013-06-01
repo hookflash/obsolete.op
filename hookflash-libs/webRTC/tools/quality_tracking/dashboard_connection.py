@@ -10,11 +10,8 @@
 
 """Contains utilities for communicating with the dashboard."""
 
-__author__ = 'phoglund@webrtc.org (Patrik Höglund)'
-
 import httplib
 import shelve
-import urlparse
 import oauth.oauth as oauth
 
 import constants
@@ -43,6 +40,8 @@ class DashboardConnection:
 
   def __init__(self, consumer_key):
     self.consumer_key_ = consumer_key
+    self.consumer_secret_ = None
+    self.access_token_string_ = None
 
   def read_required_files(self, consumer_secret_file, access_token_file):
     """Reads required data for making OAuth requests.
@@ -119,7 +118,8 @@ class DashboardConnection:
   def _read_consumer_secret(self, filename):
     return self._read_shelve(filename, 'consumer_secret')
 
-  def _read_shelve(self, filename, key):
+  @staticmethod
+  def _read_shelve(filename, key):
     input_file = shelve.open(filename)
 
     if not input_file.has_key(key):

@@ -124,7 +124,6 @@ void protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto() {
   if (already_here) return;
   already_here = true;
   GOOGLE_PROTOBUF_VERIFY_VERSION;
-
   ::google::protobuf::protobuf_AddDesc_google_2fprotobuf_2fdescriptor_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n%google/protobuf/compiler/plugin.proto\022"
@@ -154,7 +153,6 @@ struct StaticDescriptorInitializer_google_2fprotobuf_2fcompiler_2fplugin_2eproto
     protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
   }
 } static_descriptor_initializer_google_2fprotobuf_2fcompiler_2fplugin_2eproto_;
-
 
 // ===================================================================
 
@@ -207,7 +205,8 @@ const ::google::protobuf::Descriptor* CodeGeneratorRequest::descriptor() {
 }
 
 const CodeGeneratorRequest& CodeGeneratorRequest::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();  return *default_instance_;
+  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
+  return *default_instance_;
 }
 
 CodeGeneratorRequest* CodeGeneratorRequest::default_instance_ = NULL;
@@ -244,7 +243,8 @@ bool CodeGeneratorRequest::MergePartialFromCodedStream(
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
                 input, this->add_file_to_generate()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->file_to_generate(0).data(), this->file_to_generate(0).length(),
+            this->file_to_generate(this->file_to_generate_size() - 1).data(),
+            this->file_to_generate(this->file_to_generate_size() - 1).length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
@@ -529,7 +529,8 @@ const ::google::protobuf::Descriptor* CodeGeneratorResponse_File::descriptor() {
 }
 
 const CodeGeneratorResponse_File& CodeGeneratorResponse_File::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();  return *default_instance_;
+  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
+  return *default_instance_;
 }
 
 CodeGeneratorResponse_File* CodeGeneratorResponse_File::default_instance_ = NULL;
@@ -857,7 +858,8 @@ const ::google::protobuf::Descriptor* CodeGeneratorResponse::descriptor() {
 }
 
 const CodeGeneratorResponse& CodeGeneratorResponse::default_instance() {
-  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();  return *default_instance_;
+  if (default_instance_ == NULL) protobuf_AddDesc_google_2fprotobuf_2fcompiler_2fplugin_2eproto();
+  return *default_instance_;
 }
 
 CodeGeneratorResponse* CodeGeneratorResponse::default_instance_ = NULL;

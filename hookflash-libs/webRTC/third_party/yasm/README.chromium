@@ -1,13 +1,19 @@
 Name: yasm
 URL: http://www.tortall.net/projects/yasm/
-Version: 1.1.0
+Version: 1.2.0
+License: 2-clause or 3-clause BSD licensed, with the exception of bitvect, which is triple-licensed under the Artistic license, GPL, and LGPL
+License File: source/patched-yasm/COPYING
+License Android Compatible: yes
+Security Critical: no
+
 With these patches merged:
 * https://github.com/yasm/yasm/commit/a2cbb10ee1b90b73647667ac849c74d65761d412
 * https://github.com/yasm/yasm/commit/01ab853e68ef8aeded716d6f5b34895200f66a51
 * https://github.com/yasm/yasm/commit/82fafa7b5619e702c8681c959ade0746498e3cbc
+* https://github.com/yasm/yasm/commit/2bd66514b6b100887c19d8598da38347b3cff40e
+* https://github.com/yasm/yasm/commit/ab19547382660d81e0b4a0232dccb38f44c52a36
+* https://github.com/yasm/yasm/commit/9728322335cba96500861ef766b1546d096e5600
 
-License File: source/patched-yasm/COPYING
-Security Critical: no
 
 See also the yasm.gyp file for a description of the yasm build process.
 
@@ -30,7 +36,8 @@ Instructions for recreating the yasm.gyp file.
      compiler warnings.
 
   5) Grab the generated Makefile, libyasm-stdint.h, config.h, and put into
-     the correct platform location.
+     the correct platform location. For android platform, copy the files
+     generated for linux.
 
        src/third_party/yasm/source/config/[platform]
 

@@ -339,8 +339,9 @@ if [ -z "${mirror}" ]; then
    mirror="http://archive.ubuntu.com/ubuntu" ||
    mirror="http://ftp.us.debian.org/debian"
 fi
- sudo debootstrap ${archflag} "${distname}" /var/lib/chroot/"${target}"        \
-                  "$mirror"
+
+sudo ${http_proxy:+http_proxy="${http_proxy}"} debootstrap ${archflag} \
+    "${distname}" "/var/lib/chroot/${target}"  "$mirror"
 
 # Add new entry to /etc/schroot/schroot.conf
 grep -qs ubuntu.com /usr/share/debootstrap/scripts/"${distname}" &&
@@ -391,12 +392,16 @@ if [ -d /media ] &&
     sudo sh -c 'cat >>/etc/schroot/mount-'"${target}"
 fi
 
-# Share /dev/shm and possibly /run/shm
+# Share /dev/shm, /run and /run/shm.
 grep -qs '^/dev/shm' /etc/schroot/mount-"${target}" ||
   echo '/dev/shm /dev/shm none rw,bind 0 0' |
     sudo sh -c 'cat >>/etc/schroot/mount-'"${target}"
-if [ -d "/var/lib/chroot/${target}/run" ] &&
-   ! grep -qs '^/run/shm' /etc/schroot/mount-"${target}"; then
+if [ ! -d "/var/lib/chroot/${target}/run" ] &&
+   ! grep -qs '^/run' /etc/schroot/mount-"${target}"; then
+  echo '/run /run none rw,bind 0 0' |
+    sudo sh -c 'cat >>/etc/schroot/mount-'"${target}"
+fi
+if ! grep -qs '^/run/shm' /etc/schroot/mount-"${target}"; then
   { [ -d /run ] && echo '/run/shm /run/shm none rw,bind 0 0' ||
                    echo '/dev/shm /run/shm none rw,bind 0 0'; } |
     sudo sh -c 'cat >>/etc/schroot/mount-'"${target}"
@@ -552,6 +557,13 @@ sudo sed -i '/^deb[^-]/p
              s/^deb\([^-]\)/deb-src\1/' \
          "/var/lib/chroot/${target}/etc/apt/sources.list"
 
+# Set apt proxy if host has set http_proxy
+if [ -n "${http_proxy}" ]; then
+  sudo sh -c '
+    echo "Acquire::http::proxy \"'"${http_proxy}"'\";" \
+        >>"/var/lib/chroot/'"${target}"'/etc/apt/apt.conf"'
+fi
+
 # Update packages
 sudo "/usr/local/bin/${target%bit}" /bin/sh -c '
   apt-get update; apt-get -y dist-upgrade' || :
@@ -575,9 +587,12 @@ sudo "/usr/local/bin/${target%bit}" dpkg --assert-multi-arch >&/dev/null &&
   sudo sed -i 's/ / [arch=amd64,i386] /' \
               "/var/lib/chroot/${target}/etc/apt/sources.list"
   [ -d /var/lib/chroot/${target}/etc/dpkg/dpkg.cfg.d/ ] &&
-  echo foreign-architecture \
-       $([ "${arch}" = "32bit" ] && echo amd64 || echo i386) |
-    sudo sh -c "cat >'/var/lib/chroot/${target}/etc/dpkg/dpkg.cfg.d/multiarch'"
+  sudo "/usr/local/bin/${target%bit}" dpkg --add-architecture \
+      $([ "${arch}" = "32bit" ] && echo amd64 || echo i386) >&/dev/null ||
+    echo foreign-architecture \
+        $([ "${arch}" = "32bit" ] && echo amd64 || echo i386) |
+      sudo sh -c \
+        "cat >'/var/lib/chroot/${target}/etc/dpkg/dpkg.cfg.d/multiarch'"
 }
 
 # Configure "sudo" package
@@ -650,17 +665,19 @@ if [ -x "${script}" ]; then
         # possible, if it lives on a network filesystem that denies
         # access to root.
         tmp_script=
-        if ! sudo "${target%bit}" sh -c "[ -x '${script}' ]" >&/dev/null; then
+        if ! sudo /usr/local/bin/"${target%bit}" \
+            sh -c "[ -x '${script}' ]" >&/dev/null; then
           tmp_script="/tmp/${script##*/}"
           cp "${script}" "${tmp_script}"
         fi
         # Some distributions automatically start an instance of the system-
-        # wide dbus daemon or of the logging daemon, when installing the Chrome
-        # build depencies. This prevents the chroot session from being closed.
-        # So, we always try to shut down any running instance of dbus and
-        # rsyslog.
-        sudo "${target%bit}" sh -c "${script} --no-lib32;
+        # wide dbus daemon, cron daemon or of the logging daemon, when
+        # installing the Chrome build depencies. This prevents the chroot
+        # session from being closed.  So, we always try to shut down any running
+        # instance of dbus and rsyslog.
+        sudo /usr/local/bin/"${target%bit}" sh -c "${script} --no-lib32;
               rc=$?;
+              /etc/init.d/cron stop >/dev/null 2>&1 || :;
               /etc/init.d/rsyslog stop >/dev/null 2>&1 || :;
               /etc/init.d/dbus stop >/dev/null 2>&1 || :;
               exit $rc"
@@ -771,8 +788,8 @@ cat <<EOF
 
 Successfully installed ${distname} ${arch}
 
-You can run programs inside of the chroot by invoking the "${target%bit}"
-command.
+You can run programs inside of the chroot by invoking the
+"/usr/local/bin/${target%bit}" command.
 
 This command can be used with arguments, in order to just run a single
 program inside of the chroot environment (e.g. "${target%bit} make chrome")

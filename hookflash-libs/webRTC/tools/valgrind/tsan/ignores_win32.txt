@@ -12,6 +12,10 @@ fun_r:*CryptAcquireContext*
 obj:*WINHTTP.dll
 obj:*imagehlp.dll
 
+# Instrumenting IP Helper API causes crashes.
+# TODO(szym): investigate http://crbug.com/146119
+obj:*IPHLPAPI.dll
+
 # Use less detailed instrumentation of STL
 fun_hist:*std::*<*
 # Don't instrument some stl internals - they shouldn't be useful
@@ -34,3 +38,8 @@ fun:_updatetlocinfoEx_nolock
 # a debug exception by PlatformThread
 # TODO(timurrrr): investigate
 fun_r:*PlatformThread*SetName*
+
+# Recursively ignore Histrogram::Add and friends, see http://crbug.com/62694.
+fun_r:base::Histogram::Add
+fun_r:base::HistogramSamples::Add
+fun_r:base::HistogramBase::AddTime

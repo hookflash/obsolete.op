@@ -38,6 +38,7 @@
 		0066811B16C9CE8700259F81 /* zsLib_XMLParserWarningTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006680D316C9CE8700259F81 /* zsLib_XMLParserWarningTypes.cpp */; };
 		0066811C16C9CE8700259F81 /* zsLib_XMLText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006680D416C9CE8700259F81 /* zsLib_XMLText.cpp */; };
 		0066811D16C9CE8700259F81 /* zsLib_XMLUnknown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006680D516C9CE8700259F81 /* zsLib_XMLUnknown.cpp */; };
+		E2FD1DB317539BE000C3D4A3 /* zsLib_RegEx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E2FD1DB217539BE000C3D4A3 /* zsLib_RegEx.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,7 @@
 		006680FC16C9CE8700259F81 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		006680FD16C9CE8700259F81 /* XML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XML.h; sourceTree = "<group>"; };
 		006680FE16C9CE8700259F81 /* zsLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zsLib.h; sourceTree = "<group>"; };
+		E2FD1DB217539BE000C3D4A3 /* zsLib_RegEx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = zsLib_RegEx.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +176,7 @@
 		006680B616C9CE8700259F81 /* cpp */ = {
 			isa = PBXGroup;
 			children = (
+				E2FD1DB217539BE000C3D4A3 /* zsLib_RegEx.cpp */,
 				006680B716C9CE8700259F81 /* zsLib.cpp */,
 				006680B816C9CE8700259F81 /* zsLib_Event.cpp */,
 				006680B916C9CE8700259F81 /* zsLib_helpers.cpp */,
@@ -329,6 +332,7 @@
 				0066811B16C9CE8700259F81 /* zsLib_XMLParserWarningTypes.cpp in Sources */,
 				0066811C16C9CE8700259F81 /* zsLib_XMLText.cpp in Sources */,
 				0066811D16C9CE8700259F81 /* zsLib_XMLUnknown.cpp in Sources */,
+				E2FD1DB317539BE000C3D4A3 /* zsLib_RegEx.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
