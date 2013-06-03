@@ -27,6 +27,13 @@ class memoize(object):
       return result
 
 
+class GypError(Exception):
+  """Error class representing an error, which is to be presented
+  to the user.  The main entry point will catch and display this.
+  """
+  pass
+
+
 def ExceptionAppend(e, msg):
   """Append a message to the given exception's message."""
   if not e.args:
@@ -95,6 +102,15 @@ def BuildFile(fully_qualified_target):
   return ParseQualifiedTarget(fully_qualified_target)[0]
 
 
+def GetEnvironFallback(var_list, default):
+  """Look up a key in the environment, with fallback to secondary keys
+  and finally falling back to a default value."""
+  for var in var_list:
+    if var in os.environ:
+      return os.environ[var]
+  return default
+
+
 def QualifiedTarget(build_file, target, toolset):
   # "Qualified" means the file that a target was defined in and the target
   # name, separated by a colon, suffixed by a # and the toolset name:
@@ -111,9 +127,9 @@ def RelativePath(path, relative_to):
   # directory, returns a relative path that identifies path relative to
   # relative_to.
 
-  # Convert to absolute (and therefore normalized paths).
-  path = os.path.abspath(path)
-  relative_to = os.path.abspath(relative_to)
+  # Convert to normalized (and therefore absolute paths).
+  path = os.path.realpath(path)
+  relative_to = os.path.realpath(relative_to)
 
   # Split the paths into components.
   path_split = path.split(os.path.sep)
@@ -133,6 +149,20 @@ def RelativePath(path, relative_to):
 
   # Turn it back into a string and we're done.
   return os.path.join(*relative_split)
+
+
+@memoize
+def InvertRelativePath(path, toplevel_dir=None):
+  """Given a path like foo/bar that is relative to toplevel_dir, return
+  the inverse relative path back to the toplevel_dir.
+
+  E.g. os.path.normpath(os.path.join(path, InvertRelativePath(path)))
+  should always produce the empty string, unless the path contains symlinks.
+  """
+  if not path:
+    return path
+  toplevel_dir = '.' if toplevel_dir is None else toplevel_dir
+  return RelativePath(toplevel_dir, os.path.join(toplevel_dir, path))
 
 
 def FixIfRelativePath(path, relative_to):
@@ -352,12 +382,20 @@ def GetFlavor(params):
     'cygwin': 'win',
     'win32': 'win',
     'darwin': 'mac',
-    'sunos5': 'solaris',
-    'freebsd7': 'freebsd',
-    'freebsd8': 'freebsd',
   }
-  flavor = flavors.get(sys.platform, 'linux')
-  return params.get('flavor', flavor)
+
+  if 'flavor' in params:
+    return params['flavor']
+  if sys.platform in flavors:
+    return flavors[sys.platform]
+  if sys.platform.startswith('sunos'):
+    return 'solaris'
+  if sys.platform.startswith('freebsd'):
+    return 'freebsd'
+  if sys.platform.startswith('aix'):
+    return 'aix'
+
+  return 'linux'
 
 
 def CopyTool(flavor, out_path):
@@ -391,7 +429,7 @@ def CopyTool(flavor, out_path):
 
 def uniquer(seq, idfun=None):
     if idfun is None:
-        def idfun(x): return x
+        idfun = lambda x: x
     seen = {}
     result = []
     for item in seq:
@@ -400,3 +438,52 @@ def uniquer(seq, idfun=None):
         seen[marker] = 1
         result.append(item)
     return result
+
+
+class CycleError(Exception):
+  """An exception raised when an unexpected cycle is detected."""
+  def __init__(self, nodes):
+    self.nodes = nodes
+  def __str__(self):
+    return 'CycleError: cycle involving: ' + str(self.nodes)
+
+
+def TopologicallySorted(graph, get_edges):
+  """Topologically sort based on a user provided edge definition.
+
+  Args:
+    graph: A list of node names.
+    get_edges: A function mapping from node name to a hashable collection
+               of node names which this node has outgoing edges to.
+  Returns:
+    A list containing all of the node in graph in topological order.
+    It is assumed that calling get_edges once for each node and caching is
+    cheaper than repeatedly calling get_edges.
+  Raises:
+    CycleError in the event of a cycle.
+  Example:
+    graph = {'a': '$(b) $(c)', 'b': 'hi', 'c': '$(b)'}
+    def GetEdges(node):
+      return re.findall(r'\$\(([^))]\)', graph[node])
+    print TopologicallySorted(graph.keys(), GetEdges)
+    ==>
+    ['a', 'c', b']
+  """
+  get_edges = memoize(get_edges)
+  visited = set()
+  visiting = set()
+  ordered_nodes = []
+  def Visit(node):
+    if node in visiting:
+      raise CycleError(visiting)
+    if node in visited:
+      return
+    visited.add(node)
+    visiting.add(node)
+    for neighbor in get_edges(node):
+      Visit(neighbor)
+    visiting.remove(node)
+    ordered_nodes.insert(0, node)
+  for node in sorted(graph):
+    Visit(node)
+  return ordered_nodes

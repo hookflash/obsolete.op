@@ -26,7 +26,6 @@
  */
 
 #include <util.h>
-/*@unused@*/ RCSID("$Id: elf.c 2206 2009-07-21 06:48:42Z peter $");
 
 #include <libyasm.h>
 #define YASM_OBJFMT_ELF_INTERNAL
@@ -99,7 +98,7 @@ elf_set_arch(yasm_arch *arch, yasm_symtab *symtab, int bits_pref)
                                                     elf_march->ssyms[i].name,
                                                     NULL, 0, 0);
             yasm_symrec_add_data(elf_ssyms[i], &elf_ssym_symrec_data,
-                                 &elf_march->ssyms[i]);
+                                 (void*)&elf_march->ssyms[i]);
         }
     }
 

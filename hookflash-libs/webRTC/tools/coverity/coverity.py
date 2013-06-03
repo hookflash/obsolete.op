@@ -82,7 +82,7 @@ COVERITY_REMOTE = 'localhost'
 
 COVERITY_PORT = '8080'
 
-COVERITY_STREAM = 'trunk'
+COVERITY_STREAM = 'WebRTC-Windows-7-x64'
 
 COVERITY_TARGET = 'Windows'
 
@@ -117,7 +117,7 @@ def _ReleaseLock(lock_file, lock_filename):
   os.remove(lock_filename)
 
 
-def run_coverity(options, args):
+def run_coverity(options):
   """Runs all the selected tests for the given build type and target."""
   # Create the lock file to prevent another instance of this script from
   # running.
@@ -144,7 +144,7 @@ def run_coverity(options, args):
   # the time to read the password is after we do the chdir().
   coverity_password = _ReadPassword(options.coverity_password_file)
 
-  cmd = 'gclient sync'
+  cmd = 'gclient sync --force'
   gclient_exit = _RunCommand(cmd, options.dry_run, shell=True)
   if gclient_exit != 0:
     print 'gclient aborted with status %s' % gclient_exit
@@ -155,9 +155,9 @@ def run_coverity(options, args):
 
   # Do a clean build.  Remove the build output directory first.
   if sys.platform.startswith('linux'):
-    rm_path = os.path.join(options.source_dir,'out',options.target)
+    rm_path = os.path.join(options.source_dir, 'out', options.target)
   elif sys.platform == 'win32':
-    rm_path = os.path.join(options.source_dir,options.solution_dir,
+    rm_path = os.path.join(options.source_dir, options.solution_dir,
                            options.target)
   elif sys.platform == 'darwin':
     rm_path = os.path.join(options.source_dir,'xcodebuild')
@@ -169,16 +169,16 @@ def run_coverity(options, args):
   if options.dry_run:
     print 'shutil.rmtree(%s)' % repr(rm_path)
   else:
-    shutil.rmtree(rm_path,True)
+    shutil.rmtree(rm_path, True)
 
   if options.preserve_intermediate_dir:
-      print 'Preserving intermediate directory.'
+    print 'Preserving intermediate directory.'
   else:
     if options.dry_run:
       print 'shutil.rmtree(%s)' % repr(options.coverity_intermediate_dir)
       print 'os.mkdir(%s)' % repr(options.coverity_intermediate_dir)
     else:
-      shutil.rmtree(options.coverity_intermediate_dir,True)
+      shutil.rmtree(options.coverity_intermediate_dir, True)
       os.mkdir(options.coverity_intermediate_dir)
 
   print 'Elapsed time: %ds' % (time.time() - start_time)
@@ -192,7 +192,7 @@ def run_coverity(options, args):
       options.target)
   elif sys.platform == 'win32':
     cmd = ('%s\\cov-build.exe --dir %s devenv.com %s\\%s /build %s '
-           '/project webrtc.vcproj') % (
+           '/project All.vcxproj') % (
       options.coverity_bin_dir, options.coverity_intermediate_dir,
       options.source_dir, options.solution_file, options.target)
   elif sys.platform == 'darwin':
@@ -316,8 +316,8 @@ def main():
                            action='store_true', help=helpmsg,
                            default=False)
 
-  options, args = option_parser.parse_args()
-  return run_coverity(options, args)
+  options, _ = option_parser.parse_args()
+  return run_coverity(options)
 
 
 if '__main__' == __name__:

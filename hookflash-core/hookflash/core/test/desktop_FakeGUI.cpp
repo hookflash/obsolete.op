@@ -79,6 +79,14 @@ namespace hookflash
       void FakeGUI::onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute)
       {
       }
+      
+      void FakeGUI::onMediaEngineFaceDetected()
+      {
+      }
+      
+      void FakeGUI::onMediaEngineVideoCaptureRecordStopped()
+      {
+      }
 
     }
   }

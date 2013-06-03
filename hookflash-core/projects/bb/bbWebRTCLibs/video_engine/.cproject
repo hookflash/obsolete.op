@@ -33,27 +33,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1447243585" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1646562142" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.2056372940" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
@@ -78,7 +82,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -113,27 +117,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1814749519" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1312624931" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.pie.115755604" name="Position Independent Executable (-fPIE)" superClass="com.qnx.qcc.option.compiler.pie" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.qccoptions.1229790226" name="QCC Options" superClass="com.qnx.qcc.option.compiler.qccoptions" valueType="stringList">
@@ -161,7 +169,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -198,27 +206,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.71448674" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.337130174" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.438388777" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
@@ -244,7 +256,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -281,27 +293,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.532672556" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.674733834" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.ccoptions.2719740" name="Compiler Options (-Wc,)" superClass="com.qnx.qcc.option.compiler.ccoptions" valueType="stringList">
 									<listOptionValue builtIn="false" value="-fPIC"/>
@@ -327,7 +343,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -362,27 +378,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1041069752" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.27678348" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.431336938" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -404,7 +424,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -440,27 +460,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.664250412" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1094343258" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.532200530" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -483,7 +507,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -519,27 +543,31 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/audio_coding/codecs/opus/celt"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/system_wrappers/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/media_file/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/rtp_rtcp/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/udp_transport/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/video_engine/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_processing/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/common_video/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/utility/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/testing/gmock/include"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_coding/codecs/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/modules/video_render/main/interface"/>
-									<listOptionValue builtIn="false" value="${ProjDirPath}/../../../../../hookflash-libs/webRTC/src/voice_engine/main/interface"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/audio_coding/codecs/opus/celt&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/media_file/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/rtp_rtcp/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/udp_transport/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/video_engine/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_processing/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/common_video/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/utility/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/webrtc/voice_engine/main/interface&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.2136994178" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1102383574" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_FORTIFY_SOURCE=2"/>
+									<listOptionValue builtIn="false" value="WEBRTC_LOGGING"/>
+									<listOptionValue builtIn="false" value="WEBRTC_VIDEO_ENGINE_FILE_API"/>
+									<listOptionValue builtIn="false" value="BUILDINFO=0"/>
+									<listOptionValue builtIn="false" value="WEBRTC_SVNREVISION=0"/>
 								</option>
 								<inputType id="com.qnx.qcc.inputType.compiler.224866699" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
@@ -562,7 +590,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
-						<entry excluding="video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="video_engine/stream_synchronization_unittest.cc|video_engine/encoder_state_feedback_unittest.cc|video_engine/call_stats_unittest.cc|video_engine/main/test|video_engine/test|video_engine/vie_remb_unittest.cc|vie_remb_unittest.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -5,8 +5,7 @@
 {
   'variables': {
     # When including this gypi, the following variables must be set:
-    #   json_schema_files: a list of json files that comprise the api model.
-    #   idl_schema_files: a list of IDL files that comprise the api model.
+    #   schema_files: a list of json or IDL files that comprise the api model.
     #   cc_dir: path to generated files
     #   root_namespace: the C++ namespace that all generated files go under
     # Functions and namespaces can be excluded by setting "nocompile" to true.
@@ -16,14 +15,13 @@
   'rules': [
     {
       'rule_name': 'genapi',
+      'msvs_external_rule': 1,
       'extension': 'json',
       'inputs': [
-        '<(api_gen_dir)/any.cc',
-        '<(api_gen_dir)/any.h',
-        '<(api_gen_dir)/any_helper.py',
         '<(api_gen_dir)/cc_generator.py',
         '<(api_gen_dir)/code.py',
         '<(api_gen_dir)/compiler.py',
+        '<(api_gen_dir)/cpp_generator.py',
         '<(api_gen_dir)/cpp_type_generator.py',
         '<(api_gen_dir)/cpp_util.py',
         '<(api_gen_dir)/h_generator.py',
@@ -35,7 +33,7 @@
         # TODO(calamity): uncomment this when gyp on windows behaves like other
         # platforms. List expansions of filepaths in inputs expand to different
         # things.
-        # '<@(json_schema_files)',
+        # '<@(schema_files)',
       ],
       'outputs': [
         '<(SHARED_INTERMEDIATE_DIR)/<(cc_dir)/<(RULE_INPUT_ROOT).cc',
@@ -48,6 +46,7 @@
         '--root=<(DEPTH)',
         '--destdir=<(SHARED_INTERMEDIATE_DIR)',
         '--namespace=<(root_namespace)',
+        '--generator=cpp',
       ],
       'message': 'Generating C++ code from <(RULE_INPUT_PATH) json files',
       'process_outputs_as_sources': 1,
@@ -57,12 +56,10 @@
       'msvs_external_rule': 1,
       'extension': 'idl',
       'inputs': [
-        '<(api_gen_dir)/any.cc',
-        '<(api_gen_dir)/any.h',
-        '<(api_gen_dir)/any_helper.py',
         '<(api_gen_dir)/cc_generator.py',
         '<(api_gen_dir)/code.py',
         '<(api_gen_dir)/compiler.py',
+        '<(api_gen_dir)/cpp_generator.py',
         '<(api_gen_dir)/cpp_type_generator.py',
         '<(api_gen_dir)/cpp_util.py',
         '<(api_gen_dir)/h_generator.py',
@@ -74,7 +71,7 @@
         # TODO(calamity): uncomment this when gyp on windows behaves like other
         # platforms. List expansions of filepaths in inputs expand to different
         # things.
-        # '<@(idl_schema_files)',
+        # '<@(schema_files)',
       ],
       'outputs': [
         '<(SHARED_INTERMEDIATE_DIR)/<(cc_dir)/<(RULE_INPUT_ROOT).cc',
@@ -87,6 +84,7 @@
         '--root=<(DEPTH)',
         '--destdir=<(SHARED_INTERMEDIATE_DIR)',
         '--namespace=<(root_namespace)',
+        '--generator=cpp',
       ],
       'message': 'Generating C++ code from <(RULE_INPUT_PATH) IDL files',
       'process_outputs_as_sources': 1,

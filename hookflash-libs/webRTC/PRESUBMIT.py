@@ -8,6 +8,10 @@
 
 def _LicenseHeader(input_api):
   """Returns the license header regexp."""
+  # Accept any year number from 2011 to the current year
+  current_year = int(input_api.time.strftime('%Y'))
+  allowed_years = (str(s) for s in reversed(xrange(2011, current_year + 1)))
+  years_re = '(' + '|'.join(allowed_years) + ')'
   license_header = (
       r'.*? Copyright \(c\) %(year)s The WebRTC project authors\. '
         r'All Rights Reserved\.\n'
@@ -19,7 +23,7 @@ def _LicenseHeader(input_api):
       r'.*? in the file PATENTS\.  All contributing project authors may\n'
       r'.*? be found in the AUTHORS file in the root of the source tree\.\n'
   ) % {
-      'year': input_api.time.strftime('%Y'),
+      'year': years_re,
   }
   return license_header
 
@@ -61,8 +65,9 @@ def _CheckNoFRIEND_TEST(input_api, output_api):
       'gtest\'s FRIEND_TEST() macro. Include testsupport/gtest_prod_util.h and '
       'use FRIEND_TEST_ALL_PREFIXES() instead.\n' + '\n'.join(problems))]
 
-def _CheckNewFilesLintClean(input_api, output_api, source_file_filter=None):
-  """Checks that all NEW '.cc' and '.h' files pass cpplint.py.
+def _CheckApprovedFilesLintClean(input_api, output_api,
+                                 source_file_filter=None):
+  """Checks that all new or whitelisted .cc and .h files pass cpplint.py.
   This check is based on _CheckChangeLintsClean in
   depot_tools/presubmit_canned_checks.py but has less filters and only checks
   added files."""
@@ -84,13 +89,14 @@ def _CheckNewFilesLintClean(input_api, output_api, source_file_filter=None):
   # Use the strictest verbosity level for cpplint.py (level 1) which is the
   # default when running cpplint.py from command line.
   # To make it possible to work with not-yet-converted code, we're only applying
-  # it to new (or moved/renamed) files.
+  # it to new (or moved/renamed) files and files listed in LINT_FOLDERS.
   verbosity_level = 1
   files = []
   for f in input_api.AffectedSourceFiles(source_file_filter):
     # Note that moved/renamed files also count as added for svn.
     if (f.Action() == 'A'):
       files.append(f.AbsoluteLocalPath())
+
   for file_name in files:
     cpplint.ProcessFile(file_name, verbosity_level)
 
@@ -109,15 +115,36 @@ def _CommonChecks(input_api, output_api):
   """Checks common to both upload and commit."""
   # TODO(kjellander): Use presubmit_canned_checks.PanProjectChecks too.
   results = []
+  results.extend(input_api.canned_checks.RunPylint(input_api, output_api,
+      black_list=(r'^.*gviz_api\.py$',
+                  r'^.*gaeunit\.py$',
+                  r'^third_party/.*\.py$',
+                  r'^testing/.*\.py$',
+                  r'^tools/gyp/.*\.py$',
+                  r'^tools/perf_expectations/.*\.py$',
+                  r'^tools/python/.*\.py$',
+                  r'^tools/python_charts/data/.*\.py$',
+                  r'^tools/refactoring.*\.py$',
+                  # TODO(phoglund): should arguably be checked.
+                  r'^tools/valgrind-webrtc/.*\.py$',
+                  r'^tools/valgrind/.*\.py$',
+                  # TODO(phoglund): should arguably be checked.
+                  r'^webrtc/build/.*\.py$',
+                  r'^build/.*\.py$',
+                  r'^out/.*\.py$',),
+      disabled_warnings=['F0401',  # Failed to import x
+                         'E0611',  # No package y in x
+                         'W0232',  # Class has no __init__ method
+                        ]))
   results.extend(input_api.canned_checks.CheckLongLines(
-      input_api, output_api))
+      input_api, output_api, maxlen=80))
   results.extend(input_api.canned_checks.CheckChangeHasNoTabs(
       input_api, output_api))
   results.extend(input_api.canned_checks.CheckChangeHasNoStrayWhitespace(
       input_api, output_api))
   results.extend(input_api.canned_checks.CheckChangeTodoHasOwner(
       input_api, output_api))
-  results.extend(_CheckNewFilesLintClean(input_api, output_api))
+  results.extend(_CheckApprovedFilesLintClean(input_api, output_api))
   results.extend(input_api.canned_checks.CheckLicense(
       input_api, output_api, _LicenseHeader(input_api)))
   results.extend(_CheckNoIOStreamInHeaders(input_api, output_api))
@@ -142,3 +169,4 @@ def CheckChangeOnCommit(input_api, output_api):
   results.extend(input_api.canned_checks.CheckChangeHasTestField(
       input_api, output_api))
   return results
+

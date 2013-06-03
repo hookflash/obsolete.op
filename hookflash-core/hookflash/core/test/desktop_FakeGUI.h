@@ -72,6 +72,20 @@ namespace hookflash
         #pragma mark
 
         virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FakeGUI => IMediaEngineDelegate
+        #pragma mark
+        
+        virtual void onMediaEngineFaceDetected();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FakeGUI => IMediaEngineDelegate
+        #pragma mark
+        
+        virtual void onMediaEngineVideoCaptureRecordStopped();
 
     private:
         FakeGUIWeakPtr mThisWeak;

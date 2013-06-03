@@ -48,6 +48,7 @@ cp buildlog.txt $PDIR/
 # Copy clang into pdir, symlink clang++ to it.
 cp "${LLVM_BIN_DIR}/clang" $PDIR/bin/
 (cd $PDIR/bin && ln -sf clang clang++ && cd -)
+cp "${LLVM_BIN_DIR}/llvm-symbolizer" $PDIR/bin/
 
 # Copy plugins. Some of the dylibs are pretty big, so copy only the ones we
 # care about.
@@ -57,18 +58,26 @@ else
   cp "${LLVM_LIB_DIR}/libFindBadConstructs.so" $PDIR/lib
 fi
 
-# Copy built-in headers (lib/clang/3.0/include).
+# Copy built-in headers (lib/clang/3.2/include).
 # libcompiler-rt puts all kinds of libraries there too, but we want only ASan.
 if [ "$(uname -s)" = "Darwin" ]; then
-  # Keep only Release+Asserts/lib/clang/3.1/lib/darwin/libclang_rt.asan_osx.a
+  # Keep only Release+Asserts/lib/clang/3.2/lib/darwin/libclang_rt.asan_osx.a
   find "${LLVM_LIB_DIR}/clang" -type f -path '*lib/darwin*' | grep -v asan | \
        xargs rm
+  # Fix LC_ID_DYLIB for the ASan dynamic library to be relative to
+  # @executable_path.
+  # TODO(glider): this is transitional. We'll need to fix the dylib name
+  # either in our build system, or in Clang. See also http://crbug.com/170629.
+  ASAN_DYLIB_NAME=libclang_rt.asan_osx_dynamic.dylib
+  ASAN_DYLIB=$(find "${LLVM_LIB_DIR}/clang" -type f -path "*${ASAN_DYLIB_NAME}")
+  install_name_tool -id @executable_path/${ASAN_DYLIB_NAME} "${ASAN_DYLIB}"
 else
-  # Keep only Release+Asserts/lib/clang/3.1/lib/linux/libclang_rt.asan-x86_64.a
-  # TODO(thakis): Make sure the 32bit version is kept too once that's built.
-  find "${LLVM_LIB_DIR}/clang" -type f -path '*lib/linux*' | grep -v asan | \
-       xargs rm
-
+  # Keep only
+  # Release+Asserts/lib/clang/3.2/lib/linux/libclang_rt.{asan,tsan}-x86_64.a
+  # TODO(thakis): Make sure the 32bit version of ASan runtime is kept too once
+  # that's built. TSan runtime exists only for 64 bits.
+  find "${LLVM_LIB_DIR}/clang" -type f -path '*lib/linux*' | \
+       grep -v "asan\|tsan" | xargs rm
 fi
 
 cp -R "${LLVM_LIB_DIR}/clang" $PDIR/lib

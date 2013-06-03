@@ -38,39 +38,64 @@ sudo apt-get update
 # Fix deps
 sudo apt-get -f install
 
-# Install python-pexpect
-sudo apt-get install python-pexpect
+# Install deps
+# This step differs depending on what Ubuntu release we are running
+# on since the package names are different, and Sun's Java must
+# be installed manually on late-model versions.
 
-# Install sun-java6 stuff
-sudo apt-get install sun-java6-bin sun-java6-jre sun-java6-jdk
+# common
+sudo apt-get -y install lighttpd python-pexpect xvfb x11-utils
 
-# Switch version of Java to java-6-sun
-# Sun's java is missing certain Java plugins (e.g. for firefox, mozilla).  These
-# are not required to build, and thus are treated only as warnings. Any errors
-# in updating java alternatives which are not '*-javaplugin.so' will cause
-# errors and stop the script from completing successfully.
-if ! sudo update-java-alternatives -s java-6-sun \
-          >& "${TEMPDIR}"/update-java-alternatives.out
-then
-  # Check that there are the expected javaplugin.so errors for the update
-  if grep 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out >& /dev/null
-  then
-    # Print as warnings all the javaplugin.so errors
-    echo 'WARNING: java-6-sun has no alternatives for the following plugins:'
-    grep 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out
+if /usr/bin/lsb_release -r -s | grep -q "12."; then
+  # Ubuntu 12.x
+  sudo apt-get -y install ant
+
+  # Java can not be installed via ppa on Ubuntu 12.04+ so we'll
+  # simply check to see if it has been setup properly -- if not
+  # let the user know.
+
+  if ! java -version 2>&1 | grep -q "Java(TM)"; then
+    echo "****************************************************************"
+    echo "You need to install the Oracle Java SDK from http://goo.gl/uPRSq"
+    echo "and configure it as the default command-line Java environment."
+    echo "****************************************************************"
+    exit
   fi
-  # Check if there are any errors that are not javaplugin.so
-  if grep -v 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out \
-         >& /dev/null
+
+else
+  # Ubuntu 10.x
+
+  sudo apt-get -y install ant1.8
+
+  # Install sun-java6 stuff
+  sudo apt-get -y install sun-java6-bin sun-java6-jre sun-java6-jdk
+
+  # Switch version of Java to java-6-sun
+  # Sun's java is missing certain Java plugins (e.g. for firefox, mozilla).
+  # These are not required to build, and thus are treated only as warnings.
+  # Any errors in updating java alternatives which are not '*-javaplugin.so'
+  # will cause errors and stop the script from completing successfully.
+  if ! sudo update-java-alternatives -s java-6-sun \
+            >& "${TEMPDIR}"/update-java-alternatives.out
   then
-    # If there are non-javaplugin.so errors, treat as errors and exit
-    echo 'ERRORS: Failed to update alternatives for java-6-sun:'
-    grep -v 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out
-    exit 1
+    # Check that there are the expected javaplugin.so errors for the update
+    if grep 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out >& \
+           /dev/null
+    then
+      # Print as warnings all the javaplugin.so errors
+      echo 'WARNING: java-6-sun has no alternatives for the following plugins:'
+      grep 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out
+    fi
+    # Check if there are any errors that are not javaplugin.so
+    if grep -v 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out \
+           >& /dev/null
+    then
+      # If there are non-javaplugin.so errors, treat as errors and exit
+      echo 'ERRORS: Failed to update alternatives for java-6-sun:'
+      grep -v 'javaplugin.so' "${TEMPDIR}"/update-java-alternatives.out
+      exit 1
+    fi
   fi
 fi
-
-# Install ant 1.8 (default is 1.7).
-sudo apt-get install ant1.8
 
 echo "install-build-deps-android.sh complete."
