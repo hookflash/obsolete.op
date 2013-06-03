@@ -49,8 +49,7 @@ namespace hookflash
         public:
           enum AttributeTypes
           {
-            AttributeType_GrantID = AttributeType_Last + 1,
-            AttributeType_NamespaceURLNameValues,
+            AttributeType_NamespaceURLNameValues = AttributeType_Last + 1,
           };
 
           typedef String Name;
@@ -75,16 +74,12 @@ namespace hookflash
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const String &grantID() const                   {return mGrantID;}
-          void grantID(const String &val)                 {mGrantID = val;}
-
           const NamespaceURLNameValueMap &namespaceURLNameValues() const   {return mNamespaceURLNameValues;}
           void namespaceURLNameValues(const NamespaceURLNameValueMap &val) {mNamespaceURLNameValues = val;}
 
         protected:
           LockboxContentGetResult();
 
-          String mGrantID;
           NamespaceURLNameValueMap mNamespaceURLNameValues;
         };
       }

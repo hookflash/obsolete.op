@@ -32,7 +32,7 @@
 #pragma once
 
 #include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 
 #include <utility>
 #include <list>
@@ -43,17 +43,16 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
-        class LockboxAdminStartNotify : public MessageNotify
+        class NamespaceGrantStartNotify : public MessageNotify
         {
         public:
           enum AttributeTypes
           {
             AttributeType_AgentInfo,
-            AttributeType_LockboxInfo,
-            AttributeType_GrantID,
-            AttributeType_NamespaceURLs,
+            AttributeType_GrantInfo,
+            AttributeType_NamespaceInfos,
             AttributeType_BrowserVisibility,
             AttributeType_BrowserPopup,
             AttributeType_OuterFrameURL,
@@ -70,30 +69,27 @@ namespace hookflash
 
           static const char *toString(BrowserVisibilities visibility);
 
-          typedef String NamespaceURL;
-          typedef std::list<NamespaceURL> NamespaceURLList;
-
         public:
-          static LockboxAdminStartNotifyPtr convert(MessagePtr message);
+          static NamespaceGrantStartNotifyPtr convert(MessagePtr message);
 
-          static LockboxAdminStartNotifyPtr create();
+          static NamespaceGrantStartNotifyPtr create();
 
           virtual DocumentPtr encode();
 
-          virtual Methods method() const                    {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminStart;}
+          virtual Methods method() const                    {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantStart;}
 
-          virtual IMessageFactoryPtr factory() const        {return MessageFactoryIdentityLockbox::singleton();}
+          virtual IMessageFactoryPtr factory() const        {return MessageFactoryNamespaceGrant::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
           const AgentInfo &agentInfo() const                {return mAgentInfo;}
           void agentInfo(const AgentInfo &val)              {mAgentInfo = val;}
 
-          const LockboxInfo &lockboxInfo() const            {return mLockboxInfo;}
-          void lockboxInfo(const LockboxInfo &val)          {mLockboxInfo = val;}
+          const GrantInfo &grantInfo() const                {return mGrantInfo;}
+          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
 
-          const String &grantID() const                     {return mGrantID;}
-          void grantID(const String &val)                   {mGrantID = val;}
+          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
+          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
 
           BrowserVisibilities browserVisibility() const     {return mVisibility;}
           void browserVisibility(BrowserVisibilities val)   {mVisibility = val;}
@@ -105,13 +101,13 @@ namespace hookflash
           void outerFrameURL(const String &val)             {mOuterFrameURL = val;}
 
         protected:
-          LockboxAdminStartNotify();
+          NamespaceGrantStartNotify();
 
           AgentInfo mAgentInfo;
-          LockboxInfo mLockboxInfo;
 
-          String mGrantID;
-          NamespaceURLList mNamespaceURLs;
+          GrantInfo mGrantInfo;
+
+          NamespaceInfoMap mNamespaceInfos;
 
           BrowserVisibilities mVisibility;
           int mPopup;

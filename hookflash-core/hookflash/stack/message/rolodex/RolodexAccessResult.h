@@ -32,7 +32,7 @@
 #pragma once
 
 #include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 
 #include <list>
 
@@ -42,28 +42,37 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace rolodex
       {
-        class LockboxNamespaceGrantWindowResult : public MessageResult
+        class RolodexAccessResult : public MessageResult
         {
         public:
           enum AttributeTypes
           {
+            AttributeType_RolodexInfo = AttributeType_Last + 1,
           };
 
         public:
-          static LockboxNamespaceGrantWindowResultPtr convert(MessagePtr message);
+          static RolodexAccessResultPtr convert(MessagePtr message);
 
-          static LockboxNamespaceGrantWindowResultPtr create(LockboxNamespaceGrantWindowRequestPtr request);
+          static RolodexAccessResultPtr create(
+                                               ElementPtr root,
+                                               IMessageSourcePtr messageSource
+                                               );
 
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantWindow;}
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryRolodex::Method_RolodexAccess;}
 
-          virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentityLockbox::singleton();}
+          virtual IMessageFactoryPtr factory() const      {return MessageFactoryRolodex::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
+          const RolodexInfo &rolodexInfo() const            {return mRolodexInfo;}
+          void rolodexInfo(const RolodexInfo &val)          {mRolodexInfo = val;}
+
         protected:
-          LockboxNamespaceGrantWindowResult();
+          RolodexAccessResult();
+
+          RolodexInfo mRolodexInfo;
         };
       }
     }

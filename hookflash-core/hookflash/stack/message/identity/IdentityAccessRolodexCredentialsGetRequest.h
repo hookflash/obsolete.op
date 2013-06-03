@@ -32,7 +32,7 @@
 #pragma once
 
 #include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
 
 #include <utility>
 #include <list>
@@ -43,42 +43,45 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace identity
       {
-        class LockboxNamespaceGrantWindowRequest : public MessageRequest
+        class IdentityAccessRolodexCredentialsGetRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_Ready,
-            AttributeType_Visible,
+            AttributeType_IdentityInfo,
           };
 
         public:
-          static LockboxNamespaceGrantWindowRequestPtr convert(MessagePtr message);
+          static IdentityAccessRolodexCredentialsGetRequestPtr convert(MessagePtr message);
 
-          static LockboxNamespaceGrantWindowRequestPtr create(
-                                                             ElementPtr root,
-                                                             IMessageSourcePtr messageSource
-                                                             );
+          static IdentityAccessRolodexCredentialsGetRequestPtr create();
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantWindow;}
+          virtual DocumentPtr encode();
 
-          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentityLockbox::singleton();}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentity::Method_IdentityAccessRolodexCredentialsGetUpdate;}
+
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentity::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          bool ready() const                          {return (mReady > 0);}
-          void ready(bool &val)                       {mReady = (val ? 1: 0);}
+          // IdentityInfo members need to be set:
+          //
+          // mURI
+          // mProvider
+          //
+          // mAccessToken
+          // mAccessSecret
+          // mAccessSecretExpires
 
-          bool visible() const                        {return (mVisible > 0);}
-          void visible(bool &val)                     {mVisible = (val ? 1: 0);}
+          const IdentityInfo &identityInfo() const    {return mIdentityInfo;}
+          void identityInfo(const IdentityInfo &val)  {mIdentityInfo = val;}
 
         protected:
-          LockboxNamespaceGrantWindowRequest();
+          IdentityAccessRolodexCredentialsGetRequest();
 
-          int mReady;
-          int mVisible;
+          IdentityInfo mIdentityInfo;
         };
       }
     }

@@ -651,6 +651,31 @@ namespace hookflash
         }
         
         //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(const GrantInfo &info)
+        {
+          ElementPtr grantEl = Element::create("grant");
+
+          setAttributeID(grantEl, info.mID);
+          if (info.mSecret.hasData()) {
+            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("secret", info.mSecret));
+          }
+          if (info.mSecretProof.hasData()) {
+            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretProof", info.mSecretProof));
+          }
+          if (Time() != info.mSecretProofExpires) {
+            grantEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("secretProofExpires", IMessageHelper::timeToString(info.mSecretProofExpires)));
+          }
+          if (Time() != info.mExpires) {
+            grantEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(info.mExpires)));
+          }
+          if (info.mDomain.hasData()) {
+            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("domain", info.mDomain));
+          }
+
+          return grantEl;
+        }
+        
+        //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(const NamespaceInfo &info)
         {
           ElementPtr namespaceEl = Element::create("namespace");
@@ -665,6 +690,45 @@ namespace hookflash
           return namespaceEl;
         }
 
+        //---------------------------------------------------------------------
+        ElementPtr MessageHelper::createElement(const RolodexInfo &info)
+        {
+          ElementPtr lockboxEl = Element::create("rolodex");
+
+          if (!info.mServerToken.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("serverToken", info.mServerToken));
+          }
+
+          if (!info.mAccessToken.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessToken", info.mAccessToken));
+          }
+          if (!info.mAccessSecret.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", info.mAccessSecret));
+          }
+          if (Time() != info.mAccessSecretExpires) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(info.mAccessSecretExpires)));
+          }
+          if (!info.mAccessSecretProof.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
+          }
+          if (Time() != info.mAccessSecretExpires) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
+          }
+
+          if (!info.mVersion.isEmpty()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("version", info.mVersion));
+          }
+          if (Time() != info.mUpdateNext) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updateNext", IMessageHelper::timeToString(info.mUpdateNext)));
+          }
+
+          if (info.mRefreshFlag) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("refresh", "true"));
+          }
+
+          return lockboxEl;
+        }
+        
         //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(
                                                 const PublishToRelationshipsMap &relationships,
@@ -1722,6 +1786,49 @@ namespace hookflash
           return info;
         }
 
+        //---------------------------------------------------------------------
+        GrantInfo MessageHelper::createGrant(ElementPtr elem)
+        {
+          GrantInfo info;
+
+          if (!elem) return info;
+
+          info.mID = IMessageHelper::getAttributeID(elem);
+          info.mSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secret"));
+          info.mSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretProof"));
+          info.mSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretProofExpires")));
+          info.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
+          info.mDomain = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("domain"));
+
+          return info;
+        }
+
+        //---------------------------------------------------------------------
+        RolodexInfo MessageHelper::createRolodex(ElementPtr elem)
+        {
+          RolodexInfo info;
+
+          if (!elem) return info;
+
+          info.mServerToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("serverToken"));
+
+          info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
+          info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
+          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
+          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+
+          info.mVersion = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("version"));
+          info.mUpdateNext = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updateNext")));
+
+          try {
+            info.mRefreshFlag = Numeric<bool>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("refresh")));
+          } catch(Numeric<bool>::ValueOutOfRange &) {
+          }
+          
+          return info;
+        }
+        
       }
     }
   }

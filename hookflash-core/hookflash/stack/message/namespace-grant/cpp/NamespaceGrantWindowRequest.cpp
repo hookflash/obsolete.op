@@ -29,11 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
+#include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <hookflash/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
+
+namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
 namespace hookflash
 {
@@ -41,60 +44,54 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantCompleteNotifyPtr LockboxNamespaceGrantCompleteNotify::convert(MessagePtr message)
+        NamespaceGrantWindowRequestPtr NamespaceGrantWindowRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxNamespaceGrantCompleteNotify>(message);
+          return boost::dynamic_pointer_cast<NamespaceGrantWindowRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantCompleteNotify::LockboxNamespaceGrantCompleteNotify()
+        NamespaceGrantWindowRequest::NamespaceGrantWindowRequest() :
+          mReady(-1),
+          mVisible(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantCompleteNotifyPtr LockboxNamespaceGrantCompleteNotify::create(
-                                                                                           ElementPtr root,
-                                                                                           IMessageSourcePtr messageSource
-                                                                                           )
+        NamespaceGrantWindowRequestPtr NamespaceGrantWindowRequest::create(
+                                                                                       ElementPtr root,
+                                                                                       IMessageSourcePtr messageSource
+                                                                                       )
         {
-          LockboxNamespaceGrantCompleteNotifyPtr ret(new LockboxNamespaceGrantCompleteNotify);
-          IMessageHelper::fill(*ret, root, messageSource);
+          NamespaceGrantWindowRequestPtr ret(new NamespaceGrantWindowRequest);
+          MessageHelper::fill(*ret, root, messageSource);
 
-          ElementPtr grantEl = root->findFirstChildElement("grant");
-          if (grantEl) {
-            ret->mGrantID = IMessageHelper::getAttributeID(grantEl);
-
-            ElementPtr namespacesEl = grantEl->findFirstChildElement("namespaces");
-            if (namespacesEl) {
-              ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
-              while (namespaceEl) {
-                NamespaceInfo info;
-                info.mURL = IMessageHelper::getAttributeID(namespaceEl);
-                info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttribute(namespaceEl, "updated"));
-                if (info.mURL.hasData()) {
-                  ret->mNamespaceInfos[info.mURL] = info;
-                }
-                namespaceEl = namespaceEl->findNextSiblingElement("namespace");
-              }
+          ElementPtr browserEl = root->findFirstChildElement("browser");
+          if (browserEl) {
+            String ready = IMessageHelper::getElementText(root->findFirstChildElement("ready"));
+            if (!ready.isEmpty()) {
+              ret->mReady = ("true" == ready ? 1 : 0);
+            }
+            String visibility = IMessageHelper::getElementText(root->findFirstChildElement("visibility"));
+            if (!visibility.isEmpty()) {
+              ret->mVisible = ("true" == visibility ? 1 : 0);
             }
           }
-          
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool LockboxNamespaceGrantCompleteNotify::hasAttribute(AttributeTypes type) const
+        bool NamespaceGrantWindowRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_GrantID:               return mGrantID.hasData();
-            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
-            default:                                  break;
+            case AttributeType_Ready:         return (mReady >= 0);
+            case AttributeType_Visible:       return (mVisible >= 0);
+            default:                          break;
           }
           return false;
         }

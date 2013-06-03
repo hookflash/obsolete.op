@@ -61,6 +61,7 @@ namespace hookflash
             Method_IdentityAccessStart,
             Method_IdentityAccessComplete,
             Method_IdentityAccessLockboxUpdate,
+            Method_IdentityAccessRolodexCredentialsGetUpdate,
             Method_IdentityLookupUpdate,
             Method_IdentitySign,
 

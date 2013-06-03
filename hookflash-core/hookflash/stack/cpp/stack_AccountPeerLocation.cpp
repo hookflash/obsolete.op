@@ -865,9 +865,9 @@ namespace hookflash
                mLocationInfo.getDebugValueString() +
                (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
                IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<typeof(PUID)>(mSocketSubscription->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<typeof(PUID)>(mSocketSession->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<typeof(PUID)>(mMessaging->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<PUID>(mSocketSubscription->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<PUID>(mSocketSession->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<PUID>(mMessaging->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IMessageHelper::timeToString(mIdentifyTime) : String(), firstTime) +
                Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +

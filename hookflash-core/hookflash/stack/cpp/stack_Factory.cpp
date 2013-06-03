@@ -714,48 +714,53 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentity(
-                                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                                   IServiceIdentitySessionDelegatePtr delegate,
+                                                                                  IServiceIdentityPtr provider,
+                                                                                  IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                                   const char *outerFrameURLUponReload,
-                                                                                  const char *identityURI,
-                                                                                  IServiceIdentityPtr provider
+                                                                                  const char *identityURI
                                                                                   )
       {
-        return ServiceIdentitySession::loginWithIdentity(existingLockbox, delegate, outerFrameURLUponReload, identityURI, provider);
+        return ServiceIdentitySession::loginWithIdentity(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, identityURI);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityProvider(
-                                                                                          IServiceLockboxSessionPtr existingLockbox,
                                                                                           IServiceIdentitySessionDelegatePtr delegate,
-                                                                                          const char *outerFrameURLUponReload,
                                                                                           IServiceIdentityPtr provider,
+                                                                                          IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                          IServiceLockboxSessionPtr existingLockbox,
+                                                                                          const char *outerFrameURLUponReload,
                                                                                           const char *legacyIdentityBaseURI
                                                                                           )
       {
-        return ServiceIdentitySession::loginWithIdentityProvider(existingLockbox, delegate, outerFrameURLUponReload, provider, legacyIdentityBaseURI);
+        return ServiceIdentitySession::loginWithIdentityProvider(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, legacyIdentityBaseURI);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityBundle(
-                                                                                        IServiceLockboxSessionPtr existingLockbox,
                                                                                         IServiceIdentitySessionDelegatePtr delegate,
+                                                                                        IServiceIdentityPtr provider,
+                                                                                        IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                        IServiceLockboxSessionPtr existingLockbox,
                                                                                         const char *outerFrameURLUponReload,
                                                                                         ElementPtr signedIdentityBundle
                                                                                         )
       {
-        return ServiceIdentitySession::loginWithIdentityBundle(existingLockbox, delegate, outerFrameURLUponReload, signedIdentityBundle);
+        return ServiceIdentitySession::loginWithIdentityBundle(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, signedIdentityBundle);
       }
 
       //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::reload(
+                                                                       BootstrappedNetworkPtr provider,
+                                                                       IServiceNamespaceGrantSessionPtr grantSession,
                                                                        IServiceLockboxSessionPtr existingLockbox,
-                                                                       BootstrappedNetworkPtr network,
                                                                        const char *identityURI,
                                                                        const char *reloginKey
                                                                        )
       {
-        return ServiceIdentitySession::reload(existingLockbox, network, identityURI, reloginKey);
+        return ServiceIdentitySession::reload(provider, grantSession, existingLockbox, identityURI, reloginKey);
       }
 
       //-----------------------------------------------------------------------
@@ -775,28 +780,52 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::login(
                                                                     IServiceLockboxSessionDelegatePtr delegate,
-                                                                    IServiceLockboxPtr ServiceLockbox,
+                                                                    IServiceLockboxPtr serviceLockbox,
+                                                                    IServiceNamespaceGrantSessionPtr grantSession,
                                                                     IServiceIdentitySessionPtr identitySession,
-                                                                    const char *outerFrameURLUponReload,
-                                                                    const char *grantID,
                                                                     bool forceNewAccount
                                                                     )
       {
-        return ServiceLockboxSession::login(delegate, ServiceLockbox, identitySession, outerFrameURLUponReload, grantID, forceNewAccount);
+        return ServiceLockboxSession::login(delegate, serviceLockbox, grantSession, identitySession, forceNewAccount);
       }
 
       //-----------------------------------------------------------------------
       ServiceLockboxSessionPtr IServiceLockboxSessionFactory::relogin(
                                                                       IServiceLockboxSessionDelegatePtr delegate,
                                                                       IServiceLockboxPtr serviceLockbox,
-                                                                      const char *outerFrameURLUponReload,
+                                                                      IServiceNamespaceGrantSessionPtr grantSession,
                                                                       const char *lockboxAccountID,
-                                                                      const char *lockboxGrantID,
                                                                       const char *identityHalfLockboxKey,
                                                                       const char *lockboxHalfLockboxKey
                                                                       )
       {
-        return ServiceLockboxSession::relogin(delegate, serviceLockbox, outerFrameURLUponReload, lockboxAccountID, lockboxGrantID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+        return ServiceLockboxSession::relogin(delegate, serviceLockbox, grantSession, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceNamespaceGrantSessionFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServiceNamespaceGrantSessionFactory &IServiceNamespaceGrantSessionFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceNamespaceGrantSessionPtr IServiceNamespaceGrantSessionFactory::create(
+                                                                                   IServiceNamespaceGrantSessionDelegatePtr delegate,
+                                                                                   IServiceNamespaceGrantPtr serviceNamespaceGrant,
+                                                                                   const char *outerFrameURLUponReload,
+                                                                                   const char *grantID,
+                                                                                   const char *grantSecret
+                                                                                   )
+      {
+        return ServiceNamespaceGrantSession::create(delegate, serviceNamespaceGrant, outerFrameURLUponReload, grantID, grantSecret);
       }
 
       //-----------------------------------------------------------------------

@@ -73,6 +73,8 @@ namespace hookflash
                                                                  UINT totalToFetch = 1
                                                                  );
 
+      virtual PUID getID() const = 0;
+
       virtual IServiceSaltPtr getService() const = 0;
 
       virtual bool isComplete() const = 0;

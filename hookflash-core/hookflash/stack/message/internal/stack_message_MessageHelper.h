@@ -65,7 +65,9 @@ namespace hookflash
                                           );
           static ElementPtr createElement(const LockboxInfo &info);
           static ElementPtr createElement(const AgentInfo &info);
+          static ElementPtr createElement(const GrantInfo &info);
           static ElementPtr createElement(const NamespaceInfo &info);
+          static ElementPtr createElement(const RolodexInfo &info);
 
           static ElementPtr createElement(
                                           const PublishToRelationshipsMap &relationships,
@@ -107,6 +109,8 @@ namespace hookflash
           static IdentityInfo createIdentity(ElementPtr elem);
           static LockboxInfo  createLockbox(ElementPtr elem);
           static AgentInfo    createAgent(ElementPtr elem);
+          static GrantInfo    createGrant(ElementPtr elem);
+          static RolodexInfo  createRolodex(ElementPtr elem);
         };
       }
     }

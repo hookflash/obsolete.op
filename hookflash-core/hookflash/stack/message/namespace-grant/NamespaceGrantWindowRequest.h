@@ -31,9 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 
+#include <utility>
 #include <list>
 
 namespace hookflash
@@ -42,31 +43,42 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
-        class LockboxAdminCompleteNotify : public MessageNotify
+        class NamespaceGrantWindowRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
           {
+            AttributeType_Ready,
+            AttributeType_Visible,
           };
 
         public:
-          static LockboxAdminCompleteNotifyPtr convert(MessagePtr message);
+          static NamespaceGrantWindowRequestPtr convert(MessagePtr message);
 
-          static LockboxAdminCompleteNotifyPtr create(
-                                                      ElementPtr root,
-                                                      IMessageSourcePtr messageSource
-                                                      );
+          static NamespaceGrantWindowRequestPtr create(
+                                                             ElementPtr root,
+                                                             IMessageSourcePtr messageSource
+                                                             );
 
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminComplete;}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantWindow;}
 
-          virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentityLockbox::singleton();}
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryNamespaceGrant::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
+          bool ready() const                          {return (mReady > 0);}
+          void ready(bool &val)                       {mReady = (val ? 1: 0);}
+
+          bool visible() const                        {return (mVisible > 0);}
+          void visible(bool &val)                     {mVisible = (val ? 1: 0);}
+
         protected:
-          LockboxAdminCompleteNotify();
+          NamespaceGrantWindowRequest();
+
+          int mReady;
+          int mVisible;
         };
       }
     }

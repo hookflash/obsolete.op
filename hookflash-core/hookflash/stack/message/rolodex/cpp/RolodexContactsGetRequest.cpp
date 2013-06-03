@@ -29,12 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
+#include <hookflash/stack/message/rolodex/RolodexContactsGetRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
+
+#define HOOKFLASH_STACK_MESSAGE_ROLODEX_CONTACTS_GET_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -44,58 +46,66 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace rolodex
       {
+        using zsLib::Seconds;
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowRequestPtr LockboxNamespaceGrantWindowRequest::convert(MessagePtr message)
+        RolodexContactsGetRequestPtr RolodexContactsGetRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxNamespaceGrantWindowRequest>(message);
+          return boost::dynamic_pointer_cast<RolodexContactsGetRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowRequest::LockboxNamespaceGrantWindowRequest() :
-          mReady(-1),
-          mVisible(-1)
+        RolodexContactsGetRequest::RolodexContactsGetRequest()
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowRequestPtr LockboxNamespaceGrantWindowRequest::create(
-                                                                                       ElementPtr root,
-                                                                                       IMessageSourcePtr messageSource
-                                                                                       )
+        RolodexContactsGetRequestPtr RolodexContactsGetRequest::create()
         {
-          LockboxNamespaceGrantWindowRequestPtr ret(new LockboxNamespaceGrantWindowRequest);
-          MessageHelper::fill(*ret, root, messageSource);
-
-          ElementPtr browserEl = root->findFirstChildElement("browser");
-          if (browserEl) {
-            String ready = IMessageHelper::getElementText(root->findFirstChildElement("ready"));
-            if (!ready.isEmpty()) {
-              ret->mReady = ("true" == ready ? 1 : 0);
-            }
-            String visibility = IMessageHelper::getElementText(root->findFirstChildElement("visibility"));
-            if (!visibility.isEmpty()) {
-              ret->mVisible = ("true" == visibility ? 1 : 0);
-            }
-          }
+          RolodexContactsGetRequestPtr ret(new RolodexContactsGetRequest);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool LockboxNamespaceGrantWindowRequest::hasAttribute(AttributeTypes type) const
+        bool RolodexContactsGetRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_Ready:         return (mReady >= 0);
-            case AttributeType_Visible:       return (mVisible >= 0);
-            default:                          break;
+            case AttributeType_RolodexInfo:      return mRolodexInfo.hasData();
+            default:                             break;
           }
           return false;
         }
 
+        //---------------------------------------------------------------------
+        DocumentPtr RolodexContactsGetRequest::encode()
+        {
+          DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
+          ElementPtr rootEl = ret->getFirstChildElement();
+
+          String clientNonce = IHelper::randomString(32);
+
+          RolodexInfo rolodexInfo;
+          rolodexInfo.mServerToken = mRolodexInfo.mServerToken;
+          rolodexInfo.mVersion = mRolodexInfo.mVersion;
+          rolodexInfo.mRefreshFlag = mRolodexInfo.mRefreshFlag;
+
+          rolodexInfo.mAccessToken = mRolodexInfo.mAccessToken;
+          if (mRolodexInfo.mAccessSecret.hasData()) {
+            rolodexInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_ROLODEX_CONTACTS_GET_REQUEST_EXPIRES_TIME_IN_SECONDS);
+            rolodexInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(mRolodexInfo.mAccessSecret), "rolodex-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(rolodexInfo.mAccessSecretProofExpires) + ":" + rolodexInfo.mAccessToken + ":rolodex-contacts-get"));
+          }
+
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          if (rolodexInfo.hasData()) {
+            rootEl->adoptAsLastChild(MessageHelper::createElement(rolodexInfo));
+          }
+
+          return ret;
+        }
       }
     }
   }

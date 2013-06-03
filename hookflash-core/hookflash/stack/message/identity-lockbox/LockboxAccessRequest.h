@@ -51,8 +51,9 @@ namespace hookflash
           enum AttributeTypes
           {
             AttributeType_IdentityInfo,
-            AttributeType_GrandID,
             AttributeType_LockboxInfo,
+            AttributeType_GrantInfo,
+            AttributeType_NamespaceInfos,
           };
 
         public:
@@ -76,25 +77,29 @@ namespace hookflash
           // mAccessToken
           // mAccessSecret
 
-          const AgentInfo &agentInfo() const              {return mAgentInfo;}
-          void agentInfo(const AgentInfo &val)            {mAgentInfo = val;}
-
           const IdentityInfo &identityInfo() const        {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)      {mIdentityInfo = val;}
 
-          const String &grantID() const                   {return mGrantID;}
-          void grantID(const String &val)                 {mGrantID = val;}
-
           const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
           void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
+
+          const GrantInfo &grantInfo() const              {return mGrantInfo;}
+          void grantInfo(const GrantInfo &val)            {mGrantInfo = val;}
+
+          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
+          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
 
         protected:
           LockboxAccessRequest();
 
           AgentInfo mAgentInfo;
+
           IdentityInfo mIdentityInfo;
-          String mGrantID;
+
           LockboxInfo mLockboxInfo;
+
+          GrantInfo mGrantInfo;
+          NamespaceInfoMap mNamespaceInfos;
         };
       }
     }

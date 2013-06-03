@@ -33,6 +33,7 @@
 #include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
 #include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
 #include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
+#include <hookflash/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
 #include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 #include <hookflash/stack/message/Message.h>
@@ -110,14 +111,15 @@ namespace hookflash
         {
           switch ((MessageFactoryIdentity::Methods)method)
           {
-            case Method_Invalid:                            return "";
+            case Method_Invalid:                                    return "";
 
-            case Method_IdentityAccessWindow:               return "identity-access-window";
-            case Method_IdentityAccessStart:                return "identity-access-start";
-            case Method_IdentityAccessComplete:             return "identity-access-complete";
-            case Method_IdentityAccessLockboxUpdate:        return "identity-access-lockbox-update";
-            case Method_IdentityLookupUpdate:               return "identity-lookup-update";
-            case Method_IdentitySign:                       return "identity-sign";
+            case Method_IdentityAccessWindow:                       return "identity-access-window";
+            case Method_IdentityAccessStart:                        return "identity-access-start";
+            case Method_IdentityAccessComplete:                     return "identity-access-complete";
+            case Method_IdentityAccessLockboxUpdate:                return "identity-access-lockbox-update";
+            case Method_IdentityAccessRolodexCredentialsGetUpdate:  return "identity-access-rolodex-credentials-get";
+            case Method_IdentityLookupUpdate:                       return "identity-lookup-update";
+            case Method_IdentitySign:                               return "identity-sign";
           }
           return "";
         }
@@ -134,46 +136,50 @@ namespace hookflash
           Methods msgMethod = (MessageFactoryIdentity::Methods)toMethod(IMessageHelper::getAttribute(root, "method"));
 
           switch (msgType) {
-            case Message::MessageType_Invalid:                  return MessagePtr();
+            case Message::MessageType_Invalid:                          return MessagePtr();
 
             case Message::MessageType_Request:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                    return MessagePtr();
 
-                case Method_IdentityAccessWindow:               return IdentityAccessWindowRequest::create(root, messageSource);
-                case Method_IdentityAccessStart:                return MessagePtr();
-                case Method_IdentityAccessComplete:             return MessagePtr();
-                case Method_IdentityAccessLockboxUpdate:        return MessagePtr();
-                case Method_IdentityLookupUpdate:               return MessagePtr();
-                case Method_IdentitySign:                       return MessagePtr();
+                case Method_IdentityAccessWindow:                       return IdentityAccessWindowRequest::create(root, messageSource);
+                case Method_IdentityAccessStart:                        return MessagePtr();
+                case Method_IdentityAccessComplete:                     return MessagePtr();
+                case Method_IdentityAccessLockboxUpdate:                return MessagePtr();
+                case Method_IdentityAccessRolodexCredentialsGetUpdate:  return MessagePtr();
+                case Method_IdentityLookupUpdate:                       return MessagePtr();
+                case Method_IdentitySign:                               return MessagePtr();
               }
               break;
             }
             case Message::MessageType_Result:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                    return MessagePtr();
 
-                case Method_IdentityAccessWindow:               return MessagePtr();
-                case Method_IdentityAccessStart:                return MessagePtr();
-                case Method_IdentityAccessComplete:             return MessagePtr();
-                case Method_IdentityAccessLockboxUpdate:        return IdentityAccessLockboxUpdateResult::create(root, messageSource);
-                case Method_IdentityLookupUpdate:               return IdentityLookupUpdateResult::create(root, messageSource);
-                case Method_IdentitySign:                       return IdentitySignResult::create(root, messageSource);
+                case Method_IdentityAccessWindow:                       return MessagePtr();
+                case Method_IdentityAccessStart:                        return MessagePtr();
+                case Method_IdentityAccessComplete:                     return MessagePtr();
+                case Method_IdentityAccessLockboxUpdate:                return IdentityAccessLockboxUpdateResult::create(root, messageSource);
+                case Method_IdentityAccessRolodexCredentialsGetUpdate:  return IdentityAccessRolodexCredentialsGetResult::create(root, messageSource);
+                case Method_IdentityLookupUpdate:                       return IdentityLookupUpdateResult::create(root, messageSource);
+                case Method_IdentitySign:                               return IdentitySignResult::create(root, messageSource);
               }
               break;
             }
-            case Message::MessageType_Notify:                   {
+            case Message::MessageType_Notify:
+            {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                    return MessagePtr();
 
-                case Method_IdentityAccessWindow:               return MessagePtr();
-                case Method_IdentityAccessStart:                return MessagePtr();
-                case Method_IdentityAccessComplete:             return IdentityAccessCompleteNotify::create(root, messageSource);
-                case Method_IdentityAccessLockboxUpdate:        return MessagePtr();
-                case Method_IdentityLookupUpdate:               return MessagePtr();
-                case Method_IdentitySign:                       return MessagePtr();
+                case Method_IdentityAccessWindow:                       return MessagePtr();
+                case Method_IdentityAccessStart:                        return MessagePtr();
+                case Method_IdentityAccessComplete:                     return IdentityAccessCompleteNotify::create(root, messageSource);
+                case Method_IdentityAccessLockboxUpdate:                return MessagePtr();
+                case Method_IdentityAccessRolodexCredentialsGetUpdate:  return MessagePtr();
+                case Method_IdentityLookupUpdate:                       return MessagePtr();
+                case Method_IdentitySign:                               return MessagePtr();
               }
               break;
             }

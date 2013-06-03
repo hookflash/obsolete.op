@@ -102,26 +102,30 @@ namespace hookflash
 
       // use when the identity URI is known (or partially known), provider is required if type is legacy
       static IServiceIdentitySessionPtr loginWithIdentity(
-                                                          IServiceLockboxSessionPtr existingLockbox,            // pass NULL IServiceLockboxSessionPtr() if none exists
                                                           IServiceIdentitySessionDelegatePtr delegate,
+                                                          IServiceIdentityPtr provider,
+                                                          IServiceNamespaceGrantSessionPtr grantSession,
+                                                          IServiceLockboxSessionPtr existingLockbox,            // pass NULL IServiceLockboxSessionPtr() if none exists
                                                           const char *outerFrameURLUponReload,
-                                                          const char *identityURI,
-                                                          IServiceIdentityPtr provider = IServiceIdentityPtr()  // required if identity URI does not have domain
+                                                          const char *identityURI
                                                           );
 
       // use when provider is known but nothing more
       static IServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                  IServiceLockboxSessionPtr existingLockbox,    // pass NULL IServiceLockboxSessionPtr() if none exists
                                                                   IServiceIdentitySessionDelegatePtr delegate,
-                                                                  const char *outerFrameURLUponReload,
                                                                   IServiceIdentityPtr provider,
+                                                                  IServiceNamespaceGrantSessionPtr grantSession,
+                                                                  IServiceLockboxSessionPtr existingLockbox,    // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                  const char *outerFrameURLUponReload,
                                                                   const char *legacyIdentityBaseURI = NULL
                                                                   );
 
       // use when a signed identity bundle is available
       static IServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                IServiceLockboxSessionPtr existingLockbox,      // pass NULL IServiceLockboxSessionPtr() if none exists
                                                                 IServiceIdentitySessionDelegatePtr delegate,
+                                                                IServiceIdentityPtr provider,
+                                                                IServiceNamespaceGrantSessionPtr grantSession,
+                                                                IServiceLockboxSessionPtr existingLockbox,      // pass NULL IServiceLockboxSessionPtr() if none exists
                                                                 const char *outerFrameURLUponReload,
                                                                 ElementPtr signedIdentityBundle
                                                                 );

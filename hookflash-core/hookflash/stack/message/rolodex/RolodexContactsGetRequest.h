@@ -31,9 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 
+#include <utility>
 #include <list>
 
 namespace hookflash
@@ -42,42 +43,36 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace rolodex
       {
-        class LockboxNamespaceGrantCompleteNotify : public MessageNotify
+        class RolodexContactsGetRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_GrantID,
-            AttributeType_NamespaceInfos,
+            AttributeType_RolodexInfo,
           };
 
         public:
-          static LockboxNamespaceGrantCompleteNotifyPtr convert(MessagePtr message);
+          static RolodexContactsGetRequestPtr convert(MessagePtr message);
 
-          static LockboxNamespaceGrantCompleteNotifyPtr create(
-                                                               ElementPtr root,
-                                                               IMessageSourcePtr messageSource
-                                                               );
+          static RolodexContactsGetRequestPtr create();
 
-          virtual Methods method() const                    {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantComplete;}
+          virtual DocumentPtr encode();
 
-          virtual IMessageFactoryPtr factory() const        {return MessageFactoryIdentityLockbox::singleton();}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryRolodex::Method_RolodexContactsGet;}
+
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryRolodex::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const String &grantID() const                     {return mGrantID;}
-          void grantID(const String &val)                   {mGrantID = val;}
-
-          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
-          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
+          const RolodexInfo &rolodexInfo() const      {return mRolodexInfo;}
+          void rolodexInfo(const RolodexInfo &val)    {mRolodexInfo = val;}
 
         protected:
-          LockboxNamespaceGrantCompleteNotify();
+          RolodexContactsGetRequest();
 
-          String mGrantID;
-          NamespaceInfoMap mNamespaceInfos;
+          RolodexInfo mRolodexInfo;
         };
       }
     }

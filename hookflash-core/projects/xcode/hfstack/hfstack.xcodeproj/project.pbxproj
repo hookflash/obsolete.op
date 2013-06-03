@@ -7,9 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00384C0D17596D8800113845 /* MessageFactoryNamespaceGrant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */; };
+		00384C0E17596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */; };
+		00384C0F17596D8800113845 /* NamespaceGrantAdminStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */; };
+		00384C1017596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */; };
+		00384C1117596D8800113845 /* NamespaceGrantAdminWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */; };
+		00384C1217596D8800113845 /* NamespaceGrantCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */; };
+		00384C1317596D8800113845 /* NamespaceGrantStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */; };
+		00384C1417596D8800113845 /* NamespaceGrantValidateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */; };
+		00384C1517596D8800113845 /* NamespaceGrantValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */; };
+		00384C1617596D8800113845 /* NamespaceGrantWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C0017596D8800113845 /* NamespaceGrantWindowRequest.cpp */; };
+		00384C1717596D8800113845 /* NamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */; };
+		00384C25175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C23175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp */; };
+		00384C26175A70F300113845 /* IdentityAccessRolodexCredentialsGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C24175A70F300113845 /* IdentityAccessRolodexCredentialsGetResult.cpp */; };
+		00384C35175A79D100113845 /* MessageFactoryRolodex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2B175A79D100113845 /* MessageFactoryRolodex.cpp */; };
+		00384C36175A79D100113845 /* RolodexAccessRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2C175A79D100113845 /* RolodexAccessRequest.cpp */; };
+		00384C37175A79D100113845 /* RolodexAccessResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2D175A79D100113845 /* RolodexAccessResult.cpp */; };
+		00384C38175A79D100113845 /* RolodexContactsGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2E175A79D100113845 /* RolodexContactsGetRequest.cpp */; };
+		00384C39175A79D100113845 /* RolodexContactsGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2F175A79D100113845 /* RolodexContactsGetResult.cpp */; };
+		00384C40175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C3F175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp */; };
 		0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */; };
-		0051C45F1745BB940095FD98 /* LockboxAdminWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */; };
-		0051C4601745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */; };
 		005F60AE17557D5100BC3DD6 /* stack_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60AD17557D5100BC3DD6 /* stack_Cache.cpp */; };
 		0063B84A16CA8E8B00E6DB4D /* stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B69F16CA8E8A00E6DB4D /* stack.cpp */; };
 		0063B84B16CA8E8B00E6DB4D /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6A016CA8E8A00E6DB4D /* stack_Account.cpp */; };
@@ -111,25 +128,54 @@
 		00AF4CB9171CCA2300DCA0A8 /* LockboxAccessResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4CB7171CCA2300DCA0A8 /* LockboxAccessResult.cpp */; };
 		00AF4CBD171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4CBC171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp */; };
 		00AF4DCE171D943B00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */; };
-		00AF4DD2171DB85B00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */; };
-		00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */; };
-		00AF4DD9171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */; };
 		00AF4DDE171DFACB00DCA0A8 /* LockboxContentGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */; };
 		00AF4DDF171DFACB00DCA0A8 /* LockboxContentGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */; };
 		00AF4DE4171E2EE500DCA0A8 /* LockboxContentSetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE2171E2EE200DCA0A8 /* LockboxContentSetRequest.cpp */; };
 		00AF4DE5171E2EE500DCA0A8 /* LockboxContentSetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */; };
-		00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */; };
-		00AF4DEC171E38A500DCA0A8 /* LockboxAdminStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */; };
-		00AF4DEF171E3B5400DCA0A8 /* LockboxAdminCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00384BF4175961C400113845 /* IServiceNamespaceGrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IServiceNamespaceGrant.h; sourceTree = "<group>"; };
+		00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryNamespaceGrant.cpp; sourceTree = "<group>"; };
+		00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminCompleteNotify.cpp; sourceTree = "<group>"; };
+		00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminStartNotify.cpp; sourceTree = "<group>"; };
+		00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminWindowRequest.cpp; sourceTree = "<group>"; };
+		00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminWindowResult.cpp; sourceTree = "<group>"; };
+		00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantCompleteNotify.cpp; sourceTree = "<group>"; };
+		00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantStartNotify.cpp; sourceTree = "<group>"; };
+		00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantValidateRequest.cpp; sourceTree = "<group>"; };
+		00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantValidateResult.cpp; sourceTree = "<group>"; };
+		00384C0017596D8800113845 /* NamespaceGrantWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantWindowRequest.cpp; sourceTree = "<group>"; };
+		00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantWindowResult.cpp; sourceTree = "<group>"; };
+		00384C0217596D8800113845 /* MessageFactoryNamespaceGrant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryNamespaceGrant.h; sourceTree = "<group>"; };
+		00384C0317596D8800113845 /* NamespaceGrantAdminCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminCompleteNotify.h; sourceTree = "<group>"; };
+		00384C0417596D8800113845 /* NamespaceGrantAdminStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminStartNotify.h; sourceTree = "<group>"; };
+		00384C0517596D8800113845 /* NamespaceGrantAdminWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminWindowRequest.h; sourceTree = "<group>"; };
+		00384C0617596D8800113845 /* NamespaceGrantAdminWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminWindowResult.h; sourceTree = "<group>"; };
+		00384C0717596D8800113845 /* NamespaceGrantCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantCompleteNotify.h; sourceTree = "<group>"; };
+		00384C0817596D8800113845 /* NamespaceGrantStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantStartNotify.h; sourceTree = "<group>"; };
+		00384C0917596D8800113845 /* NamespaceGrantValidateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantValidateRequest.h; sourceTree = "<group>"; };
+		00384C0A17596D8800113845 /* NamespaceGrantValidateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantValidateResult.h; sourceTree = "<group>"; };
+		00384C0B17596D8800113845 /* NamespaceGrantWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantWindowRequest.h; sourceTree = "<group>"; };
+		00384C0C17596D8800113845 /* NamespaceGrantWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantWindowResult.h; sourceTree = "<group>"; };
+		00384C23175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessRolodexCredentialsGetRequest.cpp; sourceTree = "<group>"; };
+		00384C24175A70F300113845 /* IdentityAccessRolodexCredentialsGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessRolodexCredentialsGetResult.cpp; sourceTree = "<group>"; };
+		00384C27175A710700113845 /* IdentityAccessRolodexCredentialsGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessRolodexCredentialsGetRequest.h; sourceTree = "<group>"; };
+		00384C28175A710700113845 /* IdentityAccessRolodexCredentialsGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessRolodexCredentialsGetResult.h; sourceTree = "<group>"; };
+		00384C2B175A79D100113845 /* MessageFactoryRolodex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryRolodex.cpp; sourceTree = "<group>"; };
+		00384C2C175A79D100113845 /* RolodexAccessRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexAccessRequest.cpp; sourceTree = "<group>"; };
+		00384C2D175A79D100113845 /* RolodexAccessResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexAccessResult.cpp; sourceTree = "<group>"; };
+		00384C2E175A79D100113845 /* RolodexContactsGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexContactsGetRequest.cpp; sourceTree = "<group>"; };
+		00384C2F175A79D100113845 /* RolodexContactsGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexContactsGetResult.cpp; sourceTree = "<group>"; };
+		00384C30175A79D100113845 /* MessageFactoryRolodex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryRolodex.h; sourceTree = "<group>"; };
+		00384C31175A79D100113845 /* RolodexAccessRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RolodexAccessRequest.h; sourceTree = "<group>"; };
+		00384C32175A79D100113845 /* RolodexAccessResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RolodexAccessResult.h; sourceTree = "<group>"; };
+		00384C33175A79D100113845 /* RolodexContactsGetRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RolodexContactsGetRequest.h; sourceTree = "<group>"; };
+		00384C34175A79D100113845 /* RolodexContactsGetResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RolodexContactsGetResult.h; sourceTree = "<group>"; };
+		00384C3F175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceNamespaceGrantSession.cpp; sourceTree = "<group>"; };
+		00384C41175A8B4E00113845 /* stack_ServiceNamespaceGrantSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceNamespaceGrantSession.h; sourceTree = "<group>"; };
 		0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowResult.cpp; sourceTree = "<group>"; };
 		0051C45C1745B9A80095FD98 /* IdentityAccessWindowResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowResult.h; sourceTree = "<group>"; };
-		0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowResult.cpp; sourceTree = "<group>"; };
-		0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowResult.cpp; sourceTree = "<group>"; };
-		0051C4611745BBB00095FD98 /* LockboxAdminWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxAdminWindowResult.h; sourceTree = "<group>"; };
-		0051C4621745BBB00095FD98 /* LockboxNamespaceGrantWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantWindowResult.h; sourceTree = "<group>"; };
 		005F60AB17557D2100BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
 		005F60AC17557D4200BC3DD6 /* stack_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Cache.h; sourceTree = "<group>"; };
 		005F60AD17557D5100BC3DD6 /* stack_Cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Cache.cpp; sourceTree = "<group>"; };
@@ -366,12 +412,6 @@
 		00AF4CBE171CE3E800DCA0A8 /* LockboxIdentitiesUpdateRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxIdentitiesUpdateRequest.h; sourceTree = "<group>"; };
 		00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxIdentitiesUpdateResult.cpp; sourceTree = "<group>"; };
 		00AF4DCF171D944600DCA0A8 /* LockboxIdentitiesUpdateResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxIdentitiesUpdateResult.h; sourceTree = "<group>"; };
-		00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantStartNotify.cpp; sourceTree = "<group>"; };
-		00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantWindowRequest.cpp; sourceTree = "<group>"; };
-		00AF4DD4171DB86600DCA0A8 /* LockboxNamespaceGrantStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantStartNotify.h; sourceTree = "<group>"; };
-		00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantWindowRequest.h; sourceTree = "<group>"; };
-		00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantCompleteNotify.cpp; sourceTree = "<group>"; };
-		00AF4DDA171DF69800DCA0A8 /* LockboxNamespaceGrantCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantCompleteNotify.h; sourceTree = "<group>"; };
 		00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentGetRequest.cpp; sourceTree = "<group>"; };
 		00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentGetResult.cpp; sourceTree = "<group>"; };
 		00AF4DE0171DFADF00DCA0A8 /* LockboxContentGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentGetRequest.h; sourceTree = "<group>"; };
@@ -380,12 +420,6 @@
 		00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentSetResult.cpp; sourceTree = "<group>"; };
 		00AF4DE6171E2EFD00DCA0A8 /* LockboxContentSetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetRequest.h; sourceTree = "<group>"; };
 		00AF4DE7171E2EFF00DCA0A8 /* LockboxContentSetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetResult.h; sourceTree = "<group>"; };
-		00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminWindowRequest.cpp; sourceTree = "<group>"; };
-		00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminWindowRequest.h; sourceTree = "<group>"; };
-		00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminStartNotify.cpp; sourceTree = "<group>"; };
-		00AF4DED171E38B400DCA0A8 /* LockboxAdminStartNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminStartNotify.h; sourceTree = "<group>"; };
-		00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxAdminCompleteNotify.cpp; sourceTree = "<group>"; };
-		00AF4DF0171E3B5E00DCA0A8 /* LockboxAdminCompleteNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxAdminCompleteNotify.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +433,68 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00384BF517596D8800113845 /* namespace-grant */ = {
+			isa = PBXGroup;
+			children = (
+				00384BF617596D8800113845 /* cpp */,
+				00384C0217596D8800113845 /* MessageFactoryNamespaceGrant.h */,
+				00384C0B17596D8800113845 /* NamespaceGrantWindowRequest.h */,
+				00384C0C17596D8800113845 /* NamespaceGrantWindowResult.h */,
+				00384C0817596D8800113845 /* NamespaceGrantStartNotify.h */,
+				00384C0717596D8800113845 /* NamespaceGrantCompleteNotify.h */,
+				00384C0517596D8800113845 /* NamespaceGrantAdminWindowRequest.h */,
+				00384C0617596D8800113845 /* NamespaceGrantAdminWindowResult.h */,
+				00384C0417596D8800113845 /* NamespaceGrantAdminStartNotify.h */,
+				00384C0317596D8800113845 /* NamespaceGrantAdminCompleteNotify.h */,
+				00384C0917596D8800113845 /* NamespaceGrantValidateRequest.h */,
+				00384C0A17596D8800113845 /* NamespaceGrantValidateResult.h */,
+			);
+			path = "namespace-grant";
+			sourceTree = "<group>";
+		};
+		00384BF617596D8800113845 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */,
+				00384C0017596D8800113845 /* NamespaceGrantWindowRequest.cpp */,
+				00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */,
+				00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */,
+				00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */,
+				00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */,
+				00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */,
+				00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */,
+				00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */,
+				00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */,
+				00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */,
+			);
+			path = cpp;
+			sourceTree = "<group>";
+		};
+		00384C29175A79CF00113845 /* rolodex */ = {
+			isa = PBXGroup;
+			children = (
+				00384C2A175A79D100113845 /* cpp */,
+				00384C30175A79D100113845 /* MessageFactoryRolodex.h */,
+				00384C31175A79D100113845 /* RolodexAccessRequest.h */,
+				00384C32175A79D100113845 /* RolodexAccessResult.h */,
+				00384C33175A79D100113845 /* RolodexContactsGetRequest.h */,
+				00384C34175A79D100113845 /* RolodexContactsGetResult.h */,
+			);
+			path = rolodex;
+			sourceTree = "<group>";
+		};
+		00384C2A175A79D100113845 /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				00384C2B175A79D100113845 /* MessageFactoryRolodex.cpp */,
+				00384C2C175A79D100113845 /* RolodexAccessRequest.cpp */,
+				00384C2D175A79D100113845 /* RolodexAccessResult.cpp */,
+				00384C2E175A79D100113845 /* RolodexContactsGetRequest.cpp */,
+				00384C2F175A79D100113845 /* RolodexContactsGetResult.cpp */,
+			);
+			path = cpp;
+			sourceTree = "<group>";
+		};
 		0063B5EC16CA8E8A00E6DB4D /* hookflash */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,6 +534,7 @@
 				0063B6EB16CA8E8A00E6DB4D /* IServiceCertificates.h */,
 				0063B6EC16CA8E8A00E6DB4D /* IServiceIdentity.h */,
 				0063B6ED16CA8E8A00E6DB4D /* IServiceLockbox.h */,
+				00384BF4175961C400113845 /* IServiceNamespaceGrant.h */,
 				0063B6EE16CA8E8A00E6DB4D /* IServiceSalt.h */,
 				0063B6EF16CA8E8A00E6DB4D /* IStack.h */,
 			);
@@ -474,6 +571,7 @@
 				0063B6B616CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.cpp */,
 				0063B6B716CA8E8A00E6DB4D /* stack_ServiceIdentitySession.cpp */,
 				0063B6B816CA8E8A00E6DB4D /* stack_ServiceLockboxSession.cpp */,
+				00384C3F175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp */,
 				0063B6B916CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.cpp */,
 				0063B6BA16CA8E8A00E6DB4D /* stack_Stack.cpp */,
 			);
@@ -511,6 +609,7 @@
 				0063B6DB16CA8E8A00E6DB4D /* stack_ServiceCertificatesValidateQuery.h */,
 				0063B6DC16CA8E8A00E6DB4D /* stack_ServiceIdentitySession.h */,
 				0063B6DD16CA8E8A00E6DB4D /* stack_ServiceLockboxSession.h */,
+				00384C41175A8B4E00113845 /* stack_ServiceNamespaceGrantSession.h */,
 				0063B6DE16CA8E8A00E6DB4D /* stack_ServiceSaltFetchSignedSaltQuery.h */,
 				0063B6DF16CA8E8A00E6DB4D /* stack_Stack.h */,
 			);
@@ -528,11 +627,13 @@
 				0063B71516CA8E8A00E6DB4D /* identity */,
 				00AF4C9617179C9200DCA0A8 /* identity-lockbox */,
 				0063B72D16CA8E8A00E6DB4D /* identity-lookup */,
+				00384BF517596D8800113845 /* namespace-grant */,
 				00AF4C9A17179C9200DCA0A8 /* peer */,
 				0063B74616CA8E8B00E6DB4D /* peer-common */,
 				0063B77A16CA8E8B00E6DB4D /* peer-finder */,
 				0063B79016CA8E8B00E6DB4D /* peer-salt */,
 				0063B79816CA8E8B00E6DB4D /* peer-to-peer */,
+				00384C29175A79CF00113845 /* rolodex */,
 				0063B7A416CA8E8B00E6DB4D /* types.h */,
 				0063B74516CA8E8B00E6DB4D /* messages.h */,
 				0063B74016CA8E8B00E6DB4D /* Message.h */,
@@ -639,6 +740,8 @@
 				0063B72616CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.h */,
 				0063B72216CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.h */,
 				0063B72316CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateResult.h */,
+				00384C27175A710700113845 /* IdentityAccessRolodexCredentialsGetRequest.h */,
+				00384C28175A710700113845 /* IdentityAccessRolodexCredentialsGetResult.h */,
 				00AF4CB4171CA84800DCA0A8 /* IdentityLookupUpdateRequest.h */,
 				00AF4CB5171CA84A00DCA0A8 /* IdentityLookupUpdateResult.h */,
 				0063B72A16CA8E8A00E6DB4D /* IdentitySignRequest.h */,
@@ -657,6 +760,8 @@
 				0063B71A16CA8E8A00E6DB4D /* IdentityAccessCompleteNotify.cpp */,
 				0063B71716CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateRequest.cpp */,
 				0063B71816CA8E8A00E6DB4D /* IdentityAccessLockboxUpdateResult.cpp */,
+				00384C23175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp */,
+				00384C24175A70F300113845 /* IdentityAccessRolodexCredentialsGetResult.cpp */,
 				00AF4CB0171CA83B00DCA0A8 /* IdentityLookupUpdateRequest.cpp */,
 				00AF4CB1171CA83C00DCA0A8 /* IdentityLookupUpdateResult.cpp */,
 				0063B71F16CA8E8A00E6DB4D /* IdentitySignRequest.cpp */,
@@ -847,18 +952,10 @@
 				00AF4CBB171CCA3200DCA0A8 /* LockboxAccessResult.h */,
 				00AF4CBE171CE3E800DCA0A8 /* LockboxIdentitiesUpdateRequest.h */,
 				00AF4DCF171D944600DCA0A8 /* LockboxIdentitiesUpdateResult.h */,
-				00AF4DD5171DB86700DCA0A8 /* LockboxNamespaceGrantWindowRequest.h */,
-				0051C4621745BBB00095FD98 /* LockboxNamespaceGrantWindowResult.h */,
-				00AF4DD4171DB86600DCA0A8 /* LockboxNamespaceGrantStartNotify.h */,
-				00AF4DDA171DF69800DCA0A8 /* LockboxNamespaceGrantCompleteNotify.h */,
 				00AF4DE0171DFADF00DCA0A8 /* LockboxContentGetRequest.h */,
 				00AF4DE1171DFAE100DCA0A8 /* LockboxContentGetResult.h */,
 				00AF4DE6171E2EFD00DCA0A8 /* LockboxContentSetRequest.h */,
 				00AF4DE7171E2EFF00DCA0A8 /* LockboxContentSetResult.h */,
-				00AF4DEA171E366700DCA0A8 /* LockboxAdminWindowRequest.h */,
-				0051C4611745BBB00095FD98 /* LockboxAdminWindowResult.h */,
-				00AF4DED171E38B400DCA0A8 /* LockboxAdminStartNotify.h */,
-				00AF4DF0171E3B5E00DCA0A8 /* LockboxAdminCompleteNotify.h */,
 			);
 			path = "identity-lockbox";
 			sourceTree = "<group>";
@@ -871,18 +968,10 @@
 				00AF4CB7171CCA2300DCA0A8 /* LockboxAccessResult.cpp */,
 				00AF4CBC171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp */,
 				00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */,
-				00AF4DD1171DB85A00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp */,
-				0051C45E1745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp */,
-				00AF4DD0171DB85A00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp */,
-				00AF4DD8171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp */,
 				00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */,
 				00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */,
 				00AF4DE2171E2EE200DCA0A8 /* LockboxContentSetRequest.cpp */,
 				00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */,
-				00AF4DE8171E365800DCA0A8 /* LockboxAdminWindowRequest.cpp */,
-				0051C45D1745BB940095FD98 /* LockboxAdminWindowResult.cpp */,
-				00AF4DEB171E38A300DCA0A8 /* LockboxAdminStartNotify.cpp */,
-				00AF4DEE171E3B5100DCA0A8 /* LockboxAdminCompleteNotify.cpp */,
 			);
 			path = cpp;
 			sourceTree = "<group>";
@@ -1069,20 +1158,31 @@
 				00AF4CB9171CCA2300DCA0A8 /* LockboxAccessResult.cpp in Sources */,
 				00AF4CBD171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp in Sources */,
 				00AF4DCE171D943B00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp in Sources */,
-				00AF4DD2171DB85B00DCA0A8 /* LockboxNamespaceGrantStartNotify.cpp in Sources */,
-				00AF4DD3171DB85B00DCA0A8 /* LockboxNamespaceGrantWindowRequest.cpp in Sources */,
-				00AF4DD9171DF68F00DCA0A8 /* LockboxNamespaceGrantCompleteNotify.cpp in Sources */,
 				00AF4DDE171DFACB00DCA0A8 /* LockboxContentGetRequest.cpp in Sources */,
 				00AF4DDF171DFACB00DCA0A8 /* LockboxContentGetResult.cpp in Sources */,
 				00AF4DE4171E2EE500DCA0A8 /* LockboxContentSetRequest.cpp in Sources */,
 				00AF4DE5171E2EE500DCA0A8 /* LockboxContentSetResult.cpp in Sources */,
-				00AF4DE9171E365A00DCA0A8 /* LockboxAdminWindowRequest.cpp in Sources */,
-				00AF4DEC171E38A500DCA0A8 /* LockboxAdminStartNotify.cpp in Sources */,
-				00AF4DEF171E3B5400DCA0A8 /* LockboxAdminCompleteNotify.cpp in Sources */,
 				0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */,
-				0051C45F1745BB940095FD98 /* LockboxAdminWindowResult.cpp in Sources */,
-				0051C4601745BB940095FD98 /* LockboxNamespaceGrantWindowResult.cpp in Sources */,
 				005F60AE17557D5100BC3DD6 /* stack_Cache.cpp in Sources */,
+				00384C0D17596D8800113845 /* MessageFactoryNamespaceGrant.cpp in Sources */,
+				00384C0E17596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp in Sources */,
+				00384C0F17596D8800113845 /* NamespaceGrantAdminStartNotify.cpp in Sources */,
+				00384C1017596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp in Sources */,
+				00384C1117596D8800113845 /* NamespaceGrantAdminWindowResult.cpp in Sources */,
+				00384C1217596D8800113845 /* NamespaceGrantCompleteNotify.cpp in Sources */,
+				00384C1317596D8800113845 /* NamespaceGrantStartNotify.cpp in Sources */,
+				00384C1417596D8800113845 /* NamespaceGrantValidateRequest.cpp in Sources */,
+				00384C1517596D8800113845 /* NamespaceGrantValidateResult.cpp in Sources */,
+				00384C1617596D8800113845 /* NamespaceGrantWindowRequest.cpp in Sources */,
+				00384C1717596D8800113845 /* NamespaceGrantWindowResult.cpp in Sources */,
+				00384C25175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */,
+				00384C26175A70F300113845 /* IdentityAccessRolodexCredentialsGetResult.cpp in Sources */,
+				00384C35175A79D100113845 /* MessageFactoryRolodex.cpp in Sources */,
+				00384C36175A79D100113845 /* RolodexAccessRequest.cpp in Sources */,
+				00384C37175A79D100113845 /* RolodexAccessResult.cpp in Sources */,
+				00384C38175A79D100113845 /* RolodexContactsGetRequest.cpp in Sources */,
+				00384C39175A79D100113845 /* RolodexContactsGetResult.cpp in Sources */,
+				00384C40175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

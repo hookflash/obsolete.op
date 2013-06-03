@@ -31,10 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/IMessageFactory.h>
 
-#include <list>
 
 namespace hookflash
 {
@@ -42,28 +40,49 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace rolodex
       {
-        class LockboxAdminWindowResult : public MessageResult
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MessageFactoryRolodex
+        #pragma mark
+
+        class MessageFactoryRolodex : public IMessageFactory
         {
         public:
-          enum AttributeTypes
+          enum Methods
           {
+            Method_Invalid = Message::Method_Invalid,
+
+            Method_RolodexAccess,
+            Method_RolodexContactsGet,
+
+            Method_Last = Method_RolodexContactsGet,
           };
 
-        public:
-          static LockboxAdminWindowResultPtr convert(MessagePtr message);
-
-          static LockboxAdminWindowResultPtr create(LockboxAdminWindowRequestPtr request);
-
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminWindow;}
-
-          virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentityLockbox::singleton();}
-
-          bool hasAttribute(AttributeTypes type) const;
-
         protected:
-          LockboxAdminWindowResult();
+          static MessageFactoryRolodexPtr create();
+
+        public:
+          static MessageFactoryRolodexPtr singleton();
+
+          //-------------------------------------------------------------------
+          #pragma mark
+          #pragma mark MessageFactoryRolodex => IMessageFactory
+          #pragma mark
+
+          virtual const char *getHandler() const;
+
+          virtual Message::Methods toMethod(const char *method) const;
+          virtual const char *toString(Message::Methods method) const;
+
+          virtual MessagePtr create(
+                                    ElementPtr root,
+                                    IMessageSourcePtr messageSource
+                                    );
         };
       }
     }

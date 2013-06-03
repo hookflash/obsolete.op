@@ -33,9 +33,6 @@
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFilePublic.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -80,6 +77,9 @@ namespace hookflash
           switch (type)
           {
             case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
+            case AttributeType_LockboxInfo:       return mLockboxInfo.hasData();
+            case AttributeType_GrantInfo:         return mGrantInfo.hasData();
+            case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
             default:                              break;
           }
           return false;
@@ -90,9 +90,6 @@ namespace hookflash
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
-
-          AgentInfo agentInfo = IStackForInternal::agentInfo();
-          mAgentInfo.mergeFrom(agentInfo, false);
 
           String clientNonce = IHelper::randomString(32);
           IdentityInfo identityInfo;
@@ -118,18 +115,36 @@ namespace hookflash
             root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
 
-          if (mGrantID.hasData()) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
-          }
-
-          if (mAgentInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
-          }
-
           if (lockboxInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
+          GrantInfo grantInfo;
+          grantInfo.mID = mGrantInfo.mID;
+          grantInfo.mDomain = mGrantInfo.mDomain;
+
+          if (grantInfo.mSecret.hasData()) {
+            grantInfo.mSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
+            grantInfo.mSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(grantInfo.mSecret), "namespace-grant-validate:" + grantInfo.mID + ":" + clientNonce + ":" + IMessageHelper::timeToString(grantInfo.mSecretProofExpires) + ":lockbox-access"));
+          }
+
+          if (grantInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(grantInfo));
+          }
+
+          if (hasAttribute(AttributeType_NamespaceInfos)) {
+            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
+
+            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
+            {
+              const NamespaceInfo &namespaceInfo = (*iter).second;
+              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
+            }
+
+            if (namespacesEl->hasChildren()) {
+              root->adoptAsLastChild(namespacesEl);
+            }
+          }
           return ret;
         }
       }

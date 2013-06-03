@@ -104,13 +104,15 @@ namespace hookflash
                                         IAccountDelegatePtr delegate,
                                         IConversationThreadDelegatePtr conversationThreadDelegate,
                                         ICallDelegatePtr callDelegate,
-                                        const char *outerFrameURLUponReload,
+                                        const char *namespaceGrantOuterFrameURLUponReload,
+                                        const char *namespaceGrantServiceDomain,
+                                        const char *grantID,
+                                        const char *grantSecret,
                                         const char *lockboxServiceDomain,
-                                        const char *lockboxGrantID,
                                         bool forceCreateNewLockboxAccount
                                         )
       {
-        return Account::login(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, lockboxServiceDomain, lockboxGrantID, forceCreateNewLockboxAccount);
+        return Account::login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, namespaceGrantServiceDomain, grantID, grantSecret, lockboxServiceDomain, forceCreateNewLockboxAccount);
       }
 
       //-----------------------------------------------------------------------
@@ -118,11 +120,11 @@ namespace hookflash
                                           IAccountDelegatePtr delegate,
                                           IConversationThreadDelegatePtr conversationThreadDelegate,
                                           ICallDelegatePtr callDelegate,
-                                          const char *outerFrameURLUponReload,
+                                          const char *namespaceGrantOuterFrameURLUponReload,
                                           ElementPtr reloginInformation
                                           )
       {
-        return Account::relogin(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, reloginInformation);
+        return Account::relogin(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, reloginInformation);
       }
 
       //-----------------------------------------------------------------------

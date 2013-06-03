@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminCompleteNotify.h>
+#include <hookflash/stack/message/rolodex/RolodexAccessResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -41,43 +41,45 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace rolodex
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxAdminCompleteNotifyPtr LockboxAdminCompleteNotify::convert(MessagePtr message)
+        RolodexAccessResultPtr RolodexAccessResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxAdminCompleteNotify>(message);
+          return boost::dynamic_pointer_cast<RolodexAccessResult>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminCompleteNotify::LockboxAdminCompleteNotify()
+        RolodexAccessResult::RolodexAccessResult()
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminCompleteNotifyPtr LockboxAdminCompleteNotify::create(
-                                                                         ElementPtr root,
-                                                                         IMessageSourcePtr messageSource
-                                                                         )
+        RolodexAccessResultPtr RolodexAccessResult::create(
+                                                           ElementPtr rootEl,
+                                                           IMessageSourcePtr messageSource
+                                                           )
         {
-          LockboxAdminCompleteNotifyPtr ret(new LockboxAdminCompleteNotify);
-          IMessageHelper::fill(*ret, root, messageSource);
+          RolodexAccessResultPtr ret(new RolodexAccessResult);
+          IMessageHelper::fill(*ret, rootEl, messageSource);
+
+          ret->mRolodexInfo = MessageHelper::createRolodex(rootEl->findFirstChildElement("rolodex"));
 
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool LockboxAdminCompleteNotify::hasAttribute(AttributeTypes type) const
+        bool RolodexAccessResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
+            case AttributeType_RolodexInfo:           return mRolodexInfo.hasData();
             default:                                  break;
           }
-          return false;
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }
-
       }
     }
   }

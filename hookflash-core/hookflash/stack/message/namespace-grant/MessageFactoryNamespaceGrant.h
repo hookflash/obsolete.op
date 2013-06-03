@@ -29,12 +29,10 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#pragma once
 
-#include <zsLib/XML.h>
-#include <zsLib/helpers.h>
+#include <hookflash/stack/message/IMessageFactory.h>
+
 
 namespace hookflash
 {
@@ -42,40 +40,56 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
-        using internal::MessageHelper;
-
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowResultPtr LockboxNamespaceGrantWindowResult::convert(MessagePtr message)
-        {
-          return boost::dynamic_pointer_cast<LockboxNamespaceGrantWindowResult>(message);
-        }
-
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowResult::LockboxNamespaceGrantWindowResult()
-        {
-        }
-
         //---------------------------------------------------------------------
-        LockboxNamespaceGrantWindowResultPtr LockboxNamespaceGrantWindowResult::create(LockboxNamespaceGrantWindowRequestPtr request)
-        {
-          LockboxNamespaceGrantWindowResultPtr ret(new LockboxNamespaceGrantWindowResult);
-          ret->mDomain = request->domain();
-          ret->mID = request->messageID();
-          ret->mAppID = request->appID();
-          return ret;
-        }
-
         //---------------------------------------------------------------------
-        bool LockboxNamespaceGrantWindowResult::hasAttribute(AttributeTypes type) const
+        #pragma mark
+        #pragma mark MessageFactoryNamespaceGrant
+        #pragma mark
+
+        class MessageFactoryNamespaceGrant : public IMessageFactory
         {
-          switch (type)
+        public:
+          enum Methods
           {
-            default:                                    break;
-          }
-          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
-        }
+            Method_Invalid = Message::Method_Invalid,
+
+            Method_NamespaceGrantWindow,
+            Method_NamespaceGrantStart,
+            Method_NamespaceGrantComplete,
+            Method_NamespaceGrantAdminWindow,
+            Method_NamespaceGrantAdminStart,
+            Method_NamespaceGrantAdminComplete,
+            Method_NamespaceGrantPreappovedGrant,
+            Method_NamespaceGrantValidate,
+
+            Method_Last = Method_NamespaceGrantValidate,
+          };
+
+        protected:
+          static MessageFactoryNamespaceGrantPtr create();
+
+        public:
+          static MessageFactoryNamespaceGrantPtr singleton();
+
+          //-------------------------------------------------------------------
+          #pragma mark
+          #pragma mark MessageFactoryNamespaceGrant => IMessageFactory
+          #pragma mark
+
+          virtual const char *getHandler() const;
+
+          virtual Message::Methods toMethod(const char *method) const;
+          virtual const char *toString(Message::Methods method) const;
+
+          virtual MessagePtr create(
+                                    ElementPtr root,
+                                    IMessageSourcePtr messageSource
+                                    );
+        };
       }
     }
   }

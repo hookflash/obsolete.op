@@ -41,6 +41,8 @@
 #include <hookflash/stack/message/identity/IdentitySignResult.h>
 #include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
 
+#include <hookflash/stack/internal/stack_ServiceNamespaceGrantSession.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 
 #include <list>
@@ -76,8 +78,9 @@ namespace hookflash
         const IServiceIdentitySessionForServiceLockbox &forLockbox() const {return *this;}
 
         static ServiceIdentitySessionPtr reload(
+                                                BootstrappedNetworkPtr provider,
+                                                IServiceNamespaceGrantSessionPtr grantSession,
                                                 IServiceLockboxSessionPtr existingLockbox,
-                                                BootstrappedNetworkPtr network,
                                                 const char *identityURI,
                                                 const char *reloginKey
                                                 );
@@ -131,6 +134,7 @@ namespace hookflash
                                      public IServiceIdentitySessionForServiceLockbox,
                                      public IServiceIdentitySessionAsyncDelegate,
                                      public IBootstrappedNetworkDelegate,
+                                     public IServiceNamespaceGrantSessionForServicesDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentitySignResult>,
@@ -140,6 +144,7 @@ namespace hookflash
         friend interaction IServiceIdentitySessionFactory;
         friend interaction IServiceIdentitySession;
 
+        typedef IServiceNamespaceGrantSession::SessionStates GrantSessionStates;
         typedef IServiceIdentitySession::SessionStates SessionStates;
 
         typedef std::list<DocumentPtr> DocumentList;
@@ -147,10 +152,11 @@ namespace hookflash
       protected:
         ServiceIdentitySession(
                                IMessageQueuePtr queue,
-                               ServiceLockboxSessionPtr existingLockbox,
-                               BootstrappedNetworkPtr identityNetwork,
-                               BootstrappedNetworkPtr providerNetwork,
                                IServiceIdentitySessionDelegatePtr delegate,
+                               BootstrappedNetworkPtr providerNetwork,
+                               BootstrappedNetworkPtr identityNetwork,
+                               ServiceNamespaceGrantSessionPtr grantSession,
+                               ServiceLockboxSessionPtr existingLockbox,
                                const char *outerFrameURLUponReload
                                );
 
@@ -172,24 +178,28 @@ namespace hookflash
         static String toDebugString(IServiceIdentitySessionPtr session, bool includeCommaPrefix = true);
 
         static ServiceIdentitySessionPtr loginWithIdentity(
-                                                           IServiceLockboxSessionPtr existingLockbox,
                                                            IServiceIdentitySessionDelegatePtr delegate,
+                                                           IServiceIdentityPtr provider,
+                                                           IServiceNamespaceGrantSessionPtr grantSession,
+                                                           IServiceLockboxSessionPtr existingLockbox,
                                                            const char *outerFrameURLUponReload,
-                                                           const char *identityURI,
-                                                           IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
+                                                           const char *identityURI
                                                            );
 
         static ServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                   IServiceLockboxSessionPtr existingLockbox,
                                                                    IServiceIdentitySessionDelegatePtr delegate,
-                                                                   const char *outerFrameURLUponReload,
                                                                    IServiceIdentityPtr provider,
+                                                                   IServiceNamespaceGrantSessionPtr grantSession,
+                                                                   IServiceLockboxSessionPtr existingLockbox,
+                                                                   const char *outerFrameURLUponReload,
                                                                    const char *legacyIdentityBaseURI = NULL
                                                                    );
 
         static ServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                 IServiceLockboxSessionPtr existingLockbox,
                                                                  IServiceIdentitySessionDelegatePtr delegate,
+                                                                 IServiceIdentityPtr provider,
+                                                                 IServiceNamespaceGrantSessionPtr grantSession,
+                                                                 IServiceLockboxSessionPtr existingLockbox,
                                                                  const char *outerFrameURLUponReload,
                                                                  ElementPtr signedIdentityBundleEl
                                                                  );
@@ -236,8 +246,9 @@ namespace hookflash
         #pragma mark
 
         static ServiceIdentitySessionPtr reload(
+                                                BootstrappedNetworkPtr provider,
+                                                IServiceNamespaceGrantSessionPtr grantSession,
                                                 IServiceLockboxSessionPtr existingLockbox,
-                                                BootstrappedNetworkPtr network,
                                                 const char *identityURI,
                                                 const char *reloginKey
                                                 );
@@ -275,6 +286,16 @@ namespace hookflash
         #pragma mark
 
         virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesDelegate
+        #pragma mark
+
+        virtual void onServiceNamespaceGrantSessionStateChanged(
+                                                                ServiceNamespaceGrantSessionPtr session,
+                                                                GrantSessionStates state
+                                                                );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -355,6 +376,7 @@ namespace hookflash
         void step();
 
         bool stepBootstrapper();
+        bool stepGrantCheck();
         bool stepLoadBrowserWindow();
         bool stepMakeBrowserWindowVisible();
         bool stepIdentityAccessStartNotification();
@@ -383,27 +405,33 @@ namespace hookflash
         ServiceIdentitySessionWeakPtr mThisWeak;
         ServiceIdentitySessionPtr mGraciousShutdownReference;
 
+        SessionStates mCurrentState;
+        SessionStates mLastReportedState;
+
+        WORD mLastError;
+        String mLastErrorReason;
+        
         IServiceIdentitySessionDelegatePtr mDelegate;
         ServiceLockboxSessionWeakPtr mAssociatedLockbox;
         bool mKillAssociation;
 
-        BootstrappedNetworkPtr mIdentityBootstrappedNetwork;
+        IdentityInfo mIdentityInfo;
+
         BootstrappedNetworkPtr mProviderBootstrappedNetwork;
+        BootstrappedNetworkPtr mIdentityBootstrappedNetwork;
         BootstrappedNetworkPtr mActiveBootstrappedNetwork;
+
+        ServiceNamespaceGrantSessionPtr mGrantSession;
+        IServiceNamespaceGrantSessionForServicesSubscriptionPtr mGrantSubscription;
 
         IMessageMonitorPtr mIdentityAccessLockboxUpdateMonitor;
         IMessageMonitorPtr mIdentityLookupUpdateMonitor;
         IMessageMonitorPtr mIdentitySignMonitor;
         IMessageMonitorPtr mIdentityLookupMonitor;
 
-        SessionStates mCurrentState;
-        SessionStates mLastReportedState;
-
-        WORD mLastError;
-        String mLastErrorReason;
-
-        IdentityInfo mIdentityInfo;
         LockboxInfo mLockboxInfo;
+
+        bool mHasPermissions;
 
         bool mBrowserWindowReady;
         bool mBrowserWindowVisible;
@@ -417,7 +445,6 @@ namespace hookflash
         IdentityInfo mPreviousLookupInfo;
 
         String mOuterFrameURLUponReload;
-        String mInnerFrameURL;
 
         ElementPtr mSignedIdentityBundleVerfiedEl;
         ElementPtr mSignedIdentityBundleUncheckedEl;
@@ -439,31 +466,36 @@ namespace hookflash
         static IServiceIdentitySessionFactory &singleton();
 
         virtual ServiceIdentitySessionPtr loginWithIdentity(
-                                                            IServiceLockboxSessionPtr existingLockbox,
                                                             IServiceIdentitySessionDelegatePtr delegate,
+                                                            IServiceIdentityPtr provider,
+                                                            IServiceNamespaceGrantSessionPtr grantSession,
+                                                            IServiceLockboxSessionPtr existingLockbox,
                                                             const char *outerFrameURLUponReload,
-                                                            const char *identityURI,
-                                                            IServiceIdentityPtr provider = IServiceIdentityPtr() // required if identity URI does not have domain
+                                                            const char *identityURI
                                                             );
 
         virtual ServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                    IServiceLockboxSessionPtr existingLockbox,
                                                                     IServiceIdentitySessionDelegatePtr delegate,
-                                                                    const char *outerFrameURLUponReload,
                                                                     IServiceIdentityPtr provider,
+                                                                    IServiceNamespaceGrantSessionPtr grantSession,
+                                                                    IServiceLockboxSessionPtr existingLockbox,
+                                                                    const char *outerFrameURLUponReload,
                                                                     const char *legacyIdentityBaseURI = NULL
                                                                     );
 
         virtual ServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                   IServiceIdentitySessionDelegatePtr delegate,
+                                                                  IServiceIdentityPtr provider,
+                                                                  IServiceNamespaceGrantSessionPtr grantSession,
+                                                                  IServiceLockboxSessionPtr existingLockbox,
                                                                   const char *outerFrameURLUponReload,
                                                                   ElementPtr signedIdentityBundle
                                                                   );
 
         static ServiceIdentitySessionPtr reload(
+                                                BootstrappedNetworkPtr provider,
+                                                IServiceNamespaceGrantSessionPtr grantSession,
                                                 IServiceLockboxSessionPtr existingLockbox,
-                                                BootstrappedNetworkPtr network,
                                                 const char *identityURI,
                                                 const char *reloginKey
                                                 );

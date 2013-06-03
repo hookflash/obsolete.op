@@ -42,6 +42,7 @@
 #include <hookflash/stack/IPeerFilePrivate.h>
 #include <hookflash/stack/IPublication.h>
 #include <hookflash/stack/IPublicationRepository.h>
+#include <hookflash/stack/message/IMessageHelper.h>
 
 #include <hookflash/services/IHTTP.h>
 
@@ -157,32 +158,43 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *lockboxOuterFrameURLUponReload,
+                                const char *namespaceGrantOuterFrameURLUponReload,
+                                const char *namespaceGrantServiceDomain,
+                                const char *grantID,
+                                const char *grantSecret,
                                 const char *lockboxServiceDomain,
-                                const char *lockboxGrantID,
                                 bool forceCreateNewLockboxAccount
                                 )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxOuterFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceGrantOuterFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceGrantServiceDomain)
+        ZS_THROW_INVALID_ARGUMENT_IF(!grantID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!grantSecret)
         ZS_THROW_INVALID_ARGUMENT_IF(!lockboxServiceDomain)
-        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxGrantID)
 
         AccountPtr pThis(new Account(IStackForInternal::queueCore(), delegate, conversationThreadDelegate, callDelegate));
         pThis->mThisWeak = pThis;
 
-        String domain(lockboxServiceDomain);
-
-        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
-        if (!network) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + domain)
+        String namespaceDomain(namespaceGrantServiceDomain);
+        IBootstrappedNetworkPtr grantNetwork = IBootstrappedNetwork::prepare(namespaceDomain);
+        if (!grantNetwork) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + namespaceDomain)
           return AccountPtr();
         }
 
-        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(network);
+        String lockboxDomain(lockboxServiceDomain);
+        IBootstrappedNetworkPtr lockboxNetwork = IBootstrappedNetwork::prepare(lockboxDomain);
+        if (!lockboxNetwork) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + lockboxDomain)
+          return AccountPtr();
+        }
+
+        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, IServiceNamespaceGrant::createServiceNamespaceGrantFrom(grantNetwork), namespaceGrantOuterFrameURLUponReload, grantID, grantSecret);
+        ZS_THROW_BAD_STATE_IF(!pThis->mGrantSession)
+
+        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(lockboxNetwork);
         ZS_THROW_BAD_STATE_IF(!pThis->mLockboxService)
 
-        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
-        pThis->mLockboxGrantID = String(lockboxGrantID);
         pThis->mLockboxForceCreateNewAccount = forceCreateNewLockboxAccount;
 
         pThis->init();
@@ -194,47 +206,57 @@ namespace hookflash
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  const char *lockboxOuterFrameURLUponReload,
+                                  const char *namespaceGrantOuterFrameURLUponReload,
                                   ElementPtr reloginInformation
                                   )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxOuterFrameURLUponReload)
+        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceGrantOuterFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!reloginInformation)
 
         AccountPtr pThis(new Account(IStackForInternal::queueCore(), delegate, conversationThreadDelegate, callDelegate));
         pThis->mThisWeak = pThis;
-        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
 
-        String domain;
+        String lockboxDomain;
+        String grantDomain;
         String accountID;
         String grantID;
+        String grantSecret;
         String keyIdentityHalf;
         String keyLockboxHalf;
 
         try {
-          domain = reloginInformation->findFirstChildElementChecked("domain")->getTextDecoded();
+          lockboxDomain = reloginInformation->findFirstChildElementChecked("lockboxDomain")->getTextDecoded();
+          grantDomain = reloginInformation->findFirstChildElementChecked("grantDomain")->getTextDecoded();
           accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
           grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
+          grantSecret = reloginInformation->findFirstChildElementChecked("grantSecret")->getTextDecoded();
           keyIdentityHalf = reloginInformation->findFirstChildElementChecked("keyIdentityHalf")->getTextDecoded();
           keyLockboxHalf = reloginInformation->findFirstChildElementChecked("keyLockboxHalf")->getTextDecoded();
         } catch (CheckFailed &) {
           return AccountPtr();
         }
 
-        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
-        if (!network) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + domain)
+        IBootstrappedNetworkPtr grantNetwork = IBootstrappedNetwork::prepare(grantDomain);
+        if (!grantNetwork) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + grantDomain)
           return AccountPtr();
         }
 
-        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(network);
+        IBootstrappedNetworkPtr lockboxNetwork = IBootstrappedNetwork::prepare(lockboxDomain);
+        if (!lockboxNetwork) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + lockboxDomain)
+          return AccountPtr();
+        }
+
+        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, IServiceNamespaceGrant::createServiceNamespaceGrantFrom(grantNetwork), namespaceGrantOuterFrameURLUponReload, grantID, grantSecret);
+        ZS_THROW_BAD_STATE_IF(!pThis->mGrantSession)
+
+        pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(lockboxNetwork);
         ZS_THROW_BAD_STATE_IF(!pThis->mLockboxService)
 
-        pThis->mLockboxOuterFrameURLUponReload = String(lockboxOuterFrameURLUponReload);
-        pThis->mLockboxGrantID = grantID;
         pThis->mLockboxForceCreateNewAccount = false;
 
-        pThis->mLockboxSession = IServiceLockboxSession::relogin(pThis, pThis->mLockboxService, lockboxOuterFrameURLUponReload, accountID, grantID, keyIdentityHalf, keyLockboxHalf);
+        pThis->mLockboxSession = IServiceLockboxSession::relogin(pThis, pThis->mLockboxService, pThis->mGrantSession, accountID, keyIdentityHalf, keyLockboxHalf);
         pThis->init();
 
         if (!pThis->mLockboxSession) {
@@ -258,6 +280,88 @@ namespace hookflash
         ZS_LOG_DEBUG(log("getting account state") + getDebugValueString())
 
         return mCurrentState;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr Account::getReloginInformation() const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (!mLockboxService) {
+          ZS_LOG_WARNING(Detail, log("missing lockbox domain information"))
+          return ElementPtr();
+        }
+
+        String lockboxDomain = mLockboxService->getBootstrappedNetwork()->getDomain();
+        if (lockboxDomain.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("missing lockbox domain information"))
+          return ElementPtr();
+        }
+
+        if (!mGrantSession) {
+          ZS_LOG_WARNING(Detail, log("missing namespace grant information"))
+          return ElementPtr();
+        }
+
+        IServiceNamespaceGrantPtr grantService = mGrantSession->getService();
+        if (!grantService) {
+          ZS_LOG_WARNING(Detail, log("missing namespace grant domain information"))
+          return ElementPtr();
+        }
+
+        String grantDomain = grantService->getBootstrappedNetwork()->getDomain();
+        if (grantDomain.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("missing namespace grant domain information"))
+          return ElementPtr();
+        }
+
+        if (!mLockboxSession) {
+          ZS_LOG_WARNING(Detail, log("missing lockbox session information"))
+          return ElementPtr();
+        }
+
+        String accountID = mLockboxSession->getAccountID();
+        if (accountID.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("missing account ID information"))
+          return ElementPtr();
+        }
+
+        String grantID = mGrantSession->getGrantID();
+        if (grantID.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("missing grant ID information"))
+          return ElementPtr();
+        }
+
+        String grantSecret = mGrantSession->getGrantID();
+        if (grantSecret.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("missing grant secret information"))
+          return ElementPtr();
+        }
+
+        SecureByteBlockPtr identityHalf;
+        SecureByteBlockPtr lockboxHalf;
+        mLockboxSession->getLockboxKey(identityHalf, lockboxHalf);
+
+        if ((!identityHalf) &&
+            (!lockboxHalf)) {
+          ZS_LOG_WARNING(Detail, log("missing lockbox key information"))
+          return ElementPtr();
+        }
+
+        String keyIdentityHalf = stack::IHelper::convertToString(*identityHalf);
+        String keyLockboxHalf = stack::IHelper::convertToString(*lockboxHalf);
+
+        ElementPtr reloginEl = Element::create("relogin");
+
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxDomain", lockboxDomain));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantDomain", grantDomain));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accountID", accountID));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantID", grantID));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantSecret", grantSecret));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", keyIdentityHalf));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", keyLockboxHalf));
+
+        return reloginEl;
       }
 
       //-----------------------------------------------------------------------
@@ -383,44 +487,44 @@ namespace hookflash
       String Account::getInnerBrowserWindowFrameURL() const
       {
         AutoRecursiveLock lock(getLock());
-        if (!mLockboxSession) {
+        if (!mGrantSession) {
           ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
           return String();
         }
-        return mLockboxSession->getInnerBrowserWindowFrameURL();
+        return mGrantSession->getInnerBrowserWindowFrameURL();
       }
 
       //-----------------------------------------------------------------------
       void Account::notifyBrowserWindowVisible()
       {
         AutoRecursiveLock lock(getLock());
-        if (!mLockboxSession) {
+        if (!mGrantSession) {
           ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
           return;
         }
-        mLockboxSession->notifyBrowserWindowVisible();
+        mGrantSession->notifyBrowserWindowVisible();
       }
 
       //-----------------------------------------------------------------------
       void Account::notifyBrowserWindowClosed()
       {
         AutoRecursiveLock lock(getLock());
-        if (!mLockboxSession) {
+        if (!mGrantSession) {
           ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
           return;
         }
-        mLockboxSession->notifyBrowserWindowClosed();
+        mGrantSession->notifyBrowserWindowClosed();
       }
 
       //-----------------------------------------------------------------------
       ElementPtr Account::getNextMessageForInnerBrowerWindowFrame()
       {
         AutoRecursiveLock lock(getLock());
-        if (!mLockboxSession) {
+        if (!mGrantSession) {
           ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
           return ElementPtr();
         }
-        DocumentPtr doc = mLockboxSession->getNextMessageForInnerBrowerWindowFrame();
+        DocumentPtr doc = mGrantSession->getNextMessageForInnerBrowerWindowFrame();
         if (!doc) {
           ZS_LOG_WARNING(Detail, log("lockbox has no message pending for inner browser window frame"))
           return ElementPtr();
@@ -434,13 +538,13 @@ namespace hookflash
         ZS_THROW_INVALID_ARGUMENT_IF(!unparsedMessage)
 
         AutoRecursiveLock lock(getLock());
-        if (!mLockboxSession) {
+        if (!mGrantSession) {
           ZS_LOG_WARNING(Detail, log("lockbox session has not yet been created"))
           return;
         }
         DocumentPtr doc = Document::create();
         doc->adoptAsLastChild(unparsedMessage);
-        mLockboxSession->handleMessageFromInnerBrowserWindowFrame(doc);
+        mGrantSession->handleMessageFromInnerBrowserWindowFrame(doc);
       }
 
       //-----------------------------------------------------------------------
@@ -657,6 +761,13 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
+      stack::IServiceNamespaceGrantSessionPtr Account::getNamespaceGrantSession() const
+      {
+        AutoRecursiveLock lock(mLock);
+        return mGrantSession;
+      }
+
+      //-----------------------------------------------------------------------
       stack::IServiceLockboxSessionPtr Account::getLockboxSession() const
       {
         AutoRecursiveLock lock(mLock);
@@ -676,7 +787,7 @@ namespace hookflash
 
         if (!mLockboxSession) {
           ZS_LOG_DEBUG(log("creating lockbox session"))
-          mLockboxSession = IServiceLockboxSession::login(mThisWeak.lock(), mLockboxService, identity->forAccount().getSession(), mLockboxOuterFrameURLUponReload, mLockboxGrantID, mLockboxForceCreateNewAccount);
+          mLockboxSession = IServiceLockboxSession::login(mThisWeak.lock(), mLockboxService, mGrantSession, identity->forAccount().getSession(), mLockboxForceCreateNewAccount);
         } else {
           ZS_LOG_DEBUG(log("associating to existing lockbox session"))
           ServiceIdentitySessionList add;
@@ -846,9 +957,9 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       void Account::onServiceLockboxSessionStateChanged(
-                                                            IServiceLockboxSessionPtr session,
-                                                            SessionStates state
-                                                            )
+                                                        IServiceLockboxSessionPtr session,
+                                                        LockboxSessionStates state
+                                                        )
       {
         AutoRecursiveLock lock(mLock);
         step();
@@ -882,18 +993,36 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      void Account::onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session)
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Account => IServiceNamespaceGrantSessionDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Account::onServiceNamespaceGrantSessionStateChanged(
+                                                               IServiceNamespaceGrantSessionPtr session,
+                                                               GrantSessionStates state
+                                                               )
+      {
+        AutoRecursiveLock lock(mLock);
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::onServiceNamespaceGrantSessionPendingMessageForInnerBrowserWindowFrame(IServiceNamespaceGrantSessionPtr session)
       {
         AutoRecursiveLock lock(mLock);
 
-        if (session != mLockboxSession) {
-          ZS_LOG_WARNING(Detail, log("notified about obsolete peer contact session"))
+        if (session != mGrantSession) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete namespace grant session"))
           return;
         }
 
         if ((isShuttingDown()) ||
             (isShutdown())) {
-          ZS_LOG_WARNING(Detail, log("notified of association change during shutdown"))
+          ZS_LOG_WARNING(Detail, log("notified pending messages during shutdown"))
           return;
         }
 
@@ -1037,16 +1166,21 @@ namespace hookflash
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("error code", 0 != mLastErrorCode ? Stringize<typeof(mLastErrorCode)>(mLastErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
+               Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("conversation thread delegate", mConversationThreadDelegate ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("call delegate", mCallDelegate ? String("true") : String(), firstTime) +
                stack::IAccount::toDebugString(mStackAccount) +
+               stack::IServiceNamespaceGrantSession::toDebugString(mGrantSession) +
                stack::IServiceLockboxSession::toDebugString(mLockboxSession) +
-               Helper::getDebugValue("lockbox outer frame URL upon reload", mLockboxOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("lockbox grant ID", mLockboxGrantID, firstTime) +
                Helper::getDebugValue("force new lockbox account", mLockboxForceCreateNewAccount ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("identities", mIdentities.size() > 0 ? Stringize<IdentityMap::size_type>(mIdentities.size()).string() : String(), firstTime) +
                stack::IPeerSubscription::toDebugString(mPeerSubscription) +
                IContact::toDebugString(mSelfContact) +
-               Helper::getDebugValue("identities", mIdentities.size() > 0 ? Stringize<size_t>(mIdentities.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<size_t>(mContacts.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? Stringize<size_t>(mConversationThreads.size()).string() : String(), firstTime);
+               Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<ContactMap::size_type>(mContacts.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("contact subscription", mContactSubscriptions.size() > 0 ? Stringize<ContactMap::size_type>(mContactSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? Stringize<ConversationThreadMap::size_type>(mConversationThreads.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("call transport", mCallTransport ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("subscribers permission document", mSubscribersPermissionDocument ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1094,6 +1228,10 @@ namespace hookflash
 
         setState(AccountState_Shutdown);
 
+        if (mGrantSession) {
+          mGrantSession->cancel();    // do not reset
+        }
+
         if (mLockboxSession) {
           mLockboxSession->cancel();  // do not reset
         }
@@ -1123,6 +1261,7 @@ namespace hookflash
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepLoginIdentityAssociated()) return;
+        if (!stepGrantSession()) return;
         if (!stepLockboxSession()) return;
         if (!stepStackAccount()) return;
         if (!stepSelfContact()) return;
@@ -1151,6 +1290,62 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      bool Account::stepGrantSession()
+      {
+        WORD errorCode = 0;
+        String reason;
+
+        IServiceNamespaceGrantSession::SessionStates state = mGrantSession->getState(&errorCode, &reason);
+
+        switch (state) {
+          case IServiceNamespaceGrantSession::SessionState_Pending:
+          {
+            ZS_LOG_DEBUG(log("namespace grant session is pending"))
+            setState(AccountState_Pending);
+            return false;
+          }
+          case IServiceNamespaceGrantSession::SessionState_WaitingForAssociationToAllServices:
+          {
+            ZS_LOG_DEBUG(log("namespace grant session is waiting for association to all services"))
+            mGrantSession->notifyAssocaitedToAllServicesComplete(); // but actually, it's ready now so inform it
+            IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+            return false;
+          }
+          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeLoaded:
+          {
+            ZS_LOG_DEBUG(log("namespace grant is waiting for the browser window to be loaded"))
+            setState(AccountState_WaitingForBrowserWindowToBeLoaded);
+            return false;
+          }
+          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
+          {
+            ZS_LOG_DEBUG(log("namespace grant is waiting for browser window to be made visible"))
+            setState(AccountState_WaitingForBrowserWindowToBeMadeVisible);
+            return false;
+          }
+          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToClose:
+          {
+            ZS_LOG_DEBUG(log("namespace grant is waiting for browser window to close"))
+            setState(AccountState_WaitingForBrowserWindowToClose);
+            return false;
+          }
+          case IServiceNamespaceGrantSession::SessionState_Ready: {
+            ZS_LOG_DEBUG(log("namespace grant is ready"))
+            return true;
+          }
+          case IServiceNamespaceGrantSession::SessionState_Shutdown:  {
+            ZS_LOG_ERROR(Detail, log("namespace grant is session shutdown"))
+            setError(errorCode, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("waiting for lockbox session to be ready"))
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
       bool Account::stepLockboxSession()
       {
         WORD errorCode = 0;
@@ -1169,24 +1364,6 @@ namespace hookflash
           {
             ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
             setState(AccountState_PendingPeerFilesGeneration);
-            return false;
-          }
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeLoaded:
-          {
-            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
-            setState(AccountState_WaitingForBrowserWindowToBeLoaded);
-            return false;
-          }
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
-          {
-            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
-            setState(AccountState_WaitingForBrowserWindowToBeMadeVisible);
-            return false;
-          }
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToClose:
-          {
-            ZS_LOG_DEBUG(log("lockbox is pending and generating peer files"))
-            setState(AccountState_WaitingForBrowserWindowToClose);
             return false;
           }
           case IServiceLockboxSession::SessionState_Ready: {
@@ -2255,13 +2432,15 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *outerFrameURLUponReload,
+                                const char *namespaceGrantOuterFrameURLUponReload,
+                                const char *namespaceGrantServiceDomain,
+                                const char *grantID,
+                                const char *grantSecret,
                                 const char *lockboxServiceDomain,
-                                const char *lockboxGrantID,
                                 bool forceCreateNewLockboxAccount
                                 )
     {
-      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, lockboxServiceDomain, lockboxGrantID, forceCreateNewLockboxAccount);
+      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, namespaceGrantServiceDomain, grantID, grantSecret, lockboxServiceDomain, forceCreateNewLockboxAccount);
     }
 
     //-------------------------------------------------------------------------
@@ -2269,11 +2448,11 @@ namespace hookflash
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  const char *outerFrameURLUponReload,
+                                  const char *namespaceGrantOuterFrameURLUponReload,
                                   ElementPtr reloginInformation
                                   )
     {
-      return internal::IAccountFactory::singleton().relogin(delegate, conversationThreadDelegate, callDelegate, outerFrameURLUponReload, reloginInformation);
+      return internal::IAccountFactory::singleton().relogin(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, reloginInformation);
     }
   }
 }

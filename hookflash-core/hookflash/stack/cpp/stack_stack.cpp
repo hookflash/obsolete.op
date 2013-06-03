@@ -35,6 +35,9 @@
 #include <hookflash/stack/message/certificates/MessageFactoryCertificates.h>
 #include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
 #include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 #include <hookflash/stack/message/peer/MessageFactoryPeer.h>
 #include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
@@ -59,6 +62,9 @@ namespace hookflash
       using message::certificates::MessageFactoryCertificates;
       using message::identity::MessageFactoryIdentity;
       using message::identity_lookup::MessageFactoryIdentityLookup;
+      using message::identity_lockbox::MessageFactoryIdentityLockbox;
+      using message::namespace_grant::MessageFactoryNamespaceGrant;
+      using message::rolodex::MessageFactoryRolodex;
       using message::peer::MessageFactoryPeer;
       using message::peer_common::MessageFactoryPeerCommon;
       using message::peer_finder::MessageFactoryPeerFinder;
@@ -165,6 +171,9 @@ namespace hookflash
         MessageFactoryCertificates::singleton();
         MessageFactoryIdentity::singleton();
         MessageFactoryIdentityLookup::singleton();
+        MessageFactoryIdentityLockbox::singleton();
+        MessageFactoryNamespaceGrant::singleton();
+        MessageFactoryRolodex::singleton();
         MessageFactoryPeer::singleton();
         MessageFactoryPeerCommon::singleton();
         MessageFactoryPeerFinder::singleton();

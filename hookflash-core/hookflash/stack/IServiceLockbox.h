@@ -69,9 +69,6 @@ namespace hookflash
       {
         SessionState_Pending,
         SessionState_PendingPeerFilesGeneration,
-        SessionState_WaitingForBrowserWindowToBeLoaded,
-        SessionState_WaitingForBrowserWindowToBeMadeVisible,
-        SessionState_WaitingForBrowserWindowToClose,
         SessionState_Ready,
         SessionState_Shutdown,
       };
@@ -81,19 +78,17 @@ namespace hookflash
 
       static IServiceLockboxSessionPtr login(
                                              IServiceLockboxSessionDelegatePtr delegate,
-                                             IServiceLockboxPtr ServiceLockbox,
+                                             IServiceLockboxPtr serviceLockbox,
+                                             IServiceNamespaceGrantSessionPtr grantSession,
                                              IServiceIdentitySessionPtr identitySession,
-                                             const char *outerFrameURLUponReload,
-                                             const char *lockboxGrantID,
                                              bool forceNewAccount = false
                                              );
 
       static IServiceLockboxSessionPtr relogin(
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr serviceLockbox,
-                                               const char *outerFrameURLUponReload,
+                                               IServiceNamespaceGrantSessionPtr grantSession,
                                                const char *lockboxAccountID,
-                                               const char *lockboxGrantID,
                                                const char *identityHalfLockboxKey,
                                                const char *lockboxHalfLockboxKey
                                                );
@@ -124,14 +119,6 @@ namespace hookflash
                                        const ServiceIdentitySessionList &identitiesToRemove
                                        ) = 0;
 
-      virtual String getInnerBrowserWindowFrameURL() const = 0;
-
-      virtual void notifyBrowserWindowVisible() = 0;
-      virtual void notifyBrowserWindowClosed() = 0;
-
-      virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame() = 0;
-      virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;
-
       virtual void cancel() = 0;
     };
 
@@ -152,8 +139,6 @@ namespace hookflash
                                                        SessionStates state
                                                        ) = 0;
       virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session) = 0;
-
-      virtual void onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session) = 0;
     };
   }
 }
@@ -163,5 +148,4 @@ ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionPtr, IServiceLo
 ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onServiceLockboxSessionStateChanged, IServiceLockboxSessionPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onServiceLockboxSessionAssociatedIdentitiesChanged, IServiceLockboxSessionPtr)
-ZS_DECLARE_PROXY_METHOD_1(onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame, IServiceLockboxSessionPtr)
 ZS_DECLARE_PROXY_END()

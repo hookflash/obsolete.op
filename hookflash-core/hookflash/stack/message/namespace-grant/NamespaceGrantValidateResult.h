@@ -31,10 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 
-#include <utility>
 #include <list>
 
 namespace hookflash
@@ -43,42 +42,42 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
-        class LockboxAdminWindowRequest : public MessageRequest
+        class NamespaceGrantValidateResult : public MessageResult
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_Ready,
-            AttributeType_Visible,
+            AttributeType_GrantInfo = AttributeType_Last + 1,
+            AttributeType_NamespaceInfos,
           };
 
         public:
-          static LockboxAdminWindowRequestPtr convert(MessagePtr message);
+          static NamespaceGrantValidateResultPtr convert(MessagePtr message);
 
-          static LockboxAdminWindowRequestPtr create(
-                                                    ElementPtr root,
-                                                    IMessageSourcePtr messageSource
-                                                    );
+          static NamespaceGrantValidateResultPtr create(
+                                                        ElementPtr root,
+                                                        IMessageSourcePtr messageSource
+                                                        );
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxAdminWindow;}
+          virtual Methods method() const                    {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantValidate;}
 
-          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentityLockbox::singleton();}
+          virtual IMessageFactoryPtr factory() const        {return MessageFactoryNamespaceGrant::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          bool ready() const                          {return (mReady > 0);}
-          void ready(bool &val)                       {mReady = (val ? 1: 0);}
+          const GrantInfo &grantInfo() const                {return mGrantInfo;}
+          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
 
-          bool visible() const                        {return (mVisible > 0);}
-          void visible(bool &val)                     {mVisible = (val ? 1: 0);}
+          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
+          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
 
         protected:
-          LockboxAdminWindowRequest();
+          NamespaceGrantValidateResult();
 
-          int mReady;
-          int mVisible;
+          GrantInfo mGrantInfo;
+          NamespaceInfoMap mNamespaceInfos;
         };
       }
     }

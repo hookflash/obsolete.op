@@ -78,6 +78,7 @@ namespace hookflash
           switch (type)
           {
             case AttributeType_LockboxInfo:      return mLockboxInfo.hasData();
+            case AttributeType_NamespaceInfos:   return (mNamespaceInfos.size() > 0);
             default:                             break;
           }
           return false;
@@ -104,26 +105,16 @@ namespace hookflash
             root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
-          if (hasAttribute(AttributeType_GrantID)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
+          ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
+
+          for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
+          {
+            const NamespaceInfo &namespaceInfo = (*iter).second;
+            namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
           }
 
-          if (hasAttribute(AttributeType_GrantID)) {
-            ElementPtr grantEl = IMessageHelper::createElementWithID("grant", mGrantID);
-
-            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
-
-            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
-            {
-              const NamespaceInfo &namespaceInfo = (*iter).second;
-              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
-            }
-
-            if (namespacesEl->hasChildren()) {
-              grantEl->adoptAsLastChild(namespacesEl);
-            }
-
-            root->adoptAsLastChild(grantEl);
+          if (namespacesEl->hasChildren()) {
+            root->adoptAsLastChild(namespacesEl);
           }
 
           return ret;

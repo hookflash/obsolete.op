@@ -264,17 +264,17 @@ namespace hookflash
       String IdentityInfo::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("disposition", IdentityInfo::Disposition_NA != mDisposition ? String(toString(mDisposition)) : String(), firstTime) +
-               Helper::getDebugValue("access token", mAccessToken, firstTime) +
-               Helper::getDebugValue("access secret", mAccessSecret, firstTime) +
-               Helper::getDebugValue("access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
-               Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime) +
-               Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
-               Helper::getDebugValue("relogin key", mReloginKey, firstTime) +
+        return Helper::getDebugValue("identity disposition", IdentityInfo::Disposition_NA != mDisposition ? String(toString(mDisposition)) : String(), firstTime) +
+               Helper::getDebugValue("identity access token", mAccessToken, firstTime) +
+               Helper::getDebugValue("identity access secret", mAccessSecret, firstTime) +
+               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("identity access secret proof", mAccessSecretProof, firstTime) +
+               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("identity relogin key", mReloginKey, firstTime) +
                Helper::getDebugValue("identity base", mBase, firstTime) +
                Helper::getDebugValue("identity", mURI, firstTime) +
                Helper::getDebugValue("identity provider", mProvider, firstTime) +
-               Helper::getDebugValue("stable ID", mStableID, firstTime) +
+               Helper::getDebugValue("identity stable ID", mStableID, firstTime) +
                IPeerFilePublic::toDebugString(mPeerFilePublic, !firstTime) +
                Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
                Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mPriority).string() : String(), firstTime) +
@@ -284,7 +284,7 @@ namespace hookflash
                Helper::getDebugValue("name", mName, firstTime) +
                Helper::getDebugValue("profile", mProfile, firstTime) +
                Helper::getDebugValue("vprofile", mVProfile, firstTime) +
-               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? Stringize<typeof(size_t)>(mAvatars.size()).string() : String(), firstTime);
+               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? Stringize<AvatarList::size_type>(mAvatars.size()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -408,7 +408,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark message::IdentityInfo
+      #pragma mark message::LockboxInfo
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -434,17 +434,17 @@ namespace hookflash
       String LockboxInfo::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("domain", mDomain, firstTime) +
-               Helper::getDebugValue("account ID", mAccountID, firstTime) +
-               Helper::getDebugValue("access token", mAccessToken, firstTime) +
-               Helper::getDebugValue("access secret", mAccessSecret, firstTime) +
-               Helper::getDebugValue("access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
-               Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime) +
-               Helper::getDebugValue("access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
-               Helper::getDebugValue("key (identity half)", mKeyIdentityHalf ? String((const char *) mKeyIdentityHalf->BytePtr()) : String(), firstTime) +
-               Helper::getDebugValue("key (lockbox half)", mKeyLockboxHalf ? String((const char *) mKeyLockboxHalf->BytePtr()) : String(), firstTime) +
-               Helper::getDebugValue("hash", mHash, firstTime) +
-               Helper::getDebugValue("reset", mResetFlag ? "true" : "false", firstTime);
+        return Helper::getDebugValue("lockbox domain", mDomain, firstTime) +
+               Helper::getDebugValue("lockbox account ID", mAccountID, firstTime) +
+               Helper::getDebugValue("lockbox access token", mAccessToken, firstTime) +
+               Helper::getDebugValue("lockbox access secret", mAccessSecret, firstTime) +
+               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("lockbox access secret proof", mAccessSecretProof, firstTime) +
+               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("lockbox key (identity half)", mKeyIdentityHalf ? String((const char *) mKeyIdentityHalf->BytePtr()) : String(), firstTime) +
+               Helper::getDebugValue("lockbox key (lockbox half)", mKeyLockboxHalf ? String((const char *) mKeyLockboxHalf->BytePtr()) : String(), firstTime) +
+               Helper::getDebugValue("lockbox hash", mHash, firstTime) +
+               Helper::getDebugValue("lockbox reset", mResetFlag ? "true" : "false", firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -512,6 +512,51 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark message::GrantInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool GrantInfo::hasData() const
+      {
+        return ((mID.hasData()) ||
+                (mSecret.hasData()) ||
+                (mSecretProof.hasData()) ||
+                (Time() != mSecretProofExpires) ||
+                (Time() != mExpires) ||
+                (mDomain.hasData()));
+      }
+
+      //-----------------------------------------------------------------------
+      String GrantInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("grant ID", mID, firstTime) +
+               Helper::getDebugValue("grant secret", mSecret, firstTime) +
+               Helper::getDebugValue("grant secret proof", mSecretProof, firstTime) +
+               Helper::getDebugValue("secret proof expires", Time() != mSecretProofExpires ? IMessageHelper::timeToString(mSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("grant expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
+               Helper::getDebugValue("grant domain", mDomain, firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void GrantInfo::mergeFrom(
+                                const GrantInfo &source,
+                                bool overwriteExisting
+                                )
+      {
+        merge(mID, source.mID, overwriteExisting);
+        merge(mSecret, source.mSecret, overwriteExisting);
+        merge(mSecretProof, source.mSecretProof, overwriteExisting);
+        merge(mSecretProofExpires, source.mSecretProofExpires, overwriteExisting);
+        merge(mExpires, source.mExpires, overwriteExisting);
+        merge(mDomain, source.mDomain, overwriteExisting);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark message::NamespaceInfo
       #pragma mark
 
@@ -539,6 +584,67 @@ namespace hookflash
         merge(mURL, source.mURL, overwriteExisting);
         merge(mLastUpdated, source.mLastUpdated, overwriteExisting);
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark message::RolodexInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool RolodexInfo::hasData() const
+      {
+        return ((mServerToken.hasData()) ||
+
+                (mAccessToken.hasData()) ||
+                (mAccessSecret.hasData()) ||
+                (Time() != mAccessSecretExpires) ||
+                (mAccessSecretProof.hasData()) ||
+                (Time() != mAccessSecretProofExpires) ||
+
+                (mVersion.hasData()) ||
+                (Time() != mUpdateNext) ||
+
+                (mRefreshFlag));
+      }
+
+      //-----------------------------------------------------------------------
+      String RolodexInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("rolodex server token", mServerToken, firstTime) +
+               Helper::getDebugValue("rolodex access token", mAccessToken, firstTime) +
+               Helper::getDebugValue("rolodex access secret", mAccessSecret, firstTime) +
+               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("rolodex access secret proof", mAccessSecretProof, firstTime) +
+               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("rolodex version", mVersion, firstTime) +
+               Helper::getDebugValue("rolodex update next", Time() != mUpdateNext ? IMessageHelper::timeToString(mUpdateNext) : String(), firstTime) +
+               Helper::getDebugValue("refresh", mRefreshFlag ? "true" : "false", firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void RolodexInfo::mergeFrom(
+                                  const RolodexInfo &source,
+                                  bool overwriteExisting
+                                  )
+      {
+        merge(mServerToken, source.mServerToken, overwriteExisting);
+
+        merge(mAccessToken, source.mAccessToken, overwriteExisting);
+        merge(mAccessSecret, source.mAccessSecret, overwriteExisting);
+        merge(mAccessSecretExpires, source.mAccessSecretExpires, overwriteExisting);
+        merge(mAccessSecretProof, source.mAccessSecretProof, overwriteExisting);
+        merge(mAccessSecretProofExpires, source.mAccessSecretProofExpires, overwriteExisting);
+
+        merge(mVersion, source.mVersion, overwriteExisting);
+        merge(mUpdateNext, source.mUpdateNext, overwriteExisting);
+
+        merge(mRefreshFlag, source.mRefreshFlag, overwriteExisting);
+      }
+
     }
   }
 }

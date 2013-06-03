@@ -171,6 +171,12 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      BootstrappedNetworkPtr BootstrappedNetwork::convert(IServiceNamespaceGrantPtr network)
+      {
+        return boost::dynamic_pointer_cast<BootstrappedNetwork>(network);
+      }
+
+      //-----------------------------------------------------------------------
       BootstrappedNetworkPtr BootstrappedNetwork::convert(IServiceSaltPtr network)
       {
         return boost::dynamic_pointer_cast<BootstrappedNetwork>(network);
@@ -429,6 +435,20 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       IServiceLockboxPtr BootstrappedNetwork::createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
+      {
+        return BootstrappedNetwork::convert(bootstrappedNetwork);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark BootstrappedNetwork => IServiceNamespaceGrant
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IServiceNamespaceGrantPtr BootstrappedNetwork::createServiceNamespaceGrantFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
       {
         return BootstrappedNetwork::convert(bootstrappedNetwork);
       }
@@ -1158,6 +1178,19 @@ namespace hookflash
     IServiceLockboxPtr IServiceLockbox::createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
     {
       return internal::BootstrappedNetwork::createServiceLockboxFrom(bootstrappedNetwork);
+    }
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IServiceNamespaceGrant
+    #pragma mark
+
+    IServiceNamespaceGrantPtr IServiceNamespaceGrant::createServiceNamespaceGrantFrom(IBootstrappedNetworkPtr bootstrappedNetwork)
+    {
+      return internal::BootstrappedNetwork::createServiceNamespaceGrantFrom(bootstrappedNetwork);
     }
 
     //-------------------------------------------------------------------------

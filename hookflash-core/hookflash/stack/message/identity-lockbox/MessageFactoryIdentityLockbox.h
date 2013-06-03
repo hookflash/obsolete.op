@@ -60,17 +60,10 @@ namespace hookflash
             Method_LockboxAccess,
             Method_LockboxAccessValidate,
             Method_LockboxIdentitiesUpdate,
-            Method_LockboxNamespaceGrantWindow,
-            Method_LockboxNamespaceGrantStart,
-            Method_LockboxNamespaceGrantComplete,
             Method_LockboxContentGet,
             Method_LockboxContentSet,
-            Method_LockboxAdminWindow,
-            Method_LockboxAdminStart,
-            Method_LockboxAdminComplete,
-            Method_LockboxNamespacePreappovedGrant,
 
-            Method_Last = Method_LockboxNamespacePreappovedGrant,
+            Method_Last = Method_LockboxContentSet,
           };
 
         protected:

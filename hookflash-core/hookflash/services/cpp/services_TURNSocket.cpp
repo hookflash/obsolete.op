@@ -1220,8 +1220,8 @@ namespace hookflash
                Helper::getDebugValue("nonce", mNonce, firstTime) +
                Helper::getDebugValue("udp dns query", mTURNUDPQuery ? String("true") : String(), firstTime) +
                Helper::getDebugValue("tcp dns query", mTURNTCPQuery ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("udp dns srv records", mTURNUDPSRVResult ? (mTURNUDPSRVResult->mRecords.size() > 0 ? Stringize<typeof(size_t)>(mTURNUDPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
-               Helper::getDebugValue("tcp dns srv records", mTURNTCPSRVResult ? (mTURNTCPSRVResult->mRecords.size() > 0 ? Stringize<typeof(size_t)>(mTURNTCPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
+               Helper::getDebugValue("udp dns srv records", mTURNUDPSRVResult ? (mTURNUDPSRVResult->mRecords.size() > 0 ? Stringize<size_t>(mTURNUDPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
+               Helper::getDebugValue("tcp dns srv records", mTURNTCPSRVResult ? (mTURNTCPSRVResult->mRecords.size() > 0 ? Stringize<size_t>(mTURNTCPSRVResult->mRecords.size()).string() : String()) : String(), firstTime) +
                Helper::getDebugValue("use channel binding", mUseChannelBinding ? String("true") : String(), firstTime) +
                Helper::getDebugValue("allocated response IP", mAllocateResponseIP.string(), firstTime) +
                Helper::getDebugValue("relayed IP", mRelayedIP.string(), firstTime) +
@@ -1244,15 +1244,15 @@ namespace hookflash
                Helper::getDebugValue("last send data to server", Time() != mLastSentDataToServer ? Stringize<Time>(mLastSentDataToServer).string() : String(), firstTime) +
                Helper::getDebugValue("last refreash timer was sent", Time() != mLastRefreshTimerWasSentAt ? Stringize<Time>(mLastRefreshTimerWasSentAt).string() : String(), firstTime) +
                Helper::getDebugValue("deallocate requester", mDeallocateRequester ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("servers", mServers.size() > 0 ? Stringize<typeof(size_t)>(mServers.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("servers", mServers.size() > 0 ? Stringize<size_t>(mServers.size()).string() : String(), firstTime) +
                Helper::getDebugValue("activation timer", mActivationTimer ? String("true") : String(), firstTime) +
                Helper::getDebugValue("permissions", mPermissions.size() > 0 ? Stringize<typeof(size_t)>(mPermissions.size()).string() : String(), firstTime) +
                Helper::getDebugValue("permission timer", mPermissionTimer ? String("true") : String(), firstTime) +
                Helper::getDebugValue("permission requester", mPermissionRequester ? String("true") : String(), firstTime) +
                Helper::getDebugValue("permission max capacity", 0 != mPermissionRequesterMaxCapacity ? Stringize<typeof(mPermissionRequesterMaxCapacity)>(mPermissionRequesterMaxCapacity).string() : String(), firstTime) +
-               Helper::getDebugValue("channel IP map", mChannelIPMap.size() > 0 ? Stringize<typeof(size_t)>(mChannelIPMap.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("channel number map", mChannelNumberMap.size() > 0 ? Stringize<typeof(size_t)>(mChannelNumberMap.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("recycle buffers", mRecycledBuffers.size() > 0 ? Stringize<typeof(size_t)>(mRecycledBuffers.size()).string() : String(), firstTime);
+               Helper::getDebugValue("channel IP map", mChannelIPMap.size() > 0 ? Stringize<size_t>(mChannelIPMap.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("channel number map", mChannelNumberMap.size() > 0 ? Stringize<size_t>(mChannelNumberMap.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("recycle buffers", mRecycledBuffers.size() > 0 ? Stringize<size_t>(mRecycledBuffers.size()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

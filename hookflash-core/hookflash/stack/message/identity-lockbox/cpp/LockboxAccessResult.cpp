@@ -67,25 +67,6 @@ namespace hookflash
 
           ret->mLockboxInfo = MessageHelper::createLockbox(root->findFirstChildElement("lockbox"));
 
-          ElementPtr grantEl = root->findFirstChildElement("grant");
-          if (grantEl) {
-            ret->mGrantID = IMessageHelper::getAttributeID(grantEl);
-
-            ElementPtr namespacesEl = grantEl->findFirstChildElement("namespaces");
-            if (namespacesEl) {
-              ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
-              while (namespaceEl) {
-                NamespaceInfo info;
-                info.mURL = IMessageHelper::getAttributeID(namespaceEl);
-                info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttributeID(namespaceEl));
-                if (info.mURL.hasData()) {
-                  ret->mNamespaceInfos[info.mURL] = info;
-                }
-                namespaceEl = namespaceEl->findNextSiblingElement("namespace");
-              }
-            }
-          }
-
           ElementPtr identitiesEl = root->findFirstChildElement("identities");
           if (identitiesEl) {
             ElementPtr identityEl = identitiesEl->findFirstChildElement("identity");
@@ -107,8 +88,6 @@ namespace hookflash
           switch (type)
           {
             case AttributeType_LockboxInfo:           return mLockboxInfo.hasData();
-            case AttributeType_GrantID:               return mGrantID.hasData();
-            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
             case AttributeType_Identities:            return (mIdentities.size() > 0);
             default:                                  break;
           }

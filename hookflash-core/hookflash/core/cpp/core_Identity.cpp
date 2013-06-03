@@ -201,17 +201,18 @@ namespace hookflash
         provider = IServiceIdentity::createServiceIdentityFrom(network);
         ZS_THROW_BAD_STATE_IF(!provider)
 
-        IServiceLockboxSessionPtr lockbox = account->forIdentity().getLockboxSession();
+        IServiceNamespaceGrantSessionPtr grantSession = account->forIdentity().getNamespaceGrantSession();
+        IServiceLockboxSessionPtr lockboxSession = account->forIdentity().getLockboxSession();
 
         if (IServiceIdentity::isValid(identity)) {
           // this is a fully validated identity scenario
-          pThis->mSession = IServiceIdentitySession::loginWithIdentity(lockbox, pThis, outerFrameURLUponReload, identityURI_or_identityBaseURI, provider);
+          pThis->mSession = IServiceIdentitySession::loginWithIdentity(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identityURI_or_identityBaseURI);
         } else {
           if (!IServiceIdentity::isValidBase(identity)) {
             ZS_LOG_ERROR(Detail, pThis->log("identit specified is not valid") + ", identity=" + identity + ", domain=" + domain)
             return IdentityPtr();
           }
-          pThis->mSession->loginWithIdentityProvider(lockbox, pThis, outerFrameURLUponReload, provider, identity);
+          pThis->mSession->loginWithIdentityProvider(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identity);
         }
 
         pThis->init();

@@ -879,10 +879,10 @@ namespace hookflash
           if ((mIsPost) &&
               (mPostData.size() > 0)) {
             ZS_LOG_BASIC(log("INFO") + ", content type=" + mMimeType)
-            ZS_LOG_BASIC(log("INFO") + ", posted length=" + Stringize<typeof(SecureByteBlock::size_type)>(mPostData.size()-sizeof(char)).string()) // added extra NUL to buffer so must subtract to get proper length
+            ZS_LOG_BASIC(log("INFO") + ", posted length=" + Stringize<SecureByteBlock::size_type>(mPostData.size()-sizeof(char)).string()) // added extra NUL to buffer so must subtract to get proper length
           }
           if (Duration() != mTimeout) {
-            ZS_LOG_BASIC(log("INFO") + ", timeout (ms)=" + Stringize<typeof(Duration::tick_type)>(mTimeout.total_milliseconds()).string())
+            ZS_LOG_BASIC(log("INFO") + ", timeout (ms)=" + Stringize<Duration::tick_type>(mTimeout.total_milliseconds()).string())
           }
           ZS_LOG_BASIC("------------------------------------HTTP INFO----------------------------------")
           if (mIsPost) {

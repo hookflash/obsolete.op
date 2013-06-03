@@ -104,40 +104,30 @@ namespace hookflash
             root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
-          if (hasAttribute(AttributeType_GrantID)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
+          ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
+
+          for (NamespaceURLNameValueMap::iterator iter = mNamespaceURLNameValues.begin(); iter != mNamespaceURLNameValues.end(); ++iter)
+          {
+            const NamespaceURL &namespaceURL = (*iter).first;
+            const NameValueMap &values = (*iter).second;
+
+            ElementPtr namespaceEl = IMessageHelper::createElementWithID("namespace", namespaceURL);
+
+            for (NameValueMap::const_iterator valuesIter = values.begin(); valuesIter != values.end(); ++valuesIter)
+            {
+              const Name &key = (*valuesIter).first;
+              const Value &value = (*valuesIter).second;
+              if ("$updated" == key) continue;  // strip "$update" fromm the values tree in case it migrated back into "set" from original "get"
+              namespaceEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode(key, value));
+            }
+
+            if (namespaceEl->hasChildren()) {
+              namespacesEl->adoptAsLastChild(namespaceEl);
+            }
           }
 
-          if (hasAttribute(AttributeType_GrantID)) {
-            ElementPtr grantEl = IMessageHelper::createElementWithID("grant", mGrantID);
-
-            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
-
-            for (NamespaceURLNameValueMap::iterator iter = mNamespaceURLNameValues.begin(); iter != mNamespaceURLNameValues.end(); ++iter)
-            {
-              const NamespaceURL &namespaceURL = (*iter).first;
-              const NameValueMap &values = (*iter).second;
-
-              ElementPtr namespaceEl = IMessageHelper::createElementWithID("namespace", namespaceURL);
-
-              for (NameValueMap::const_iterator valuesIter = values.begin(); valuesIter != values.end(); ++valuesIter)
-              {
-                const Name &key = (*valuesIter).first;
-                const Value &value = (*valuesIter).second;
-                if ("$updated" == key) continue;  // strip "$update" fromm the values tree in case it migrated back into "set" from original "get"
-                namespaceEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode(key, value));
-              }
-
-              if (namespaceEl->hasChildren()) {
-                namespacesEl->adoptAsLastChild(namespaceEl);
-              }
-            }
-
-            if (namespacesEl->hasChildren()) {
-              grantEl->adoptAsLastChild(namespacesEl);
-            }
-
-            root->adoptAsLastChild(grantEl);
+          if (namespacesEl->hasChildren()) {
+            root->adoptAsLastChild(namespacesEl);
           }
 
           return ret;

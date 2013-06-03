@@ -33,8 +33,9 @@
 
 #include <hookflash/stack/IBootstrappedNetwork.h>
 #include <hookflash/stack/IServiceCertificates.h>
-#include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/IServiceIdentity.h>
+#include <hookflash/stack/IServiceLockbox.h>
+#include <hookflash/stack/IServiceNamespaceGrant.h>
 #include <hookflash/stack/IServiceSalt.h>
 #include <hookflash/stack/internal/types.h>
 #include <hookflash/stack/IMessageSource.h>
@@ -182,6 +183,7 @@ namespace hookflash
                                   public IServiceCertificates,
                                   public IServiceIdentity,
                                   public IServiceLockbox,
+                                  public IServiceNamespaceGrant,
                                   public IServiceSalt,
                                   public IBootstrappedNetworkForAccount,
                                   public IBootstrappedNetworkForAccountFinder,
@@ -198,6 +200,7 @@ namespace hookflash
         friend interaction IServiceCertificates;
         friend interaction IServiceIdentity;
         friend interaction IServiceLockbox;
+        friend interaction IServiceNamespaceGrant;
         friend interaction IServiceSalt;
 
         typedef zsLib::IMessageQueuePtr IMessageQueuePtr;
@@ -235,6 +238,7 @@ namespace hookflash
         static BootstrappedNetworkPtr convert(IServiceCertificatesPtr network);
         static BootstrappedNetworkPtr convert(IServiceIdentityPtr network);
         static BootstrappedNetworkPtr convert(IServiceLockboxPtr network);
+        static BootstrappedNetworkPtr convert(IServiceNamespaceGrantPtr network);
         static BootstrappedNetworkPtr convert(IServiceSaltPtr network);
 
         typedef std::map<IHTTPQueryPtr, message::MessagePtr> PendingRequestMap;
@@ -303,6 +307,17 @@ namespace hookflash
         #pragma mark
 
         static IServiceLockboxPtr createServiceLockboxFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        // (duplicate) virtual PUID getID() const;
+
+        // (duplicate) virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark BootstrappedNetwork => IServiceNamespaceGrant
+        #pragma mark
+
+        static IServiceNamespaceGrantPtr createServiceNamespaceGrantFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
 
         // (duplicate) virtual PUID getID() const;
 

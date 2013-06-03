@@ -29,14 +29,11 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
+#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
-
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
 namespace hookflash
 {
@@ -44,58 +41,61 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowRequestPtr LockboxAdminWindowRequest::convert(MessagePtr message)
+        NamespaceGrantValidateResultPtr NamespaceGrantValidateResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxAdminWindowRequest>(message);
+          return boost::dynamic_pointer_cast<NamespaceGrantValidateResult>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowRequest::LockboxAdminWindowRequest() :
-          mReady(-1),
-          mVisible(-1)
+        NamespaceGrantValidateResult::NamespaceGrantValidateResult()
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminWindowRequestPtr LockboxAdminWindowRequest::create(
-                                                                     ElementPtr root,
-                                                                     IMessageSourcePtr messageSource
-                                                                     )
+        NamespaceGrantValidateResultPtr NamespaceGrantValidateResult::create(
+                                                                             ElementPtr rootEl,
+                                                                             IMessageSourcePtr messageSource
+                                                                             )
         {
-          LockboxAdminWindowRequestPtr ret(new LockboxAdminWindowRequest);
-          MessageHelper::fill(*ret, root, messageSource);
+          NamespaceGrantValidateResultPtr ret(new NamespaceGrantValidateResult);
+          IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ElementPtr browserEl = root->findFirstChildElement("browser");
-          if (browserEl) {
-            String ready = IMessageHelper::getElementText(root->findFirstChildElement("ready"));
-            if (!ready.isEmpty()) {
-              ret->mReady = ("true" == ready ? 1 : 0);
-            }
-            String visibility = IMessageHelper::getElementText(root->findFirstChildElement("visibility"));
-            if (!visibility.isEmpty()) {
-              ret->mVisible = ("true" == visibility ? 1 : 0);
+          ret->mGrantInfo = MessageHelper::createGrant(rootEl->findFirstChildElement("grant"));
+          ElementPtr grantEl = rootEl->findFirstChildElement("grant");
+
+          ElementPtr namespacesEl = rootEl->findFirstChildElement("namespaces");
+          if (namespacesEl) {
+            ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
+            while (namespaceEl) {
+              NamespaceInfo info;
+              info.mURL = IMessageHelper::getAttributeID(namespaceEl);
+              info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttribute(namespaceEl, "updated"));
+              if (info.mURL.hasData()) {
+                ret->mNamespaceInfos[info.mURL] = info;
+              }
+              namespaceEl = namespaceEl->findNextSiblingElement("namespace");
             }
           }
+
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool LockboxAdminWindowRequest::hasAttribute(AttributeTypes type) const
+        bool NamespaceGrantValidateResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_Ready:         return (mReady >= 0);
-            case AttributeType_Visible:       return (mVisible >= 0);
-            default:                          break;
+            case AttributeType_GrantInfo:             return mGrantInfo.hasData();
+            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
+            default:                                  break;
           }
-          return false;
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }
-
       }
     }
   }

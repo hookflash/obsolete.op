@@ -1802,9 +1802,6 @@ namespace hookflash
         switch (state) {
           case IServiceLockboxSession::SessionState_Pending:
           case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration:
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeLoaded:
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
-          case IServiceLockboxSession::SessionState_WaitingForBrowserWindowToClose:
           {
             ZS_LOG_DEBUG(log("contact session pending"))
             return false;

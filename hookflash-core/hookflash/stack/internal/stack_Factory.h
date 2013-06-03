@@ -70,6 +70,7 @@ namespace hookflash
                       public IServiceCertificatesValidateQueryFactory,
                       public IServiceIdentitySessionFactory,
                       public IServiceLockboxSessionFactory,
+                      public IServiceNamespaceGrantSessionFactory,
                       public IServiceSaltFetchSignedSaltQueryFactory
       {
       public:

@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#pragma once
 
-#include <zsLib/XML.h>
-#include <zsLib/helpers.h>
+#include <hookflash/stack/message/MessageNotify.h>
+#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+
+#include <list>
 
 namespace hookflash
 {
@@ -42,40 +42,32 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
-        using internal::MessageHelper;
-
-        //---------------------------------------------------------------------
-        LockboxAdminWindowResultPtr LockboxAdminWindowResult::convert(MessagePtr message)
+        class NamespaceGrantAdminCompleteNotify : public MessageNotify
         {
-          return boost::dynamic_pointer_cast<LockboxAdminWindowResult>(message);
-        }
-
-        //---------------------------------------------------------------------
-        LockboxAdminWindowResult::LockboxAdminWindowResult()
-        {
-        }
-
-        //---------------------------------------------------------------------
-        LockboxAdminWindowResultPtr LockboxAdminWindowResult::create(LockboxAdminWindowRequestPtr request)
-        {
-          LockboxAdminWindowResultPtr ret(new LockboxAdminWindowResult);
-          ret->mDomain = request->domain();
-          ret->mID = request->messageID();
-          ret->mAppID = request->appID();
-          return ret;
-        }
-
-        //---------------------------------------------------------------------
-        bool LockboxAdminWindowResult::hasAttribute(AttributeTypes type) const
-        {
-          switch (type)
+        public:
+          enum AttributeTypes
           {
-            default:                                    break;
-          }
-          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
-        }
+          };
+
+        public:
+          static NamespaceGrantAdminCompleteNotifyPtr convert(MessagePtr message);
+
+          static NamespaceGrantAdminCompleteNotifyPtr create(
+                                                             ElementPtr root,
+                                                             IMessageSourcePtr messageSource
+                                                             );
+
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantAdminComplete;}
+
+          virtual IMessageFactoryPtr factory() const      {return MessageFactoryNamespaceGrant::singleton();}
+
+          bool hasAttribute(AttributeTypes type) const;
+
+        protected:
+          NamespaceGrantAdminCompleteNotify();
+        };
       }
     }
   }

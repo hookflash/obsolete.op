@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminStartNotify.h>
+#include <hookflash/stack/message/namespace-grant/NamespaceGrantStartNotify.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
@@ -37,7 +37,7 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_LOCKBOX_ADMIN_START_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define HOOKFLASH_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_START_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -47,14 +47,14 @@ namespace hookflash
   {
     namespace message
     {
-      namespace identity_lockbox
+      namespace namespace_grant
       {
         using zsLib::Seconds;
         using internal::MessageHelper;
         using stack::internal::IStackForInternal;
 
         //---------------------------------------------------------------------
-        const char *LockboxAdminStartNotify::toString(BrowserVisibilities visibility)
+        const char *NamespaceGrantStartNotify::toString(BrowserVisibilities visibility)
         {
           switch (visibility) {
             case BrowserVisibility_NA:              return "";
@@ -67,34 +67,33 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminStartNotifyPtr LockboxAdminStartNotify::convert(MessagePtr message)
+        NamespaceGrantStartNotifyPtr NamespaceGrantStartNotify::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<LockboxAdminStartNotify>(message);
+          return boost::dynamic_pointer_cast<NamespaceGrantStartNotify>(message);
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminStartNotify::LockboxAdminStartNotify() :
+        NamespaceGrantStartNotify::NamespaceGrantStartNotify() :
           mVisibility(BrowserVisibility_NA),
           mPopup(-1)
         {
         }
 
         //---------------------------------------------------------------------
-        LockboxAdminStartNotifyPtr LockboxAdminStartNotify::create()
+        NamespaceGrantStartNotifyPtr NamespaceGrantStartNotify::create()
         {
-          LockboxAdminStartNotifyPtr ret(new LockboxAdminStartNotify);
+          NamespaceGrantStartNotifyPtr ret(new NamespaceGrantStartNotify);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool LockboxAdminStartNotify::hasAttribute(AttributeTypes type) const
+        bool NamespaceGrantStartNotify::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
             case AttributeType_AgentInfo:         return mAgentInfo.hasData();
-            case AttributeType_LockboxInfo:       return mLockboxInfo.hasData();
-            case AttributeType_GrantID:           return mGrantID.hasData();
-            case AttributeType_NamespaceURLs:     return (mNamespaceURLs.size() > 0);
+            case AttributeType_GrantInfo:         return mGrantInfo.hasData();
+            case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
             case AttributeType_BrowserVisibility: return (BrowserVisibility_NA != mVisibility);
             case AttributeType_BrowserPopup:      return (mPopup >= 0);
             case AttributeType_OuterFrameURL:     return mOuterFrameURL.hasData();
@@ -105,7 +104,7 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr LockboxAdminStartNotify::encode()
+        DocumentPtr NamespaceGrantStartNotify::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
@@ -114,27 +113,33 @@ namespace hookflash
 
           String clientNonce = IHelper::randomString(32);
 
-          LockboxInfo lockboxInfo;
-
           AgentInfo agentInfo = IStackForInternal::agentInfo();
           agentInfo.mergeFrom(mAgentInfo, true);
 
-          lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
-          if (mLockboxInfo.mAccessSecret.hasData()) {
-            lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_ADMIN_START_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-admin"));
-          }
+          GrantInfo grantInfo;
+          grantInfo.mID = mGrantInfo.mID;
+          grantInfo.mSecret = mGrantInfo.mSecret;
 
           if (mAgentInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
           }
 
-          if (lockboxInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
+          if (grantInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(grantInfo));
           }
 
-          if (hasAttribute(AttributeType_GrantID)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
+          if (hasAttribute(AttributeType_NamespaceInfos)) {
+            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
+
+            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
+            {
+              const NamespaceInfo &namespaceInfo = (*iter).second;
+              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
+            }
+
+            if (namespacesEl->hasChildren()) {
+              root->adoptAsLastChild(namespacesEl);
+            }
           }
 
           if (hasAttribute(AttributeType_BrowserVisibility)) {

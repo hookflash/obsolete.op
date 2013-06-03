@@ -58,48 +58,43 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         LockboxContentGetResultPtr LockboxContentGetResult::create(
-                                                                   ElementPtr root,
+                                                                   ElementPtr rootEl,
                                                                    IMessageSourcePtr messageSource
                                                                    )
         {
           LockboxContentGetResultPtr ret(new LockboxContentGetResult);
-          IMessageHelper::fill(*ret, root, messageSource);
+          IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ElementPtr grantEl = root->findFirstChildElement("grant");
-          if (grantEl) {
-            ret->mGrantID = IMessageHelper::getAttributeID(grantEl);
+          ElementPtr namespacesEl = rootEl->findFirstChildElement("namespaces");
+          if (namespacesEl) {
+            ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
+            while (namespaceEl) {
+              String namespaceURL = IMessageHelper::getAttributeID(namespaceEl);
+              if (namespaceURL.hasData()) {
+                NameValueMap values;
 
-            ElementPtr namespacesEl = grantEl->findFirstChildElement("namespaces");
-            if (namespacesEl) {
-              ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
-              while (namespaceEl) {
-                String namespaceURL = IMessageHelper::getAttributeID(namespaceEl);
-                if (namespaceURL.hasData()) {
-                  NameValueMap values;
+                String updated = IMessageHelper::getAttribute(namespaceEl, "updated");
+                if (updated.hasData()) {
+                  values["$updated"] = updated;
+                }
 
-                  String updated = IMessageHelper::getAttribute(namespaceEl, "updated");
-                  if (updated.hasData()) {
-                    values["$updated"] = updated;
-                  }
+                ElementPtr childEl = namespaceEl->getFirstChildElement();
+                while (childEl) {
+                  String name = childEl->getValue();
+                  String value = IMessageHelper::getElementTextAndDecode(childEl);
+                  childEl = childEl->getNextSiblingElement();
 
-                  ElementPtr childEl = namespaceEl->getFirstChildElement();
-                  while (childEl) {
-                    String name = childEl->getValue();
-                    String value = IMessageHelper::getElementTextAndDecode(childEl);
-                    childEl = childEl->getNextSiblingElement();
-
-                    if ((name.hasData()) &&
-                        (value.hasData())) {
-                      values[name] = value;
-                    }
-                  }
-
-                  if (values.size() > 0) {
-                    ret->mNamespaceURLNameValues[namespaceURL] = values;
+                  if ((name.hasData()) &&
+                      (value.hasData())) {
+                    values[name] = value;
                   }
                 }
-                namespaceEl = namespaceEl->findNextSiblingElement("namespace");
+
+                if (values.size() > 0) {
+                  ret->mNamespaceURLNameValues[namespaceURL] = values;
+                }
               }
+              namespaceEl = namespaceEl->findNextSiblingElement("namespace");
             }
           }
 
@@ -111,7 +106,6 @@ namespace hookflash
         {
           switch (type)
           {
-            case AttributeType_GrantID:                 return mGrantID.hasData();
             case AttributeType_NamespaceURLNameValues:  return (mNamespaceURLNameValues.size() > 0);
             default:                                    break;
           }

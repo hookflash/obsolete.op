@@ -68,9 +68,11 @@ namespace hookflash
                                IAccountDelegatePtr delegate,
                                IConversationThreadDelegatePtr conversationThreadDelegate,
                                ICallDelegatePtr callDelegate,
-                               const char *lockboxOuterFrameURLUponReload,
+                               const char *namespaceGrantOuterFrameURLUponReload,
+                               const char *namespaceGrantServiceDomain,
+                               const char *grantID,
+                               const char *grantSecret,
                                const char *lockboxServiceDomain,
-                               const char *lockboxGrantID,
                                bool forceCreateNewLockboxAccount = false
                                );
 
@@ -78,7 +80,7 @@ namespace hookflash
                                  IAccountDelegatePtr delegate,
                                  IConversationThreadDelegatePtr conversationThreadDelegate,
                                  ICallDelegatePtr callDelegate,
-                                 const char *lockboxOuterFrameURLUponReload,
+                                 const char *namespaceGrantOuterFrameURLUponReload,
                                  ElementPtr reloginInformation
                                  );
 

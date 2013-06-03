@@ -44,6 +44,8 @@
 
 #include <hookflash/stack/IServiceSalt.h>
 
+#include <hookflash/stack/internal/stack_ServiceNamespaceGrantSession.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 
 #include <list>
@@ -152,6 +154,7 @@ namespace hookflash
                                     public IServiceLockboxSessionAsyncDelegate,
                                     public IBootstrappedNetworkDelegate,
                                     public IServiceSaltFetchSignedSaltQueryDelegate,
+                                    public IServiceNamespaceGrantSessionForServicesDelegate,
                                     public IMessageMonitorResultDelegate<LockboxAccessResult>,
                                     public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
                                     public IMessageMonitorResultDelegate<LockboxContentGetResult>,
@@ -161,6 +164,9 @@ namespace hookflash
       public:
         friend interaction IServiceLockboxSessionFactory;
         friend interaction IServiceLockboxSession;
+
+        typedef IServiceNamespaceGrantSessionForServicesDelegate::SessionStates GrantSessionStates;
+        typedef IServiceLockboxSession::SessionStates SessionStates;
 
         typedef PUID ServiceIdentitySessionID;
         typedef std::map<ServiceIdentitySessionID, ServiceIdentitySessionPtr> ServiceIdentitySessionMap;
@@ -174,7 +180,7 @@ namespace hookflash
                               IMessageQueuePtr queue,
                               BootstrappedNetworkPtr network,
                               IServiceLockboxSessionDelegatePtr delegate,
-                              const char *outerFrameURLUponReload
+                              ServiceNamespaceGrantSessionPtr grantSession
                               );
         
         ServiceLockboxSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -184,7 +190,7 @@ namespace hookflash
       public:
         ~ServiceLockboxSession();
 
-        static ServiceLockboxSessionPtr convert(IServiceLockboxSessionPtr query);
+        static ServiceLockboxSessionPtr convert(IServiceLockboxSessionPtr session);
 
       protected:
         //---------------------------------------------------------------------
@@ -197,18 +203,16 @@ namespace hookflash
         static ServiceLockboxSessionPtr login(
                                               IServiceLockboxSessionDelegatePtr delegate,
                                               IServiceLockboxPtr serviceLockbox,
+                                              IServiceNamespaceGrantSessionPtr grantSession,
                                               IServiceIdentitySessionPtr identitySession,
-                                              const char *outerFrameURLUponReload,
-                                              const char *grantID,
                                               bool forceNewAccount = false
                                               );
 
         static ServiceLockboxSessionPtr relogin(
                                                 IServiceLockboxSessionDelegatePtr delegate,
                                                 IServiceLockboxPtr serviceLockbox,
-                                                const char *outerFrameURLUponReload,
+                                                IServiceNamespaceGrantSessionPtr grantSession,
                                                 const char *lockboxAccountID,
-                                                const char *lockboxGrantID,
                                                 const char *identityHalfLockboxKey,
                                                 const char *lockboxHalfLockboxKey
                                                 );
@@ -239,14 +243,6 @@ namespace hookflash
                                          const ServiceIdentitySessionList &identitiesToAssociate,
                                          const ServiceIdentitySessionList &identitiesToRemove
                                          );
-
-        virtual String getInnerBrowserWindowFrameURL() const;
-
-        virtual void notifyBrowserWindowVisible();
-        virtual void notifyBrowserWindowClosed();
-
-        virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
-        virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
 
         virtual void cancel();
 
@@ -316,6 +312,16 @@ namespace hookflash
         #pragma mark
 
         virtual void onServiceSaltFetchSignedSaltCompleted(IServiceSaltFetchSignedSaltQueryPtr query);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceLockboxSession => IServiceNamespaceGrantSessionForServicesDelegate
+        #pragma mark
+
+        virtual void onServiceNamespaceGrantSessionStateChanged(
+                                                                ServiceNamespaceGrantSessionPtr session,
+                                                                GrantSessionStates state
+                                                                );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -412,13 +418,9 @@ namespace hookflash
 
         void step();
         bool stepBootstrapper();
+        bool stepGrantSession();
         bool stepIdentityLogin();
         bool stepLockboxAccess();
-        bool stepLoadGrantWindow();
-        bool stepMakeGrantWindowVisible();
-        bool stepSendLockboxNamespaceGrantStartNotification();
-        bool stepWaitForPermission();
-        bool stepCloseBrowserWindow();
         bool stepContentGet();
         bool stepPreparePeerFiles();
         bool stepUploadPeerFiles();
@@ -471,36 +473,28 @@ namespace hookflash
         IServiceLockboxSessionDelegatePtr mDelegate;
         AccountWeakPtr mAccount;
 
+        SessionStates mCurrentState;
+
+        WORD mLastError;
+        String mLastErrorReason;
+
         BootstrappedNetworkPtr mBootstrappedNetwork;
+        ServiceNamespaceGrantSessionPtr mGrantSession;
+        IServiceNamespaceGrantSessionForServicesSubscriptionPtr mGrantSubscription;
 
         IMessageMonitorPtr mLockboxAccessMonitor;
         IMessageMonitorPtr mLockboxIdentitiesUpdateMonitor;
         IMessageMonitorPtr mLockboxContentGetMonitor;
         IMessageMonitorPtr mLockboxContentSetMonitor;
         IMessageMonitorPtr mPeerServicesGetMonitor;
-
-        SessionStates mCurrentState;
-
-        WORD mLastError;
-        String mLastErrorReason;
-
-        String mOuterFrameURLUponReload;
-
-        String mGrantID;
+        
         LockboxInfo mLockboxInfo;
 
         ServiceIdentitySessionPtr mLoginIdentity;
 
         IPeerFilesPtr mPeerFiles;
 
-        bool mBrowserWindowReady;
-        bool mBrowserWindowVisible;
-        bool mBrowserWindowClosed;
-
-        bool mNeedsBrowserWindowVisible;
-
         bool mHasPermissions;
-        bool mLockboxNamespaceGrantStartNotificationSent;
 
         bool mPeerFilesNeedUpload;
         bool mLoginIdentitySetToBecomeAssociated;
@@ -517,8 +511,6 @@ namespace hookflash
 
         ServiceIdentitySessionMap mPendingUpdateIdentities;
         ServiceIdentitySessionMap mPendingRemoveIdentities;
-
-        DocumentList mPendingMessagesToDeliver;
 
         NamespaceURLNameValueMap mContent;
       };
@@ -538,18 +530,16 @@ namespace hookflash
         virtual ServiceLockboxSessionPtr login(
                                                IServiceLockboxSessionDelegatePtr delegate,
                                                IServiceLockboxPtr ServiceLockbox,
+                                               IServiceNamespaceGrantSessionPtr grantSession,
                                                IServiceIdentitySessionPtr identitySession,
-                                               const char *outerFrameURLUponReload,
-                                               const char *grantID,
                                                bool forceNewAccount = false
                                                );
         
         virtual ServiceLockboxSessionPtr relogin(
                                                  IServiceLockboxSessionDelegatePtr delegate,
                                                  IServiceLockboxPtr serviceLockbox,
-                                                 const char *outerFrameURLUponReload,
+                                                 IServiceNamespaceGrantSessionPtr grantSession,
                                                  const char *lockboxAccountID,
-                                                 const char *lockboxGrantID,
                                                  const char *identityHalfLockboxKey,
                                                  const char *lockboxHalfLockboxKey
                                                  );

@@ -51,7 +51,6 @@ namespace hookflash
           enum AttributeTypes
           {
             AttributeType_LockboxInfo,
-            AttributeType_GrantID,
             AttributeType_NamespaceURLNameValues,
           };
 
@@ -79,9 +78,6 @@ namespace hookflash
           const LockboxInfo &lockboxInfo() const    {return mLockboxInfo;}
           void lockboxInfo(const LockboxInfo &val)  {mLockboxInfo = val;}
 
-          const String &grantID() const                   {return mGrantID;}
-          void grantID(const String &val)                 {mGrantID = val;}
-
           const NamespaceURLNameValueMap &namespaceURLNameValues() const   {return mNamespaceURLNameValues;}
           void namespaceURLNameValues(const NamespaceURLNameValueMap &val) {mNamespaceURLNameValues = val;}
 
@@ -90,7 +86,6 @@ namespace hookflash
 
           LockboxInfo mLockboxInfo;
 
-          String mGrantID;
           NamespaceURLNameValueMap mNamespaceURLNameValues;
         };
       }

@@ -32,12 +32,8 @@
 #include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantWindowRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantCompleteNotify.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminWindowRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAdminCompleteNotify.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
 
@@ -45,7 +41,7 @@
 
 #include <hookflash/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER "identity-lockbox"
+#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER "identity-lockbox"
 
 
 namespace hookflash
@@ -90,7 +86,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryIdentityLockbox::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER;
+          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER;
         }
 
         //---------------------------------------------------------------------
@@ -118,15 +114,8 @@ namespace hookflash
             case Method_LockboxAccess:                      return "lockbox-access";
             case Method_LockboxAccessValidate:              return "lockbox-access-validate";
             case Method_LockboxIdentitiesUpdate:            return "lockbox-identities-update";
-            case Method_LockboxNamespaceGrantWindow:        return "lockbox-namespace-grant-window";
-            case Method_LockboxNamespaceGrantStart:         return "lockbox-namespace-grant";
-            case Method_LockboxNamespaceGrantComplete:      return "lockbox-namespace-grant-complete";
             case Method_LockboxContentGet:                  return "lockbox-content-get";
             case Method_LockboxContentSet:                  return "lockbox-content-set";
-            case Method_LockboxAdminWindow:                 return "lockbox-admin-window";
-            case Method_LockboxAdminStart:                  return "lockbox-admin";
-            case Method_LockboxAdminComplete:               return "lockbox-admin-complete";
-            case Method_LockboxNamespacePreappovedGrant:    return "lockbox-namespace-preapproved-grent";
           }
           return "";
         }
@@ -153,15 +142,8 @@ namespace hookflash
                 case Method_LockboxAccess:                      return MessagePtr();
                 case Method_LockboxAccessValidate:              return MessagePtr();
                 case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxNamespaceGrantWindow:        return LockboxNamespaceGrantWindowRequest::create(root, messageSource);
-                case Method_LockboxNamespaceGrantStart:         return MessagePtr();
-                case Method_LockboxNamespaceGrantComplete:      return MessagePtr();
                 case Method_LockboxContentGet:                  return MessagePtr();
                 case Method_LockboxContentSet:                  return MessagePtr();
-                case Method_LockboxAdminWindow:                 return LockboxAdminWindowRequest::create(root, messageSource);
-                case Method_LockboxAdminStart:                  return MessagePtr();
-                case Method_LockboxAdminComplete:               return MessagePtr();
-                case Method_LockboxNamespacePreappovedGrant:    return MessagePtr();
               }
               break;
             }
@@ -173,34 +155,21 @@ namespace hookflash
                 case Method_LockboxAccess:                      return LockboxAccessResult::create(root, messageSource);
                 case Method_LockboxAccessValidate:              return MessagePtr();
                 case Method_LockboxIdentitiesUpdate:            return LockboxIdentitiesUpdateResult::create(root, messageSource);
-                case Method_LockboxNamespaceGrantWindow:        return MessagePtr();
-                case Method_LockboxNamespaceGrantStart:         return MessagePtr();
-                case Method_LockboxNamespaceGrantComplete:      return MessagePtr();
                 case Method_LockboxContentGet:                  return LockboxContentGetResult::create(root, messageSource);
                 case Method_LockboxContentSet:                  return LockboxContentSetResult::create(root, messageSource);
-                case Method_LockboxAdminWindow:                 return MessagePtr();
-                case Method_LockboxAdminStart:                  return MessagePtr();
-                case Method_LockboxAdminComplete:               return MessagePtr();
-                case Method_LockboxNamespacePreappovedGrant:    return MessagePtr();
               }
               break;
             }
-            case Message::MessageType_Notify:                   {
+            case Message::MessageType_Notify:
+            {
               switch (msgMethod) {
                 case Method_Invalid:                            return MessagePtr();
 
                 case Method_LockboxAccess:                      return MessagePtr();
                 case Method_LockboxAccessValidate:              return MessagePtr();
                 case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxNamespaceGrantWindow:        return MessagePtr();
-                case Method_LockboxNamespaceGrantStart:         return MessagePtr();
-                case Method_LockboxNamespaceGrantComplete:      return LockboxNamespaceGrantCompleteNotify::create(root, messageSource);
                 case Method_LockboxContentGet:                  return MessagePtr();
                 case Method_LockboxContentSet:                  return MessagePtr();
-                case Method_LockboxAdminWindow:                 return MessagePtr();
-                case Method_LockboxAdminStart:                  return MessagePtr();
-                case Method_LockboxAdminComplete:               return LockboxAdminCompleteNotify::create(root, messageSource);
-                case Method_LockboxNamespacePreappovedGrant:    return MessagePtr();
               }
               break;
             }

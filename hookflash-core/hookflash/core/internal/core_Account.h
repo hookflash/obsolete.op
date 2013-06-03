@@ -41,6 +41,7 @@
 #include <hookflash/stack/IHelper.h>
 #include <hookflash/stack/IPublicationRepository.h>
 #include <hookflash/stack/IServiceLockbox.h>
+#include <hookflash/stack/IServiceNamespaceGrant.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -151,6 +152,7 @@ namespace hookflash
         IAccountForIdentity &forIdentity() {return *this;}
         const IAccountForIdentity &forIdentity() const {return *this;}
 
+        virtual stack::IServiceNamespaceGrantSessionPtr getNamespaceGrantSession() const = 0;
         virtual stack::IServiceLockboxSessionPtr getLockboxSession() const = 0;
 
         virtual void associateIdentity(IdentityPtr identity) = 0;
@@ -207,6 +209,7 @@ namespace hookflash
                       public stack::IAccountDelegate,
                       public IPeerSubscriptionDelegate,
                       public IServiceLockboxSessionDelegate,
+                      public IServiceNamespaceGrantSessionDelegate,
                       public IAccountAsyncDelegate
       {
       public:
@@ -229,6 +232,9 @@ namespace hookflash
         typedef boost::weak_ptr<LocationSubscription> LocationSubscriptionWeakPtr;
 
         typedef IAccount::AccountStates AccountStates;
+
+        typedef IServiceLockboxSession::SessionStates LockboxSessionStates;
+        typedef IServiceNamespaceGrantSession::SessionStates GrantSessionStates;
 
         typedef String PeerURI;
         typedef std::map<PeerURI, ContactSubscriptionPtr> ContactSubscriptionMap;
@@ -270,16 +276,18 @@ namespace hookflash
                                 IAccountDelegatePtr delegate,
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
-                                const char *lockboxOuterFrameURLUponReload,
+                                const char *namespaceGrantOuterFrameURLUponReload,
+                                const char *namespaceGrantServiceDomain,
+                                const char *grantID,
+                                const char *grantSecret,
                                 const char *lockboxServiceDomain,
-                                const char *lockboxGrantID,
                                 bool forceCreateNewLockboxAccount = false
                                 );
         static AccountPtr relogin(
                                   IAccountDelegatePtr delegate,
                                   IConversationThreadDelegatePtr conversationThreadDelegate,
                                   ICallDelegatePtr callDelegate,
-                                  const char *lockboxOuterFrameURLUponReload,
+                                  const char *namespaceGrantOuterFrameURLUponReload,
                                   ElementPtr reloginInformation
                                   );
 
@@ -372,7 +380,8 @@ namespace hookflash
         #pragma mark Account => IAccountForIdentity
         #pragma mark
 
-        virtual stack::IServiceLockboxSessionPtr getLockboxSession() const;
+        virtual IServiceNamespaceGrantSessionPtr getNamespaceGrantSession() const;
+        virtual IServiceLockboxSessionPtr getLockboxSession() const;
 
         virtual void associateIdentity(IdentityPtr identity);
 
@@ -435,12 +444,21 @@ namespace hookflash
         #pragma mark
 
         virtual void onServiceLockboxSessionStateChanged(
-                                                             IServiceLockboxSessionPtr session,
-                                                             SessionStates state
-                                                             );
+                                                         IServiceLockboxSessionPtr session,
+                                                         LockboxSessionStates state
+                                                         );
         virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
 
-        virtual void onServiceLockboxSessionPendingMessageForInnerBrowserWindowFrame(IServiceLockboxSessionPtr session);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IServiceNamespaceGrantSessionDelegate
+        #pragma mark
+
+        virtual void onServiceNamespaceGrantSessionStateChanged(
+                                                                IServiceNamespaceGrantSessionPtr session,
+                                                                GrantSessionStates state
+                                                                );
+        virtual void onServiceNamespaceGrantSessionPendingMessageForInnerBrowserWindowFrame(IServiceNamespaceGrantSessionPtr session);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -492,6 +510,7 @@ namespace hookflash
 
         void step();
         bool stepLoginIdentityAssociated();
+        bool stepGrantSession();
         bool stepLockboxSession();
         bool stepStackAccount();
         bool stepSelfContact();
@@ -834,10 +853,10 @@ namespace hookflash
 
         stack::IAccountPtr mStackAccount;
 
+        IServiceNamespaceGrantSessionPtr mGrantSession;
+
         IServiceLockboxSessionPtr mLockboxSession;
         IServiceLockboxPtr mLockboxService;
-        String mLockboxOuterFrameURLUponReload;
-        String mLockboxGrantID;
         bool mLockboxForceCreateNewAccount;
 
         mutable IdentityMap mIdentities;
@@ -872,16 +891,19 @@ namespace hookflash
                                  IAccountDelegatePtr delegate,
                                  IConversationThreadDelegatePtr conversationThreadDelegate,
                                  ICallDelegatePtr callDelegate,
-                                 const char *lockboxOuterFrameURLUponReload,
+                                 const char *namespaceGrantOuterFrameURLUponReload,
+                                 const char *namespaceGrantServiceDomain,
+                                 const char *grantID,
+                                 const char *grantSecret,
                                  const char *lockboxServiceDomain,
-                                 const char *lockboxGrantID,
                                  bool forceCreateNewLockboxAccount = false
                                  );
+
         virtual AccountPtr relogin(
                                    IAccountDelegatePtr delegate,
                                    IConversationThreadDelegatePtr conversationThreadDelegate,
                                    ICallDelegatePtr callDelegate,
-                                   const char *lockboxOuterFrameURLUponReload,
+                                   const char *namespaceGrantOuterFrameURLUponReload,
                                    ElementPtr reloginInformation
                                    );
       };

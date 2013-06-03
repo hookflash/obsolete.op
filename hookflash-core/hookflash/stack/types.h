@@ -284,19 +284,6 @@ namespace hookflash
     typedef boost::weak_ptr<IServiceSaltFetchSignedSaltQueryDelegate> IServiceSaltFetchSignedSaltQueryDelegateWeakPtr;
     typedef zsLib::Proxy<IServiceSaltFetchSignedSaltQueryDelegate> IServiceSaltFetchSignedSaltQueryDelegateProxy;
 
-    interaction IServiceLockbox;
-    typedef boost::shared_ptr<IServiceLockbox> IServiceLockboxPtr;
-    typedef boost::weak_ptr<IServiceLockbox> IServiceLockboxWeakPtr;
-
-    interaction IServiceLockboxSession;
-    typedef boost::shared_ptr<IServiceLockboxSession> IServiceLockboxSessionPtr;
-    typedef boost::weak_ptr<IServiceLockboxSession> IServiceLockboxSessionWeakPtr;
-
-    interaction IServiceLockboxSessionDelegate;
-    typedef boost::shared_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegatePtr;
-    typedef boost::weak_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateWeakPtr;
-    typedef zsLib::Proxy<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateProxy;
-
     interaction IServiceIdentity;
     typedef boost::shared_ptr<IServiceIdentity> IServiceIdentityPtr;
     typedef boost::weak_ptr<IServiceIdentity> IServiceIdentityWeakPtr;
@@ -313,5 +300,32 @@ namespace hookflash
     typedef std::list<IServiceIdentitySessionPtr> ServiceIdentitySessionList;
     typedef boost::shared_ptr<ServiceIdentitySessionList> ServiceIdentitySessionListPtr;
     typedef boost::weak_ptr<ServiceIdentitySessionList> ServiceIdentitySessionListWeakPtr;
+
+    interaction IServiceLockbox;
+    typedef boost::shared_ptr<IServiceLockbox> IServiceLockboxPtr;
+    typedef boost::weak_ptr<IServiceLockbox> IServiceLockboxWeakPtr;
+
+    interaction IServiceLockboxSession;
+    typedef boost::shared_ptr<IServiceLockboxSession> IServiceLockboxSessionPtr;
+    typedef boost::weak_ptr<IServiceLockboxSession> IServiceLockboxSessionWeakPtr;
+
+    interaction IServiceLockboxSessionDelegate;
+    typedef boost::shared_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegatePtr;
+    typedef boost::weak_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateWeakPtr;
+    typedef zsLib::Proxy<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateProxy;
+    
+    interaction IServiceNamespaceGrant;
+    typedef boost::shared_ptr<IServiceNamespaceGrant> IServiceNamespaceGrantPtr;
+    typedef boost::weak_ptr<IServiceNamespaceGrant> IServiceNamespaceGrantWeakPtr;
+
+    interaction IServiceNamespaceGrantSession;
+    typedef boost::shared_ptr<IServiceNamespaceGrantSession> IServiceNamespaceGrantSessionPtr;
+    typedef boost::weak_ptr<IServiceNamespaceGrantSession> IServiceNamespaceGrantSessionWeakPtr;
+
+    interaction IServiceNamespaceGrantSessionDelegate;
+    typedef boost::shared_ptr<IServiceNamespaceGrantSessionDelegate> IServiceNamespaceGrantSessionDelegatePtr;
+    typedef boost::weak_ptr<IServiceNamespaceGrantSessionDelegate> IServiceNamespaceGrantSessionDelegateWeakPtr;
+    typedef zsLib::Proxy<IServiceNamespaceGrantSessionDelegate> IServiceNamespaceGrantSessionDelegateProxy;
+
   }
 }
