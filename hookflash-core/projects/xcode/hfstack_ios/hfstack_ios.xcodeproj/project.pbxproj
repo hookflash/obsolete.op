@@ -107,6 +107,8 @@
 		006FB4D2175E5F65000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4D0175E5F65000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp */; };
 		006FB4D7175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4D5175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp */; };
 		006FB4D8175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4D6175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp */; };
+		006FB4DD175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4DB175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp */; };
+		006FB4DE175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4DC175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp */; };
 		00AF4DF3171E3DE400DCA0A8 /* stack_ServiceLockboxSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DF2171E3DE300DCA0A8 /* stack_ServiceLockboxSession.cpp */; };
 		00AF4E02171E3E4A00DCA0A8 /* IdentityAccessCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DFB171E3E4A00DCA0A8 /* IdentityAccessCompleteNotify.cpp */; };
 		00AF4E03171E3E4A00DCA0A8 /* IdentityAccessLockboxUpdateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DFC171E3E4A00DCA0A8 /* IdentityAccessLockboxUpdateRequest.cpp */; };
@@ -377,6 +379,10 @@
 		006FB4D6175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantChallengeValidateResult.cpp; sourceTree = "<group>"; };
 		006FB4D9175E5FEE000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantChallengeValidateRequest.h; sourceTree = "<group>"; };
 		006FB4DA175E5FEE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantChallengeValidateResult.h; sourceTree = "<group>"; };
+		006FB4DB175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessRolodexCredentialsGetRequest.cpp; sourceTree = "<group>"; };
+		006FB4DC175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessRolodexCredentialsGetResult.cpp; sourceTree = "<group>"; };
+		006FB4DF175EA3F0000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessRolodexCredentialsGetRequest.h; sourceTree = "<group>"; };
+		006FB4E0175EA3F0000C53A8 /* IdentityAccessRolodexCredentialsGetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessRolodexCredentialsGetResult.h; sourceTree = "<group>"; };
 		00AF4DF1171E3DC700DCA0A8 /* IServiceLockbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IServiceLockbox.h; sourceTree = "<group>"; };
 		00AF4DF2171E3DE300DCA0A8 /* stack_ServiceLockboxSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceLockboxSession.cpp; sourceTree = "<group>"; };
 		00AF4DF4171E3E3300DCA0A8 /* IdentityAccessCompleteNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessCompleteNotify.h; sourceTree = "<group>"; };
@@ -746,6 +752,8 @@
 				00AF4DF4171E3E3300DCA0A8 /* IdentityAccessCompleteNotify.h */,
 				00AF4DF5171E3E3300DCA0A8 /* IdentityAccessLockboxUpdateRequest.h */,
 				00AF4DF6171E3E3300DCA0A8 /* IdentityAccessLockboxUpdateResult.h */,
+				006FB4DF175EA3F0000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.h */,
+				006FB4E0175EA3F0000C53A8 /* IdentityAccessRolodexCredentialsGetResult.h */,
 				00AF4DF9171E3E3400DCA0A8 /* IdentityLookupUpdateRequest.h */,
 				00AF4DFA171E3E3400DCA0A8 /* IdentityLookupUpdateResult.h */,
 				0063BA9816CA92CF00E6DB4D /* IdentitySignRequest.h */,
@@ -762,6 +770,8 @@
 				0051C4681745D1110095FD98 /* IdentityAccessWindowResult.cpp */,
 				00AF4DFE171E3E4A00DCA0A8 /* IdentityAccessStartNotify.cpp */,
 				00AF4DFB171E3E4A00DCA0A8 /* IdentityAccessCompleteNotify.cpp */,
+				006FB4DB175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp */,
+				006FB4DC175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp */,
 				00AF4DFC171E3E4A00DCA0A8 /* IdentityAccessLockboxUpdateRequest.cpp */,
 				00AF4DFD171E3E4A00DCA0A8 /* IdentityAccessLockboxUpdateResult.cpp */,
 				00AF4E00171E3E4A00DCA0A8 /* IdentityLookupUpdateRequest.cpp */,
@@ -1159,6 +1169,8 @@
 				006FB4D2175E5F65000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */,
 				006FB4D7175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp in Sources */,
 				006FB4D8175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp in Sources */,
+				006FB4DD175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */,
+				006FB4DE175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
