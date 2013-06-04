@@ -60,13 +60,8 @@ namespace hookflash
             Method_NamespaceGrantWindow,
             Method_NamespaceGrantStart,
             Method_NamespaceGrantComplete,
-            Method_NamespaceGrantAdminWindow,
-            Method_NamespaceGrantAdminStart,
-            Method_NamespaceGrantAdminComplete,
-            Method_NamespaceGrantPreappovedGrant,
-            Method_NamespaceGrantValidate,
 
-            Method_Last = Method_NamespaceGrantValidate,
+            Method_Last = Method_NamespaceGrantComplete,
           };
 
         protected:

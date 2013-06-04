@@ -8,14 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00384C0D17596D8800113845 /* MessageFactoryNamespaceGrant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */; };
-		00384C0E17596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */; };
-		00384C0F17596D8800113845 /* NamespaceGrantAdminStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */; };
-		00384C1017596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */; };
-		00384C1117596D8800113845 /* NamespaceGrantAdminWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */; };
 		00384C1217596D8800113845 /* NamespaceGrantCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */; };
 		00384C1317596D8800113845 /* NamespaceGrantStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */; };
-		00384C1417596D8800113845 /* NamespaceGrantValidateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */; };
-		00384C1517596D8800113845 /* NamespaceGrantValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */; };
 		00384C1617596D8800113845 /* NamespaceGrantWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C0017596D8800113845 /* NamespaceGrantWindowRequest.cpp */; };
 		00384C1717596D8800113845 /* NamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */; };
 		00384C25175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C23175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp */; };
@@ -116,6 +110,10 @@
 		0063B92F16CA8E8B00E6DB4D /* PeerIdentifyResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B79C16CA8E8B00E6DB4D /* PeerIdentifyResult.cpp */; };
 		0063B93016CA8E8B00E6DB4D /* PeerKeepAliveRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B79D16CA8E8B00E6DB4D /* PeerKeepAliveRequest.cpp */; };
 		0063B93116CA8E8B00E6DB4D /* PeerKeepAliveResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B79E16CA8E8B00E6DB4D /* PeerKeepAliveResult.cpp */; };
+		006FB4C5175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4C3175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp */; };
+		006FB4C6175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4C4175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp */; };
+		006FB4CB175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4C9175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp */; };
+		006FB4CC175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 006FB4CA175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp */; };
 		00AF4C9E17179C9200DCA0A8 /* MessageFactoryIdentityLockbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4C9817179C9200DCA0A8 /* MessageFactoryIdentityLockbox.cpp */; };
 		00AF4CA017179C9200DCA0A8 /* MessageFactoryPeer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4C9C17179C9200DCA0A8 /* MessageFactoryPeer.cpp */; };
 		00AF4CA417185C0A00DCA0A8 /* PeerServicesGetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4CA217185C0A00DCA0A8 /* PeerServicesGetRequest.cpp */; };
@@ -137,25 +135,13 @@
 /* Begin PBXFileReference section */
 		00384BF4175961C400113845 /* IServiceNamespaceGrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IServiceNamespaceGrant.h; sourceTree = "<group>"; };
 		00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryNamespaceGrant.cpp; sourceTree = "<group>"; };
-		00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminCompleteNotify.cpp; sourceTree = "<group>"; };
-		00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminStartNotify.cpp; sourceTree = "<group>"; };
-		00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminWindowRequest.cpp; sourceTree = "<group>"; };
-		00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantAdminWindowResult.cpp; sourceTree = "<group>"; };
 		00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantCompleteNotify.cpp; sourceTree = "<group>"; };
 		00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantStartNotify.cpp; sourceTree = "<group>"; };
-		00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantValidateRequest.cpp; sourceTree = "<group>"; };
-		00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantValidateResult.cpp; sourceTree = "<group>"; };
 		00384C0017596D8800113845 /* NamespaceGrantWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantWindowRequest.cpp; sourceTree = "<group>"; };
 		00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantWindowResult.cpp; sourceTree = "<group>"; };
 		00384C0217596D8800113845 /* MessageFactoryNamespaceGrant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryNamespaceGrant.h; sourceTree = "<group>"; };
-		00384C0317596D8800113845 /* NamespaceGrantAdminCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminCompleteNotify.h; sourceTree = "<group>"; };
-		00384C0417596D8800113845 /* NamespaceGrantAdminStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminStartNotify.h; sourceTree = "<group>"; };
-		00384C0517596D8800113845 /* NamespaceGrantAdminWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminWindowRequest.h; sourceTree = "<group>"; };
-		00384C0617596D8800113845 /* NamespaceGrantAdminWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantAdminWindowResult.h; sourceTree = "<group>"; };
 		00384C0717596D8800113845 /* NamespaceGrantCompleteNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantCompleteNotify.h; sourceTree = "<group>"; };
 		00384C0817596D8800113845 /* NamespaceGrantStartNotify.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantStartNotify.h; sourceTree = "<group>"; };
-		00384C0917596D8800113845 /* NamespaceGrantValidateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantValidateRequest.h; sourceTree = "<group>"; };
-		00384C0A17596D8800113845 /* NamespaceGrantValidateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantValidateResult.h; sourceTree = "<group>"; };
 		00384C0B17596D8800113845 /* NamespaceGrantWindowRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantWindowRequest.h; sourceTree = "<group>"; };
 		00384C0C17596D8800113845 /* NamespaceGrantWindowResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NamespaceGrantWindowResult.h; sourceTree = "<group>"; };
 		00384C23175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessRolodexCredentialsGetRequest.cpp; sourceTree = "<group>"; };
@@ -387,6 +373,14 @@
 		0063B7A416CA8E8B00E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		0063B7A516CA8E8B00E6DB4D /* stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack.h; sourceTree = "<group>"; };
 		0063B7AD16CA8E8B00E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		006FB4C3175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantChallengeValidateRequest.cpp; sourceTree = "<group>"; };
+		006FB4C4175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxNamespaceGrantChallengeValidateResult.cpp; sourceTree = "<group>"; };
+		006FB4C7175D1369000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantChallengeValidateRequest.h; sourceTree = "<group>"; };
+		006FB4C8175D1369000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxNamespaceGrantChallengeValidateResult.h; sourceTree = "<group>"; };
+		006FB4C9175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexNamespaceGrantChallengeValidateRequest.cpp; sourceTree = "<group>"; };
+		006FB4CA175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RolodexNamespaceGrantChallengeValidateResult.cpp; sourceTree = "<group>"; };
+		006FB4CD175D23F8000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RolodexNamespaceGrantChallengeValidateRequest.h; sourceTree = "<group>"; };
+		006FB4CE175D23F8000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RolodexNamespaceGrantChallengeValidateResult.h; sourceTree = "<group>"; };
 		0095DEBA16CA8C2F005F53D3 /* libhfstack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfstack.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		00AF4C9817179C9200DCA0A8 /* MessageFactoryIdentityLockbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryIdentityLockbox.cpp; sourceTree = "<group>"; };
 		00AF4C9917179C9200DCA0A8 /* MessageFactoryIdentityLockbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryIdentityLockbox.h; sourceTree = "<group>"; };
@@ -442,12 +436,6 @@
 				00384C0C17596D8800113845 /* NamespaceGrantWindowResult.h */,
 				00384C0817596D8800113845 /* NamespaceGrantStartNotify.h */,
 				00384C0717596D8800113845 /* NamespaceGrantCompleteNotify.h */,
-				00384C0517596D8800113845 /* NamespaceGrantAdminWindowRequest.h */,
-				00384C0617596D8800113845 /* NamespaceGrantAdminWindowResult.h */,
-				00384C0417596D8800113845 /* NamespaceGrantAdminStartNotify.h */,
-				00384C0317596D8800113845 /* NamespaceGrantAdminCompleteNotify.h */,
-				00384C0917596D8800113845 /* NamespaceGrantValidateRequest.h */,
-				00384C0A17596D8800113845 /* NamespaceGrantValidateResult.h */,
 			);
 			path = "namespace-grant";
 			sourceTree = "<group>";
@@ -460,12 +448,6 @@
 				00384C0117596D8800113845 /* NamespaceGrantWindowResult.cpp */,
 				00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */,
 				00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */,
-				00384BFA17596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp */,
-				00384BFB17596D8800113845 /* NamespaceGrantAdminWindowResult.cpp */,
-				00384BF917596D8800113845 /* NamespaceGrantAdminStartNotify.cpp */,
-				00384BF817596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp */,
-				00384BFE17596D8800113845 /* NamespaceGrantValidateRequest.cpp */,
-				00384BFF17596D8800113845 /* NamespaceGrantValidateResult.cpp */,
 			);
 			path = cpp;
 			sourceTree = "<group>";
@@ -477,6 +459,8 @@
 				00384C30175A79D100113845 /* MessageFactoryRolodex.h */,
 				00384C31175A79D100113845 /* RolodexAccessRequest.h */,
 				00384C32175A79D100113845 /* RolodexAccessResult.h */,
+				006FB4CD175D23F8000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.h */,
+				006FB4CE175D23F8000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.h */,
 				00384C33175A79D100113845 /* RolodexContactsGetRequest.h */,
 				00384C34175A79D100113845 /* RolodexContactsGetResult.h */,
 			);
@@ -489,6 +473,8 @@
 				00384C2B175A79D100113845 /* MessageFactoryRolodex.cpp */,
 				00384C2C175A79D100113845 /* RolodexAccessRequest.cpp */,
 				00384C2D175A79D100113845 /* RolodexAccessResult.cpp */,
+				006FB4C9175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp */,
+				006FB4CA175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp */,
 				00384C2E175A79D100113845 /* RolodexContactsGetRequest.cpp */,
 				00384C2F175A79D100113845 /* RolodexContactsGetResult.cpp */,
 			);
@@ -950,6 +936,8 @@
 				00AF4C9917179C9200DCA0A8 /* MessageFactoryIdentityLockbox.h */,
 				00AF4CBA171CCA3200DCA0A8 /* LockboxAccessRequest.h */,
 				00AF4CBB171CCA3200DCA0A8 /* LockboxAccessResult.h */,
+				006FB4C7175D1369000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.h */,
+				006FB4C8175D1369000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.h */,
 				00AF4CBE171CE3E800DCA0A8 /* LockboxIdentitiesUpdateRequest.h */,
 				00AF4DCF171D944600DCA0A8 /* LockboxIdentitiesUpdateResult.h */,
 				00AF4DE0171DFADF00DCA0A8 /* LockboxContentGetRequest.h */,
@@ -966,6 +954,8 @@
 				00AF4C9817179C9200DCA0A8 /* MessageFactoryIdentityLockbox.cpp */,
 				00AF4CB6171CCA2300DCA0A8 /* LockboxAccessRequest.cpp */,
 				00AF4CB7171CCA2300DCA0A8 /* LockboxAccessResult.cpp */,
+				006FB4C3175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp */,
+				006FB4C4175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp */,
 				00AF4CBC171CE3D700DCA0A8 /* LockboxIdentitiesUpdateRequest.cpp */,
 				00AF4DCD171D943A00DCA0A8 /* LockboxIdentitiesUpdateResult.cpp */,
 				00AF4DDC171DFAC900DCA0A8 /* LockboxContentGetRequest.cpp */,
@@ -1165,14 +1155,8 @@
 				0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */,
 				005F60AE17557D5100BC3DD6 /* stack_Cache.cpp in Sources */,
 				00384C0D17596D8800113845 /* MessageFactoryNamespaceGrant.cpp in Sources */,
-				00384C0E17596D8800113845 /* NamespaceGrantAdminCompleteNotify.cpp in Sources */,
-				00384C0F17596D8800113845 /* NamespaceGrantAdminStartNotify.cpp in Sources */,
-				00384C1017596D8800113845 /* NamespaceGrantAdminWindowRequest.cpp in Sources */,
-				00384C1117596D8800113845 /* NamespaceGrantAdminWindowResult.cpp in Sources */,
 				00384C1217596D8800113845 /* NamespaceGrantCompleteNotify.cpp in Sources */,
 				00384C1317596D8800113845 /* NamespaceGrantStartNotify.cpp in Sources */,
-				00384C1417596D8800113845 /* NamespaceGrantValidateRequest.cpp in Sources */,
-				00384C1517596D8800113845 /* NamespaceGrantValidateResult.cpp in Sources */,
 				00384C1617596D8800113845 /* NamespaceGrantWindowRequest.cpp in Sources */,
 				00384C1717596D8800113845 /* NamespaceGrantWindowResult.cpp in Sources */,
 				00384C25175A70F300113845 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */,
@@ -1183,6 +1167,10 @@
 				00384C38175A79D100113845 /* RolodexContactsGetRequest.cpp in Sources */,
 				00384C39175A79D100113845 /* RolodexContactsGetResult.cpp in Sources */,
 				00384C40175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp in Sources */,
+				006FB4C5175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateRequest.cpp in Sources */,
+				006FB4C6175D134F000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp in Sources */,
+				006FB4CB175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp in Sources */,
+				006FB4CC175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

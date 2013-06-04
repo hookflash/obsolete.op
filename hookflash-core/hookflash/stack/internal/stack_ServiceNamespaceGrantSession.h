@@ -36,7 +36,6 @@
 #include <hookflash/stack/IMessageMonitor.h>
 #include <hookflash/stack/IMessageSource.h>
 #include <hookflash/stack/IServiceNamespaceGrant.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateResult.h>
 
 #include <hookflash/stack/IServiceSalt.h>
 
@@ -50,8 +49,6 @@ namespace hookflash
   {
     namespace internal
     {
-      using message::namespace_grant::NamespaceGrantValidateResult;
-      using message::namespace_grant::NamespaceGrantValidateResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -70,19 +67,22 @@ namespace hookflash
 
         virtual PUID getID() const = 0;
 
-        virtual SessionStates getState(
-                                       WORD *lastErrorCode,
-                                       String *lastErrorReason
-                                       ) const = 0;
+        virtual String getGrantID() const = 0;
 
-        virtual IServiceNamespaceGrantSessionForServicesSubscriptionPtr subscribe(
-                                                                                  IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                                                                                  ) = 0;
+        virtual IServiceNamespaceGrantSessionForServicesWaitPtr obtainWaitToProceed(
+                                                                                    IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate = IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr()
+                                                                                    ) = 0;  // returns IServiceNamespaceGrantSessionForServicesWaitPtr() (i.e. NULL) if not obtain to wait at this time
 
-        virtual void grantNamespaces(const NamespaceInfoMap &namespaces) = 0;
-        virtual bool isNamespaceGranted(const char *namespaceURL) const = 0;
+        virtual IServiceNamespaceGrantSessionForServicesQueryPtr query(
+                                                                       IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                                                       const NamespaceGrantChallengeInfo &challengeInfo,
+                                                                       const NamespaceInfoMap &namespaces
+                                                                       ) = 0;
 
-        virtual GrantInfo getGrantInfo() const = 0;
+        virtual bool isNamespaceURLInNamespaceGrantChallengeBundle(
+                                                                   ElementPtr bundle,
+                                                                   const char *namespaceURL
+                                                                   ) const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -90,32 +90,61 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceNamespaceGrantSessionForServicesDelegate
+      #pragma mark IServiceNamespaceGrantSessionForServicesWait
       #pragma mark
 
-      interaction IServiceNamespaceGrantSessionForServicesDelegate
-      {
-        typedef IServiceNamespaceGrantSession::SessionStates SessionStates;
-
-        virtual void onServiceNamespaceGrantSessionStateChanged(
-                                                                ServiceNamespaceGrantSessionPtr session,
-                                                                SessionStates state
-                                                                ) = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IServiceNamespaceGrantSessionForServicesSubscription
-      #pragma mark
-
-      interaction IServiceNamespaceGrantSessionForServicesSubscription
+      interaction IServiceNamespaceGrantSessionForServicesWait
       {
         virtual PUID getID() const = 0;
 
         virtual void cancel() = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
+      #pragma mark
+
+      interaction IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
+      {
+        virtual void onServiceNamespaceGrantSessionForServicesWaitComplete(IServiceNamespaceGrantSessionPtr session) = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceNamespaceGrantSessionForServicesQuery
+      #pragma mark
+
+      interaction IServiceNamespaceGrantSessionForServicesQuery
+      {
+        virtual PUID getID() const = 0;
+
+        virtual void cancel() = 0;
+
+        virtual bool isComplete() const = 0;
+        virtual ElementPtr getNamespaceGrantChallengeBundle() const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IServiceNamespaceGrantSessionForServicesQueryDelegate
+      #pragma mark
+
+      interaction IServiceNamespaceGrantSessionForServicesQueryDelegate
+      {
+        virtual void onServiceNamespaceGrantSessionForServicesQueryComplete(
+                                                                            IServiceNamespaceGrantSessionForServicesQueryPtr query,
+                                                                            ElementPtr namespaceGrantChallengeBundleEl
+                                                                            ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -145,8 +174,7 @@ namespace hookflash
                                            public IMessageSource,
                                            public IServiceNamespaceGrantSessionForServices,
                                            public IServiceNamespaceGrantSessionAsyncDelegate,
-                                           public IBootstrappedNetworkDelegate,
-                                           public IMessageMonitorResultDelegate<NamespaceGrantValidateResult>
+                                           public IBootstrappedNetworkDelegate
       {
       public:
         friend interaction IServiceNamespaceGrantSessionFactory;
@@ -154,24 +182,29 @@ namespace hookflash
 
         typedef IServiceNamespaceGrantSession::SessionStates SessionStates;
 
-        class Subscription;
-        typedef boost::shared_ptr<Subscription> SubscriptionPtr;
-        typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
-        friend class Subscription;
+        class Wait;
+        typedef boost::shared_ptr<Wait> WaitPtr;
+        typedef boost::weak_ptr<Wait> WaitWeakPtr;
+        friend class Wait;
 
-        typedef PUID SubscriptionID;
-        typedef std::map<SubscriptionID, SubscriptionWeakPtr> SubscriptionMap;
+        class Query;
+        typedef boost::shared_ptr<Query> QueryPtr;
+        typedef boost::weak_ptr<Query> QueryWeakPtr;
+        friend class Query;
+
+        typedef PUID QueryID;
+        typedef std::map<QueryID, QueryPtr> QueryMap;
 
         typedef std::list<DocumentPtr> DocumentList;
+
+        typedef std::list<IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr> WaitingDelegateList;
 
       protected:
         ServiceNamespaceGrantSession(
                                      IMessageQueuePtr queue,
-                                     BootstrappedNetworkPtr network,
                                      IServiceNamespaceGrantSessionDelegatePtr delegate,
                                      const char *outerFrameURLUponReload,
-                                     const char *grantID,
-                                     const char *grantSecret
+                                     const char *grantID
                                      );
 
         ServiceNamespaceGrantSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -193,15 +226,11 @@ namespace hookflash
 
         static ServiceNamespaceGrantSessionPtr create(
                                                       IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                      IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                       const char *outerFrameURLUponReload,
-                                                      const char *grantID,
-                                                      const char *grantSecret
+                                                      const char *grantID
                                                       );
 
         virtual PUID getID() const {return mID;}
-
-        virtual IServiceNamespaceGrantPtr getService() const;
 
         virtual SessionStates getState(
                                        WORD *lastErrorCode,
@@ -209,9 +238,6 @@ namespace hookflash
                                        ) const;
 
         virtual String getGrantID() const;
-        virtual String getGrantSecret() const;
-
-        virtual void notifyAssocaitedToAllServicesComplete();
 
         virtual String getInnerBrowserWindowFrameURL() const;
 
@@ -237,19 +263,22 @@ namespace hookflash
 
         // (duplicate) virtual PUID getID() const;
 
-        // (duplicate) virtual SessionStates getState(
-        //                                            WORD *lastErrorCode,
-        //                                            String *lastErrorReason
-        //                                            ) const;
+        // (duplicate) virtual String getGrantID() const;
 
-        virtual IServiceNamespaceGrantSessionForServicesSubscriptionPtr subscribe(
-                                                                                  IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                                                                                  );
+        virtual IServiceNamespaceGrantSessionForServicesWaitPtr obtainWaitToProceed(
+                                                                                    IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate = IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr()
+                                                                                    );
 
-        virtual void grantNamespaces(const NamespaceInfoMap &namespaceURL);
-        virtual bool isNamespaceGranted(const char *namespaceURL) const;
+        virtual IServiceNamespaceGrantSessionForServicesQueryPtr query(
+                                                                       IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                                                       const NamespaceGrantChallengeInfo &challengeInfo,
+                                                                       const NamespaceInfoMap &namespaces
+                                                                       );
 
-        virtual GrantInfo getGrantInfo() const;
+        virtual bool isNamespaceURLInNamespaceGrantChallengeBundle(
+                                                                   ElementPtr bundle,
+                                                                   const char *namespaceURL
+                                                                   ) const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -265,29 +294,22 @@ namespace hookflash
 
         virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork);
 
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark ServiceNamespaceGrantSession => IMessageMonitorResultDelegate<NamespaceGrantValidateResult>
-        #pragma mark
-
-        virtual bool handleMessageMonitorResultReceived(
-                                                        IMessageMonitorPtr monitor,
-                                                        NamespaceGrantValidateResultPtr result
-                                                        );
-
-        virtual bool handleMessageMonitorErrorResultReceived(
-                                                             IMessageMonitorPtr monitor,
-                                                             NamespaceGrantValidateResultPtr ignore, // will always be NULL
-                                                             message::MessageResultPtr result
-                                                             );
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceNamespaceGrantSession => friend class Subscription
+        #pragma mark ServiceNamespaceGrantSession => friend class Query
         #pragma mark
 
-        void notifySubscriptionGone(PUID subscriptionID);
+        void notifyQueryGone(PUID queryID);
+
+        // (duplicate) RecursiveLock &getLock() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceNamespaceGrantSession => friend class Wait
+        #pragma mark
+
+        void notifyWaitGone(PUID waitID);
 
       protected:
         //---------------------------------------------------------------------
@@ -304,15 +326,16 @@ namespace hookflash
 
         void step();
         bool stepWaitForServices();
+        bool stepPrepareQueries();
         bool stepBootstrapper();
-        bool stepSendInitialValidate();
-        bool stepCheckAllNamespaces();
         bool stepLoadGrantWindow();
         bool stepMakeGrantWindowVisible();
         bool stepSendNamespaceGrantStartNotification();
         bool stepWaitForPermission();
         bool stepCloseBrowserWindow();
         bool stepExpiresCheck();
+
+        bool stepRestart();
 
         void postStep();
 
@@ -322,30 +345,25 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceNamespaceGrantSession::Subscription
+        #pragma mark ServiceNamespaceGrantSession::Wait
         #pragma mark
 
       public:
-        class Subscription : public IServiceNamespaceGrantSessionForServicesSubscription
+        class Wait : public IServiceNamespaceGrantSessionForServicesWait
         {
         public:
           friend class ServiceNamespaceGrantSession;
 
-          typedef ServiceNamespaceGrantSession::SessionStates SessionStates;
-
         protected:
-          Subscription(
-                       ServiceNamespaceGrantSessionPtr outer,
-                       IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                       );
+          Wait(ServiceNamespaceGrantSessionPtr outer);
 
         public:
-          ~Subscription();
+          ~Wait();
 
         protected:
           //---------------------------------------------------------------------
           #pragma mark
-          #pragma mark ServiceNamespaceGrantSession::Subscription => IServiceNamespaceGrantSessionForServices
+          #pragma mark ServiceNamespaceGrantSession::Wait => IServiceNamespaceGrantSessionForServicesWait
           #pragma mark
 
           virtual PUID getID() const {return mID;}
@@ -355,23 +373,93 @@ namespace hookflash
         protected:
           //---------------------------------------------------------------------
           #pragma mark
-          #pragma mark ServiceNamespaceGrantSession::Subscription => friend class ServiceNamespaceGrantSession
+          #pragma mark ServiceNamespaceGrantSession::Wait => friend class ServiceNamespaceGrantSession
           #pragma mark
 
-          static SubscriptionPtr create(
-                                        ServiceNamespaceGrantSessionPtr outer,
-                                        IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                                        );
+          static WaitPtr create(ServiceNamespaceGrantSessionPtr outer);
 
           // (duplicate) virtual PUID getID() const;
-
-          void notifyStateChanged(SessionStates state);
 
         public:
           PUID mID;
           ServiceNamespaceGrantSessionPtr mOuter;
+        };
 
-          IServiceNamespaceGrantSessionForServicesDelegatePtr mDelegate;
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceNamespaceGrantSession::Query
+        #pragma mark
+
+      public:
+        class Query : public IServiceNamespaceGrantSessionForServicesQuery
+        {
+        public:
+          friend class ServiceNamespaceGrantSession;
+
+        protected:
+          Query(
+                ServiceNamespaceGrantSessionPtr outer,
+                IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                const NamespaceGrantChallengeInfo &challengeInfo,
+                const NamespaceInfoMap &namespaces
+                );
+
+        public:
+          ~Query();
+
+        protected:
+          //---------------------------------------------------------------------
+          #pragma mark
+          #pragma mark ServiceNamespaceGrantSession::Query => IServiceNamespaceGrantSessionForServicesQuery
+          #pragma mark
+
+          virtual PUID getID() const {return mID;}
+
+          virtual void cancel();
+
+          virtual bool isComplete() const;
+          virtual ElementPtr getNamespaceGrantChallengeBundle() const;
+
+        protected:
+          //---------------------------------------------------------------------
+          #pragma mark
+          #pragma mark ServiceNamespaceGrantSession::Query => friend class ServiceNamespaceGrantSession
+          #pragma mark
+
+          static QueryPtr create(
+                                 ServiceNamespaceGrantSessionPtr outer,
+                                 IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                 const NamespaceGrantChallengeInfo &challengeInfo,
+                                 const NamespaceInfoMap &namespaces
+                                 );
+
+          // (duplicate) virtual PUID getID() const;
+
+          const NamespaceGrantChallengeInfo &getChallengeInfo() const {return mChallengeInfo;}
+          const NamespaceInfoMap &getNamespaces() const {return mNamespaces;}
+
+          void notifyComplete(ElementPtr bundleEl);
+
+        protected:
+          //---------------------------------------------------------------------
+          #pragma mark
+          #pragma mark ServiceNamespaceGrantSession::Query => (internal)
+          #pragma mark
+
+          RecursiveLock &getLock() const;
+
+        public:
+          mutable RecursiveLock mBogusLock;
+          PUID mID;
+          QueryWeakPtr mThisWeak;
+          ServiceNamespaceGrantSessionWeakPtr mOuter;
+
+          IServiceNamespaceGrantSessionForServicesQueryDelegatePtr mDelegate;
+
+          NamespaceGrantChallengeInfo mChallengeInfo;
+          NamespaceInfoMap mNamespaces;
+
+          ElementPtr mNamespaceGrantChallengeBundleEl;
         };
 
       protected:
@@ -397,11 +485,7 @@ namespace hookflash
 
         String mOuterFrameURLUponReload;
 
-        GrantInfo mGrantInfo;
-
-        bool mRedoGrantBrowserProcessIfNeeded;
-
-        bool mNotifiedAssociatedToAllServicesComplete;
+        String mGrantID;
 
         bool mBrowserWindowReady;
         bool mBrowserWindowVisible;
@@ -409,18 +493,17 @@ namespace hookflash
 
         bool mNeedsBrowserWindowVisible;
 
-        ULONG mTotalNamesapceValidationsIssued;
-        Time mLastNamespaceValidateIssued;
         bool mNamespaceGrantStartNotificationSent;
         bool mReceivedNamespaceGrantCompleteNotify;
 
         DocumentList mPendingMessagesToDeliver;
 
-        NamespaceInfoMap mNamespacesToGrant;
-        NamespaceInfoMap mNamespacesGranted;
-        bool mHasGrantedAllRequiredNamespaces;
+        ULONG mTotalWaits;
 
-        SubscriptionMap mSubscriptions;
+        QueryMap mQueriesInProcess;
+        QueryMap mPendingQueries;
+
+        WaitingDelegateList mWaitingDelegates;
       };
 
       //-----------------------------------------------------------------------
@@ -437,10 +520,8 @@ namespace hookflash
 
         static ServiceNamespaceGrantSessionPtr create(
                                                       IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                      IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                       const char *outerFrameURLUponReload,
-                                                      const char *grantID,
-                                                      const char *grantSecret
+                                                      const char *grantID
                                                       );
       };
       
@@ -452,8 +533,13 @@ ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSession
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::ServiceNamespaceGrantSessionPtr, ServiceNamespaceGrantSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesDelegate::SessionStates, SessionStates)
-ZS_DECLARE_PROXY_METHOD_2(onServiceNamespaceGrantSessionStateChanged, ServiceNamespaceGrantSessionPtr, SessionStates)
+ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceNamespaceGrantSessionPtr, IServiceNamespaceGrantSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onServiceNamespaceGrantSessionForServicesWaitComplete, IServiceNamespaceGrantSessionPtr)
+ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesQueryPtr, IServiceNamespaceGrantSessionForServicesQueryPtr)
+ZS_DECLARE_PROXY_TYPEDEF(zsLib::XML::ElementPtr, ElementPtr)
+ZS_DECLARE_PROXY_METHOD_2(onServiceNamespaceGrantSessionForServicesQueryComplete, IServiceNamespaceGrantSessionForServicesQueryPtr, ElementPtr)
 ZS_DECLARE_PROXY_END()

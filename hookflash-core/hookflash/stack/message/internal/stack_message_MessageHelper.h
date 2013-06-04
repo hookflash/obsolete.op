@@ -65,7 +65,7 @@ namespace hookflash
                                           );
           static ElementPtr createElement(const LockboxInfo &info);
           static ElementPtr createElement(const AgentInfo &info);
-          static ElementPtr createElement(const GrantInfo &info);
+          static ElementPtr createElement(const NamespaceGrantChallengeInfo &info);
           static ElementPtr createElement(const NamespaceInfo &info);
           static ElementPtr createElement(const RolodexInfo &info);
 
@@ -104,13 +104,13 @@ namespace hookflash
                                               ElementPtr elem,
                                               const SecureByteBlock *encryptionKey = NULL
                                               );
-          static Finder       createFinder(ElementPtr elem);
-          static Service      createService(ElementPtr serviceEl);
-          static IdentityInfo createIdentity(ElementPtr elem);
-          static LockboxInfo  createLockbox(ElementPtr elem);
-          static AgentInfo    createAgent(ElementPtr elem);
-          static GrantInfo    createGrant(ElementPtr elem);
-          static RolodexInfo  createRolodex(ElementPtr elem);
+          static Finder                       createFinder(ElementPtr elem);
+          static Service                      createService(ElementPtr serviceEl);
+          static IdentityInfo                 createIdentity(ElementPtr elem);
+          static LockboxInfo                  createLockbox(ElementPtr elem);
+          static AgentInfo                    createAgent(ElementPtr elem);
+          static NamespaceGrantChallengeInfo  createNamespaceGrantChallenge(ElementPtr elem);
+          static RolodexInfo                  createRolodex(ElementPtr elem);
         };
       }
     }

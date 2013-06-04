@@ -32,6 +32,7 @@
 #include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
 #include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
@@ -84,6 +85,8 @@ namespace hookflash
 
       using message::identity_lockbox::LockboxAccessRequest;
       using message::identity_lockbox::LockboxAccessRequestPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantChallengeValidateRequest;
+      using message::identity_lockbox::LockboxNamespaceGrantChallengeValidateRequestPtr;
       using message::identity_lockbox::LockboxIdentitiesUpdateRequest;
       using message::identity_lockbox::LockboxIdentitiesUpdateRequestPtr;
       using message::identity_lockbox::LockboxContentGetRequest;
@@ -202,16 +205,12 @@ namespace hookflash
         mGrantSession(grantSession),
         mCurrentState(SessionState_Pending),
         mLastError(0),
-        mHasPermissions(false),
+        mObtainedLock(false),
         mPeerFilesNeedUpload(false),
         mLoginIdentitySetToBecomeAssociated(false),
         mForceNewAccount(false)
       {
         ZS_LOG_DEBUG(log("created"))
-
-        NamespaceInfoMap namespaces;
-        getNamespaces(namespaces);
-        mGrantSession->forServices().grantNamespaces(namespaces);
       }
 
       //-----------------------------------------------------------------------
@@ -267,7 +266,6 @@ namespace hookflash
 
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, ServiceNamespaceGrantSession::convert(grantSession)));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->mForceNewAccount = forceNewAccount;
         pThis->init();
@@ -293,7 +291,6 @@ namespace hookflash
 
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, ServiceNamespaceGrantSession::convert(grantSession)));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         pThis->mLockboxInfo.mAccountID = String(lockboxAccountID);
         pThis->mLockboxInfo.mKeyIdentityHalf = IHelper::convertToBuffer(identityHalfLockboxKey);
         pThis->mLockboxInfo.mKeyLockboxHalf = IHelper::convertToBuffer(lockboxHalfLockboxKey);
@@ -422,14 +419,23 @@ namespace hookflash
           return;
         }
 
-        if (mGrantSubscription) {
-          mGrantSubscription->cancel();
-          mGrantSubscription.reset();
+        if (mGrantQuery) {
+          mGrantQuery->cancel();
+          mGrantQuery.reset();
+        }
+
+        if (mGrantWait) {
+          mGrantWait->cancel();
+          mGrantWait.reset();
         }
 
         if (mLockboxAccessMonitor) {
           mLockboxAccessMonitor->cancel();
           mLockboxAccessMonitor.reset();
+        }
+        if (mLockboxNamespaceGrantChallengeValidateMonitor) {
+          mLockboxNamespaceGrantChallengeValidateMonitor->cancel();
+          mLockboxNamespaceGrantChallengeValidateMonitor.reset();
         }
         if (mLockboxIdentitiesUpdateMonitor) {
           mLockboxIdentitiesUpdateMonitor->cancel();
@@ -677,14 +683,31 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark ServiceLockboxSession => IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::onServiceNamespaceGrantSessionForServicesWaitComplete(IServiceNamespaceGrantSessionPtr session)
+      {
+        ZS_LOG_DEBUG(log("namespace grant session wait is ready to be obtained (if needed)"))
+
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark ServiceLockboxSession => IServiceSaltFetchSignedSaltQueryDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceLockboxSession::onServiceNamespaceGrantSessionStateChanged(
-                                                                             ServiceNamespaceGrantSessionPtr session,
-                                                                             GrantSessionStates state
-                                                                             )
+      void ServiceLockboxSession::onServiceNamespaceGrantSessionForServicesQueryComplete(
+                                                                                         IServiceNamespaceGrantSessionForServicesQueryPtr query,
+                                                                                         ElementPtr namespaceGrantChallengeBundleEl
+                                                                                         )
       {
         ZS_LOG_DEBUG(log("namespace grant session state changed"))
 
@@ -720,6 +743,15 @@ namespace hookflash
 
         mServerIdentities = result->identities();
 
+        NamespaceGrantChallengeInfo challengeInfo = result->namespaceGrantChallengeInfo();
+
+        if (challengeInfo.mID.hasData()) {
+          // a namespace grant challenge was issue
+          NamespaceInfoMap namespaces;
+          getNamespaces(namespaces);
+          mGrantQuery = mGrantSession->forServices().query(mThisWeak.lock(), challengeInfo, namespaces);
+        }
+
         step();
 
         return true;
@@ -750,7 +782,54 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxAccessResult>
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxNamespaceGrantChallengeValidateResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorResultReceived(
+                                                                     IMessageMonitorPtr monitor,
+                                                                     LockboxNamespaceGrantChallengeValidateResultPtr result
+                                                                     )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mLockboxNamespaceGrantChallengeValidateMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        mLockboxNamespaceGrantChallengeValidateMonitor->cancel();
+        mLockboxNamespaceGrantChallengeValidateMonitor.reset();
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::handleMessageMonitorErrorResultReceived(
+                                                                          IMessageMonitorPtr monitor,
+                                                                          LockboxNamespaceGrantChallengeValidateResultPtr ignore, // will always be NULL
+                                                                          message::MessageResultPtr result
+                                                                          )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mLockboxAccessMonitor) {
+          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
+          return false;
+        }
+
+        ZS_LOG_WARNING(Detail, log("lockbox access failed"))
+
+        setError(result->errorCode(), result->errorReason());
+        cancel();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -997,8 +1076,10 @@ namespace hookflash
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
                Helper::getDebugValue("grant session", mGrantSession ? Stringize<PUID>(mGrantSession->forServices().getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant subscription", mGrantSubscription ? Stringize<PUID>(mGrantSubscription->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant query", mGrantQuery ? Stringize<PUID>(mGrantQuery->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant wait", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("lockbox access monitor", mLockboxAccessMonitor ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("lockbox grant validate monitor", mLockboxNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("lockbox identities update monitor", mLockboxIdentitiesUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("lockbox content get monitor", mLockboxContentGetMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("lockbox content set monitor", mLockboxContentSetMonitor ? String("true") : String(), firstTime) +
@@ -1006,7 +1087,7 @@ namespace hookflash
                mLockboxInfo.getDebugValueString() +
                Helper::getDebugValue("login identity", mLoginIdentity ? String("true") : String(), firstTime) +
                IPeerFiles::toDebugString(mPeerFiles) +
-               Helper::getDebugValue("has permissions", mHasPermissions ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("obtained lock", mObtainedLock ? String("true") : String(), firstTime) +
                Helper::getDebugValue("peer files need upload", mPeerFilesNeedUpload ? String("true") : String(), firstTime) +
                Helper::getDebugValue("login identity set to become associated", mLoginIdentitySetToBecomeAssociated ? String("true") : String(), firstTime) +
                Helper::getDebugValue("force new account", mForceNewAccount ? String("true") : String(), firstTime) +
@@ -1030,9 +1111,11 @@ namespace hookflash
         }
 
         if (!stepBootstrapper()) goto post_step;
-        if (!stepGrantSession()) goto post_step;
+        if (!stepGrantLock()) goto post_step;
         if (!stepIdentityLogin()) goto post_step;
         if (!stepLockboxAccess()) goto post_step;
+        if (!stepGrantLockClear()) goto post_step;
+        if (!stepGrantChallenge()) goto post_step;
         if (!stepContentGet()) goto post_step;
         if (!stepPreparePeerFiles()) goto post_step;
         if (!stepUploadPeerFiles()) goto post_step;
@@ -1074,61 +1157,28 @@ namespace hookflash
         cancel();
         return false;
       }
-      
+
       //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepGrantSession()
+      bool ServiceLockboxSession::stepGrantLock()
       {
-        if (mHasPermissions) {
-          ZS_LOG_DEBUG(log("already have namespace persmissions granted"))
+        if (mObtainedLock) {
+          ZS_LOG_DEBUG(log("already informed browser window ready thus no need to make sure grant wait lock is obtained"))
           return true;
         }
 
-        WORD errorCode = 0;
-        String reason;
-
-        GrantSessionStates state = mGrantSession->forServices().getState(&errorCode, &reason);
-
-        switch (state) {
-          case IServiceNamespaceGrantSession::SessionState_Pending:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForAssociationToAllServices:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeLoaded:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToClose:
-          {
-            ZS_LOG_DEBUG(log("waiting for namespace grant session to complete"))
-            return false;
-          }
-          case IServiceNamespaceGrantSession::SessionState_Ready:
-          {
-            ZS_LOG_DEBUG(log("namespace grant session is compelte"))
-            break;
-          }
-          case IServiceNamespaceGrantSession::SessionState_Shutdown:
-          {
-            ZS_LOG_ERROR(Detail, log("namespace grant session failed"))
-            setError(errorCode, reason);
-            cancel();
-            return false;
-          }
+        if (mGrantWait) {
+          ZS_LOG_DEBUG(log("grant wait lock is already obtained"))
+          return true;
         }
 
-        NamespaceInfoMap namespaces;
-        getNamespaces(namespaces);
+        mGrantWait = mGrantSession->forServices().obtainWaitToProceed(mThisWeak.lock());
 
-        for (NamespaceInfoMap::iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
-        {
-          NamespaceInfo &info = (*iter).second;
-          if (!mGrantSession->forServices().isNamespaceGranted(info.mURL)) {
-            ZS_LOG_WARNING(Detail, log("did not grant permission to a required namespace") + ", namespace=" + info.mURL)
-            setError(IHTTP::HTTPStatusCode_Forbidden, ("Failed to obtain permission to namespace, namespace=" + info.mURL).c_str());
-            cancel();
-            return false;
-          }
+        if (!mGrantWait) {
+          ZS_LOG_DEBUG(log("waiting to obtain grant wait lock"))
+          return false;
         }
-
-        ZS_LOG_DEBUG(log("all required namespaces have beeng ranted"))
-
-        mHasPermissions = true;
+        
+        mObtainedLock = true;
         return true;
       }
       
@@ -1170,7 +1220,7 @@ namespace hookflash
       bool ServiceLockboxSession::stepLockboxAccess()
       {
         if (mLockboxAccessMonitor) {
-          ZS_LOG_DEBUG(log("waiting for lockbox access monitor to compelte"))
+          ZS_LOG_DEBUG(log("waiting for lockbox access monitor to complete"))
           return false;
         }
 
@@ -1227,13 +1277,90 @@ namespace hookflash
 
         mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();
 
-        request->grantInfo(mGrantSession->forServices().getGrantInfo());
+        request->grantID(mGrantSession->forServices().getGrantID());
         request->lockboxInfo(mLockboxInfo);
+
+        NamespaceInfoMap namespaces;
+        getNamespaces(namespaces);
+        request->namespaceURLs(namespaces);
 
         mLockboxAccessMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-access", request);
 
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepGrantLockClear()
+      {
+        if (!mGrantWait) {
+          ZS_LOG_DEBUG(log("wait already cleared"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("clearing grant wait"))
+
+        mGrantWait->cancel();
+        mGrantWait.reset();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepGrantChallenge()
+      {
+        if (mLockboxNamespaceGrantChallengeValidateMonitor) {
+          ZS_LOG_DEBUG(log("waiting for lockbox namespace grant challenge validate monitor to complete"))
+          return false;
+        }
+
+        if (!mGrantQuery) {
+          ZS_LOG_DEBUG(log("no grant challenge query thus continuing..."))
+          return true;
+        }
+
+        if (!mGrantQuery->isComplete()) {
+          ZS_LOG_DEBUG(log("waiting for the grant query to complete"))
+          return false;
+        }
+
+        ElementPtr bundleEl = mGrantQuery->getNamespaceGrantChallengeBundle();
+        if (!bundleEl) {
+          ZS_LOG_ERROR(Detail, log("namespaces were no granted in challenge"))
+          setError(IHTTP::HTTPStatusCode_Forbidden, "namespaces were not granted to access lockbox");
+          cancel();
+          return false;
+        }
+
+        NamespaceInfoMap namespaces;
+        getNamespaces(namespaces);
+
+        for (NamespaceInfoMap::iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
+        {
+          NamespaceInfo &namespaceInfo = (*iter).second;
+
+          if (!mGrantSession->forServices().isNamespaceURLInNamespaceGrantChallengeBundle(bundleEl, namespaceInfo.mURL)) {
+            ZS_LOG_WARNING(Detail, log("lockbox was not granted required namespace") + ", namespace" + namespaceInfo.mURL)
+            setError(IHTTP::HTTPStatusCode_Forbidden, "namespaces were not granted to access lockbox");
+            cancel();
+            return false;
+          }
+        }
+
+        mGrantQuery->cancel();
+        mGrantQuery.reset();
+
+        ZS_LOG_DEBUG(log("all namespaces required were correctly granted, notify the lockbox of the newly created access"))
+
+        LockboxNamespaceGrantChallengeValidateRequestPtr request = LockboxNamespaceGrantChallengeValidateRequest::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
+
+        request->lockboxInfo(mLockboxInfo);
+        request->namespaceGrantChallengeBundle(bundleEl);
+
+        mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "rolodex-namespace-grant-challenge-validate", request);
+
+        return true;
       }
 
       //-----------------------------------------------------------------------

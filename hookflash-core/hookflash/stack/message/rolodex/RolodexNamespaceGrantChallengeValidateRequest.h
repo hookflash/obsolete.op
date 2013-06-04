@@ -29,12 +29,13 @@
 
  */
 
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminWindowResult.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminWindowRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#pragma once
 
-#include <zsLib/XML.h>
-#include <zsLib/helpers.h>
+#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
+
+#include <utility>
+#include <list>
 
 namespace hookflash
 {
@@ -42,40 +43,43 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace rolodex
       {
-        using internal::MessageHelper;
-
-        //---------------------------------------------------------------------
-        NamespaceGrantAdminWindowResultPtr NamespaceGrantAdminWindowResult::convert(MessagePtr message)
+        class RolodexNamespaceGrantChallengeValidateRequest : public MessageRequest
         {
-          return boost::dynamic_pointer_cast<NamespaceGrantAdminWindowResult>(message);
-        }
-
-        //---------------------------------------------------------------------
-        NamespaceGrantAdminWindowResult::NamespaceGrantAdminWindowResult()
-        {
-        }
-
-        //---------------------------------------------------------------------
-        NamespaceGrantAdminWindowResultPtr NamespaceGrantAdminWindowResult::create(NamespaceGrantAdminWindowRequestPtr request)
-        {
-          NamespaceGrantAdminWindowResultPtr ret(new NamespaceGrantAdminWindowResult);
-          ret->mDomain = request->domain();
-          ret->mID = request->messageID();
-          ret->mAppID = request->appID();
-          return ret;
-        }
-
-        //---------------------------------------------------------------------
-        bool NamespaceGrantAdminWindowResult::hasAttribute(AttributeTypes type) const
-        {
-          switch (type)
+        public:
+          enum AttributeTypes
           {
-            default:                                    break;
-          }
-          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
-        }
+            AttributeType_RolodexInfo,
+            AttributeType_NamespaceGrantChallengeBundle,
+          };
+
+        public:
+          static RolodexNamespaceGrantChallengeValidateRequestPtr convert(MessagePtr message);
+
+          static RolodexNamespaceGrantChallengeValidateRequestPtr create();
+
+          virtual DocumentPtr encode();
+
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryRolodex::Method_RolodexNamespaceGrantChallengeValidate;}
+
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryRolodex::singleton();}
+
+          bool hasAttribute(AttributeTypes type) const;
+
+          const RolodexInfo &rolodexInfo() const          {return mRolodexInfo;}
+          void rolodexInfo(const RolodexInfo &val)        {mRolodexInfo = val;}
+
+          const ElementPtr &namespaceGrantChallengeBundle() const {return mNamespaceGrantChallengeBundle;}
+          void namespaceGrantChallengeBundle(ElementPtr val);
+
+        protected:
+          RolodexNamespaceGrantChallengeValidateRequest();
+
+          RolodexInfo mRolodexInfo;
+
+          ElementPtr mNamespaceGrantChallengeBundle;
+        };
       }
     }
   }

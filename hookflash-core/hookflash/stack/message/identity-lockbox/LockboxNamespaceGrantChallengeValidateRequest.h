@@ -31,9 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <hookflash/stack/message/MessageRequest.h>
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 
+#include <utility>
 #include <list>
 
 namespace hookflash
@@ -42,42 +43,42 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace identity_lockbox
       {
-        class NamespaceGrantValidateResult : public MessageResult
+        class LockboxNamespaceGrantChallengeValidateRequest : public MessageRequest
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_GrantInfo = AttributeType_Last + 1,
-            AttributeType_NamespaceInfos,
+            AttributeType_LockboxInfo,
+            AttributeType_NamespaceGrantChallengeBundle,
           };
 
         public:
-          static NamespaceGrantValidateResultPtr convert(MessagePtr message);
+          static LockboxNamespaceGrantChallengeValidateRequestPtr convert(MessagePtr message);
 
-          static NamespaceGrantValidateResultPtr create(
-                                                        ElementPtr root,
-                                                        IMessageSourcePtr messageSource
-                                                        );
+          static LockboxNamespaceGrantChallengeValidateRequestPtr create();
 
-          virtual Methods method() const                    {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantValidate;}
+          virtual DocumentPtr encode();
 
-          virtual IMessageFactoryPtr factory() const        {return MessageFactoryNamespaceGrant::singleton();}
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantChallengeValidate;}
+
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryIdentityLockbox::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const GrantInfo &grantInfo() const                {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
+          const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
 
-          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
-          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
+          const ElementPtr &namespaceGrantChallengeBundle() const {return mNamespaceGrantChallengeBundle;}
+          void namespaceGrantChallengeBundle(ElementPtr val);
 
         protected:
-          NamespaceGrantValidateResult();
+          LockboxNamespaceGrantChallengeValidateRequest();
 
-          GrantInfo mGrantInfo;
-          NamespaceInfoMap mNamespaceInfos;
+          LockboxInfo mLockboxInfo;
+
+          ElementPtr mNamespaceGrantChallengeBundle;
         };
       }
     }

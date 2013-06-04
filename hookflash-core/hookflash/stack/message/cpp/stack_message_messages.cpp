@@ -512,44 +512,41 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark message::GrantInfo
+      #pragma mark message::NamespaceGrantChallengeInfo
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool GrantInfo::hasData() const
+      bool NamespaceGrantChallengeInfo::hasData() const
       {
         return ((mID.hasData()) ||
-                (mSecret.hasData()) ||
-                (mSecretProof.hasData()) ||
-                (Time() != mSecretProofExpires) ||
-                (Time() != mExpires) ||
-                (mDomain.hasData()));
+                (mName.hasData()) ||
+                (mImageURL.hasData()) ||
+                (mServiceURL.hasData()) ||
+                (mDomains.hasData()));
       }
 
       //-----------------------------------------------------------------------
-      String GrantInfo::getDebugValueString(bool includeCommaPrefix) const
+      String NamespaceGrantChallengeInfo::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("grant ID", mID, firstTime) +
-               Helper::getDebugValue("grant secret", mSecret, firstTime) +
-               Helper::getDebugValue("grant secret proof", mSecretProof, firstTime) +
-               Helper::getDebugValue("secret proof expires", Time() != mSecretProofExpires ? IMessageHelper::timeToString(mSecretProofExpires) : String(), firstTime) +
-               Helper::getDebugValue("grant expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
-               Helper::getDebugValue("grant domain", mDomain, firstTime);
+        return Helper::getDebugValue("grant challenge ID", mID, firstTime) +
+               Helper::getDebugValue("service name", mName, firstTime) +
+               Helper::getDebugValue("image url", mImageURL, firstTime) +
+               Helper::getDebugValue("service url", mServiceURL, firstTime) +
+               Helper::getDebugValue("domains", mDomains, firstTime);
       }
 
       //-----------------------------------------------------------------------
-      void GrantInfo::mergeFrom(
-                                const GrantInfo &source,
-                                bool overwriteExisting
-                                )
+      void NamespaceGrantChallengeInfo::mergeFrom(
+                                                  const NamespaceGrantChallengeInfo &source,
+                                                  bool overwriteExisting
+                                                  )
       {
         merge(mID, source.mID, overwriteExisting);
-        merge(mSecret, source.mSecret, overwriteExisting);
-        merge(mSecretProof, source.mSecretProof, overwriteExisting);
-        merge(mSecretProofExpires, source.mSecretProofExpires, overwriteExisting);
-        merge(mExpires, source.mExpires, overwriteExisting);
-        merge(mDomain, source.mDomain, overwriteExisting);
+        merge(mName, source.mName, overwriteExisting);
+        merge(mImageURL, source.mImageURL, overwriteExisting);
+        merge(mServiceURL, source.mServiceURL, overwriteExisting);
+        merge(mDomains, source.mDomains, overwriteExisting);
       }
 
       //-----------------------------------------------------------------------

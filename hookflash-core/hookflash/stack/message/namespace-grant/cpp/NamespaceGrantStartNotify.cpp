@@ -92,8 +92,7 @@ namespace hookflash
           switch (type)
           {
             case AttributeType_AgentInfo:         return mAgentInfo.hasData();
-            case AttributeType_GrantInfo:         return mGrantInfo.hasData();
-            case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
+            case AttributeType_Challenges:        return (mChallenges.size() > 0);
             case AttributeType_BrowserVisibility: return (BrowserVisibility_NA != mVisibility);
             case AttributeType_BrowserPopup:      return (mPopup >= 0);
             case AttributeType_OuterFrameURL:     return mOuterFrameURL.hasData();
@@ -116,29 +115,41 @@ namespace hookflash
           AgentInfo agentInfo = IStackForInternal::agentInfo();
           agentInfo.mergeFrom(mAgentInfo, true);
 
-          GrantInfo grantInfo;
-          grantInfo.mID = mGrantInfo.mID;
-          grantInfo.mSecret = mGrantInfo.mSecret;
-
           if (mAgentInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
           }
 
-          if (grantInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(grantInfo));
-          }
+          if (mChallenges.size() > 0) {
+            ElementPtr namespaceGrantChallengesEl = Element::create("namespaceGrantChallenges");
 
-          if (hasAttribute(AttributeType_NamespaceInfos)) {
-            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
-
-            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
+            for (NamespaceGrantChallengeInfoAndNamespacesList::iterator iterChallenge = mChallenges.begin(); iterChallenge != mChallenges.end(); ++iterChallenge)
             {
-              const NamespaceInfo &namespaceInfo = (*iter).second;
-              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
-            }
+              const NamespaceGrantChallengeInfo &namespaceGrantChallengeInfo = (*iterChallenge).first;
+              const NamespaceInfoMap &namespaces = (*iterChallenge).second;
 
-            if (namespacesEl->hasChildren()) {
-              root->adoptAsLastChild(namespacesEl);
+              if (namespaceGrantChallengeInfo.hasData()) {
+                ElementPtr namespaceGrantChallengesEl = MessageHelper::createElement(namespaceGrantChallengeInfo);
+
+                ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
+
+                for (NamespaceInfoMap::const_iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
+                {
+                  const NamespaceInfo &namespaceInfo = (*iter).second;
+                  if (namespaceInfo.hasData()) {
+                    namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
+                  }
+                }
+
+                if (namespacesEl->hasChildren()) {
+                  namespaceGrantChallengesEl->adoptAsLastChild(namespacesEl);
+                } else {
+                  namespaceGrantChallengesEl.reset();
+                }
+
+                if (namespaceGrantChallengesEl) {
+                  namespaceGrantChallengesEl->adoptAsLastChild(namespaceGrantChallengesEl);
+                }
+              }
             }
           }
 

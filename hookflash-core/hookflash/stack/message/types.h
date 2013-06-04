@@ -296,25 +296,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark GrantInfo
+      #pragma mark NamespaceGrantChallengeInfo
       #pragma mark
 
-      struct GrantInfo
+      struct NamespaceGrantChallengeInfo
       {
         String mID;
-        String mSecret;
-        String mSecretProof;
-        Time mSecretProofExpires;
+        String mName;
+        String mImageURL;
+        String mServiceURL;
+        String mDomains;
 
-        Time mExpires;
-        String mDomain;
-
-        GrantInfo() {}
+        NamespaceGrantChallengeInfo() {}
         bool hasData() const;
         String getDebugValueString(bool includeCommaPrefix = true) const;
 
         void mergeFrom(
-                       const GrantInfo &source,
+                       const NamespaceGrantChallengeInfo &source,
                        bool overwriteExisting = true
                        );
       };
@@ -545,6 +543,14 @@ namespace hookflash
         typedef boost::shared_ptr<LockboxAccessValidateResult> LockboxAccessValidateResultPtr;
         typedef boost::weak_ptr<LockboxAccessValidateResult> LockboxAccessValidateResultWeakPtr;
 
+        class LockboxNamespaceGrantChallengeValidateRequest;
+        typedef boost::shared_ptr<LockboxNamespaceGrantChallengeValidateRequest> LockboxNamespaceGrantChallengeValidateRequestPtr;
+        typedef boost::weak_ptr<LockboxNamespaceGrantChallengeValidateRequest> LockboxNamespaceGrantChallengeValidateRequestWeakPtr;
+
+        class LockboxNamespaceGrantChallengeValidateResult;
+        typedef boost::shared_ptr<LockboxNamespaceGrantChallengeValidateResult> LockboxNamespaceGrantChallengeValidateResultPtr;
+        typedef boost::weak_ptr<LockboxNamespaceGrantChallengeValidateResult> LockboxNamespaceGrantChallengeValidateResultWeakPtr;
+        
         class LockboxIdentitiesUpdateRequest;
         typedef boost::shared_ptr<LockboxIdentitiesUpdateRequest> LockboxIdentitiesUpdateRequestPtr;
         typedef boost::weak_ptr<LockboxIdentitiesUpdateRequest> LockboxIdentitiesUpdateRequestWeakPtr;
@@ -591,38 +597,6 @@ namespace hookflash
         class NamespaceGrantCompleteNotify;
         typedef boost::shared_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyPtr;
         typedef boost::weak_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyWeakPtr;
-
-        class NamespaceGrantAdminWindowRequest;
-        typedef boost::shared_ptr<NamespaceGrantAdminWindowRequest> NamespaceGrantAdminWindowRequestPtr;
-        typedef boost::weak_ptr<NamespaceGrantAdminWindowRequest> NamespaceGrantAdminWindowRequestWeakPtr;
-
-        class NamespaceGrantAdminWindowResult;
-        typedef boost::shared_ptr<NamespaceGrantAdminWindowResult> NamespaceGrantAdminWindowResultPtr;
-        typedef boost::weak_ptr<NamespaceGrantAdminWindowResult> NamespaceGrantAdminWindowResultWeakPtr;
-
-        class NamespaceGrantAdminStartNotify;
-        typedef boost::shared_ptr<NamespaceGrantAdminStartNotify> NamespaceGrantAdminStartNotifyPtr;
-        typedef boost::weak_ptr<NamespaceGrantAdminStartNotify> NamespaceGrantAdminStartNotifyWeakPtr;
-
-        class NamespaceGrantAdminCompleteNotify;
-        typedef boost::shared_ptr<NamespaceGrantAdminCompleteNotify> NamespaceGrantAdminCompleteNotifyPtr;
-        typedef boost::weak_ptr<NamespaceGrantAdminCompleteNotify> NamespaceGrantAdminCompleteNotifyWeakPtr;
-
-        class NamespaceGrantPreapprovedGrantRequest;
-        typedef boost::shared_ptr<NamespaceGrantPreapprovedGrantRequest> NamespaceGrantPreapprovedGrantRequestPtr;
-        typedef boost::weak_ptr<NamespaceGrantPreapprovedGrantRequest> NamespaceGrantPreapprovedGrantRequestWeakPtr;
-
-        class NamespaceGrantPreapprovedGrantResult;
-        typedef boost::shared_ptr<NamespaceGrantPreapprovedGrantResult> NamespaceGrantPreapprovedGrantResultPtr;
-        typedef boost::weak_ptr<NamespaceGrantPreapprovedGrantResult> NamespaceGrantPreapprovedGrantResultWeakPtr;
-
-        class NamespaceGrantValidateRequest;
-        typedef boost::shared_ptr<NamespaceGrantValidateRequest> NamespaceGrantValidateRequestPtr;
-        typedef boost::weak_ptr<NamespaceGrantValidateRequest> NamespaceGrantValidateRequestWeakPtr;
-
-        class NamespaceGrantValidateResult;
-        typedef boost::shared_ptr<NamespaceGrantValidateResult> NamespaceGrantValidateResultPtr;
-        typedef boost::weak_ptr<NamespaceGrantValidateResult> NamespaceGrantValidateResultWeakPtr;
       }
       
       namespace identity_lookup
@@ -661,6 +635,14 @@ namespace hookflash
         class RolodexAccessResult;
         typedef boost::shared_ptr<RolodexAccessResult> RolodexAccessResultPtr;
         typedef boost::weak_ptr<RolodexAccessResult> RolodexAccessResultWeakPtr;
+
+        class RolodexNamespaceGrantChallengeValidateRequest;
+        typedef boost::shared_ptr<RolodexNamespaceGrantChallengeValidateRequest> RolodexNamespaceGrantChallengeValidateRequestPtr;
+        typedef boost::weak_ptr<RolodexNamespaceGrantChallengeValidateRequest> RolodexNamespaceGrantChallengeValidateRequestWeakPtr;
+
+        class RolodexNamespaceGrantChallengeValidateResult;
+        typedef boost::shared_ptr<RolodexNamespaceGrantChallengeValidateResult> RolodexNamespaceGrantChallengeValidateResultPtr;
+        typedef boost::weak_ptr<RolodexNamespaceGrantChallengeValidateResult> RolodexNamespaceGrantChallengeValidateResultWeakPtr;
 
         class RolodexContactsGetRequest;
         typedef boost::shared_ptr<RolodexContactsGetRequest> RolodexContactsGetRequestPtr;

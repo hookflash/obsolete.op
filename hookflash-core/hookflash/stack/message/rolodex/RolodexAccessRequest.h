@@ -52,7 +52,7 @@ namespace hookflash
           {
             AttributeType_IdentityInfo,
             AttributeType_RolodexInfo,
-            AttributeType_GrantInfo,
+            AttributeType_GrantID,
             AttributeType_NamespaceInfos,
           };
 
@@ -83,8 +83,11 @@ namespace hookflash
           const RolodexInfo &rolodexInfo() const          {return mRolodexInfo;}
           void rolodexInfo(const RolodexInfo &val)        {mRolodexInfo = val;}
 
-          const GrantInfo &grantInfo() const              {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)            {mGrantInfo = val;}
+          const AgentInfo &agentInfo() const              {return mAgentInfo;}
+          void agentInfo(const AgentInfo &val)            {mAgentInfo = val;}
+
+          const String &grantID() const                   {return mGrantID;}
+          void grantID(const String &val)                 {mGrantID = val;}
 
         protected:
           RolodexAccessRequest();
@@ -93,7 +96,9 @@ namespace hookflash
 
           RolodexInfo mRolodexInfo;
 
-          GrantInfo mGrantInfo;
+          AgentInfo mAgentInfo;
+
+          String mGrantID;
         };
       }
     }

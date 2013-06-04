@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 
 #include <list>
 
@@ -42,9 +42,9 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace identity_lockbox
       {
-        class NamespaceGrantAdminCompleteNotify : public MessageNotify
+        class LockboxNamespaceGrantChallengeValidateResult : public MessageResult
         {
         public:
           enum AttributeTypes
@@ -52,21 +52,21 @@ namespace hookflash
           };
 
         public:
-          static NamespaceGrantAdminCompleteNotifyPtr convert(MessagePtr message);
+          static LockboxNamespaceGrantChallengeValidateResultPtr convert(MessagePtr message);
 
-          static NamespaceGrantAdminCompleteNotifyPtr create(
-                                                             ElementPtr root,
-                                                             IMessageSourcePtr messageSource
-                                                             );
+          static LockboxNamespaceGrantChallengeValidateResultPtr create(
+                                                                        ElementPtr root,
+                                                                        IMessageSourcePtr messageSource
+                                                                        );
 
-          virtual Methods method() const                  {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantAdminComplete;}
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryIdentityLockbox::Method_LockboxNamespaceGrantChallengeValidate;}
 
-          virtual IMessageFactoryPtr factory() const      {return MessageFactoryNamespaceGrant::singleton();}
+          virtual IMessageFactoryPtr factory() const      {return MessageFactoryIdentityLockbox::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
         protected:
-          NamespaceGrantAdminCompleteNotify();
+          LockboxNamespaceGrantChallengeValidateResult();
         };
       }
     }

@@ -105,14 +105,12 @@ namespace hookflash
                                         IConversationThreadDelegatePtr conversationThreadDelegate,
                                         ICallDelegatePtr callDelegate,
                                         const char *namespaceGrantOuterFrameURLUponReload,
-                                        const char *namespaceGrantServiceDomain,
                                         const char *grantID,
-                                        const char *grantSecret,
                                         const char *lockboxServiceDomain,
                                         bool forceCreateNewLockboxAccount
                                         )
       {
-        return Account::login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, namespaceGrantServiceDomain, grantID, grantSecret, lockboxServiceDomain, forceCreateNewLockboxAccount);
+        return Account::login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, grantID, lockboxServiceDomain, forceCreateNewLockboxAccount);
       }
 
       //-----------------------------------------------------------------------

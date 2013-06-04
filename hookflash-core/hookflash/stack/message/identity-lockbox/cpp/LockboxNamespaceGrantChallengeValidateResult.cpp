@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminCompleteNotify.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -41,43 +41,42 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace identity_lockbox
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        NamespaceGrantAdminCompleteNotifyPtr NamespaceGrantAdminCompleteNotify::convert(MessagePtr message)
+        LockboxNamespaceGrantChallengeValidateResultPtr LockboxNamespaceGrantChallengeValidateResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<NamespaceGrantAdminCompleteNotify>(message);
+          return boost::dynamic_pointer_cast<LockboxNamespaceGrantChallengeValidateResult>(message);
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantAdminCompleteNotify::NamespaceGrantAdminCompleteNotify()
+        LockboxNamespaceGrantChallengeValidateResult::LockboxNamespaceGrantChallengeValidateResult()
         {
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantAdminCompleteNotifyPtr NamespaceGrantAdminCompleteNotify::create(
-                                                                                       ElementPtr root,
-                                                                                       IMessageSourcePtr messageSource
-                                                                                       )
+        LockboxNamespaceGrantChallengeValidateResultPtr LockboxNamespaceGrantChallengeValidateResult::create(
+                                                                                                             ElementPtr root,
+                                                                                                             IMessageSourcePtr messageSource
+                                                                                                             )
         {
-          NamespaceGrantAdminCompleteNotifyPtr ret(new NamespaceGrantAdminCompleteNotify);
+          LockboxNamespaceGrantChallengeValidateResultPtr ret(new LockboxNamespaceGrantChallengeValidateResult);
           IMessageHelper::fill(*ret, root, messageSource);
 
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool NamespaceGrantAdminCompleteNotify::hasAttribute(AttributeTypes type) const
+        bool LockboxNamespaceGrantChallengeValidateResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            default:                                  break;
+            default:                                    break;
           }
-          return false;
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }
-
       }
     }
   }

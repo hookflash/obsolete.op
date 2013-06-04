@@ -43,23 +43,6 @@ namespace hookflash
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServiceNamespaceGrant
-    #pragma mark
-
-    interaction IServiceNamespaceGrant
-    {
-      static IServiceNamespaceGrantPtr createServiceNamespaceGrantFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
-
-      virtual PUID getID() const = 0;
-
-      virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const = 0;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
     #pragma mark IServiceNamespaceGrantSession
     #pragma mark
 
@@ -68,7 +51,6 @@ namespace hookflash
       enum SessionStates
       {
         SessionState_Pending,
-        SessionState_WaitingForAssociationToAllServices,
         SessionState_WaitingForBrowserWindowToBeLoaded,
         SessionState_WaitingForBrowserWindowToBeMadeVisible,
         SessionState_WaitingForBrowserWindowToClose,
@@ -81,15 +63,11 @@ namespace hookflash
 
       static IServiceNamespaceGrantSessionPtr create(
                                                      IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                     IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                      const char *outerFrameURLUponReload,
-                                                     const char *grantID,
-                                                     const char *grantSecret
+                                                     const char *grantID
                                                      );
 
       virtual PUID getID() const = 0;
-
-      virtual IServiceNamespaceGrantPtr getService() const = 0;
 
       virtual SessionStates getState(
                                      WORD *lastErrorCode,
@@ -97,9 +75,6 @@ namespace hookflash
                                      ) const = 0;
 
       virtual String getGrantID() const = 0;
-      virtual String getGrantSecret() const = 0;
-
-      virtual void notifyAssocaitedToAllServicesComplete() = 0;
 
       virtual String getInnerBrowserWindowFrameURL() const = 0;
 

@@ -120,8 +120,6 @@ namespace hookflash
       using stack::IServiceLockboxSession;
       using stack::IServiceLockboxSessionPtr;
       using stack::IServiceLockboxSessionDelegate;
-      using stack::IServiceNamespaceGrant;
-      using stack::IServiceNamespaceGrantPtr;
       using stack::IServiceNamespaceGrantSession;
       using stack::IServiceNamespaceGrantSessionPtr;
       using stack::IServiceNamespaceGrantSessionDelegate;

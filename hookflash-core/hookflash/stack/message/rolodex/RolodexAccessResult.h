@@ -69,10 +69,15 @@ namespace hookflash
           const RolodexInfo &rolodexInfo() const            {return mRolodexInfo;}
           void rolodexInfo(const RolodexInfo &val)          {mRolodexInfo = val;}
 
+          const NamespaceGrantChallengeInfo &namespaceGrantChallengeInfo() const    {return mNamespaceGrantChallengeInfo;}
+          void namespaceGrantChallengeInfo(const NamespaceGrantChallengeInfo &val)  {mNamespaceGrantChallengeInfo = val;}
+
         protected:
           RolodexAccessResult();
 
           RolodexInfo mRolodexInfo;
+
+          NamespaceGrantChallengeInfo mNamespaceGrantChallengeInfo;
         };
       }
     }

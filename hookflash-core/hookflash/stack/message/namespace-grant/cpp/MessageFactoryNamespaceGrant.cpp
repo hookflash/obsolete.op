@@ -32,9 +32,6 @@
 #include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowRequest.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantCompleteNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminWindowRequest.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminCompleteNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateResult.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
 
@@ -115,11 +112,6 @@ namespace hookflash
             case Method_NamespaceGrantWindow:               return "namespace-grant-window";
             case Method_NamespaceGrantStart:                return "namespace-grant-start";
             case Method_NamespaceGrantComplete:             return "namespace-grant-complete";
-            case Method_NamespaceGrantAdminWindow:          return "namespace-grant-admin-window";
-            case Method_NamespaceGrantAdminStart:           return "namespace-grant-admin";
-            case Method_NamespaceGrantAdminComplete:        return "namespace-grant-admin-complete";
-            case Method_NamespaceGrantPreappovedGrant:      return "namespace-grant-preapproved-grent";
-            case Method_NamespaceGrantValidate:             return "namespace-grant-validate";
           }
           return "";
         }
@@ -146,11 +138,6 @@ namespace hookflash
                 case Method_NamespaceGrantWindow:               return NamespaceGrantWindowRequest::create(root, messageSource);
                 case Method_NamespaceGrantStart:                return MessagePtr();
                 case Method_NamespaceGrantComplete:             return MessagePtr();
-                case Method_NamespaceGrantAdminWindow:          return NamespaceGrantAdminWindowRequest::create(root, messageSource);
-                case Method_NamespaceGrantAdminStart:           return MessagePtr();
-                case Method_NamespaceGrantAdminComplete:        return MessagePtr();
-                case Method_NamespaceGrantPreappovedGrant:      return MessagePtr();
-                case Method_NamespaceGrantValidate:             return MessagePtr();
               }
               break;
             }
@@ -162,11 +149,6 @@ namespace hookflash
                 case Method_NamespaceGrantWindow:               return MessagePtr();
                 case Method_NamespaceGrantStart:                return MessagePtr();
                 case Method_NamespaceGrantComplete:             return MessagePtr();
-                case Method_NamespaceGrantAdminWindow:          return MessagePtr();
-                case Method_NamespaceGrantAdminStart:           return MessagePtr();
-                case Method_NamespaceGrantAdminComplete:        return MessagePtr();
-                case Method_NamespaceGrantPreappovedGrant:      return MessagePtr();
-                case Method_NamespaceGrantValidate:             return NamespaceGrantValidateResult::create(root, messageSource);
               }
               break;
             }
@@ -178,11 +160,6 @@ namespace hookflash
                 case Method_NamespaceGrantWindow:               return MessagePtr();
                 case Method_NamespaceGrantStart:                return MessagePtr();
                 case Method_NamespaceGrantComplete:             return NamespaceGrantCompleteNotify::create(root, messageSource);
-                case Method_NamespaceGrantAdminWindow:          return MessagePtr();
-                case Method_NamespaceGrantAdminStart:           return MessagePtr();
-                case Method_NamespaceGrantAdminComplete:        return NamespaceGrantAdminCompleteNotify::create(root, messageSource);
-                case Method_NamespaceGrantPreappovedGrant:      return MessagePtr();
-                case Method_NamespaceGrantValidate:             return MessagePtr();
               }
               break;
             }

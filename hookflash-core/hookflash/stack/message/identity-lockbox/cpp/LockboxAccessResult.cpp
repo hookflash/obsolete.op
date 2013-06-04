@@ -58,16 +58,17 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         LockboxAccessResultPtr LockboxAccessResult::create(
-                                                           ElementPtr root,
+                                                           ElementPtr rootEl,
                                                            IMessageSourcePtr messageSource
                                                            )
         {
           LockboxAccessResultPtr ret(new LockboxAccessResult);
-          IMessageHelper::fill(*ret, root, messageSource);
+          IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ret->mLockboxInfo = MessageHelper::createLockbox(root->findFirstChildElement("lockbox"));
+          ret->mLockboxInfo = MessageHelper::createLockbox(rootEl->findFirstChildElement("lockbox"));
+          ret->mNamespaceGrantChallengeInfo = MessageHelper::createNamespaceGrantChallenge(rootEl->findFirstChildElement("namespaceGrantChallenge"));
 
-          ElementPtr identitiesEl = root->findFirstChildElement("identities");
+          ElementPtr identitiesEl = rootEl->findFirstChildElement("identities");
           if (identitiesEl) {
             ElementPtr identityEl = identitiesEl->findFirstChildElement("identity");
             while (identityEl) {

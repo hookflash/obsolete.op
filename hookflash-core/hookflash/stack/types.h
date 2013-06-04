@@ -314,10 +314,6 @@ namespace hookflash
     typedef boost::weak_ptr<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateWeakPtr;
     typedef zsLib::Proxy<IServiceLockboxSessionDelegate> IServiceLockboxSessionDelegateProxy;
     
-    interaction IServiceNamespaceGrant;
-    typedef boost::shared_ptr<IServiceNamespaceGrant> IServiceNamespaceGrantPtr;
-    typedef boost::weak_ptr<IServiceNamespaceGrant> IServiceNamespaceGrantWeakPtr;
-
     interaction IServiceNamespaceGrantSession;
     typedef boost::shared_ptr<IServiceNamespaceGrantSession> IServiceNamespaceGrantSessionPtr;
     typedef boost::weak_ptr<IServiceNamespaceGrantSession> IServiceNamespaceGrantSessionWeakPtr;

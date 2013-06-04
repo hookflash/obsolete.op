@@ -37,6 +37,7 @@
 #include <hookflash/stack/IMessageSource.h>
 #include <hookflash/stack/IServiceLockbox.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
@@ -58,6 +59,8 @@ namespace hookflash
     {
       using message::identity_lockbox::LockboxAccessResult;
       using message::identity_lockbox::LockboxAccessResultPtr;
+      using message::identity_lockbox::LockboxNamespaceGrantChallengeValidateResult;
+      using message::identity_lockbox::LockboxNamespaceGrantChallengeValidateResultPtr;
       using message::identity_lockbox::LockboxIdentitiesUpdateResult;
       using message::identity_lockbox::LockboxIdentitiesUpdateResultPtr;
       using message::identity_lockbox::LockboxContentGetResult;
@@ -154,8 +157,10 @@ namespace hookflash
                                     public IServiceLockboxSessionAsyncDelegate,
                                     public IBootstrappedNetworkDelegate,
                                     public IServiceSaltFetchSignedSaltQueryDelegate,
-                                    public IServiceNamespaceGrantSessionForServicesDelegate,
+                                    public IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate,
+                                    public IServiceNamespaceGrantSessionForServicesQueryDelegate,
                                     public IMessageMonitorResultDelegate<LockboxAccessResult>,
+                                    public IMessageMonitorResultDelegate<LockboxNamespaceGrantChallengeValidateResult>,
                                     public IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>,
                                     public IMessageMonitorResultDelegate<LockboxContentGetResult>,
                                     public IMessageMonitorResultDelegate<LockboxContentSetResult>,
@@ -165,7 +170,6 @@ namespace hookflash
         friend interaction IServiceLockboxSessionFactory;
         friend interaction IServiceLockboxSession;
 
-        typedef IServiceNamespaceGrantSessionForServicesDelegate::SessionStates GrantSessionStates;
         typedef IServiceLockboxSession::SessionStates SessionStates;
 
         typedef PUID ServiceIdentitySessionID;
@@ -315,13 +319,20 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IServiceNamespaceGrantSessionForServicesDelegate
+        #pragma mark ServiceLockboxSession => IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
         #pragma mark
 
-        virtual void onServiceNamespaceGrantSessionStateChanged(
-                                                                ServiceNamespaceGrantSessionPtr session,
-                                                                GrantSessionStates state
-                                                                );
+        virtual void onServiceNamespaceGrantSessionForServicesWaitComplete(IServiceNamespaceGrantSessionPtr session);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceLockboxSession => IServiceNamespaceGrantSessionForServicesQueryDelegate
+        #pragma mark
+
+        virtual void onServiceNamespaceGrantSessionForServicesQueryComplete(
+                                                                            IServiceNamespaceGrantSessionForServicesQueryPtr query,
+                                                                            ElementPtr namespaceGrantChallengeBundleEl
+                                                                            );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -336,6 +347,22 @@ namespace hookflash
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
                                                              LockboxAccessResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceLockboxSession => IMessageMonitorResultDelegate<LockboxNamespaceGrantChallengeValidateResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        LockboxNamespaceGrantChallengeValidateResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             LockboxNamespaceGrantChallengeValidateResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
@@ -418,9 +445,11 @@ namespace hookflash
 
         void step();
         bool stepBootstrapper();
-        bool stepGrantSession();
+        bool stepGrantLock();
         bool stepIdentityLogin();
         bool stepLockboxAccess();
+        bool stepGrantLockClear();
+        bool stepGrantChallenge();
         bool stepContentGet();
         bool stepPreparePeerFiles();
         bool stepUploadPeerFiles();
@@ -480,9 +509,11 @@ namespace hookflash
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
         ServiceNamespaceGrantSessionPtr mGrantSession;
-        IServiceNamespaceGrantSessionForServicesSubscriptionPtr mGrantSubscription;
+        IServiceNamespaceGrantSessionForServicesQueryPtr mGrantQuery;
+        IServiceNamespaceGrantSessionForServicesWaitPtr mGrantWait;
 
         IMessageMonitorPtr mLockboxAccessMonitor;
+        IMessageMonitorPtr mLockboxNamespaceGrantChallengeValidateMonitor;
         IMessageMonitorPtr mLockboxIdentitiesUpdateMonitor;
         IMessageMonitorPtr mLockboxContentGetMonitor;
         IMessageMonitorPtr mLockboxContentSetMonitor;
@@ -494,7 +525,7 @@ namespace hookflash
 
         IPeerFilesPtr mPeerFiles;
 
-        bool mHasPermissions;
+        bool mObtainedLock;
 
         bool mPeerFilesNeedUpload;
         bool mLoginIdentitySetToBecomeAssociated;

@@ -34,7 +34,6 @@
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowResult.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantStartNotify.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantCompleteNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateRequest.h>
 
 #include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
 #include <hookflash/stack/internal/stack_Helper.h>
@@ -43,16 +42,11 @@
 #include <hookflash/stack/internal/stack_Stack.h>
 
 #include <zsLib/Log.h>
-//#include <zsLib/XML.h>
+#include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
 #include <zsLib/Stringize.h>
 
-
-#define HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_TIMEOUT_IN_SECONDS (60*2)
-
-#define HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_TIME_BEFORE_EXPIRY_MUST_REFRESH_GRANT_IN_SECONDS (2*60)
-#define HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_MIN_TIME_BETWEEN_VALIDATION_REQUESTS_IN_SECONDS (60*60*24)
 
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
@@ -63,6 +57,7 @@ namespace hookflash
     namespace internal
     {
       using zsLib::Stringize;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using message::namespace_grant::NamespaceGrantWindowRequest;
       using message::namespace_grant::NamespaceGrantWindowRequestPtr;
@@ -72,10 +67,6 @@ namespace hookflash
       using message::namespace_grant::NamespaceGrantStartNotifyPtr;
       using message::namespace_grant::NamespaceGrantCompleteNotify;
       using message::namespace_grant::NamespaceGrantCompleteNotifyPtr;
-      using message::namespace_grant::NamespaceGrantValidateRequest;
-      using message::namespace_grant::NamespaceGrantValidateRequestPtr;
-      using message::namespace_grant::NamespaceGrantValidateResult;
-      using message::namespace_grant::NamespaceGrantValidateResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -96,33 +87,25 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceNamespaceGrantSession::ServiceNamespaceGrantSession(
                                                                  IMessageQueuePtr queue,
-                                                                 BootstrappedNetworkPtr network,
                                                                  IServiceNamespaceGrantSessionDelegatePtr delegate,
                                                                  const char *outerFrameURLUponReload,
-                                                                 const char *grantID,
-                                                                 const char *grantSecret
+                                                                 const char *grantID
                                                                  ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceNamespaceGrantSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceNamespaceGrantSessionDelegatePtr()),
-        mBootstrappedNetwork(network),
         mCurrentState(SessionState_Pending),
         mLastError(0),
         mOuterFrameURLUponReload(outerFrameURLUponReload),
-        mRedoGrantBrowserProcessIfNeeded(true),
-        mNotifiedAssociatedToAllServicesComplete(false),
+        mGrantID(grantID),
         mBrowserWindowReady(false),
         mBrowserWindowVisible(false),
         mBrowserWindowClosed(false),
         mNeedsBrowserWindowVisible(false),
-        mTotalNamesapceValidationsIssued(0),
         mReceivedNamespaceGrantCompleteNotify(false),
         mNamespaceGrantStartNotificationSent(false),
-        mHasGrantedAllRequiredNamespaces(false)
+        mTotalWaits(0)
       {
-        mGrantInfo.mID = String(grantID);
-        mGrantInfo.mSecret = String(grantSecret);
-
         ZS_LOG_DEBUG(log("created"))
       }
 
@@ -139,7 +122,6 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::init()
       {
-        IBootstrappedNetworkForServices::prepare(mBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -166,28 +148,18 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceNamespaceGrantSessionPtr ServiceNamespaceGrantSession::create(
                                                                            IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                                           IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                                            const char *outerFrameURLUponReload,
-                                                                           const char *grantID,
-                                                                           const char *grantSecret
+                                                                           const char *grantID
                                                                            )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!serviceNamespaceGrant)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!grantID)
-        ZS_THROW_INVALID_ARGUMENT_IF(!grantSecret)
 
-        ServiceNamespaceGrantSessionPtr pThis(new ServiceNamespaceGrantSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceNamespaceGrant), delegate, outerFrameURLUponReload, grantID, grantSecret));
+        ServiceNamespaceGrantSessionPtr pThis(new ServiceNamespaceGrantSession(IStackForInternal::queueStack(), delegate, outerFrameURLUponReload, grantID));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      IServiceNamespaceGrantPtr ServiceNamespaceGrantSession::getService() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mBootstrappedNetwork;
       }
 
       //-----------------------------------------------------------------------
@@ -207,24 +179,9 @@ namespace hookflash
       String ServiceNamespaceGrantSession::getGrantID() const
       {
         AutoRecursiveLock lock(getLock());
-        return mGrantInfo.mID;
+        return mGrantID;
       }
       
-      //-----------------------------------------------------------------------
-      String ServiceNamespaceGrantSession::getGrantSecret() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mGrantInfo.mID;
-      }
-
-      //-----------------------------------------------------------------------
-      void ServiceNamespaceGrantSession::notifyAssocaitedToAllServicesComplete()
-      {
-        AutoRecursiveLock lock(getLock());
-        mNotifiedAssociatedToAllServicesComplete = true;
-        step();
-      }
-
       //-----------------------------------------------------------------------
       String ServiceNamespaceGrantSession::getInnerBrowserWindowFrameURL() const
       {
@@ -274,6 +231,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage)
       {
+        typedef NamespaceGrantCompleteNotify::NamespaceGranthallengeBundleList NamespaceGranthallengeBundleList;
         MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
         if (IMessageMonitor::handleMessageReceived(message)) {
           ZS_LOG_DEBUG(log("message handled via message monitor"))
@@ -314,17 +272,54 @@ namespace hookflash
 
           ZS_LOG_DEBUG(log("received namespace grant complete notification"))
 
-          const GrantInfo &grantInfo = completeNotify->grantInfo();
-          mGrantInfo.mergeFrom(grantInfo, true);
+          const NamespaceGranthallengeBundleList &bundles = completeNotify->bundles();
 
-          mNamespacesGranted = completeNotify->namespaceInfos();
+          for (NamespaceGranthallengeBundleList::const_iterator iter = bundles.begin(); iter != bundles.end(); ++iter)
+          {
+            ElementPtr bundleEl = (*iter);
 
-          if (mNamespacesGranted.size() < 1) {
-            ZS_LOG_WARNING(Detail, log("no namespaces were not granted from namespace grant complete notification"))
-            setError(IHTTP::HTTPStatusCode_Forbidden, "Namespaces were not granted");
-            cancel();
-            return;
+            if (!bundleEl) {
+              ZS_LOG_WARNING(Detail, log("bundle element returned from namespace grant complete was null (which is not legal)"))
+              continue;
+            }
+
+            ElementPtr namespaceGrantChallengeEl = bundleEl->findFirstChildElement("namespaceGrantChallenge");
+            if (!namespaceGrantChallengeEl) {
+              ZS_LOG_WARNING(Detail, log("bundle element missing \"namespaceGrantChallenge\" from grant grant bundle (which is not legal)"))
+              continue;
+            }
+
+            String challengeID = IMessageHelper::getAttributeID(namespaceGrantChallengeEl);
+
+            bool found = false;
+
+            for (QueryMap::iterator iterQuery = mQueriesInProcess.begin(); iterQuery != mQueriesInProcess.end();)
+            {
+              QueryMap::iterator iterQueryCurrent = iterQuery;
+              ++iterQuery;
+
+              QueryPtr query = (*iterQueryCurrent).second;
+
+              if (query->getChallengeInfo().mID == challengeID) {
+                ZS_LOG_DEBUG(log("found query that matches challenge ID") + ", challenge ID=" + challengeID)
+                query->notifyComplete(bundleEl);
+                mQueriesInProcess.erase(iterQueryCurrent);
+                found = true;
+                break;
+              }
+            }
+            if (found) continue;
+
+            ZS_LOG_WARNING(Detail, log("did not find query that matched challenge ID") + ", challenge ID=" + challengeID)
           }
+
+          for (QueryMap::iterator iterQuery = mQueriesInProcess.begin(); iterQuery != mQueriesInProcess.end(); ++iterQuery)
+          {
+            QueryPtr query = (*iterQuery).second;
+            ZS_LOG_WARNING(Detail, log("did not find signed bundle for challenge ID") + ", challenge ID=" + query->getChallengeInfo().mID)
+            query->notifyComplete(ElementPtr());
+          }
+          mQueriesInProcess.clear();
 
           mReceivedNamespaceGrantCompleteNotify = true;
 
@@ -360,8 +355,28 @@ namespace hookflash
 
         setState(SessionState_Shutdown);
 
-        mSubscriptions.clear();
-        
+        // cancel all queries in progress
+        {
+          for (QueryMap::iterator iterQuery = mQueriesInProcess.begin(); iterQuery != mQueriesInProcess.end(); ++iterQuery)
+          {
+            QueryPtr query = (*iterQuery).second;
+            ZS_LOG_WARNING(Detail, log("did not find signed bundle for challenge ID") + ", challenge ID=" + query->getChallengeInfo().mID)
+            query->notifyComplete(ElementPtr());
+          }
+          mQueriesInProcess.clear();
+        }
+
+        // cancel all pending queries
+        {
+          for (QueryMap::iterator iterQuery = mPendingQueries.begin(); iterQuery != mPendingQueries.end(); ++iterQuery)
+          {
+            QueryPtr query = (*iterQuery).second;
+            ZS_LOG_WARNING(Detail, log("did not find signed bundle for challenge ID") + ", challenge ID=" + query->getChallengeInfo().mID)
+            query->notifyComplete(ElementPtr());
+          }
+          mPendingQueries.clear();
+        }
+
         mDelegate.reset();
       }
 
@@ -382,67 +397,101 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServiceNamespaceGrantSessionForServicesSubscriptionPtr ServiceNamespaceGrantSession::subscribe(IServiceNamespaceGrantSessionForServicesDelegatePtr delegate)
+      IServiceNamespaceGrantSessionForServicesWaitPtr ServiceNamespaceGrantSession::obtainWaitToProceed(
+                                                                                                        IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate
+                                                                                                        )
+      {
+        AutoRecursiveLock lock(getLock());
+
+        {
+          if (isShutdown()) {
+            ZS_LOG_WARNING(Detail, log("obtained lock during shutdown (legal, but frowned upon)"))
+
+            WaitPtr wait = Wait::create(mThisWeak.lock());
+            ++mTotalWaits;
+            return wait;
+          }
+
+          if (mQueriesInProcess.size() > 0) {
+            ZS_LOG_DEBUG(log("cannot obtain lock while queries are in progress"))
+            goto failure_to_obtain;
+          }
+          if (mBrowserWindowReady) {
+            ZS_LOG_DEBUG(log("cannot obtain lock while browser window is active"))
+            goto failure_to_obtain;
+          }
+
+          WaitPtr wait = Wait::create(mThisWeak.lock());
+          ++mTotalWaits;
+          return wait;
+        }
+
+      failure_to_obtain:
+
+        if (waitForWaitUponFailingToObtainDelegate) {
+          ZS_LOG_DEBUG(log("will inform delegate when it can try to obtain another wait lock again"))
+          mWaitingDelegates.push_back(IServiceNamespaceGrantSessionForServicesWaitForWaitDelegateProxy::createWeak(IStackForInternal::queueDelegate(), waitForWaitUponFailingToObtainDelegate));
+        }
+
+        return IServiceNamespaceGrantSessionForServicesWaitPtr();
+      }
+
+      //-----------------------------------------------------------------------
+      IServiceNamespaceGrantSessionForServicesQueryPtr ServiceNamespaceGrantSession::query(
+                                                                                           IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                                                                           const NamespaceGrantChallengeInfo &challengeInfo,
+                                                                                           const NamespaceInfoMap &namespaces
+                                                                                           )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
 
         AutoRecursiveLock lock(getLock());
-        SubscriptionPtr subscription = Subscription::create(mThisWeak.lock(), IServiceNamespaceGrantSessionForServicesDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate));
+        QueryPtr query = Query::create(mThisWeak.lock(), IServiceNamespaceGrantSessionForServicesQueryDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate), challengeInfo, namespaces);
 
-        mSubscriptions[subscription->getID()] = subscription;
-        subscription->notifyStateChanged(mCurrentState);
-        return subscription;
+        if (isShutdown()) {
+          query->notifyComplete(ElementPtr());
+          return query;
+        }
+
+        mPendingQueries[query->getID()] = query;
+        return query;
       }
 
       //-----------------------------------------------------------------------
-      void ServiceNamespaceGrantSession::grantNamespaces(const NamespaceInfoMap &namespaces)
-      {
-        if (namespaces.size() < 1) return;
-
-        AutoRecursiveLock lock(getLock());
-
-        bool needGranting = false;
-
-        for (NamespaceInfoMap::const_iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
-        {
-          const NamespaceInfo &info = (*iter).second;
-          if (info.mURL.hasData()) {
-            mNamespacesToGrant[info.mURL] = info;
-
-            if (mNamespacesGranted.find(info.mURL) == mNamespacesGranted.end()) {
-              needGranting = true;
-            }
-          }
-        }
-
-        if (needGranting) {
-          mHasGrantedAllRequiredNamespaces = false;
-          mRedoGrantBrowserProcessIfNeeded = true;
-
-          IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::isNamespaceGranted(const char *namespaceURL) const
+      bool ServiceNamespaceGrantSession::isNamespaceURLInNamespaceGrantChallengeBundle(
+                                                                                       ElementPtr bundleEl,
+                                                                                       const char *namespaceURL
+                                                                                       ) const
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
-        AutoRecursiveLock lock(getLock());
 
-        NamespaceInfoMap::const_iterator found = mNamespacesGranted.find(namespaceURL);
-        if (found == mNamespacesGranted.end()) {
-          ZS_LOG_WARNING(Trace, log("namespace is not granted") + ", namespace=" + namespaceURL)
+        if (!bundleEl) {
+          ZS_LOG_WARNING(Detail, log("challenge bundle passed in is null so it cannot contain the namespace"))
           return false;
         }
-        ZS_LOG_DEBUG(log("namespace is not granted") + ", namespace=" + namespaceURL)
-        return true;
-      }
 
-      //-----------------------------------------------------------------------
-      GrantInfo ServiceNamespaceGrantSession::getGrantInfo() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mGrantInfo;
+        ElementPtr namespaceGrantChallengeEl = bundleEl->findFirstChildElement("namespaceGrantChallenge");
+        if (!namespaceGrantChallengeEl) {
+          ZS_LOG_WARNING(Detail, log("missing \"namespaceGrantChallenge\" inside challenge bundle thus cannot contain a namespace"))
+          return false;
+        }
+
+        ElementPtr namespacesEl = namespaceGrantChallengeEl->findFirstChildElement("namespaces");
+        if (!namespacesEl) {
+          ZS_LOG_WARNING(Detail, log("missing \"namespaces\" inside challenge bundle thus cannot contain a namespace"))
+          return false;
+        }
+        ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
+        while (namespaceEl) {
+          String namespaceID = IMessageHelper::getAttributeID(namespaceEl);
+          if (namespaceID == namespaceURL) {
+            ZS_LOG_TRACE(log("found namespace inside challenge bundle") + ", namespace=" + namespaceURL)
+            return true;
+          }
+          namespaceEl = namespaceEl->findNextSiblingElement("namespace");
+        }
+        ZS_LOG_WARNING(Debug, log("did not find namespace inside challenge bundle") + ", namespace=" + namespaceURL)
+        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -483,60 +532,32 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceNamespaceGrantSession => IMessageMonitorResultDelegate<LockboxAccessResult>
+      #pragma mark ServiceNamespaceGrantSession => friend class Query
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::handleMessageMonitorResultReceived(
-                                                                            IMessageMonitorPtr monitor,
-                                                                            NamespaceGrantValidateResultPtr result
-                                                                            )
+      void ServiceNamespaceGrantSession::notifyQueryGone(PUID queryID)
       {
+        ZS_LOG_WARNING(Debug, log("removing query") + ", query ID=" + Stringize<typeof(queryID)>(queryID).string())
+
         AutoRecursiveLock lock(getLock());
-        if (monitor != mNamespaceGrantValidateMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
+        {
+          QueryMap::iterator found = mQueriesInProcess.find(queryID);
+          if (found != mQueriesInProcess.end()) {
+            mQueriesInProcess.erase(found);
+            return;
+          }
+        }
+        {
+          QueryMap::iterator found = mPendingQueries.find(queryID);
+          if (found != mPendingQueries.end()) {
+            mPendingQueries.erase(found);
+            return;
+          }
         }
 
-        mNamespaceGrantValidateMonitor->cancel();
-        mNamespaceGrantValidateMonitor.reset();
-
-        GrantInfo grantInfo = result->grantInfo();
-        mGrantInfo.mergeFrom(grantInfo, true);
-
-        mNamespacesGranted = result->namespaceInfos();
-
-        step();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::handleMessageMonitorErrorResultReceived(
-                                                                                 IMessageMonitorPtr monitor,
-                                                                                 NamespaceGrantValidateResultPtr ignore, // will always be NULL
-                                                                                 message::MessageResultPtr result
-                                                                                 )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mNamespaceGrantValidateMonitor) {
-          ZS_LOG_DEBUG(log("notified about obsolete monitor"))
-          return false;
-        }
-
-        mNamespaceGrantValidateMonitor->cancel();
-        mNamespaceGrantValidateMonitor.reset();
-
-        ZS_LOG_WARNING(Detail, log("namespace grant failed"))
-
-        if (mTotalNamesapceValidationsIssued > 1) {
-          ZS_LOG_ERROR(Detail, log("namespace grant failed to obtain refresh"))
-          setError(result->errorCode(), result->errorReason());
-          cancel();
-          return true;
-        }
-
-        step();
-        return true;
+        ZS_LOG_WARNING(Debug, log("query already gone") + ", query ID=" + Stringize<typeof(queryID)>(queryID).string())
+        return;
       }
 
       //-----------------------------------------------------------------------
@@ -544,19 +565,37 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceNamespaceGrantSession => friend class Subscription
+      #pragma mark ServiceNamespaceGrantSession => friend class Wait
       #pragma mark
 
-      void ServiceNamespaceGrantSession::notifySubscriptionGone(PUID subscriptionID)
+      //-----------------------------------------------------------------------
+      void ServiceNamespaceGrantSession::notifyWaitGone(PUID waitID)
       {
+        ZS_LOG_WARNING(Debug, log("removing wait") + ", wait ID=" + Stringize<typeof(waitID)>(waitID).string())
+
         AutoRecursiveLock lock(getLock());
-        SubscriptionMap::iterator found = mSubscriptions.find(subscriptionID);
-        if (found == mSubscriptions.end()) {
-          ZS_LOG_WARNING(Debug, log("subscription already gone") + ", subscription ID=" + Stringize<typeof(subscriptionID)>(subscriptionID).string())
-          return;
+
+        ZS_THROW_BAD_STATE_IF(0 == mTotalWaits)
+
+        --mTotalWaits;
+        if (0 != mTotalWaits) return;
+
+        ServiceNamespaceGrantSessionPtr pThis = mThisWeak.lock();
+        if (pThis) {
+          for (WaitingDelegateList::iterator iter = mWaitingDelegates.begin(); iter != mWaitingDelegates.end(); ++iter)
+          {
+            try {
+              IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr delegate = (*iter);
+              delegate->onServiceNamespaceGrantSessionForServicesWaitComplete(pThis);
+            } catch (IServiceNamespaceGrantSessionForServicesQueryDelegateProxy::Exceptions::DelegateGone &) {
+              ZS_LOG_WARNING(Detail, log("delegate gone"))
+            }
+          }
         }
-        ZS_LOG_WARNING(Debug, log("removing subscription") + ", subscription ID=" + Stringize<typeof(subscriptionID)>(subscriptionID).string())
-        mSubscriptions.erase(found);
+
+        mWaitingDelegates.clear();
+
+        IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -591,22 +630,18 @@ namespace hookflash
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               mGrantInfo.getDebugValueString() +
-               Helper::getDebugValue("redo browser grant process", mRedoGrantBrowserProcessIfNeeded ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("notified associated to all services complete", mNotifiedAssociatedToAllServicesComplete ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("grant ID", mGrantID, firstTime) +
                Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window closed", mBrowserWindowClosed ? String("true") : String(), firstTime) +
                Helper::getDebugValue("need browser window visible", mNeedsBrowserWindowVisible ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("total namespace validations issued", mTotalNamesapceValidationsIssued > 0 ? Stringize<typeof(mTotalNamesapceValidationsIssued)>(mTotalNamesapceValidationsIssued) : String(), firstTime) +
-               Helper::getDebugValue("last namespace validations issued", Time() != mLastNamespaceValidateIssued ? IMessageHelper::timeToString(mLastNamespaceValidateIssued) : String(), firstTime) +
                Helper::getDebugValue("namespace grant start notification", mNamespaceGrantStartNotificationSent ? String("true") : String(), firstTime) +
                Helper::getDebugValue("received namespace grant complete notification", mReceivedNamespaceGrantCompleteNotify ? String("true") : String(), firstTime) +
                Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()) : String(), firstTime) +
-               Helper::getDebugValue("namespaces to grant", mNamespacesToGrant.size() > 0 ? Stringize<NamespaceInfoMap::size_type>(mNamespacesToGrant.size()) : String(), firstTime) +
-               Helper::getDebugValue("namespaces granted", mNamespacesGranted.size() > 0 ? Stringize<NamespaceInfoMap::size_type>(mNamespacesGranted.size()) : String(), firstTime) +
-               Helper::getDebugValue("has all required namespace grants", mHasGrantedAllRequiredNamespaces ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<SubscriptionMap::size_type>(mSubscriptions.size()) : String(), firstTime);
+               Helper::getDebugValue("total waits", 0 != mTotalWaits ? Stringize<typeof(mTotalWaits)>(mTotalWaits) : String(), firstTime) +
+               Helper::getDebugValue("queries in process", mQueriesInProcess.size() > 0 ? Stringize<QueryMap::size_type>(mQueriesInProcess.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending queries", mPendingQueries.size() > 0 ? Stringize<QueryMap::size_type>(mPendingQueries.size()) : String(), firstTime) +
+               Helper::getDebugValue("waiting delegates", mWaitingDelegates.size() > 0 ? Stringize<WaitingDelegateList::size_type>(mWaitingDelegates.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -619,9 +654,8 @@ namespace hookflash
         }
 
         if (!stepWaitForServices()) goto post_step;
+        if (!stepPrepareQueries()) goto post_step;
         if (!stepBootstrapper()) goto post_step;
-        if (!stepSendInitialValidate()) goto post_step;
-        if (!stepCheckAllNamespaces()) goto post_step;
         if (!stepLoadGrantWindow()) goto post_step;
         if (!stepMakeGrantWindowVisible()) goto post_step;
         if (!stepSendNamespaceGrantStartNotification()) goto post_step;
@@ -630,7 +664,7 @@ namespace hookflash
 
         setState(SessionState_Ready);
 
-        if (!stepExpiresCheck()) goto post_step;
+        if (!stepRestart()) goto post_step;
 
       post_step:
         postStep();
@@ -639,18 +673,131 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceNamespaceGrantSession::stepWaitForServices()
       {
-        if (mNotifiedAssociatedToAllServicesComplete) {
-          ZS_LOG_DEBUG(log("all services have been associated"))
+        if (0 == mTotalWaits) {
+          ZS_LOG_DEBUG(log("no services have asked for this session to wait"))
           return true;
         }
 
-        ZS_LOG_DEBUG(log("waiting for all services to be associated to the namespace grant service"))
+        ZS_LOG_DEBUG(log("waiting for all services to register their queries with the namespace grant service"))
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceNamespaceGrantSession::stepPrepareQueries()
+      {
+        typedef String Domain;
+        typedef ULONG Usage;
+        typedef std::map<Domain, Usage> DomainUsageMap;
+        typedef IHelper::SplitMap SplitMap;
+
+        if (mQueriesInProcess.size() > 0) {
+          ZS_LOG_DEBUG(log("queries have already been prepared"))
+          return true;
+        }
+
+        if (mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("cannot prepare queries while browser window is still active"))
+          return true;
+        }
+
+        if (mPendingQueries.size() < 1) {
+          ZS_LOG_DEBUG(log("no queries are pending so nothing to do"))
+          return true;
+        }
+
+        String mostFoundDomain;
+        Usage mostFoundUsage = 0;
+
+        DomainUsageMap domainUsages;
+
+        for (QueryMap::iterator iter = mPendingQueries.begin(); iter != mPendingQueries.end(); ++iter)
+        {
+          QueryPtr query = (*iter).second;
+
+          SplitMap domains;
+          IHelper::split(query->getChallengeInfo().mDomains, domains, ',');
+
+          for (SplitMap::iterator iterSplit = domains.begin(); iterSplit != domains.end(); ++iterSplit) {
+            String domain = (*iterSplit).second;
+            if (!IHelper::isValidDomain(domain)) {
+              ZS_LOG_WARNING(Debug, log("told to use invalid domain") + ", domain=" + domain)
+              continue;
+            }
+            DomainUsageMap::iterator found = domainUsages.find(domain);
+            if (found == domainUsages.end()) {
+              ZS_LOG_DEBUG(log("found first usage of domain") + ", domain=" + domain)
+              domainUsages[domain] = 1;
+              if (0 == mostFoundUsage) {
+                mostFoundUsage = 1;
+                mostFoundDomain = domain;
+              }
+              continue;
+            }
+
+            Usage &usage = (*found).second;
+            ++usage;
+            if (usage > mostFoundUsage) {
+              mostFoundUsage = usage;
+              mostFoundDomain = domain;
+            }
+
+            ZS_LOG_DEBUG(log("found another usage of domain") + ", domain=" + domain + ", total=" + Stringize<typeof(usage)>(usage).string())
+          }
+        }
+
+        ZS_LOG_DEBUG(log("most found domain") + ", domain=" + mostFoundDomain)
+
+        if (mostFoundDomain.isEmpty()) {
+          ZS_LOG_WARNING(Detail, log("cannot satisfy any of the pending domain because no usageable domain was found"))
+
+          // cancel all pending queries
+          for (QueryMap::iterator iterQuery = mPendingQueries.begin(); iterQuery != mPendingQueries.end(); ++iterQuery)
+          {
+            QueryPtr query = (*iterQuery).second;
+            ZS_LOG_WARNING(Detail, log("did not find signed bundle for challenge ID") + ", challenge ID=" + query->getChallengeInfo().mID)
+            query->notifyComplete(ElementPtr());
+          }
+          mPendingQueries.clear();
+          return true;
+        }
+
+        for (QueryMap::iterator iter = mPendingQueries.begin(); iter != mPendingQueries.end(); )
+        {
+          QueryMap::iterator current = iter;
+          ++iter;
+
+          QueryPtr query = (*current).second;
+
+          SplitMap domains;
+          IHelper::split(query->getChallengeInfo().mDomains, domains, ',');
+
+          for (SplitMap::iterator iterSplit = domains.begin(); iterSplit != domains.end(); ++iterSplit) {
+            String domain = (*iterSplit).second;
+            if (domain == mostFoundDomain) {
+              ZS_LOG_DEBUG(log("query is going to execute now") + ", domain=" + domain + ", query ID=" + Stringize<PUID>(query->getID()).string())
+              mQueriesInProcess[query->getID()] = query;
+              mPendingQueries.erase(current);
+              break;
+            }
+          }
+        }
+
+        if (mPendingQueries.size() < 1) {
+          ZS_LOG_DEBUG(log("all queries will now execute"))
+        }
+
+        mBootstrappedNetwork = IBootstrappedNetworkForServices::prepare(mostFoundDomain, mThisWeak.lock());
         return false;
       }
 
       //-----------------------------------------------------------------------
       bool ServiceNamespaceGrantSession::stepBootstrapper()
       {
+        if (!mBootstrappedNetwork) {
+          ZS_LOG_DEBUG(log("no boostrapped network thus nothing to do"))
+          return true;
+        }
+
         if (!mBootstrappedNetwork->forServices().isPreparationComplete()) {
           setState(SessionState_Pending);
 
@@ -672,93 +819,12 @@ namespace hookflash
         cancel();
         return false;
       }
-      
-      //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::stepSendInitialValidate()
-      {
-        if (mNamespaceGrantValidateMonitor) {
-          ZS_LOG_DEBUG(log("waiting for namespace grant validate to complete"))
-          return false;
-        }
-
-        if (0 != mTotalNamesapceValidationsIssued) {
-          ZS_LOG_DEBUG(log("already sent initial validate request"))
-          return true;
-        }
-
-        ++mTotalNamesapceValidationsIssued;
-
-        NamespaceGrantValidateRequestPtr request = NamespaceGrantValidateRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
-
-        request->purpose("namespace-grant-check");
-        request->grantInfo(mGrantInfo);
-        request->namespaceURLs(mNamespacesToGrant);
-
-        mNamespaceGrantValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<NamespaceGrantValidateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("namespace-grant", "namespace-grant-validate", request);
-        return false;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::stepCheckAllNamespaces()
-      {
-        if (mHasGrantedAllRequiredNamespaces) {
-          ZS_LOG_DEBUG(log("all required namespaces have been granted"))
-          return true;
-        }
-
-        for (NamespaceInfoMap::iterator iterToGrant = mNamespacesToGrant.begin(); iterToGrant != mNamespacesToGrant.end(); ++iterToGrant)
-        {
-          const NamespaceInfo &toGrantInfo = (*iterToGrant).second;
-          bool found = false;
-          for (NamespaceInfoMap::iterator iterGranted = mNamespacesGranted.begin(); iterGranted != mNamespacesGranted.end(); ++iterGranted)
-          {
-            const NamespaceInfo &grantedInfo = (*iterGranted).second;
-            if (toGrantInfo.mURL == grantedInfo.mURL) {
-              found = true;
-              break;
-            }
-          }
-
-          if (!found) {
-            ZS_LOG_DEBUG(log("at least one namespace requested is not granted (will continue processing)") + ", missing namespace=" + toGrantInfo.mURL)
-
-            if ((SessionState_Ready == mCurrentState) &&
-                (mRedoGrantBrowserProcessIfNeeded)) {
-
-              // prepare to load browser window all over again
-              mRedoGrantBrowserProcessIfNeeded = false;
-              mBrowserWindowReady = false;
-              mBrowserWindowVisible = false;
-              mBrowserWindowClosed = false;
-              mNeedsBrowserWindowVisible = false;
-              mNamespaceGrantStartNotificationSent = false;
-              mReceivedNamespaceGrantCompleteNotify = false;
-
-              mPendingMessagesToDeliver.clear();
-
-              setState(SessionState_Pending);
-
-              ZS_LOG_DEBUG(log("redoing stages required to perform grant"))
-              IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-              return false;
-            }
-            return true;  // do not prevent next steps from continuing
-          }
-        }
-
-        ZS_LOG_DEBUG(log("have all required namespace grants"))
-
-        mHasGrantedAllRequiredNamespaces = true;
-        return true;
-      }
 
       //-----------------------------------------------------------------------
       bool ServiceNamespaceGrantSession::stepLoadGrantWindow()
       {
-        if (mHasGrantedAllRequiredNamespaces) {
-          ZS_LOG_DEBUG(log("all required namespaces have been granted"))
+        if (!mBootstrappedNetwork) {
+          ZS_LOG_DEBUG(log("no boostrapped network thus nothing to do"))
           return true;
         }
 
@@ -796,6 +862,9 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceNamespaceGrantSession::stepSendNamespaceGrantStartNotification()
       {
+        typedef NamespaceGrantStartNotify::NamespaceGrantChallengeInfoAndNamespacesList NamespaceGrantChallengeInfoAndNamespacesList;
+        typedef NamespaceGrantStartNotify::NamespaceGrantChallengeInfoAndNamespaces NamespaceGrantChallengeInfoAndNamespaces;
+
         if (!mBrowserWindowReady) {
           ZS_LOG_DEBUG(log("all required namespaces have been granted"))
           return true;
@@ -811,9 +880,22 @@ namespace hookflash
         NamespaceGrantStartNotifyPtr request = NamespaceGrantStartNotify::create();
         request->domain(mBootstrappedNetwork->forServices().getDomain());
 
+        NamespaceGrantChallengeInfoAndNamespacesList process;
+
+        for (QueryMap::iterator iter = mQueriesInProcess.begin(); iter != mQueriesInProcess.end(); ++iter)
+        {
+          QueryPtr query = (*iter).second;
+
+          NamespaceGrantChallengeInfoAndNamespaces data(query->getChallengeInfo(), query->getNamespaces());
+
+          ZS_LOG_DEBUG(log("going to process challenge") + ", challenge ID=" + query->getChallengeInfo().mID)
+
+          process.push_back(NamespaceGrantChallengeInfoAndNamespaces(query->getChallengeInfo(), query->getNamespaces()));
+        }
+
+        request->challenges(process);
+
         request->outerFrameURL(mOuterFrameURLUponReload);
-        request->grantInfo(mGrantInfo);
-        request->namespaceURLs(mNamespacesToGrant);
         request->popup(false);
         request->browserVisibility(NamespaceGrantStartNotify::BrowserVisibility_VisibleOnDemand);
 
@@ -859,32 +941,27 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceNamespaceGrantSession::stepExpiresCheck()
+      bool ServiceNamespaceGrantSession::stepRestart()
       {
-        if (mLastNamespaceValidateIssued + Seconds(HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_MIN_TIME_BETWEEN_VALIDATION_REQUESTS_IN_SECONDS) > zsLib::now()) {
-          if (zsLib::now() + Seconds(HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_TIME_BEFORE_EXPIRY_MUST_REFRESH_GRANT_IN_SECONDS) < mGrantInfo.mExpires) {
-            ZS_LOG_DEBUG(log("cannot revalidate right now as it is too soon to last validation"))
-            return true;
-          }
-          ZS_LOG_DEBUG(log("must revalidate grant now as it is too close to expiry") + getDebugValueString())
-        } else {
-          ZS_LOG_DEBUG(log("time to reissue the namespace grant validation") + getDebugValueString())
+        ZS_LOG_DEBUG(log("reseting namespace grant session to allow another query session to start"))
+
+        mBootstrappedNetwork.reset();
+
+        mBrowserWindowReady = false;
+        mBrowserWindowVisible = false;
+        mBrowserWindowClosed = false;
+
+        mNeedsBrowserWindowVisible = false;
+        mNamespaceGrantStartNotificationSent = false;
+        mReceivedNamespaceGrantCompleteNotify = false;
+
+        ZS_THROW_BAD_STATE_IF(mQueriesInProcess.size() > 0)
+        ZS_THROW_BAD_STATE_IF(0 != mTotalWaits)
+
+        if (mPendingQueries.size() > 0) {
+          IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
         }
-
-        ++mTotalNamesapceValidationsIssued;
-
-        setState(SessionState_Pending);
-
-        NamespaceGrantValidateRequestPtr request = NamespaceGrantValidateRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
-
-        request->purpose("namespace-grant-refresh");
-        request->grantInfo(mGrantInfo);
-        request->namespaceURLs(mNamespacesToGrant);
-
-        mNamespaceGrantValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<NamespaceGrantValidateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_NAMESPACE_GRANT_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("namespace-grant", "namespace-grant-validate", request);
-        return false;
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -899,14 +976,6 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState) + getDebugValueString())
         mCurrentState = state;
-
-        for (SubscriptionMap::iterator iter = mSubscriptions.begin(); iter != mSubscriptions.end(); ++iter)
-        {
-          SubscriptionPtr subscription = (*iter).second.lock();
-          if (subscription) {
-            subscription->notifyStateChanged(mCurrentState);
-          }
-        }
 
         ServiceNamespaceGrantSessionPtr pThis = mThisWeak.lock();
         if ((pThis) &&
@@ -967,23 +1036,28 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceNamespaceGrantSession::Subscription
+      #pragma mark ServiceNamespaceGrantSession::Query
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ServiceNamespaceGrantSession::Subscription::Subscription(
-                                                               ServiceNamespaceGrantSessionPtr outer,
-                                                               IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                                                               ) :
-      mID(zsLib::createPUID()),
-      mOuter(outer),
-      mDelegate(delegate)
+      ServiceNamespaceGrantSession::Query::Query(
+                                                 ServiceNamespaceGrantSessionPtr outer,
+                                                 IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                                 const NamespaceGrantChallengeInfo &challengeInfo,
+                                                 const NamespaceInfoMap &namespaces
+                                                 ) :
+        mID(zsLib::createPUID()),
+        mOuter(outer),
+        mDelegate(delegate),
+        mChallengeInfo(challengeInfo),
+        mNamespaces(namespaces)
       {
       }
 
       //-----------------------------------------------------------------------
-      ServiceNamespaceGrantSession::Subscription::~Subscription()
+      ServiceNamespaceGrantSession::Query::~Query()
       {
+        mThisWeak.reset();
         cancel();
       }
 
@@ -992,18 +1066,38 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceNamespaceGrantSession::Subscription => IServiceNamespaceGrantSessionForServices
+      #pragma mark ServiceNamespaceGrantSession::Query => IServiceNamespaceGrantSessionForServices
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceNamespaceGrantSession::Subscription::cancel()
+      void ServiceNamespaceGrantSession::Query::cancel()
       {
-        if (mOuter) {
-          mOuter->notifySubscriptionGone(mID);
+        AutoRecursiveLock lock(getLock());
+
+        notifyComplete(ElementPtr());
+
+        ServiceNamespaceGrantSessionPtr outer = mOuter.lock();
+
+        if (outer) {
+          outer->notifyQueryGone(mID);
           mOuter.reset();
         }
 
         mDelegate.reset();
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceNamespaceGrantSession::Query::isComplete() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return (bool)(mDelegate);
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr ServiceNamespaceGrantSession::Query::getNamespaceGrantChallengeBundle() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mNamespaceGrantChallengeBundleEl;
       }
 
       //-----------------------------------------------------------------------
@@ -1015,25 +1109,53 @@ namespace hookflash
       #pragma mark
 
       //-----------------------------------------------------------------------
-      ServiceNamespaceGrantSession::SubscriptionPtr ServiceNamespaceGrantSession::Subscription::create(
-                                                                                                       ServiceNamespaceGrantSessionPtr outer,
-                                                                                                       IServiceNamespaceGrantSessionForServicesDelegatePtr delegate
-                                                                                                       )
+      ServiceNamespaceGrantSession::QueryPtr ServiceNamespaceGrantSession::Query::create(
+                                                                                         ServiceNamespaceGrantSessionPtr outer,
+                                                                                         IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
+                                                                                         const NamespaceGrantChallengeInfo &challengeInfo,
+                                                                                         const NamespaceInfoMap &namespaces
+                                                                                         )
       {
-        SubscriptionPtr pThis(new Subscription(outer, delegate));
+        QueryPtr pThis(new Query(outer, delegate, challengeInfo, namespaces));
+        pThis->mThisWeak = pThis;
         return pThis;
       }
 
       //-----------------------------------------------------------------------
-      void ServiceNamespaceGrantSession::Subscription::notifyStateChanged(SessionStates state)
+      void ServiceNamespaceGrantSession::Query::notifyComplete(ElementPtr bundleEl)
       {
+        AutoRecursiveLock lock(getLock());
+
+        mNamespaceGrantChallengeBundleEl = bundleEl;
+
         if (!mDelegate) return;
-        if (!mOuter) return;
+
+        QueryPtr pThis = mThisWeak.lock();
+        if (!pThis) return;
 
         try {
-          mDelegate->onServiceNamespaceGrantSessionStateChanged(mOuter, state);
-        } catch(IServiceNamespaceGrantSessionForServicesDelegateProxy::Exceptions::DelegateGone &) {
+          mDelegate->onServiceNamespaceGrantSessionForServicesQueryComplete(pThis, bundleEl);
+        } catch(IServiceNamespaceGrantSessionForServicesQueryDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, "ServiceNamespaceGrantSession::Query [] delegate gone")
         }
+
+        mDelegate.reset();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceNamespaceGrantSession::Query => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RecursiveLock &ServiceNamespaceGrantSession::Query::getLock() const
+      {
+        ServiceNamespaceGrantSessionPtr outer = mOuter.lock();
+        if (!outer) return mBogusLock;
+        return outer->getLock();
       }
 
       //-----------------------------------------------------------------------
@@ -1065,7 +1187,6 @@ namespace hookflash
       switch (state)
       {
         case SessionState_Pending:                                return "Pending";
-        case SessionState_WaitingForAssociationToAllServices:     return "Waiting for Association to All Services";
         case SessionState_WaitingForBrowserWindowToBeLoaded:      return "Waiting for Browser Window to be Loaded";
         case SessionState_WaitingForBrowserWindowToBeMadeVisible: return "Waiting for Browser Window to be Made Visible";
         case SessionState_WaitingForBrowserWindowToClose:         return "Waiting for Browser Window to Close";
@@ -1084,13 +1205,11 @@ namespace hookflash
     //-------------------------------------------------------------------------
     IServiceNamespaceGrantSessionPtr IServiceNamespaceGrantSession::create(
                                                                            IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                                           IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                                            const char *outerFrameURLUponReload,
-                                                                           const char *grantID,
-                                                                           const char *grantSecret
+                                                                           const char *grantID
                                                                            )
     {
-      return internal::IServiceNamespaceGrantSessionFactory::singleton().create(delegate, serviceNamespaceGrant, outerFrameURLUponReload, grantID, grantSecret);
+      return internal::IServiceNamespaceGrantSessionFactory::singleton().create(delegate, outerFrameURLUponReload, grantID);
     }
 
   }

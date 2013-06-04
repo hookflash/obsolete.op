@@ -31,6 +31,7 @@
 
 #include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
@@ -109,13 +110,14 @@ namespace hookflash
         {
           switch ((MessageFactoryIdentityLockbox::Methods)method)
           {
-            case Method_Invalid:                            return "";
+            case Method_Invalid:                                    return "";
 
-            case Method_LockboxAccess:                      return "lockbox-access";
-            case Method_LockboxAccessValidate:              return "lockbox-access-validate";
-            case Method_LockboxIdentitiesUpdate:            return "lockbox-identities-update";
-            case Method_LockboxContentGet:                  return "lockbox-content-get";
-            case Method_LockboxContentSet:                  return "lockbox-content-set";
+            case Method_LockboxAccess:                              return "lockbox-access";
+            case Method_LockboxAccessValidate:                      return "lockbox-access-validate";
+            case Method_LockboxNamespaceGrantChallengeValidate:     return "lockbox-namespace-challenge-grant-validate";
+            case Method_LockboxIdentitiesUpdate:                    return "lockbox-identities-update";
+            case Method_LockboxContentGet:                          return "lockbox-content-get";
+            case Method_LockboxContentSet:                          return "lockbox-content-set";
           }
           return "";
         }
@@ -132,44 +134,47 @@ namespace hookflash
           Methods msgMethod = (MessageFactoryIdentityLockbox::Methods)toMethod(IMessageHelper::getAttribute(root, "method"));
 
           switch (msgType) {
-            case Message::MessageType_Invalid:                  return MessagePtr();
+            case Message::MessageType_Invalid:                      return MessagePtr();
 
             case Message::MessageType_Request:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_LockboxAccess:                      return MessagePtr();
-                case Method_LockboxAccessValidate:              return MessagePtr();
-                case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxContentGet:                  return MessagePtr();
-                case Method_LockboxContentSet:                  return MessagePtr();
+                case Method_LockboxAccess:                          return MessagePtr();
+                case Method_LockboxAccessValidate:                  return MessagePtr();
+                case Method_LockboxNamespaceGrantChallengeValidate: return MessagePtr();
+                case Method_LockboxIdentitiesUpdate:                return MessagePtr();
+                case Method_LockboxContentGet:                      return MessagePtr();
+                case Method_LockboxContentSet:                      return MessagePtr();
               }
               break;
             }
             case Message::MessageType_Result:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_LockboxAccess:                      return LockboxAccessResult::create(root, messageSource);
-                case Method_LockboxAccessValidate:              return MessagePtr();
-                case Method_LockboxIdentitiesUpdate:            return LockboxIdentitiesUpdateResult::create(root, messageSource);
-                case Method_LockboxContentGet:                  return LockboxContentGetResult::create(root, messageSource);
-                case Method_LockboxContentSet:                  return LockboxContentSetResult::create(root, messageSource);
+                case Method_LockboxAccess:                          return LockboxAccessResult::create(root, messageSource);
+                case Method_LockboxAccessValidate:                  return MessagePtr();
+                case Method_LockboxNamespaceGrantChallengeValidate: return LockboxNamespaceGrantChallengeValidateResult::create(root, messageSource);
+                case Method_LockboxIdentitiesUpdate:                return LockboxIdentitiesUpdateResult::create(root, messageSource);
+                case Method_LockboxContentGet:                      return LockboxContentGetResult::create(root, messageSource);
+                case Method_LockboxContentSet:                      return LockboxContentSetResult::create(root, messageSource);
               }
               break;
             }
             case Message::MessageType_Notify:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_LockboxAccess:                      return MessagePtr();
-                case Method_LockboxAccessValidate:              return MessagePtr();
-                case Method_LockboxIdentitiesUpdate:            return MessagePtr();
-                case Method_LockboxContentGet:                  return MessagePtr();
-                case Method_LockboxContentSet:                  return MessagePtr();
+                case Method_LockboxAccess:                          return MessagePtr();
+                case Method_LockboxAccessValidate:                  return MessagePtr();
+                case Method_LockboxNamespaceGrantChallengeValidate: return MessagePtr();
+                case Method_LockboxIdentitiesUpdate:                return MessagePtr();
+                case Method_LockboxContentGet:                      return MessagePtr();
+                case Method_LockboxContentSet:                      return MessagePtr();
               }
               break;
             }

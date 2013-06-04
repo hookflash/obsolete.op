@@ -29,18 +29,15 @@
 
  */
 
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFilePublic.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_NAMESPACE_GRANT_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define HOOKFLASH_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -50,79 +47,79 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace identity_lockbox
       {
         using zsLib::Seconds;
         using internal::MessageHelper;
         using stack::internal::IStackForInternal;
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateRequestPtr NamespaceGrantValidateRequest::convert(MessagePtr message)
+        LockboxNamespaceGrantChallengeValidateRequestPtr LockboxNamespaceGrantChallengeValidateRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<NamespaceGrantValidateRequest>(message);
+          return boost::dynamic_pointer_cast<LockboxNamespaceGrantChallengeValidateRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateRequest::NamespaceGrantValidateRequest()
+        LockboxNamespaceGrantChallengeValidateRequest::LockboxNamespaceGrantChallengeValidateRequest()
         {
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateRequestPtr NamespaceGrantValidateRequest::create()
+        LockboxNamespaceGrantChallengeValidateRequestPtr LockboxNamespaceGrantChallengeValidateRequest::create()
         {
-          NamespaceGrantValidateRequestPtr ret(new NamespaceGrantValidateRequest);
+          LockboxNamespaceGrantChallengeValidateRequestPtr ret(new LockboxNamespaceGrantChallengeValidateRequest);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool NamespaceGrantValidateRequest::hasAttribute(AttributeTypes type) const
+        bool LockboxNamespaceGrantChallengeValidateRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_Purpose:           return mPurpose.hasData();
-            case AttributeType_GrantInfo:         return mGrantInfo.hasData();
-            case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
-            default:                              break;
+            case AttributeType_LockboxInfo:                     return mLockboxInfo.hasData();
+            case AttributeType_NamespaceGrantChallengeBundle:   return (mNamespaceGrantChallengeBundle);
+            default:                                            break;
           }
           return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr NamespaceGrantValidateRequest::encode()
+        DocumentPtr LockboxNamespaceGrantChallengeValidateRequest::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-          ElementPtr root = ret->getFirstChildElement();
+          ElementPtr rootEl = ret->getFirstChildElement();
 
           String clientNonce = IHelper::randomString(32);
+          LockboxInfo lockboxInfo;
 
-          GrantInfo grantInfo;
-          grantInfo.mID = mGrantInfo.mID;
-
-          if (grantInfo.mSecret.hasData()) {
-            grantInfo.mSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_NAMESPACE_GRANT_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            grantInfo.mSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(grantInfo.mSecret), "namespace-grant-validate:" + grantInfo.mID + ":" + clientNonce + ":" + IMessageHelper::timeToString(grantInfo.mSecretProofExpires) + ":" + mPurpose));
+          lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
+          if (mLockboxInfo.mAccessSecret.hasData()) {
+            lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-identities-update"));
           }
 
-          if (grantInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(grantInfo));
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          if (lockboxInfo.hasData()) {
+            rootEl->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
-          if (hasAttribute(AttributeType_NamespaceInfos)) {
-            ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
-
-            for (NamespaceInfoMap::iterator iter = mNamespaceInfos.begin(); iter != mNamespaceInfos.end(); ++iter)
-            {
-              const NamespaceInfo &namespaceInfo = (*iter).second;
-              namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
-            }
-
-            if (namespacesEl->hasChildren()) {
-              root->adoptAsLastChild(namespacesEl);
-            }
+          if (mNamespaceGrantChallengeBundle) {
+            rootEl->adoptAsLastChild(mNamespaceGrantChallengeBundle->clone()->toElement());
           }
 
           return ret;
         }
+
+        void LockboxNamespaceGrantChallengeValidateRequest::namespaceGrantChallengeBundle(ElementPtr val)
+        {
+          if (!val) {
+            mNamespaceGrantChallengeBundle.reset();
+            return;
+          }
+
+          mNamespaceGrantChallengeBundle = val->clone()->toElement();
+        }
+
       }
     }
   }

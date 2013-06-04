@@ -31,10 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <hookflash/stack/message/MessageResult.h>
+#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 
-#include <utility>
 #include <list>
 
 namespace hookflash
@@ -43,48 +42,32 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace rolodex
       {
-        class NamespaceGrantValidateRequest : public MessageRequest
+        class RolodexNamespaceGrantChallengeValidateResult : public MessageResult
         {
         public:
           enum AttributeTypes
           {
-            AttributeType_Purpose,
-            AttributeType_GrantInfo,
-            AttributeType_NamespaceInfos,
           };
 
         public:
-          static NamespaceGrantValidateRequestPtr convert(MessagePtr message);
+          static RolodexNamespaceGrantChallengeValidateResultPtr convert(MessagePtr message);
 
-          static NamespaceGrantValidateRequestPtr create();
+          static RolodexNamespaceGrantChallengeValidateResultPtr create(
+                                                                        ElementPtr rootEl,
+                                                                        IMessageSourcePtr messageSource
+                                                                        );
 
-          virtual DocumentPtr encode();
+          virtual Methods method() const                  {return (Message::Methods)MessageFactoryRolodex::Method_RolodexNamespaceGrantChallengeValidate;}
 
-          virtual Methods method() const              {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantValidate;}
-
-          virtual IMessageFactoryPtr factory() const  {return MessageFactoryNamespaceGrant::singleton();}
+          virtual IMessageFactoryPtr factory() const      {return MessageFactoryRolodex::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const String &purpose() const                     {return mPurpose;}
-          void purpose(const String &val)                   {mPurpose = val;}
-
-          const GrantInfo &grantInfo() const                {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
-
-          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
-          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
-
         protected:
-          NamespaceGrantValidateRequest();
+          RolodexNamespaceGrantChallengeValidateResult();
 
-          String mPurpose;
-
-          GrantInfo mGrantInfo;
-
-          NamespaceInfoMap mNamespaceInfos;
         };
       }
     }

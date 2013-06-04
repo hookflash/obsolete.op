@@ -51,8 +51,7 @@ namespace hookflash
           enum AttributeTypes
           {
             AttributeType_AgentInfo,
-            AttributeType_GrantInfo,
-            AttributeType_NamespaceInfos,
+            AttributeType_Challenges,
             AttributeType_BrowserVisibility,
             AttributeType_BrowserPopup,
             AttributeType_OuterFrameURL,
@@ -68,6 +67,9 @@ namespace hookflash
           };
 
           static const char *toString(BrowserVisibilities visibility);
+
+          typedef std::pair<NamespaceGrantChallengeInfo, NamespaceInfoMap> NamespaceGrantChallengeInfoAndNamespaces;
+          typedef std::list<NamespaceGrantChallengeInfoAndNamespaces> NamespaceGrantChallengeInfoAndNamespacesList;
 
         public:
           static NamespaceGrantStartNotifyPtr convert(MessagePtr message);
@@ -85,11 +87,8 @@ namespace hookflash
           const AgentInfo &agentInfo() const                {return mAgentInfo;}
           void agentInfo(const AgentInfo &val)              {mAgentInfo = val;}
 
-          const GrantInfo &grantInfo() const                {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
-
-          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
-          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
+          const NamespaceGrantChallengeInfoAndNamespacesList &challenges() const    {return mChallenges;}
+          void challenges(const NamespaceGrantChallengeInfoAndNamespacesList &val)  {mChallenges = val;}
 
           BrowserVisibilities browserVisibility() const     {return mVisibility;}
           void browserVisibility(BrowserVisibilities val)   {mVisibility = val;}
@@ -105,9 +104,7 @@ namespace hookflash
 
           AgentInfo mAgentInfo;
 
-          GrantInfo mGrantInfo;
-
-          NamespaceInfoMap mNamespaceInfos;
+          NamespaceGrantChallengeInfoAndNamespacesList mChallenges;
 
           BrowserVisibilities mVisibility;
           int mPopup;

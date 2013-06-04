@@ -651,28 +651,25 @@ namespace hookflash
         }
         
         //---------------------------------------------------------------------
-        ElementPtr MessageHelper::createElement(const GrantInfo &info)
+        ElementPtr MessageHelper::createElement(const NamespaceGrantChallengeInfo &info)
         {
-          ElementPtr grantEl = Element::create("grant");
+          ElementPtr namespaceGrantChallengeEl = Element::create("namespaceGrantChallenge");
 
-          setAttributeID(grantEl, info.mID);
-          if (info.mSecret.hasData()) {
-            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("secret", info.mSecret));
+          setAttributeID(namespaceGrantChallengeEl, info.mID);
+          if (info.mName.hasData()) {
+            namespaceGrantChallengeEl->adoptAsLastChild(IMessageHelper::createElementWithText("name", info.mName));
           }
-          if (info.mSecretProof.hasData()) {
-            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("secretProof", info.mSecretProof));
+          if (info.mImageURL.hasData()) {
+            namespaceGrantChallengeEl->adoptAsLastChild(IMessageHelper::createElementWithText("image", info.mName));
           }
-          if (Time() != info.mSecretProofExpires) {
-            grantEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("secretProofExpires", IMessageHelper::timeToString(info.mSecretProofExpires)));
+          if (info.mServiceURL.hasData()) {
+            namespaceGrantChallengeEl->adoptAsLastChild(IMessageHelper::createElementWithText("url", info.mName));
           }
-          if (Time() != info.mExpires) {
-            grantEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(info.mExpires)));
-          }
-          if (info.mDomain.hasData()) {
-            grantEl->adoptAsLastChild(IMessageHelper::createElementWithText("domain", info.mDomain));
+          if (info.mDomains.hasData()) {
+            namespaceGrantChallengeEl->adoptAsLastChild(IMessageHelper::createElementWithText("domains", info.mName));
           }
 
-          return grantEl;
+          return namespaceGrantChallengeEl;
         }
         
         //---------------------------------------------------------------------
@@ -1787,18 +1784,17 @@ namespace hookflash
         }
 
         //---------------------------------------------------------------------
-        GrantInfo MessageHelper::createGrant(ElementPtr elem)
+        NamespaceGrantChallengeInfo MessageHelper::createNamespaceGrantChallenge(ElementPtr elem)
         {
-          GrantInfo info;
+          NamespaceGrantChallengeInfo info;
 
           if (!elem) return info;
 
           info.mID = IMessageHelper::getAttributeID(elem);
-          info.mSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secret"));
-          info.mSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretProof"));
-          info.mSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("secretProofExpires")));
-          info.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
-          info.mDomain = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("domain"));
+          info.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
+          info.mImageURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("image"));
+          info.mServiceURL = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("url"));
+          info.mDomains = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("domains"));
 
           return info;
         }

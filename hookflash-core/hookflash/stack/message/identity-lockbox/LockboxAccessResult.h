@@ -57,7 +57,7 @@ namespace hookflash
           static LockboxAccessResultPtr convert(MessagePtr message);
 
           static LockboxAccessResultPtr create(
-                                               ElementPtr root,
+                                               ElementPtr rootEl,
                                                IMessageSourcePtr messageSource
                                                );
 
@@ -67,16 +67,21 @@ namespace hookflash
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const LockboxInfo &lockboxInfo() const            {return mLockboxInfo;}
-          void lockboxInfo(const LockboxInfo &val)          {mLockboxInfo = val;}
+          const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
 
-          const IdentityInfoList &identities() const        {return mIdentities;}
-          void identities(const IdentityInfoList &val)      {mIdentities = val;}
+          const NamespaceGrantChallengeInfo &namespaceGrantChallengeInfo() const    {return mNamespaceGrantChallengeInfo;}
+          void namespaceGrantChallengeInfo(const NamespaceGrantChallengeInfo &val)  {mNamespaceGrantChallengeInfo = val;}
+
+          const IdentityInfoList &identities() const      {return mIdentities;}
+          void identities(const IdentityInfoList &val)    {mIdentities = val;}
 
         protected:
           LockboxAccessResult();
 
           LockboxInfo mLockboxInfo;
+
+          NamespaceGrantChallengeInfo mNamespaceGrantChallengeInfo;
 
           IdentityInfoList mIdentities;
         };

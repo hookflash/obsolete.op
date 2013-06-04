@@ -208,10 +208,6 @@ namespace hookflash
         mIdentityLookupUpdated(false)
       {
         ZS_LOG_DEBUG(log("created"))
-
-        NamespaceInfoMap namespaces;
-        getNamespaces(namespaces);
-        mGrantSession->forServices().grantNamespaces(namespaces);
       }
 
       //-----------------------------------------------------------------------
@@ -300,7 +296,6 @@ namespace hookflash
 
         ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, providerNetwork, identityNetwork, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         if (IServiceIdentity::isValidBase(identityURI)) {
           pThis->mIdentityInfo.mBase = identityURI;
         } else {
@@ -331,7 +326,6 @@ namespace hookflash
 
         ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, BootstrappedNetwork::convert(provider), BootstrappedNetworkPtr(), ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         pThis->init();
         return pThis;
       }
@@ -390,7 +384,6 @@ namespace hookflash
 
         ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, BootstrappedNetwork::convert(provider), network, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         pThis->mIdentityInfo.mURI = identityURI;
         pThis->mSignedIdentityBundleUncheckedEl = signedIdentityBundleEl->clone()->toElement();
         pThis->init();
@@ -643,6 +636,16 @@ namespace hookflash
           mIdentityLookupMonitor.reset();
         }
 
+        if (mGrantQuery) {
+          mGrantQuery->cancel();
+          mGrantQuery.reset();
+        }
+
+        if (mGrantWait) {
+          mGrantWait->cancel();
+          mGrantWait.reset();
+        }
+
         setState(SessionState_Shutdown);
       }
 
@@ -697,7 +700,6 @@ namespace hookflash
                                                                    NULL
                                                                    ));
         pThis->mThisWeak = pThis;
-        pThis->mGrantSubscription = pThis->mGrantSession->forServices().subscribe(pThis);
         pThis->mAssociatedLockbox = ServiceLockboxSession::convert(existingLockbox);
         pThis->mIdentityInfo.mURI = identityURI;
         pThis->mIdentityInfo.mReloginKey = String(reloginKey);
@@ -832,16 +834,33 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesDelegate
+      #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::onServiceNamespaceGrantSessionStateChanged(
-                                                                              ServiceNamespaceGrantSessionPtr session,
-                                                                              GrantSessionStates state
-                                                                              )
+      void ServiceIdentitySession::onServiceNamespaceGrantSessionForServicesWaitComplete(IServiceNamespaceGrantSessionPtr session)
       {
-        ZS_LOG_DEBUG(log("namespace grant session state changed"))
+        ZS_LOG_DEBUG(log("namespace grant waits have completed, can try again to obtain a wait (if waiting)"))
+
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesQueryDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void ServiceIdentitySession::onServiceNamespaceGrantSessionForServicesQueryComplete(
+                                                                                          IServiceNamespaceGrantSessionForServicesQueryPtr query,
+                                                                                          ElementPtr namespaceGrantChallengeBundleEl
+                                                                                          )
+      {
+        ZS_LOG_DEBUG(log("namespace grant query completed"))
 
         AutoRecursiveLock lock(getLock());
         step();
@@ -1099,12 +1118,12 @@ namespace hookflash
                IBootstrappedNetwork::toDebugString(mIdentityBootstrappedNetwork) +
                Helper::getDebugValue("active boostrapper", (mActiveBootstrappedNetwork ? (mIdentityBootstrappedNetwork == mActiveBootstrappedNetwork ? String("identity") : String("provider")) : String()), firstTime) +
                Helper::getDebugValue("grant session id", mGrantSession ? Stringize<PUID>(mGrantSession->forServices().getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant subscription id", mGrantSubscription ? Stringize<PUID>(mGrantSubscription->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant query id", mGrantQuery ? Stringize<PUID>(mGrantQuery->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant wait id", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity sign monitor", mIdentitySignMonitor ? String("true") : String(), firstTime) +
                (mLockboxInfo.hasData() ? mLockboxInfo.getDebugValueString() : String()) +
-               Helper::getDebugValue("has permissions", mHasPermissions ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser closed", mBrowserWindowClosed ? String("true") : String(), firstTime) +
@@ -1151,6 +1170,7 @@ namespace hookflash
         if (!stepSign()) return;
         if (!stepAllRequestsCompleted()) return;
         if (!stepCloseBrowserWindow()) return;
+        if (!stepClearWait()) return;
 
         if (mKillAssociation) {
           ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
@@ -1237,57 +1257,23 @@ namespace hookflash
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepGrantCheck()
       {
-        if (mHasPermissions) {
-          ZS_LOG_DEBUG(log("already have namespace persmissions granted"))
+        if (mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("already informed browser window ready thus no need to make sure grant wait lock is obtained"))
           return true;
         }
 
-        WORD errorCode = 0;
-        String reason;
-
-        GrantSessionStates state = mGrantSession->forServices().getState(&errorCode, &reason);
-
-        switch (state) {
-          case IServiceNamespaceGrantSession::SessionState_Pending:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForAssociationToAllServices:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeLoaded:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeMadeVisible:
-          case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToClose:
-          {
-            ZS_LOG_DEBUG(log("waiting for namespace grant session to complete"))
-            return false;
-          }
-          case IServiceNamespaceGrantSession::SessionState_Ready:
-          {
-            ZS_LOG_DEBUG(log("namespace grant session is compelte"))
-            break;
-          }
-          case IServiceNamespaceGrantSession::SessionState_Shutdown:
-          {
-            ZS_LOG_ERROR(Detail, log("namespace grant session failed"))
-            setError(errorCode, reason);
-            cancel();
-            return false;
-          }
+        if (mGrantWait) {
+          ZS_LOG_DEBUG(log("grant wait lock is already obtained"))
+          return true;
         }
 
-        NamespaceInfoMap namespaces;
-        getNamespaces(namespaces);
+        mGrantWait = mGrantSession->forServices().obtainWaitToProceed(mThisWeak.lock());
 
-        for (NamespaceInfoMap::iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
-        {
-          NamespaceInfo &info = (*iter).second;
-          if (!mGrantSession->forServices().isNamespaceGranted(info.mURL)) {
-            ZS_LOG_WARNING(Detail, log("did not grant permission to a required namespace") + ", namespace=" + info.mURL)
-            setError(IHTTP::HTTPStatusCode_Forbidden, ("Failed to obtain permission to namespace, namespace=" + info.mURL).c_str());
-            cancel();
-            return false;
-          }
+        if (!mGrantWait) {
+          ZS_LOG_DEBUG(log("waiting to obtain grant wait lock"))
+          return false;
         }
 
-        ZS_LOG_DEBUG(log("all required namespaces have beeng ranted"))
-
-        mHasPermissions = true;
         return true;
       }
 
@@ -1772,6 +1758,7 @@ namespace hookflash
       {
         if (mBrowserWindowClosed) {
           ZS_LOG_DEBUG(log("browser window is closed"))
+          return true;
         }
 
         ZS_LOG_DEBUG(log("waiting for browser window to close"))
@@ -1780,7 +1767,22 @@ namespace hookflash
 
         return false;
       }
-      
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepClearWait()
+      {
+        if (!mGrantWait) {
+          ZS_LOG_DEBUG(log("wait already cleared"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("clearing grant wait"))
+
+        mGrantWait->cancel();
+        mGrantWait.reset();
+        return true;
+      }
+
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::setState(SessionStates state)
       {

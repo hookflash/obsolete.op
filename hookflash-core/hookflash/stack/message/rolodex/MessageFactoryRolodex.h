@@ -58,6 +58,7 @@ namespace hookflash
             Method_Invalid = Message::Method_Invalid,
 
             Method_RolodexAccess,
+            Method_RolodexNamespaceGrantChallengeValidate,
             Method_RolodexContactsGet,
 
             Method_Last = Method_RolodexContactsGet,

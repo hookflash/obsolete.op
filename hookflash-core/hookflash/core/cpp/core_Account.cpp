@@ -159,28 +159,17 @@ namespace hookflash
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
                                 const char *namespaceGrantOuterFrameURLUponReload,
-                                const char *namespaceGrantServiceDomain,
                                 const char *grantID,
-                                const char *grantSecret,
                                 const char *lockboxServiceDomain,
                                 bool forceCreateNewLockboxAccount
                                 )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!namespaceGrantOuterFrameURLUponReload)
-        ZS_THROW_INVALID_ARGUMENT_IF(!namespaceGrantServiceDomain)
         ZS_THROW_INVALID_ARGUMENT_IF(!grantID)
-        ZS_THROW_INVALID_ARGUMENT_IF(!grantSecret)
         ZS_THROW_INVALID_ARGUMENT_IF(!lockboxServiceDomain)
 
         AccountPtr pThis(new Account(IStackForInternal::queueCore(), delegate, conversationThreadDelegate, callDelegate));
         pThis->mThisWeak = pThis;
-
-        String namespaceDomain(namespaceGrantServiceDomain);
-        IBootstrappedNetworkPtr grantNetwork = IBootstrappedNetwork::prepare(namespaceDomain);
-        if (!grantNetwork) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + namespaceDomain)
-          return AccountPtr();
-        }
 
         String lockboxDomain(lockboxServiceDomain);
         IBootstrappedNetworkPtr lockboxNetwork = IBootstrappedNetwork::prepare(lockboxDomain);
@@ -189,7 +178,7 @@ namespace hookflash
           return AccountPtr();
         }
 
-        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, IServiceNamespaceGrant::createServiceNamespaceGrantFrom(grantNetwork), namespaceGrantOuterFrameURLUponReload, grantID, grantSecret);
+        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, namespaceGrantOuterFrameURLUponReload, grantID);
         ZS_THROW_BAD_STATE_IF(!pThis->mGrantSession)
 
         pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(lockboxNetwork);
@@ -217,28 +206,18 @@ namespace hookflash
         pThis->mThisWeak = pThis;
 
         String lockboxDomain;
-        String grantDomain;
         String accountID;
         String grantID;
-        String grantSecret;
         String keyIdentityHalf;
         String keyLockboxHalf;
 
         try {
           lockboxDomain = reloginInformation->findFirstChildElementChecked("lockboxDomain")->getTextDecoded();
-          grantDomain = reloginInformation->findFirstChildElementChecked("grantDomain")->getTextDecoded();
           accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
           grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
-          grantSecret = reloginInformation->findFirstChildElementChecked("grantSecret")->getTextDecoded();
           keyIdentityHalf = reloginInformation->findFirstChildElementChecked("keyIdentityHalf")->getTextDecoded();
           keyLockboxHalf = reloginInformation->findFirstChildElementChecked("keyLockboxHalf")->getTextDecoded();
         } catch (CheckFailed &) {
-          return AccountPtr();
-        }
-
-        IBootstrappedNetworkPtr grantNetwork = IBootstrappedNetwork::prepare(grantDomain);
-        if (!grantNetwork) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + grantDomain)
           return AccountPtr();
         }
 
@@ -248,7 +227,7 @@ namespace hookflash
           return AccountPtr();
         }
 
-        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, IServiceNamespaceGrant::createServiceNamespaceGrantFrom(grantNetwork), namespaceGrantOuterFrameURLUponReload, grantID, grantSecret);
+        pThis->mGrantSession = IServiceNamespaceGrantSession::create(pThis, namespaceGrantOuterFrameURLUponReload, grantID);
         ZS_THROW_BAD_STATE_IF(!pThis->mGrantSession)
 
         pThis->mLockboxService = IServiceLockbox::createServiceLockboxFrom(lockboxNetwork);
@@ -303,18 +282,6 @@ namespace hookflash
           return ElementPtr();
         }
 
-        IServiceNamespaceGrantPtr grantService = mGrantSession->getService();
-        if (!grantService) {
-          ZS_LOG_WARNING(Detail, log("missing namespace grant domain information"))
-          return ElementPtr();
-        }
-
-        String grantDomain = grantService->getBootstrappedNetwork()->getDomain();
-        if (grantDomain.isEmpty()) {
-          ZS_LOG_WARNING(Detail, log("missing namespace grant domain information"))
-          return ElementPtr();
-        }
-
         if (!mLockboxSession) {
           ZS_LOG_WARNING(Detail, log("missing lockbox session information"))
           return ElementPtr();
@@ -329,12 +296,6 @@ namespace hookflash
         String grantID = mGrantSession->getGrantID();
         if (grantID.isEmpty()) {
           ZS_LOG_WARNING(Detail, log("missing grant ID information"))
-          return ElementPtr();
-        }
-
-        String grantSecret = mGrantSession->getGrantID();
-        if (grantSecret.isEmpty()) {
-          ZS_LOG_WARNING(Detail, log("missing grant secret information"))
           return ElementPtr();
         }
 
@@ -354,10 +315,8 @@ namespace hookflash
         ElementPtr reloginEl = Element::create("relogin");
 
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxDomain", lockboxDomain));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantDomain", grantDomain));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accountID", accountID));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantID", grantID));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantSecret", grantSecret));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", keyIdentityHalf));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", keyLockboxHalf));
 
@@ -1302,13 +1261,6 @@ namespace hookflash
           {
             ZS_LOG_DEBUG(log("namespace grant session is pending"))
             setState(AccountState_Pending);
-            return false;
-          }
-          case IServiceNamespaceGrantSession::SessionState_WaitingForAssociationToAllServices:
-          {
-            ZS_LOG_DEBUG(log("namespace grant session is waiting for association to all services"))
-            mGrantSession->notifyAssocaitedToAllServicesComplete(); // but actually, it's ready now so inform it
-            IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
             return false;
           }
           case IServiceNamespaceGrantSession::SessionState_WaitingForBrowserWindowToBeLoaded:
@@ -2433,14 +2385,12 @@ namespace hookflash
                                 IConversationThreadDelegatePtr conversationThreadDelegate,
                                 ICallDelegatePtr callDelegate,
                                 const char *namespaceGrantOuterFrameURLUponReload,
-                                const char *namespaceGrantServiceDomain,
                                 const char *grantID,
-                                const char *grantSecret,
                                 const char *lockboxServiceDomain,
                                 bool forceCreateNewLockboxAccount
                                 )
     {
-      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, namespaceGrantServiceDomain, grantID, grantSecret, lockboxServiceDomain, forceCreateNewLockboxAccount);
+      return internal::IAccountFactory::singleton().login(delegate, conversationThreadDelegate, callDelegate, namespaceGrantOuterFrameURLUponReload, grantID, lockboxServiceDomain, forceCreateNewLockboxAccount);
     }
 
     //-------------------------------------------------------------------------

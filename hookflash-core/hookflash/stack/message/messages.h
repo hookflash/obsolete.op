@@ -92,6 +92,8 @@
 #include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateRequest.h>
+#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
 #include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
@@ -103,16 +105,12 @@
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowRequest.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowResult.h>
 #include <hookflash/stack/message/namespace-grant/NamespaceGrantCompleteNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminWindowRequest.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminWindowResult.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminStartNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantAdminCompleteNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateRequest.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateResult.h>
 
 #include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 #include <hookflash/stack/message/rolodex/RolodexAccessRequest.h>
 #include <hookflash/stack/message/rolodex/RolodexAccessResult.h>
+#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateRequest.h>
+#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/rolodex/RolodexContactsGetRequest.h>
 #include <hookflash/stack/message/rolodex/RolodexContactsGetResult.h>
 

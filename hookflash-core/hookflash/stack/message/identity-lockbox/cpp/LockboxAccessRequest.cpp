@@ -78,7 +78,8 @@ namespace hookflash
           {
             case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
             case AttributeType_LockboxInfo:       return mLockboxInfo.hasData();
-            case AttributeType_GrantInfo:         return mGrantInfo.hasData();
+            case AttributeType_AgentInfo:         return mAgentInfo.hasData();
+            case AttributeType_GrantID:           return mGrantID.hasData();
             case AttributeType_NamespaceInfos:    return (mNamespaceInfos.size() > 0);
             default:                              break;
           }
@@ -89,7 +90,7 @@ namespace hookflash
         DocumentPtr LockboxAccessRequest::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-          ElementPtr root = ret->getFirstChildElement();
+          ElementPtr rootEl = ret->getFirstChildElement();
 
           String clientNonce = IHelper::randomString(32);
           IdentityInfo identityInfo;
@@ -110,26 +111,25 @@ namespace hookflash
           lockboxInfo.mHash = mLockboxInfo.mHash;
           lockboxInfo.mResetFlag = mLockboxInfo.mResetFlag;
 
-          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
           if (identityInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
+            rootEl->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
 
           if (lockboxInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
+            rootEl->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }
 
-          GrantInfo grantInfo;
-          grantInfo.mID = mGrantInfo.mID;
-          grantInfo.mDomain = mGrantInfo.mDomain;
+          AgentInfo agentInfo;
+          agentInfo = IStackForInternal::agentInfo();
+          agentInfo.mergeFrom(mAgentInfo, true);
 
-          if (grantInfo.mSecret.hasData()) {
-            grantInfo.mSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            grantInfo.mSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(grantInfo.mSecret), "namespace-grant-validate:" + grantInfo.mID + ":" + clientNonce + ":" + IMessageHelper::timeToString(grantInfo.mSecretProofExpires) + ":lockbox-access"));
+          if (mAgentInfo.hasData()) {
+            rootEl->adoptAsLastChild(MessageHelper::createElement(agentInfo));
           }
 
-          if (grantInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(grantInfo));
+          if (mGrantID.hasData()) {
+            rootEl->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
           }
 
           if (hasAttribute(AttributeType_NamespaceInfos)) {
@@ -142,7 +142,7 @@ namespace hookflash
             }
 
             if (namespacesEl->hasChildren()) {
-              root->adoptAsLastChild(namespacesEl);
+              rootEl->adoptAsLastChild(namespacesEl);
             }
           }
           return ret;

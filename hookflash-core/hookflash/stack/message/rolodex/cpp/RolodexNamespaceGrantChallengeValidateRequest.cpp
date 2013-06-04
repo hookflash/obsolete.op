@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/rolodex/RolodexAccessRequest.h>
+#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateRequest.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 #include <hookflash/stack/internal/stack_Stack.h>
 #include <hookflash/stack/IHelper.h>
@@ -37,7 +37,7 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define HOOKFLASH_STACK_MESSAGE_ROLODEX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
 namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
 
@@ -54,81 +54,74 @@ namespace hookflash
         using stack::internal::IStackForInternal;
 
         //---------------------------------------------------------------------
-        RolodexAccessRequestPtr RolodexAccessRequest::convert(MessagePtr message)
+        RolodexNamespaceGrantChallengeValidateRequestPtr RolodexNamespaceGrantChallengeValidateRequest::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<RolodexAccessRequest>(message);
+          return boost::dynamic_pointer_cast<RolodexNamespaceGrantChallengeValidateRequest>(message);
         }
 
         //---------------------------------------------------------------------
-        RolodexAccessRequest::RolodexAccessRequest()
+        RolodexNamespaceGrantChallengeValidateRequest::RolodexNamespaceGrantChallengeValidateRequest()
         {
         }
 
         //---------------------------------------------------------------------
-        RolodexAccessRequestPtr RolodexAccessRequest::create()
+        RolodexNamespaceGrantChallengeValidateRequestPtr RolodexNamespaceGrantChallengeValidateRequest::create()
         {
-          RolodexAccessRequestPtr ret(new RolodexAccessRequest);
+          RolodexNamespaceGrantChallengeValidateRequestPtr ret(new RolodexNamespaceGrantChallengeValidateRequest);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool RolodexAccessRequest::hasAttribute(AttributeTypes type) const
+        bool RolodexNamespaceGrantChallengeValidateRequest::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_IdentityInfo:      return mIdentityInfo.hasData();
-            case AttributeType_RolodexInfo:       return mRolodexInfo.hasData();
-            case AttributeType_GrantID:           return mGrantID.hasData();
-            default:                              break;
+            case AttributeType_RolodexInfo:                   return mRolodexInfo.hasData();
+            case AttributeType_NamespaceGrantChallengeBundle: return (mNamespaceGrantChallengeBundle);
+            default:                                          break;
           }
           return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr RolodexAccessRequest::encode()
+        DocumentPtr RolodexNamespaceGrantChallengeValidateRequest::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr rootEl = ret->getFirstChildElement();
 
           String clientNonce = IHelper::randomString(32);
-          IdentityInfo identityInfo;
-
-          identityInfo.mURI = mIdentityInfo.mURI;
-          identityInfo.mProvider = mIdentityInfo.mProvider;
-
-          identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
-          if (mIdentityInfo.mAccessSecret.hasData()) {
-            identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
-          }
-
-          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
-          if (identityInfo.hasData()) {
-            rootEl->adoptAsLastChild(MessageHelper::createElement(identityInfo));
-          }
 
           RolodexInfo rolodexInfo;
           rolodexInfo.mServerToken = mRolodexInfo.mServerToken;
           rolodexInfo.mVersion = mRolodexInfo.mVersion;
           rolodexInfo.mRefreshFlag = mRolodexInfo.mRefreshFlag;
 
+          rolodexInfo.mAccessToken = mRolodexInfo.mAccessToken;
+          if (mRolodexInfo.mAccessSecret.hasData()) {
+            rolodexInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_ROLODEX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
+            rolodexInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(mRolodexInfo.mAccessSecret), "rolodex-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(rolodexInfo.mAccessSecretProofExpires) + ":" + rolodexInfo.mAccessToken + ":rolodex-namespace-grant-challenge-validate"));
+          }
+
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
           if (rolodexInfo.hasData()) {
             rootEl->adoptAsLastChild(MessageHelper::createElement(rolodexInfo));
           }
 
-          AgentInfo agentInfo;
-          agentInfo = IStackForInternal::agentInfo();
-          agentInfo.mergeFrom(mAgentInfo, true);
-
-          if (mAgentInfo.hasData()) {
-            rootEl->adoptAsLastChild(MessageHelper::createElement(agentInfo));
-          }
-
-          if (mGrantID.hasData()) {
-            rootEl->adoptAsLastChild(IMessageHelper::createElementWithID("grant", mGrantID));
+          if (mNamespaceGrantChallengeBundle) {
+            rootEl->adoptAsLastChild(mNamespaceGrantChallengeBundle->clone()->toElement());
           }
 
           return ret;
+        }
+
+        void RolodexNamespaceGrantChallengeValidateRequest::namespaceGrantChallengeBundle(ElementPtr val)
+        {
+          if (!val) {
+            mNamespaceGrantChallengeBundle.reset();
+            return;
+          }
+
+          mNamespaceGrantChallengeBundle = val->clone()->toElement();
         }
       }
     }

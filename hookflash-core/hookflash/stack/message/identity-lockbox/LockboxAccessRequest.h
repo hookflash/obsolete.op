@@ -52,7 +52,8 @@ namespace hookflash
           {
             AttributeType_IdentityInfo,
             AttributeType_LockboxInfo,
-            AttributeType_GrantInfo,
+            AttributeType_AgentInfo,
+            AttributeType_GrantID,
             AttributeType_NamespaceInfos,
           };
 
@@ -83,22 +84,25 @@ namespace hookflash
           const LockboxInfo &lockboxInfo() const          {return mLockboxInfo;}
           void lockboxInfo(const LockboxInfo &val)        {mLockboxInfo = val;}
 
-          const GrantInfo &grantInfo() const              {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)            {mGrantInfo = val;}
+          const AgentInfo &agentInfo() const              {return mAgentInfo;}
+          void agentInfo(const AgentInfo &val)            {mAgentInfo = val;}
 
-          const NamespaceInfoMap &namespaceURLs() const     {return mNamespaceInfos;}
-          void namespaceURLs(const NamespaceInfoMap &val)   {mNamespaceInfos = val;}
+          const String &grantID() const                   {return mGrantID;}
+          void grantID(const String &val)                 {mGrantID = val;}
+
+          const NamespaceInfoMap &namespaceURLs() const   {return mNamespaceInfos;}
+          void namespaceURLs(const NamespaceInfoMap &val) {mNamespaceInfos = val;}
 
         protected:
           LockboxAccessRequest();
-
-          AgentInfo mAgentInfo;
 
           IdentityInfo mIdentityInfo;
 
           LockboxInfo mLockboxInfo;
 
-          GrantInfo mGrantInfo;
+          AgentInfo mAgentInfo;
+
+          String mGrantID;
           NamespaceInfoMap mNamespaceInfos;
         };
       }

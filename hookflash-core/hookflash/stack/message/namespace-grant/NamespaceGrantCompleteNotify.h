@@ -49,35 +49,32 @@ namespace hookflash
         public:
           enum AttributeTypes
           {
-            AttributeType_GrantInfo,
-            AttributeType_NamespaceInfos,
+            AttributeType_Bundles,
           };
+
+          typedef std::list<ElementPtr> NamespaceGranthallengeBundleList;
 
         public:
           static NamespaceGrantCompleteNotifyPtr convert(MessagePtr message);
 
           static NamespaceGrantCompleteNotifyPtr create(
-                                                               ElementPtr root,
-                                                               IMessageSourcePtr messageSource
-                                                               );
+                                                        ElementPtr root,
+                                                        IMessageSourcePtr messageSource
+                                                        );
 
-          virtual Methods method() const                    {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantComplete;}
+          virtual Methods method() const                            {return (Message::Methods)MessageFactoryNamespaceGrant::Method_NamespaceGrantComplete;}
 
-          virtual IMessageFactoryPtr factory() const        {return MessageFactoryNamespaceGrant::singleton();}
+          virtual IMessageFactoryPtr factory() const                {return MessageFactoryNamespaceGrant::singleton();}
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const GrantInfo &grantInfo() const                {return mGrantInfo;}
-          void grantInfo(const GrantInfo &val)              {mGrantInfo = val;}
-
-          const NamespaceInfoMap &namespaceInfos() const    {return mNamespaceInfos;}
-          void namespaceInfos(const NamespaceInfoMap &val)  {mNamespaceInfos = val;}
+          const NamespaceGranthallengeBundleList &bundles() const    {return mBundles;}
+          void bundles(const NamespaceGranthallengeBundleList &val)  {mBundles = val;}
 
         protected:
           NamespaceGrantCompleteNotify();
 
-          GrantInfo mGrantInfo;
-          NamespaceInfoMap mNamespaceInfos;
+          NamespaceGranthallengeBundleList mBundles;
         };
       }
     }

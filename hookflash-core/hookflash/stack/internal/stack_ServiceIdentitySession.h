@@ -134,7 +134,8 @@ namespace hookflash
                                      public IServiceIdentitySessionForServiceLockbox,
                                      public IServiceIdentitySessionAsyncDelegate,
                                      public IBootstrappedNetworkDelegate,
-                                     public IServiceNamespaceGrantSessionForServicesDelegate,
+                                     public IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate,
+                                     public IServiceNamespaceGrantSessionForServicesQueryDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentitySignResult>,
@@ -289,13 +290,20 @@ namespace hookflash
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesDelegate
+        #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
         #pragma mark
 
-        virtual void onServiceNamespaceGrantSessionStateChanged(
-                                                                ServiceNamespaceGrantSessionPtr session,
-                                                                GrantSessionStates state
-                                                                );
+        virtual void onServiceNamespaceGrantSessionForServicesWaitComplete(IServiceNamespaceGrantSessionPtr session);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesQueryDelegate
+        #pragma mark
+
+        virtual void onServiceNamespaceGrantSessionForServicesQueryComplete(
+                                                                            IServiceNamespaceGrantSessionForServicesQueryPtr query,
+                                                                            ElementPtr namespaceGrantChallengeBundleEl
+                                                                            );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -389,6 +397,7 @@ namespace hookflash
         bool stepSign();
         bool stepAllRequestsCompleted();
         bool stepCloseBrowserWindow();
+        bool stepClearWait();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
@@ -422,7 +431,8 @@ namespace hookflash
         BootstrappedNetworkPtr mActiveBootstrappedNetwork;
 
         ServiceNamespaceGrantSessionPtr mGrantSession;
-        IServiceNamespaceGrantSessionForServicesSubscriptionPtr mGrantSubscription;
+        IServiceNamespaceGrantSessionForServicesQueryPtr mGrantQuery;
+        IServiceNamespaceGrantSessionForServicesWaitPtr mGrantWait;
 
         IMessageMonitorPtr mIdentityAccessLockboxUpdateMonitor;
         IMessageMonitorPtr mIdentityLookupUpdateMonitor;
@@ -430,8 +440,6 @@ namespace hookflash
         IMessageMonitorPtr mIdentityLookupMonitor;
 
         LockboxInfo mLockboxInfo;
-
-        bool mHasPermissions;
 
         bool mBrowserWindowReady;
         bool mBrowserWindowVisible;

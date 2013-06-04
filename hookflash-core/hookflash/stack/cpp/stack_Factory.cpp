@@ -819,13 +819,11 @@ namespace hookflash
       //-----------------------------------------------------------------------
       ServiceNamespaceGrantSessionPtr IServiceNamespaceGrantSessionFactory::create(
                                                                                    IServiceNamespaceGrantSessionDelegatePtr delegate,
-                                                                                   IServiceNamespaceGrantPtr serviceNamespaceGrant,
                                                                                    const char *outerFrameURLUponReload,
-                                                                                   const char *grantID,
-                                                                                   const char *grantSecret
+                                                                                   const char *grantID
                                                                                    )
       {
-        return ServiceNamespaceGrantSession::create(delegate, serviceNamespaceGrant, outerFrameURLUponReload, grantID, grantSecret);
+        return ServiceNamespaceGrantSession::create(delegate, outerFrameURLUponReload, grantID);
       }
 
       //-----------------------------------------------------------------------

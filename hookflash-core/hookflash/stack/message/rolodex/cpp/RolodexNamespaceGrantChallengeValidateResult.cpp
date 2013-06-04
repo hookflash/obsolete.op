@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantValidateResult.h>
+#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
@@ -41,57 +41,38 @@ namespace hookflash
   {
     namespace message
     {
-      namespace namespace_grant
+      namespace rolodex
       {
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateResultPtr NamespaceGrantValidateResult::convert(MessagePtr message)
+        RolodexNamespaceGrantChallengeValidateResultPtr RolodexNamespaceGrantChallengeValidateResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<NamespaceGrantValidateResult>(message);
+          return boost::dynamic_pointer_cast<RolodexNamespaceGrantChallengeValidateResult>(message);
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateResult::NamespaceGrantValidateResult()
+        RolodexNamespaceGrantChallengeValidateResult::RolodexNamespaceGrantChallengeValidateResult()
         {
         }
 
         //---------------------------------------------------------------------
-        NamespaceGrantValidateResultPtr NamespaceGrantValidateResult::create(
-                                                                             ElementPtr rootEl,
-                                                                             IMessageSourcePtr messageSource
-                                                                             )
+        RolodexNamespaceGrantChallengeValidateResultPtr RolodexNamespaceGrantChallengeValidateResult::create(
+                                                                                                             ElementPtr rootEl,
+                                                                                                             IMessageSourcePtr messageSource
+                                                                                                             )
         {
-          NamespaceGrantValidateResultPtr ret(new NamespaceGrantValidateResult);
+          RolodexNamespaceGrantChallengeValidateResultPtr ret(new RolodexNamespaceGrantChallengeValidateResult);
           IMessageHelper::fill(*ret, rootEl, messageSource);
-
-          ret->mGrantInfo = MessageHelper::createGrant(rootEl->findFirstChildElement("grant"));
-          ElementPtr grantEl = rootEl->findFirstChildElement("grant");
-
-          ElementPtr namespacesEl = rootEl->findFirstChildElement("namespaces");
-          if (namespacesEl) {
-            ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
-            while (namespaceEl) {
-              NamespaceInfo info;
-              info.mURL = IMessageHelper::getAttributeID(namespaceEl);
-              info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttribute(namespaceEl, "updated"));
-              if (info.mURL.hasData()) {
-                ret->mNamespaceInfos[info.mURL] = info;
-              }
-              namespaceEl = namespaceEl->findNextSiblingElement("namespace");
-            }
-          }
 
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool NamespaceGrantValidateResult::hasAttribute(AttributeTypes type) const
+        bool RolodexNamespaceGrantChallengeValidateResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_GrantInfo:             return mGrantInfo.hasData();
-            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
             default:                                  break;
           }
           return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);

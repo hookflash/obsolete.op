@@ -66,6 +66,7 @@ namespace hookflash
           IMessageHelper::fill(*ret, rootEl, messageSource);
 
           ret->mRolodexInfo = MessageHelper::createRolodex(rootEl->findFirstChildElement("rolodex"));
+          ret->mNamespaceGrantChallengeInfo = MessageHelper::createNamespaceGrantChallenge(rootEl->findFirstChildElement("namespaceGrantChallenge"));
 
           return ret;
         }

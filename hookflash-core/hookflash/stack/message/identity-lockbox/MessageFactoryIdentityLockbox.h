@@ -59,6 +59,7 @@ namespace hookflash
 
             Method_LockboxAccess,
             Method_LockboxAccessValidate,
+            Method_LockboxNamespaceGrantChallengeValidate,
             Method_LockboxIdentitiesUpdate,
             Method_LockboxContentGet,
             Method_LockboxContentSet,

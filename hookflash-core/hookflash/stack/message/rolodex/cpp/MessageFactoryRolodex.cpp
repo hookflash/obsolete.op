@@ -31,6 +31,7 @@
 
 #include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
 #include <hookflash/stack/message/rolodex/RolodexAccessResult.h>
+#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
 #include <hookflash/stack/message/rolodex/RolodexContactsGetResult.h>
 #include <hookflash/stack/message/Message.h>
 #include <hookflash/stack/message/IMessageFactoryManager.h>
@@ -107,10 +108,11 @@ namespace hookflash
         {
           switch ((MessageFactoryRolodex::Methods)method)
           {
-            case Method_Invalid:                            return "";
+            case Method_Invalid:                                return "";
 
-            case Method_RolodexAccess:                      return "rolodex-access";
-            case Method_RolodexContactsGet:                 return "rolodex-contacts-get";
+            case Method_RolodexAccess:                          return "rolodex-access";
+            case Method_RolodexNamespaceGrantChallengeValidate: return "rolodex-namespace-grant-challenge-validate";
+            case Method_RolodexContactsGet:                     return "rolodex-contacts-get";
           }
           return "";
         }
@@ -127,39 +129,42 @@ namespace hookflash
           Methods msgMethod = (MessageFactoryRolodex::Methods)toMethod(IMessageHelper::getAttribute(root, "method"));
 
           switch (msgType) {
-            case Message::MessageType_Invalid:                  return MessagePtr();
+            case Message::MessageType_Invalid:                      return MessagePtr();
 
             case Message::MessageType_Request:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_RolodexAccess:                      return MessagePtr();
-                case Method_RolodexContactsGet:                 return MessagePtr();
+                case Method_RolodexAccess:                          return MessagePtr();
+                case Method_RolodexNamespaceGrantChallengeValidate: return MessagePtr();
+                case Method_RolodexContactsGet:                     return MessagePtr();
               }
               break;
             }
             case Message::MessageType_Result:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_RolodexAccess:                      return RolodexAccessResult::create(root, messageSource);
-                case Method_RolodexContactsGet:                 return RolodexContactsGetResult::create(root, messageSource);
+                case Method_RolodexAccess:                          return RolodexAccessResult::create(root, messageSource);
+                case Method_RolodexNamespaceGrantChallengeValidate: return RolodexNamespaceGrantChallengeValidateResult::create(root, messageSource);
+                case Method_RolodexContactsGet:                     return RolodexContactsGetResult::create(root, messageSource);
               }
               break;
             }
             case Message::MessageType_Notify:
             {
               switch (msgMethod) {
-                case Method_Invalid:                            return MessagePtr();
+                case Method_Invalid:                                return MessagePtr();
 
-                case Method_RolodexAccess:                      return MessagePtr();
-                case Method_RolodexContactsGet:                 return MessagePtr();
+                case Method_RolodexAccess:                          return MessagePtr();
+                case Method_RolodexNamespaceGrantChallengeValidate: return MessagePtr();
+                case Method_RolodexContactsGet:                     return MessagePtr();
               }
               break;
             }
-            case Message::MessageType_Reply:                    return MessagePtr();
+            case Message::MessageType_Reply:                        return MessagePtr();
           }
 
           return MessagePtr();

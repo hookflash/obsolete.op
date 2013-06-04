@@ -65,20 +65,12 @@ namespace hookflash
           NamespaceGrantCompleteNotifyPtr ret(new NamespaceGrantCompleteNotify);
           IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ret->mGrantInfo = MessageHelper::createGrant(rootEl->findFirstChildElement("grant"));
-          ElementPtr grantEl = rootEl->findFirstChildElement("grant");
-
-          ElementPtr namespacesEl = rootEl->findFirstChildElement("namespaces");
-          if (namespacesEl) {
-            ElementPtr namespaceEl = namespacesEl->findFirstChildElement("namespace");
-            while (namespaceEl) {
-              NamespaceInfo info;
-              info.mURL = IMessageHelper::getAttributeID(namespaceEl);
-              info.mLastUpdated = IMessageHelper::stringToTime(IMessageHelper::getAttribute(namespaceEl, "updated"));
-              if (info.mURL.hasData()) {
-                ret->mNamespaceInfos[info.mURL] = info;
-              }
-              namespaceEl = namespaceEl->findNextSiblingElement("namespace");
+          ElementPtr namespaceGranthallengeBundlesEl = rootEl->findFirstChildElement("namespaceGrantChallengeBundles");
+          if (namespaceGranthallengeBundlesEl) {
+            ElementPtr namespaceGranthallengeBundleEl = namespaceGranthallengeBundlesEl->findFirstChildElement("namespaceGrantChallengeBundle");
+            while (namespaceGranthallengeBundleEl) {
+              ret->mBundles.push_back(namespaceGranthallengeBundleEl->clone()->toElement());
+              namespaceGranthallengeBundleEl = namespaceGranthallengeBundleEl->findNextSiblingElement("namespaceGrantChallengeBundle");
             }
           }
 
@@ -90,8 +82,7 @@ namespace hookflash
         {
           switch (type)
           {
-            case AttributeType_GrantInfo:             return mGrantInfo.hasData();
-            case AttributeType_NamespaceInfos:        return (mNamespaceInfos.size() > 0);
+            case AttributeType_Bundles:               return (mBundles.size() > 0);
             default:                                  break;
           }
           return false;

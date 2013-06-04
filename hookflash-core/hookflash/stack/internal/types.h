@@ -227,14 +227,23 @@ namespace hookflash
       typedef boost::shared_ptr<ServiceNamespaceGrantSession> ServiceNamespaceGrantSessionPtr;
       typedef boost::weak_ptr<ServiceNamespaceGrantSession> ServiceNamespaceGrantSessionWeakPtr;
 
-      interaction IServiceNamespaceGrantSessionForServicesSubscription;
-      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesSubscription> IServiceNamespaceGrantSessionForServicesSubscriptionPtr;
-      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesSubscription> IServiceNamespaceGrantSessionForServicesSubscriptionWeakPtr;
+      interaction IServiceNamespaceGrantSessionForServicesQuery;
+      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesQuery> IServiceNamespaceGrantSessionForServicesQueryPtr;
+      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesQuery> IServiceNamespaceGrantSessionForServicesQueryWeakPtr;
 
-      interaction IServiceNamespaceGrantSessionForServicesDelegate;
-      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesDelegate> IServiceNamespaceGrantSessionForServicesDelegatePtr;
-      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesDelegate> IServiceNamespaceGrantSessionForServicesDelegateWeakPtr;
-      typedef zsLib::Proxy<IServiceNamespaceGrantSessionForServicesDelegate> IServiceNamespaceGrantSessionForServicesDelegateProxy;
+      interaction IServiceNamespaceGrantSessionForServicesQueryDelegate;
+      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesQueryDelegate> IServiceNamespaceGrantSessionForServicesQueryDelegatePtr;
+      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesQueryDelegate> IServiceNamespaceGrantSessionForServicesQueryDelegateWeakPtr;
+      typedef zsLib::Proxy<IServiceNamespaceGrantSessionForServicesQueryDelegate> IServiceNamespaceGrantSessionForServicesQueryDelegateProxy;
+
+      interaction IServiceNamespaceGrantSessionForServicesWait;
+      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesWait> IServiceNamespaceGrantSessionForServicesWaitPtr;
+      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesWait> IServiceNamespaceGrantSessionForServicesWaitWeakPtr;
+
+      interaction IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate;
+      typedef boost::shared_ptr<IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate> IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr;
+      typedef boost::weak_ptr<IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate> IServiceNamespaceGrantSessionForServicesWaitForWaitDelegateWeakPtr;
+      typedef zsLib::Proxy<IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate> IServiceNamespaceGrantSessionForServicesWaitForWaitDelegateProxy;
 
       class IServiceNamespaceGrantSessionAsyncDelegate;
       typedef boost::shared_ptr<IServiceNamespaceGrantSessionAsyncDelegate> IServiceNamespaceGrantSessionAsyncDelegatePtr;
