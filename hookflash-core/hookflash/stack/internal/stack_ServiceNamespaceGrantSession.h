@@ -382,6 +382,7 @@ namespace hookflash
 
         public:
           PUID mID;
+          RecursiveLock mLock;
           ServiceNamespaceGrantSessionPtr mOuter;
         };
 

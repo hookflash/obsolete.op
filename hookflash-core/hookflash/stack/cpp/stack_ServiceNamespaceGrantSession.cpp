@@ -1036,6 +1036,66 @@ namespace hookflash
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark ServiceNamespaceGrantSession::Wait
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ServiceNamespaceGrantSession::Wait::Wait(ServiceNamespaceGrantSessionPtr outer) :
+        mID(zsLib::createPUID()),
+        mOuter(outer)
+      {
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceNamespaceGrantSession::Wait::~Wait()
+      {
+      }
+
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceNamespaceGrantSession::Wait => IServiceNamespaceGrantSessionForServicesWait
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void ServiceNamespaceGrantSession::Wait::cancel()
+      {
+
+        ServiceNamespaceGrantSessionPtr outer;
+        {
+          AutoRecursiveLock lock(mLock);
+          outer = mOuter;
+          mOuter.reset();
+        }
+
+        if (!outer) return;
+
+        outer->notifyWaitGone(mID);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceNamespaceGrantSession::Wait => friend class ServiceNamespaceGrantSession
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ServiceNamespaceGrantSession::WaitPtr ServiceNamespaceGrantSession::Wait::create(ServiceNamespaceGrantSessionPtr outer)
+      {
+        WaitPtr pThis(new Wait(outer));
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark ServiceNamespaceGrantSession::Query
       #pragma mark
 
