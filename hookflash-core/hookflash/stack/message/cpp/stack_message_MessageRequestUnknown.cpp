@@ -82,8 +82,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         DocumentPtr MessageRequestUnknown::encode()
         {
-          DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-          return ret;
+          return IMessageHelper::createDocumentWithRoot(*this);
         }
 
         //---------------------------------------------------------------------

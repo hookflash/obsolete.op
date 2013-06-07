@@ -44,6 +44,8 @@ namespace hookflash
       public:
         friend class Message;
 
+        typedef WORD ErrorCodeType;
+
         enum AttributeTypes
         {
           AttributeType_Time,
@@ -84,7 +86,7 @@ namespace hookflash
         Time time() const                           {return mTime;}
         void time(Time val)                         {mTime = val;}
 
-        WORD errorCode() const                      {return mErrorCode;}
+        ErrorCodeType errorCode() const             {return mErrorCode;}
         void errorCode(WORD val)                    {mErrorCode = val;}
 
         String errorReason() const                  {return mErrorReason;}
@@ -96,7 +98,7 @@ namespace hookflash
         MessageResult();
 
         Time mTime;
-        WORD mErrorCode;
+        ErrorCodeType mErrorCode;
         String mErrorReason;
 
       private:

@@ -53,7 +53,7 @@ namespace hookflash
         static String timeToString(const Time &value);
 
         static Time getAttributeEpoch(ElementPtr node);
-        static void setAttributeEpoch(ElementPtr node, const Time &value);
+        static void setAttributeTimestamp(ElementPtr node, const Time &value);
 
         static String getAttribute(
                                    ElementPtr node,

@@ -163,29 +163,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       DocumentPtr MessageResult::encode()
       {
-        DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-
-        if ((0 == mErrorCode) &&
-            (mErrorReason.isEmpty())) {
-          return ret;
-        }
-
-        ElementPtr root = ret->getFirstChildElement();
-
-        // <error>
-        // <reason id=”301”>Moved Permanently</reason>
-        // </error>
-
-        ElementPtr reason = IMessageHelper::createElementWithText("reason", mErrorReason);
-        if (0 != mErrorCode) {
-          IMessageHelper::setAttributeID(reason, Stringize<WORD>(mErrorCode).string());
-        }
-
-        ElementPtr error = IMessageHelper::createElement("error");
-        error->adoptAsLastChild(reason);
-
-        root->adoptAsLastChild(error);
-        return ret;
+        return IMessageHelper::createDocumentWithRoot(*this);
       }
 
       //-----------------------------------------------------------------------

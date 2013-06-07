@@ -97,34 +97,49 @@ namespace hookflash
         ret->setElementNameIsCaseSensative(true);
         ret->setAttributeNameIsCaseSensative(true);
 
-        ElementPtr root = Element::create(tagName);
-        ret->adoptAsFirstChild(root);
+        ElementPtr rootEl = Element::create(tagName);
+        ret->adoptAsFirstChild(rootEl);
 
         String domain = message.domain();
 
         if (domain.hasData()) {
-          IMessageHelper::setAttribute(root, "domain", domain);
+          IMessageHelper::setAttribute(rootEl, "domain", domain);
         }
 
         String appID = message.appID();
         if (appID.hasData()) {
-          IMessageHelper::setAttribute(root, "appID", appID);
+          IMessageHelper::setAttribute(rootEl, "appID", appID);
         }
 
-        IMessageHelper::setAttribute(root, "handler", factory->getHandler());
-        IMessageHelper::setAttributeID(root, message.messageID());
-        IMessageHelper::setAttribute(root, "method", factory->toString(message.method()));
+        IMessageHelper::setAttribute(rootEl, "handler", factory->getHandler());
+        IMessageHelper::setAttributeID(rootEl, message.messageID());
+        IMessageHelper::setAttribute(rootEl, "method", factory->toString(message.method()));
 
         if (message.isResult()) {
           const message::MessageResult *msgResult = (dynamic_cast<const message::MessageResult *>(&message));
           if (msgResult->hasAttribute(MessageResult::AttributeType_Time)) {
-            IMessageHelper::setAttributeEpoch(root, msgResult->time());
+            IMessageHelper::setAttributeTimestamp(rootEl, msgResult->time());
+          }
+          if ((msgResult->hasAttribute(MessageResult::AttributeType_ErrorCode)) ||
+              (msgResult->hasAttribute(MessageResult::AttributeType_ErrorReason))) {
+
+            ElementPtr errorEl;
+            if (msgResult->hasAttribute(MessageResult::AttributeType_ErrorReason)) {
+              errorEl = IMessageHelper::createElementWithTextAndJSONEncode("error", msgResult->errorReason());
+            } else {
+              errorEl = IMessageHelper::createElement("error");
+            }
+            if (msgResult->hasAttribute(MessageResult::AttributeType_ErrorCode)) {
+              IMessageHelper:setAttributeID(errorEl, Stringize<MessageResult::ErrorCodeType>(msgResult->errorCode()));
+            }
+
+            rootEl->adoptAsLastChild(errorEl);
           }
         }
         if (message.isReply()) {
           const message::MessageReply *msgReply = (dynamic_cast<const message::MessageReply *>(&message));
           if (msgReply->hasAttribute(MessageReply::AttributeType_Time)) {
-            IMessageHelper::setAttributeEpoch(root, msgReply->time());
+            IMessageHelper::setAttributeTimestamp(rootEl, msgReply->time());
           }
         }
 
@@ -188,7 +203,7 @@ namespace hookflash
       }
 
       //---------------------------------------------------------------------
-      void IMessageHelper::setAttributeEpoch(ElementPtr elem, const Time &value)
+      void IMessageHelper::setAttributeTimestamp(ElementPtr elem, const Time &value)
       {
         if (Time() == value) return;
         elem->setAttribute("timestamp", timeToString(value), false);
@@ -1441,10 +1456,7 @@ namespace hookflash
           ElementPtr errorEl = root->findFirstChildElement("error");
           if (!errorEl) return 0;
 
-          ElementPtr reasonEl = errorEl->findFirstChildElement("reason");
-          if (!reasonEl) return 0;
-
-          String ec = IMessageHelper::getAttributeID(reasonEl);
+          String ec = IMessageHelper::getAttributeID(errorEl);
           if (ec.isEmpty()) return 0;
 
           try {
@@ -1463,10 +1475,7 @@ namespace hookflash
           ElementPtr errorEl = root->findFirstChildElement("error");
           if (!errorEl) return String();
 
-          ElementPtr reasonEl = errorEl->findFirstChildElement("reason");
-          if (!reasonEl) return String();
-
-          return IMessageHelper::getElementText(reasonEl);
+          return IMessageHelper::getElementText(errorEl);
         }
 
         //---------------------------------------------------------------------

@@ -50,6 +50,8 @@
 
 #define HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_MAX_REDIRECTION_ATTEMPTS (5)
 
+#define HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE "text/json"
+
 namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
 
 namespace hookflash
@@ -644,6 +646,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void BootstrappedNetwork::reuse()
       {
+        ZS_LOG_DEBUG(log("reuse called"))
+
+        AutoRecursiveLock lock(getLock());
+
         if (!isPreparationComplete()) {
           ZS_LOG_DEBUG(log("preparation is still pending"))
           return;
@@ -653,6 +659,8 @@ namespace hookflash
           ZS_LOG_DEBUG(log("preparation is complete and was successful"))
           return;
         }
+
+        ZS_LOG_DEBUG(log("reuse called"))
 
         mCompleted = false;
 
@@ -951,6 +959,8 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
+        ZS_LOG_DEBUG(log("cancel called"))
+
         BootstrappedNetworkPtr pThis = mThisWeak.lock();
 
         if (!mCompleted) {
@@ -1082,7 +1092,7 @@ namespace hookflash
 
         ZS_LOG_TRACE(log("posting message") + ", message=" + buffer.get())
 
-        return IHTTP::post(mThisWeak.lock(), IStackForInternal::userAgent(), url, (const BYTE *)buffer.get(), size);
+        return IHTTP::post(mThisWeak.lock(), IStackForInternal::userAgent(), url, (const BYTE *)buffer.get(), size, HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE);
       }
 
       //-----------------------------------------------------------------------
