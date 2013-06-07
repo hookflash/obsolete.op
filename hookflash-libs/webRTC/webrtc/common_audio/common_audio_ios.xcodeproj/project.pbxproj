@@ -516,6 +516,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -568,6 +569,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = vad;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -587,6 +589,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -641,6 +644,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = signal_processing;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -674,6 +678,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -726,6 +731,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = signal_processing;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -745,6 +751,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -798,6 +805,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = resampler;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -817,6 +825,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -868,6 +877,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = resampler;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -900,8 +910,10 @@
 		AD075C5066E47CCCFD60F29B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				PRODUCT_NAME = All;
 				SYMROOT = build;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -909,6 +921,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_WARN_CXX0X_EXTENSIONS = NO;
 				CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS = YES;
@@ -960,6 +973,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = vad;
 				USE_HEADERMAP = NO;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wendif-labels",
@@ -978,8 +992,10 @@
 		D79930E405FECD8BCA97D1D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				PRODUCT_NAME = All;
 				SYMROOT = build;
+				VALID_ARCHS = "armv7 armv7s";
 			};
 			name = Debug;
 		};
