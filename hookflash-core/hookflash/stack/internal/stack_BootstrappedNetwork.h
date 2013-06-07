@@ -417,6 +417,7 @@ namespace hookflash
 
         void go();
         void reuse();
+        void dontUse();
 
         void step();
         void cancel();

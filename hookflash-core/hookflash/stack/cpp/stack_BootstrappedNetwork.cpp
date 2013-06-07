@@ -218,6 +218,7 @@ namespace hookflash
         if (pThis->getID() != useThis->getID()) {
           ZS_LOG_DEBUG(useThis->log("reusing existing object") + useThis->getDebugValueString())
           useThis->reuse();
+          pThis->dontUse();
         }
 
         if (delegate) {
@@ -684,6 +685,13 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
+      void BootstrappedNetwork::dontUse()
+      {
+        ZS_LOG_DEBUG(log("not using this object (will self destruct)"))
+        mCompleted = true;
+      }
+
+      //-----------------------------------------------------------------------
       void BootstrappedNetwork::step()
       {
         if (mCompleted) {
@@ -943,6 +951,8 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
+        BootstrappedNetworkPtr pThis = mThisWeak.lock();
+
         if (!mCompleted) {
           setFailure(ErrorCode_UserCancelled);
         }
@@ -971,7 +981,6 @@ namespace hookflash
 
         mCertificates.clear();
 
-        BootstrappedNetworkPtr pThis = mThisWeak.lock();
         if (pThis) {
           BootstrappedNetworkManagerPtr manager = mManager.lock();
           if (manager) {
