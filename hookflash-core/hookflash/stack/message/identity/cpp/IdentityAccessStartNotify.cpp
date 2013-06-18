@@ -116,7 +116,7 @@ namespace hookflash
           identityInfo.mReloginKey = mIdentityInfo.mReloginKey;
 
           AgentInfo agentInfo = IStackForInternal::agentInfo();
-          agentInfo.mergeFrom(mAgentInfo, true);
+          mAgentInfo.mergeFrom(agentInfo, true);
 
           if (identityInfo.mURI.hasData()) {
             // already have a full URI so no need to have a base URI
@@ -132,7 +132,7 @@ namespace hookflash
           }
 
           if (hasAttribute(AttributeType_BrowserVisibility)) {
-            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visbility", toString(mVisibility)));
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visibility", toString(mVisibility)));
           }
 
           if (hasAttribute(AttributeType_BrowserPopup)) {

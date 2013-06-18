@@ -1158,9 +1158,8 @@ namespace hookflash
 
         if (!stepBootstrapper()) return;
         if (!stepLoadBrowserWindow()) return;
-        if (!stepMakeBrowserWindowVisible()) return;
         if (!stepIdentityAccessStartNotification()) return;
-        if (!stepIdentityAccessCompleteNotification()) return;
+        if (!stepMakeBrowserWindowVisible()) return;
         if (!stepIdentityAccessCompleteNotification()) return;
         if (!stepLockboxAssociation()) return;
         if (!stepIdentityLookup()) return;

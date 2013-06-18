@@ -537,7 +537,7 @@ namespace hookflash
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("stableID", identity.mStableID));
           }
 
-          if (!identity.mPeerFilePublic) {
+          if (identity.mPeerFilePublic) {
             identityEl->adoptAsLastChild(identity.mPeerFilePublic->saveToElement());
           }
 
