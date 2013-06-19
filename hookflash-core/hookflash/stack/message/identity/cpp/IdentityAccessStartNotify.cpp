@@ -116,15 +116,15 @@ namespace hookflash
           identityInfo.mReloginKey = mIdentityInfo.mReloginKey;
 
           AgentInfo agentInfo = IStackForInternal::agentInfo();
-          mAgentInfo.mergeFrom(agentInfo, true);
+          agentInfo.mergeFrom(mAgentInfo, true);
 
           if (identityInfo.mURI.hasData()) {
             // already have a full URI so no need to have a base URI
             identityInfo.mBase.clear();
           }
 
-          if (mAgentInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
+          if (agentInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(agentInfo));
           }
 
           if (identityInfo.hasData()) {

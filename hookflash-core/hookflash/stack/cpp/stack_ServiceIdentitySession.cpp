@@ -516,6 +516,7 @@ namespace hookflash
         if (mDelegate) {
           if (mPendingMessagesToDeliver.size() > 0) {
             try {
+              ZS_LOG_DEBUG(log("notifying about another pending message for the inner frame"))
               mDelegate->onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
             } catch (IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
               ZS_LOG_WARNING(Detail, log("delegate gone"))
@@ -554,12 +555,12 @@ namespace hookflash
           sendInnerWindowMessage(result);
 
           if (windowRequest->ready()) {
-            ZS_LOG_DEBUG(log("notifying browser window ready"))
+            ZS_LOG_DEBUG(log("notified browser window ready"))
             mBrowserWindowReady = true;
           }
 
           if (windowRequest->visible()) {
-            ZS_LOG_DEBUG(log("notifying browser window needs to be made visible"))
+            ZS_LOG_DEBUG(log("notified browser window needs to be made visible"))
             mNeedsBrowserWindowVisible = true;
           }
 
@@ -1306,31 +1307,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepMakeBrowserWindowVisible()
-      {
-        if (mBrowserWindowVisible) {
-          ZS_LOG_DEBUG(log("browser window is visible"))
-          return true;
-        }
-
-        if (!mNeedsBrowserWindowVisible) {
-          ZS_LOG_DEBUG(log("browser window was not requested to become visible"))
-          return false;
-        }
-
-        if (mKillAssociation) {
-          ZS_LOG_WARNING(Detail, log("association is killed"))
-          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
-          cancel();
-          return false;
-        }
-
-        ZS_LOG_DEBUG(log("waiting for browser window to become visible"))
-        setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
-        return false;
-      }
-
-      //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepIdentityAccessStartNotification()
       {
         if (mIdentityAccessStartNotificationSent) {
@@ -1363,6 +1339,31 @@ namespace hookflash
 
         mIdentityAccessStartNotificationSent = true;
         return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepMakeBrowserWindowVisible()
+      {
+        if (mBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("browser window is visible"))
+          return true;
+        }
+
+        if (!mNeedsBrowserWindowVisible) {
+          ZS_LOG_DEBUG(log("browser window was not requested to become visible"))
+          return false;
+        }
+
+        if (mKillAssociation) {
+          ZS_LOG_WARNING(Detail, log("association is killed"))
+          setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
+          cancel();
+          return false;
+        }
+
+        ZS_LOG_DEBUG(log("waiting for browser window to become visible"))
+        setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
+        return false;
       }
 
       //-----------------------------------------------------------------------

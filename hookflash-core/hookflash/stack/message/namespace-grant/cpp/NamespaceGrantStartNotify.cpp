@@ -115,8 +115,8 @@ namespace hookflash
           AgentInfo agentInfo = IStackForInternal::agentInfo();
           agentInfo.mergeFrom(mAgentInfo, true);
 
-          if (mAgentInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
+          if (agentInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(agentInfo));
           }
 
           if (mChallenges.size() > 0) {
