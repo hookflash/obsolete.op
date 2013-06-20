@@ -401,6 +401,7 @@ namespace hookflash
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
+        void notifyLockboxStateChanged();
         void sendInnerWindowMessage(MessagePtr message);
 
       protected:

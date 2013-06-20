@@ -136,7 +136,7 @@ namespace hookflash
 
         if ((!part1) || (!part2)) return SecureByteBlockPtr();
 
-        if ((part1->SizeInBytes()) || (part2->SizeInBytes())) return SecureByteBlockPtr();
+        if (part1->SizeInBytes() != part2->SizeInBytes()) return SecureByteBlockPtr();
 
         SecureByteBlockPtr buffer(new SecureByteBlock);
         buffer->CleanNew(part1->SizeInBytes());
@@ -297,11 +297,15 @@ namespace hookflash
 
         if ((pThis->mLockboxInfo.mKeyIdentityHalf) &&
             (pThis->mLockboxInfo.mKeyLockboxHalf)) {
-          pThis->mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combineKey(pThis->mLockboxInfo.mKeyIdentityHalf, pThis->mLockboxInfo.mKeyLockboxHalf))));
+          SecureByteBlockPtr combined = combineKey(pThis->mLockboxInfo.mKeyIdentityHalf, pThis->mLockboxInfo.mKeyLockboxHalf);
+          if (!combined) {
+            ZS_LOG_WARNING(Detail, pThis->log("relogin lockbox key information specified is not valid"))
+            return ServiceLockboxSessionPtr();
+          }
+          pThis->mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
         }
         pThis->init();
         return pThis;
-        return ServiceLockboxSessionPtr();
       }
 
       //-----------------------------------------------------------------------
@@ -1205,6 +1209,11 @@ namespace hookflash
           return true;
         }
 
+        ZS_LOG_DEBUG(log("associated login identity to lockbox"))
+
+        // require the association now to ensure the identity changes in state cause lockbox state changes too
+        mLoginIdentity->forLockbox().associate(mThisWeak.lock());
+
         if (mLoginIdentity->forLockbox().isLoginComplete()) {
           ZS_LOG_DEBUG(log("identity login is complete"))
           return true;
@@ -1241,6 +1250,15 @@ namespace hookflash
           LockboxInfo lockboxInfo = mLoginIdentity->forLockbox().getLockboxInfo();
           mLockboxInfo.mergeFrom(lockboxInfo);
 
+          if (!IHelper::isValidDomain(mLockboxInfo.mDomain)) {
+            ZS_LOG_DEBUG(log("domain from identity is invalid, reseting to default domain") + ", domain=" + mLockboxInfo.mDomain)
+
+            mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();
+
+            // account/keying information must also be incorrect if domain is not valid
+            mLockboxInfo.mKeyLockboxHalf.reset();
+          }
+
           if (mBootstrappedNetwork->forServices().getDomain() != mLockboxInfo.mDomain) {
             ZS_LOG_DEBUG(log("default bootstrapper is not to be used for this lockbox as an altenative lockbox must be used thus preparing replacement bootstrapper"))
 
@@ -1256,23 +1274,34 @@ namespace hookflash
 
           if (lockboxInfo.mResetFlag) {
             // when reseting the account, all of these values need to become wiped out
-            mLockboxInfo.mAccountID.clear();
             mLockboxInfo.mKeyLockboxHalf.reset();
-            mLockboxInfo.mKeyIdentityHalf.reset();
-            mLockboxInfo.mHash.clear();
           }
 
-          if (!mLockboxInfo.mKeyIdentityHalf) {
-            SecureByteBlockPtr newKey = stack::IHelper::random(32);
-            splitKey(*newKey, mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+          do {
+            if (!mLockboxInfo.mKeyIdentityHalf) {
+              mLockboxInfo.mAccountID.clear();
+              mLockboxInfo.mKeyLockboxHalf.reset();
+              mLockboxInfo.mKeyIdentityHalf.reset();
+              mLockboxInfo.mHash.clear();
 
-            ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
-          }
+              SecureByteBlockPtr newKey = stack::IHelper::random(32);
 
-          if ((mLockboxInfo.mKeyIdentityHalf) &&
-              (mLockboxInfo.mKeyLockboxHalf)) {
-            mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf))));
-          }
+              splitKey(*newKey, mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+
+              ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
+            }
+
+            if ((mLockboxInfo.mKeyIdentityHalf) &&
+                (mLockboxInfo.mKeyLockboxHalf)) {
+              SecureByteBlockPtr combined = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+              if (combined) {
+                ZS_LOG_DEBUG(log("creating lockbox key hash"))
+                mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
+              } else {
+                mLockboxInfo.mHash.clear();
+              }
+            }
+          } while (mLockboxInfo.mHash.isEmpty());
         }
 
         mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();

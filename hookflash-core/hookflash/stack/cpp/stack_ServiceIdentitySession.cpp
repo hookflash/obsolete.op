@@ -589,6 +589,8 @@ namespace hookflash
           }
 
           IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+
+          notifyLockboxStateChanged();
           return;
         }
 
@@ -1790,10 +1792,7 @@ namespace hookflash
           ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
           mCurrentState = state;
 
-          ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
-          if (lockbox) {
-            lockbox->forServiceIdentity().notifyStateChanged();
-          }
+          notifyLockboxStateChanged();
         }
 
         if (mLastReportedState != mCurrentState) {
@@ -1828,6 +1827,16 @@ namespace hookflash
         mLastErrorReason = reason;
 
         ZS_LOG_WARNING(Detail, log("error set") + getDebugValueString())
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceIdentitySession::notifyLockboxStateChanged()
+      {
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) return;
+
+        ZS_LOG_DEBUG(log("notifying lockbox of state change"))
+        lockbox->forServiceIdentity().notifyStateChanged();
       }
 
       //-----------------------------------------------------------------------
