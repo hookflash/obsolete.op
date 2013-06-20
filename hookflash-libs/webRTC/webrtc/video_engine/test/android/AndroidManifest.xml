@@ -13,7 +13,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.HEADSET_PLUG"/>
+                <!-- action android:name="android.intent.action.HEADSET_PLUG"/ -->
             </intent-filter>
         </activity>
     </application>

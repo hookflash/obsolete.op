@@ -101,7 +101,8 @@ int arm_cpu_caps(void)
 
 #elif defined(__linux__)
 #if defined(__ANDROID__)
-#include <cpu-features.h>
+#include <machine/cpu-features.h>
+#define ANDROID_CPU_ARM_FEATURE_NEON 4
 
 int arm_cpu_caps(void)
 {
