@@ -1150,7 +1150,7 @@ namespace hookflash
       bool ServiceNamespaceGrantSession::Query::isComplete() const
       {
         AutoRecursiveLock lock(getLock());
-        return (bool)(mDelegate);
+        return (bool)(!mDelegate);
       }
 
       //-----------------------------------------------------------------------

@@ -101,7 +101,7 @@ namespace hookflash
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
             identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
           }
 
           LockboxInfo lockboxInfo;
@@ -122,10 +122,10 @@ namespace hookflash
 
           AgentInfo agentInfo;
           agentInfo = IStackForInternal::agentInfo();
-          agentInfo.mergeFrom(mAgentInfo, true);
+          mAgentInfo.mergeFrom(agentInfo, true);
 
           if (mAgentInfo.hasData()) {
-            rootEl->adoptAsLastChild(MessageHelper::createElement(agentInfo));
+            rootEl->adoptAsLastChild(MessageHelper::createElement(mAgentInfo));
           }
 
           if (mGrantID.hasData()) {
