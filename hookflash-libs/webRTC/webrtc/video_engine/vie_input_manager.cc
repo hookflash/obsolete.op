@@ -181,7 +181,7 @@ int ViEInputManager::SetDefaultOrientation(const char* device_unique_idUTF8,
         capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
     assert(capture_device_info_);
     
-  VideoCaptureOrientation module_orientation;
+  VideoCaptureOrientation module_orientation = kOrientationLandscapeLeft;
   
   // Copy from module type to public type.
   switch (orientation) {
@@ -212,7 +212,7 @@ int ViEInputManager::SetLockedOrientation(const char* device_unique_idUTF8,
         capture_device_info_ = VideoCaptureFactory::CreateDeviceInfo(ViEModuleId(engine_id_));
     assert(capture_device_info_);
     
-  VideoCaptureOrientation module_orientation;
+  VideoCaptureOrientation module_orientation = kOrientationLandscapeLeft;
   
   // Copy from module type to public type.
   switch (orientation) {

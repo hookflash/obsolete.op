@@ -7,13 +7,13 @@
 *.so
 *.o
 *.a
+.metadata
 xcschememanagement.plist
 hookflash-staging/
 WorkspaceSettings.xcsettings
 Device-Release
 Device-Debug
 Simulator-Debug
-hookflash-core/projects/bb/.metadata
 hookflash-libs/boost/boost/bin.v2/
 hookflash-libs/boost/boost/bjam
 hookflash-libs/boost/boost/bootstrap.log
@@ -67,3 +67,8 @@ hookflash-libs/curl/curl/tests/server/.deps/
 hookflash-libs/curl/curl/tests/unit/.deps/
 hookflash-libs/curl/curl/tests/server/Makefile
 hookflash-libs/curl/curl/tests/unit/Makefile
+hookflash-libs/webRTC/out
+hookflash-libs/webRTC/webrtc/video_engine/test/android/bin
+hookflash-libs/webRTC/webrtc/video_engine/test/android/gen
+hookflash-libs/webRTC/webrtc/video_engine/test/android/libs
+hookflash-libs/webRTC/webrtc/video_engine/test/android/obj

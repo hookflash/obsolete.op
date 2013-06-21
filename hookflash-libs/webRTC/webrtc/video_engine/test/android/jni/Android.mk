@@ -260,17 +260,17 @@ LOCAL_SRC_FILES := \
     $(MY_LIBS_PATH)/libjpeg_turbo.a
 include $(PREBUILT_STATIC_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := libaudioproc_debug_proto
-LOCAL_SRC_FILES := \
-    $(MY_LIBS_PATH)/libaudioproc_debug_proto.a
-include $(PREBUILT_STATIC_LIBRARY)
+#include $(CLEAR_VARS)
+#LOCAL_MODULE := libaudioproc_debug_proto
+#LOCAL_SRC_FILES := \
+#    $(MY_LIBS_PATH)/libaudioproc_debug_proto.a
+#include $(PREBUILT_STATIC_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE := libprotobuf_lite
-LOCAL_SRC_FILES := \
-    $(MY_LIBS_PATH)/libprotobuf_lite.a
-include $(PREBUILT_STATIC_LIBRARY)
+#include $(CLEAR_VARS)
+#LOCAL_MODULE := libprotobuf_lite
+#LOCAL_SRC_FILES := \
+#    $(MY_LIBS_PATH)/libprotobuf_lite.a
+#include $(PREBUILT_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := libvpx
@@ -358,8 +358,6 @@ LOCAL_STATIC_LIBRARIES := \
     libvideo_coding_utility \
     libsystem_wrappers \
     libjpeg_turbo \
-    libaudioproc_debug_proto \
-    libprotobuf_lite \
     libvpx \
     libvpx_arm_neon \
     libpaced_sender \
