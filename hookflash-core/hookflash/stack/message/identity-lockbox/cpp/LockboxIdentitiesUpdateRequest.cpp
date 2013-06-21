@@ -96,7 +96,7 @@ namespace hookflash
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_IDENTITIES_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-identities-update"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-identities-update"));
           }
 
           IdentityInfoList identities;
@@ -112,7 +112,7 @@ namespace hookflash
             identityInfo.mAccessToken = listIdentity.mAccessToken;
             if (listIdentity.mAccessSecret.hasData()) {
               identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_LOCKBOX_IDENTITIES_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-              identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(listIdentity.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access-update"));
+              identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(listIdentity.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access-update"));
             }
 
             if (identityInfo.hasData()) {

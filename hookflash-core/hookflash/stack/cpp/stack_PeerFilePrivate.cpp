@@ -408,7 +408,7 @@ namespace hookflash
                                                  const char *saltInBase64
                                                  )
       {
-        return IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
+        return IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
       }
 
       //-----------------------------------------------------------------------
@@ -598,7 +598,7 @@ namespace hookflash
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
@@ -697,7 +697,7 @@ namespace hookflash
             return false;
           }
 
-          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
 
           if (calculatedSecretProof != secretProof) {
             ZS_LOG_ERROR(Detail, log("private peer file password appears to be incorrect, secret proof calculated=") + calculatedSecretProof + ", expecting=" + secretProof)

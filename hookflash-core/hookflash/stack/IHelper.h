@@ -162,15 +162,6 @@ namespace hookflash
                                      HashAlgorthms algorithm = HashAlgorthm_SHA1
                                      );
 
-      static SecureByteBlockPtr hmacKey(
-                                        const char *password,
-                                        HashAlgorthms algorithm = HashAlgorthm_SHA1
-                                        );
-      static SecureByteBlockPtr hmacKey(
-                                        const std::string &password,
-                                        HashAlgorthms algorithm = HashAlgorthm_SHA1
-                                        );
-
       static SecureByteBlockPtr hmac(
                                      const SecureByteBlock &key,
                                      const char *value,

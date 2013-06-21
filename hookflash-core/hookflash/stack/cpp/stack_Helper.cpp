@@ -374,32 +374,6 @@ namespace hookflash
       }
 
       //-----------------------------------------------------------------------
-      SecureByteBlockPtr Helper::hmacKey(
-                                         const char *password,
-                                         HashAlgorthms algorithm
-                                         )
-      {
-        SecureByteBlockPtr key;
-        size_t length = 0;
-
-        switch (algorithm) {
-          case HashAlgorthm_MD5:      length = 16; break;
-          case HashAlgorthm_SHA1:     length = 20; break;
-          case HashAlgorthm_SHA256:   length = 32; break;
-        }
-
-        if (strlen(password)*sizeof(char) > length) {
-          key = hash(password, algorithm);
-        } else {
-          key = SecureByteBlockPtr(new SecureByteBlock);
-          key->CleanNew(length);
-          memcpy(*key, password, strlen(password)*sizeof(char));
-        }
-
-        return key;
-      }
-
-      //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hmac(
                                       const SecureByteBlock &key,
                                       const String &value,
@@ -981,24 +955,6 @@ namespace hookflash
                                      )
     {
       return internal::Helper::hash(buffer.c_str(), algorithm);
-    }
-
-    //-------------------------------------------------------------------------
-    SecureByteBlockPtr IHelper::hmacKey(
-                                        const char *password,
-                                        HashAlgorthms algorithm
-                                        )
-    {
-      return internal::Helper::hmacKey(password, algorithm);
-    }
-
-    //-------------------------------------------------------------------------
-    SecureByteBlockPtr IHelper::hmacKey(
-                                        const std::string &password,
-                                        HashAlgorthms algorithm
-                                        )
-    {
-      return internal::Helper::hmacKey(password.c_str(), algorithm);
     }
 
     //-------------------------------------------------------------------------

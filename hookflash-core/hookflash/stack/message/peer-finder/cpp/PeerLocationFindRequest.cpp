@@ -134,7 +134,7 @@ namespace hookflash
             String peerSecretEncrypted = findProofEl->findFirstChildElementChecked("peerSecretEncrypted")->getText();
 
             String findSecret = peerFilePublic->getFindSecret();
-            String calculatedFindSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
+            String calculatedFindSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
 
             if (calculatedFindSecretProof != findSecretProof) {
               ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] calculated find secret proof did not match request, calculated=" + calculatedFindSecretProof + ", request=" + findSecretProof)
@@ -294,7 +294,7 @@ namespace hookflash
             if (remotePeerFilePublic) {
               String findSecret = remotePeerFilePublic->getFindSecret();
               if (findSecret.length() > 0) {
-                String findSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKey(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
+                String findSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("findSecretProof", findSecretProof));
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("findSecretProofExpires", IMessageHelper::timeToString(expires)));
               }
