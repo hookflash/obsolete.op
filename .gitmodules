@@ -1,3 +1,6 @@
 [submodule "hookflash-libs/bbBoost"]
 	path = hookflash-libs/bbBoost
 	url = https://github.com/openpeer/op.git
+[submodule "libs/zsLib"]
+	path = libs/zsLib
+	url = git@github.com:openpeer/zsLib.git
