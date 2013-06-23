@@ -1,0 +1,433 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		005F60B61756B7DB00BC3DD6 /* core_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */; };
+		0063C11516CA9B6A00E6DB4D /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5716CA9B6900E6DB4D /* core.cpp */; };
+		0063C11616CA9B6A00E6DB4D /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5816CA9B6900E6DB4D /* core_Account.cpp */; };
+		0063C11716CA9B6A00E6DB4D /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5916CA9B6900E6DB4D /* core_Call.cpp */; };
+		0063C11816CA9B6A00E6DB4D /* core_CallTransport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */; };
+		0063C11916CA9B6A00E6DB4D /* core_Contact.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */; };
+		0063C11B16CA9B6A00E6DB4D /* core_ConversationThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */; };
+		0063C11C16CA9B6A00E6DB4D /* core_ConversationThreadDocumentFetcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */; };
+		0063C11D16CA9B6A00E6DB4D /* core_ConversationThreadHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */; };
+		0063C11E16CA9B6A00E6DB4D /* core_ConversationThreadSlave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6016CA9B6900E6DB4D /* core_ConversationThreadSlave.cpp */; };
+		0063C11F16CA9B6A00E6DB4D /* core_Factory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6116CA9B6900E6DB4D /* core_Factory.cpp */; };
+		0063C12016CA9B6A00E6DB4D /* core_Helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6216CA9B6900E6DB4D /* core_Helper.cpp */; };
+		0063C12116CA9B6A00E6DB4D /* core_IConversationThreadParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6316CA9B6900E6DB4D /* core_IConversationThreadParser.cpp */; };
+		0063C12216CA9B6A00E6DB4D /* core_Identity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6416CA9B6900E6DB4D /* core_Identity.cpp */; };
+		0063C12316CA9B6A00E6DB4D /* core_IdentityLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6516CA9B6900E6DB4D /* core_IdentityLookup.cpp */; };
+		0063C12416CA9B6A00E6DB4D /* core_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6616CA9B6900E6DB4D /* core_Logger.cpp */; };
+		0063C12516CA9B6A00E6DB4D /* core_MediaEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6716CA9B6900E6DB4D /* core_MediaEngine.cpp */; };
+		0063C12616CA9B6A00E6DB4D /* core_Stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BF6816CA9B6900E6DB4D /* core_Stack.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0063BF4016CA9B2F00E6DB4D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/${PRODUCT_NAME}";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		005F60B41756B7C500BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
+		005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Cache.cpp; sourceTree = "<group>"; };
+		005F60B71756B7E300BC3DD6 /* core_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_Cache.h; sourceTree = "<group>"; };
+		0063BF4216CA9B2F00E6DB4D /* libhfcore_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfcore_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		0063BF5516CA9B6900E6DB4D /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		0063BF5716CA9B6900E6DB4D /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
+		0063BF5816CA9B6900E6DB4D /* core_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Account.cpp; sourceTree = "<group>"; };
+		0063BF5916CA9B6900E6DB4D /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Call.cpp; sourceTree = "<group>"; };
+		0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_CallTransport.cpp; sourceTree = "<group>"; };
+		0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Contact.cpp; sourceTree = "<group>"; };
+		0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThread.cpp; sourceTree = "<group>"; };
+		0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
+		0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
+		0063BF6016CA9B6900E6DB4D /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
+		0063BF6116CA9B6900E6DB4D /* core_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Factory.cpp; sourceTree = "<group>"; };
+		0063BF6216CA9B6900E6DB4D /* core_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Helper.cpp; sourceTree = "<group>"; };
+		0063BF6316CA9B6900E6DB4D /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IConversationThreadParser.cpp; sourceTree = "<group>"; };
+		0063BF6416CA9B6900E6DB4D /* core_Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Identity.cpp; sourceTree = "<group>"; };
+		0063BF6516CA9B6900E6DB4D /* core_IdentityLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IdentityLookup.cpp; sourceTree = "<group>"; };
+		0063BF6616CA9B6900E6DB4D /* core_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Logger.cpp; sourceTree = "<group>"; };
+		0063BF6716CA9B6900E6DB4D /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_MediaEngine.cpp; sourceTree = "<group>"; };
+		0063BF6816CA9B6900E6DB4D /* core_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Stack.cpp; sourceTree = "<group>"; };
+		0063BF6916CA9B6900E6DB4D /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAccount.h; sourceTree = "<group>"; };
+		0063BF6A16CA9B6900E6DB4D /* ICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICall.h; sourceTree = "<group>"; };
+		0063BF6B16CA9B6900E6DB4D /* IContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IContact.h; sourceTree = "<group>"; };
+		0063BF6D16CA9B6900E6DB4D /* IConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IConversationThread.h; sourceTree = "<group>"; };
+		0063BF6E16CA9B6900E6DB4D /* IHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IHelper.h; sourceTree = "<group>"; };
+		0063BF6F16CA9B6900E6DB4D /* IIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIdentity.h; sourceTree = "<group>"; };
+		0063BF7016CA9B6900E6DB4D /* IIdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IIdentityLookup.h; sourceTree = "<group>"; };
+		0063BF7116CA9B6900E6DB4D /* ILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILogger.h; sourceTree = "<group>"; };
+		0063BF7216CA9B6900E6DB4D /* IMediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMediaEngine.h; sourceTree = "<group>"; };
+		0063BF7416CA9B6900E6DB4D /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
+		0063BF7516CA9B6900E6DB4D /* core_Account.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Account.h; sourceTree = "<group>"; };
+		0063BF7616CA9B6900E6DB4D /* core_Call.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Call.h; sourceTree = "<group>"; };
+		0063BF7716CA9B6900E6DB4D /* core_CallTransport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_CallTransport.h; sourceTree = "<group>"; };
+		0063BF7816CA9B6900E6DB4D /* core_Contact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Contact.h; sourceTree = "<group>"; };
+		0063BF7A16CA9B6900E6DB4D /* core_ConversationThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThread.h; sourceTree = "<group>"; };
+		0063BF7B16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadDocumentFetcher.h; sourceTree = "<group>"; };
+		0063BF7C16CA9B6900E6DB4D /* core_ConversationThreadHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadHost.h; sourceTree = "<group>"; };
+		0063BF7D16CA9B6900E6DB4D /* core_ConversationThreadSlave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_ConversationThreadSlave.h; sourceTree = "<group>"; };
+		0063BF7E16CA9B6900E6DB4D /* core_Factory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Factory.h; sourceTree = "<group>"; };
+		0063BF7F16CA9B6900E6DB4D /* core_Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Helper.h; sourceTree = "<group>"; };
+		0063BF8016CA9B6900E6DB4D /* core_IConversationThreadParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_IConversationThreadParser.h; sourceTree = "<group>"; };
+		0063BF8116CA9B6900E6DB4D /* core_Identity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Identity.h; sourceTree = "<group>"; };
+		0063BF8216CA9B6900E6DB4D /* core_IdentityLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_IdentityLookup.h; sourceTree = "<group>"; };
+		0063BF8316CA9B6900E6DB4D /* core_Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Logger.h; sourceTree = "<group>"; };
+		0063BF8416CA9B6900E6DB4D /* core_MediaEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_MediaEngine.h; sourceTree = "<group>"; };
+		0063BF8516CA9B6900E6DB4D /* core_Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_Stack.h; sourceTree = "<group>"; };
+		0063BF8616CA9B6900E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		0063BF8716CA9B6900E6DB4D /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStack.h; sourceTree = "<group>"; };
+		0063BF8F16CA9B6900E6DB4D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0063BF3F16CA9B2F00E6DB4D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0063BF3916CA9B2F00E6DB4D = {
+			isa = PBXGroup;
+			children = (
+				0063BF5316CA9B6900E6DB4D /* openpeer */,
+				0063BF4316CA9B2F00E6DB4D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0063BF4316CA9B2F00E6DB4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0063BF4216CA9B2F00E6DB4D /* libhfcore_ios.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0063BF5316CA9B6900E6DB4D /* openpeer */ = {
+			isa = PBXGroup;
+			children = (
+				0063BF5416CA9B6900E6DB4D /* core */,
+			);
+			name = openpeer;
+			path = ../../../openpeer;
+			sourceTree = "<group>";
+		};
+		0063BF5416CA9B6900E6DB4D /* core */ = {
+			isa = PBXGroup;
+			children = (
+				0063BF5616CA9B6900E6DB4D /* cpp */,
+				0063BF7316CA9B6900E6DB4D /* internal */,
+				0063BF8F16CA9B6900E6DB4D /* types.h */,
+				0063BF5516CA9B6900E6DB4D /* core.h */,
+				0063BF6916CA9B6900E6DB4D /* IAccount.h */,
+				005F60B41756B7C500BC3DD6 /* ICache.h */,
+				0063BF6A16CA9B6900E6DB4D /* ICall.h */,
+				0063BF6B16CA9B6900E6DB4D /* IContact.h */,
+				0063BF6D16CA9B6900E6DB4D /* IConversationThread.h */,
+				0063BF6E16CA9B6900E6DB4D /* IHelper.h */,
+				0063BF6F16CA9B6900E6DB4D /* IIdentity.h */,
+				0063BF7016CA9B6900E6DB4D /* IIdentityLookup.h */,
+				0063BF7116CA9B6900E6DB4D /* ILogger.h */,
+				0063BF7216CA9B6900E6DB4D /* IMediaEngine.h */,
+				0063BF8716CA9B6900E6DB4D /* IStack.h */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		0063BF5616CA9B6900E6DB4D /* cpp */ = {
+			isa = PBXGroup;
+			children = (
+				0063BF5716CA9B6900E6DB4D /* core.cpp */,
+				0063BF5816CA9B6900E6DB4D /* core_Account.cpp */,
+				005F60B51756B7DB00BC3DD6 /* core_Cache.cpp */,
+				0063BF5916CA9B6900E6DB4D /* core_Call.cpp */,
+				0063BF5A16CA9B6900E6DB4D /* core_CallTransport.cpp */,
+				0063BF5B16CA9B6900E6DB4D /* core_Contact.cpp */,
+				0063BF5D16CA9B6900E6DB4D /* core_ConversationThread.cpp */,
+				0063BF5E16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */,
+				0063BF5F16CA9B6900E6DB4D /* core_ConversationThreadHost.cpp */,
+				0063BF6016CA9B6900E6DB4D /* core_ConversationThreadSlave.cpp */,
+				0063BF6116CA9B6900E6DB4D /* core_Factory.cpp */,
+				0063BF6216CA9B6900E6DB4D /* core_Helper.cpp */,
+				0063BF6316CA9B6900E6DB4D /* core_IConversationThreadParser.cpp */,
+				0063BF6416CA9B6900E6DB4D /* core_Identity.cpp */,
+				0063BF6516CA9B6900E6DB4D /* core_IdentityLookup.cpp */,
+				0063BF6616CA9B6900E6DB4D /* core_Logger.cpp */,
+				0063BF6716CA9B6900E6DB4D /* core_MediaEngine.cpp */,
+				0063BF6816CA9B6900E6DB4D /* core_Stack.cpp */,
+			);
+			path = cpp;
+			sourceTree = "<group>";
+		};
+		0063BF7316CA9B6900E6DB4D /* internal */ = {
+			isa = PBXGroup;
+			children = (
+				0063BF8616CA9B6900E6DB4D /* types.h */,
+				0063BF7416CA9B6900E6DB4D /* core.h */,
+				0063BF7516CA9B6900E6DB4D /* core_Account.h */,
+				005F60B71756B7E300BC3DD6 /* core_Cache.h */,
+				0063BF7616CA9B6900E6DB4D /* core_Call.h */,
+				0063BF7716CA9B6900E6DB4D /* core_CallTransport.h */,
+				0063BF7816CA9B6900E6DB4D /* core_Contact.h */,
+				0063BF7A16CA9B6900E6DB4D /* core_ConversationThread.h */,
+				0063BF7B16CA9B6900E6DB4D /* core_ConversationThreadDocumentFetcher.h */,
+				0063BF7C16CA9B6900E6DB4D /* core_ConversationThreadHost.h */,
+				0063BF7D16CA9B6900E6DB4D /* core_ConversationThreadSlave.h */,
+				0063BF7E16CA9B6900E6DB4D /* core_Factory.h */,
+				0063BF7F16CA9B6900E6DB4D /* core_Helper.h */,
+				0063BF8016CA9B6900E6DB4D /* core_IConversationThreadParser.h */,
+				0063BF8116CA9B6900E6DB4D /* core_Identity.h */,
+				0063BF8216CA9B6900E6DB4D /* core_IdentityLookup.h */,
+				0063BF8316CA9B6900E6DB4D /* core_Logger.h */,
+				0063BF8416CA9B6900E6DB4D /* core_MediaEngine.h */,
+				0063BF8516CA9B6900E6DB4D /* core_Stack.h */,
+			);
+			path = internal;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0063BF4116CA9B2F00E6DB4D /* hfcore_ios */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0063BF5016CA9B2F00E6DB4D /* Build configuration list for PBXNativeTarget "hfcore_ios" */;
+			buildPhases = (
+				0063BF3E16CA9B2F00E6DB4D /* Sources */,
+				0063BF3F16CA9B2F00E6DB4D /* Frameworks */,
+				0063BF4016CA9B2F00E6DB4D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hfcore_ios;
+			productName = hfcore_ios;
+			productReference = 0063BF4216CA9B2F00E6DB4D /* libhfcore_ios.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0063BF3A16CA9B2F00E6DB4D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+				ORGANIZATIONNAME = "SMB Phone Inc.";
+			};
+			buildConfigurationList = 0063BF3D16CA9B2F00E6DB4D /* Build configuration list for PBXProject "hfcore_ios" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0063BF3916CA9B2F00E6DB4D;
+			productRefGroup = 0063BF4316CA9B2F00E6DB4D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0063BF4116CA9B2F00E6DB4D /* hfcore_ios */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0063BF3E16CA9B2F00E6DB4D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0063C11516CA9B6A00E6DB4D /* core.cpp in Sources */,
+				0063C11616CA9B6A00E6DB4D /* core_Account.cpp in Sources */,
+				0063C11716CA9B6A00E6DB4D /* core_Call.cpp in Sources */,
+				0063C11816CA9B6A00E6DB4D /* core_CallTransport.cpp in Sources */,
+				0063C11916CA9B6A00E6DB4D /* core_Contact.cpp in Sources */,
+				0063C11B16CA9B6A00E6DB4D /* core_ConversationThread.cpp in Sources */,
+				0063C11C16CA9B6A00E6DB4D /* core_ConversationThreadDocumentFetcher.cpp in Sources */,
+				0063C11D16CA9B6A00E6DB4D /* core_ConversationThreadHost.cpp in Sources */,
+				0063C11E16CA9B6A00E6DB4D /* core_ConversationThreadSlave.cpp in Sources */,
+				0063C11F16CA9B6A00E6DB4D /* core_Factory.cpp in Sources */,
+				0063C12016CA9B6A00E6DB4D /* core_Helper.cpp in Sources */,
+				0063C12116CA9B6A00E6DB4D /* core_IConversationThreadParser.cpp in Sources */,
+				0063C12216CA9B6A00E6DB4D /* core_Identity.cpp in Sources */,
+				0063C12316CA9B6A00E6DB4D /* core_IdentityLookup.cpp in Sources */,
+				0063C12416CA9B6A00E6DB4D /* core_Logger.cpp in Sources */,
+				0063C12516CA9B6A00E6DB4D /* core_MediaEngine.cpp in Sources */,
+				0063C12616CA9B6A00E6DB4D /* core_Stack.cpp in Sources */,
+				005F60B61756B7DB00BC3DD6 /* core_Cache.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0063BF4E16CA9B2F00E6DB4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					CRYPTOPP_DISABLE_SSE2,
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					"../../../libs/zsLib",
+					"../../../libs/curl/include",
+					"../../../libs/boost/staging/include",
+					"../../../hookflash-libs/udns",
+					"../../../hookflash-libs/cryptopp",
+					"../../../hookflash-libs/webRTC",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		0063BF4F16CA9B2F00E6DB4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					CRYPTOPP_DISABLE_SSE2,
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					../../..,
+					"../../../libs/zsLib",
+					"../../../libs/curl/include",
+					"../../../libs/boost/staging/include",
+					"../../../hookflash-libs/udns",
+					"../../../hookflash-libs/cryptopp",
+					"../../../hookflash-libs/webRTC",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0063BF5116CA9B2F00E6DB4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/hfcore_ios.dst;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../hookflash-staging/iPhoneOS/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		0063BF5216CA9B2F00E6DB4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/hfcore_ios.dst;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"../../../../hookflash-staging/iPhoneOS/include",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0063BF3D16CA9B2F00E6DB4D /* Build configuration list for PBXProject "hfcore_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0063BF4E16CA9B2F00E6DB4D /* Debug */,
+				0063BF4F16CA9B2F00E6DB4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0063BF5016CA9B2F00E6DB4D /* Build configuration list for PBXNativeTarget "hfcore_ios" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0063BF5116CA9B2F00E6DB4D /* Debug */,
+				0063BF5216CA9B2F00E6DB4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0063BF3A16CA9B2F00E6DB4D /* Project object */;
+}

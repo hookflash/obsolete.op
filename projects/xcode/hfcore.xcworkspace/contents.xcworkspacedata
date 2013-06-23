@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:hfcoreTest_ios/hfcoreTest_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfcoreTest/hfcoreTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfcore_ios/hfcore_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfcore/hfcore.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfstackTest_ios/hfstackTest_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfstackTest/hfstackTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfstack_ios/hfstack_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfstack/hfstack.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfservicesTest_ios/hfservicesTest_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfservicesTest/hfservicesTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfservices_ios/hfservices_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:hfservices/hfservices.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../hookflash-libs/cryptopp/projects/xcode/cryptopp_ios/cryptopp_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../hookflash-libs/udns/projects/xcode/udns_ios/udns_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../hookflash-libs/zsLib/projects/xcode/zsLibTest_ios/zsLibTest_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../libs/zsLib/projects/xcode/zsLibTest/zsLibTest.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../libs/zsLib/projects/xcode/zsLib_ios/zsLib_ios.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj">
+   </FileRef>
+</Workspace>

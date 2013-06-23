@@ -4,3 +4,9 @@
 [submodule "libs/zsLib"]
 	path = libs/zsLib
 	url = git@github.com:openpeer/zsLib.git
+[submodule "libs/boost"]
+	path = libs/boost
+	url = git@github.com:openpeer/boost.git
+[submodule "libs/curl"]
+	path = libs/curl
+	url = git@github.com:openpeer/curl.git
