@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'zsLib_ios' target in the 'zsLib_ios' project
-//
-
-#ifdef __OBJC__
-  #import <Foundation/Foundation.h>
-#endif

@@ -10,3 +10,6 @@
 [submodule "libs/curl"]
 	path = libs/curl
 	url = git@github.com:openpeer/curl.git
+[submodule "libs/cryptopp"]
+	path = libs/cryptopp
+	url = git@github.com:openpeer/cryptopp.git
