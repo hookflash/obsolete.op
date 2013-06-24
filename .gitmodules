@@ -13,3 +13,6 @@
 [submodule "libs/cryptopp"]
 	path = libs/cryptopp
 	url = git@github.com:openpeer/cryptopp.git
+[submodule "libs/udns"]
+	path = libs/udns
+	url = git@github.com:openpeer/udns.git
