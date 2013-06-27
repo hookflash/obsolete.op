@@ -31,19 +31,19 @@
 
 #pragma once
 
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Cache.h>
-#include <hookflash/core/internal/core_Call.h>
-#include <hookflash/core/internal/core_CallTransport.h>
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_ConversationThread.h>
-#include <hookflash/core/internal/core_ConversationThreadHost.h>
-#include <hookflash/core/internal/core_ConversationThreadSlave.h>
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
-#include <hookflash/core/internal/core_ConversationThreadDocumentFetcher.h>
-#include <hookflash/core/internal/core_Helper.h>
-#include <hookflash/core/internal/core_Identity.h>
-#include <hookflash/core/internal/core_IdentityLookup.h>
-#include <hookflash/core/internal/core_Logger.h>
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Cache.h>
+#include <openpeer/core/internal/core_Call.h>
+#include <openpeer/core/internal/core_CallTransport.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_ConversationThread.h>
+#include <openpeer/core/internal/core_ConversationThreadHost.h>
+#include <openpeer/core/internal/core_ConversationThreadSlave.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/core_ConversationThreadDocumentFetcher.h>
+#include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_Identity.h>
+#include <openpeer/core/internal/core_IdentityLookup.h>
+#include <openpeer/core/internal/core_Logger.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_Stack.h>

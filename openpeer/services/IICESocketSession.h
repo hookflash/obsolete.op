@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
-#include <hookflash/services/IICESocket.h>
+#include <openpeer/services/types.h>
+#include <openpeer/services/IICESocket.h>
 #include <zsLib/types.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>

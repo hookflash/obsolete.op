@@ -31,17 +31,17 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
+#include <openpeer/stack/internal/types.h>
 
-#include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/ILocation.h>
+#include <openpeer/stack/IAccount.h>
+#include <openpeer/stack/ILocation.h>
 
-#include <hookflash/services/IRUDPICESocket.h>
-#include <hookflash/services/IRUDPICESocketSession.h>
-#include <hookflash/services/IRUDPMessaging.h>
+#include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/IRUDPICESocketSession.h>
+#include <openpeer/services/IRUDPMessaging.h>
 
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyResult.h>
-#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveResult.h>
+#include <openpeer/stack/message/peer-to-peer/PeerIdentifyResult.h>
+#include <openpeer/stack/message/peer-to-peer/PeerKeepAliveResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

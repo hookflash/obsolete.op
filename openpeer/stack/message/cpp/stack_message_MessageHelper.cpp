@@ -29,25 +29,25 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/message/IMessageFactory.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/MessageReply.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/message/IMessageFactory.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/MessageReply.h>
 
-#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
-#include <hookflash/stack/message/peer-common/PeerGetResult.h>
+#include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
+#include <openpeer/stack/message/peer-common/PeerPublishRequest.h>
+#include <openpeer/stack/message/peer-common/PeerGetResult.h>
 
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Publication.h>
-#include <hookflash/stack/internal/stack_PublicationMetaData.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Publication.h>
+#include <openpeer/stack/internal/stack_PublicationMetaData.h>
 
-#include <hookflash/stack/IPublicationRepository.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IRSAPublicKey.h>
+#include <openpeer/stack/IPublicationRepository.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IRSAPublicKey.h>
 
 #include <zsLib/Numeric.h>
 #include <zsLib/XML.h>

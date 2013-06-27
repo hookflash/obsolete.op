@@ -38,8 +38,8 @@
 #include "webrtc/test/channel_transport/include/channel_transport.h"
 #include "webrtc/system_wrappers/interface/scoped_ptr.h"
 
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/internal/core_Factory.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_Factory.h>
 
 #include <zsLib/Timer.h>
 

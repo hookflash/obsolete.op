@@ -30,11 +30,11 @@
  */
 
 
-#include <hookflash/core/internal/core_ConversationThreadDocumentFetcher.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_ConversationThreadDocumentFetcher.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Helper.h>
 
-#include <hookflash/stack/ILocation.h>
+#include <openpeer/stack/ILocation.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>

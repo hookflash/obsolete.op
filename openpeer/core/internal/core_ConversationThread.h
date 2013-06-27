@@ -31,12 +31,12 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/IConversationThread.h>
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/IConversationThread.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
 
-//#include <hookflash/stack/types.h>
-#include <hookflash/stack/IHelper.h>
+//#include <openpeer/stack/types.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_CONVERSATION_THREAD_TYPE_INDEX (2)
 #define HOOKFLASH_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX (3)

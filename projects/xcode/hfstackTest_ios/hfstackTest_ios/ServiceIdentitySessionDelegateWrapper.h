@@ -30,8 +30,8 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <hookflash/stack/IServiceIdentity.h>
-#import <hookflash/stack/types.h>
+#import <openpeer/stack/IServiceIdentity.h>
+#import <openpeer/stack/types.h>
 
 using namespace hookflash::stack;
 

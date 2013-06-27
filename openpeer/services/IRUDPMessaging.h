@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
-#include <hookflash/services/IRUDPChannel.h>
+#include <openpeer/services/types.h>
+#include <openpeer/services/IRUDPChannel.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
 #include <zsLib/String.h>

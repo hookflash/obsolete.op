@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/services/IHTTP.h>
-#include <hookflash/services/internal/services_HTTP.h>
-#include <hookflash/services/internal/services_Helper.h>
+#include <openpeer/services/IHTTP.h>
+#include <openpeer/services/internal/services_HTTP.h>
+#include <openpeer/services/internal/services_Helper.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>

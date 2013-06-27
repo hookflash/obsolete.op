@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
+#include <openpeer/stack/message/MessageNotify.h>
+#include <openpeer/stack/message/identity/MessageFactoryIdentity.h>
 
 #include <utility>
 #include <list>

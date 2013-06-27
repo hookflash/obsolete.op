@@ -31,11 +31,11 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IPublicationRepository.h>
-#include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/IPeerSubscription.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IPublicationRepository.h>
+#include <openpeer/stack/IPublication.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IPeerSubscription.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>

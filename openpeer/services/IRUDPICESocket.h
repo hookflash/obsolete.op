@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
-#include <hookflash/services/IICESocket.h>
+#include <openpeer/services/types.h>
+#include <openpeer/services/IICESocket.h>
 #include <zsLib/Proxy.h>
 
 #define HOOKFLASH_SERVICES_IRUDPSOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS (10*60)

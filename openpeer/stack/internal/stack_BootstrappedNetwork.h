@@ -31,18 +31,18 @@
 
 #pragma once
 
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IServiceCertificates.h>
-#include <hookflash/stack/IServiceIdentity.h>
-#include <hookflash/stack/IServiceLockbox.h>
-#include <hookflash/stack/IServiceNamespaceGrant.h>
-#include <hookflash/stack/IServiceSalt.h>
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IMessageSource.h>
-#include <hookflash/stack/message/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IServiceCertificates.h>
+#include <openpeer/stack/IServiceIdentity.h>
+#include <openpeer/stack/IServiceLockbox.h>
+#include <openpeer/stack/IServiceNamespaceGrant.h>
+#include <openpeer/stack/IServiceSalt.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/message/types.h>
 
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

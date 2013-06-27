@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/core/ICache.h>
-#include <hookflash/stack/ICache.h>
-#include <hookflash/core/internal/types.h>
+#include <openpeer/core/ICache.h>
+#include <openpeer/stack/ICache.h>
+#include <openpeer/core/internal/types.h>
 
 namespace hookflash
 {

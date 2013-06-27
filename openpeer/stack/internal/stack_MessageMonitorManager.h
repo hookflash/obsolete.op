@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
+#include <openpeer/stack/internal/types.h>
 
 #include <map>
 

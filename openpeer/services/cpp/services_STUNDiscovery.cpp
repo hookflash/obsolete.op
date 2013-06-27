@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/internal/services_STUNDiscovery.h>
-#include <hookflash/services/ISTUNRequesterManager.h>
+#include <openpeer/services/internal/services_STUNDiscovery.h>
+#include <openpeer/services/ISTUNRequesterManager.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 

@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Cache.h>
+#include <openpeer/stack/internal/stack_Cache.h>
 
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/IMessageMonitor.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/IMessageMonitor.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>

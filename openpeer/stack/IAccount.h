@@ -31,11 +31,11 @@
 
 #pragma once
 
-#include <hookflash/stack/types.h>
-#include <hookflash/stack/message/types.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/message/types.h>
 
-#include <hookflash/services/IICESocket.h>
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/services/IICESocket.h>
+#include <openpeer/services/IHTTP.h>
 
 
 namespace hookflash

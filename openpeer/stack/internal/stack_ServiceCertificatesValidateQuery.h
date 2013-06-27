@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IServiceCertificates.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IServiceCertificates.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

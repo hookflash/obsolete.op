@@ -34,7 +34,7 @@
 #include <zsLib/types.h>
 #include <zsLib/MessageQueueAssociator.h>
 
-#include <hookflash/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
 
 namespace hookflash
 {

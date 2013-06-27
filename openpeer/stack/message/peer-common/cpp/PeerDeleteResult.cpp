@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteRequest.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteResult.h>
 
 namespace hookflash
 {

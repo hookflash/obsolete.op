@@ -29,15 +29,15 @@
 
  */
 
-#include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOOKUP_HANDLER "identity-lookup"
 

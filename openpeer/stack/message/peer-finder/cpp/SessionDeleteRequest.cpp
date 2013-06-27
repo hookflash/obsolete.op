@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/message/peer-finder/SessionDeleteRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
 

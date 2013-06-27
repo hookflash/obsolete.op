@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/String.h>
 

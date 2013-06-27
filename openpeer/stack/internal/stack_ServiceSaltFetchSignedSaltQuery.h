@@ -31,12 +31,12 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IServiceSalt.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/message/peer-salt/SignedSaltGetResult.h>
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IServiceSalt.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/message/peer-salt/SignedSaltGetResult.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

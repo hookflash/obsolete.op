@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/MessageNotify.h>
+#include <openpeer/stack/message/MessageNotify.h>
 
 namespace hookflash
 {

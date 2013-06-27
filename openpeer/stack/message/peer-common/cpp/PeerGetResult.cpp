@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
-#include <hookflash/stack/message/peer-common/PeerGetResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-common/PeerGetRequest.h>
+#include <openpeer/stack/message/peer-common/PeerGetResult.h>
 
-#include <hookflash/stack/IPublication.h>
+#include <openpeer/stack/IPublication.h>
 
 namespace hookflash
 {

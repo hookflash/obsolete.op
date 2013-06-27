@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
+#include <openpeer/services/types.h>
 
 namespace hookflash
 {

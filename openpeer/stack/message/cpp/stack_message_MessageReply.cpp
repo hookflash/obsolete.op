@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/MessageReply.h>
+#include <openpeer/stack/message/MessageReply.h>
 
 #include <zsLib/helpers.h>
 

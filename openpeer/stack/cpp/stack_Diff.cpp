@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Diff.h>
+#include <openpeer/stack/internal/stack_Diff.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/Numeric.h>

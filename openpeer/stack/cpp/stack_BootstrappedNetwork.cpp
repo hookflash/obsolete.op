@@ -29,20 +29,20 @@
 
  */
 
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetworkManager.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/IRSAPublicKey.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetworkManager.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_PeerFilePrivate.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IRSAPublicKey.h>
 
-#include <hookflash/stack/message/bootstrapper/ServicesGetRequest.h>
-#include <hookflash/stack/message/bootstrapper/ServicesGetResult.h>
-#include <hookflash/stack/message/certificates/CertificatesGetRequest.h>
-#include <hookflash/stack/message/certificates/CertificatesGetResult.h>
+#include <openpeer/stack/message/bootstrapper/ServicesGetRequest.h>
+#include <openpeer/stack/message/bootstrapper/ServicesGetResult.h>
+#include <openpeer/stack/message/certificates/CertificatesGetRequest.h>
+#include <openpeer/stack/message/certificates/CertificatesGetResult.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

@@ -31,10 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/types.h>
-#include <hookflash/stack/message/types.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/ILocation.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/message/types.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/ILocation.h>
 
 namespace hookflash
 {

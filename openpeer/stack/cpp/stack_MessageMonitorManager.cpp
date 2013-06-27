@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/stack/internal/stack_MessageMonitor.h>
-#include <hookflash/stack/internal/stack_MessageMonitorManager.h>
+#include <openpeer/stack/internal/stack_MessageMonitor.h>
+#include <openpeer/stack/internal/stack_MessageMonitorManager.h>
 
-#include <hookflash/stack/message/Message.h>
+#include <openpeer/stack/message/Message.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

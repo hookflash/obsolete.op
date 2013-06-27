@@ -29,13 +29,13 @@
 
  */
 
-#include <hookflash/core/internal/core_Call.h>
-#include <hookflash/core/internal/core_CallTransport.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_Helper.h>
-#include <hookflash/stack/message/IMessageHelper.h>
+#include <openpeer/core/internal/core_Call.h>
+#include <openpeer/core/internal/core_CallTransport.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/stack/message/IMessageHelper.h>
 
 #include <zsLib/helpers.h>
 

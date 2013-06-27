@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
-#include <hookflash/core/ILogger.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/ILogger.h>
 
 #include <zsLib/helpers.h>
 

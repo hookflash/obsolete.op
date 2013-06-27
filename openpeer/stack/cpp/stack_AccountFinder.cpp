@@ -29,23 +29,23 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_AccountFinder.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_MessageMonitor.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/message/peer-finder/SessionDeleteRequest.h>
-#include <hookflash/stack/message/peer-finder/SessionCreateRequest.h>
-#include <hookflash/stack/message/peer-finder/SessionCreateResult.h>
-#include <hookflash/stack/message/peer-finder/SessionKeepAliveRequest.h>
-#include <hookflash/stack/message/peer-finder/SessionKeepAliveResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePublic.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_AccountFinder.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_MessageMonitor.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
+#include <openpeer/stack/message/peer-finder/SessionCreateRequest.h>
+#include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
+#include <openpeer/stack/message/peer-finder/SessionKeepAliveRequest.h>
+#include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

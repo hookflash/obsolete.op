@@ -31,17 +31,17 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/IMessageSource.h>
-#include <hookflash/stack/IServiceIdentity.h>
-#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
-#include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
-#include <hookflash/stack/message/identity/IdentitySignResult.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/IServiceIdentity.h>
+#include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
+#include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
+#include <openpeer/stack/message/identity/IdentitySignResult.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
 
-#include <hookflash/stack/internal/stack_ServiceNamespaceGrantSession.h>
+#include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IRUDPICESocket.h>
-#include <hookflash/services/IICESocket.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/IICESocket.h>
 
 #include <map>
 

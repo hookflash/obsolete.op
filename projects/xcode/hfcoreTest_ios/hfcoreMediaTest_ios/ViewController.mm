@@ -8,8 +8,8 @@
 
 #import "ViewController.h"
 #import "MediaEngineDelegateWrapper.h"
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/test/TestMediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/test/TestMediaEngine.h>
 
 @implementation ViewController
 

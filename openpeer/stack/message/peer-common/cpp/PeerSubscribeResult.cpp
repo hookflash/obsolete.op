@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeRequest.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeResult.h>
 
 namespace hookflash
 {

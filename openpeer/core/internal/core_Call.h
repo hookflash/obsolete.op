@@ -31,13 +31,13 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
-#include <hookflash/core/internal/core_ConversationThread.h>
-#include <hookflash/core/ICall.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/core_ConversationThread.h>
+#include <openpeer/core/ICall.h>
 
-#include <hookflash/services/IICESocket.h>
-#include <hookflash/services/IICESocketSession.h>
+#include <openpeer/services/IICESocket.h>
+#include <openpeer/services/IICESocketSession.h>
 
 #include <zsLib/Timer.h>
 

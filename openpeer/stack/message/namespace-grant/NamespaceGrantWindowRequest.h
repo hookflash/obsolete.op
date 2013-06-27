@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 
 #include <utility>
 #include <list>

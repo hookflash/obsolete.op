@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/message/certificates/CertificatesGetResult.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/certificates/CertificatesGetResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IRSAPublicKey.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IRSAPublicKey.h>
 
 #include <zsLib/XML.h>
 

@@ -30,19 +30,19 @@
  */
 
 
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
-#include <hookflash/core/internal/core_ConversationThread.h>
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/core_ConversationThread.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Helper.h>
 
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IDiff.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/IPublication.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IDiff.h>
 
 #include <zsLib/XML.h>
 //#include <zsLib/Log.h>

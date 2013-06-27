@@ -31,10 +31,10 @@
 
 #pragma once
 
-#include <hookflash/services/ITURNSocket.h>
-#include <hookflash/services/ISTUNRequester.h>
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/internal/types.h>
+#include <openpeer/services/ITURNSocket.h>
+#include <openpeer/services/ISTUNRequester.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/internal/types.h>
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/ISocket.h>
 #include <zsLib/Timer.h>

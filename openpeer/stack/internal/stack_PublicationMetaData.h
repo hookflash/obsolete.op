@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IPublicationMetaData.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IPublicationMetaData.h>
 
 #include <boost/shared_array.hpp>
 

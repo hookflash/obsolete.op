@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/internal/types.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/internal/types.h>
 
 namespace hookflash
 {

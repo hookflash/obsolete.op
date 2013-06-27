@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IRUDPMessaging.h>
-#include <hookflash/services/IRUDPChannel.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/IRUDPChannel.h>
 
 #include <boost/shared_array.hpp>
 

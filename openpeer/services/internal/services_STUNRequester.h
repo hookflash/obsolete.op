@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/ISTUNRequester.h>
-#include <hookflash/services/STUNPacket.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/ISTUNRequester.h>
+#include <openpeer/services/STUNPacket.h>
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
 #include <zsLib/Proxy.h>

@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
-#include <hookflash/services/IDNS.h>
+#include <openpeer/services/types.h>
+#include <openpeer/services/IDNS.h>
 #include <zsLib/types.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>

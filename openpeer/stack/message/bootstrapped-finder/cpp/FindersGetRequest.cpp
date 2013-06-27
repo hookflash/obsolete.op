@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/message/bootstrapped-finder/FindersGetRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>

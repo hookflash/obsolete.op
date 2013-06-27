@@ -31,11 +31,11 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-//#include <hookflash/core/internal/core_IConversationThreadParser.h>
-#include <hookflash/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/types.h>
+//#include <openpeer/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
 //
-//#include <hookflash/services/IICESocket.h>
+//#include <openpeer/services/IICESocket.h>
 //
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>

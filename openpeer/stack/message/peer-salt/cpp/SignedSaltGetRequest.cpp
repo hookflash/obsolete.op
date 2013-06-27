@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/message/peer-salt/SignedSaltGetRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-salt/SignedSaltGetRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>

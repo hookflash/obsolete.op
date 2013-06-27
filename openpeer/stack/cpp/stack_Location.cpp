@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Helper.h>
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>

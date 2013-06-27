@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/types.h>
-#include <hookflash/services/STUNPacket.h>
+#include <openpeer/services/types.h>
+#include <openpeer/services/STUNPacket.h>
 #include <zsLib/Proxy.h>
 
 #include <boost/shared_array.hpp>

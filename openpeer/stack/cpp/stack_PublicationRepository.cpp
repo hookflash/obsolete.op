@@ -29,31 +29,31 @@
 
  */
 
-#include <hookflash/stack/internal/stack_PublicationRepository.h>
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_Publication.h>
-#include <hookflash/stack/internal/stack_PublicationMetaData.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/internal/stack_Diff.h>
-#include <hookflash/stack/IMessageIncoming.h>
+#include <openpeer/stack/internal/stack_PublicationRepository.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_Publication.h>
+#include <openpeer/stack/internal/stack_PublicationMetaData.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_Diff.h>
+#include <openpeer/stack/IMessageIncoming.h>
 
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishResult.h>
-#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
-#include <hookflash/stack/message/peer-common/PeerGetResult.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteResult.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyResult.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
+#include <openpeer/stack/message/peer-common/PeerPublishRequest.h>
+#include <openpeer/stack/message/peer-common/PeerPublishResult.h>
+#include <openpeer/stack/message/peer-common/PeerGetRequest.h>
+#include <openpeer/stack/message/peer-common/PeerGetResult.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteRequest.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteResult.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeRequest.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeResult.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyRequest.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyResult.h>
 
-#include <hookflash/stack/message/MessageResult.h>
+#include <openpeer/stack/message/MessageResult.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>

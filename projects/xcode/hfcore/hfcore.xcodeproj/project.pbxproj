@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		005F60A617556E9600BC3DD6 /* ICache.h in Headers */ = {isa = PBXBuildFile; fileRef = 005F60A517556E9600BC3DD6 /* ICache.h */; };
 		005F60A8175571E100BC3DD6 /* core_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60A7175571E100BC3DD6 /* core_Cache.cpp */; };
-		005F60AA175571ED00BC3DD6 /* core_Cache.h in Headers */ = {isa = PBXBuildFile; fileRef = 005F60A9175571ED00BC3DD6 /* core_Cache.h */; };
 		0063BDA816CA9A2A00E6DB4D /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BBE916CA9A2900E6DB4D /* core.cpp */; };
 		0063BDA916CA9A2A00E6DB4D /* core_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BBEA16CA9A2900E6DB4D /* core_Account.cpp */; };
 		0063BDAA16CA9A2A00E6DB4D /* core_Call.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BBEB16CA9A2900E6DB4D /* core_Call.cpp */; };
@@ -199,8 +197,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				005F60A617556E9600BC3DD6 /* ICache.h in Headers */,
-				005F60AA175571ED00BC3DD6 /* core_Cache.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -307,22 +303,22 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC",
-					"../../../../hookflash-libs/webRTC/webrtc",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
-					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					../../../libs,
+					../../../libs/boost/staging/include,
+					../../../libs/zsLib,
+					"../../../hookflash-libs/webRTC",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -356,22 +352,22 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/udns",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/webRTC",
-					"../../../../hookflash-libs/webRTC/webrtc",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
-					"../../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
-					"../../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
-					"../../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					../../../libs,
+					../../../libs/boost/staging/include,
+					../../../libs/zsLib,
+					"../../../hookflash-libs/webRTC",
+					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -382,10 +378,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -394,10 +387,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

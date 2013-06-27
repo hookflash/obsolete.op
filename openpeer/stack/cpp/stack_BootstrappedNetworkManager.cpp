@@ -29,9 +29,9 @@
  
  */
 
-#include <hookflash/stack/internal/stack_BootstrappedNetworkManager.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetworkManager.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Stack.h>
 
 #include <zsLib/helpers.h>
 

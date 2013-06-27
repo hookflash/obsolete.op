@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/stack/internal/stack_PeerFiles.h>
-#include <hookflash/stack/internal/stack_PeerFilePublic.h>
-#include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_PeerFiles.h>
+#include <openpeer/stack/internal/stack_PeerFilePublic.h>
+#include <openpeer/stack/internal/stack_PeerFilePrivate.h>
+#include <openpeer/stack/internal/stack_Helper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

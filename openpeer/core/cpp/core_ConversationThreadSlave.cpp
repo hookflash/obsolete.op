@@ -30,15 +30,15 @@
  */
 
 
-#include <hookflash/core/internal/core_ConversationThreadSlave.h>
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_Call.h>
-#include <hookflash/core/internal/core_Helper.h>
-#include <hookflash/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_ConversationThreadSlave.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_Call.h>
+#include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_Stack.h>
 
-#include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IPublication.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

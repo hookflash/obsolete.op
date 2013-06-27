@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/ISTUNRequesterManager.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/ISTUNRequesterManager.h>
 
 #include <map>
 #include <utility>

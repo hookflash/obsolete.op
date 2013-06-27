@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryUnknown.h>
-#include <hookflash/stack/message/internal/stack_message_MessageRequestUnknown.h>
-#include <hookflash/stack/message/internal/stack_message_MessageNotifyUnknown.h>
+#include <openpeer/stack/message/internal/stack_message_MessageFactoryUnknown.h>
+#include <openpeer/stack/message/internal/stack_message_MessageRequestUnknown.h>
+#include <openpeer/stack/message/internal/stack_message_MessageNotifyUnknown.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 
 namespace hookflash

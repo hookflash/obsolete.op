@@ -30,8 +30,8 @@
  */
 
 #import <UIKit/UIKit.h>
-#import <hookflash/stack/IBootstrappedNetwork.h>
-#import <hookflash/stack/types.h>
+#import <openpeer/stack/IBootstrappedNetwork.h>
+#import <openpeer/stack/types.h>
 
 using namespace hookflash::stack;
 

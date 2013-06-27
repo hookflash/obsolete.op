@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/STUNPacket.h>
-#include <hookflash/services/RUDPPacket.h>
+#include <openpeer/services/STUNPacket.h>
+#include <openpeer/services/RUDPPacket.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

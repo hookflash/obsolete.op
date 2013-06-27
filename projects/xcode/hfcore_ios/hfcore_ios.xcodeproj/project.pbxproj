@@ -302,25 +302,23 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../libs/zsLib",
-					"../../../libs/curl/include",
-					"../../../libs/boost/staging/include",
-					"../../../hookflash-libs/udns",
-					"../../../hookflash-libs/cryptopp",
+					../../../libs,
+					../../../libs/zsLib,
+					../../../libs/curl/include,
+					../../../libs/boost/staging/iPhoneOS/include,
 					"../../../hookflash-libs/webRTC",
 					"../../../hookflash-libs/webRTC/webrtc",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
 					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
 					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
 					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
 					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
 					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
@@ -350,25 +348,23 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../../..,
-					"../../../libs/zsLib",
-					"../../../libs/curl/include",
-					"../../../libs/boost/staging/include",
-					"../../../hookflash-libs/udns",
-					"../../../hookflash-libs/cryptopp",
+					../../../libs,
+					../../../libs/zsLib,
+					../../../libs/curl/include,
+					../../../libs/boost/staging/iPhoneOS/include,
 					"../../../hookflash-libs/webRTC",
 					"../../../hookflash-libs/webRTC/webrtc",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
 					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
+					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
 					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/include",
+					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/iphone",
 					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
 					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc",
+					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
 					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
+					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				SDKROOT = iphoneos;
@@ -380,10 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/hfcore_ios.dst;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -395,10 +388,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/hfcore_ios.dst;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

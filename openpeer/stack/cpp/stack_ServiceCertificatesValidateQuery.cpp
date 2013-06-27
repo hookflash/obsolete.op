@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/internal/stack_ServiceCertificatesValidateQuery.h>
-#include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_ServiceCertificatesValidateQuery.h>
+#include <openpeer/stack/internal/stack_PeerFilePrivate.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Stack.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>

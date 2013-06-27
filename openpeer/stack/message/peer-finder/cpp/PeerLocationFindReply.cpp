@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

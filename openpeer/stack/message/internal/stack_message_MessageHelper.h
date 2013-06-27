@@ -31,10 +31,10 @@
 
 #pragma once
 
-#include <hookflash/stack/message/internal/types.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/IPublicationMetaData.h>
+#include <openpeer/stack/message/internal/types.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/IPublicationMetaData.h>
 
 namespace hookflash
 {

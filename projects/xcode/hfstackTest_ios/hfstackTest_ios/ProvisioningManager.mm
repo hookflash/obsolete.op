@@ -30,8 +30,8 @@
  */
 
 #import "ProvisioningManager.h"
-#import <hookflash/stack/IStack.h>
-#import <hookflash/stack/IServiceIdentity.h>
+#import <openpeer/stack/IStack.h>
+#import <openpeer/stack/IServiceIdentity.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Proxy.h>
@@ -90,7 +90,19 @@ static ProvisioningManager *sProvisioningManager = nil;
   zsLib::MessageQueueThreadPtr threadServices(zsLib::MessageQueueThread::createBasic());
   
   //prepare stack
-  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test App", "iOS 5.0.3", "iPad 2");
+  IStack::setup(
+                threadDelegate,
+                threadStack,
+                threadServices,
+                "com.xyz123.app1",
+                "Bojan's Test App",
+                "https://testapp.com/image.png",
+                "https://testapp.com/app/",
+                "hookflash/1.0.1001a (iOS/iPad)",
+                "123456",
+                "iOS 5.0.3",
+                "iPad 2"
+                );
   
   //initialize bootstrapped network
   mNetwork = IBootstrappedNetwork::prepare("unstable.hookflash.me", mBootstrappedNetworkDelegate);
@@ -118,7 +130,7 @@ static ProvisioningManager *sProvisioningManager = nil;
   mServiceIdentity = IServiceIdentity::createServiceIdentityFrom(bootstrappedNetwork);
   
   //create identity session
-  mServiceIdentitySession = IServiceIdentitySession::loginWithIdentityTBD(mServiceIdentitySessionDelegate, "provisioning-unstable-dev.hookflash.me", mServiceIdentity);
+//  mServiceIdentitySession = IServiceIdentitySession::loginWithIdentityTBD(mServiceIdentitySessionDelegate, "provisioning-unstable-dev.hookflash.me", mServiceIdentity);
 }
 
 - (void) onServiceIdentitySessionStateChanged: (IServiceIdentitySessionPtr)session identitySessionState:(IServiceIdentitySession::SessionStates) state

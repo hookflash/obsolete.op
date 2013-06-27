@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/internal/types.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/internal/types.h>
 
 #define HOOKFLASH_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS (24*365*2)
 #define HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM "http://openpeer.org/2012/12/14/jsonsig#rsa-sha1"

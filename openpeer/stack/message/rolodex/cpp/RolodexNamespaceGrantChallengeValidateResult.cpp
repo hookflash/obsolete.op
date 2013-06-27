@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

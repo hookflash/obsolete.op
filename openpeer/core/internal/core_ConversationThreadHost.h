@@ -31,12 +31,12 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/internal/core_ConversationThread.h>
-#include <hookflash/core/internal/core_ConversationThreadDocumentFetcher.h>
-#include <hookflash/core/internal/core_IConversationThreadParser.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/internal/core_ConversationThread.h>
+#include <openpeer/core/internal/core_ConversationThreadDocumentFetcher.h>
+#include <openpeer/core/internal/core_IConversationThreadParser.h>
 
-#include <hookflash/stack/IPeerSubscription.h>
+#include <openpeer/stack/IPeerSubscription.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/String.h>

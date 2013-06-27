@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/internal/stack_PeerFiles.h>
-#include <hookflash/stack/internal/stack_PeerFilePublic.h>
-#include <hookflash/stack/internal/stack_PeerFilePrivate.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IRSAPrivateKey.h>
-#include <hookflash/stack/IRSAPublicKey.h>
-#include <hookflash/stack/message/IMessageHelper.h>
+#include <openpeer/stack/internal/stack_PeerFiles.h>
+#include <openpeer/stack/internal/stack_PeerFilePublic.h>
+#include <openpeer/stack/internal/stack_PeerFilePrivate.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IRSAPrivateKey.h>
+#include <openpeer/stack/IRSAPublicKey.h>
+#include <openpeer/stack/message/IMessageHelper.h>
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

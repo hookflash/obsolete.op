@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/ILocation.h>
-#include <hookflash/stack/IMessageSource.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/ILocation.h>
+#include <openpeer/stack/IMessageSource.h>
 
 namespace hookflash
 {

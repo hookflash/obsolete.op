@@ -29,13 +29,15 @@
  
  */
 
+#if 0
+
 #include "TestServiceLockboxSession.h"
 #include "config.h"
 #include "boost_replacement.h"
 #include "helpers.h"
-#include <hookflash/stack/IStack.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/IStack.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Proxy.h>
@@ -774,3 +776,5 @@ void doTestPeerContactSession()
   zsLib::proxyDump();
   BOOST_EQUAL(zsLib::proxyGetTotalConstructed(), 0);
 }
+
+#endif //0

@@ -29,17 +29,17 @@
 
  */
 
-#include <hookflash/stack/internal/stack_ServiceNamespaceGrantSession.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowRequest.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantWindowResult.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantStartNotify.h>
-#include <hookflash/stack/message/namespace-grant/NamespaceGrantCompleteNotify.h>
+#include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
+#include <openpeer/stack/message/namespace-grant/NamespaceGrantWindowRequest.h>
+#include <openpeer/stack/message/namespace-grant/NamespaceGrantWindowResult.h>
+#include <openpeer/stack/message/namespace-grant/NamespaceGrantStartNotify.h>
+#include <openpeer/stack/message/namespace-grant/NamespaceGrantCompleteNotify.h>
 
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/internal/stack_Stack.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>

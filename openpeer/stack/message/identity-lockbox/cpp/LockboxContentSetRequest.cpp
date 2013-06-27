@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFilePublic.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentSetRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/core/internal/core_Factory.h>
+#include <openpeer/core/internal/core_Factory.h>
 
 #include <zsLib/Log.h>
 

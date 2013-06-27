@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/services/internal/services_TURNSocket.h>
-#include <hookflash/services/internal/services_Helper.h>
-#include <hookflash/services/STUNPacket.h>
-#include <hookflash/services/ISTUNRequesterManager.h>
+#include <openpeer/services/internal/services_TURNSocket.h>
+#include <openpeer/services/internal/services_Helper.h>
+#include <openpeer/services/STUNPacket.h>
+#include <openpeer/services/ISTUNRequesterManager.h>
 #include <zsLib/Socket.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>

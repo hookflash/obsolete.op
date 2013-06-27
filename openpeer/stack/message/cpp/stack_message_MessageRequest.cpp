@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/MessageRequest.h>
 
 namespace hookflash
 {

@@ -34,14 +34,14 @@
 
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/services/IHelper.h>
 
 #include <iostream>
 
 typedef hookflash::services::IHelper IHelper;
 
 void doTestStack();
-void doTestPeerContactSession();
+void doTestLockboxSession();
 void doTestAccount();
 
 
@@ -119,8 +119,8 @@ namespace BoostReplacement
   
   void runAllTests()
   {
-    //doTestStack();
-    doTestPeerContactSession();
-    //doTestAccount();
+    doTestStack();
+//    doTestPeerContactSession();
+//    doTestAccount();
   }
 }

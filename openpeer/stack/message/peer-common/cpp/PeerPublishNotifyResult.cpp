@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyRequest.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyResult.h>
 
 namespace hookflash
 {

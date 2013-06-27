@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
+#include <openpeer/services/internal/types.h>
 
 #include <udns/udns.h>
 #include <zsLib/ISocket.h>

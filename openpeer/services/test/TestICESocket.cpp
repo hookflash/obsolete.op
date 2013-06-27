@@ -34,8 +34,8 @@
 #include <zsLib/Exception.h>
 #include <zsLib/Socket.h>
 #include <zsLib/Timer.h>
-#include <hookflash/services/IICESocket.h>
-#include <hookflash/services/IICESocketSession.h>
+#include <openpeer/services/IICESocket.h>
+#include <openpeer/services/IICESocketSession.h>
 
 #include <boost/shared_array.hpp>
 

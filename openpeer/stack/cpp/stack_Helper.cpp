@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/services/IHelper.h>
-#include <hookflash/stack/message/IMessageHelper.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/services/IHelper.h>
+#include <openpeer/stack/message/IMessageHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>

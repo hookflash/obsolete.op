@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_Helper.h>
 
 #include <zsLib/XML.h>
 

@@ -33,7 +33,7 @@
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Socket.h>
-#include <hookflash/services/ISTUNDiscovery.h>
+#include <openpeer/services/ISTUNDiscovery.h>
 
 //#include <boost/test/unit_test_suite.hpp>
 //#include <boost/test/unit_test.hpp>

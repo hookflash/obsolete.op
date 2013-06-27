@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/services/internal/services_ICESocket.h>
-#include <hookflash/services/internal/services_ICESocketSession.h>
-#include <hookflash/services/internal/services_TURNSocket.h>
-#include <hookflash/services/internal/services_Helper.h>
-#include <hookflash/services/ISTUNRequesterManager.h>
+#include <openpeer/services/internal/services_ICESocket.h>
+#include <openpeer/services/internal/services_ICESocketSession.h>
+#include <openpeer/services/internal/services_TURNSocket.h>
+#include <openpeer/services/internal/services_Helper.h>
+#include <openpeer/services/ISTUNRequesterManager.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Numeric.h>

@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/peer/MessageFactoryPeer.h>
-#include <hookflash/stack/message/peer/PeerServicesGetResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/peer/MessageFactoryPeer.h>
+#include <openpeer/stack/message/peer/PeerServicesGetResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER "peer"
 

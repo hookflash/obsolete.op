@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/certificates/MessageFactoryCertificates.h>
-#include <hookflash/stack/message/certificates/CertificatesGetResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/certificates/MessageFactoryCertificates.h>
+#include <openpeer/stack/message/certificates/CertificatesGetResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_CERTIFICATES_HANDLER "certificates"
 

@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/rolodex/MessageFactoryRolodex.h>
 
 #include <utility>
 #include <list>

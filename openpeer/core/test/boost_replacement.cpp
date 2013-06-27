@@ -34,7 +34,7 @@
 
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/services/IHelper.h>
 
 #include <iostream>
 

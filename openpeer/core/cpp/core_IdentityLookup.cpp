@@ -29,17 +29,17 @@
 
  */
 
-#include <hookflash/core/internal/core_IdentityLookup.h>
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Helper.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_IdentityLookup.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Contact.h>
 
-#include <hookflash/stack/IServiceIdentity.h>
-#include <hookflash/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IServiceIdentity.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
-#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

@@ -31,21 +31,21 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/IMessageSource.h>
-#include <hookflash/stack/IServiceLockbox.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
-#include <hookflash/stack/message/peer/PeerServicesGetResult.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/IServiceLockbox.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentGetResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentSetResult.h>
+#include <openpeer/stack/message/peer/PeerServicesGetResult.h>
 
-#include <hookflash/stack/IServiceSalt.h>
+#include <openpeer/stack/IServiceSalt.h>
 
-#include <hookflash/stack/internal/stack_ServiceNamespaceGrantSession.h>
+#include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

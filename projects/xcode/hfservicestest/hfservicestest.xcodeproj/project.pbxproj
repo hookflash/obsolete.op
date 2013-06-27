@@ -22,34 +22,13 @@
 		0063C49D16CAA46A00E6DB4D /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49A16CAA46A00E6DB4D /* libboost_date_time.a */; };
 		0063C49E16CAA46A00E6DB4D /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49B16CAA46A00E6DB4D /* libboost_regex.a */; };
 		0063C49F16CAA46A00E6DB4D /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49C16CAA46A00E6DB4D /* libboost_thread.a */; };
-		0063D2E216CB0B0B00E6DB4D /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2C716CB0A7A00E6DB4D /* libzsLib.a */; };
-		0063D2E316CB0B1400E6DB4D /* libudns.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2CD16CB0A8200E6DB4D /* libudns.a */; };
-		0063D2E416CB0B5200E6DB4D /* libcryptopp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2D316CB0A8D00E6DB4D /* libcryptopp.a */; };
-		0063D2E516CB0B6600E6DB4D /* libhfservices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2D916CB0A9400E6DB4D /* libhfservices.a */; };
+		00AD9015177BF88D009590EB /* libhfservices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2D916CB0A9400E6DB4D /* libhfservices.a */; };
+		00AD9016177BF8EF009590EB /* libcryptopp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C90628177BF5390090BD8B /* libcryptopp.a */; };
+		00AD9017177BF8FE009590EB /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C90618177BF4F50090BD8B /* libzsLib.a */; };
+		00AD9018177BF90D009590EB /* libudns.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C90620177BF5140090BD8B /* libudns.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0063D2C616CB0A7A00E6DB4D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2C216CB0A7A00E6DB4D /* zsLib.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 006680AE16C9CE4300259F81;
-			remoteInfo = zsLib;
-		};
-		0063D2CC16CB0A8200E6DB4D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2C816CB0A8200E6DB4D /* udns.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0066820516C9D91300259F81;
-			remoteInfo = udns;
-		};
-		0063D2D216CB0A8D00E6DB4D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2CE16CB0A8D00E6DB4D /* cryptopp.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 006682A016C9DC3D00259F81;
-			remoteInfo = cryptopp;
-		};
 		0063D2D816CB0A9400E6DB4D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */;
@@ -57,33 +36,54 @@
 			remoteGlobalIDString = 0095D8B116CA83CB005F53D3;
 			remoteInfo = hfservices;
 		};
-		0063D2DA16CB0AA000E6DB4D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2CE16CB0A8D00E6DB4D /* cryptopp.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 0066829F16C9DC3D00259F81;
-			remoteInfo = cryptopp;
-		};
-		0063D2DC16CB0AA000E6DB4D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2C216CB0A7A00E6DB4D /* zsLib.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 006680AD16C9CE4300259F81;
-			remoteInfo = zsLib;
-		};
-		0063D2DE16CB0AA000E6DB4D /* PBXContainerItemProxy */ = {
+		00C90609177BF3000090BD8B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 0095D8B016CA83CB005F53D3;
 			remoteInfo = hfservices;
 		};
-		0063D2E016CB0AA000E6DB4D /* PBXContainerItemProxy */ = {
+		00C90617177BF4F50090BD8B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 0063D2C816CB0A8200E6DB4D /* udns.xcodeproj */;
+			containerPortal = 00C90613177BF4F50090BD8B /* zsLib.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 006680AE16C9CE4300259F81;
+			remoteInfo = zsLib;
+		};
+		00C90619177BF4FB0090BD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00C90613177BF4F50090BD8B /* zsLib.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 006680AD16C9CE4300259F81;
+			remoteInfo = zsLib;
+		};
+		00C9061F177BF5140090BD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00C9061B177BF5130090BD8B /* udns.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0066820516C9D91300259F81;
+			remoteInfo = udns;
+		};
+		00C90621177BF5170090BD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00C9061B177BF5130090BD8B /* udns.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 0066820416C9D91300259F81;
 			remoteInfo = udns;
+		};
+		00C90627177BF5390090BD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00C90623177BF5380090BD8B /* cryptopp.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 006682A016C9DC3D00259F81;
+			remoteInfo = cryptopp;
+		};
+		00C90629177BF53D0090BD8B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 00C90623177BF5380090BD8B /* cryptopp.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 0066829F16C9DC3D00259F81;
+			remoteInfo = cryptopp;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -115,13 +115,13 @@
 		0063C29216CAA03800E6DB4D /* TestTURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTURNSocket.cpp; sourceTree = "<group>"; };
 		0063C47016CAA27000E6DB4D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		0063C47216CAA28600E6DB4D /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
-		0063C49A16CAA46A00E6DB4D /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = "../../../../hookflash-staging/lib/libboost_date_time.a"; sourceTree = SOURCE_ROOT; };
-		0063C49B16CAA46A00E6DB4D /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = "../../../../hookflash-staging/lib/libboost_regex.a"; sourceTree = SOURCE_ROOT; };
-		0063C49C16CAA46A00E6DB4D /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = "../../../../hookflash-staging/lib/libboost_thread.a"; sourceTree = SOURCE_ROOT; };
-		0063D2C216CB0A7A00E6DB4D /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = "../../../../hookflash-libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj"; sourceTree = "<group>"; };
-		0063D2C816CB0A8200E6DB4D /* udns.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns.xcodeproj; path = "../../../../hookflash-libs/udns/projects/xcode/udns/udns.xcodeproj"; sourceTree = "<group>"; };
-		0063D2CE16CB0A8D00E6DB4D /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = "../../../../hookflash-libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj"; sourceTree = "<group>"; };
+		0063C49A16CAA46A00E6DB4D /* libboost_date_time.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_date_time.a; path = ../../../libs/boost/staging/lib/libboost_date_time.a; sourceTree = SOURCE_ROOT; };
+		0063C49B16CAA46A00E6DB4D /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../../../libs/boost/staging/lib/libboost_regex.a; sourceTree = SOURCE_ROOT; };
+		0063C49C16CAA46A00E6DB4D /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../../../libs/boost/staging/lib/libboost_thread.a; sourceTree = SOURCE_ROOT; };
 		0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfservices.xcodeproj; path = ../hfservices/hfservices.xcodeproj; sourceTree = "<group>"; };
+		00C90613177BF4F50090BD8B /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../../../libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
+		00C9061B177BF5130090BD8B /* udns.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns.xcodeproj; path = ../../../libs/udns/projects/xcode/udns/udns.xcodeproj; sourceTree = "<group>"; };
+		00C90623177BF5380090BD8B /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = ../../../libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,10 +129,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0063D2E516CB0B6600E6DB4D /* libhfservices.a in Frameworks */,
-				0063D2E416CB0B5200E6DB4D /* libcryptopp.a in Frameworks */,
-				0063D2E316CB0B1400E6DB4D /* libudns.a in Frameworks */,
-				0063D2E216CB0B0B00E6DB4D /* libzsLib.a in Frameworks */,
+				00AD9018177BF90D009590EB /* libudns.a in Frameworks */,
+				00AD9017177BF8FE009590EB /* libzsLib.a in Frameworks */,
+				00AD9016177BF8EF009590EB /* libcryptopp.a in Frameworks */,
+				00AD9015177BF88D009590EB /* libhfservices.a in Frameworks */,
 				0063C47316CAA28600E6DB4D /* libcurl.dylib in Frameworks */,
 				0063C47116CAA27000E6DB4D /* CoreFoundation.framework in Frameworks */,
 				0063C49D16CAA46A00E6DB4D /* libboost_date_time.a in Frameworks */,
@@ -222,41 +222,41 @@
 			isa = PBXGroup;
 			children = (
 				0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */,
-				0063D2CE16CB0A8D00E6DB4D /* cryptopp.xcodeproj */,
-				0063D2C816CB0A8200E6DB4D /* udns.xcodeproj */,
-				0063D2C216CB0A7A00E6DB4D /* zsLib.xcodeproj */,
+				00C90623177BF5380090BD8B /* cryptopp.xcodeproj */,
+				00C9061B177BF5130090BD8B /* udns.xcodeproj */,
+				00C90613177BF4F50090BD8B /* zsLib.xcodeproj */,
 			);
 			name = Projects;
-			sourceTree = "<group>";
-		};
-		0063D2C316CB0A7A00E6DB4D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0063D2C716CB0A7A00E6DB4D /* libzsLib.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0063D2C916CB0A8200E6DB4D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0063D2CD16CB0A8200E6DB4D /* libudns.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		0063D2CF16CB0A8D00E6DB4D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				0063D2D316CB0A8D00E6DB4D /* libcryptopp.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		0063D2D516CB0A9300E6DB4D /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				0063D2D916CB0A9400E6DB4D /* libhfservices.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00C90614177BF4F50090BD8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00C90618177BF4F50090BD8B /* libzsLib.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00C9061C177BF5130090BD8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00C90620177BF5140090BD8B /* libudns.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00C90624177BF5380090BD8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00C90628177BF5390090BD8B /* libcryptopp.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -275,10 +275,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				0063D2DF16CB0AA000E6DB4D /* PBXTargetDependency */,
-				0063D2DB16CB0AA000E6DB4D /* PBXTargetDependency */,
-				0063D2E116CB0AA000E6DB4D /* PBXTargetDependency */,
-				0063D2DD16CB0AA000E6DB4D /* PBXTargetDependency */,
+				00C9062A177BF53D0090BD8B /* PBXTargetDependency */,
+				00C90622177BF5170090BD8B /* PBXTargetDependency */,
+				00C9061A177BF4FB0090BD8B /* PBXTargetDependency */,
+				00C9060A177BF3000090BD8B /* PBXTargetDependency */,
 			);
 			name = hfservicesTest;
 			productName = hfservicesTest;
@@ -306,20 +306,20 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 0063D2CF16CB0A8D00E6DB4D /* Products */;
-					ProjectRef = 0063D2CE16CB0A8D00E6DB4D /* cryptopp.xcodeproj */;
+					ProductGroup = 00C90624177BF5380090BD8B /* Products */;
+					ProjectRef = 00C90623177BF5380090BD8B /* cryptopp.xcodeproj */;
 				},
 				{
 					ProductGroup = 0063D2D516CB0A9300E6DB4D /* Products */;
 					ProjectRef = 0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */;
 				},
 				{
-					ProductGroup = 0063D2C916CB0A8200E6DB4D /* Products */;
-					ProjectRef = 0063D2C816CB0A8200E6DB4D /* udns.xcodeproj */;
+					ProductGroup = 00C9061C177BF5130090BD8B /* Products */;
+					ProjectRef = 00C9061B177BF5130090BD8B /* udns.xcodeproj */;
 				},
 				{
-					ProductGroup = 0063D2C316CB0A7A00E6DB4D /* Products */;
-					ProjectRef = 0063D2C216CB0A7A00E6DB4D /* zsLib.xcodeproj */;
+					ProductGroup = 00C90614177BF4F50090BD8B /* Products */;
+					ProjectRef = 00C90613177BF4F50090BD8B /* zsLib.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -330,32 +330,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		0063D2C716CB0A7A00E6DB4D /* libzsLib.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libzsLib.a;
-			remoteRef = 0063D2C616CB0A7A00E6DB4D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0063D2CD16CB0A8200E6DB4D /* libudns.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libudns.a;
-			remoteRef = 0063D2CC16CB0A8200E6DB4D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0063D2D316CB0A8D00E6DB4D /* libcryptopp.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libcryptopp.a;
-			remoteRef = 0063D2D216CB0A8D00E6DB4D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		0063D2D916CB0A9400E6DB4D /* libhfservices.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libhfservices.a;
 			remoteRef = 0063D2D816CB0A9400E6DB4D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00C90618177BF4F50090BD8B /* libzsLib.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libzsLib.a;
+			remoteRef = 00C90617177BF4F50090BD8B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00C90620177BF5140090BD8B /* libudns.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libudns.a;
+			remoteRef = 00C9061F177BF5140090BD8B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		00C90628177BF5390090BD8B /* libcryptopp.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcryptopp.a;
+			remoteRef = 00C90627177BF5390090BD8B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -381,25 +381,25 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0063D2DB16CB0AA000E6DB4D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = cryptopp;
-			targetProxy = 0063D2DA16CB0AA000E6DB4D /* PBXContainerItemProxy */;
-		};
-		0063D2DD16CB0AA000E6DB4D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = zsLib;
-			targetProxy = 0063D2DC16CB0AA000E6DB4D /* PBXContainerItemProxy */;
-		};
-		0063D2DF16CB0AA000E6DB4D /* PBXTargetDependency */ = {
+		00C9060A177BF3000090BD8B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = hfservices;
-			targetProxy = 0063D2DE16CB0AA000E6DB4D /* PBXContainerItemProxy */;
+			targetProxy = 00C90609177BF3000090BD8B /* PBXContainerItemProxy */;
 		};
-		0063D2E116CB0AA000E6DB4D /* PBXTargetDependency */ = {
+		00C9061A177BF4FB0090BD8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = zsLib;
+			targetProxy = 00C90619177BF4FB0090BD8B /* PBXContainerItemProxy */;
+		};
+		00C90622177BF5170090BD8B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = udns;
-			targetProxy = 0063D2E016CB0AA000E6DB4D /* PBXContainerItemProxy */;
+			targetProxy = 00C90621177BF5170090BD8B /* PBXContainerItemProxy */;
+		};
+		00C9062A177BF53D0090BD8B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = cryptopp;
+			targetProxy = 00C90629177BF53D0090BD8B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -431,11 +431,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/udns",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/include,
 				);
+				LIBRARY_SEARCH_PATHS = ../../../libs/boost/staging/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -467,11 +468,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/cryptopp",
-					"../../../../hookflash-libs/udns",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/include,
 				);
+				LIBRARY_SEARCH_PATHS = ../../../libs/boost/staging/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 			};
@@ -480,16 +482,8 @@
 		0063C1E116CA9F8500E6DB4D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/lib",
-					"\"$(SRCROOT)/../../../../hookflash-staging/lib\"",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-fnzfpkqlnqedplevivzjlpdivnws/Build/Products/Debug\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -497,16 +491,8 @@
 		0063C1E216CA9F8500E6DB4D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/lib",
-					"\"$(SRCROOT)/../../../../hookflash-staging/lib\"",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-fnzfpkqlnqedplevivzjlpdivnws/Build/Products/Debug\"",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

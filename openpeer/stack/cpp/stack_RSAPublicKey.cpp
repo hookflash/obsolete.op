@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/internal/stack_RSAPublicKey.h>
-#include <hookflash/stack/internal/stack_RSAPrivateKey.h>
+#include <openpeer/stack/internal/stack_RSAPublicKey.h>
+#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

@@ -31,17 +31,17 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/internal/core_CallTransport.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/internal/core_CallTransport.h>
 
-#include <hookflash/core/IAccount.h>
+#include <openpeer/core/IAccount.h>
 
-#include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/IPeerSubscription.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPublicationRepository.h>
-#include <hookflash/stack/IServiceLockbox.h>
-#include <hookflash/stack/IServiceNamespaceGrant.h>
+#include <openpeer/stack/IAccount.h>
+#include <openpeer/stack/IPeerSubscription.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPublicationRepository.h>
+#include <openpeer/stack/IServiceLockbox.h>
+#include <openpeer/stack/IServiceNamespaceGrant.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

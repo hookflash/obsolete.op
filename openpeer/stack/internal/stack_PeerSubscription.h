@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IPeerSubscription.h>
+#include <openpeer/stack/IAccount.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IPeerSubscription.h>
 
 namespace hookflash
 {

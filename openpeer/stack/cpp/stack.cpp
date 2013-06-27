@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/stack/internal/stack.h>
-#include <hookflash/stack/stack.h>
+#include <openpeer/stack/internal/stack.h>
+#include <openpeer/stack/stack.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>

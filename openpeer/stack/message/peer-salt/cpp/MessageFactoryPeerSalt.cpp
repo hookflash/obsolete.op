@@ -29,15 +29,15 @@
 
  */
 
-#include <hookflash/stack/message/peer-salt/MessageFactoryPeerSalt.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/peer-salt/MessageFactoryPeerSalt.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/message/peer-salt/SignedSaltGetResult.h>
+#include <openpeer/stack/message/peer-salt/SignedSaltGetResult.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_SALT_HANDLER "peer-salt"
 

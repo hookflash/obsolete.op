@@ -332,10 +332,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../libs/zsLib",
-					"../../../hookflash-libs/cryptopp",
-					"../../../hookflash-libs/udns",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -368,10 +368,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../libs/zsLib",
-					"../../../hookflash-libs/cryptopp",
-					"../../../hookflash-libs/udns",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
@@ -382,10 +382,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -394,10 +391,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

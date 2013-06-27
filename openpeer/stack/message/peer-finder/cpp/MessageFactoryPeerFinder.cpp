@@ -29,19 +29,19 @@
 
  */
 
-#include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/message/peer-finder/SessionCreateResult.h>
-#include <hookflash/stack/message/peer-finder/SessionDeleteResult.h>
-#include <hookflash/stack/message/peer-finder/SessionKeepAliveResult.h>
+#include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
+#include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
+#include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_FINDER_HANDLER "peer-finder"
 

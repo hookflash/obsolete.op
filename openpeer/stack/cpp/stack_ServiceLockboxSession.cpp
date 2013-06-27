@@ -29,25 +29,25 @@
 
  */
 
-#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
-#include <hookflash/stack/internal/stack_ServiceIdentitySession.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentGetRequest.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentSetRequest.h>
-#include <hookflash/stack/message/peer/PeerServicesGetRequest.h>
+#include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/internal/stack_ServiceIdentitySession.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxAccessRequest.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateRequest.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxIdentitiesUpdateRequest.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentGetRequest.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentSetRequest.h>
+#include <openpeer/stack/message/peer/PeerServicesGetRequest.h>
 
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/internal/stack_Stack.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>

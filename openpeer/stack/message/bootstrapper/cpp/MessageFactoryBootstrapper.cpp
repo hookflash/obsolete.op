@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/bootstrapper/MessageFactoryBootstrapper.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/bootstrapper/MessageFactoryBootstrapper.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/bootstrapper/ServicesGetResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/bootstrapper/ServicesGetResult.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPER_HANDLER "bootstrapper"
 

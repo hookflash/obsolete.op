@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/core/internal/core_Cache.h>
+#include <openpeer/core/internal/core_Cache.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>

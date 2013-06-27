@@ -333,7 +333,7 @@
 		0063BACA16CA92D000E6DB4D /* PeerSubscribeRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerSubscribeRequest.h; sourceTree = "<group>"; };
 		0063BACB16CA92D000E6DB4D /* PeerSubscribeResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerSubscribeResult.h; sourceTree = "<group>"; };
 		0063BAEA16CA92D000E6DB4D /* MessageFactoryPeerFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryPeerFinder.cpp; sourceTree = "<group>"; };
-		0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PeerLocationFindReply.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		0063BAEB16CA92D000E6DB4D /* PeerLocationFindReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = PeerLocationFindReply.cpp; sourceTree = "<group>"; };
 		0063BAEC16CA92D000E6DB4D /* PeerLocationFindRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeerLocationFindRequest.cpp; sourceTree = "<group>"; };
 		0063BAED16CA92D000E6DB4D /* PeerLocationFindResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeerLocationFindResult.cpp; sourceTree = "<group>"; };
 		0063BAEE16CA92D000E6DB4D /* SessionCreateRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionCreateRequest.cpp; sourceTree = "<group>"; };
@@ -343,8 +343,8 @@
 		0063BAF216CA92D000E6DB4D /* SessionKeepAliveRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionKeepAliveRequest.cpp; sourceTree = "<group>"; };
 		0063BAF316CA92D000E6DB4D /* SessionKeepAliveResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SessionKeepAliveResult.cpp; sourceTree = "<group>"; };
 		0063BAF416CA92D000E6DB4D /* MessageFactoryPeerFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryPeerFinder.h; sourceTree = "<group>"; };
-		0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindReply.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindRequest.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		0063BAF516CA92D000E6DB4D /* PeerLocationFindReply.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindReply.h; sourceTree = "<group>"; };
+		0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PeerLocationFindRequest.h; sourceTree = "<group>"; };
 		0063BAF716CA92D000E6DB4D /* PeerLocationFindResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerLocationFindResult.h; sourceTree = "<group>"; };
 		0063BAF816CA92D000E6DB4D /* SessionCreateRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionCreateRequest.h; sourceTree = "<group>"; };
 		0063BAF916CA92D000E6DB4D /* SessionCreateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SessionCreateResult.h; sourceTree = "<group>"; };
@@ -1201,9 +1201,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/cryptopp",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/iPhoneOS/include,
+					../../../libs/curl/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1232,9 +1234,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					../../../,
-					"../../../../hookflash-libs/zsLib",
-					"../../../../hookflash-libs/cryptopp",
+					../../..,
+					../../../libs/zsLib,
+					../../../libs,
+					../../../libs/boost/staging/iPhoneOS/include,
+					../../../libs/curl/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				SDKROOT = iphoneos;
@@ -1246,10 +1250,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/hfstack_ios.dst;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1261,10 +1262,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DSTROOT = /tmp/hfstack_ios.dst;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"../../../../hookflash-staging/iPhoneOS/include",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

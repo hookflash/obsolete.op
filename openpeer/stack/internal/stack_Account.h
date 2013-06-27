@@ -31,15 +31,15 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/IPeerSubscription.h>
-#include <hookflash/stack/internal/stack_AccountFinder.h>
-#include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/services/IRUDPICESocket.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IAccount.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/IPeerSubscription.h>
+#include <openpeer/stack/internal/stack_AccountFinder.h>
+#include <openpeer/stack/internal/stack_AccountPeerLocation.h>
+#include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/services/IRUDPICESocket.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

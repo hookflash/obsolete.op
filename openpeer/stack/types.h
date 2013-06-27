@@ -38,7 +38,7 @@
 
 #include <cryptopp/secblock.h>
 
-#include <hookflash/services/IICESocket.h>
+#include <openpeer/services/IICESocket.h>
 
 namespace hookflash
 {

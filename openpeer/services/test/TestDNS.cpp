@@ -32,10 +32,10 @@
 
 #include <zsLib/MessageQueueThread.h>
 #include <zsLib/Exception.h>
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/ISTUNDiscovery.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/ISTUNDiscovery.h>
 
-#include <hookflash/services/internal/services_Factory.h>
+#include <openpeer/services/internal/services_Factory.h>
 
 #include <zsLib/Socket.h>
 

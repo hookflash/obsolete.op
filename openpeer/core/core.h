@@ -31,15 +31,15 @@
 
 #pragma once
 
-#include <hookflash/core/types.h>
-#include <hookflash/core/IAccount.h>
-#include <hookflash/core/ICache.h>
-#include <hookflash/core/ICall.h>
-#include <hookflash/core/IConversationThread.h>
-#include <hookflash/core/IContact.h>
-#include <hookflash/core/IHelper.h>
-#include <hookflash/core/IIdentity.h>
-#include <hookflash/core/IIdentityLookup.h>
-#include <hookflash/core/ILogger.h>
-#include <hookflash/core/IMediaEngine.h>
-#include <hookflash/core/IStack.h>
+#include <openpeer/core/types.h>
+#include <openpeer/core/IAccount.h>
+#include <openpeer/core/ICache.h>
+#include <openpeer/core/ICall.h>
+#include <openpeer/core/IConversationThread.h>
+#include <openpeer/core/IContact.h>
+#include <openpeer/core/IHelper.h>
+#include <openpeer/core/IIdentity.h>
+#include <openpeer/core/IIdentityLookup.h>
+#include <openpeer/core/ILogger.h>
+#include <openpeer/core/IMediaEngine.h>
+#include <openpeer/core/IStack.h>

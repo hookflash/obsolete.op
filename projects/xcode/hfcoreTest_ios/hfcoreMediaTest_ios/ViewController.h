@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#include <hookflash/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
 
 @interface ViewController : UIViewController
 {

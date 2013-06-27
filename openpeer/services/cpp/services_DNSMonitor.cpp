@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/internal/services_DNSMonitor.h>
-#include <hookflash/services/internal/services_Helper.h>
+#include <openpeer/services/internal/services_DNSMonitor.h>
+#include <openpeer/services/internal/services_Helper.h>
 #include <zsLib/Exception.h>
 #include <zsLib/Socket.h>
 #include <zsLib/helpers.h>

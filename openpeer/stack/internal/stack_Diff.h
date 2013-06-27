@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IDiff.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IDiff.h>
 
 
 #define HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME "diff"

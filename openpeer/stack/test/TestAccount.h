@@ -31,11 +31,13 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
-#include <hookflash/stack/internal/stack_Factory.h>
-#include <hookflash/services/internal/services_Factory.h>
-#include <hookflash/services/internal/services_HTTP.h>
-#include <hookflash/services/internal/services_RUDPICESocket.h>
+#if 0
+
+#include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/internal/stack_Factory.h>
+#include <openpeer/services/internal/services_Factory.h>
+#include <openpeer/services/internal/services_HTTP.h>
+#include <openpeer/services/internal/services_RUDPICESocket.h>
 
 #include <zsLib/Timer.h>
 
@@ -429,3 +431,5 @@ namespace hookflash
     }
   }
 }
+
+#endif //0

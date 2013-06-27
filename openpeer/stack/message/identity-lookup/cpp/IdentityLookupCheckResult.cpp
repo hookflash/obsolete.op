@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IPeerFilePublic.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

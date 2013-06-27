@@ -31,13 +31,13 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/IMessageSource.h>
-#include <hookflash/stack/IServiceNamespaceGrant.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/IServiceNamespaceGrant.h>
 
-#include <hookflash/stack/IServiceSalt.h>
+#include <openpeer/stack/IServiceSalt.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

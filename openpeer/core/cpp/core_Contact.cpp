@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Helper.h>
 
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

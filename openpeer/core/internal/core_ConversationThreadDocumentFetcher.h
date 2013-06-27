@@ -31,10 +31,10 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
+#include <openpeer/core/internal/types.h>
 
-#include <hookflash/stack/types.h>
-#include <hookflash/stack/IPublicationRepository.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/IPublicationRepository.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/String.h>

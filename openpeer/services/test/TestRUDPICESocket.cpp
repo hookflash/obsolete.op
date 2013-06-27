@@ -34,10 +34,10 @@
 #include <zsLib/Exception.h>
 #include <zsLib/Socket.h>
 #include <zsLib/Timer.h>
-#include <hookflash/services/IRUDPICESocket.h>
-#include <hookflash/services/IRUDPICESocketSession.h>
-#include <hookflash/services/IRUDPMessaging.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/IRUDPICESocketSession.h>
+#include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/IHelper.h>
 
 
 #include "config.h"

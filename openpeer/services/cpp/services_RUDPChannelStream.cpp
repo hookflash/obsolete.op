@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/internal/services_RUDPChannelStream.h>
-#include <hookflash/services/RUDPPacket.h>
+#include <openpeer/services/internal/services_RUDPChannelStream.h>
+#include <openpeer/services/RUDPPacket.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>

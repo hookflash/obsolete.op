@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/LockboxAccessRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxAccessRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

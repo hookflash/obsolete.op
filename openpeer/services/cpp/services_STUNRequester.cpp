@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/internal/services_STUNRequester.h>
-#include <hookflash/services/internal/services_STUNRequesterManager.h>
+#include <openpeer/services/internal/services_STUNRequester.h>
+#include <openpeer/services/internal/services_STUNRequesterManager.h>
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>

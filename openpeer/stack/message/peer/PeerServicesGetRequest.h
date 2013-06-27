@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/peer/MessageFactoryPeer.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/peer/MessageFactoryPeer.h>
 
 #include <utility>
 #include <list>

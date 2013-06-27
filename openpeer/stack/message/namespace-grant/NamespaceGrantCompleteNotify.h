@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageNotify.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <openpeer/stack/message/MessageNotify.h>
+#include <openpeer/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
 
 #include <list>
 

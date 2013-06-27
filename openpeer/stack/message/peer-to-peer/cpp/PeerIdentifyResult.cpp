@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyResult.h>
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-to-peer/PeerIdentifyResult.h>
+#include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
 

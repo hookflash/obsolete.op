@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/core/IStack.h>
-#include <hookflash/core/IMediaEngine.h>
+#include <openpeer/core/IStack.h>
+#include <openpeer/core/IMediaEngine.h>
 
 namespace hookflash
 {

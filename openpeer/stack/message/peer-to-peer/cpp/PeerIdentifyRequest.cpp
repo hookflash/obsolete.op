@@ -29,15 +29,15 @@
 
  */
 
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Peer.h>
+#include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

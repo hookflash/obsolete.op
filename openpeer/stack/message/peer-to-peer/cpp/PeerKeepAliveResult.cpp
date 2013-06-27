@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveResult.h>
-#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/peer-to-peer/PeerKeepAliveResult.h>
+#include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Stringize.h>

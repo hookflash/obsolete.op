@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/identity/MessageFactoryIdentity.h>
 
 #include <utility>
 #include <list>

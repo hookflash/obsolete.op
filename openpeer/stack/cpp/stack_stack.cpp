@@ -29,20 +29,20 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/message/bootstrapped-finder/MessageFactoryBootstrappedFinder.h>
-#include <hookflash/stack/message/bootstrapper/MessageFactoryBootstrapper.h>
-#include <hookflash/stack/message/certificates/MessageFactoryCertificates.h>
-#include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
-#include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
-#include <hookflash/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
-#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
-#include <hookflash/stack/message/peer/MessageFactoryPeer.h>
-#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/peer-finder/MessageFactoryPeerFinder.h>
-#include <hookflash/stack/message/peer-salt/MessageFactoryPeerSalt.h>
-#include <hookflash/stack/message/peer-to-peer/MessageFactoryPeerToPeer.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/message/bootstrapped-finder/MessageFactoryBootstrappedFinder.h>
+#include <openpeer/stack/message/bootstrapper/MessageFactoryBootstrapper.h>
+#include <openpeer/stack/message/certificates/MessageFactoryCertificates.h>
+#include <openpeer/stack/message/identity/MessageFactoryIdentity.h>
+#include <openpeer/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <openpeer/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <openpeer/stack/message/namespace-grant/MessageFactoryNamespaceGrant.h>
+#include <openpeer/stack/message/rolodex/MessageFactoryRolodex.h>
+#include <openpeer/stack/message/peer/MessageFactoryPeer.h>
+#include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
+#include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
+#include <openpeer/stack/message/peer-salt/MessageFactoryPeerSalt.h>
+#include <openpeer/stack/message/peer-to-peer/MessageFactoryPeerToPeer.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

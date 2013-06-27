@@ -29,22 +29,22 @@
 
  */
 
-#include <hookflash/core/internal/core_Account.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Identity.h>
-#include <hookflash/core/internal/core_Contact.h>
-#include <hookflash/core/internal/core_ConversationThread.h>
-#include <hookflash/core/internal/core_Helper.h>
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IServiceLockbox.h>
-#include <hookflash/stack/IPeerFilePrivate.h>
-#include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/IPublicationRepository.h>
-#include <hookflash/stack/message/IMessageHelper.h>
+#include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Identity.h>
+#include <openpeer/core/internal/core_Contact.h>
+#include <openpeer/core/internal/core_ConversationThread.h>
+#include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IServiceLockbox.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPublication.h>
+#include <openpeer/stack/IPublicationRepository.h>
+#include <openpeer/stack/message/IMessageHelper.h>
 
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

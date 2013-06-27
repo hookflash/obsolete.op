@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/types.h>
-#include <hookflash/services/types.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/types.h>
+#include <openpeer/services/types.h>
 
 namespace hookflash
 {

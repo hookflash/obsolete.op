@@ -29,7 +29,7 @@
 
  */
 
-#include <hookflash/services/internal/services.h>
+#include <openpeer/services/internal/services.h>
 
 #include <zsLib/Log.h>
 

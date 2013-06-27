@@ -29,11 +29,11 @@
 
  */
 
-#include <hookflash/stack/internal/stack_ServiceSaltFetchSignedSaltQuery.h>
-#include <hookflash/stack/message/peer-salt/SignedSaltGetRequest.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_ServiceSaltFetchSignedSaltQuery.h>
+#include <openpeer/stack/message/peer-salt/SignedSaltGetRequest.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Stack.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

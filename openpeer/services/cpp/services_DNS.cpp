@@ -29,10 +29,10 @@
 
  */
 
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/internal/services_DNS.h>
-#include <hookflash/services/internal/services_DNSMonitor.h>
-#include <hookflash/services/internal/services_Helper.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/internal/services_DNS.h>
+#include <openpeer/services/internal/services_DNSMonitor.h>
+#include <openpeer/services/internal/services_Helper.h>
 #include <zsLib/helpers.h>
 
 #include <cryptopp/osrng.h>

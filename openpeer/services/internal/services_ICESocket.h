@@ -31,11 +31,11 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IICESocket.h>
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/ITURNSocket.h>
-#include <hookflash/services/ISTUNDiscovery.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IICESocket.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/ITURNSocket.h>
+#include <openpeer/services/ISTUNDiscovery.h>
 #include <zsLib/types.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/MessageQueueAssociator.h>

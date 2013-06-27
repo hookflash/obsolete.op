@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/identity-lookup/IdentityLookupRequest.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>

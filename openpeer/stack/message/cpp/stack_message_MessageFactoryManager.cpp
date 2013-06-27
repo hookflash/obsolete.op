@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryManager.h>
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryUnknown.h>
+#include <openpeer/stack/message/internal/stack_message_MessageFactoryManager.h>
+#include <openpeer/stack/message/internal/stack_message_MessageFactoryUnknown.h>
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/MessageReply.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/IMessageFactory.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/MessageReply.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/IMessageFactory.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>

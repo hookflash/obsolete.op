@@ -29,9 +29,9 @@
 
  */
 
-#include <hookflash/stack/message/internal/stack_message_messages.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/IPeerFilePublic.h>
+#include <openpeer/stack/message/internal/stack_message_messages.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>

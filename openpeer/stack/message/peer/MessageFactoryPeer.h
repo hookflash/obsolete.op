@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <hookflash/stack/message/IMessageFactory.h>
+#include <openpeer/stack/message/IMessageFactory.h>
 
 
 namespace hookflash

@@ -34,9 +34,9 @@
 #include <zsLib/Exception.h>
 #include <zsLib/Socket.h>
 #include <zsLib/Timer.h>
-#include <hookflash/services/ITURNSocket.h>
-#include <hookflash/services/STUNPacket.h>
-#include <hookflash/services/ISTUNDiscovery.h>
+#include <openpeer/services/ITURNSocket.h>
+#include <openpeer/services/STUNPacket.h>
+#include <openpeer/services/ISTUNDiscovery.h>
 
 #include <boost/shared_array.hpp>
 

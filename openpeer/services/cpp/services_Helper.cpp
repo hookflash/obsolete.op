@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/services/internal/services_Helper.h>
-#include <hookflash/services/IDNS.h>
+#include <openpeer/services/internal/services_Helper.h>
+#include <openpeer/services/IDNS.h>
 #include <cryptopp/osrng.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

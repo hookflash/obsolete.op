@@ -30,11 +30,11 @@
  */
 
 
-#include <hookflash/core/internal/core_CallTransport.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Call.h>
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/internal/core_Helper.h>
+#include <openpeer/core/internal/core_CallTransport.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Call.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_Helper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

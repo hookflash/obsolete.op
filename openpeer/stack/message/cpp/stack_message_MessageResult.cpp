@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryManager.h>
-#include <hookflash/stack/message/internal/stack_message_MessageFactoryUnknown.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageFactoryManager.h>
+#include <openpeer/stack/message/internal/stack_message_MessageFactoryUnknown.h>
 
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>

@@ -29,22 +29,22 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/internal/stack_AccountFinder.h>
-#include <hookflash/stack/internal/stack_MessageMonitor.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/message/peer-to-peer/PeerIdentifyRequest.h>
-#include <hookflash/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
-#include <hookflash/stack/message/IMessageHelper.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_AccountPeerLocation.h>
+#include <openpeer/stack/internal/stack_AccountFinder.h>
+#include <openpeer/stack/internal/stack_MessageMonitor.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
+#include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/IMessageHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>

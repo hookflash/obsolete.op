@@ -31,16 +31,16 @@
 
 #pragma once
 
-#include <hookflash/stack/IAccount.h>
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/services/IRUDPICESocket.h>
-#include <hookflash/services/IRUDPICESocketSession.h>
-#include <hookflash/services/IRUDPMessaging.h>
+#include <openpeer/stack/IAccount.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/IRUDPICESocketSession.h>
+#include <openpeer/services/IRUDPMessaging.h>
 
-#include <hookflash/stack/message/peer-finder/SessionCreateResult.h>
-#include <hookflash/stack/message/peer-finder/SessionKeepAliveResult.h>
-#include <hookflash/stack/message/peer-finder/SessionDeleteResult.h>
+#include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
+#include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
+#include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>

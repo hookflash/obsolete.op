@@ -31,10 +31,10 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/internal/services_IRUDPChannelStream.h>
-#include <hookflash/services/IRUDPChannel.h>
-#include <hookflash/services/ISTUNRequester.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/internal/services_IRUDPChannelStream.h>
+#include <openpeer/services/IRUDPChannel.h>
+#include <openpeer/services/ISTUNRequester.h>
 
 #include <zsLib/Timer.h>
 

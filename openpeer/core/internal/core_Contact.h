@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/core/IContact.h>
-#include <hookflash/core/internal/types.h>
+#include <openpeer/core/IContact.h>
+#include <openpeer/core/internal/types.h>
 
 namespace hookflash
 {

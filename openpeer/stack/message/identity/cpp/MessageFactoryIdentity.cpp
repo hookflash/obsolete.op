@@ -29,19 +29,19 @@
 
  */
 
-#include <hookflash/stack/message/identity/MessageFactoryIdentity.h>
-#include <hookflash/stack/message/identity/IdentityAccessWindowRequest.h>
-#include <hookflash/stack/message/identity/IdentityAccessCompleteNotify.h>
-#include <hookflash/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
-#include <hookflash/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
-#include <hookflash/stack/message/identity/IdentityLookupUpdateResult.h>
-#include <hookflash/stack/message/identity/IdentitySignResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/identity/MessageFactoryIdentity.h>
+#include <openpeer/stack/message/identity/IdentityAccessWindowRequest.h>
+#include <openpeer/stack/message/identity/IdentityAccessCompleteNotify.h>
+#include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
+#include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
+#include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
+#include <openpeer/stack/message/identity/IdentitySignResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER "identity"
 

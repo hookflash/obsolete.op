@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/internal/stack_PublicationMetaData.h>
-#include <hookflash/stack/IPublication.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/internal/stack_PublicationMetaData.h>
+#include <openpeer/stack/IPublication.h>
 
 #include <zsLib/Exception.h>
 

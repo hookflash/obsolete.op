@@ -33,8 +33,8 @@
 
 #include <zsLib/types.h>
 #include <zsLib/Proxy.h>
-#include <hookflash/services/IDNS.h>
-#include <hookflash/services/STUNPacket.h>
+#include <openpeer/services/IDNS.h>
+#include <openpeer/services/STUNPacket.h>
 #include <boost/shared_array.hpp>
 
 namespace hookflash

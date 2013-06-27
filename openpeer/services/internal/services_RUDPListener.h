@@ -31,9 +31,9 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/IRUDPListener.h>
-#include <hookflash/services/internal/services_RUDPChannel.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IRUDPListener.h>
+#include <openpeer/services/internal/services_RUDPChannel.h>
 
 #include <zsLib/Socket.h>
 

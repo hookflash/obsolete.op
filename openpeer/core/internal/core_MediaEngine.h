@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/IMediaEngine.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/IMediaEngine.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

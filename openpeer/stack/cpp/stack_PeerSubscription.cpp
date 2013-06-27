@@ -29,14 +29,14 @@
 
  */
 
-#include <hookflash/stack/internal/stack_PeerSubscription.h>
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_PeerSubscription.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_Helper.h>
 
-#include <hookflash/stack/IMessageIncoming.h>
+#include <openpeer/stack/IMessageIncoming.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

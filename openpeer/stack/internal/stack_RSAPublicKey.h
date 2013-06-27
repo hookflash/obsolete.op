@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/internal/types.h>
-#include <hookflash/stack/IRSAPublicKey.h>
+#include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/IRSAPublicKey.h>
 
 #include <cryptopp/rsa.h>
 #include <cryptopp/secblock.h>

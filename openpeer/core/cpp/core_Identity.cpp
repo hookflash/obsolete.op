@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/core/internal/core_Identity.h>
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Identity.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_Account.h>
 
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/XML.h>

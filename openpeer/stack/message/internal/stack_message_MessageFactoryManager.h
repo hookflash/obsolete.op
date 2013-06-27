@@ -31,11 +31,11 @@
 
 #pragma once
 
-#include <hookflash/stack/message/internal/types.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
-#include <hookflash/stack/message/Message.h>
+#include <openpeer/stack/message/internal/types.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/Message.h>
 
-#include <hookflash/services/IHTTP.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <list>
 

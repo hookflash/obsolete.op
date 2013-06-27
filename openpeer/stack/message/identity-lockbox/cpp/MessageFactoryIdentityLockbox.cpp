@@ -29,18 +29,18 @@
 
  */
 
-#include <hookflash/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxAccessResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentGetResult.h>
-#include <hookflash/stack/message/identity-lockbox/LockboxContentSetResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxAccessResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentGetResult.h>
+#include <openpeer/stack/message/identity-lockbox/LockboxContentSetResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER "identity-lockbox"
 

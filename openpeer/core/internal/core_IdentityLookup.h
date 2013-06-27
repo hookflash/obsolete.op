@@ -31,13 +31,13 @@
 
 #pragma once
 
-#include <hookflash/core/internal/types.h>
-#include <hookflash/core/IIdentityLookup.h>
+#include <openpeer/core/internal/types.h>
+#include <openpeer/core/IIdentityLookup.h>
 
-#include <hookflash/stack/IBootstrappedNetwork.h>
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupCheckResult.h>
-#include <hookflash/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckResult.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 

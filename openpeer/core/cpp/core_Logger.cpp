@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/core/internal/core_Logger.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/core/internal/core_Logger.h>
+#include <openpeer/services/IHelper.h>
 
 namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
 namespace hookflash { namespace core { namespace application { ZS_DECLARE_SUBSYSTEM(hookflash_application) } } }

@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/IMessageMonitor.h>
-#include <hookflash/stack/internal/types.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/internal/types.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>

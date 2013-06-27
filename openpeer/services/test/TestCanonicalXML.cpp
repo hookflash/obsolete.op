@@ -29,7 +29,7 @@
  
  */
 
-#include <hookflash/services/ICanonicalXML.h>
+#include <openpeer/services/ICanonicalXML.h>
 
 #include <zsLib/XML.h>
 #include <iostream>

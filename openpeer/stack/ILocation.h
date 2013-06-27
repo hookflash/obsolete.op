@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/types.h>
-#include <hookflash/stack/message/types.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/message/types.h>
 
 namespace hookflash
 {

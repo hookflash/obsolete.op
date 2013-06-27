@@ -29,16 +29,16 @@
 
  */
 
-#include <hookflash/stack/message/rolodex/MessageFactoryRolodex.h>
-#include <hookflash/stack/message/rolodex/RolodexAccessResult.h>
-#include <hookflash/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
-#include <hookflash/stack/message/rolodex/RolodexContactsGetResult.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/rolodex/MessageFactoryRolodex.h>
+#include <openpeer/stack/message/rolodex/RolodexAccessResult.h>
+#include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
+#include <openpeer/stack/message/rolodex/RolodexContactsGetResult.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_ROLODEX_HANDLER "rolodex"
 

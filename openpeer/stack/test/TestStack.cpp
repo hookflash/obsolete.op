@@ -35,7 +35,7 @@
 #include <zsLib/Exception.h>
 #include <zsLib/Proxy.h>
 
-#include <hookflash/stack/IStack.h>
+#include <openpeer/stack/IStack.h>
 
 #include "config.h"
 #include "boost_replacement.h"
@@ -104,7 +104,19 @@ void doTestStack()
   zsLib::MessageQueueThreadPtr threadStack(zsLib::MessageQueueThread::createBasic());
   zsLib::MessageQueueThreadPtr threadServices(zsLib::MessageQueueThread::createBasic());
 
-  IStack::setup(threadDelegate, threadStack, threadServices, "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+  IStack::setup(
+                threadDelegate,
+                threadStack,
+                threadServices,
+                "com.xyz123.app1",
+                "servicesTestApp",
+                "http://test.com/image.png",
+                "http://test.com/app/",
+                "hookflash/1.0.1001a (iOS/iPad)",
+                "123456",
+                "iOS 5.0.3",
+                "iPad 2"
+                );
 
   TestStackCallbackPtr testObject = TestStackCallback::create(thread);
 

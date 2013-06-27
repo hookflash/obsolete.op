@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageRequest.h>
-#include <hookflash/stack/message/bootstrapped-finder/MessageFactoryBootstrappedFinder.h>
+#include <openpeer/stack/message/MessageRequest.h>
+#include <openpeer/stack/message/bootstrapped-finder/MessageFactoryBootstrappedFinder.h>
 
 namespace hookflash
 {

@@ -29,24 +29,24 @@
 
  */
 
-#include <hookflash/stack/message/peer-common/MessageFactoryPeerCommon.h>
-#include <hookflash/stack/message/Message.h>
-#include <hookflash/stack/message/IMessageFactoryManager.h>
+#include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
+#include <openpeer/stack/message/Message.h>
+#include <openpeer/stack/message/IMessageFactoryManager.h>
 
-#include <hookflash/stack/message/internal/stack_message_MessageHelper.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <hookflash/stack/message/peer-common/PeerPublishRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishResult.h>
-#include <hookflash/stack/message/peer-common/PeerGetRequest.h>
-#include <hookflash/stack/message/peer-common/PeerGetResult.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteRequest.h>
-#include <hookflash/stack/message/peer-common/PeerDeleteResult.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeRequest.h>
-#include <hookflash/stack/message/peer-common/PeerSubscribeResult.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyRequest.h>
-#include <hookflash/stack/message/peer-common/PeerPublishNotifyResult.h>
+#include <openpeer/stack/message/peer-common/PeerPublishRequest.h>
+#include <openpeer/stack/message/peer-common/PeerPublishResult.h>
+#include <openpeer/stack/message/peer-common/PeerGetRequest.h>
+#include <openpeer/stack/message/peer-common/PeerGetResult.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteRequest.h>
+#include <openpeer/stack/message/peer-common/PeerDeleteResult.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeRequest.h>
+#include <openpeer/stack/message/peer-common/PeerSubscribeResult.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyRequest.h>
+#include <openpeer/stack/message/peer-common/PeerPublishNotifyResult.h>
 
-#include <hookflash/stack/IHelper.h>
+#include <openpeer/stack/IHelper.h>
 
 #define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_COMMON_HANDLER "peer-common"
 

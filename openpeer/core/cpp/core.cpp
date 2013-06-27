@@ -29,8 +29,8 @@
 
  */
 
-#include <hookflash/core/core.h>
-#include <hookflash/core/internal/core.h>
+#include <openpeer/core/core.h>
+#include <openpeer/core/internal/core.h>
 #include <zsLib/Log.h>
 
 namespace hookflash { namespace core { ZS_IMPLEMENT_SUBSYSTEM(hookflash_core) } }

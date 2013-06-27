@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/types.h>
-#include <hookflash/stack/IPublicationMetaData.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/IPublicationMetaData.h>
 
 #include <list>
 

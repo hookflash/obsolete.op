@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#include <hookflash/core/IMediaEngine.h>
+#include <openpeer/core/IMediaEngine.h>
 
 using namespace hookflash::core;
 

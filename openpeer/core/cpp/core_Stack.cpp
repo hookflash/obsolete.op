@@ -29,13 +29,13 @@
 
  */
 
-#include <hookflash/core/internal/core_Stack.h>
-#include <hookflash/core/internal/core_MediaEngine.h>
-#include <hookflash/core/IConversationThread.h>
-#include <hookflash/core/ICall.h>
-#include <hookflash/services/IHelper.h>
+#include <openpeer/core/internal/core_Stack.h>
+#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/IConversationThread.h>
+#include <openpeer/core/ICall.h>
+#include <openpeer/services/IHelper.h>
 
-#include <hookflash/stack/IStack.h>
+#include <openpeer/stack/IStack.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/MessageQueueThread.h>

@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/types.h>
-#include <hookflash/services/IICESocket.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/services/IICESocket.h>
 
 #include <list>
 #include <map>

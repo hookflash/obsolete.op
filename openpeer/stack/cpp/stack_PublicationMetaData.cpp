@@ -29,12 +29,12 @@
 
  */
 
-#include <hookflash/stack/internal/stack_PublicationMetaData.h>
-#include <hookflash/stack/internal/stack_Publication.h>
-#include <hookflash/stack/IPublication.h>
-#include <hookflash/stack/ILocation.h>
-#include <hookflash/stack/IPeer.h>
-#include <hookflash/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_PublicationMetaData.h>
+#include <openpeer/stack/internal/stack_Publication.h>
+#include <openpeer/stack/IPublication.h>
+#include <openpeer/stack/ILocation.h>
+#include <openpeer/stack/IPeer.h>
+#include <openpeer/stack/internal/stack_Location.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>

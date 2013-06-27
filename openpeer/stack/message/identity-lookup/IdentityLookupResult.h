@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/identity-lookup/MessageFactoryIdentityLookup.h>
 
 #include <list>
 

@@ -31,8 +31,8 @@
 
 #pragma once
 
-#include <hookflash/services/internal/types.h>
-#include <hookflash/services/internal/services_IRUDPChannelStream.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/internal/services_IRUDPChannelStream.h>
 #include <zsLib/Timer.h>
 #include <zsLib/Exception.h>
 

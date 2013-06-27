@@ -29,32 +29,32 @@
 
  */
 
-#include <hookflash/stack/internal/stack_Account.h>
-#include <hookflash/stack/internal/stack_AccountFinder.h>
-#include <hookflash/stack/internal/stack_AccountPeerLocation.h>
-#include <hookflash/stack/internal/stack_BootstrappedNetwork.h>
-#include <hookflash/stack/internal/stack_Helper.h>
-#include <hookflash/stack/internal/stack_Location.h>
-#include <hookflash/stack/internal/stack_MessageMonitor.h>
-#include <hookflash/stack/internal/stack_MessageIncoming.h>
-#include <hookflash/stack/internal/stack_Peer.h>
-#include <hookflash/stack/internal/stack_PeerSubscription.h>
-#include <hookflash/stack/internal/stack_PublicationRepository.h>
-#include <hookflash/stack/internal/stack_ServiceLockboxSession.h>
-#include <hookflash/stack/internal/stack_Stack.h>
-#include <hookflash/stack/message/MessageResult.h>
-#include <hookflash/stack/message/IMessageHelper.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindRequest.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <hookflash/stack/message/peer-finder/PeerLocationFindReply.h>
-#include <hookflash/stack/message/bootstrapped-finder/FindersGetRequest.h>
-#include <hookflash/stack/message/bootstrapped-finder/FindersGetResult.h>
-#include <hookflash/stack/IHelper.h>
-#include <hookflash/stack/IPeerFilePublic.h>
-#include <hookflash/stack/IPeerFiles.h>
-#include <hookflash/stack/IPublicationRepository.h>
+#include <openpeer/stack/internal/stack_Account.h>
+#include <openpeer/stack/internal/stack_AccountFinder.h>
+#include <openpeer/stack/internal/stack_AccountPeerLocation.h>
+#include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
+#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_MessageMonitor.h>
+#include <openpeer/stack/internal/stack_MessageIncoming.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_PeerSubscription.h>
+#include <openpeer/stack/internal/stack_PublicationRepository.h>
+#include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
+#include <openpeer/stack/message/bootstrapped-finder/FindersGetResult.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPublicationRepository.h>
 
-#include <hookflash/services/IRUDPICESocket.h>
+#include <openpeer/services/IRUDPICESocket.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
