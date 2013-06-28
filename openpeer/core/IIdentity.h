@@ -68,7 +68,7 @@ namespace openpeer
                                 IIdentityDelegatePtr delegate,
                                 const char *outerFrameURLUponReload,
                                 const char *identityURI_or_identityBaseURI,
-                                const char *identityProviderDomain // used when identity URI is of legacy or oauth-type
+                                const char *identityProviderDomain          // used when identity URI is of legacy or oauth-type
                                 );
 
       virtual IdentityStates getState(
