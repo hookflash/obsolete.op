@@ -39,11 +39,11 @@
 
 #include <iostream>
 
-namespace hookflash { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
 
 
 
-typedef hookflash::services::IHelper IHelper;
+typedef openpeer::services::IHelper IHelper;
 
 void doTestCanonicalXML();
 void doTestDNS();
@@ -84,19 +84,19 @@ namespace BoostReplacement
     IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
     IHelper::setLogLevel("hookflash_services", zsLib::Log::Trace);
 
-    if (HOOKFLASH_SERVICE_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING) {
       IHelper::installStdOutLogger(false);
     }
 
-    if (HOOKFLASH_SERVICE_TEST_USE_FIFO_LOGGING) {
-      IHelper::installFileLogger(HOOKFLASH_SERVICE_TEST_FIFO_LOGGING_FILE, true);
+    if (OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING) {
+      IHelper::installFileLogger(OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE, true);
     }
 
-    if (HOOKFLASH_SERVICE_TEST_USE_TELNET_LOGGING) {
-      IHelper::installTelnetLogger(HOOKFLASH_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
+    if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
+      IHelper::installTelnetLogger(OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
     }
 
-    if (HOOKFLASH_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
       IHelper::installDebuggerLogger();
     }
 
@@ -107,16 +107,16 @@ namespace BoostReplacement
   {
     BOOST_STDOUT() << "REMOVING LOGGER...\n\n";
 
-    if (HOOKFLASH_SERVICE_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING) {
       IHelper::uninstallStdOutLogger();
     }
-    if (HOOKFLASH_SERVICE_TEST_USE_FIFO_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING) {
       IHelper::uninstallFileLogger();
     }
-    if (HOOKFLASH_SERVICE_TEST_USE_TELNET_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
       IHelper::uninstallTelnetLogger();
     }
-    if (HOOKFLASH_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
+    if (OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
       IHelper::uninstallDebuggerLogger();
     }
 

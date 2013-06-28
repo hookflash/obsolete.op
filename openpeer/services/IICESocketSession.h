@@ -37,7 +37,7 @@
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -176,12 +176,12 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IICESocketSessionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IICESocketSessionPtr, IICESocketSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::STUNPacketPtr, STUNPacketPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IICESocketSessionDelegate::ICESocketSessionStates, ICESocketSessionStates)
-ZS_DECLARE_PROXY_METHOD_2(onICESocketSessionStateChanged, IICESocketSessionPtr, hookflash::services::IICESocketSessionDelegate::ICESocketSessionStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IICESocketSessionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IICESocketSessionPtr, IICESocketSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::STUNPacketPtr, STUNPacketPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IICESocketSessionDelegate::ICESocketSessionStates, ICESocketSessionStates)
+ZS_DECLARE_PROXY_METHOD_2(onICESocketSessionStateChanged, IICESocketSessionPtr, openpeer::services::IICESocketSessionDelegate::ICESocketSessionStates)
 ZS_DECLARE_PROXY_METHOD_SYNC_3(handleICESocketSessionReceivedPacket, IICESocketSessionPtr, const BYTE *, ULONG)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_4(handleICESocketSessionReceivedSTUNPacket, bool, IICESocketSessionPtr, STUNPacketPtr, const String &, const String &)
-ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionWriteReady, hookflash::services::IICESocketSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionWriteReady, openpeer::services::IICESocketSessionPtr)
 ZS_DECLARE_PROXY_END()

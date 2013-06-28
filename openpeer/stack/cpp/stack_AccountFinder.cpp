@@ -61,20 +61,20 @@
 #include <unistd.h>
 #endif //_WIN32
 
-#define HOOKFLASH_STACK_SESSION_CREATE_REQUEST_TIMEOUT_IN_SECONDS (60)
+#define OPENPEER_STACK_SESSION_CREATE_REQUEST_TIMEOUT_IN_SECONDS (60)
 
-#define HOOKFLASH_STACK_SESSION_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (60)
+#define OPENPEER_STACK_SESSION_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (60)
 
-#define HOOKFLASH_STACK_SESSION_DELETE_REQUEST_TIMEOUT_IN_SECONDS (5)
+#define OPENPEER_STACK_SESSION_DELETE_REQUEST_TIMEOUT_IN_SECONDS (5)
 
-#define HOOKFLASH_STACK_ACCOUNT_FINDER_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS (20)
-#define HOOKFLASH_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS (90)
+#define OPENPEER_STACK_ACCOUNT_FINDER_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS (20)
+#define OPENPEER_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS (90)
 
-#define HOOKFLASH_STACK_ACCOUNT_BACKGROUNDING_TIMEOUT_IN_SECONDS (HOOKFLASH_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS + 40)
+#define OPENPEER_STACK_ACCOUNT_BACKGROUNDING_TIMEOUT_IN_SECONDS (OPENPEER_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS + 40)
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -631,7 +631,7 @@ namespace hookflash
         SessionKeepAliveRequestPtr request = SessionKeepAliveRequest::create();
         request->domain(outer->forAccountFinder().getDomain());
 
-        mSessionKeepAliveMonitor = sendRequest(IMessageMonitorResultDelegate<SessionKeepAliveResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SESSION_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
+        mSessionKeepAliveMonitor = sendRequest(IMessageMonitorResultDelegate<SessionKeepAliveResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SESSION_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
       }
 
       //-----------------------------------------------------------------------
@@ -759,7 +759,7 @@ namespace hookflash
                 SessionDeleteRequestPtr request = SessionDeleteRequest::create();
                 request->domain(outer->forAccountFinder().getDomain());
 
-                mSessionDeleteMonitor = sendRequest(IMessageMonitorResultDelegate<SessionDeleteResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SESSION_DELETE_REQUEST_TIMEOUT_IN_SECONDS));
+                mSessionDeleteMonitor = sendRequest(IMessageMonitorResultDelegate<SessionDeleteResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SESSION_DELETE_REQUEST_TIMEOUT_IN_SECONDS));
               }
               return;
             }
@@ -940,10 +940,10 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("setting keep alive properties for socket session"))
         mSocketSession->setKeepAliveProperties(
-                                               Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
-                                               Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS),
+                                               Seconds(OPENPEER_STACK_ACCOUNT_FINDER_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
+                                               Seconds(OPENPEER_STACK_ACCOUNT_FINDER_EXPECT_SESSION_DATA_IN_SECONDS),
                                                Duration(),
-                                               Seconds(HOOKFLASH_STACK_ACCOUNT_BACKGROUNDING_TIMEOUT_IN_SECONDS)
+                                               Seconds(OPENPEER_STACK_ACCOUNT_BACKGROUNDING_TIMEOUT_IN_SECONDS)
                                                );
 
         return false;
@@ -1007,7 +1007,7 @@ namespace hookflash
         request->peerFiles(peerFiles);
 
         ZS_LOG_DEBUG(log("sending session create request"))
-        mSessionCreateMonitor = sendRequest(IMessageMonitorResultDelegate<SessionCreateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SESSION_CREATE_REQUEST_TIMEOUT_IN_SECONDS));
+        mSessionCreateMonitor = sendRequest(IMessageMonitorResultDelegate<SessionCreateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SESSION_CREATE_REQUEST_TIMEOUT_IN_SECONDS));
 
         return false;
       }

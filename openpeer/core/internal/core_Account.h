@@ -45,7 +45,7 @@
 
 #include <zsLib/MessageQueueAssociator.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -908,10 +908,10 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::IAccountAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IAccountAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::Account::IContactSubscriptionAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::Account::IContactSubscriptionAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

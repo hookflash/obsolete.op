@@ -39,9 +39,9 @@
 
 #include <zsLib/Log.h>
 
-namespace hookflash { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(hfcoretest) } } }
+namespace openpeer { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(hfcoretest) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -53,7 +53,18 @@ namespace hookflash
 
       void FakeGUI::init()
       {
-        IStack::singleton()->setup(mThisWeak.lock(), mThisWeak.lock(), "123456", "hookflash/1.0.1001a (iOS/iPad)", "iOS 5.0.3", "iPad 2");
+        IStack::singleton()->setup(
+                                   mThisWeak.lock(),
+                                   mThisWeak.lock(),
+                                   "com.xyz123.app1",
+                                   "Hookflash",
+                                   "https://app.com/image.png",
+                                   "https://app.com/app/",
+                                   "hookflash/1.0.1001a (iOS/iPad)", 
+                                   "123456",
+                                   "iOS 5.0.3",
+                                   "iPad 2"
+                                   );
       }
 
       FakeGUI::~FakeGUI()
@@ -92,12 +103,12 @@ namespace hookflash
   }
 }
 
-using hookflash::core::test::FakeGUI;
-using hookflash::core::test::FakeGUIPtr;
+using openpeer::core::test::FakeGUI;
+using openpeer::core::test::FakeGUIPtr;
 
 void doFakeGUITest()
 {
-  if (!HOOKFLASH_CORE_TEST_DO_FAKE_GUI_TEST) return;
+  if (!OPENPEER_CORE_TEST_DO_FAKE_GUI_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
@@ -122,7 +133,7 @@ void doFakeGUITest()
 
 void foo()
 {
-//  if (!HOOKFLASH_STACK_TEST_DO_STACK_TEST) return;
+//  if (!OPENPEER_STACK_TEST_DO_STACK_TEST) return;
 //
 //  BOOST_INSTALL_LOGGER();
 //

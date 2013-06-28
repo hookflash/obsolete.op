@@ -43,7 +43,7 @@
 #include "config.h"
 #include "boost_replacement.h"
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::BYTE;
 using zsLib::WORD;
@@ -54,16 +54,16 @@ using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
 using zsLib::AutoRecursiveLock;
-using hookflash::services::IRUDPListener;
-using hookflash::services::IRUDPListenerPtr;
-using hookflash::services::IRUDPListenerDelegate;
-using hookflash::services::IRUDPMessaging;
-using hookflash::services::IRUDPMessagingPtr;
-using hookflash::services::IRUDPMessagingDelegate;
-using hookflash::services::IHelper;
-using hookflash::services::IDNS;
+using openpeer::services::IRUDPListener;
+using openpeer::services::IRUDPListenerPtr;
+using openpeer::services::IRUDPListenerDelegate;
+using openpeer::services::IRUDPMessaging;
+using openpeer::services::IRUDPMessagingPtr;
+using openpeer::services::IRUDPMessagingDelegate;
+using openpeer::services::IHelper;
+using openpeer::services::IDNS;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -178,21 +178,21 @@ namespace hookflash
   }
 }
 
-using namespace hookflash::services::test;
+using namespace openpeer::services::test;
 
-using hookflash::services::test::TestRUDPListenerCallback;
-using hookflash::services::test::TestRUDPListenerCallbackPtr;
+using openpeer::services::test::TestRUDPListenerCallback;
+using openpeer::services::test::TestRUDPListenerCallbackPtr;
 
 void doTestRUDPListener()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST) return;
-  if (HOOKFLASH_SERVICE_TEST_RUNNING_AS_CLIENT) return;
+  if (!OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST) return;
+  if (OPENPEER_SERVICE_TEST_RUNNING_AS_CLIENT) return;
 
   BOOST_INSTALL_LOGGER();
 
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
-  TestRUDPListenerCallbackPtr testObject1 = TestRUDPListenerCallback::create(thread, HOOKFLASH_SERVICE_TEST_RUDP_SERVER_PORT);
+  TestRUDPListenerCallbackPtr testObject1 = TestRUDPListenerCallback::create(thread, OPENPEER_SERVICE_TEST_RUDP_SERVER_PORT);
 
   ZS_LOG_BASIC("WAITING:      Waiting for RUDP Listener testing to complete (max wait is 60 minutes).");
 

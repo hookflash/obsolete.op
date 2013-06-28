@@ -44,10 +44,10 @@
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -1662,7 +1662,7 @@ namespace hookflash
 
             if (((IPeer::PeerFindState_Finding != state) &&
                  (peerLocations->size() < 1)) ||
-                (lastStateChangeTime + Seconds(HOOKFLASH_CONVERSATION_THREAD_MAX_WAIT_DELIVERY_TIME_BEFORE_PUSH_IN_SECONDS) < tick)) {
+                (lastStateChangeTime + Seconds(OPENPEER_CONVERSATION_THREAD_MAX_WAIT_DELIVERY_TIME_BEFORE_PUSH_IN_SECONDS) < tick)) {
               ZS_LOG_DEBUG(log("state must now be set to undeliverable") + ", message ID=" + message->getDebugValueString() + ", peer find state=" + IPeer::toString(state) + ", last state changed time=" + Stringize<Time>(lastStateChangeTime).string() + ", current time=" + Stringize<Time>(tick).string())
               mMessageDeliveryStates[message->messageID()] = DeliveryStatePair(zsLib::now(), IConversationThread::MessageDeliveryState_UserNotAvailable);
               outer->notifyMessageDeliveryStateChanged(message->messageID(), IConversationThread::MessageDeliveryState_UserNotAvailable);

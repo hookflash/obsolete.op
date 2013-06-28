@@ -41,7 +41,7 @@ namespace CryptoPP
   class HexDecoder;
 };
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

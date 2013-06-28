@@ -36,7 +36,7 @@
 
 #include <openpeer/stack/IBootstrappedNetwork.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

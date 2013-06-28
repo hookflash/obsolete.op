@@ -45,10 +45,10 @@
 #include <cryptopp/sha.h>
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -316,7 +316,7 @@ namespace hookflash
           }
 
           String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
+          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
             ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
             return false;
           }
@@ -445,8 +445,8 @@ namespace hookflash
 
         try {
           String cipher = sectionAEl->findFirstChildElementChecked("cipher")->getTextDecoded();
-          if (HOOKFLASH_STACK_PEER_FILE_CIPHER != cipher) {
-            ZS_LOG_WARNING(Detail, log("cipher suite is not understood, cipher suite=") + cipher + ", expecting=" + HOOKFLASH_STACK_PEER_FILE_CIPHER)
+          if (OPENPEER_STACK_PEER_FILE_CIPHER != cipher) {
+            ZS_LOG_WARNING(Detail, log("cipher suite is not understood, cipher suite=") + cipher + ", expecting=" + OPENPEER_STACK_PEER_FILE_CIPHER)
             return false;
           }
 
@@ -513,8 +513,8 @@ namespace hookflash
 
             SecureByteBlockPtr sectionHash = IHelper::hash((const char *)(sectionAAsString.get()), IHelper::HashAlgorthm_SHA1);
             String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-            if (HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM != algorithm) {
-              ZS_LOG_WARNING(Detail, log("signature algorithm was not understood, peer URI=") + mPeerURI + ", algorithm=" + algorithm + ", expecting=" + HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM)
+            if (OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM != algorithm) {
+              ZS_LOG_WARNING(Detail, log("signature algorithm was not understood, peer URI=") + mPeerURI + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM)
               return false;
             }
 

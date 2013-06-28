@@ -33,7 +33,7 @@
 
 #include <openpeer/core/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -133,8 +133,8 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::IMediaEngineDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaEngineDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_0(onMediaEngineFaceDetected)
 ZS_DECLARE_PROXY_METHOD_0(onMediaEngineVideoCaptureRecordStopped)

@@ -40,10 +40,10 @@
 
 #include <boost/shared_array.hpp>
 
-#define HOOKFLASH_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES (20)
-#define HOOKFLASH_SERVICES_CLIENT_SOFTARE_DECLARATION "hookflash STUN 1.0"
+#define OPENPEER_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES (20)
+#define OPENPEER_SERVICES_CLIENT_SOFTARE_DECLARATION "openpeer STUN 1.0"
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -200,20 +200,20 @@ namespace hookflash
 
       static STUNPacketPtr createRequest(
                                          Methods method,
-                                         const char *software = HOOKFLASH_SERVICES_CLIENT_SOFTARE_DECLARATION
+                                         const char *software = OPENPEER_SERVICES_CLIENT_SOFTARE_DECLARATION
                                          );
       static STUNPacketPtr createIndication(
                                             Methods method,
-                                            const char *software = HOOKFLASH_SERVICES_CLIENT_SOFTARE_DECLARATION
+                                            const char *software = OPENPEER_SERVICES_CLIENT_SOFTARE_DECLARATION
                                             );
 
       static STUNPacketPtr createResponse(
                                           STUNPacketPtr request,
-                                          const char *software = HOOKFLASH_SERVICES_CLIENT_SOFTARE_DECLARATION
+                                          const char *software = OPENPEER_SERVICES_CLIENT_SOFTARE_DECLARATION
                                           );
       static STUNPacketPtr createErrorResponse(
                                                STUNPacketPtr request,
-                                               const char *software = HOOKFLASH_SERVICES_CLIENT_SOFTARE_DECLARATION
+                                               const char *software = OPENPEER_SERVICES_CLIENT_SOFTARE_DECLARATION
                                                );          // put the error code into the request
 
       STUNPacketPtr clone(bool changeTransactionID) const;
@@ -311,7 +311,7 @@ namespace hookflash
 
       CredentialMechanisms mCredentialMechanism;
       ULONG mMessageIntegrityMessageLengthInBytes;              // how big is the input into the HMAC algorithm, including 20 byte header -- it is the length of the packet up to but not including the message integrity attribute or message-integrity value
-      BYTE  mMessageIntegrity[HOOKFLASH_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];   // the message integrity of the packet
+      BYTE  mMessageIntegrity[OPENPEER_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];   // the message integrity of the packet
 
       bool mFingerprintIncluded;                                // should this packet include the fingerprint (or did include the fingerprint)
 

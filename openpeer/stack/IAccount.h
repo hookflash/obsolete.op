@@ -38,7 +38,7 @@
 #include <openpeer/services/IHTTP.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -108,6 +108,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IAccountDelegate)
-ZS_DECLARE_PROXY_METHOD_2(onAccountStateChanged, hookflash::stack::IAccountPtr, hookflash::stack::IAccount::AccountStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IAccountDelegate)
+ZS_DECLARE_PROXY_METHOD_2(onAccountStateChanged, openpeer::stack::IAccountPtr, openpeer::stack::IAccount::AccountStates)
 ZS_DECLARE_PROXY_END()

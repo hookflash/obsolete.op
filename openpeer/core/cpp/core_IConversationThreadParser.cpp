@@ -52,9 +52,9 @@
 #include <zsLib/IPAddress.h>
 
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -241,7 +241,7 @@ namespace hookflash
       //  ...
       //  <messages>
       //   ...
-      //   <messageBundle xmlns="http://www.hookflash.com/openpeer/1.0/message">
+      //   <messageBundle xmlns="http://www.openpeer.org/openpeer/1.0/message">
       //    <message id=”e041038922edbc0638cebbded884896” />
       //     <from id=”920bd1d88e4cc3ba0f95e24ea9168e272ff03b3b” />
       //     <sent>2002-Jan-01 10:00:01.123456789</sent>
@@ -543,8 +543,8 @@ namespace hookflash
       // <thread>
       //  ...
       //  <contacts version="1">
-      //   <contact ID="peer://domain.com/920bd1d88e4cc3ba0f95e24ea9168e272ff03b3b" disposition="add"><peer version=”1”><sectionBundle xmlns="http://www.hookflash.com/openpeer/1.0/message"><section id=”A”> ... contents ...</section> ... </sectionBundle></peer></contact>
-      //   <contact ID="peer://domain.com/f95e24ea9168e242ff03b3920bd1d88a4cc3ba04" disposition="add"><profileBundle><profile></profile></profileBundle><peer version=”1”><sectionBundle xmlns="http://www.hookflash.com/openpeer/1.0/message"><section id=”A”> ... contents ...</section> ... </sectionBundle></peer></contact>
+      //   <contact ID="peer://domain.com/920bd1d88e4cc3ba0f95e24ea9168e272ff03b3b" disposition="add"><peer version=”1”><sectionBundle xmlns="http://www.openpeer.org/openpeer/1.0/message"><section id=”A”> ... contents ...</section> ... </sectionBundle></peer></contact>
+      //   <contact ID="peer://domain.com/f95e24ea9168e242ff03b3920bd1d88a4cc3ba04" disposition="add"><profileBundle><profile></profile></profileBundle><peer version=”1”><sectionBundle xmlns="http://www.openpeer.org/openpeer/1.0/message"><section id=”A”> ... contents ...</section> ... </sectionBundle></peer></contact>
       //   <contact ID="...">...</contact>
       //   <contact ID="..." disposition="remove"></contact>
       //  <contacts>
@@ -1568,7 +1568,7 @@ namespace hookflash
 
         SplitMap result;
         stack::IHelper::split(publication->getName(), result);
-        String type = stack::IHelper::get(result, HOOKFLASH_CONVERSATION_THREAD_TYPE_INDEX);
+        String type = stack::IHelper::get(result, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
 
         try {
           pThis->mType = toThreadTypes(type);

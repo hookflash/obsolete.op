@@ -54,19 +54,19 @@
 #include <unistd.h>
 #endif //_WIN32
 
-#define HOOKFLASH_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO "text/x-openpeer-json-plain"
-#define HOOKFLASH_STACK_PEER_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (2*60)
-#define HOOKFLASH_STACK_CONNECTION_MANAGER_PEER_IDENTIFY_EXPIRES_IN_SECONDS (2*60)
+#define OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO "text/x-openpeer-json-plain"
+#define OPENPEER_STACK_PEER_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (2*60)
+#define OPENPEER_STACK_CONNECTION_MANAGER_PEER_IDENTIFY_EXPIRES_IN_SECONDS (2*60)
 
-#define HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS (15)
-#define HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS (50)
+#define OPENPEER_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS (15)
+#define OPENPEER_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS (50)
 
-#define HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS (HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS + 40)
+#define OPENPEER_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS (OPENPEER_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS + 40)
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -252,10 +252,10 @@ namespace hookflash
         if (mSocketSession) {
           ZS_LOG_DEBUG(log("setting keep alive properties for socket session"))
           mSocketSession->setKeepAliveProperties(
-                                                 Seconds(HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
-                                                 Seconds(HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS),
+                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
+                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS),
                                                  Duration(),
-                                                 Seconds(HOOKFLASH_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS)
+                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS)
                                                  );
         } else {
           ZS_LOG_ERROR(Detail, log("failed to create socket session"))
@@ -376,7 +376,7 @@ namespace hookflash
         PeerKeepAliveRequestPtr request = PeerKeepAliveRequest::create();
         request->domain(outer->forAccountPeerLocation().getDomain());
 
-        mKeepAliveMonitor = sendRequest(IMessageMonitorResultDelegate<PeerKeepAliveResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_PEER_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
+        mKeepAliveMonitor = sendRequest(IMessageMonitorResultDelegate<PeerKeepAliveResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_PEER_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
       }
 
       //-----------------------------------------------------------------------
@@ -482,7 +482,7 @@ namespace hookflash
             IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock());
             if (!messaging) return;
 
-            if (HOOKFLASH_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != messaging->getRemoteConnectionInfo()) {
+            if (OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != messaging->getRemoteConnectionInfo()) {
               ZS_LOG_WARNING(Detail, log("received unknown incoming connection type thus shutting down incoming connection") + ", type=" + messaging->getRemoteConnectionInfo())
               messaging->shutdown();
               return;
@@ -520,7 +520,7 @@ namespace hookflash
         mMessaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock());
         mIncoming = true;
 
-        if (HOOKFLASH_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != mMessaging->getRemoteConnectionInfo()) {
+        if (OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != mMessaging->getRemoteConnectionInfo()) {
           ZS_LOG_WARNING(Detail, log("received unknown incoming connection type thus shutting down incoming connection") + ", type=" + mMessaging->getRemoteConnectionInfo())
 
           mMessaging->shutdown();
@@ -1115,7 +1115,7 @@ namespace hookflash
         }
 
         ZS_LOG_DEBUG(log("requesting messaging channel open"))
-        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), HOOKFLASH_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO);
+        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO);
 
         if (!mMessaging) {
           ZS_LOG_DEBUG(log("unable to open a messaging channel to remote peer thus shutting down"))
@@ -1165,7 +1165,7 @@ namespace hookflash
         request->location(*selfLocationInfo);
         request->peerFiles(outer->forAccountPeerLocation().getPeerFiles());
 
-        mIdentifyMonitor = sendRequest(IMessageMonitorResultDelegate<PeerIdentifyResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_CONNECTION_MANAGER_PEER_IDENTIFY_EXPIRES_IN_SECONDS));
+        mIdentifyMonitor = sendRequest(IMessageMonitorResultDelegate<PeerIdentifyResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_CONNECTION_MANAGER_PEER_IDENTIFY_EXPIRES_IN_SECONDS));
         return false;
       }
 

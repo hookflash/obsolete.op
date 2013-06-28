@@ -40,9 +40,9 @@
 
 #include <boost/thread.hpp>
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services_http) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services_http) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -434,10 +434,10 @@ namespace hookflash
       {
 #ifndef _LINUX
 #ifdef __QNX__
-          pthread_setname_np(pthread_self(), "com.hookflash.services.http");
+          pthread_setname_np(pthread_self(), "org.openpeer.services.http");
 #else
 #ifndef _ANDROID
-        pthread_setname_np("com.hookflash.services.http");
+        pthread_setname_np("org.openpeer.services.http");
 #endif //_ANDROID
 #endif // __QNX__
 #endif //_LINUX

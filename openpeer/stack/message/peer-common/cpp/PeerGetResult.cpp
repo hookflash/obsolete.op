@@ -35,7 +35,7 @@
 
 #include <openpeer/stack/IPublication.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

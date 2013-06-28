@@ -31,7 +31,7 @@
 
 #include <openpeer/stack/message/MessageRequest.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

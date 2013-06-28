@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #include <openpeer/core/IMediaEngine.h>
 
-using namespace hookflash::core;
+using namespace openpeer::core;
 
 class MediaEngineDelegateWrapper : public IMediaEngineDelegate
 {

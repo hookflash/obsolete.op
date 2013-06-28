@@ -34,7 +34,7 @@
 #include <openpeer/stack/internal/types.h>
 #include <openpeer/stack/IHelper.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

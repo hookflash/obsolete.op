@@ -33,7 +33,7 @@
 
 #include <zsLib/helpers.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

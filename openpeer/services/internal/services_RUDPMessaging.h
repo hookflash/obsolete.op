@@ -37,7 +37,7 @@
 
 #include <boost/shared_array.hpp>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

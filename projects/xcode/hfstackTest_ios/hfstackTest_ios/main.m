@@ -2,7 +2,7 @@
 //  main.m
 //  hfstackTest_ios
 //
-//  Created by hookflash on 11-11-18.
+//  Created by openpeer on 11-11-18.
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 

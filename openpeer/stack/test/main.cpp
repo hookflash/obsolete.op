@@ -36,7 +36,7 @@
 
 #include <zsLib/Log.h>
 
-namespace hookflash { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(openpeer_services_test) } } }
 
 int main (int argc, char * const argv[]) {
   // insert code here...

@@ -35,7 +35,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

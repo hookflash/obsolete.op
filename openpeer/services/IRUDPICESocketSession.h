@@ -38,7 +38,7 @@
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -161,9 +161,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IRUDPICESocketSessionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionDelegate::RUDPICESocketSessionStates, RUDPICESocketSessionStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPICESocketSessionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionDelegate::RUDPICESocketSessionStates, RUDPICESocketSessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPICESocketSessionStateChanged, IRUDPICESocketSessionPtr, RUDPICESocketSessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPICESocketSessionChannelWaiting, IRUDPICESocketSessionPtr)
 ZS_DECLARE_PROXY_END()

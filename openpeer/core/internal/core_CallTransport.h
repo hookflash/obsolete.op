@@ -40,7 +40,7 @@
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -490,13 +490,13 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::ICallTransportDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::internal::ICallTransportPtr, ICallTransportPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::internal::ICallTransport::CallTransportStates, CallTransportStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ICallTransportDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::ICallTransportPtr, ICallTransportPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::ICallTransport::CallTransportStates, CallTransportStates)
 ZS_DECLARE_PROXY_METHOD_2(onCallTransportStateChanged, ICallTransportPtr, CallTransportStates)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::ICallTransportAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ICallTransportAsync)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_METHOD_0(onStart)
 ZS_DECLARE_PROXY_METHOD_0(onStop)

@@ -37,11 +37,11 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define OPENPEER_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -98,7 +98,7 @@ namespace hookflash
 
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
-            identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
+            identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
             identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
           }
 

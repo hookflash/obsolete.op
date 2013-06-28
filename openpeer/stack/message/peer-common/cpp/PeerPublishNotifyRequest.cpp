@@ -34,7 +34,7 @@
 
 #include <zsLib/XML.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -102,7 +102,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         DocumentPtr PeerPublishNotifyRequest::encode()
         {
-          ULONG maxDataSize = HOOKFLASH_STACK_MESSAGE_PEER_PUBLISH_NOTIFY_MAX_DOCUMENT_PUBLICATION_SIZE_IN_BYTES;
+          ULONG maxDataSize = OPENPEER_STACK_MESSAGE_PEER_PUBLISH_NOTIFY_MAX_DOCUMENT_PUBLICATION_SIZE_IN_BYTES;
 
           DocumentPtr current;
           for (PeerPublishNotifyRequest::PublicationList::iterator iter = mPublicationList.begin(); iter != mPublicationList.end(); ++iter)

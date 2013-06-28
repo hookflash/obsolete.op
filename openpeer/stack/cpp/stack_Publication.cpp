@@ -42,9 +42,9 @@
 #include <zsLib/helpers.h>
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -454,7 +454,7 @@ namespace hookflash
 
         mData.reset();
 
-        ElementPtr diffElem = updatedDocumentToBeAdopted->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME); // root for diffs elements
+        ElementPtr diffElem = updatedDocumentToBeAdopted->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME); // root for diffs elements
         if (!diffElem) {
           mDiffDocuments.clear();
 
@@ -667,7 +667,7 @@ namespace hookflash
           mData = publication->mData;
           mDocument.reset();
         } else {
-          ElementPtr diffEl = publication->mDocument->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+          ElementPtr diffEl = publication->mDocument->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
           if (diffEl) {
             if (publication->mBaseVersion != mVersion + 1) {
               if (NULL != noThrowVersionMismatched) {
@@ -926,17 +926,17 @@ namespace hookflash
           try {
             if (!cloned) {
               cloned = doc->clone()->toDocument();
-              diffOutputEl = cloned->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+              diffOutputEl = cloned->findFirstChildElementChecked(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
             } else {
-              diffOutputEl = cloned->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+              diffOutputEl = cloned->findFirstChildElementChecked(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
 
               // we need to process all elements and insert them into the other...
-              ElementPtr diffEl = doc->findFirstChildElementChecked(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+              ElementPtr diffEl = doc->findFirstChildElementChecked(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
 
-              ElementPtr itemEl = diffEl->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
+              ElementPtr itemEl = diffEl->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
               while (itemEl) {
                 diffOutputEl->adoptAsLastChild(itemEl->clone());
-                itemEl = itemEl->findNextSiblingElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
+                itemEl = itemEl->findNextSiblingElement(OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
               }
             }
           } catch (CheckFailed &) {

@@ -33,7 +33,7 @@
 #import <openpeer/stack/IServiceIdentity.h>
 #import <openpeer/stack/types.h>
 
-using namespace hookflash::stack;
+using namespace openpeer::stack;
 
 class ServiceIdentitySessionDelegateWrapper : public IServiceIdentitySessionDelegate
 {

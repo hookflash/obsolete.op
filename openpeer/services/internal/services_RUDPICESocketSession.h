@@ -37,10 +37,10 @@
 #include <openpeer/services/IICESocketSession.h>
 #include <openpeer/services/ISTUNRequester.h>
 
-#define HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START (0x6000)                    // the actual range is 0x4000 -> 0x7FFF but to prevent collision with TURN, RUDP this is a recommended range to use
-#define HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END   (0x7FFF)
+#define OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START (0x6000)                    // the actual range is 0x4000 -> 0x7FFF but to prevent collision with TURN, RUDP this is a recommended range to use
+#define OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END   (0x7FFF)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

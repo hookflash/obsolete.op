@@ -58,20 +58,20 @@
 #define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
 #include <cryptopp/md5.h>
 
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS (60*2)
+#define OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS (60*2)
 
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION (80)
+#define OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION (80)
 
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE "https://openpeer.org/permission/identity-signatures"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE "https://openpeer.org/permission/identity-signatures"
 
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME "privatePeerFileSecret"
-#define HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME "privatePeerFile"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME "privatePeerFileSecret"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME "privatePeerFile"
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -108,9 +108,9 @@ namespace hookflash
       static void getNamespaces(NamespaceInfoMap &outNamespaces)
       {
         static const char *gPermissions[] = {
-          HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE,
-          HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE,
-          HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE,
+          OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE,
+          OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE,
+          OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE,
           NULL
         };
 
@@ -607,7 +607,7 @@ namespace hookflash
 
         String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + info.mURI + ":" + info.mProvider));
 
-        String signatureStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+        String signatureStr = getContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
 
         if (signatureStr.isEmpty()) {
           ZS_LOG_WARNING(Detail, log("no signture present for identity yet (probably okay)") + info.getDebugValueString())
@@ -1313,7 +1313,7 @@ namespace hookflash
         getNamespaces(namespaces);
         request->namespaceURLs(namespaces);
 
-        mLockboxAccessMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mLockboxAccessMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-access", request);
 
         return false;
@@ -1386,7 +1386,7 @@ namespace hookflash
         request->lockboxInfo(mLockboxInfo);
         request->namespaceGrantChallengeBundle(bundleEl);
 
-        mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "rolodex-namespace-grant-challenge-validate", request);
 
         return true;
@@ -1416,7 +1416,7 @@ namespace hookflash
         request->lockboxInfo(mLockboxInfo);
         request->namespaceInfos(namespaces);
 
-        mLockboxContentGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mLockboxContentGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-get", request);
 
         return false;
@@ -1448,8 +1448,8 @@ namespace hookflash
 
         setState(SessionState_Pending);
 
-        String privatePeerSecretStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
-        String privatePeerFileStr = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
+        String privatePeerSecretStr = getContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+        String privatePeerFileStr = getContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
 
         if ((privatePeerSecretStr.hasData()) &&
             (privatePeerFileStr.hasData())) {
@@ -1482,7 +1482,7 @@ namespace hookflash
           Duration totalLifetime = (expires - created);
           Duration lifeConsumed (now - created);
 
-          if (((lifeConsumed.seconds() * 100) / totalLifetime.seconds()) > HOOKFLASH_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION) {
+          if (((lifeConsumed.seconds() * 100) / totalLifetime.seconds()) > OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION) {
             ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + Stringize<Duration::sec_type>(lifeConsumed.seconds()).string() + ", " + Stringize<Duration::sec_type>(totalLifetime.seconds()).string() + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
             mPeerFiles.reset();
           }
@@ -1495,8 +1495,8 @@ namespace hookflash
           ZS_LOG_DEBUG(log("peer files will be regenerated"))
 
           // erase out the current peer file information if it exists from memory (prevents them from becoming reloaded / retested later)
-          clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
-          clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
+          clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+          clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
         }
 
         if (!mSaltQuery) {
@@ -1543,8 +1543,8 @@ namespace hookflash
 
         privatePeerFileStr = output.get();
 
-        setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME, IHelper::convertToString(*peerFileSecret));
-        setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME, privatePeerFileStr);
+        setContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME, IHelper::convertToString(*peerFileSecret));
+        setContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME, privatePeerFileStr);
 
         mPeerFilesNeedUpload = true;
         return true;
@@ -1574,15 +1574,15 @@ namespace hookflash
         request->lockboxInfo(mLockboxInfo);
 
         NamespaceValueMap values;
-        values[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME] = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
-        values[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME] = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
+        values[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME] = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
+        values[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME] = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
 
         NamespaceURLValueMap namespaces;
-        namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE] = values;
+        namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE] = values;
 
         request->namespaceURLNameValues(namespaces);
 
-        mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
 
         return false;
@@ -1610,7 +1610,7 @@ namespace hookflash
 
         request->lockboxInfo(mLockboxInfo);
 
-        mPeerServicesGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerServicesGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mPeerServicesGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<PeerServicesGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("peer", "peer-services-get", request);
         return false;
       }
@@ -1725,7 +1725,7 @@ namespace hookflash
 
           String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + info.mURI + ":" + info.mProvider));
 
-          String reloginKey = getContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+          String reloginKey = getContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
 
           ZS_LOG_DEBUG(log("reloading identity") + ", identity uri=" + info.mURI + ", provider=" + info.mProvider + ", relogin key=" + reloginKey)
 
@@ -1867,14 +1867,14 @@ namespace hookflash
             {
               String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
               reloginValues[hash] = "-";
-              clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+              clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
             }
 
             // clear signature (if present)
             {
               String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
               signatureValues[hash] = "-";
-              clearContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+              clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
             }
 
             removedIdentities[pendingRemovalIdentity->forLockbox().getID()] = pendingRemovalIdentity;
@@ -1915,8 +1915,8 @@ namespace hookflash
           if (info.mReloginKey.hasData()) {
             String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + info.mURI + ":" + info.mProvider));
 
-            setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash, info.mReloginKey);
-            String rawValue = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
+            setContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash, info.mReloginKey);
+            String rawValue = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
             reloginValues[hash] = rawValue;
           }
 
@@ -1929,8 +1929,8 @@ namespace hookflash
 
             String signatureStr((const char *) output.get());
 
-            setContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash, signatureStr);
-            String rawValue = getRawContent(HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
+            setContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash, signatureStr);
+            String rawValue = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
             signatureValues[hash] = rawValue;
           }
         }
@@ -1939,11 +1939,11 @@ namespace hookflash
 
         if (reloginValues.size() > 0) {
           ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + Stringize<size_t>(reloginValues.size()).string())
-          namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
+          namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
         }
         if (signatureValues.size() > 0) {
           ZS_LOG_DEBUG(log("contains signature values to update") + "values=" + Stringize<size_t>(signatureValues.size()).string())
-          namespaces[HOOKFLASH_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE] = signatureValues;
+          namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE] = signatureValues;
         }
 
         if (namespaces.size() > 0) {
@@ -1955,7 +1955,7 @@ namespace hookflash
 
           request->namespaceURLNameValues(namespaces);
 
-          mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+          mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
           mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
         }
 
@@ -1999,7 +1999,7 @@ namespace hookflash
             request->identitiesToUpdate(updateInfos);
             request->identitiesToRemove(removeInfos);
 
-            mLockboxIdentitiesUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+            mLockboxIdentitiesUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxIdentitiesUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
             mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-identities-update", request);
 
             // NOTE: It's entirely possible the associate request can fail. Unfortunately, there is very little that can be done upon failure. The user will have to take some responsibility to keep their identities associated.

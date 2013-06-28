@@ -45,11 +45,11 @@
 
 #include <zsLib/Log.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_TO_PEER_HANDLER "p2p"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_TO_PEER_HANDLER "p2p"
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -94,7 +94,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryPeerToPeer::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_TO_PEER_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_TO_PEER_HANDLER;
         }
 
         //---------------------------------------------------------------------

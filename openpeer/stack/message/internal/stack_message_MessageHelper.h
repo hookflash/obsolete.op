@@ -36,7 +36,7 @@
 #include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/IPublicationMetaData.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

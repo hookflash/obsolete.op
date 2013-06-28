@@ -39,10 +39,10 @@
 
 #include <boost/shared_array.hpp>
 
-#define HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START (0x4000)                    // the actual range is 0x4000 -> 0x7FFF but to prevent collision with RUDP this is a recommended range to use
-#define HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END   (0x5FFF)
+#define OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START (0x4000)                    // the actual range is 0x4000 -> 0x7FFF but to prevent collision with RUDP this is a recommended range to use
+#define OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END   (0x5FFF)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -82,8 +82,8 @@ namespace hookflash
                                    const char *turnServerUsername,
                                    const char *turnServerPassword,
                                    bool useChannelBinding = false,
-                                   WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                   WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                   WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                   WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                    );
 
       static ITURNSocketPtr create(
@@ -94,8 +94,8 @@ namespace hookflash
                                    const char *turnServerUsername,
                                    const char *turnServerPassword,
                                    bool useChannelBinding = false,
-                                   WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                   WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                   WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                   WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                    );
 
       static String toDebugString(ITURNSocketPtr peer, bool includeCommaPrefix = true);
@@ -195,11 +195,11 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::ITURNSocketDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::ITURNSocketPtr, ITURNSocketPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::ITURNSocketDelegate::TURNSocketStates, TURNSocketStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::ITURNSocketDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::ITURNSocketPtr, ITURNSocketPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::ITURNSocketDelegate::TURNSocketStates, TURNSocketStates)
 ZS_DECLARE_PROXY_METHOD_2(onTURNSocketStateChanged, ITURNSocketPtr, TURNSocketStates)
 ZS_DECLARE_PROXY_METHOD_SYNC_4(handleTURNSocketReceivedPacket, ITURNSocketPtr, IPAddress, const BYTE *, ULONG)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_4(notifyTURNSocketSendPacket, bool, ITURNSocketPtr, IPAddress, const BYTE *, ULONG)
-ZS_DECLARE_PROXY_METHOD_1(onTURNSocketWriteReady, hookflash::services::ITURNSocketPtr)
+ZS_DECLARE_PROXY_METHOD_1(onTURNSocketWriteReady, openpeer::services::ITURNSocketPtr)
 ZS_DECLARE_PROXY_END()

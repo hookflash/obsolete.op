@@ -42,7 +42,7 @@
 #include <zsLib/String.h>
 #include <zsLib/Timer.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -349,6 +349,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::IConversationThreadSlaveAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IConversationThreadSlaveAsync)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

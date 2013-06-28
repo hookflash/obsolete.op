@@ -38,10 +38,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER "peer"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER "peer"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -83,7 +83,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryPeer::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_HANDLER;
         }
 
         //---------------------------------------------------------------------

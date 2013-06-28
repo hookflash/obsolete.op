@@ -38,7 +38,7 @@
 #include <zsLib/Timer.h>
 #include <zsLib/Proxy.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -40,9 +40,9 @@
 #include <cryptopp/rsa.h>
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -119,7 +119,7 @@ namespace hookflash
 
         RSAPrivateKeyPtr pThis(new RSAPrivateKey);
 
-        pThis->mPrivateKey.GenerateRandomWithKeySize(rng, HOOKFLASH_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE);
+        pThis->mPrivateKey.GenerateRandomWithKeySize(rng, OPENPEER_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE);
         if (!pThis->mPrivateKey.Validate(rng, 3)) {
           ZS_LOG_ERROR(Basic, "failed to generate a new private key")
           return RSAPrivateKeyPtr();

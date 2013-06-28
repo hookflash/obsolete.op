@@ -50,9 +50,9 @@ namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(ho
 
 namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_peer_contact_test) } } }
 
-//#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-//#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-#define HOOKFLASH_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS (60*2)
+//#define OPENPEER_MEDIA_ENGINE_DEBUG_LOG_LEVEL
+//#define OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
+#define OPENPEER_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS (60*2)
 
 namespace hookflash
 {
@@ -217,9 +217,9 @@ namespace hookflash
         boost::shared_array<char> postData = doc->writeAsJSON(&postDataLengthInBytes);
         
         
-        Duration timeout = Duration(Seconds(HOOKFLASH_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
+        Duration timeout = Duration(Seconds(OPENPEER_STACK_TEST_SERVICE_PEER_CONTACT_TIMEOUT_IN_SECONDS));
         
-        TestHTTPQueryForPeerContactPtr query = TestHTTPQueryForPeerContact::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
+        TestHTTPQueryForPeerContactPtr query = TestHTTPQueryForPeerContact::create(openpeer::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
         
         mPendingRequests[query] = message;
         
@@ -567,7 +567,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         mNetworkDone = true;
         
-        mIdentitySession = hookflash::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
+        mIdentitySession = openpeer::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
         
         zsLib::String filePassword, fileText;
         bool ret = readFromFile(filePassword, fileText);
@@ -581,13 +581,13 @@ namespace hookflash
           
           mPeerFilesPtr = IPeerFiles::loadFromElement(mPeerFilePassword.c_str(), mPeerFilesElement);
           
-          mPeerContactSession = hookflash::stack::IServiceLockboxSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
+          mPeerContactSession = openpeer::stack::IServiceLockboxSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
         }
         else
         {
           //peer file not found, do Login
           mLoginScenario = LoginScenario_Login;
-          mPeerContactSession = hookflash::stack::IServiceLockboxSession::login(mThisWeak.lock(), hookflash::stack::IServiceLockbox::createServiceLockboxFrom(mNetwork), mIdentitySession);
+          mPeerContactSession = openpeer::stack::IServiceLockboxSession::login(mThisWeak.lock(), openpeer::stack::IServiceLockbox::createServiceLockboxFrom(mNetwork), mIdentitySession);
         }
         
         
@@ -609,7 +609,7 @@ namespace hookflash
       
       void TestCallbackForPeerContact::onServiceLockboxSessionStateChanged(
                                                                 IServiceLockboxSessionPtr session,
-                                                                hookflash::stack::IServiceLockboxSession::SessionStates state
+                                                                openpeer::stack::IServiceLockboxSession::SessionStates state
                                                                 )
       {
         if (state == IServiceLockboxSession::SessionState_Ready)
@@ -673,29 +673,29 @@ namespace hookflash
 }
 
 //service peer contact session
-using hookflash::stack::test::TestServiceLockboxSession;
-using hookflash::stack::test::TestServiceLockboxSessionPtr;
+using openpeer::stack::test::TestServiceLockboxSession;
+using openpeer::stack::test::TestServiceLockboxSessionPtr;
 
 //service identity session
-using hookflash::stack::test::TestServiceIdentitySessionForPeerContact;
-using hookflash::stack::test::TestServiceIdentitySessionForPeerContactPtr;
+using openpeer::stack::test::TestServiceIdentitySessionForPeerContact;
+using openpeer::stack::test::TestServiceIdentitySessionForPeerContactPtr;
 
 //bootstrapped network
-using hookflash::stack::test::TestBootstrappedNetworkForPeerContact;
-using hookflash::stack::test::TestBootstrappedNetworkForPeerContactPtr;
+using openpeer::stack::test::TestBootstrappedNetworkForPeerContact;
+using openpeer::stack::test::TestBootstrappedNetworkForPeerContactPtr;
 
 //delegate callback
-using hookflash::stack::test::TestCallbackForPeerContact;
-using hookflash::stack::test::TestCallbackForPeerContactPtr;
+using openpeer::stack::test::TestCallbackForPeerContact;
+using openpeer::stack::test::TestCallbackForPeerContactPtr;
 
 //factory
-using hookflash::stack::test::TestFactoryForPeerContact;
-using hookflash::stack::test::TestFactoryForPeerContactPtr;
+using openpeer::stack::test::TestFactoryForPeerContact;
+using openpeer::stack::test::TestFactoryForPeerContactPtr;
 
 
 void doTestPeerContactSession()
 {
-  if (!HOOKFLASH_STACK_TEST_DO_PEER_CONTACT_SESSION_TEST) return;
+  if (!OPENPEER_STACK_TEST_DO_PEER_CONTACT_SESSION_TEST) return;
   
   BOOST_INSTALL_LOGGER();
   
@@ -707,10 +707,10 @@ void doTestPeerContactSession()
   
   //override factory
   TestFactoryForPeerContactPtr overrideFactory(new TestFactoryForPeerContact);
-  hookflash::stack::internal::Factory::override(overrideFactory);
+  openpeer::stack::internal::Factory::override(overrideFactory);
   
   //prepare stack
-  hookflash::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");
+  openpeer::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");
   
   //start test
   TestCallbackForPeerContactPtr testObject = TestCallbackForPeerContact::create(thread);

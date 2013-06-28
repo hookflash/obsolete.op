@@ -35,9 +35,9 @@
 #include <zsLib/Numeric.h>
 #include <zsLib/XML.h>
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -223,12 +223,12 @@ namespace hookflash
                                      )
       {
         if (ioDiffDocument) {
-          outDiffEl = ioDiffDocument->findLastChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+          outDiffEl = ioDiffDocument->findLastChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
           return;
         }
 
         DocumentPtr doc = Document::create();
-        ElementPtr diffEl = Element::create(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+        ElementPtr diffEl = Element::create(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
         doc->adoptAsLastChild(diffEl);
 
         ioDiffDocument = doc;
@@ -243,7 +243,7 @@ namespace hookflash
       {
         typedef std::list<String> PathList;
 
-        ElementPtr itemEl = Element::create(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
+        ElementPtr itemEl = Element::create(OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
         itemEl->setAttribute("do", toActionString(action));
 
         // calculate the path...
@@ -349,10 +349,10 @@ namespace hookflash
 
         // scope: processing the diff document
         {
-          ElementPtr diffElem = diffDocument->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME); // root for diffs elements
+          ElementPtr diffElem = diffDocument->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME); // root for diffs elements
           if (!diffElem) return false;
 
-          ElementPtr itemEl = diffElem->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);        // diff element
+          ElementPtr itemEl = diffElem->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);        // diff element
           while (itemEl)
           {
             String pathStr = itemEl->getAttributeValue("path");
@@ -466,7 +466,7 @@ namespace hookflash
               }
             }
 
-            itemEl = itemEl->findNextSiblingElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
+            itemEl = itemEl->findNextSiblingElement(OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME);
           }
         }
 

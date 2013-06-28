@@ -37,12 +37,12 @@
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 
-#define HOOKFLASH_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE ((1 << (sizeof(WORD)*8)) + sizeof(DWORD))
-#define HOOKFLASH_SERVICES_RUDPMESSAGING_MAX_RECYLCE_BUFFERS (100)
+#define OPENPEER_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE ((1 << (sizeof(WORD)*8)) + sizeof(DWORD))
+#define OPENPEER_SERVICES_RUDPMESSAGING_MAX_RECYLCE_BUFFERS (100)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -234,7 +234,7 @@ namespace hookflash
 
         AutoRecycleBuffer recycle(*this, recycleBuffer);
 
-        if (messsageLengthInBytes < HOOKFLASH_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE - sizeof(DWORD)) {
+        if (messsageLengthInBytes < OPENPEER_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE - sizeof(DWORD)) {
           // this buffer can fit inside the recycle buffer, great!
           getBuffer(buffer);
           recycleBuffer = buffer;
@@ -580,7 +580,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
         if (mRecycledBuffers.size() < 1) {
-          outBuffer = RecycledPacketBuffer(new BYTE[HOOKFLASH_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE]);
+          outBuffer = RecycledPacketBuffer(new BYTE[OPENPEER_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE]);
           return;
         }
 
@@ -594,7 +594,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         if (!buffer) return;
 
-        if (mRecycledBuffers.size() >= HOOKFLASH_SERVICES_RUDPMESSAGING_MAX_RECYLCE_BUFFERS) {
+        if (mRecycledBuffers.size() >= OPENPEER_SERVICES_RUDPMESSAGING_MAX_RECYLCE_BUFFERS) {
           buffer.reset();
           return;
         }

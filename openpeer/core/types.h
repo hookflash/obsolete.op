@@ -41,7 +41,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -56,9 +56,9 @@ namespace hookflash
     using zsLib::XML::Element;
     using zsLib::XML::ElementPtr;
 
-    using hookflash::stack::SecureByteBlock;
-    using hookflash::stack::SecureByteBlockPtr;
-    using hookflash::stack::message::IMessageHelper;
+    using openpeer::stack::SecureByteBlock;
+    using openpeer::stack::SecureByteBlockPtr;
+    using openpeer::stack::message::IMessageHelper;
 
     interaction IAccount;
     typedef boost::shared_ptr<IAccount> IAccountPtr;

@@ -35,7 +35,7 @@
 
 #include <openpeer/stack/message/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -91,7 +91,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IBootstrappedNetworkDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IBootstrappedNetworkPtr, IBootstrappedNetworkPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IBootstrappedNetworkDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IBootstrappedNetworkPtr, IBootstrappedNetworkPtr)
 ZS_DECLARE_PROXY_METHOD_1(onBootstrappedNetworkPreparationCompleted, IBootstrappedNetworkPtr)
 ZS_DECLARE_PROXY_END()

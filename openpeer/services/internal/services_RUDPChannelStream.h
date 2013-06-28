@@ -44,7 +44,7 @@
 #pragma warning(push)
 #pragma warning(disable:4290)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -435,7 +435,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPChannelStreamAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelStreamAsync)
 ZS_DECLARE_PROXY_METHOD_0(onSendNow)
 ZS_DECLARE_PROXY_END()
 

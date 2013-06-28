@@ -34,7 +34,7 @@
 #include <openpeer/core/internal/types.h>
 #include <openpeer/core/ILogger.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

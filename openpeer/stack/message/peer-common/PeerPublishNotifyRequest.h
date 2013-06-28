@@ -34,9 +34,9 @@
 #include <openpeer/stack/message/MessageNotify.h>
 #include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
 
-#define HOOKFLASH_STACK_MESSAGE_PEER_PUBLISH_NOTIFY_MAX_DOCUMENT_PUBLICATION_SIZE_IN_BYTES (50*1024)
+#define OPENPEER_STACK_MESSAGE_PEER_PUBLISH_NOTIFY_MAX_DOCUMENT_PUBLICATION_SIZE_IN_BYTES (50*1024)
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

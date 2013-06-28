@@ -42,23 +42,23 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE (1 << (sizeof(WORD)*8))
-#define HOOKFLASH_SERVICES_TURNSOCKET_MAX_RECYLCE_BUFFERS 4
+#define OPENPEER_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE (1 << (sizeof(WORD)*8))
+#define OPENPEER_SERVICES_TURNSOCKET_MAX_RECYLCE_BUFFERS 4
 
-#define HOOKFLASH_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS (20)             // keep alive should be 20 because ICE sends its keep alives every 15 seconds
-#define HOOKFLASH_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS (15)               // do not allow server to dictate a LIFETIME lower than 15 seconds
-#define HOOKFLASH_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS (60) // should try to refresh at least 60 seconds before LIFETIME of an allocation expires
+#define OPENPEER_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS (20)             // keep alive should be 20 because ICE sends its keep alives every 15 seconds
+#define OPENPEER_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS (15)               // do not allow server to dictate a LIFETIME lower than 15 seconds
+#define OPENPEER_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS (60) // should try to refresh at least 60 seconds before LIFETIME of an allocation expires
 
-#define HOOKFLASH_SERVICES_TURN_RECOMMENDED_LIFETIME_IN_SECONDS (60*10)                 // 10 minutes is recommended LIFETIME for an allocation on TURN
-#define HOOKFLASH_SERVICES_TURN_PERMISSION_RETRY_IN_SECONDS (4*60)                      // 5 minutes until permissions expire so retry in 4 minutes
-#define HOOKFLASH_SERVICES_TURN_REMOVE_PERMISSION_IF_NO_DATA_IN_SECONDS (10*60)         // remove any created permission if no data was sent in 10 minutes
-#define HOOKFLASH_SERVICES_TURN_REMOVE_CHANNEL_IF_NO_DATA_IN_SECONDS (10*60)            // remove any channels created if no data was sent in 10 minutes
+#define OPENPEER_SERVICES_TURN_RECOMMENDED_LIFETIME_IN_SECONDS (60*10)                 // 10 minutes is recommended LIFETIME for an allocation on TURN
+#define OPENPEER_SERVICES_TURN_PERMISSION_RETRY_IN_SECONDS (4*60)                      // 5 minutes until permissions expire so retry in 4 minutes
+#define OPENPEER_SERVICES_TURN_REMOVE_PERMISSION_IF_NO_DATA_IN_SECONDS (10*60)         // remove any created permission if no data was sent in 10 minutes
+#define OPENPEER_SERVICES_TURN_REMOVE_CHANNEL_IF_NO_DATA_IN_SECONDS (10*60)            // remove any channels created if no data was sent in 10 minutes
 
-#define HOOKFLASH_SERVICES_TURN_ACTIVATE_NEXT_SERVER_IN_SECONDS (4)
+#define OPENPEER_SERVICES_TURN_ACTIVATE_NEXT_SERVER_IN_SECONDS (4)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -151,9 +151,9 @@ namespace hookflash
       {
         ZS_THROW_INVALID_USAGE_IF(mLimitChannelToRangeStart > mLimitChannelToRangeEnd)
         ZS_LOG_BASIC(log("created"))
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-        mServerName = HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP;
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+        mServerName = OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP;
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
       }
 
       //-----------------------------------------------------------------------
@@ -337,7 +337,7 @@ namespace hookflash
           ZS_LOG_WARNING(Debug, log("cannot send packet as buffer length is empty"))
           return false;
         }
-        if (bufferLengthInBytes > HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES) {
+        if (bufferLengthInBytes > OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES) {
           ZS_LOG_WARNING(Debug, log("cannot send packet as buffer length is greater than maximum capacity") + ", size=" + Stringize<ULONG>(bufferLengthInBytes).string())
           return false;  // illegal to be so large
         }
@@ -529,7 +529,7 @@ namespace hookflash
         if ((channel < mLimitChannelToRangeStart) ||
             (channel > mLimitChannelToRangeEnd)) return false;        // this can't be legal channel data
 
-        if (length > HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES) return false;  // this can't be legal channel data
+        if (length > OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES) return false;  // this can't be legal channel data
         if (length > (bufferLengthInBytes-sizeof(DWORD))) {
           ZS_LOG_WARNING(Detail, log("channel packet received with a length set too large") + ", ip = " + fromIPAddress.string() + ", reported length=" + Stringize<WORD>(length).string() + ", actual length=" + Stringize<ULONG>(bufferLengthInBytes).string())
           return false;
@@ -863,7 +863,7 @@ namespace hookflash
                 if (0 != consumedBytes) {
                   // the STUN packet is going to have it's parsed pointing into the read buffer which is about to be consumed, fix the pointers now...
                   ZS_THROW_INVALID_ASSUMPTION_IF(!stun)
-                  ZS_THROW_INVALID_ASSUMPTION_IF(consumedBytes > HOOKFLASH_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE)
+                  ZS_THROW_INVALID_ASSUMPTION_IF(consumedBytes > OPENPEER_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE)
 
                   getBuffer(buffer);
 
@@ -905,7 +905,7 @@ namespace hookflash
 
                     if ((channel < mLimitChannelToRangeStart) ||
                         (channel > mLimitChannelToRangeEnd) ||
-                        (lengthAsULONG > HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES)) {
+                        (lengthAsULONG > OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES)) {
                       ZS_LOG_ERROR(Basic, log("socket received bogus data and is being shutdown"))
                       // this socket has bogus data in it...
                       mLastError = TURNSocketError_BogusDataOnSocketReceived;
@@ -1118,15 +1118,15 @@ namespace hookflash
           if (mRefreshRequester) return;  // if there already is a referesh timer then we don't need to do another one...
 
           // figure out how much time do we have before the lifetime expires
-          DWORD totalSeconds = (mLifetime > (HOOKFLASH_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS+30) ? mLifetime - HOOKFLASH_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS : mLifetime / 2);
-          if (totalSeconds < HOOKFLASH_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS)
-            totalSeconds = HOOKFLASH_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS;
+          DWORD totalSeconds = (mLifetime > (OPENPEER_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS+30) ? mLifetime - OPENPEER_SERVICES_TURN_RECOMMENDED_REFRESH_BEFORE_LIFETIME_END_IN_SECONDS : mLifetime / 2);
+          if (totalSeconds < OPENPEER_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS)
+            totalSeconds = OPENPEER_SERVICES_TURN_MINIMUM_LIFETIME_FOR_TURN_IN_SECONDS;
 
           Time current = zsLib::now();
 
           // if we haven't sent data to the server in a while we should otherwise our firewall socket port could close
-          if (mLastSentDataToServer + Seconds(HOOKFLASH_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS) < current)
-            totalSeconds = (totalSeconds > HOOKFLASH_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS ? HOOKFLASH_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS : totalSeconds);
+          if (mLastSentDataToServer + Seconds(OPENPEER_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS) < current)
+            totalSeconds = (totalSeconds > OPENPEER_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS ? OPENPEER_SERVICES_TURN_MINIMUM_KEEP_ALIVE_FOR_TURN_IN_SECONDS : totalSeconds);
 
           if (mLastRefreshTimerWasSentAt + Seconds(totalSeconds) > current) {
             // we don't need to refresh yet because we sent data to the server recently and the lifetime hasn't expired yet...
@@ -1341,7 +1341,7 @@ namespace hookflash
           server->mServerIP = result;
           server->mActivateAfter = activateAfter;
 
-          activateAfter += Seconds(HOOKFLASH_SERVICES_TURN_ACTIVATE_NEXT_SERVER_IN_SECONDS);
+          activateAfter += Seconds(OPENPEER_SERVICES_TURN_ACTIVATE_NEXT_SERVER_IN_SECONDS);
 
           mServers.push_back(server);
         }
@@ -1452,7 +1452,7 @@ namespace hookflash
 
             ZS_LOG_DETAIL(log("creating alloc request") + ", server IP=" + server->mServerIP.string() + ", is UDP=" + (server->mIsUDP ? "true" : "false"))
 
-            mLifetime = HOOKFLASH_SERVICES_TURN_RECOMMENDED_LIFETIME_IN_SECONDS;
+            mLifetime = OPENPEER_SERVICES_TURN_RECOMMENDED_LIFETIME_IN_SECONDS;
 
             // we don't have an allocate request - form one now
             STUNPacketPtr allocRequest = STUNPacket::createRequest(STUNPacket::Method_Allocate);
@@ -1496,7 +1496,7 @@ namespace hookflash
 
         // we need to refresh permissions every 4 minutes
         if (!mPermissionTimer) {
-          mPermissionTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_SERVICES_TURN_PERMISSION_RETRY_IN_SECONDS));  // refresh permissions every 4 minutes
+          mPermissionTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_SERVICES_TURN_PERMISSION_RETRY_IN_SECONDS));  // refresh permissions every 4 minutes
         }
 
         // finally we need to make sure all channels are created imemdiately
@@ -1958,7 +1958,7 @@ namespace hookflash
             PermissionMap::iterator current = permIter;
             ++permIter;
 
-            if (time > ((*current).second->mLastSentDataAt + Seconds(HOOKFLASH_SERVICES_TURN_REMOVE_PERMISSION_IF_NO_DATA_IN_SECONDS))) {
+            if (time > ((*current).second->mLastSentDataAt + Seconds(OPENPEER_SERVICES_TURN_REMOVE_PERMISSION_IF_NO_DATA_IN_SECONDS))) {
               mPermissions.erase(current);
             } else
               found = true;
@@ -2033,7 +2033,7 @@ namespace hookflash
           {
             for (ChannelNumberMap::iterator iter = mChannelNumberMap.begin(); iter != mChannelNumberMap.end(); ++iter) {
               ChannelInfoPtr info = (*iter).second;
-              if (time > (info->mLastSentDataAt + Seconds(HOOKFLASH_SERVICES_TURN_REMOVE_CHANNEL_IF_NO_DATA_IN_SECONDS))) {
+              if (time > (info->mLastSentDataAt + Seconds(OPENPEER_SERVICES_TURN_REMOVE_CHANNEL_IF_NO_DATA_IN_SECONDS))) {
                 infoList.push_back(info);
               }
             }
@@ -2342,7 +2342,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
         if (mRecycledBuffers.size() < 1) {
-          outBuffer = RecycledPacketBuffer(new BYTE[HOOKFLASH_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE]);
+          outBuffer = RecycledPacketBuffer(new BYTE[OPENPEER_SERVICES_TURNSOCKET_RECYCLE_BUFFER_SIZE]);
           return;
         }
 
@@ -2356,7 +2356,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         if (!buffer) return;
 
-        if (mRecycledBuffers.size() >= HOOKFLASH_SERVICES_TURNSOCKET_MAX_RECYLCE_BUFFERS) {
+        if (mRecycledBuffers.size() >= OPENPEER_SERVICES_TURNSOCKET_MAX_RECYLCE_BUFFERS) {
           buffer.reset();
           return;
         }

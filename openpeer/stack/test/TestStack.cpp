@@ -42,9 +42,9 @@
 
 #include <list>
 
-namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_stack_test) } } }
+namespace openpeer { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_stack_test) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -89,13 +89,13 @@ namespace hookflash
 
 
 using zsLib::ULONG;
-using hookflash::stack::IStack;
-using hookflash::stack::test::TestStackCallback;
-using hookflash::stack::test::TestStackCallbackPtr;
+using openpeer::stack::IStack;
+using openpeer::stack::test::TestStackCallback;
+using openpeer::stack::test::TestStackCallbackPtr;
 
 void doTestStack()
 {
-  if (!HOOKFLASH_STACK_TEST_DO_STACK_TEST) return;
+  if (!OPENPEER_STACK_TEST_DO_STACK_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 

@@ -33,7 +33,7 @@
 
 #include <openpeer/services/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

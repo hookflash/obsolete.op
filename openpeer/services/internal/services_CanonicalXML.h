@@ -34,7 +34,7 @@
 #include <openpeer/services/internal/types.h>
 #include <openpeer/services/ICanonicalXML.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

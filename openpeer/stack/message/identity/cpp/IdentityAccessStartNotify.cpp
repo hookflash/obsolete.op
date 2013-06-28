@@ -37,9 +37,9 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

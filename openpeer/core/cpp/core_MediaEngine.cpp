@@ -46,14 +46,14 @@
 #include <TargetConditionals.h>
 #endif
 
-#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
-//#define HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
-#define HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL (-1)
-#define HOOKFLASH_MEDIA_ENGINE_MTU (576)
+#define OPENPEER_MEDIA_ENGINE_VOICE_CODEC_ISAC
+//#define OPENPEER_MEDIA_ENGINE_VOICE_CODEC_OPUS
+#define OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL (-1)
+#define OPENPEER_MEDIA_ENGINE_MTU (576)
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_webrtc) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_webrtc) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -106,7 +106,7 @@ namespace hookflash
                                ) :
         MessageQueueAssociator(queue),
         mError(0),
-        mMtu(HOOKFLASH_MEDIA_ENGINE_MTU),
+        mMtu(OPENPEER_MEDIA_ENGINE_MTU),
         mID(zsLib::createPUID()),
         mDelegate(IMediaEngineDelegateProxy::createWeak(delegate)),
         mEcEnabled(false),
@@ -115,9 +115,9 @@ namespace hookflash
         mVoiceRecordFile(""),
         mDefaultVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
         mRecordVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
-        mVoiceChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVoiceChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL),
         mVoiceTransport(&mRedirectVoiceTransport),
-        mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVideoChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL),
         mVideoTransport(&mRedirectVideoTransport),
         mCaptureId(0),
         mCameraType(CameraType_Front),
@@ -173,7 +173,7 @@ namespace hookflash
         Noop(true),
         MessageQueueAssociator(IMessageQueuePtr()),
         mError(0),
-        mMtu(HOOKFLASH_MEDIA_ENGINE_MTU),
+        mMtu(OPENPEER_MEDIA_ENGINE_MTU),
         mID(zsLib::createPUID()),
         mEcEnabled(false),
         mAgcEnabled(false),
@@ -181,9 +181,9 @@ namespace hookflash
         mVoiceRecordFile(""),
         mDefaultVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
         mRecordVideoOrientation(IMediaEngine::VideoOrientation_LandscapeLeft),
-        mVoiceChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVoiceChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL),
         mVoiceTransport(NULL),
-        mVideoChannel(HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL),
+        mVideoChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL),
         mVideoTransport(NULL),
         mCaptureId(0),
         mCameraType(CameraType_Front),
@@ -564,7 +564,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void MediaEngine::setLogLevel()
       {
-//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Detail);
+//        ILogger::setLogLevel("openpeer_webrtc", ILogger::Detail);
       }
 
       //---------------------------------------------------------------------
@@ -638,7 +638,7 @@ namespace hookflash
         
         ZS_LOG_DEBUG(log("set video orientation and codec parameters"))
         
-        if (mVideoChannel == HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL) {
+        if (mVideoChannel == OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL) {
           mError = setVideoCaptureRotation();
         } else {
           mError = setVideoCodecParameters();
@@ -1094,14 +1094,14 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVoiceRTPPacket(const void *data, unsigned int length)
       {
-        int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+        int channel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
           if (mVoiceEngineReady)
             channel = mVoiceChannel;
         }
 
-        if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
+        if (OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
           ZS_LOG_WARNING(Debug, log("voice channel is not ready yet"))
           return -1;
         }
@@ -1118,14 +1118,14 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVoiceRTCPPacket(const void* data, unsigned int length)
       {
-        int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+        int channel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
           if (mVoiceEngineReady)
             channel = mVoiceChannel;
         }
 
-        if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
+        if (OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
           ZS_LOG_WARNING(Debug, log("voice channel is not ready yet"))
           return -1;
         }
@@ -1166,14 +1166,14 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVideoRTPPacket(const void *data, const int length)
       {
-        int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+        int channel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
           if (mVideoEngineReady)
             channel = mVideoChannel;
         }
 
-        if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
+        if (OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
           ZS_LOG_WARNING(Debug, log("video channel is not ready yet"))
           return -1;
         }
@@ -1190,14 +1190,14 @@ namespace hookflash
       //-----------------------------------------------------------------------
       int MediaEngine::receivedVideoRTCPPacket(const void *data, const int length)
       {
-        int channel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+        int channel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         {
           AutoRecursiveLock lock(mMediaEngineReadyLock);
           if (mVideoEngineReady)
             channel = mVideoChannel;
         }
 
-        if (HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
+        if (OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL == channel) {
           ZS_LOG_WARNING(Debug, log("video channel is not ready yet"))
           return -1;
         }
@@ -1344,9 +1344,9 @@ namespace hookflash
       {
   #ifndef _LINUX
   # ifdef __QNX__
-        pthread_setname_np(pthread_self(), "com.hookflash.core.mediaEngine");
+        pthread_setname_np(pthread_self(), "org.openpeer.core.mediaEngine");
   # else
-        pthread_setname_np("com.hookflash.core.mediaEngine");
+        pthread_setname_np("org.openpeer.core.mediaEngine");
   # endif
   #endif
         ZS_LOG_DEBUG(log("media engine lifetime thread spawned"))
@@ -1496,7 +1496,7 @@ namespace hookflash
           mVoiceChannel = mVoiceBase->CreateChannel();
           if (mVoiceChannel < 0) {
             ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
-            mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+            mVoiceChannel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
             return;
           }
 
@@ -1551,7 +1551,7 @@ namespace hookflash
               ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
               return;
             }
-#ifdef HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_ISAC
+#ifdef OPENPEER_MEDIA_ENGINE_VOICE_CODEC_ISAC
             if (strcmp(cinst.plname, "ISAC") == 0) {
               strcpy(cinst.plname, "ISAC");
               cinst.pltype = 103;
@@ -1566,7 +1566,7 @@ namespace hookflash
               }
               break;
             }
-#elif defined HOOKFLASH_MEDIA_ENGINE_VOICE_CODEC_OPUS
+#elif defined OPENPEER_MEDIA_ENGINE_VOICE_CODEC_OPUS
             if (strcmp(cinst.plname, "OPUS") == 0) {
               strcpy(cinst.plname, "OPUS");
               cinst.pltype = 110;
@@ -1682,7 +1682,7 @@ namespace hookflash
             ZS_LOG_ERROR(Detail, log("failed to delete voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
             return;
           }
-          mVoiceChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+          mVoiceChannel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         }
       }
       
@@ -2078,7 +2078,7 @@ namespace hookflash
             return;
           }
 
-          mVideoChannel = HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL;
+          mVideoChannel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
         }
       }
       
@@ -2125,7 +2125,7 @@ namespace hookflash
           return;
         }
         
-        if (mVideoChannel == HOOKFLASH_MEDIA_ENGINE_INVALID_CHANNEL)
+        if (mVideoChannel == OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL)
           setVideoCaptureRotation();
         else
           setVideoCodecParameters();

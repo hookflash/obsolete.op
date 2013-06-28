@@ -42,10 +42,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER "identity-lockbox"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER "identity-lockbox"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -87,7 +87,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryIdentityLockbox::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOCKBOX_HANDLER;
         }
 
         //---------------------------------------------------------------------

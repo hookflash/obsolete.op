@@ -39,23 +39,23 @@
 
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_CALL_CLEANUP_TIMEOUT_IN_SECONDS (60*2)
+#define OPENPEER_CALL_CLEANUP_TIMEOUT_IN_SECONDS (60*2)
 
-#define HOOKFLASH_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS (4)
-#define HOOKFLASH_CALL_CALL_CHECK_PEER_ALIVE_TIMER_IN_SECONDS (15)
+#define OPENPEER_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS (4)
+#define OPENPEER_CALL_CALL_CHECK_PEER_ALIVE_TIMER_IN_SECONDS (15)
 
-#define HOOKFLASH_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS (4)
-#define HOOKFLASH_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS (10)
-#define HOOKFLASH_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (15)
+#define OPENPEER_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS (4)
+#define OPENPEER_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS (10)
+#define OPENPEER_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS (15)
 
-#define HOOKFLASH_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS (20)
-#define HOOKFLASH_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS (45)
+#define OPENPEER_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS (20)
+#define OPENPEER_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS (45)
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_media) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_media) } }
 
 using zsLib::Stringize;
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -996,7 +996,7 @@ namespace hookflash
               // We will want the cleanup timer to fire to ensure the
               // conversation thread (which is holding a reference to the call)
               // to forget about this call object in time...
-              mCleanupTimer = Timer::create(ITimerDelegateProxy::create(getQueue(), mGracefulShutdownReference), Seconds(HOOKFLASH_CALL_CLEANUP_TIMEOUT_IN_SECONDS), false);
+              mCleanupTimer = Timer::create(ITimerDelegateProxy::create(getQueue(), mGracefulShutdownReference), Seconds(OPENPEER_CALL_CLEANUP_TIMEOUT_IN_SECONDS), false);
             }
           }
 
@@ -1479,12 +1479,12 @@ namespace hookflash
             if (CallClosedReason_None != lastClosedReason) {
               ZS_LOG_DEBUG(log("did not find any remote locations that were open (but one or more were closed)"))
 
-              if (mFirstClosedRemoteCallTime + Seconds(HOOKFLASH_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS) < tick) {
+              if (mFirstClosedRemoteCallTime + Seconds(OPENPEER_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS) < tick) {
                 setClosedReason(lastClosedReason);
                 return false;
               }
               if (!mFirstClosedRemoteCallTimer) {
-                mFirstClosedRemoteCallTimer = Timer::create(ITimerDelegateProxy::createWeak(getQueue(), mThisWeak.lock()), Seconds(HOOKFLASH_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS), false);
+                mFirstClosedRemoteCallTimer = Timer::create(ITimerDelegateProxy::createWeak(getQueue(), mThisWeak.lock()), Seconds(OPENPEER_CALL_FIRST_CLOSED_REMOTE_CALL_TIME_IN_SECONDS), false);
               }
               ZS_LOG_DEBUG(log("remote party is closed but will try to connect with other locations (if possible)"))
             }
@@ -1776,7 +1776,7 @@ namespace hookflash
 
           if (!mPeerAliveTimer) {
             ZS_LOG_DEBUG(log("peer alive timer is required (thus starting the timer)"))
-            mPeerAliveTimer = Timer::create(ITimerDelegateProxy::createWeak(getQueue(), mThisWeak.lock()), Seconds(HOOKFLASH_CALL_CALL_CHECK_PEER_ALIVE_TIMER_IN_SECONDS));
+            mPeerAliveTimer = Timer::create(ITimerDelegateProxy::createWeak(getQueue(), mThisWeak.lock()), Seconds(OPENPEER_CALL_CALL_CHECK_PEER_ALIVE_TIMER_IN_SECONDS));
           }
 
           if (ICall::CallState_Hold != mCurrentState) {
@@ -2292,16 +2292,16 @@ namespace hookflash
         }
 
         if (mAudioRTPSocketSession) {
-          mAudioRTPSocketSession->setKeepAliveProperties(Seconds(HOOKFLASH_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
+          mAudioRTPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
         }
         if (mAudioRTCPSocketSession) {
-          mAudioRTCPSocketSession->setKeepAliveProperties(Seconds(HOOKFLASH_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
+          mAudioRTCPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
         }
         if (mVideoRTPSocketSession) {
-          mVideoRTPSocketSession->setKeepAliveProperties(Seconds(HOOKFLASH_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
+          mVideoRTPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
         }
         if (mVideoRTCPSocketSession) {
-          mVideoRTCPSocketSession->setKeepAliveProperties(Seconds(HOOKFLASH_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(HOOKFLASH_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
+          mVideoRTCPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
         }
 
         ZS_LOG_DEBUG(log("init completed") +

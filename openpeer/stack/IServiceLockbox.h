@@ -34,7 +34,7 @@
 #include <openpeer/stack/types.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -143,9 +143,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IServiceLockboxSessionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionPtr, IServiceLockboxSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceLockboxSessionDelegate::SessionStates, SessionStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IServiceLockboxSessionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceLockboxSessionPtr, IServiceLockboxSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceLockboxSessionDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onServiceLockboxSessionStateChanged, IServiceLockboxSessionPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onServiceLockboxSessionAssociatedIdentitiesChanged, IServiceLockboxSessionPtr)
 ZS_DECLARE_PROXY_END()

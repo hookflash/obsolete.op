@@ -33,6 +33,6 @@
 
 #include <zsLib/Log.h>
 
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services) } }
-namespace hookflash { namespace services { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_http) } }
+namespace openpeer { namespace services { ZS_IMPLEMENT_SUBSYSTEM(openpeer_services) } }
+namespace openpeer { namespace services { ZS_IMPLEMENT_SUBSYSTEM(openpeer_services_http) } }
 

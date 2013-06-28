@@ -40,7 +40,7 @@
 - (void) initSingleton;
 @end
 
-using namespace hookflash::stack;
+using namespace openpeer::stack;
 
 static ProvisioningManager *sProvisioningManager = nil;
 

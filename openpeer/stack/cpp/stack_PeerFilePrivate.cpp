@@ -44,9 +44,9 @@
 #include <cryptopp/sha.h>
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -270,7 +270,7 @@ namespace hookflash
         if (!signatureEl)
           signatureEl = Element::create("signature");
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("reference", referenceID));
-        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM));
+        signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM));
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestValue", IHelper::convertToBase64(*elementHash)));
         signatureEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("digestSigned", IHelper::convertToBase64(*mPrivateKey->sign(*elementHash))));
 
@@ -493,10 +493,10 @@ namespace hookflash
             ElementPtr sectionBundleEl = Element::create("sectionBundle");
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", OPENPEER_STACK_PEER_FILE_CIPHER));
 
             Time created = zsLib::now();
-            Time expires = created + Duration(Hours(HOOKFLASH_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS));
+            Time expires = created + Duration(Hours(OPENPEER_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS));
 
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("created", Stringize<time_t>(zsLib::toEpoch(created))));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("expires", Stringize<time_t>(zsLib::toEpoch(expires))));
@@ -595,7 +595,7 @@ namespace hookflash
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", HOOKFLASH_STACK_PEER_FILE_CIPHER));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", OPENPEER_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
@@ -684,7 +684,7 @@ namespace hookflash
           String encryptedPrivateData = sectionBEl->findFirstChildElementChecked("encryptedPrivateData")->getTextDecoded();
 
           // now to decrypt all this data (if possible)
-          if (HOOKFLASH_STACK_PEER_FILE_CIPHER != cipher) {
+          if (OPENPEER_STACK_PEER_FILE_CIPHER != cipher) {
             ZS_LOG_WARNING(Detail, log("unsupported cipher suite used in private peer"))
             return false;
           }

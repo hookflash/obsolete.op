@@ -37,7 +37,7 @@
 #include <list>
 #include <map>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -53,8 +53,8 @@ namespace hookflash
       typedef std::list<String> RouteList;
       typedef std::list<String> StringList;
 
-      typedef hookflash::services::IICESocket::Candidate Candidate;
-      typedef hookflash::services::IICESocket::CandidateList CandidateList;
+      typedef openpeer::services::IICESocket::Candidate Candidate;
+      typedef openpeer::services::IICESocket::CandidateList CandidateList;
 
       typedef stack::LocationInfo LocationInfo;
       typedef stack::LocationInfoList LocationInfoList;

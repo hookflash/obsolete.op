@@ -33,7 +33,7 @@
 
 #include <openpeer/core/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -85,7 +85,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::IIdentityLookupDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IIdentityLookupPtr, IIdentityLookupPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IIdentityLookupDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IIdentityLookupPtr, IIdentityLookupPtr)
 ZS_DECLARE_PROXY_METHOD_1(onIdentityLookupCompleted, IIdentityLookupPtr)
 ZS_DECLARE_PROXY_END()

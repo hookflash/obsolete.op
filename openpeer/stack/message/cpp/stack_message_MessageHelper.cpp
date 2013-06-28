@@ -53,9 +53,9 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -1048,11 +1048,11 @@ namespace hookflash
 
 
 /*
-<request xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-publish”>
+<request xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-publish”>
 
  <document>
   <details>
-   <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+   <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
    <version>12</version>
    <!-- <baseVersion>10</baseVersion> -->
    <lineage>5849943</lineage>
@@ -1064,9 +1064,9 @@ namespace hookflash
    <encoding>xml</encoding>
   </details>
   <publishToRelationships>
-   <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” allow=”all” />
-   <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” allow=”all” />
-   <relationships name=”/hookflash.com/shared-groups/1.0/foobar” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/whitelist” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/adhoc” allow=”all” />
+   <relationships name=”/openpeer.com/shared-groups/1.0/foobar” allow=”all” />
   </publishToRelationships>
   <data>
    ...
@@ -1077,11 +1077,11 @@ namespace hookflash
 */
 
 /*
-<result xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-publish” epoch=”13494934”>
+<result xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-publish” epoch=”13494934”>
 
  <document>
   <details>
-   <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+   <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
    <version>12</version>
    <lineage>5849943</lineage>
    <chunk>1/12</chunk>
@@ -1092,9 +1092,9 @@ namespace hookflash
    <encoding>xml</encoding>
   </details>
   <publishToRelationships>
-   <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” allow=”all” />
-   <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” allow=”all” />
-   <relationships name=”/hookflash.com/shared-groups/1.0/foobar” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/whitelist” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/adhoc” allow=”all” />
+   <relationships name=”/openpeer.com/shared-groups/1.0/foobar” allow=”all” />
   </publishToRelationships>
  </document>
 
@@ -1102,11 +1102,11 @@ namespace hookflash
 */
 
         /*
-<request xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-get”>
+<request xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-get”>
 
  <document>
   <details>
-   <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+   <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
    <version>12</version>
    <lineage>39239392</lineage>
    <scope>location</scope>
@@ -1120,11 +1120,11 @@ namespace hookflash
          */
 
 /*
-<result xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-get” epoch=”13494934”>
+<result xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-get” epoch=”13494934”>
 
  <document>
   <details>
-   <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+   <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
    <version>12</version>
    <!-- <baseVersion>10</baseVersion> -->
    <lineage>39239392</lineage>
@@ -1138,9 +1138,9 @@ namespace hookflash
    <encoding>xml</encoding>
   </details>
   <publishToRelationships>
-   <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” allow=”all” />
-   <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” allow=”all” />
-   <relationships name=”/hookflash.com/shared-groups/1.0/foobar” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/whitelist” allow=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/adhoc” allow=”all” />
+   <relationships name=”/openpeer.com/shared-groups/1.0/foobar” allow=”all” />
   </publishToRelationships>
   <data>
    ...
@@ -1151,11 +1151,11 @@ namespace hookflash
  */
 
         /*
-<request xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-delete”>
+<request xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-delete”>
 
  <document>
   <details>
-   <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+   <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
    <version>12</version>
    <lineage>39239392</lineage>
    <scope>location</scope>
@@ -1166,16 +1166,16 @@ namespace hookflash
          */
 
         /*
-<request xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-subscribe”>
+<request xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-subscribe”>
 
  <document>
-  <name>/hookflash.com/presence/1.0/</name>
+  <name>/openpeer.com/presence/1.0/</name>
   <subscribeToRelationships>
-   <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” subscribe=”all” />
-   <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” subscribe =”add”>
+   <relationships name=”/openpeer.com/authorization-list/1.0/whitelist” subscribe=”all” />
+   <relationships name=”/openpeer.com/authorization-list/1.0/adhoc” subscribe =”add”>
     <contact>peer://domain.com/bd520f1dbaa13c0cc9b7ff528e83470e</contact>
    </relationships>
-   <relationships name=”/hookflash.com/shared-groups/1.0/foobar” subscribe =”all” />
+   <relationships name=”/openpeer.com/shared-groups/1.0/foobar” subscribe =”all” />
   </subscribeToRelationships>
  </document>
 
@@ -1183,29 +1183,29 @@ namespace hookflash
          */
 
         /*
-<result xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-subscribe” epoch=”13494934”>
+<result xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-subscribe” epoch=”13494934”>
 
  <document>
-   <name>/hookflash.com/presence/1.0/</name>
+   <name>/openpeer.com/presence/1.0/</name>
    <subscribeToRelationships>
-    <relationships name=”/hookflash.com/authorization-list/1.0/whitelist” subscribe =”all” />
-    <relationships name=”/hookflash.com/authorization-list/1.0/adhoc” subscribe =”some”>
+    <relationships name=”/openpeer.com/authorization-list/1.0/whitelist” subscribe =”all” />
+    <relationships name=”/openpeer.com/authorization-list/1.0/adhoc” subscribe =”some”>
      <contact>peer://domain.com/bd520f1dbaa13c0cc9b7ff528e83470e</contact>
      <contact>peer://domain.com/8d17a88e8d42ffbd138f3895ec45375c</contact>
     </relationships>
-    <relationships name=”/hookflash.com/shared-groups/1.0/foobar” subscribe =”all” />
+    <relationships name=”/openpeer.com/shared-groups/1.0/foobar” subscribe =”all” />
    </subscribeToRelationships>
  </document>
 
 </result>
          */
         /*
-<request xmlns="http://www.hookflash.com/openpeer/1.0/message" id=”abc123” method=”peer-publish-notify”>
+<request xmlns="http://www.openpeer.com/openpeer/1.0/message" id=”abc123” method=”peer-publish-notify”>
 
  <documents>
   <document>
    <details>
-    <name>/hookflash.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
+    <name>/openpeer.com/presence/1.0/bd520f1dbaa13c0cc9b7ff528e83470e/883fa7...9533609131</name>
     <version>12</version>
     <lineage>43493943</lineage>
     <scope>location</scope>

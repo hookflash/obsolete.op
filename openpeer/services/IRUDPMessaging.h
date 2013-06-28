@@ -38,9 +38,9 @@
 #include <zsLib/String.h>
 #include <boost/shared_array.hpp>
 
-#define HOOKFLASH_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES (0xFFFFF)
+#define OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES (0xFFFFF)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -90,7 +90,7 @@ namespace hookflash
                                              IMessageQueuePtr queue,
                                              IRUDPListenerPtr listener,
                                              IRUDPMessagingDelegatePtr delegate,
-                                             ULONG maxMessageSizeInBytes = HOOKFLASH_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
+                                             ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                              );
 
       //-----------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace hookflash
                                              IMessageQueuePtr queue,
                                              IRUDPICESocketSessionPtr session,
                                              IRUDPMessagingDelegatePtr delegate,
-                                             ULONG maxMessageSizeInBytes = HOOKFLASH_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
+                                             ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                              );
 
       //-----------------------------------------------------------------------
@@ -115,7 +115,7 @@ namespace hookflash
                                            IRUDPICESocketSessionPtr session,
                                            IRUDPMessagingDelegatePtr delegate,
                                            const char *connectionInfo,
-                                           ULONG maxMessageSizeInBytes = HOOKFLASH_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
+                                           ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                            );
 
       virtual PUID getID() const = 0;
@@ -199,9 +199,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IRUDPMessagingDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPMessagingPtr, IRUDPMessagingPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPMessagingDelegate::RUDPMessagingStates, RUDPMessagingStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPMessagingDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPMessagingPtr, IRUDPMessagingPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPMessagingDelegate::RUDPMessagingStates, RUDPMessagingStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPMessagingStateChanged, IRUDPMessagingPtr, RUDPMessagingStates)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPMessagingReadReady, IRUDPMessagingPtr)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPMessagingWriteReady, IRUDPMessagingPtr)

@@ -48,11 +48,11 @@
 #include <cryptopp/md5.h>
 #include <cryptopp/hmac.h>
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
 using namespace zsLib::XML;
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

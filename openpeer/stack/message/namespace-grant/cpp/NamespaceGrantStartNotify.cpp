@@ -37,11 +37,11 @@
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_START_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define OPENPEER_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_START_UPDATE_REQUEST_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

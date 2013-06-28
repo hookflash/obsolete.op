@@ -48,13 +48,13 @@
 #include <zsLib/helpers.h>
 #include <zsLib/XML.h>
 
-#define HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_MAX_REDIRECTION_ATTEMPTS (5)
+#define OPENPEER_STACK_BOOTSTRAPPED_NETWORK_MAX_REDIRECTION_ATTEMPTS (5)
 
-#define HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE "text/json"
+#define OPENPEER_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE "text/json"
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -378,7 +378,7 @@ namespace hookflash
         // found the signature reference, now check if the peer URIs match - they must...
         try {
           String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
+          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
             ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
             return false;
           }
@@ -798,15 +798,15 @@ namespace hookflash
           }
         }
 
-#if (0 != HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP)
-#define HOOKFLASH_STACK_BOOTSTRAPPER_WARNING_FORCING_OVER_INSECURE_HTTP 1
-#define HOOKFLASH_STACK_BOOTSTRAPPER_WARNING_FORCING_OVER_INSECURE_HTTP 2
-#endif //(0 != HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP)
+#if (0 != OPENPEER_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP)
+#define OPENPEER_STACK_BOOTSTRAPPER_WARNING_FORCING_OVER_INSECURE_HTTP 1
+#define OPENPEER_STACK_BOOTSTRAPPER_WARNING_FORCING_OVER_INSECURE_HTTP 2
+#endif //(0 != OPENPEER_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP)
 
         // now we have the DNS service name...
         if (!mServicesGetQuery) {
-          bool forceOverHTTP = (0 == HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP ? false : true);
-          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/.well-known/" + HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
+          bool forceOverHTTP = (0 == OPENPEER_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP ? false : true);
+          String serviceURL = (forceOverHTTP ? "http://" : "https://") + mServicesGetDNSName + "/.well-known/" + OPENPEER_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME;
           ZS_LOG_DEBUG(log("step - performing services get request") + ", services-get URL=" + serviceURL)
 
           ServicesGetRequestPtr request = ServicesGetRequest::create();
@@ -842,7 +842,7 @@ namespace hookflash
               if (!redirectionURL.isEmpty()) {
                 ++mRedirectionAttempts;
 
-                if (mRedirectionAttempts < HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_MAX_REDIRECTION_ATTEMPTS) {
+                if (mRedirectionAttempts < OPENPEER_STACK_BOOTSTRAPPED_NETWORK_MAX_REDIRECTION_ATTEMPTS) {
                   mServicesGetQuery->cancel();
                   mServicesGetQuery.reset();
 
@@ -1092,7 +1092,7 @@ namespace hookflash
 
         ZS_LOG_TRACE(log("posting message") + ", message=" + buffer.get())
 
-        return IHTTP::post(mThisWeak.lock(), IStackForInternal::userAgent(), url, (const BYTE *)buffer.get(), size, HOOKFLASH_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE);
+        return IHTTP::post(mThisWeak.lock(), IStackForInternal::userAgent(), url, (const BYTE *)buffer.get(), size, OPENPEER_STACK_BOOTSTRAPPED_NETWORK_DEFAULT_MIME_TYPE);
       }
 
       //-----------------------------------------------------------------------

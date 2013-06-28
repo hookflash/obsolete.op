@@ -33,12 +33,12 @@
 #include <openpeer/core/internal/core.h>
 #include <zsLib/Log.h>
 
-namespace hookflash { namespace core { ZS_IMPLEMENT_SUBSYSTEM(hookflash_core) } }
-namespace hookflash { namespace core { ZS_IMPLEMENT_SUBSYSTEM(hookflash_media) } }
-namespace hookflash { namespace core { ZS_IMPLEMENT_SUBSYSTEM(hookflash_webrtc) } }
-namespace hookflash { namespace core { namespace application { ZS_IMPLEMENT_SUBSYSTEM(hookflash_application) } } }
+namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_core) } }
+namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_media) } }
+namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_webrtc) } }
+namespace openpeer { namespace core { namespace application { ZS_IMPLEMENT_SUBSYSTEM(openpeer_application) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

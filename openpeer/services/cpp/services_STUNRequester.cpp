@@ -36,14 +36,14 @@
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 
-#define HOOKFLASH_SERVICES_STUN_REQUESTER_MAX_RETRANSMIT_STUN_ATTEMPTS (6)
-#define HOOKFLASH_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS (500)
-#define HOOKFLASH_SERVICES_STUN_REQUESTER_MAX_REQUEST_TIME_IN_MILLISECONDS (39500)
+#define OPENPEER_SERVICES_STUN_REQUESTER_MAX_RETRANSMIT_STUN_ATTEMPTS (6)
+#define OPENPEER_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS (500)
+#define OPENPEER_SERVICES_STUN_REQUESTER_MAX_REQUEST_TIME_IN_MILLISECONDS (39500)
 
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -74,10 +74,10 @@ namespace hookflash
         mSTUNRequest(stun),
         mServerIP(serverIP),
         mUsingRFC(usingRFC),
-        mCurrentTimeout(Milliseconds(HOOKFLASH_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS)),
+        mCurrentTimeout(Milliseconds(OPENPEER_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS)),
         mTryNumber(0),
         mRequestStartTime(zsLib::now()),
-        mMaxTimeout(Duration() != maxTimeout ? maxTimeout : Milliseconds(HOOKFLASH_SERVICES_STUN_REQUESTER_MAX_REQUEST_TIME_IN_MILLISECONDS))
+        mMaxTimeout(Duration() != maxTimeout ? maxTimeout : Milliseconds(OPENPEER_SERVICES_STUN_REQUESTER_MAX_REQUEST_TIME_IN_MILLISECONDS))
       {
       }
 
@@ -157,7 +157,7 @@ namespace hookflash
         if (!mSTUNRequest) return;
 
         mRequestStartTime = zsLib::now();
-        mCurrentTimeout = Milliseconds(HOOKFLASH_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS);
+        mCurrentTimeout = Milliseconds(OPENPEER_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS);
         mTryNumber = 0;
         if (mTimer) {
           mTimer->cancel();
@@ -274,12 +274,12 @@ namespace hookflash
 
           ++mTryNumber;
 
-          if ((mTryNumber >= HOOKFLASH_SERVICES_STUN_REQUESTER_MAX_RETRANSMIT_STUN_ATTEMPTS) ||
+          if ((mTryNumber >= OPENPEER_SERVICES_STUN_REQUESTER_MAX_RETRANSMIT_STUN_ATTEMPTS) ||
               (totalTime > mMaxTimeout)) {
             return;
           }
 
-          mCurrentTimeout = mCurrentTimeout + mCurrentTimeout + Milliseconds(HOOKFLASH_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS);
+          mCurrentTimeout = mCurrentTimeout + mCurrentTimeout + Milliseconds(OPENPEER_SERVICES_STUN_REQUESTER_FIRST_ATTEMPT_TIMEOUT_IN_MILLISECONDS);
 
           // create a new timer using the new timeout
           step();

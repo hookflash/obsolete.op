@@ -35,7 +35,7 @@
 #include <zsLib/Proxy.h>
 #include <cryptopp/secblock.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -41,7 +41,7 @@
 #include <list>
 #include <utility>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -390,6 +390,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IICESocketSessionAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IICESocketSessionAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

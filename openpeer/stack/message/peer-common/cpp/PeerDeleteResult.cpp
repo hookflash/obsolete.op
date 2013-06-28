@@ -33,7 +33,7 @@
 #include <openpeer/stack/message/peer-common/PeerDeleteRequest.h>
 #include <openpeer/stack/message/peer-common/PeerDeleteResult.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

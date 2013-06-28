@@ -35,7 +35,7 @@
 
 #include <map>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

@@ -39,14 +39,14 @@
 
 #include <zsLib/Timer.h>
 
-using namespace hookflash::stack::internal;
-using namespace hookflash::stack::message;
+using namespace openpeer::stack::internal;
+using namespace openpeer::stack::message;
 
 #define USE_FAKE_BOOTSTRAPPED_NETWORK 1
 #define USE_FAKE_IDENTITY_SESSION 1
 //#define USE_FAKE_PEER_CONTACT_SESSION 1
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -82,7 +82,7 @@ namespace hookflash
 #pragma mark
 #pragma mark TestHTTPQueryForPeerContact
 #pragma mark
-      class TestHTTPQueryForPeerContact :public hookflash::services::internal::HTTP::HTTPQuery
+      class TestHTTPQueryForPeerContact :public openpeer::services::internal::HTTP::HTTPQuery
       {
       protected:
         TestHTTPQueryForPeerContact(
@@ -143,14 +143,14 @@ namespace hookflash
         //IServiceIdentitySessionDelegate methods
         virtual void onServiceIdentitySessionStateChanged(
                                                           IServiceIdentitySessionPtr session,
-                                                          hookflash::stack::IServiceIdentitySession::SessionStates state
+                                                          openpeer::stack::IServiceIdentitySession::SessionStates state
                                                           );
         
         virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session);
         
         virtual void onServiceLockboxSessionStateChanged(
                                                              IServiceLockboxSessionPtr session,
-                                                             hookflash::stack::IServiceLockboxSession::SessionStates state
+                                                             openpeer::stack::IServiceLockboxSession::SessionStates state
                                                              );
         virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
         

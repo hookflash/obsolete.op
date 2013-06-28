@@ -45,11 +45,11 @@
 #include <zsLib/Stringize.h>
 
 
-#define HOOKFLASH_STACK_MESSAGE_PEER_LOCATION_FIND_REQUEST_LIFETIME_IN_SECONDS ((60*60)*24)
+#define OPENPEER_STACK_MESSAGE_PEER_LOCATION_FIND_REQUEST_LIFETIME_IN_SECONDS ((60*60)*24)
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -275,7 +275,7 @@ namespace hookflash
 
           String clientNonce = IHelper::convertToHex(*IHelper::random(16));
 
-          Time expires = zsLib::now() + Duration(Seconds(HOOKFLASH_STACK_MESSAGE_PEER_LOCATION_FIND_REQUEST_LIFETIME_IN_SECONDS));
+          Time expires = zsLib::now() + Duration(Seconds(OPENPEER_STACK_MESSAGE_PEER_LOCATION_FIND_REQUEST_LIFETIME_IN_SECONDS));
 
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();

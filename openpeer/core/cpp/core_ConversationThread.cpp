@@ -48,9 +48,9 @@
 #include <zsLib/helpers.h>
 
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -589,7 +589,7 @@ namespace hookflash
                                                        const SplitMap &split
                                                        )
       {
-        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
+        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
         pThis->mThisWeak = pThis;
         pThis->mMustNotifyAboutNewThread = true;
         pThis->init();
@@ -610,13 +610,13 @@ namespace hookflash
       {
         AutoRecursiveLock lock(getLock());
 
-        String hostThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);
         if (found == mThreads.end()) {
           // could not find the publication... must be a host document or something is wrong...
-          String type = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_TYPE_INDEX);
+          String type = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
           if (type != "host") {
             // whatever this is it cannot be understood...
             ZS_LOG_WARNING(Detail, log("expecting a host document type but received something else") + ", type=" + type + IPublicationMetaData::toDebugString(metaData))
@@ -647,7 +647,7 @@ namespace hookflash
                                                      )
       {
         AutoRecursiveLock lock(getLock());
-        String hostThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);

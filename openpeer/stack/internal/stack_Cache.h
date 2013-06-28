@@ -34,7 +34,7 @@
 #include <openpeer/stack/ICache.h>
 #include <openpeer/stack/internal/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

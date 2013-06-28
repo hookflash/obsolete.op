@@ -34,7 +34,7 @@
 #include <openpeer/stack/types.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -105,7 +105,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IServiceCertificatesValidateQueryDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceCertificatesValidateQueryPtr, IServiceCertificatesValidateQueryPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IServiceCertificatesValidateQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceCertificatesValidateQueryPtr, IServiceCertificatesValidateQueryPtr)
 ZS_DECLARE_PROXY_METHOD_1(onServiceCertificatesValidateQueryCompleted, IServiceCertificatesValidateQueryPtr)
 ZS_DECLARE_PROXY_END()

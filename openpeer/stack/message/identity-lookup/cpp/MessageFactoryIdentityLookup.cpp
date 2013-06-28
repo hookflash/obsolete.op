@@ -39,10 +39,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOOKUP_HANDLER "identity-lookup"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOOKUP_HANDLER "identity-lookup"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -84,7 +84,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryIdentityLookup::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOOKUP_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_IDENTITY_LOOKUP_HANDLER;
         }
 
         //---------------------------------------------------------------------

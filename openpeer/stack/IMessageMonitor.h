@@ -37,7 +37,7 @@
 #include <openpeer/services/IHTTP.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -195,9 +195,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IMessageMonitorDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IMessageMonitorPtr, IMessageMonitorPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IMessageMonitorDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageMonitorPtr, IMessageMonitorPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_2(handleMessageMonitorMessageReceived, bool, IMessageMonitorPtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageMonitorTimedOut, IMessageMonitorPtr)
 ZS_DECLARE_PROXY_END()

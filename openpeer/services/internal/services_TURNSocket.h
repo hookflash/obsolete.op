@@ -39,20 +39,20 @@
 #include <zsLib/ISocket.h>
 #include <zsLib/Timer.h>
 
-#define HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES ((1 << (sizeof(WORD)*8)) - 1)
+#define OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES ((1 << (sizeof(WORD)*8)) - 1)
 
 // *** DEBUGGING ONLY - DO _NOT_ ENABLE OTHERWISE ***
-// #define HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+// #define OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
 
 // *** DEBUGGING ONLY - DO _NOT_ ENABLE OTHERWISE ***
-// #define HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-// #define HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP "23.22.109.183"
+// #define OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+// #define OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP "23.22.109.183"
 
 #include <list>
 #include <map>
 #include <utility>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -162,8 +162,8 @@ namespace hookflash
                                     const char *turnServerUsername,
                                     const char *turnServerPassword,
                                     bool useChannelBinding = false,
-                                    WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                    WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                    WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                    WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                     );
 
         static TURNSocketPtr create(
@@ -174,8 +174,8 @@ namespace hookflash
                                     const char *turnServerUsername,
                                     const char *turnServerPassword,
                                     bool useChannelBinding = false,
-                                    WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                    WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                    WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                    WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                     );
 
         static String toDebugString(ITURNSocketPtr socket, bool includeCommaPrefix = true);
@@ -380,10 +380,10 @@ namespace hookflash
 
           ISTUNRequesterPtr mAllocateRequester;
 
-          BYTE mReadBuffer[HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES+sizeof(DWORD)];
+          BYTE mReadBuffer[OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES+sizeof(DWORD)];
           ULONG mReadBufferFilledSizeInBytes;
 
-          BYTE mWriteBuffer[HOOKFLASH_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES+sizeof(DWORD)];
+          BYTE mWriteBuffer[OPENPEER_SERVICES_TURN_MAX_CHANNEL_DATA_IN_BYTES+sizeof(DWORD)];
           ULONG mWriteBufferFilledSizeInBytes;
         };
 
@@ -514,8 +514,8 @@ namespace hookflash
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      bool useChannelBinding = false,
-                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                      );
 
         virtual TURNSocketPtr create(
@@ -526,8 +526,8 @@ namespace hookflash
                                      const char *turnServerUsername,
                                      const char *turnServerPassword,
                                      bool useChannelBinding = false,
-                                     WORD limitChannelToRangeStart = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_START,
-                                     WORD limitChannelRoRangeEnd = HOOKFLASH_SERVICES_TURN_CHANNEL_RANGE_END
+                                     WORD limitChannelToRangeStart = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_START,
+                                     WORD limitChannelRoRangeEnd = OPENPEER_SERVICES_TURN_CHANNEL_RANGE_END
                                      );
       };
       
@@ -535,6 +535,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::ITURNSocketAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::ITURNSocketAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

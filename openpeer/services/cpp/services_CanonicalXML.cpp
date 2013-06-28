@@ -34,10 +34,10 @@
 
 #include <list>
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -48,9 +48,9 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_COMMON_HANDLER "peer-common"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_COMMON_HANDLER "peer-common"
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -92,7 +92,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryPeerCommon::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_COMMON_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_COMMON_HANDLER;
         }
 
         //---------------------------------------------------------------------

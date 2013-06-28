@@ -40,10 +40,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_ROLODEX_HANDLER "rolodex"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_ROLODEX_HANDLER "rolodex"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -85,7 +85,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryRolodex::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_ROLODEX_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_ROLODEX_HANDLER;
         }
 
         //---------------------------------------------------------------------

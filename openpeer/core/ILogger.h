@@ -33,7 +33,7 @@
 
 #include <openpeer/core/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -76,10 +76,10 @@ namespace hookflash
       // NOTE:    On a linux based system you can do this trick:
       //
       //          From the command prompt type:
-      //          mkfifo /tmp/hookflash.fifo
-      //          while true; do cat /tmp/hookflash.fifo; sleep 1; done
+      //          mkfifo /tmp/openpeer.fifo
+      //          while true; do cat /tmp/openpeer.fifo; sleep 1; done
       //
-      //          Pass in filename as: "/tmp/hookflash.fifo"
+      //          Pass in filename as: "/tmp/openpeer.fifo"
       //
       //          Alternatively, pass in the name of a file and it will create
       //          the file and output all logging to the file.

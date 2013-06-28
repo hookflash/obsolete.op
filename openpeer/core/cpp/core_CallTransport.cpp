@@ -39,11 +39,11 @@
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 
-#define HOOKFLASH_CALLTRANSPORT_CLOSE_UNUSED_SOCKETS_AFTER_IN_SECONDS (90)
+#define OPENPEER_CALLTRANSPORT_CLOSE_UNUSED_SOCKETS_AFTER_IN_SECONDS (90)
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_media) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_media) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -263,7 +263,7 @@ namespace hookflash
           mSocketCleanupTimer.reset();
         }
 
-        mSocketCleanupTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_CALLTRANSPORT_CLOSE_UNUSED_SOCKETS_AFTER_IN_SECONDS), false);
+        mSocketCleanupTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_CALLTRANSPORT_CLOSE_UNUSED_SOCKETS_AFTER_IN_SECONDS), false);
       }
 
       //-----------------------------------------------------------------------

@@ -56,18 +56,18 @@
 #endif //_WIN32
 #endif //_ANDROID
 
-#define HOOKFLASH_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE  (1 << (sizeof(WORD)*8))
-#define HOOKFLASH_SERVICES_ICESOCKET_MAX_RECYLCE_BUFFERS  4
+#define OPENPEER_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE  (1 << (sizeof(WORD)*8))
+#define OPENPEER_SERVICES_ICESOCKET_MAX_RECYLCE_BUFFERS  4
 
-#define HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS  HOOKFLASH_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS
+#define OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS  OPENPEER_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS
 
-#define HOOKFLASH_SERVICES_MAX_REBIND_ATTEMPT_DURATION_IN_SECONDS (10)
-
-
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+#define OPENPEER_SERVICES_MAX_REBIND_ATTEMPT_DURATION_IN_SECONDS (10)
 
 
-namespace hookflash
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
+
+
+namespace openpeer
 {
   namespace services
   {
@@ -145,7 +145,7 @@ namespace hookflash
         mID(zsLib::createPUID()),
         mCurrentState(ICESocketState_Pending),
         mBindPort(port),
-        mMaxRebindAttemptDuration(Seconds(HOOKFLASH_SERVICES_MAX_REBIND_ATTEMPT_DURATION_IN_SECONDS)),
+        mMaxRebindAttemptDuration(Seconds(OPENPEER_SERVICES_MAX_REBIND_ATTEMPT_DURATION_IN_SECONDS)),
         mMonitoringWriteReady(true),
         mTURNSRVUDPResult(srvTURNUDP),
         mTURNSRVTCPResult(srvTURNTCP),
@@ -154,7 +154,7 @@ namespace hookflash
         mTURNPassword(turnPassword ? turnPassword : ""),
         mFirstWORDInAnyPacketWillNotConflictWithTURNChannels(firstWORDInAnyPacketWillNotConflictWithTURNChannels),
         mTURNLastUsed(zsLib::now()),
-        mTURNShutdownIfNotUsedBy(Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
+        mTURNShutdownIfNotUsedBy(Seconds(OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
         mSTUNSRVResult(srvSTUN),
         mSTUNServer(stunServer ? stunServer : ""),
         mUsernameFrag(IHelper::randomString(20)),
@@ -424,14 +424,14 @@ namespace hookflash
         // attempt to send the packet over the UDP buffer
         try {
           bool wouldBlock = false;
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
           if (true) return true;
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-          if (!destination.isAddressEqual(IPAddress(HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+          if (!destination.isAddressEqual(IPAddress(OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
             return true;
           }
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
           ULONG bytesSent = mUDPSocket->sendTo(destination, buffer, bufferLengthInBytes, &wouldBlock);
           ZS_LOG_TRACE(log("sending packet") + ", via=" + toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false") + ", bytes sent=" + Stringize<ULONG>(bytesSent).string() + ", would block=" + (wouldBlock ? "true" : "false"))
           return ((!wouldBlock) && (bufferLengthInBytes == bytesSent));
@@ -526,7 +526,7 @@ namespace hookflash
 
             getBuffer(buffer);
 
-            bytesRead = mUDPSocket->receiveFrom(source, buffer.get(), HOOKFLASH_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE, &wouldBlock);
+            bytesRead = mUDPSocket->receiveFrom(source, buffer.get(), OPENPEER_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE, &wouldBlock);
             if (0 == bytesRead) return;
 
             ZS_LOG_TRACE(log("packet received") + ", ip=" + source.string())
@@ -670,14 +670,14 @@ namespace hookflash
 
         try {
           bool wouldBlock = false;
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
           if (true) return true;
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-          if (!destination.isAddressEqual(IPAddress(HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+          if (!destination.isAddressEqual(IPAddress(OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
             return true;
           }
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
           ULONG bytesSent = mUDPSocket->sendTo(destination, packet, packetLengthInBytes, &wouldBlock);
           bool sent = ((!wouldBlock) && (bytesSent == packetLengthInBytes));
           if (!sent) {
@@ -735,14 +735,14 @@ namespace hookflash
 
         try {
           bool wouldBlock = false;
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
           if (true) return;
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
-#ifdef HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
-          if (!destination.isAddressEqual(IPAddress(HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_TCP
+#ifdef OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+          if (!destination.isAddressEqual(IPAddress(OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_SERVER_IP))) {
             return;
           }
-#endif //HOOKFLASH_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
+#endif //OPENPEER_SERVICES_TURNSOCKET_DEBUGGING_FORCE_USE_TURN_WITH_UDP
           mUDPSocket->sendTo(destination, packet.get(), packetLengthInBytes, &wouldBlock);
         } catch(ISocket::Exceptions::Unspecified &error) {
           ZS_LOG_ERROR(Detail, log("sendTo error") + ", error=" + Stringize<int>(error.getErrorCode()).string())
@@ -904,7 +904,7 @@ namespace hookflash
         if (mTURNLastUsed + mTURNShutdownIfNotUsedBy < current)
         {
           // the socket can be put to sleep...
-          mTURNShutdownIfNotUsedBy = Seconds(HOOKFLASH_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS);  // reset to minimum again...
+          mTURNShutdownIfNotUsedBy = Seconds(OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS);  // reset to minimum again...
 
           if (mTURNSocket) {
             ZS_LOG_DEBUG(log("TURN server can go to sleep") + ", TURN socket ID=" + Stringize<PUID>(mTURNSocket->getID()).string())
@@ -1559,7 +1559,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
         if (mRecycledBuffers.size() < 1) {
-          outBuffer = RecycledPacketBuffer(new BYTE[HOOKFLASH_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE]);
+          outBuffer = RecycledPacketBuffer(new BYTE[OPENPEER_SERVICES_ICESOCKET_RECYCLE_BUFFER_SIZE]);
           return;
         }
 
@@ -1573,7 +1573,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         if (!buffer) return;
 
-        if (mRecycledBuffers.size() >= HOOKFLASH_SERVICES_ICESOCKET_MAX_RECYLCE_BUFFERS) {
+        if (mRecycledBuffers.size() >= OPENPEER_SERVICES_ICESOCKET_MAX_RECYLCE_BUFFERS) {
           buffer.reset();
           return;
         }

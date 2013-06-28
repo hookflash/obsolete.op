@@ -40,7 +40,7 @@
 #include <cryptopp/queue.h>
 #include <curl/curl.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -39,10 +39,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_SALT_HANDLER "peer-salt"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_SALT_HANDLER "peer-salt"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -84,7 +84,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryPeerSalt::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_SALT_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_SALT_HANDLER;
         }
 
         //---------------------------------------------------------------------

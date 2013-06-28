@@ -37,7 +37,7 @@
 #include <map>
 #include <utility>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

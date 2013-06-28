@@ -44,13 +44,13 @@
 
 #include <cryptopp/osrng.h>
 
-#define HOOKFLASH_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE (60)
-#define HOOKFLASH_SERVICES_ICESOCKETSESSION_DEFAULT_KEEPALIVE_INDICATION_TIME_IN_SECONDS (15)
+#define OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE (60)
+#define OPENPEER_SERVICES_ICESOCKETSESSION_DEFAULT_KEEPALIVE_INDICATION_TIME_IN_SECONDS (15)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -194,7 +194,7 @@ namespace hookflash
         mLastSentData(zsLib::now()),
         mLastActivity(zsLib::now()),
         mLastReceivedDataOrSTUN(zsLib::now()),
-        mKeepAliveDuration(Seconds(HOOKFLASH_SERVICES_ICESOCKETSESSION_DEFAULT_KEEPALIVE_INDICATION_TIME_IN_SECONDS))
+        mKeepAliveDuration(Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_DEFAULT_KEEPALIVE_INDICATION_TIME_IN_SECONDS))
       {
         ZS_LOG_BASIC(log("created"))
       }
@@ -1761,8 +1761,8 @@ namespace hookflash
             // we found a valid candiate but for some reason have not activated
             // it yet... wait around for it to activate... or give up if its
             // been a ridiculously long time...
-            if (mStartedSearchAt + Seconds(HOOKFLASH_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
-              ZS_LOG_ERROR(Basic, log("candidate found valid candidate but was never activated") + ", timeout=" + Stringize<int>(HOOKFLASH_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
+            if (mStartedSearchAt + Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
+              ZS_LOG_ERROR(Basic, log("candidate found valid candidate but was never activated") + ", timeout=" + Stringize<int>(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
               setShutdownReason(ICESocketSessionShutdownReason_Timeout);
               cancel(); // we waited as long as we could and it seems that we failed to connect...
               return;
@@ -1775,8 +1775,8 @@ namespace hookflash
               (-1 == foundNonActivated)) {
             // we never found a valid candidate and we did receive some
             // response but an incoming request was never received
-            if (mStartedSearchAt + Seconds(HOOKFLASH_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
-              ZS_LOG_ERROR(Basic, log("all outgoing request received a response but some incoming request has not arrived yet") + ", timeout=" + Stringize<int>(HOOKFLASH_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
+            if (mStartedSearchAt + Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
+              ZS_LOG_ERROR(Basic, log("all outgoing request received a response but some incoming request has not arrived yet") + ", timeout=" + Stringize<int>(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
               setShutdownReason(ICESocketSessionShutdownReason_Timeout);
               cancel(); // we waited as long as we could and it seems that we failed to connect...
               return;

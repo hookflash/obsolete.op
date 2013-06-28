@@ -35,7 +35,7 @@
 #include <openpeer/stack/ILocation.h>
 #include <openpeer/stack/IMessageSource.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

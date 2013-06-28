@@ -18,13 +18,13 @@ void MediaEngineDelegateWrapper::onMediaEngineAudioRouteChanged(IMediaEngine::Ou
 {
   switch (audioRoute)
   {
-    case hookflash::core::IMediaEngine::OutputAudioRoute_Headphone:
+    case openpeer::core::IMediaEngine::OutputAudioRoute_Headphone:
       printf("Audio route changed -- Headphone\n");
       break;
-    case hookflash::core::IMediaEngine::OutputAudioRoute_BuiltInReceiver:
+    case openpeer::core::IMediaEngine::OutputAudioRoute_BuiltInReceiver:
       printf("Audio route changed -- Built in speaker\n");
       break;
-    case hookflash::core::IMediaEngine::OutputAudioRoute_BuiltInSpeaker:
+    case openpeer::core::IMediaEngine::OutputAudioRoute_BuiltInSpeaker:
       printf("Audio route changed -- Built in receiver\n");
       break;
     default:

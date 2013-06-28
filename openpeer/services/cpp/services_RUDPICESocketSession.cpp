@@ -42,12 +42,12 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER (5)
+#define OPENPEER_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER (5)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -277,10 +277,10 @@ namespace hookflash
         do
         {
           ++tries;
-          if (tries > HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) return IRUDPChannelPtr();
+          if (tries > OPENPEER_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) return IRUDPChannelPtr();
 
           rng.GenerateBlock((BYTE *)(&channelNumber), sizeof(channelNumber));
-          channelNumber = (channelNumber % (HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END - HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START)) + HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START;
+          channelNumber = (channelNumber % (OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END - OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START)) + OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START;
 
           // check to see if the channel was used for this IP before...
           SessionMap::iterator found = mLocalChannelNumberSessions.find(channelNumber);
@@ -795,7 +795,7 @@ namespace hookflash
           do
           {
             ++tries;
-            if (tries > HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) {
+            if (tries > OPENPEER_SERVICES_RUDPICESOCKETSESSION_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) {
               stun->mErrorCode = STUNPacket::ErrorCode_InsufficientCapacity;
               response = STUNPacket::createErrorResponse(stun);
               fix(response);
@@ -803,7 +803,7 @@ namespace hookflash
             }
 
             rng.GenerateBlock((BYTE *)(&channelNumber), sizeof(channelNumber));
-            channelNumber = (channelNumber % (HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END - HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START)) + HOOKFLASH_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START;
+            channelNumber = (channelNumber % (OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_END - OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START)) + OPENPEER_SERVICES_RUDPICESOCKETSESSION_CHANNEL_RANGE_START;
 
             // check to see if the channel was used for this IP before...
             SessionMap::iterator found = mLocalChannelNumberSessions.find(channelNumber);

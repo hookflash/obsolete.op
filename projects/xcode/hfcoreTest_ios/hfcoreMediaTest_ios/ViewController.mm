@@ -15,9 +15,9 @@
 
 -(IBAction)startTest1
 {
-    hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
-    hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
     
     mediaEngine->setCaptureRenderView((__bridge void*)_imgView1);
     mediaEngine->setChannelRenderView((__bridge void*)_imgView2);
@@ -45,9 +45,9 @@
 
 -(IBAction)startTest2
 {
-    hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
-    hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
     
     testMediaEngineInternal->setReceiverAddress("127.0.0.1");
     
@@ -57,9 +57,9 @@
 
 -(IBAction)startTest3
 {
-    hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
-    hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
     
     mediaEngineInternal->forCallTransport().stopVoice();
     mediaEngineInternal->forCallTransport().stopVideoChannel();
@@ -67,9 +67,9 @@
 
 -(IBAction)startTest4
 {
-    hookflash::core::internal::MediaEnginePtr mediaEngineInternal = hookflash::core::internal::IMediaEngineForCallTransport::singleton();
-    hookflash::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<hookflash::core::test::TestMediaEngine>(mediaEngineInternal);
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
     
     mediaEngine->stopRecordVideoCapture();
     mediaEngine->stopVideoCapture();
@@ -88,19 +88,19 @@
   
     mediaEngineDelegatePtr = MediaEngineDelegateWrapper::create();
   
-    hookflash::core::test::TestMediaEngineFactoryPtr overrideFactory(new hookflash::core::test::TestMediaEngineFactory);
+    openpeer::core::test::TestMediaEngineFactoryPtr overrideFactory(new openpeer::core::test::TestMediaEngineFactory);
   
-    hookflash::core::internal::Factory::override(overrideFactory);
+    openpeer::core::internal::Factory::override(overrideFactory);
   
-    hookflash::core::internal::IMediaEngineForStack::setup(mediaEngineDelegatePtr);
+    openpeer::core::internal::IMediaEngineForStack::setup(mediaEngineDelegatePtr);
   
   
 //    IClient::setLogLevel(IClient::Log::Trace);
-//    IClient::setLogLevel("hookflash_services", IClient::Log::Debug);      // recommend Debug
-//    IClient::setLogLevel("hookflash_media", IClient::Log::Debug);         // recommend Debug
+//    IClient::setLogLevel("openpeer_services", IClient::Log::Debug);      // recommend Debug
+//    IClient::setLogLevel("openpeer_media", IClient::Log::Debug);         // recommend Debug
 //    IClient::installTelnetLogger(59999, 60, true);
   
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
   
     mediaEngine->setEcEnabled(true);
     mediaEngine->setAgcEnabled(true);
@@ -155,7 +155,7 @@
 
 - (void)orientationChanged
 {
-    hookflash::core::IMediaEnginePtr mediaEngine = hookflash::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
   
     mediaEngine->setVideoOrientation();
 }

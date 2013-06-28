@@ -34,7 +34,7 @@
 #include <openpeer/core/IStack.h>
 #include <openpeer/core/IMediaEngine.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

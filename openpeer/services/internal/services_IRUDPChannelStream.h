@@ -39,7 +39,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -293,10 +293,10 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPChannelStreamDelegate)
-ZS_DECLARE_PROXY_METHOD_2(onRUDPChannelStreamStateChanged, hookflash::services::internal::IRUDPChannelStreamPtr, hookflash::services::internal::IRUDPChannelStreamDelegate::RUDPChannelStreamStates)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamReadReady, hookflash::services::internal::IRUDPChannelStreamPtr)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamWriteReady, hookflash::services::internal::IRUDPChannelStreamPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(notifyRUDPChannelStreamSendPacket, bool, hookflash::services::internal::IRUDPChannelStreamPtr, const zsLib::BYTE *, zsLib::ULONG)
-ZS_DECLARE_PROXY_METHOD_3(onRUDPChannelStreamSendExternalACKNow, hookflash::services::internal::IRUDPChannelStreamPtr, bool, zsLib::PUID)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelStreamDelegate)
+ZS_DECLARE_PROXY_METHOD_2(onRUDPChannelStreamStateChanged, openpeer::services::internal::IRUDPChannelStreamPtr, openpeer::services::internal::IRUDPChannelStreamDelegate::RUDPChannelStreamStates)
+ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamReadReady, openpeer::services::internal::IRUDPChannelStreamPtr)
+ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamWriteReady, openpeer::services::internal::IRUDPChannelStreamPtr)
+ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(notifyRUDPChannelStreamSendPacket, bool, openpeer::services::internal::IRUDPChannelStreamPtr, const zsLib::BYTE *, zsLib::ULONG)
+ZS_DECLARE_PROXY_METHOD_3(onRUDPChannelStreamSendExternalACKNow, openpeer::services::internal::IRUDPChannelStreamPtr, bool, zsLib::PUID)
 ZS_DECLARE_PROXY_END()

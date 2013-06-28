@@ -34,7 +34,7 @@
 #include <openpeer/stack/types.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -104,7 +104,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IServiceSaltFetchSignedSaltQueryDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceSaltFetchSignedSaltQueryPtr, IServiceSaltFetchSignedSaltQueryPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IServiceSaltFetchSignedSaltQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceSaltFetchSignedSaltQueryPtr, IServiceSaltFetchSignedSaltQueryPtr)
 ZS_DECLARE_PROXY_METHOD_1(onServiceSaltFetchSignedSaltCompleted, IServiceSaltFetchSignedSaltQueryPtr)
 ZS_DECLARE_PROXY_END()

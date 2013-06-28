@@ -33,7 +33,7 @@
 
 #include <openpeer/core/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -134,9 +134,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::IAccountDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IAccountPtr, IAccountPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IAccount::AccountStates, AccountStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IAccountDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IAccountPtr, IAccountPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IAccount::AccountStates, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountStateChanged, IAccountPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_1(onAccountAssociatedIdentitiesChanged, IAccountPtr)
 ZS_DECLARE_PROXY_METHOD_1(onAccountPendingMessageForInnerBrowserWindowFrame, IAccountPtr)

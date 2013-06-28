@@ -40,10 +40,10 @@
 #include <cryptopp/rsa.h>
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

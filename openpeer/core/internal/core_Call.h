@@ -41,7 +41,7 @@
 
 #include <zsLib/Timer.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -760,12 +760,12 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::ICallAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ICallAsync)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_METHOD_1(onSetFocus, bool)
 ZS_DECLARE_PROXY_METHOD_0(onHangup)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::Call::ICallLocationAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::Call::ICallLocationAsync)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

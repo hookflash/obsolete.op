@@ -33,7 +33,7 @@
 
 #include <openpeer/core/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -158,11 +158,11 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::IConversationThreadDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IConversationThread::MessageDeliveryStates, MessageDeliveryStates)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IConversationThreadPtr, IConversationThreadPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IContactPtr, IContactPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::IConversationThread::ContactStates, ContactStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IConversationThreadDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IConversationThread::MessageDeliveryStates, MessageDeliveryStates)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IConversationThreadPtr, IConversationThreadPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IContactPtr, IContactPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IConversationThread::ContactStates, ContactStates)
 ZS_DECLARE_PROXY_METHOD_1(onConversationThreadNew, IConversationThreadPtr)
 ZS_DECLARE_PROXY_METHOD_1(onConversationThreadContactsChanged, IConversationThreadPtr)
 ZS_DECLARE_PROXY_METHOD_3(onConversationThreadContactStateChanged, IConversationThreadPtr, IContactPtr, ContactStates)

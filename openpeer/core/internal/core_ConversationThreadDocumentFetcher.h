@@ -39,7 +39,7 @@
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/String.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -228,11 +228,11 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::IConversationThreadDocumentFetcherDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::core::internal::IConversationThreadDocumentFetcherPtr, IConversationThreadDocumentFetcherPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationMetaDataPtr, IPublicationMetaDataPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationPtr, IPublicationPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::ILocationPtr, ILocationPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IConversationThreadDocumentFetcherDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::IConversationThreadDocumentFetcherPtr, IConversationThreadDocumentFetcherPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationMetaDataPtr, IPublicationMetaDataPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationPtr, IPublicationPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::ILocationPtr, ILocationPtr)
 ZS_DECLARE_PROXY_METHOD_3(onConversationThreadDocumentFetcherPublicationUpdated, IConversationThreadDocumentFetcherPtr, ILocationPtr, IPublicationPtr)
 ZS_DECLARE_PROXY_METHOD_3(onConversationThreadDocumentFetcherPublicationGone, IConversationThreadDocumentFetcherPtr, ILocationPtr, IPublicationMetaDataPtr)
 ZS_DECLARE_PROXY_END()

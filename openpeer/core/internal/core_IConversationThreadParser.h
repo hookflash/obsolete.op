@@ -38,9 +38,9 @@
 
 #include <zsLib/Exception.h>
 
-#define HOOKFLASH_CONVESATION_THREAD_BASE_THREAD_INDEX (3)
+#define OPENPEER_CONVESATION_THREAD_BASE_THREAD_INDEX (3)
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

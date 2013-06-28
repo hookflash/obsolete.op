@@ -35,7 +35,7 @@
 #include <openpeer/stack/IPublicationMetaData.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -267,25 +267,25 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationPublisherDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationPublisherPtr, IPublicationPublisherPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IPublicationPublisherDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationPublisherPtr, IPublicationPublisherPtr)
 ZS_DECLARE_PROXY_METHOD_1(onPublicationPublisherCompleted, IPublicationPublisherPtr)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationFetcherDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationFetcherPtr, IPublicationFetcherPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IPublicationFetcherDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationFetcherPtr, IPublicationFetcherPtr)
 ZS_DECLARE_PROXY_METHOD_1(onPublicationFetcherCompleted, IPublicationFetcherPtr)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationRemoverDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationRemoverPtr, IPublicationRemoverPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IPublicationRemoverDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationRemoverPtr, IPublicationRemoverPtr)
 ZS_DECLARE_PROXY_METHOD_1(onPublicationRemoverCompleted, IPublicationRemoverPtr)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPublicationSubscriptionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationMetaDataPtr, IPublicationMetaDataPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationSubscriptionPtr, IPublicationSubscriptionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPublicationSubscriptionDelegate::PublicationSubscriptionStates, PublicationSubscriptionStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IPublicationSubscriptionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationMetaDataPtr, IPublicationMetaDataPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationSubscriptionPtr, IPublicationSubscriptionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPublicationSubscriptionDelegate::PublicationSubscriptionStates, PublicationSubscriptionStates)
 ZS_DECLARE_PROXY_METHOD_2(onPublicationSubscriptionStateChanged, IPublicationSubscriptionPtr, PublicationSubscriptionStates)
 ZS_DECLARE_PROXY_METHOD_2(onPublicationSubscriptionPublicationUpdated, IPublicationSubscriptionPtr, IPublicationMetaDataPtr)
 ZS_DECLARE_PROXY_METHOD_2(onPublicationSubscriptionPublicationGone, IPublicationSubscriptionPtr, IPublicationMetaDataPtr)

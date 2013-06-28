@@ -33,7 +33,7 @@
 
 using namespace zsLib;
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -115,4 +115,4 @@ namespace hookflash
       }
     } // namespace test
   } // namespace stack
-} // namespace hookflash
+} // namespace openpeer

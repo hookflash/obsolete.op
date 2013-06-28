@@ -43,9 +43,9 @@
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_FINDER_HANDLER "peer-finder"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_FINDER_HANDLER "peer-finder"
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -87,7 +87,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryPeerFinder::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_PEER_FINDER_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_PEER_FINDER_HANDLER;
         }
 
         //---------------------------------------------------------------------

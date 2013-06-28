@@ -40,7 +40,7 @@
 
 #include <openpeer/services/IICESocket.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -71,8 +71,8 @@ namespace hookflash
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
 
-    typedef hookflash::services::IICESocket::CandidateList CandidateList;
-    typedef hookflash::services::IICESocket::Candidate Candidate;
+    typedef openpeer::services::IICESocket::CandidateList CandidateList;
+    typedef openpeer::services::IICESocket::Candidate Candidate;
 
     interaction ILocation;
     typedef boost::shared_ptr<ILocation> ILocationPtr;

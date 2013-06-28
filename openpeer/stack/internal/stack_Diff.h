@@ -35,10 +35,10 @@
 #include <openpeer/stack/IDiff.h>
 
 
-#define HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME "diff"
-#define HOOKFLASH_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME "item"
+#define OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME "diff"
+#define OPENPEER_STACK_DIFF_DOCUMENT_ITEM_ELEMENT_NAME "item"
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

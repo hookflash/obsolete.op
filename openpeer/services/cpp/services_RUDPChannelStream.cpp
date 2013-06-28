@@ -42,33 +42,33 @@
 #pragma warning(push)
 #pragma warning(disable:4290)
 
-#define HOOKFLASH_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS (40)
-#define HOOKFLASH_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS (20)
-#define HOOKFLASH_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS (200)
+#define OPENPEER_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS (40)
+#define OPENPEER_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS (20)
+#define OPENPEER_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS (200)
 
-#define HOOKFLASH_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES (16*1024)
-#define HOOKFLASH_SERVICES_MAX_RECYCLE_BUFFERS 16
+#define OPENPEER_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES (16*1024)
+#define OPENPEER_SERVICES_MAX_RECYCLE_BUFFERS 16
 
-#define HOOKFLASH_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER (256)
+#define OPENPEER_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER (256)
 
-#define HOOKFLASH_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS (10)
+#define OPENPEER_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS (10)
 
-#define HOOKFLASH_SERVICES_UNFREEZE_AFTER_SECONDS_OF_GOOD_TRANSMISSION (10)
-#define HOOKFLASH_SERVICES_DEFAULT_PACKETS_PER_BURST (3)
+#define OPENPEER_SERVICES_UNFREEZE_AFTER_SECONDS_OF_GOOD_TRANSMISSION (10)
+#define OPENPEER_SERVICES_DEFAULT_PACKETS_PER_BURST (3)
 
-//#define HOOKFLASH_INDUCE_FAKE_PACKET_LOSS
-#define HOOKFLASH_INDUCE_FAKE_PACKET_LOSS_PERCENTAGE (10)
+//#define OPENPEER_INDUCE_FAKE_PACKET_LOSS
+#define OPENPEER_INDUCE_FAKE_PACKET_LOSS_PERCENTAGE (10)
 
 
-#ifdef HOOKFLASH_INDUCE_FAKE_PACKET_LOSS
+#ifdef OPENPEER_INDUCE_FAKE_PACKET_LOSS
 #define WARNING_INDUCING_FAKE_PACKET_LOSS 1
 #define WARNING_INDUCING_FAKE_PACKET_LOSS 2
-#endif //HOOKFLASH_INDUCE_FAKE_PACKET_LOSS
+#endif //OPENPEER_INDUCE_FAKE_PACKET_LOSS
 
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -147,7 +147,7 @@ namespace hookflash
         if (0 == outRecommendedNextSequenceNumberForSending)
           outRecommendedNextSequenceNumberForSending = 1;
 
-        outMinimumRecommendedRTTInMilliseconds = HOOKFLASH_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS;
+        outMinimumRecommendedRTTInMilliseconds = OPENPEER_SERVICES_RUDP_MINIMUM_RECOMMENDED_RTT_IN_MILLISECONDS;
 
         outLocalAlgorithms.clear();
         outRemoteAlgoirthms.clear();
@@ -237,7 +237,7 @@ namespace hookflash
         mSendingChannelNumber(sendingChannelNumber),
         mReceivingChannelNumber(receivingChannelNumber),
         mMinimumRTT(Milliseconds(minimumNegotiatedRTTInMilliseconds)),
-        mCalculatedRTT(Milliseconds(HOOKFLASH_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
+        mCalculatedRTT(Milliseconds(OPENPEER_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
         mNextSequenceNumber(nextSequenceNumberToUseForSending),
         mXORedParityToNow(false),
         mGSNR(nextSequenberNumberExpectingToReceive-1),
@@ -253,8 +253,8 @@ namespace hookflash
         mRandomPoolPos(0),
         mTotalPacketsToResend(0),
         mAvailableBurstBatons(1),
-        mAddToAvailableBurstBatonsDuation(Milliseconds(HOOKFLASH_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
-        mPacketsPerBurst(HOOKFLASH_SERVICES_DEFAULT_PACKETS_PER_BURST),
+        mAddToAvailableBurstBatonsDuation(Milliseconds(OPENPEER_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
+        mPacketsPerBurst(OPENPEER_SERVICES_DEFAULT_PACKETS_PER_BURST),
         mBandwidthIncreaseFrozen(false),
         mStartedSendingAtTime(zsLib::now()),
         mTotalSendingPeriodWithoutIssues(Milliseconds(0)),
@@ -583,7 +583,7 @@ namespace hookflash
           }
 
           // we can't process packets that are beyond the window in which we can process
-          if (sequenceNumber > (mGSNR + HOOKFLASH_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER)) {
+          if (sequenceNumber > (mGSNR + OPENPEER_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER)) {
             ZS_LOG_WARNING(Debug, log("received packet beyond allowed window") + ", GSNR=" + sequenceToString(mGSNR) + ", packet sequence number=" + sequenceToString(sequenceNumber))
             return false;
           }
@@ -619,13 +619,13 @@ namespace hookflash
           }
 
           // allow any packet to be delivered between the mGSNFR to the default window size to be added to the buffer (since it helps move the window)
-          if (sequenceNumber > mGSNFR+HOOKFLASH_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER) {
+          if (sequenceNumber > mGSNFR+OPENPEER_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER) {
 
             if (sequenceNumber > mGSNR) {
               Time current = zsLib::now();
 
               Duration maxDuration = (mCalculatedRTT * 3);
-              if (maxDuration > Seconds(HOOKFLASH_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS)) {
+              if (maxDuration > Seconds(OPENPEER_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS)) {
                 // The remote party could have intentionally caused a really large
                 // RTT in order to open a very large buffer window in the receiver
                 // thus we have to prevent them expanding the window massively big
@@ -633,7 +633,7 @@ namespace hookflash
                 // idea to overload the receivers capacity. To prevent this we will
                 // calculate how many packets we actually receive during a 4 second
                 // window and limit our outstanding capacity to that window.
-                maxDuration = Seconds(HOOKFLASH_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS);
+                maxDuration = Seconds(OPENPEER_SERVICES_MAX_EXPAND_WINDOW_SINCE_LAST_READ_DELIVERED_IN_SECONDS);
               }
 
               // if this packet is attempting to expand the window, only allow expansion until the last delivered packet is 3xRTT old
@@ -1066,15 +1066,15 @@ namespace hookflash
                                             ULONG packetLengthInBytes
                                             )
       {
-#ifdef HOOKFLASH_INDUCE_FAKE_PACKET_LOSS
-        bool forcePacketLoss = ((rand() % 100) < HOOKFLASH_INDUCE_FAKE_PACKET_LOSS_PERCENTAGE);
+#ifdef OPENPEER_INDUCE_FAKE_PACKET_LOSS
+        bool forcePacketLoss = ((rand() % 100) < OPENPEER_INDUCE_FAKE_PACKET_LOSS_PERCENTAGE);
         if (forcePacketLoss) {
           ZS_LOG_WARNING(Trace, log("faking packet loss in deliver attempt"))
         }
         return = (forcePacketLoss ? true : (delegate->notifyRUDPChannelStreamSendPacket(mThisWeak.lock(), buffer, packetLengthInBytes)));
 #else
         return delegate->notifyRUDPChannelStreamSendPacket(mThisWeak.lock(), buffer, packetLengthInBytes);
-#endif //HOOKFLASH_INDUCE_FAKE_PACKET_LOSS
+#endif //OPENPEER_INDUCE_FAKE_PACKET_LOSS
       }
 
       //-----------------------------------------------------------------------
@@ -1278,9 +1278,9 @@ namespace hookflash
                 newPacket->mVectorLengthInBytes = firstPacketCreated->mRUDPPacket->mVectorLengthInBytes;
               }
 
-              BYTE temp[HOOKFLASH_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN];
+              BYTE temp[OPENPEER_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN];
 
-              ULONG availableBytes = newPacket->getRoomAvailableForData(HOOKFLASH_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN);
+              ULONG availableBytes = newPacket->getRoomAvailableForData(OPENPEER_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN);
 
               ULONG bytesRead = getFromWriteBuffer(&(temp[0]), availableBytes);
               newPacket->mData = &(temp[0]);
@@ -1502,8 +1502,8 @@ namespace hookflash
 
             // all available bursts should happen in one RTT
             mBurstTimer = Timer::create(mThisWeak.lock(), burstDuration);
-            if (burstDuration < Milliseconds(HOOKFLASH_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS)) {
-              burstDuration = Milliseconds(HOOKFLASH_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS);
+            if (burstDuration < Milliseconds(OPENPEER_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS)) {
+              burstDuration = Milliseconds(OPENPEER_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS);
             }
 
             ZS_LOG_TRACE(log("creating a burst timer since there is data to send and available batons to send it") + ", timer ID=" + Stringize<PUID>(mBurstTimer->getID()).string() + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string() + ", burst duration=" + Stringize<Duration::tick_type>(burstDuration.total_milliseconds()).string() + ", calculated RTT=" + Stringize<Duration::tick_type>(mCalculatedRTT.total_milliseconds()).string())
@@ -1611,7 +1611,7 @@ namespace hookflash
           }
 
           // if the packet is too far ahead from the greatest packet received then it can't be processed
-          if (nextSequenceNumber > (mGSNR + HOOKFLASH_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER)) {
+          if (nextSequenceNumber > (mGSNR + OPENPEER_SERVICES_MAX_WINDOW_TO_NEXT_SEQUENCE_NUMBER)) {
             ZS_LOG_WARNING(Detail, log("ignoring ACK as it was for packet too far outside window") + ", sequence number=" + sequenceToString(nextSequenceNumber) + ", GSNR=" + sequenceToString(mGSNR))
             goto handleAckQuickExit;
           }
@@ -1906,7 +1906,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void RUDPChannelStream::handleUnfreezing()
       {
-        if (mTotalSendingPeriodWithoutIssues > Seconds(HOOKFLASH_SERVICES_UNFREEZE_AFTER_SECONDS_OF_GOOD_TRANSMISSION)) {
+        if (mTotalSendingPeriodWithoutIssues > Seconds(OPENPEER_SERVICES_UNFREEZE_AFTER_SECONDS_OF_GOOD_TRANSMISSION)) {
           mBandwidthIncreaseFrozen = false;
           mTotalSendingPeriodWithoutIssues = Milliseconds(0);
 
@@ -2086,10 +2086,10 @@ namespace hookflash
                                         ULONG &ioBufferAllocLengthInBytes
                                         )
       {
-        if (ioBufferAllocLengthInBytes < HOOKFLASH_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES)
-          ioBufferAllocLengthInBytes = HOOKFLASH_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES;
+        if (ioBufferAllocLengthInBytes < OPENPEER_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES)
+          ioBufferAllocLengthInBytes = OPENPEER_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES;
 
-        if ((HOOKFLASH_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES != ioBufferAllocLengthInBytes) ||
+        if ((OPENPEER_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES != ioBufferAllocLengthInBytes) ||
             (mRecycleBuffers.size() < 1)) {
           outBuffer = RecycleBuffer(new BYTE[ioBufferAllocLengthInBytes]);
           return;
@@ -2105,8 +2105,8 @@ namespace hookflash
                                          ULONG bufferAllocLengthInBytes
                                          )
       {
-        if ((HOOKFLASH_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES != bufferAllocLengthInBytes) ||
-            (mRecycleBuffers.size() > HOOKFLASH_SERVICES_MAX_RECYCLE_BUFFERS)){
+        if ((OPENPEER_SERVICES_MINIMUM_DATA_BUFFER_LENGTH_ALLOCATED_IN_BYTES != bufferAllocLengthInBytes) ||
+            (mRecycleBuffers.size() > OPENPEER_SERVICES_MAX_RECYCLE_BUFFERS)){
           ioBuffer.reset();
           return;
         }

@@ -62,26 +62,25 @@
 
 #include <algorithm>
 
-//#define HOOKFLASH_STACK_SESSION_USERAGENT "hookflash/1.0.1001a (iOS/iPad)"
-#define HOOKFLASH_STACK_PEER_LOCATION_FIND_TIMEOUT_IN_SECONDS (60*2)
-#define HOOKFLASH_STACK_PEER_LOCATION_FIND_RETRY_IN_SECONDS (30)
-#define HOOKFLASH_STACK_PEER_LOCATION_INACTIVITY_TIMEOUT_IN_SECONDS (10*60)
-#define HOOKFLASH_STACK_PEER_LOCATION_KEEP_ALIVE_TIME_IN_SECONDS    (5*60)
+#define OPENPEER_STACK_PEER_LOCATION_FIND_TIMEOUT_IN_SECONDS (60*2)
+#define OPENPEER_STACK_PEER_LOCATION_FIND_RETRY_IN_SECONDS (30)
+#define OPENPEER_STACK_PEER_LOCATION_INACTIVITY_TIMEOUT_IN_SECONDS (10*60)
+#define OPENPEER_STACK_PEER_LOCATION_KEEP_ALIVE_TIME_IN_SECONDS    (5*60)
 
-#define HOOKFLASH_STACK_FINDERS_GET_TOTAL_SERVERS_TO_GET (2)
-#define HOOKFLASH_STACK_FINDERS_GET_TIMEOUT_IN_SECONDS (60)
+#define OPENPEER_STACK_FINDERS_GET_TOTAL_SERVERS_TO_GET (2)
+#define OPENPEER_STACK_FINDERS_GET_TIMEOUT_IN_SECONDS (60)
 
-#define HOOKFLASH_STACK_ACCOUNT_TIMER_FIRES_IN_SECONDS (15)
-#define HOOKFLASH_STACK_ACCOUNT_TIMER_DETECTED_BACKGROUNDING_TIME_IN_SECONDS (40)
-#define HOOKFLASH_STACK_ACCOUNT_PREVENT_LOCATION_SHUTDOWNS_AFTER_BACKGROUNDING_FOR_IN_SECONDS (15)
-#define HOOKFLASH_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS (1)
-#define HOOKFLASH_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS (60)
+#define OPENPEER_STACK_ACCOUNT_TIMER_FIRES_IN_SECONDS (15)
+#define OPENPEER_STACK_ACCOUNT_TIMER_DETECTED_BACKGROUNDING_TIME_IN_SECONDS (40)
+#define OPENPEER_STACK_ACCOUNT_PREVENT_LOCATION_SHUTDOWNS_AFTER_BACKGROUNDING_FOR_IN_SECONDS (15)
+#define OPENPEER_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS (1)
+#define OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS (60)
 
-#define HOOKFLASH_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE "rudp/udp"
+#define OPENPEER_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE "rudp/udp"
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -128,7 +127,7 @@ namespace hookflash
         {
           const Finder::Protocol &protocol = (*iter);
 
-          if (HOOKFLASH_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
+          if (OPENPEER_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
             return protocol.mSRV;
           }
         }
@@ -158,7 +157,7 @@ namespace hookflash
         mBlockLocationShutdownsUntil(zsLib::now()),
         mPeerContactSession(peerContactSession),
         mFinderRetryAfter(zsLib::now()),
-        mLastRetryFinderAfterDuration(Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS))
+        mLastRetryFinderAfterDuration(Seconds(OPENPEER_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS))
       {
         ZS_LOG_BASIC(log("created"))
       }
@@ -445,7 +444,7 @@ namespace hookflash
             mSocket->getLocalCandidates(info->mCandidates);
 
             for (CandidateList::iterator iter = info->mCandidates.begin(); iter != info->mCandidates.end(); ++iter) {
-              hookflash::services::IICESocket::Candidate &candidate = (*iter);
+              openpeer::services::IICESocket::Candidate &candidate = (*iter);
               if (IICESocket::Type_Local == candidate.mType) {
                 info->mIPAddress = (*iter).mIPAddress;
               }
@@ -949,7 +948,7 @@ namespace hookflash
         notifySubscriptions(mFinderLocation, toLocationConnectionState(state));
 
         if (IAccount::AccountState_Ready == state) {
-          mLastRetryFinderAfterDuration = Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS);
+          mLastRetryFinderAfterDuration = Seconds(OPENPEER_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS);
         }
 
         if ((IAccount::AccountState_ShuttingDown == state) ||
@@ -1526,10 +1525,10 @@ namespace hookflash
 
         Time tick = zsLib::now();
 
-        if (mLastTimerFired + Seconds(HOOKFLASH_STACK_ACCOUNT_TIMER_DETECTED_BACKGROUNDING_TIME_IN_SECONDS) < tick) {
+        if (mLastTimerFired + Seconds(OPENPEER_STACK_ACCOUNT_TIMER_DETECTED_BACKGROUNDING_TIME_IN_SECONDS) < tick) {
           ZS_LOG_WARNING(Detail, log("account timer detected account when into background"))
 
-          mBlockLocationShutdownsUntil = tick + Seconds(HOOKFLASH_STACK_ACCOUNT_PREVENT_LOCATION_SHUTDOWNS_AFTER_BACKGROUNDING_FOR_IN_SECONDS);
+          mBlockLocationShutdownsUntil = tick + Seconds(OPENPEER_STACK_ACCOUNT_PREVENT_LOCATION_SHUTDOWNS_AFTER_BACKGROUNDING_FOR_IN_SECONDS);
         }
 
         mLastTimerFired = tick;
@@ -1774,7 +1773,7 @@ namespace hookflash
         if (mTimer) return true;
 
         mLastTimerFired = zsLib::now();
-        mTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_STACK_ACCOUNT_TIMER_FIRES_IN_SECONDS));
+        mTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_STACK_ACCOUNT_TIMER_FIRES_IN_SECONDS));
         return true;
       }
 
@@ -1945,9 +1944,9 @@ namespace hookflash
 
           FindersGetRequestPtr request = FindersGetRequest::create();
           request->domain(getDomain());
-          request->totalFinders(HOOKFLASH_STACK_FINDERS_GET_TOTAL_SERVERS_TO_GET);
+          request->totalFinders(OPENPEER_STACK_FINDERS_GET_TOTAL_SERVERS_TO_GET);
 
-          mFindersGetMonitor = IMessageMonitor::monitorAndSendToService(mThisWeak.lock(), network, "bootstrapped-finders", "finders-get", request, Seconds(HOOKFLASH_STACK_FINDERS_GET_TIMEOUT_IN_SECONDS));
+          mFindersGetMonitor = IMessageMonitor::monitorAndSendToService(mThisWeak.lock(), network, "bootstrapped-finders", "finders-get", request, Seconds(OPENPEER_STACK_FINDERS_GET_TIMEOUT_IN_SECONDS));
 
           ZS_LOG_DEBUG(log("attempting to get finders"))
           return false;
@@ -2178,7 +2177,7 @@ namespace hookflash
 
             Time lastActivityTime = peerLocation->forAccount().getTimeOfLastActivity();
 
-            if (lastActivityTime + Seconds(HOOKFLASH_STACK_PEER_LOCATION_INACTIVITY_TIMEOUT_IN_SECONDS) > tick) {
+            if (lastActivityTime + Seconds(OPENPEER_STACK_PEER_LOCATION_INACTIVITY_TIMEOUT_IN_SECONDS) > tick) {
               ZS_LOG_DEBUG(log("peer location is still considered active at this time (thus keeping connection alive)") + PeerInfo::toDebugString(peerInfo) + AccountPeerLocation::toDebugString(peerLocation))
               continue;
             }
@@ -2212,7 +2211,7 @@ namespace hookflash
 
           Time lastActivityTime = peerLocation->forAccount().getTimeOfLastActivity();
 
-          if (lastActivityTime + Seconds(HOOKFLASH_STACK_PEER_LOCATION_KEEP_ALIVE_TIME_IN_SECONDS) > tick) {
+          if (lastActivityTime + Seconds(OPENPEER_STACK_PEER_LOCATION_KEEP_ALIVE_TIME_IN_SECONDS) > tick) {
             ZS_LOG_TRACE(log("peer location is not requiring a keep alive yet") + PeerInfo::toDebugString(peerInfo) + AccountPeerLocation::toDebugString(peerLocation))
             continue;
           }
@@ -2269,7 +2268,7 @@ namespace hookflash
         request->locationInfo(*locationInfo);
         request->peerFiles(peerFiles);
 
-        peerInfo->mPeerFindMonitor = mFinder->forAccount().sendRequest(mThisWeak.lock(), request, Seconds(HOOKFLASH_STACK_PEER_LOCATION_FIND_TIMEOUT_IN_SECONDS));
+        peerInfo->mPeerFindMonitor = mFinder->forAccount().sendRequest(mThisWeak.lock(), request, Seconds(OPENPEER_STACK_PEER_LOCATION_FIND_TIMEOUT_IN_SECONDS));
 
         setFindState(*(peerInfo.get()), IPeer::PeerFindState_Finding);
       }
@@ -2324,8 +2323,8 @@ namespace hookflash
         mFinderRetryAfter = tick + mLastRetryFinderAfterDuration;
         mLastRetryFinderAfterDuration = mLastRetryFinderAfterDuration * 2;
 
-        if (mLastRetryFinderAfterDuration > Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS)) {
-          mLastRetryFinderAfterDuration = Seconds(HOOKFLASH_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS);
+        if (mLastRetryFinderAfterDuration > Seconds(OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS)) {
+          mLastRetryFinderAfterDuration = Seconds(OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS);
         }
       }
 
@@ -2430,7 +2429,7 @@ namespace hookflash
       void Account::PeerInfo::findTimeReset()
       {
         mNextScheduledFind = zsLib::now();
-        mLastScheduleFindDuration = Seconds(HOOKFLASH_STACK_PEER_LOCATION_FIND_RETRY_IN_SECONDS/2);
+        mLastScheduleFindDuration = Seconds(OPENPEER_STACK_PEER_LOCATION_FIND_RETRY_IN_SECONDS/2);
         if (mLastScheduleFindDuration < Seconds(1))
           mLastScheduleFindDuration = Seconds(1);
       }

@@ -38,10 +38,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPER_HANDLER "bootstrapper"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPER_HANDLER "bootstrapper"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -83,7 +83,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryBootstrapper::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPER_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPER_HANDLER;
         }
 
         //---------------------------------------------------------------------

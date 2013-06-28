@@ -43,7 +43,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -530,17 +530,17 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceNamespaceGrantSessionAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IServiceNamespaceGrantSessionPtr, IServiceNamespaceGrantSessionPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceNamespaceGrantSessionPtr, IServiceNamespaceGrantSessionPtr)
 ZS_DECLARE_PROXY_METHOD_1(onServiceNamespaceGrantSessionForServicesWaitComplete, IServiceNamespaceGrantSessionPtr)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesQueryDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IServiceNamespaceGrantSessionForServicesQueryPtr, IServiceNamespaceGrantSessionForServicesQueryPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceNamespaceGrantSessionForServicesQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IServiceNamespaceGrantSessionForServicesQueryPtr, IServiceNamespaceGrantSessionForServicesQueryPtr)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::XML::ElementPtr, ElementPtr)
 ZS_DECLARE_PROXY_METHOD_2(onServiceNamespaceGrantSessionForServicesQueryComplete, IServiceNamespaceGrantSessionForServicesQueryPtr, ElementPtr)
 ZS_DECLARE_PROXY_END()

@@ -43,11 +43,11 @@
 #include <zsLib/helpers.h>
 #include <zsLib/XML.h>
 
-#define HOOKFLASH_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS ((60*60)*24)
+#define OPENPEER_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS ((60*60)*24)
 
-namespace hookflash { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(hookflash_stack_message) } } }
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -211,7 +211,7 @@ namespace hookflash
 
           peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", IHelper::randomString(32)));
 
-          Time expires = zsLib::now() + Duration(Seconds(HOOKFLASH_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS));
+          Time expires = zsLib::now() + Duration(Seconds(OPENPEER_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS));
           peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("expires", IMessageHelper::timeToString(expires)));
 
           if (hasAttribute(AttributeType_FindSecret)) {

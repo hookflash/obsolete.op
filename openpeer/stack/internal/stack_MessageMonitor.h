@@ -37,7 +37,7 @@
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -290,10 +290,10 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IMessageMonitorAsyncDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IMessageMonitorDelegatePtr, IMessageMonitorDelegatePtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessageResultPtr, MessageResultPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IMessageMonitorAsyncDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageMonitorDelegatePtr, IMessageMonitorDelegatePtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessageResultPtr, MessageResultPtr)
 ZS_DECLARE_PROXY_METHOD_2(onHandleMessage, IMessageMonitorDelegatePtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_1(onAutoHandleFailureResult, MessageResultPtr)
 ZS_DECLARE_PROXY_END()

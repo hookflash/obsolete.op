@@ -40,7 +40,7 @@
 
 #include <map>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -566,13 +566,13 @@ namespace hookflash
 }
 
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPChannelDelegateForSessionAndListener)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::internal::RUDPChannelPtr, RUDPChannelPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::internal::IRUDPChannelDelegateForSessionAndListener::RUDPChannelStates, RUDPChannelStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelDelegateForSessionAndListener)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::internal::RUDPChannelPtr, RUDPChannelPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::internal::IRUDPChannelDelegateForSessionAndListener::RUDPChannelStates, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPChannelStateChanged, RUDPChannelPtr, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_4(notifyRUDPChannelSendPacket, bool, RUDPChannelPtr, const IPAddress &, const BYTE *, ULONG)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPChannelAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

@@ -51,16 +51,16 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE (1 << (sizeof(WORD)*8))
-#define HOOKFLASH_SERVICES_RUDPLISTENER_MAX_RECYLCE_BUFFERS (100)
+#define OPENPEER_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE (1 << (sizeof(WORD)*8))
+#define OPENPEER_SERVICES_RUDPLISTENER_MAX_RECYLCE_BUFFERS (100)
 
-#define HOOKFLASH_SERVICES_RUDPLISTENER_MAX_NONCE_LIFETIME_IN_SECONDS (5*60)
+#define OPENPEER_SERVICES_RUDPLISTENER_MAX_NONCE_LIFETIME_IN_SECONDS (5*60)
 
-#define HOOKFLASH_SERVICES_RUDPLISTENER_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER (5)
+#define OPENPEER_SERVICES_RUDPLISTENER_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER (5)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -164,7 +164,7 @@ namespace hookflash
         if (0 != memcmp(&(key[0]), &(output[sizeof(time_t)]), sizeof(key))) return false;
 
         time_t now = time(NULL);
-        if (temp + HOOKFLASH_SERVICES_RUDPLISTENER_MAX_NONCE_LIFETIME_IN_SECONDS < now) return false;
+        if (temp + OPENPEER_SERVICES_RUDPLISTENER_MAX_NONCE_LIFETIME_IN_SECONDS < now) return false;
 
         return true;
       }
@@ -320,7 +320,7 @@ namespace hookflash
           getBuffer(buffer);
 
           try {
-            bytesRead = mUDPSocket->receiveFrom(remote, buffer.get(), HOOKFLASH_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE);
+            bytesRead = mUDPSocket->receiveFrom(remote, buffer.get(), OPENPEER_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE);
           } catch(ISocket::Exceptions::Unspecified &) {
             cancel();
             return;
@@ -746,7 +746,7 @@ namespace hookflash
           do
           {
             ++tries;
-            if (tries > HOOKFLASH_SERVICES_RUDPLISTENER_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) {
+            if (tries > OPENPEER_SERVICES_RUDPLISTENER_MAX_ATTEMPTS_TO_FIND_FREE_CHANNEL_NUMBER) {
               stun->mErrorCode = STUNPacket::ErrorCode_InsufficientCapacity;
               response = STUNPacket::createErrorResponse(stun);
               fix(response);
@@ -754,8 +754,8 @@ namespace hookflash
             }
 
             rng.GenerateBlock((BYTE *)(&channelNumber), sizeof(channelNumber));
-            channelNumber = channelNumber % (HOOKFLASH_SERVICES_RUDPLISTENER_CHANNEL_RANGE_END - HOOKFLASH_SERVICES_RUDPLISTENER_CHANNEL_RANGE_START);
-            channelNumber += HOOKFLASH_SERVICES_RUDPLISTENER_CHANNEL_RANGE_START;
+            channelNumber = channelNumber % (OPENPEER_SERVICES_RUDPLISTENER_CHANNEL_RANGE_END - OPENPEER_SERVICES_RUDPLISTENER_CHANNEL_RANGE_START);
+            channelNumber += OPENPEER_SERVICES_RUDPLISTENER_CHANNEL_RANGE_START;
 
             // check to see if the channel was used for this IP before...
             ChannelPair search(remoteIP, channelNumber);
@@ -805,7 +805,7 @@ namespace hookflash
       {
         AutoRecursiveLock lock(mLock);
         if (mRecycledBuffers.size() < 1) {
-          outBuffer = RecycledPacketBuffer(new BYTE[HOOKFLASH_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE]);
+          outBuffer = RecycledPacketBuffer(new BYTE[OPENPEER_SERVICES_RUDPLISTENER_RECYCLE_BUFFER_SIZE]);
           return;
         }
 
@@ -819,7 +819,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         if (!buffer) return;
 
-        if (mRecycledBuffers.size() >= HOOKFLASH_SERVICES_RUDPLISTENER_MAX_RECYLCE_BUFFERS) {
+        if (mRecycledBuffers.size() >= OPENPEER_SERVICES_RUDPLISTENER_MAX_RECYLCE_BUFFERS) {
           buffer.reset();
           return;
         }

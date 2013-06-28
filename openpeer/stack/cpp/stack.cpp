@@ -35,10 +35,10 @@
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 
-namespace hookflash { namespace stack { ZS_IMPLEMENT_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_IMPLEMENT_SUBSYSTEM(openpeer_stack) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

@@ -45,7 +45,7 @@
 #include <list>
 #include <iostream>
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::BYTE;
 using zsLib::WORD;
@@ -54,13 +54,13 @@ using zsLib::Socket;
 using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
-using hookflash::services::IDNS;
-using hookflash::services::IDNSQuery;
-using hookflash::services::ISTUNDiscovery;
-using hookflash::services::ISTUNDiscoveryPtr;
-using hookflash::services::ISTUNDiscoveryDelegate;
+using openpeer::services::IDNS;
+using openpeer::services::IDNSQuery;
+using openpeer::services::ISTUNDiscovery;
+using openpeer::services::ISTUNDiscoveryPtr;
+using openpeer::services::ISTUNDiscoveryDelegate;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -228,19 +228,19 @@ namespace hookflash
   }
 }
 
-using hookflash::services::test::TestSTUNDiscoveryCallback;
-using hookflash::services::test::TestSTUNDiscoveryCallbackPtr;
+using openpeer::services::test::TestSTUNDiscoveryCallback;
+using openpeer::services::test::TestSTUNDiscoveryCallbackPtr;
 
 void doTestSTUNDiscovery()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_STUN_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_STUN_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
-  TestSTUNDiscoveryCallbackPtr testObject = TestSTUNDiscoveryCallback::create(thread, 45123, HOOKFLASH_SERVICE_TEST_STUN_SERVER, true);
-  TestSTUNDiscoveryCallbackPtr testObject2 = TestSTUNDiscoveryCallback::create(thread, 45127, HOOKFLASH_SERVICE_TEST_STUN_SERVER, false);
+  TestSTUNDiscoveryCallbackPtr testObject = TestSTUNDiscoveryCallback::create(thread, 45123, OPENPEER_SERVICE_TEST_STUN_SERVER, true);
+  TestSTUNDiscoveryCallbackPtr testObject2 = TestSTUNDiscoveryCallback::create(thread, 45127, OPENPEER_SERVICE_TEST_STUN_SERVER, false);
 
   BOOST_STDOUT() << "WAITING:      Waiting for STUN discovery to complete (max wait is 180 seconds).\n";
 
@@ -286,10 +286,10 @@ void doTestSTUNDiscovery()
   BOOST_CHECK(testObject->getIP().isAddressEqual(testObject2->getIP()));
   BOOST_CHECK(testObject->getIP().getPort() != testObject2->getIP().getPort());
 
-#ifdef HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP
-  BOOST_EQUAL(testObject->getIP().string(false), HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP);
-  BOOST_EQUAL(testObject2->getIP().string(false), HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP);
-#endif //HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP
+#ifdef OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
+  BOOST_EQUAL(testObject->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+  BOOST_EQUAL(testObject2->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+#endif //OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
 
   testObject.reset();
   testObject2.reset();

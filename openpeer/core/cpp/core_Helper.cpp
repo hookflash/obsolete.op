@@ -33,9 +33,9 @@
 
 #include <zsLib/XML.h>
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

@@ -38,10 +38,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER "bootstrapped-finders"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER "bootstrapped-finders"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -83,7 +83,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryBootstrappedFinder::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_BOOTSTRAPPED_FINDER_HANDLER;
         }
 
         //---------------------------------------------------------------------

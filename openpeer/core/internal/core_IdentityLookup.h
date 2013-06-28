@@ -41,7 +41,7 @@
 
 #include <zsLib/MessageQueueAssociator.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

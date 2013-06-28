@@ -252,7 +252,7 @@
 		0063BA5916CA92CF00E6DB4D /* IServiceCertificates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceCertificates.h; sourceTree = "<group>"; };
 		0063BA5A16CA92CF00E6DB4D /* IServiceIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceIdentity.h; sourceTree = "<group>"; };
 		0063BA5C16CA92CF00E6DB4D /* IServiceSalt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IServiceSalt.h; sourceTree = "<group>"; };
-		0063BA5D16CA92CF00E6DB4D /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IStack.h; sourceTree = "<group>"; };
+		0063BA5D16CA92CF00E6DB4D /* IStack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = IStack.h; sourceTree = "<group>"; };
 		0063BA6116CA92CF00E6DB4D /* FindersGetRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindersGetRequest.cpp; sourceTree = "<group>"; };
 		0063BA6216CA92CF00E6DB4D /* FindersGetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FindersGetResult.cpp; sourceTree = "<group>"; };
 		0063BA6316CA92CF00E6DB4D /* MessageFactoryBootstrappedFinder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryBootstrappedFinder.cpp; sourceTree = "<group>"; };
@@ -274,7 +274,7 @@
 		0063BA7816CA92CF00E6DB4D /* stack_message_Message.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_Message.cpp; sourceTree = "<group>"; };
 		0063BA7916CA92CF00E6DB4D /* stack_message_MessageFactoryManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageFactoryManager.cpp; sourceTree = "<group>"; };
 		0063BA7A16CA92CF00E6DB4D /* stack_message_MessageFactoryUnknown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageFactoryUnknown.cpp; sourceTree = "<group>"; };
-		0063BA7B16CA92CF00E6DB4D /* stack_message_MessageHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageHelper.cpp; sourceTree = "<group>"; };
+		0063BA7B16CA92CF00E6DB4D /* stack_message_MessageHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = stack_message_MessageHelper.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BA7C16CA92CF00E6DB4D /* stack_message_MessageNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageNotify.cpp; sourceTree = "<group>"; };
 		0063BA7D16CA92CF00E6DB4D /* stack_message_MessageNotifyUnknown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageNotifyUnknown.cpp; sourceTree = "<group>"; };
 		0063BA7E16CA92CF00E6DB4D /* stack_message_MessageReply.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageReply.cpp; sourceTree = "<group>"; };

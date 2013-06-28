@@ -53,7 +53,7 @@
 #include <cstdio>
 #include <cstring>
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::BYTE;
 using zsLib::WORD;
@@ -62,22 +62,22 @@ using zsLib::Socket;
 using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
-using hookflash::services::IDNS;
-using hookflash::services::IDNSQuery;
-using hookflash::services::ITURNSocket;
-using hookflash::services::ITURNSocketPtr;
-using hookflash::services::ITURNSocketDelegate;
-using hookflash::services::IICESocket;
-using hookflash::services::IICESocketPtr;
+using openpeer::services::IDNS;
+using openpeer::services::IDNSQuery;
+using openpeer::services::ITURNSocket;
+using openpeer::services::ITURNSocketPtr;
+using openpeer::services::ITURNSocketDelegate;
+using openpeer::services::IICESocket;
+using openpeer::services::IICESocketPtr;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
     namespace test
     {
-      static const char *gUsername = HOOKFLASH_SERVICE_TEST_TURN_USERNAME;
-      static const char *gPassword = HOOKFLASH_SERVICE_TEST_TURN_PASSWORD;
+      static const char *gUsername = OPENPEER_SERVICE_TEST_TURN_USERNAME;
+      static const char *gPassword = OPENPEER_SERVICE_TEST_TURN_PASSWORD;
 
       class TestICESocketCallback;
       typedef boost::shared_ptr<TestICESocketCallback> TestICESocketCallbackPtr;
@@ -356,12 +356,12 @@ namespace hookflash
   }
 }
 
-using hookflash::services::test::TestICESocketCallback;
-using hookflash::services::test::TestICESocketCallbackPtr;
+using openpeer::services::test::TestICESocketCallback;
+using openpeer::services::test::TestICESocketCallbackPtr;
 
 void doTestICESocket()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_ICE_SOCKET_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_ICE_SOCKET_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
@@ -393,14 +393,14 @@ void doTestICESocket()
       switch (step) {
         case 0: {
           expecting = 2;
-          testObject1 = TestICESocketCallback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN);
-          testObject2 = TestICESocketCallback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN);
+          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
+          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
           break;
         }
         case 1: {
           expecting = 2;
-          testObject1 = TestICESocketCallback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
-          testObject2 = TestICESocketCallback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
+          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
+          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
           break;
         }
       }

@@ -48,15 +48,15 @@
 
 #include <list>
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::ULONG;
-using hookflash::services::IDNS;
-using hookflash::services::IDNSPtr;
-using hookflash::services::IDNSQuery;
-using hookflash::services::IDNSQueryPtr;
+using openpeer::services::IDNS;
+using openpeer::services::IDNSPtr;
+using openpeer::services::IDNSQuery;
+using openpeer::services::IDNSQueryPtr;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -263,36 +263,36 @@ namespace hookflash
   }
 }
 
-using hookflash::services::test::TestDNSFactory;
-using hookflash::services::test::TestDNSFactoryPtr;
-using hookflash::services::test::TestDNSCallback;
-using hookflash::services::test::TestDNSCallbackPtr;
+using openpeer::services::test::TestDNSFactory;
+using openpeer::services::test::TestDNSFactoryPtr;
+using openpeer::services::test::TestDNSCallback;
+using openpeer::services::test::TestDNSCallbackPtr;
 
 void doTestDNS()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_DNS_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_DNS_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
   TestDNSFactoryPtr overrideFactory(new TestDNSFactory);
 
-  hookflash::services::internal::Factory::override(overrideFactory);
+  openpeer::services::internal::Factory::override(overrideFactory);
 
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
   TestDNSCallbackPtr testObject = TestDNSCallback::create(thread);
 
-  IDNSQueryPtr query = IDNS::lookupA(testObject, "www." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query2 = IDNS::lookupA(testObject, "sip." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query3 = IDNS::lookupAAAA(testObject, "unittest." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query4 = IDNS::lookupAAAA(testObject, "unittest2." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query5 = IDNS::lookupSRV(testObject, HOOKFLASH_SERVICE_TEST_DNS_ZONE, "sip", "udp", 5060, IDNS::SRVLookupType_LookupOnly);
-  IDNSQueryPtr query6 = IDNS::lookupA(testObject, "bogusbogus." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query7 = IDNS::lookupAorAAAA(testObject, "sip." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query8 = IDNS::lookupAorAAAA(testObject, "unittest." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query9 = IDNS::lookupAAAA(testObject, "bogusbogus." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
-  IDNSQueryPtr query10 = IDNS::lookupSRV(testObject, HOOKFLASH_SERVICE_TEST_DNS_ZONE, "sip", "udp");
-  IDNSQueryPtr query11 = IDNS::lookupSRV(testObject, HOOKFLASH_SERVICE_TEST_DNS_ZONE, "stun", "udp");
+  IDNSQueryPtr query = IDNS::lookupA(testObject, "www." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query2 = IDNS::lookupA(testObject, "sip." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query3 = IDNS::lookupAAAA(testObject, "unittest." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query4 = IDNS::lookupAAAA(testObject, "unittest2." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query5 = IDNS::lookupSRV(testObject, OPENPEER_SERVICE_TEST_DNS_ZONE, "sip", "udp", 5060, IDNS::SRVLookupType_LookupOnly);
+  IDNSQueryPtr query6 = IDNS::lookupA(testObject, "bogusbogus." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query7 = IDNS::lookupAorAAAA(testObject, "sip." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query8 = IDNS::lookupAorAAAA(testObject, "unittest." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query9 = IDNS::lookupAAAA(testObject, "bogusbogus." OPENPEER_SERVICE_TEST_DNS_ZONE);
+  IDNSQueryPtr query10 = IDNS::lookupSRV(testObject, OPENPEER_SERVICE_TEST_DNS_ZONE, "sip", "udp");
+  IDNSQueryPtr query11 = IDNS::lookupSRV(testObject, OPENPEER_SERVICE_TEST_DNS_ZONE, "stun", "udp");
 
   BOOST_STDOUT() << "WAITING:      Waiting for DNS lookup to resolve (max wait is 60 seconds).\n";
 
@@ -376,8 +376,8 @@ void doTestDNS()
   BOOST_CHECK(!aaaa4)
 
   BOOST_CHECK(!a5)
-  BOOST_CHECK(HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS ? ((bool)aaaa5) : (!aaaa5))
-  BOOST_CHECK(HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS ? ((bool)a6) : (!a6))
+  BOOST_CHECK(OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS ? ((bool)aaaa5) : (!aaaa5))
+  BOOST_CHECK(OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS ? ((bool)a6) : (!a6))
   BOOST_CHECK(!aaaa6)
 
   if (a1) {
@@ -410,7 +410,7 @@ void doTestDNS()
     BOOST_EQUAL(srv1->mRecords.front().mPriority, 10);
     BOOST_EQUAL(srv1->mRecords.front().mWeight, 0);
     BOOST_EQUAL(srv1->mRecords.front().mPort, 5060);
-    BOOST_EQUAL(srv1->mRecords.front().mName, "sip." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
+    BOOST_EQUAL(srv1->mRecords.front().mName, "sip." OPENPEER_SERVICE_TEST_DNS_ZONE);
     BOOST_EQUAL(srv1->mRecords.front().mAResult->mIPAddresses.front().string(), zsLib::IPAddress("173.239.150.198:5060").string());
     BOOST_CHECK(!(srv1->mRecords.front().mAAAAResult));
   }
@@ -433,14 +433,14 @@ void doTestDNS()
     BOOST_EQUAL(srv2->mRecords.front().mPriority, 10);
     BOOST_EQUAL(srv2->mRecords.front().mWeight, 0);
     BOOST_EQUAL(srv2->mRecords.front().mPort, 5060);
-    BOOST_EQUAL(srv2->mRecords.front().mName, "sip." HOOKFLASH_SERVICE_TEST_DNS_ZONE);
+    BOOST_EQUAL(srv2->mRecords.front().mName, "sip." OPENPEER_SERVICE_TEST_DNS_ZONE);
     BOOST_CHECK(srv2->mRecords.front().mAResult->mTTL <= 900);
     BOOST_EQUAL(srv2->mRecords.front().mAResult->mIPAddresses.front().string(), "173.239.150.198:5060");
     BOOST_CHECK(!(srv2->mRecords.front().mAAAAResult));
   }
 
-  const char *first = "stun." HOOKFLASH_SERVICE_TEST_DNS_ZONE;
-  const char *second = "stun." HOOKFLASH_SERVICE_TEST_DNS_ZONE;
+  const char *first = "stun." OPENPEER_SERVICE_TEST_DNS_ZONE;
+  const char *second = "stun." OPENPEER_SERVICE_TEST_DNS_ZONE;
 
   const char *firstWIP = "216.93.246.14:3478";
   const char *secondWIP = "216.93.246.16:3478";
@@ -550,19 +550,19 @@ void doTestDNS()
     BOOST_CHECK(!extractedAAAA)
   }
 
-  if (!HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS) {
+  if (!OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS) {
     if (!testObject->isFailed(query6)) {
       BOOST_CHECK("This next DNS A lookup should have failed to resolve but it did resolve. Verify your provider's DNS is returning no IPs when resolving bogus A lookups; it should be but sometimes Internet providers give \"search\" page results for bogus DNS names")
     }
   }
-  BOOST_CHECK(HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS ? !testObject->isFailed(query6) : testObject->isFailed(query6));
+  BOOST_CHECK(OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS ? !testObject->isFailed(query6) : testObject->isFailed(query6));
 
-  if (!HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS) {
+  if (!OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS) {
     if (!testObject->isFailed(query9)) {
       BOOST_CHECK("This next DNS A or AAAA lookup should have failed to resolve but it did resolve. Verify your provider's DNS is returning no IPs when resolving bogus A or AAAA lookups; it should be but sometimes Internet providers give \"search\" page results for bogus DNS names")
     }
   }
-  BOOST_CHECK(HOOKFLASH_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS ? !testObject->isFailed(query9) : testObject->isFailed(query9));
+  BOOST_CHECK(OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS ? !testObject->isFailed(query9) : testObject->isFailed(query9));
 
   // these tests should not have failed
   BOOST_CHECK(!testObject->isFailed(query));

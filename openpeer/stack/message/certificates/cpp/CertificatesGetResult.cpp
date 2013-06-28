@@ -37,7 +37,7 @@
 
 #include <zsLib/XML.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

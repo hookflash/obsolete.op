@@ -40,12 +40,12 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS (10*60)
+#define OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS (10*60)
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -356,13 +356,13 @@ namespace hookflash
         IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
         IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
 
-        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        DWORD lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
         if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
           lifetime = stun->mLifetime;
         }
         // do not ever negotiate higher
-        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
-          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        if (lifetime > OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
+          lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
 
         if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
           minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
@@ -438,7 +438,7 @@ namespace hookflash
                                              localPassword,
                                              remotePassword,
                                              minimumRTT,
-                                             HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS,
+                                             OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS,
                                              incomingChannelNumber,
                                              sequenceNumber,
                                              connectionInfo
@@ -546,7 +546,7 @@ namespace hookflash
             return false;  // illegal unless it is a request, responses will come through a different method
           }
 
-          DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+          DWORD lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
           if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
             lifetime = stun->mLifetime;
           }
@@ -586,8 +586,8 @@ namespace hookflash
             return true;
           }
 
-          if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
-            lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+          if (lifetime > OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
+            lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
 
           // if the lifetime is too low we can't keep up with keep alives so reject it
           if (lifetime < 20) {
@@ -804,7 +804,7 @@ namespace hookflash
         fix(stun);
         fillCredentials(stun);
         stun->mLifetimeIncluded = true;
-        stun->mLifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        stun->mLifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
         stun->mNextSequenceNumber = mLocalSequenceNumber;
         stun->mChannelNumber = mIncomingChannelNumber;
         stun->mMinimumRTTIncluded = true;
@@ -875,13 +875,13 @@ namespace hookflash
         IRUDPChannelStream::CongestionAlgorithmList remoteAlgorithms;
         IRUDPChannelStream::getRecommendedStartValues(sequenceNumber, minimumRTT, localAlgorithms, remoteAlgorithms);
 
-        DWORD lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        DWORD lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
         if (stun->hasAttribute(STUNPacket::Attribute_Lifetime)) {
           lifetime = stun->mLifetime;
         }
         // do not ever negotiate higher
-        if (lifetime > HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
-          lifetime = HOOKFLASH_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
+        if (lifetime > OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS)
+          lifetime = OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS;
 
         if (stun->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
           minimumRTT = (minimumRTT > stun->mMinimumRTT ? minimumRTT : stun->mMinimumRTT);
@@ -1611,7 +1611,7 @@ namespace hookflash
         outSTUN->mReliabilityFlagsIncluded = true;
         outSTUN->mReliabilityFlags = 0;
 
-        ULONG available = outSTUN->getTotalRoomAvailableForData(HOOKFLASH_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN, STUNPacket::RFC_draft_RUDP);
+        ULONG available = outSTUN->getTotalRoomAvailableForData(OPENPEER_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN, STUNPacket::RFC_draft_RUDP);
 
         boost::shared_array<BYTE> vector;
         if (available > 0) {

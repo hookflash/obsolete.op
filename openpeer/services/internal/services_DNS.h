@@ -34,7 +34,7 @@
 #include <openpeer/services/internal/types.h>
 #include <openpeer/services/IDNS.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

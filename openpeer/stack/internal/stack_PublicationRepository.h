@@ -40,7 +40,7 @@
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

@@ -41,9 +41,9 @@
 
 #include <zsLib/Stringize.h>
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -93,7 +93,7 @@ namespace hookflash
         // found the signature reference, now check if the peer URIs match - they must...
         try {
           String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != HOOKFLASH_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
+          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
             ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
             return;
           }

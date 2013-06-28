@@ -38,7 +38,7 @@
 
 #include <iostream>
 
-typedef hookflash::services::IHelper IHelper;
+typedef openpeer::services::IHelper IHelper;
 
 void doFakeGUITest();
 void doMediaEngineTest();
@@ -70,18 +70,18 @@ namespace BoostReplacement
   {
     std::cout << "INSTALLING LOGGER...\n\n";
     IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
-    IHelper::setLogLevel("hookflash_services", zsLib::Log::Trace);
+    IHelper::setLogLevel("openpeer_services", zsLib::Log::Trace);
     
-    if (HOOKFLASH_CORE_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_CORE_TEST_USE_STDOUT_LOGGING) {
       IHelper::installStdOutLogger(false);
     }
     
-    if (HOOKFLASH_CORE_TEST_USE_FIFO_LOGGING) {
-      IHelper::installFileLogger(HOOKFLASH_CORE_TEST_FIFO_LOGGING_FILE, true);
+    if (OPENPEER_CORE_TEST_USE_FIFO_LOGGING) {
+      IHelper::installFileLogger(OPENPEER_CORE_TEST_FIFO_LOGGING_FILE, true);
     }
     
-    if (HOOKFLASH_CORE_TEST_USE_TELNET_LOGGING) {
-      IHelper::installTelnetLogger(HOOKFLASH_CORE_TEST_TELNET_LOGGING_PORT, 60, true);
+    if (OPENPEER_CORE_TEST_USE_TELNET_LOGGING) {
+      IHelper::installTelnetLogger(OPENPEER_CORE_TEST_TELNET_LOGGING_PORT, 60, true);
     }
     
     std::cout << "INSTALLED LOGGER...\n\n";
@@ -91,13 +91,13 @@ namespace BoostReplacement
   {
     std::cout << "REMOVING LOGGER...\n\n";
     
-    if (HOOKFLASH_CORE_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_CORE_TEST_USE_STDOUT_LOGGING) {
       IHelper::uninstallStdOutLogger();
     }
-    if (HOOKFLASH_CORE_TEST_USE_FIFO_LOGGING) {
+    if (OPENPEER_CORE_TEST_USE_FIFO_LOGGING) {
       IHelper::uninstallFileLogger();
     }
-    if (HOOKFLASH_CORE_TEST_USE_TELNET_LOGGING) {
+    if (OPENPEER_CORE_TEST_USE_TELNET_LOGGING) {
       IHelper::uninstallTelnetLogger();
     }
     

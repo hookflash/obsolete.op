@@ -37,9 +37,9 @@
 #include <cryptopp/rsa.h>
 #include <cryptopp/secblock.h>
 
-#define HOOKFLASH_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE (2048)
+#define OPENPEER_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE (2048)
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

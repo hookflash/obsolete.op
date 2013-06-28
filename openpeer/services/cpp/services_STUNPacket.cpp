@@ -44,25 +44,25 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_STUN_MAGIC_COOKIE                 (0x2112A442)
-#define HOOKFLASH_STUN_MAGIC_XOR_FINGERPRINT_VALUE  (0x5354554e)
-#define HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES         (20)
-#define HOOKFLASH_STUN_COMPREHENSION_REQUIRED_MIN   (0x0000)
-#define HOOKFLASH_STUN_COMPREHENSION_REQUIRED_MAX   (0x7FFF)
-#define HOOKFLASH_STUN_MAX_USERNAME                 (513)
-#define HOOKFLASH_STUN_MAX_REALM                    (127)
-#define HOOKFLASH_STUN_MAX_SERVER                   (127)
-#define HOOKFLASH_STUN_MAX_REASON                   (127)
-#define HOOKFLASH_STUN_MAX_NONCE                    (127)
-#define HOOKFLASH_STUN_MAX_SOFTWARE                 (127)
-#define HOOKFLASH_STUN_MAX_CONNECTION_INFO          (127)
-#define HOOKFLASH_STUN_MAX_STRING                   (513)
-#define HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR (6)
+#define OPENPEER_STUN_MAGIC_COOKIE                 (0x2112A442)
+#define OPENPEER_STUN_MAGIC_XOR_FINGERPRINT_VALUE  (0x5354554e)
+#define OPENPEER_STUN_HEADER_SIZE_IN_BYTES         (20)
+#define OPENPEER_STUN_COMPREHENSION_REQUIRED_MIN   (0x0000)
+#define OPENPEER_STUN_COMPREHENSION_REQUIRED_MAX   (0x7FFF)
+#define OPENPEER_STUN_MAX_USERNAME                 (513)
+#define OPENPEER_STUN_MAX_REALM                    (127)
+#define OPENPEER_STUN_MAX_SERVER                   (127)
+#define OPENPEER_STUN_MAX_REASON                   (127)
+#define OPENPEER_STUN_MAX_NONCE                    (127)
+#define OPENPEER_STUN_MAX_SOFTWARE                 (127)
+#define OPENPEER_STUN_MAX_CONNECTION_INFO          (127)
+#define OPENPEER_STUN_MAX_STRING                   (513)
+#define OPENPEER_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR (6)
 
 
-namespace hookflash { namespace services { ZS_DECLARE_SUBSYSTEM(hookflash_services) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -126,17 +126,17 @@ namespace hookflash
       //-----------------------------------------------------------------------
       static bool isComprehensionRequired(WORD attributeType)
       {
-        if ((attributeType >= HOOKFLASH_STUN_COMPREHENSION_REQUIRED_MIN) &&   // ignore warning this is always true
-            (attributeType <= HOOKFLASH_STUN_COMPREHENSION_REQUIRED_MAX))
+        if ((attributeType >= OPENPEER_STUN_COMPREHENSION_REQUIRED_MIN) &&   // ignore warning this is always true
+            (attributeType <= OPENPEER_STUN_COMPREHENSION_REQUIRED_MAX))
           return true;
         return false;
       }
 
       //-----------------------------------------------------------------------
       static bool parseSTUNString(const BYTE *data, ULONG length, ULONG maxLength, String &outValue) {
-        char buffer[(HOOKFLASH_STUN_MAX_STRING*HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)+1];
+        char buffer[(OPENPEER_STUN_MAX_STRING*OPENPEER_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)+1];
 
-        if (length > (maxLength*HOOKFLASH_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)) return false;
+        if (length > (maxLength*OPENPEER_STUN_MAX_UTF8_UNICODE_ENCODED_CHAR)) return false;
 
         memset(&(buffer[0]), 0, sizeof(buffer));  // ensure the buffer is NUL terminated
         memcpy(&(buffer[0]), data, length);       // copy the string "as is" into the buffer
@@ -1211,7 +1211,7 @@ namespace hookflash
             ZS_THROW_INVALID_ASSUMPTION_IF(sizeof(key) != md5.DigestSize())
             md5.Final(&(key[0]));
 
-            BYTE result[HOOKFLASH_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];
+            BYTE result[OPENPEER_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];
             memset(&(result[0]), 0, sizeof(result));
 
             // messageIntegrityMessageLengthInBytes is the length of the packet up to but not including the message integrity attribute
@@ -1220,7 +1220,7 @@ namespace hookflash
             // remember the packet's original length
             WORD originalLength = ((WORD *)stun.mOriginalPacket)[1];
             // change the length for the sake of doing the message integrity calculation
-            ((WORD *)stun.mOriginalPacket)[1] = htons(static_cast<WORD>(messageIntegrityMessageLengthInBytes + sizeof(DWORD) + sizeof(stun.mMessageIntegrity) - HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES));
+            ((WORD *)stun.mOriginalPacket)[1] = htons(static_cast<WORD>(messageIntegrityMessageLengthInBytes + sizeof(DWORD) + sizeof(stun.mMessageIntegrity) - OPENPEER_STUN_HEADER_SIZE_IN_BYTES));
 
             CryptoPP::HMAC<CryptoPP::SHA1> hmac(&(key[0]), sizeof(key));
             hmac.Update(stun.mOriginalPacket, messageIntegrityMessageLengthInBytes);
@@ -1280,7 +1280,7 @@ namespace hookflash
         ZS_THROW_INVALID_ASSUMPTION_IF(crc.DigestSize() != sizeof(DWORD))
         DWORD crcValue = 0;
         crc.Final((BYTE *)(&crcValue));
-        crcValue ^= HOOKFLASH_STUN_MAGIC_XOR_FINGERPRINT_VALUE;
+        crcValue ^= OPENPEER_STUN_MAGIC_XOR_FINGERPRINT_VALUE;
 
         ((DWORD *)pos)[0] = htonl(crcValue);
       }
@@ -1555,7 +1555,7 @@ namespace hookflash
       mCredentialMechanism(CredentialMechanisms_None),
       mOriginalPacket(NULL),
       mMessageIntegrityMessageLengthInBytes(0),
-      mMagicCookie(HOOKFLASH_STUN_MAGIC_COOKIE),
+      mMagicCookie(OPENPEER_STUN_MAGIC_COOKIE),
       mFingerprintIncluded(true),
       mChannelNumber(0),
       mLifetimeIncluded(false),
@@ -1784,15 +1784,15 @@ namespace hookflash
       ZS_THROW_INVALID_USAGE_IF(!packet)
 
       // All STUN messages MUST start with a 20-byte header followed by zero or more Attributes.
-      if (packetLengthInBytes < HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES) return STUNPacketPtr();
+      if (packetLengthInBytes < OPENPEER_STUN_HEADER_SIZE_IN_BYTES) return STUNPacketPtr();
 
       //The most significant 2 bits of every STUN message MUST be zeroes.
       if (0 != (packet[0] & 0xC0)) return STUNPacketPtr();
 
-      // The magic cookie field MUST contain the fixed value HOOKFLASH_STUN_MAGIC_COOKIE in network byte order.
+      // The magic cookie field MUST contain the fixed value OPENPEER_STUN_MAGIC_COOKIE in network byte order.
       DWORD magicCookie = ntohl(((DWORD *)packet)[1]);
       if ((!allowRFC3489) &&
-          (HOOKFLASH_STUN_MAGIC_COOKIE != magicCookie)) return STUNPacketPtr();
+          (OPENPEER_STUN_MAGIC_COOKIE != magicCookie)) return STUNPacketPtr();
 
       WORD messageType = ntohs(((WORD *)packet)[0]);
       WORD messageTypeClass = ((messageType & 0x100) >> 7) | ((messageType & 0x10) >> 4);
@@ -1805,12 +1805,12 @@ namespace hookflash
       // always zero.  This provides another way to distinguish STUN packets
       // from packets of other protocols.
       if (0 != (messageLengthInBytes & 0x3)) return STUNPacketPtr();
-      if (packetLengthInBytes < ((ULONG)HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES) + messageLengthInBytes) return STUNPacketPtr();  // this is illegal since the size is larger than the actual packet received
+      if (packetLengthInBytes < ((ULONG)OPENPEER_STUN_HEADER_SIZE_IN_BYTES) + messageLengthInBytes) return STUNPacketPtr();  // this is illegal since the size is larger than the actual packet received
 
       if (0 != (messageLengthInBytes % sizeof(DWORD))) return STUNPacketPtr(); // every attribute is aligned to a DWORD size
 
       ULONG availableBytes = messageLengthInBytes;
-      const BYTE *pos = packet + HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES;  //
+      const BYTE *pos = packet + OPENPEER_STUN_HEADER_SIZE_IN_BYTES;  //
 
       STUNPacketPtr stun(new STUNPacket);
       stun->mMagicCookie = magicCookie;
@@ -1882,7 +1882,7 @@ namespace hookflash
               break;
             }
 
-            case Attribute_Username:         if (!internal::parseSTUNString(dataPos, attributeLength, HOOKFLASH_STUN_MAX_USERNAME, stun->mUsername)) return STUNPacketPtr(); break;
+            case Attribute_Username:         if (!internal::parseSTUNString(dataPos, attributeLength, OPENPEER_STUN_MAX_USERNAME, stun->mUsername)) return STUNPacketPtr(); break;
 
             case Attribute_MessageIntegrity: {
               // found integrity but without knowing which usename and password to use there is no way to authenticate it, so that has to be done later
@@ -1905,7 +1905,7 @@ namespace hookflash
                 break;
               }
               stun->mErrorCode = (hundredsDigit * 100) + twoDigits;
-              if (!internal::parseSTUNString(dataPos + sizeof(DWORD), attributeLength - sizeof(DWORD), HOOKFLASH_STUN_MAX_REASON, stun->mReason)) return STUNPacketPtr();
+              if (!internal::parseSTUNString(dataPos + sizeof(DWORD), attributeLength - sizeof(DWORD), OPENPEER_STUN_MAX_REASON, stun->mReason)) return STUNPacketPtr();
               break;
             }
 
@@ -1919,16 +1919,16 @@ namespace hookflash
               break;
             }
 
-            case Attribute_Realm:            if (!internal::parseSTUNString(dataPos, attributeLength, HOOKFLASH_STUN_MAX_REALM, stun->mRealm)) return STUNPacketPtr(); break;
+            case Attribute_Realm:            if (!internal::parseSTUNString(dataPos, attributeLength, OPENPEER_STUN_MAX_REALM, stun->mRealm)) return STUNPacketPtr(); break;
 
-            case Attribute_Nonce:            if (!internal::parseSTUNString(dataPos, attributeLength, HOOKFLASH_STUN_MAX_REALM, stun->mNonce)) return STUNPacketPtr(); break;
+            case Attribute_Nonce:            if (!internal::parseSTUNString(dataPos, attributeLength, OPENPEER_STUN_MAX_REALM, stun->mNonce)) return STUNPacketPtr(); break;
 
             case Attribute_XORMappedAddress: {
               if (!internal::parseMappedAddress(dataPos, attributeLength, magicCookie, (const BYTE *)(&(((DWORD *)packet)[1])), stun->mMappedAddress, handleAsUnknownAttribute)) return STUNPacketPtr();
               break;
             }
 
-            case Attribute_Software:        if (!internal::parseSTUNString(dataPos, attributeLength, HOOKFLASH_STUN_MAX_SOFTWARE, stun->mSoftware)) return STUNPacketPtr(); break;
+            case Attribute_Software:        if (!internal::parseSTUNString(dataPos, attributeLength, OPENPEER_STUN_MAX_SOFTWARE, stun->mSoftware)) return STUNPacketPtr(); break;
 
             case Attribute_FingerPrint:         {
               if (attributeLength < sizeof(DWORD)) return STUNPacketPtr();
@@ -1939,7 +1939,7 @@ namespace hookflash
               ZS_THROW_INVALID_ASSUMPTION_IF(crc.DigestSize() != sizeof(DWORD))
               DWORD crcValue = 0;
               crc.Final((BYTE *)(&crcValue));
-              crcValue ^= HOOKFLASH_STUN_MAGIC_XOR_FINGERPRINT_VALUE;
+              crcValue ^= OPENPEER_STUN_MAGIC_XOR_FINGERPRINT_VALUE;
               if (crcValue != ntohl(((DWORD *)dataPos)[0])) return STUNPacketPtr();
               stun->mFingerprintIncluded = true;
               break;
@@ -2027,7 +2027,7 @@ namespace hookflash
               stun->mMinimumRTT = ntohl(((DWORD *)dataPos)[0]);
               break;
             }
-            case STUNPacket::Attribute_ConnectionInfo:      if (!internal::parseSTUNString(dataPos, attributeLength, HOOKFLASH_STUN_MAX_CONNECTION_INFO, stun->mConnectionInfo)) return STUNPacketPtr(); break;
+            case STUNPacket::Attribute_ConnectionInfo:      if (!internal::parseSTUNString(dataPos, attributeLength, OPENPEER_STUN_MAX_CONNECTION_INFO, stun->mConnectionInfo)) return STUNPacketPtr(); break;
             case STUNPacket::Attribute_CongestionControl:   {
               if (attributeLength < sizeof(DWORD)) return STUNPacketPtr();
               if (0 != (attributeLength % sizeof(WORD))) return STUNPacketPtr();
@@ -2201,17 +2201,17 @@ namespace hookflash
 
       if (streamDataAvailableInBytes < (sizeof(DWORD)*2)) return ParseLookAheadState_InsufficientDataToDeterimine;
 
-      // The magic cookie field MUST contain the fixed value HOOKFLASH_STUN_MAGIC_COOKIE in network byte order.
+      // The magic cookie field MUST contain the fixed value OPENPEER_STUN_MAGIC_COOKIE in network byte order.
       DWORD magicCookie = ntohl(((DWORD *)packet)[1]);
       if ((!allowRFC3489) &&
-          (HOOKFLASH_STUN_MAGIC_COOKIE != magicCookie)) return ParseLookAheadState_NotSTUN;
+          (OPENPEER_STUN_MAGIC_COOKIE != magicCookie)) return ParseLookAheadState_NotSTUN;
 
-      outActualSizeInBytes = HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES + messageLengthInBytes;
+      outActualSizeInBytes = OPENPEER_STUN_HEADER_SIZE_IN_BYTES + messageLengthInBytes;
 
       // All STUN messages MUST start with a 20-byte header followed by zero or more Attributes.
-      if (streamDataAvailableInBytes < HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES) return ParseLookAheadState_AppearsSTUNButPacketNotFullyAvailable;
+      if (streamDataAvailableInBytes < OPENPEER_STUN_HEADER_SIZE_IN_BYTES) return ParseLookAheadState_AppearsSTUNButPacketNotFullyAvailable;
 
-      if (streamDataAvailableInBytes < ((ULONG)HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES) + messageLengthInBytes) return ParseLookAheadState_AppearsSTUNButPacketNotFullyAvailable;
+      if (streamDataAvailableInBytes < ((ULONG)OPENPEER_STUN_HEADER_SIZE_IN_BYTES) + messageLengthInBytes) return ParseLookAheadState_AppearsSTUNButPacketNotFullyAvailable;
 
       // we not have enough data available to truly determine if this is a STUN packet and decode this STUN packet
       outSTUN = parseIfSTUN(
@@ -2464,7 +2464,7 @@ namespace hookflash
     {
       log(Log::Trace, "packetize");
 
-      outPacketLengthInBytes = HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES;
+      outPacketLengthInBytes = OPENPEER_STUN_HEADER_SIZE_IN_BYTES;
 
       // count the length of all the attributes when they are packetized
       {
@@ -2501,12 +2501,12 @@ namespace hookflash
       messageType |= ((0xF80 & ((WORD)mMethod)) << 2) | ((0x70 & ((WORD)mMethod)) << 1) | (0xF & ((WORD)mMethod));
 
       ((WORD *)packet)[0] = htons(messageType);
-      ((WORD *)packet)[1] = htons((WORD)(outPacketLengthInBytes - HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES));
+      ((WORD *)packet)[1] = htons((WORD)(outPacketLengthInBytes - OPENPEER_STUN_HEADER_SIZE_IN_BYTES));
 
       ((DWORD *)packet)[1] = htonl(mMagicCookie);
       memcpy(&(((DWORD *)packet)[2]), &(mTransactionID[0]), sizeof(mTransactionID));
 
-      BYTE *pos = packet + HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES;
+      BYTE *pos = packet + OPENPEER_STUN_HEADER_SIZE_IN_BYTES;
       mOriginalPacket = packet;
 
       // packetize all the packets now...
@@ -2589,13 +2589,13 @@ namespace hookflash
       ZS_THROW_INVALID_ASSUMPTION_IF(sizeof(key) != md5.DigestSize())
       md5.Final(&(key[0]));
 
-      BYTE result[HOOKFLASH_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];
+      BYTE result[OPENPEER_STUN_MESSAGE_INTEGRITY_LENGTH_IN_BYTES];
       memset(&(result[0]), 0, sizeof(result));
 
       // we have to smash the original packet length to do calculation then put it back after...
       WORD originalLength = ((WORD *)mOriginalPacket)[1];
       // for the sake of message integrity we have to set the length to the original size up to and including the message interity attribute
-      ((WORD *)mOriginalPacket)[1] = htons(static_cast<WORD>(mMessageIntegrityMessageLengthInBytes + sizeof(DWORD) + sizeof(mMessageIntegrity) - HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES));
+      ((WORD *)mOriginalPacket)[1] = htons(static_cast<WORD>(mMessageIntegrityMessageLengthInBytes + sizeof(DWORD) + sizeof(mMessageIntegrity) - OPENPEER_STUN_HEADER_SIZE_IN_BYTES));
 
       CryptoPP::HMAC<CryptoPP::SHA1> hmac(&(key[0]), sizeof(key));
       hmac.Update(mOriginalPacket, mMessageIntegrityMessageLengthInBytes);
@@ -2611,13 +2611,13 @@ namespace hookflash
     //-------------------------------------------------------------------------
     bool STUNPacket::isRFC3489() const
     {
-      return HOOKFLASH_STUN_MAGIC_COOKIE != mMagicCookie;
+      return OPENPEER_STUN_MAGIC_COOKIE != mMagicCookie;
     }
 
     //-------------------------------------------------------------------------
     bool STUNPacket::isRFC5389() const
     {
-      return HOOKFLASH_STUN_MAGIC_COOKIE == mMagicCookie;
+      return OPENPEER_STUN_MAGIC_COOKIE == mMagicCookie;
     }
 
     //-------------------------------------------------------------------------
@@ -2687,7 +2687,7 @@ namespace hookflash
                                                           RFCs rfc
                                                           ) const
     {
-      ULONG packetLengthInBytes = HOOKFLASH_STUN_HEADER_SIZE_IN_BYTES;
+      ULONG packetLengthInBytes = OPENPEER_STUN_HEADER_SIZE_IN_BYTES;
 
       // count the length of all the attributes when they are packetized
       {

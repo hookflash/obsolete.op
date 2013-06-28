@@ -38,7 +38,7 @@
 
 #include <iostream>
 
-typedef hookflash::services::IHelper IHelper;
+typedef openpeer::services::IHelper IHelper;
 
 void doTestStack();
 void doTestLockboxSession();
@@ -72,21 +72,21 @@ namespace BoostReplacement
   {
     std::cout << "INSTALLING LOGGER...\n\n";
     IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
-    IHelper::setLogLevel("hookflash_services", zsLib::Log::Trace);
-    IHelper::setLogLevel("hookflash_stack", zsLib::Log::Trace);
-    IHelper::setLogLevel("hookflash_stack_message", zsLib::Log::Trace);
+    IHelper::setLogLevel("openpeer_services", zsLib::Log::Trace);
+    IHelper::setLogLevel("openpeer_stack", zsLib::Log::Trace);
+    IHelper::setLogLevel("openpeer_stack_message", zsLib::Log::Trace);
     IHelper::setLogLevel(zsLib::Log::Trace);
 
-    if (HOOKFLASH_STACK_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_STACK_TEST_USE_STDOUT_LOGGING) {
       IHelper::installStdOutLogger(false);
     }
     
-    if (HOOKFLASH_STACK_TEST_USE_FIFO_LOGGING) {
-      IHelper::installFileLogger(HOOKFLASH_STACK_TEST_FIFO_LOGGING_FILE, true);
+    if (OPENPEER_STACK_TEST_USE_FIFO_LOGGING) {
+      IHelper::installFileLogger(OPENPEER_STACK_TEST_FIFO_LOGGING_FILE, true);
     }
     
-    if (HOOKFLASH_STACK_TEST_USE_TELNET_LOGGING) {
-      IHelper::installTelnetLogger(HOOKFLASH_STACK_TEST_TELNET_LOGGING_PORT, 60, true);
+    if (OPENPEER_STACK_TEST_USE_TELNET_LOGGING) {
+      IHelper::installTelnetLogger(OPENPEER_STACK_TEST_TELNET_LOGGING_PORT, 60, true);
     }
     
     std::cout << "INSTALLED LOGGER...\n\n";
@@ -96,13 +96,13 @@ namespace BoostReplacement
   {
     std::cout << "REMOVING LOGGER...\n\n";
     
-    if (HOOKFLASH_STACK_TEST_USE_STDOUT_LOGGING) {
+    if (OPENPEER_STACK_TEST_USE_STDOUT_LOGGING) {
       IHelper::uninstallStdOutLogger();
     }
-    if (HOOKFLASH_STACK_TEST_USE_FIFO_LOGGING) {
+    if (OPENPEER_STACK_TEST_USE_FIFO_LOGGING) {
       IHelper::uninstallFileLogger();
     }
-    if (HOOKFLASH_STACK_TEST_USE_TELNET_LOGGING) {
+    if (OPENPEER_STACK_TEST_USE_TELNET_LOGGING) {
       IHelper::uninstallTelnetLogger();
     }
     

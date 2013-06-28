@@ -50,7 +50,7 @@
 #include <list>
 #include <iostream>
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 typedef zsLib::ULONG ULONG;
 typedef zsLib::MessageQueueAssociator MessageQueueAssociator;
@@ -60,14 +60,14 @@ typedef zsLib::MessageQueueThread MessageQueueThread;
 typedef zsLib::Seconds Seconds;
 typedef zsLib::MessageQueueThreadPtr MessageQueueThreadPtr;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
     namespace test
     {
-      static const char *gUsername = HOOKFLASH_SERVICE_TEST_TURN_USERNAME;
-      static const char *gPassword = HOOKFLASH_SERVICE_TEST_TURN_PASSWORD;
+      static const char *gUsername = OPENPEER_SERVICE_TEST_TURN_USERNAME;
+      static const char *gPassword = OPENPEER_SERVICE_TEST_TURN_PASSWORD;
 
       class TestTURNSocketCallback;
       typedef boost::shared_ptr<TestTURNSocketCallback> TestTURNSocketCallbackPtr;
@@ -534,22 +534,22 @@ namespace hookflash
   }
 }
 
-using hookflash::services::test::TestTURNSocketCallback;
-using hookflash::services::test::TestTURNSocketCallbackPtr;
+using openpeer::services::test::TestTURNSocketCallback;
+using openpeer::services::test::TestTURNSocketCallbackPtr;
 
 void doTestTURNSocket()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_TURN_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_TURN_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
   MessageQueueThreadPtr thread(MessageQueueThread::createBasic());
 
-  TestTURNSocketCallbackPtr testObject1 = TestTURNSocketCallback::create(thread, 0, "siptest." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
-  TestTURNSocketCallbackPtr testObject2 = TestTURNSocketCallback::create(thread, 0, "siptest." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
-  TestTURNSocketCallbackPtr testObject3 = TestTURNSocketCallback::create(thread, 0, "bogus." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false, false, false, false, true);
-  TestTURNSocketCallbackPtr testObject4 = TestTURNSocketCallback::create(thread, 0, "turntest1." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
-  TestTURNSocketCallbackPtr testObject5 = TestTURNSocketCallback::create(thread, 0, "turntest4." HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+  TestTURNSocketCallbackPtr testObject1 = TestTURNSocketCallback::create(thread, 0, "siptest." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
+  TestTURNSocketCallbackPtr testObject2 = TestTURNSocketCallback::create(thread, 0, "siptest." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+  TestTURNSocketCallbackPtr testObject3 = TestTURNSocketCallback::create(thread, 0, "bogus." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, false, false, false, true);
+  TestTURNSocketCallbackPtr testObject4 = TestTURNSocketCallback::create(thread, 0, "turntest1." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+  TestTURNSocketCallbackPtr testObject5 = TestTURNSocketCallback::create(thread, 0, "turntest4." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
 
   BOOST_STDOUT() << "WAITING:      Waiting for TURN testing to complete (max wait is 180 seconds).\n";
 
@@ -658,10 +658,10 @@ void doTestTURNSocket()
     BOOST_CHECK(testObject5->getTotalUnreceived() < 10)
   }
 
-#ifdef HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP
-  BOOST_EQUAL(testObject1->getIP().string(false), HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP);
-  BOOST_EQUAL(testObject2->getIP().string(false), HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP);
-#endif //HOOKFLASH_SERVICE_TEST_WHAT_IS_MY_IP
+#ifdef OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
+  BOOST_EQUAL(testObject1->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+  BOOST_EQUAL(testObject2->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+#endif //OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
 
   testObject1.reset();
   testObject2.reset();

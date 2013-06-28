@@ -37,7 +37,7 @@
 
 #include <map>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -297,14 +297,14 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IRUDPICESocketForRUDPICESocketSession)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPICESocketForRUDPICESocketSession)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::RecursiveLock, RecursiveLock)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::PUID, PUID)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketSessionDelegatePtr, IRUDPICESocketSessionDelegatePtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionDelegatePtr, IRUDPICESocketSessionDelegatePtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(createSessionFromRemoteCandidates, IRUDPICESocketSessionPtr, IRUDPICESocketSessionDelegatePtr, const CandidateList &, ICEControls)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getICESocket, hookflash::services::IICESocketPtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getRUDPICESocket, hookflash::services::IRUDPICESocketPtr)
+ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getICESocket, openpeer::services::IICESocketPtr)
+ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getRUDPICESocket, openpeer::services::IRUDPICESocketPtr)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPICESessionClosed, PUID)
 ZS_DECLARE_PROXY_END()

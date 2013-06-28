@@ -38,16 +38,16 @@
 extern char *__progname;
 #endif
 
-namespace hookflash { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_core_test) } } }
+namespace openpeer { namespace core { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_core_test) } } }
 
-namespace hookflash { namespace core { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_core_test) } } }
+namespace openpeer { namespace core { namespace test { ZS_IMPLEMENT_SUBSYSTEM(openpeer_core_test) } } }
 
-//#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-//#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
+//#define OPENPEER_MEDIA_ENGINE_DEBUG_LOG_LEVEL
+//#define OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
 
 using namespace std;
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -106,10 +106,10 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void TestMediaEngine::setLogLevel()
       {
-#ifndef HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Basic);
+#ifndef OPENPEER_MEDIA_ENGINE_DEBUG_LOG_LEVEL
+//        ILogger::setLogLevel("openpeer_webrtc", ILogger::Basic);
 #else
-//        ILogger::setLogLevel("hookflash_webrtc", ILogger::Debug);
+//        ILogger::setLogLevel("openpeer_webrtc", ILogger::Debug);
 #endif
       }
       
@@ -250,7 +250,7 @@ namespace hookflash
       {
         MediaEngine::internalStartVoice();
         
-#ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
+#ifdef OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
         mVoiceStatisticsTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
 #endif
       }
@@ -258,7 +258,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStopVoice()
       {
-#ifdef HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
+#ifdef OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
         if (mVoiceStatisticsTimer) {
           mVoiceStatisticsTimer->cancel();
           mVoiceStatisticsTimer.reset();
@@ -347,20 +347,20 @@ namespace hookflash
   }
 }
 
-using hookflash::core::test::TestMediaEngineFactory;
-using hookflash::core::test::TestMediaEngineFactoryPtr;
-using hookflash::core::test::TestMediaEngine;
-using hookflash::core::test::TestMediaEnginePtr;
+using openpeer::core::test::TestMediaEngineFactory;
+using openpeer::core::test::TestMediaEngineFactoryPtr;
+using openpeer::core::test::TestMediaEngine;
+using openpeer::core::test::TestMediaEnginePtr;
 
 void doMediaEngineTest()
 {
-  if (!HOOKFLASH_CORE_TEST_DO_MEDIA_ENGINE_TEST) return;
+  if (!OPENPEER_CORE_TEST_DO_MEDIA_ENGINE_TEST) return;
   
   BOOST_INSTALL_LOGGER();
   
   TestMediaEngineFactoryPtr overrideFactory(new TestMediaEngineFactory);
   
-  hookflash::core::internal::Factory::override(overrideFactory);
+  openpeer::core::internal::Factory::override(overrideFactory);
   
   BOOST_UNINSTALL_LOGGER()
   zsLib::proxyDump();

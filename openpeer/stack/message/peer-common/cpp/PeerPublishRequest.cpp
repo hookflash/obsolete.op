@@ -35,7 +35,7 @@
 
 #include <zsLib/Stringize.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

@@ -57,19 +57,19 @@
 
 #include <zsLib/RegEx.h>
 
-#define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
+#define OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
 
-#define HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
-#define HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
+#define OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
+#define OPENPEER_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
 
-#define HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
+#define OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
 
-#define HOOKFLASH_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://openpeer.org/permission/rolodex-contacts"
+#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://openpeer.org/permission/rolodex-contacts"
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -108,7 +108,7 @@ namespace hookflash
       static void getNamespaces(NamespaceInfoMap &outNamespaces)
       {
         static const char *gPermissions[] = {
-          HOOKFLASH_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE,
+          OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE,
           NULL
         };
 
@@ -1447,7 +1447,7 @@ namespace hookflash
 
         request->providers(providers);
 
-        mIdentityLookupMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mIdentityLookupMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity-lookup", "identity-lookup", request);
 
         setState(SessionState_Pending);
@@ -1518,7 +1518,7 @@ namespace hookflash
 
           ZS_LOG_DEBUG(log("clearing lockbox information (but not preventing other requests from continuing)"))
 
-          mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
 
           return true;
@@ -1548,7 +1548,7 @@ namespace hookflash
 
         ZS_LOG_DEBUG(log("updating lockbox information (but not preventing other requests from continuing)"))
 
-        mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         sendInnerWindowMessage(request);
 
         return true;
@@ -1579,7 +1579,7 @@ namespace hookflash
           request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
           request->identityInfo(mIdentityInfo);
 
-          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
           return true;
@@ -1615,7 +1615,7 @@ namespace hookflash
         request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
         request->identityInfo(mIdentityInfo);
 
-        mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
         return true;
@@ -1657,7 +1657,7 @@ namespace hookflash
           request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
           request->identityInfo(mIdentityInfo);
 
-          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-sign", request);
 
           return true;
@@ -1682,7 +1682,7 @@ namespace hookflash
             if ((Time() == created) ||
                 (Time() == expires) ||
                 (created > expires) ||
-                (now + Hours(HOOKFLASH_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS) < created)) {
+                (now + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS) < created)) {
               ZS_LOG_WARNING(Detail, log("certificate has invalid date range") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
               goto invalid_certificate;
             }
@@ -1695,7 +1695,7 @@ namespace hookflash
             long durationFromCreated = (now - created).total_seconds();
             long durationToTotal = (expires - created).total_seconds();
 
-            if ((durationFromCreated * 100) / durationToTotal > (100-HOOKFLASH_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED)) {
+            if ((durationFromCreated * 100) / durationToTotal > (100-OPENPEER_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED)) {
               ZS_LOG_WARNING(Detail, log("resign identity required since certificate will expire soon") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
               goto invalid_certificate;
             }

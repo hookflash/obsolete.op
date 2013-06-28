@@ -33,7 +33,7 @@
 #include <openpeer/stack/message/peer-common/PeerSubscribeRequest.h>
 #include <openpeer/stack/message/peer-common/PeerSubscribeResult.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

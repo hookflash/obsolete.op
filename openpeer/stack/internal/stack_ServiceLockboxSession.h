@@ -51,7 +51,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -580,6 +580,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IServiceLockboxSessionAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceLockboxSessionAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

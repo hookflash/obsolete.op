@@ -20,7 +20,7 @@
   
     IBOutlet UITextField* receiverIPAddressTextField;
   
-    hookflash::core::IMediaEngineDelegatePtr mediaEngineDelegatePtr;
+    openpeer::core::IMediaEngineDelegatePtr mediaEngineDelegatePtr;
 }
 
 -(IBAction)startTest1;

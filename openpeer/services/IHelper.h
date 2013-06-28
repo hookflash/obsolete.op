@@ -35,7 +35,7 @@
 
 #include <zsLib/Log.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -50,12 +50,12 @@
 #include <zsLib/helpers.h>
 #include <zsLib/XML.h>
 
-#define HOOKFLASH_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS (60*3)
+#define OPENPEER_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS (60*3)
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -1050,8 +1050,8 @@ namespace hookflash
           return ConversationThreadPtr();
         }
 
-        String baseThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -1083,8 +1083,8 @@ namespace hookflash
                                           const SplitMap &split
                                           )
       {
-        String baseThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, HOOKFLASH_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -1609,7 +1609,7 @@ namespace hookflash
           mPeerSubscription = IPeerSubscription::subscribe(peer, mThisWeak.lock());
           ZS_THROW_BAD_STATE_IF(!mPeerSubscription)
 
-          mPeerSubscriptionAutoCloseTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS), false);
+          mPeerSubscriptionAutoCloseTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_PEER_SUBSCRIPTION_AUTO_CLOSE_TIMEOUT_IN_SECONDS), false);
         } else {
           ZS_LOG_DEBUG(log("creating location subscription to location") + ILocation::toDebugString(peerLocation))
           mLocations[peerLocation->getLocationID()] = LocationSubscription::create(mThisWeak.lock(), peerLocation);
@@ -1874,7 +1874,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String Account::ContactSubscription::log(const char *message) const
       {
-        return String("hookflash::Account::ContactSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
+        return String("openpeer::Account::ContactSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
       }
 
       //-----------------------------------------------------------------------
@@ -2206,7 +2206,7 @@ namespace hookflash
       //-----------------------------------------------------------------------
       String Account::LocationSubscription::log(const char *message) const
       {
-        return String("hookflash::Account::LocationSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
+        return String("openpeer::Account::LocationSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
       }
 
       //-----------------------------------------------------------------------

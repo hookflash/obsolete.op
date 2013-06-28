@@ -34,7 +34,7 @@
 #include <openpeer/stack/message/internal/types.h>
 #include <openpeer/stack/message/MessageNotify.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

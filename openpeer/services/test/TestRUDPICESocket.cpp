@@ -43,7 +43,7 @@
 #include "config.h"
 #include "boost_replacement.h"
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::BYTE;
 using zsLib::WORD;
@@ -54,23 +54,23 @@ using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
 using zsLib::AutoRecursiveLock;
-using hookflash::services::IRUDPICESocket;
-using hookflash::services::IRUDPICESocketPtr;
-using hookflash::services::IRUDPICESocketDelegate;
-using hookflash::services::IRUDPICESocketSession;
-using hookflash::services::IRUDPICESocketSessionPtr;
-using hookflash::services::IRUDPICESocketSessionDelegate;
-using hookflash::services::IRUDPMessaging;
-using hookflash::services::IRUDPMessagingPtr;
-using hookflash::services::IRUDPMessagingDelegate;
-using hookflash::services::IHelper;
-using hookflash::services::IICESocket;
-using hookflash::services::IDNS;
+using openpeer::services::IRUDPICESocket;
+using openpeer::services::IRUDPICESocketPtr;
+using openpeer::services::IRUDPICESocketDelegate;
+using openpeer::services::IRUDPICESocketSession;
+using openpeer::services::IRUDPICESocketSessionPtr;
+using openpeer::services::IRUDPICESocketSessionDelegate;
+using openpeer::services::IRUDPMessaging;
+using openpeer::services::IRUDPMessagingPtr;
+using openpeer::services::IRUDPMessagingDelegate;
+using openpeer::services::IHelper;
+using openpeer::services::IICESocket;
+using openpeer::services::IDNS;
 
-static const char *gUsername = HOOKFLASH_SERVICE_TEST_TURN_USERNAME;
-static const char *gPassword = HOOKFLASH_SERVICE_TEST_TURN_PASSWORD;
+static const char *gUsername = OPENPEER_SERVICE_TEST_TURN_USERNAME;
+static const char *gPassword = OPENPEER_SERVICE_TEST_TURN_PASSWORD;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -104,10 +104,10 @@ namespace hookflash
           mSocket = IRUDPICESocket::create(
                                              getAssociatedMessageQueue(),
                                              mThisWeak.lock(),
-                                             HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN,
+                                             OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN,
                                              gUsername,
                                              gPassword,
-                                             HOOKFLASH_SERVICE_TEST_STUN_SERVER
+                                             OPENPEER_SERVICE_TEST_STUN_SERVER
                                              );
         }
 
@@ -267,20 +267,20 @@ namespace hookflash
   }
 }
 
-using namespace hookflash::services::test;
-using hookflash::services::test::TestRUDPICESocketCallback;
-using hookflash::services::test::TestRUDPICESocketCallbackPtr;
+using namespace openpeer::services::test;
+using openpeer::services::test::TestRUDPICESocketCallback;
+using openpeer::services::test::TestRUDPICESocketCallbackPtr;
 
 void doTestRUDPICESocket()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST) return;
-  if (!HOOKFLASH_SERVICE_TEST_RUNNING_AS_CLIENT) return;
+  if (!OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_RUNNING_AS_CLIENT) return;
 
   BOOST_INSTALL_LOGGER();
 
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
-  TestRUDPICESocketCallbackPtr testObject1 = TestRUDPICESocketCallback::create(thread, IPAddress(HOOKFLASH_SERVICE_TEST_RUDP_SERVER_IP, HOOKFLASH_SERVICE_TEST_RUDP_SERVER_PORT));
+  TestRUDPICESocketCallbackPtr testObject1 = TestRUDPICESocketCallback::create(thread, IPAddress(OPENPEER_SERVICE_TEST_RUDP_SERVER_IP, OPENPEER_SERVICE_TEST_RUDP_SERVER_PORT));
 
   ZS_LOG_BASIC("WAITING:      Waiting for RUDP ICE socket testing to complete (max wait is 60 minutes).");
 

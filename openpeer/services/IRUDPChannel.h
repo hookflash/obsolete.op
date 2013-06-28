@@ -36,7 +36,7 @@
 #include <zsLib/Proxy.h>
 #include <zsLib/String.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -150,9 +150,9 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IRUDPChannelDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPChannelPtr, IRUDPChannelPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPChannelDelegate::RUDPChannelStates, RUDPChannelStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPChannelDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPChannelPtr, IRUDPChannelPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPChannelDelegate::RUDPChannelStates, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_2(onRDUPChannelStateChanged, IRUDPChannelPtr, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelReadReady, IRUDPChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelWriteReady, IRUDPChannelPtr)

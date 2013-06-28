@@ -47,7 +47,7 @@
 
 #include <map>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -387,14 +387,14 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountFinderAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountFinderAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountFinderDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountFinderPtr, AccountFinderPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::IAccountFinderDelegate::AccountStates, AccountStates)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountFinderDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountFinderPtr, AccountFinderPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IAccountFinderDelegate::AccountStates, AccountStates)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_2(onAccountFinderStateChanged, AccountFinderPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountFinderMessageIncoming, AccountFinderPtr, MessagePtr)
 ZS_DECLARE_PROXY_END()

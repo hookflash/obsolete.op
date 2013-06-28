@@ -37,7 +37,7 @@
 #include <cryptopp/rsa.h>
 #include <cryptopp/secblock.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

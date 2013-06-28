@@ -40,11 +40,11 @@
 
 #include <zsLib/Stringize.h>
 
-#define HOOKFLASH_STACK_SERVICE_SALT_FETCH_SIGNED_SALT_QUERY_GET_TIMEOUT_IN_SECONDS (60*2)
+#define OPENPEER_STACK_SERVICE_SALT_FETCH_SIGNED_SALT_QUERY_GET_TIMEOUT_IN_SECONDS (60*2)
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -369,7 +369,7 @@ namespace hookflash
         request->domain(mBootstrappedNetwork->forServices().getDomain());
         request->salts(mTotalToFetch);
 
-        mSaltMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<SignedSaltGetResult>::convert(mThisWeak.lock()), request, Seconds(HOOKFLASH_STACK_SERVICE_SALT_FETCH_SIGNED_SALT_QUERY_GET_TIMEOUT_IN_SECONDS));
+        mSaltMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<SignedSaltGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_SALT_FETCH_SIGNED_SALT_QUERY_GET_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("salt", "signed-salt-get", request);
         ZS_LOG_DEBUG(log("sending signed salt get request"))
       }

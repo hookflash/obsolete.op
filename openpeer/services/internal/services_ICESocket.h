@@ -45,7 +45,7 @@
 
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -445,11 +445,11 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::internal::IICESocketForICESocketSession)
-ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getSocket, hookflash::services::IICESocketPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IICESocketForICESocketSession)
+ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getSocket, openpeer::services::IICESocketPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_5(sendTo, bool, hookflash::services::IICESocket::Types, const IPAddress &, const BYTE *, ULONG, bool)
+ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_5(sendTo, bool, openpeer::services::IICESocket::Types, const IPAddress &, const BYTE *, ULONG, bool)
 ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionClosed, PUID)
-ZS_DECLARE_PROXY_METHOD_SYNC_2(addRoute, hookflash::services::internal::ICESocketSessionPtr, const IPAddress &)
-ZS_DECLARE_PROXY_METHOD_SYNC_1(removeRoute, hookflash::services::internal::ICESocketSessionPtr)
+ZS_DECLARE_PROXY_METHOD_SYNC_2(addRoute, openpeer::services::internal::ICESocketSessionPtr, const IPAddress &)
+ZS_DECLARE_PROXY_METHOD_SYNC_1(removeRoute, openpeer::services::internal::ICESocketSessionPtr)
 ZS_DECLARE_PROXY_END()

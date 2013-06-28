@@ -45,12 +45,12 @@
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
 
-#define HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS (60)
+#define OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS (60)
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -460,14 +460,14 @@ namespace hookflash
             request->domain(network->getDomain());
             request->providers(providers);
 
-            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
           } else {
             // let's issue a request to discover these identities
             IdentityLookupRequestPtr request = IdentityLookupRequest::create();
             request->domain(network->getDomain());
             request->providers(providers);
 
-            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(HOOKFLASH_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
           }
 
           if (!monitor) {

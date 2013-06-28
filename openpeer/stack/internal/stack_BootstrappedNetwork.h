@@ -47,11 +47,11 @@
 #include <zsLib/MessageQueueAssociator.h>
 
 // set to 1 to force over HTTP instead of HTTPS
-#define HOOKFLASH_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP 1
+#define OPENPEER_STACK_BOOTSTRAPPER_SERVICE_FORCE_OVER_INSECURE_HTTP 1
 
-#define HOOKFLASH_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME "openpeer-services-get"
+#define OPENPEER_STACK_BOOSTRAPPER_SERVICES_GET_URL_METHOD_NAME "openpeer-services-get"
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -500,6 +500,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IBootstrappedNetworkAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IBootstrappedNetworkAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

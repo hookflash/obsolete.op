@@ -38,7 +38,7 @@
 
 using namespace zsLib;
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -51,4 +51,4 @@ namespace hookflash
       bool readFromFile(String &outPassword, String &outText);
     } // namespace test
   } // namespace stack
-} // namespace hookflash
+} // namespace openpeer

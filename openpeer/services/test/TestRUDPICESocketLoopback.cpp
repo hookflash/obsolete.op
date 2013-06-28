@@ -54,7 +54,7 @@
 #include <cstdio>
 #include <cstring>
 
-namespace hookflash { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::BYTE;
 using zsLib::WORD;
@@ -65,26 +65,26 @@ using zsLib::ISocketPtr;
 using zsLib::IPAddress;
 using zsLib::String;
 using zsLib::Stringize;
-using hookflash::services::IDNS;
-using hookflash::services::IDNSQuery;
-using hookflash::services::ITURNSocket;
-using hookflash::services::ITURNSocketPtr;
-using hookflash::services::ITURNSocketDelegate;
-using hookflash::services::IICESocket;
-using hookflash::services::IRUDPICESocket;
-using hookflash::services::IRUDPICESocketPtr;
-using hookflash::services::IRUDPMessaging;
-using hookflash::services::IRUDPMessagingPtr;
-using namespace hookflash::services::test;
+using openpeer::services::IDNS;
+using openpeer::services::IDNSQuery;
+using openpeer::services::ITURNSocket;
+using openpeer::services::ITURNSocketPtr;
+using openpeer::services::ITURNSocketDelegate;
+using openpeer::services::IICESocket;
+using openpeer::services::IRUDPICESocket;
+using openpeer::services::IRUDPICESocketPtr;
+using openpeer::services::IRUDPMessaging;
+using openpeer::services::IRUDPMessagingPtr;
+using namespace openpeer::services::test;
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
     namespace test
     {
-      static const char *gUsername = HOOKFLASH_SERVICE_TEST_TURN_USERNAME;
-      static const char *gPassword = HOOKFLASH_SERVICE_TEST_TURN_PASSWORD;
+      static const char *gUsername = OPENPEER_SERVICE_TEST_TURN_USERNAME;
+      static const char *gPassword = OPENPEER_SERVICE_TEST_TURN_PASSWORD;
 
       class TestRUDPICESocketLoopback;
       typedef boost::shared_ptr<TestRUDPICESocketLoopback> TestRUDPICESocketLoopbackPtr;
@@ -456,12 +456,12 @@ namespace hookflash
   }
 }
 
-using hookflash::services::test::TestRUDPICESocketLoopback;
-using hookflash::services::test::TestRUDPICESocketLoopbackPtr;
+using openpeer::services::test::TestRUDPICESocketLoopback;
+using openpeer::services::test::TestRUDPICESocketLoopbackPtr;
 
 void doTestRUDPICESocketLoopback()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_RUDPICESOCKET_LOOPBACK_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_LOOPBACK_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 
@@ -492,14 +492,14 @@ void doTestRUDPICESocketLoopback()
       switch (step) {
         case 0: {
           expecting = 2;
-          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
-          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
+          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
           break;
         }
         case 1: {
           expecting = 2;
-          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
-          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, HOOKFLASH_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
+          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
+          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
           break;
         }
       }

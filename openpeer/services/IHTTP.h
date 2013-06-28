@@ -35,7 +35,7 @@
 
 #include <zsLib/Proxy.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -229,8 +229,8 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IHTTPQueryDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IHTTPQueryPtr, IHTTPQueryPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IHTTPQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IHTTPQueryPtr, IHTTPQueryPtr)
 ZS_DECLARE_PROXY_METHOD_1(onHTTPReadDataAvailable, IHTTPQueryPtr)
 ZS_DECLARE_PROXY_METHOD_1(onHTTPCompleted, IHTTPQueryPtr)
 ZS_DECLARE_PROXY_END()

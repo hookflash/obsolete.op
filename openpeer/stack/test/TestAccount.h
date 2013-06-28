@@ -41,17 +41,17 @@
 
 #include <zsLib/Timer.h>
 
-using namespace hookflash::stack::internal;
-using namespace hookflash::stack::message;
-using namespace hookflash::services::internal;
-using namespace hookflash::services;
+using namespace openpeer::stack::internal;
+using namespace openpeer::stack::message;
+using namespace openpeer::services::internal;
+using namespace openpeer::services;
 
 #define USE_FAKE_BOOTSTRAPPED_NETWORK 1
 #define USE_FAKE_IDENTITY_SESSION 1
 //#define USE_FAKE_PEER_CONTACT_SESSION 1
 //#define USE_FAKE_ACCOUNT 1
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -104,7 +104,7 @@ namespace hookflash
 #pragma mark
 #pragma mark TestHTTPQueryForAccount
 #pragma mark
-      class TestHTTPQueryForAccount :public hookflash::services::internal::HTTP::HTTPQuery
+      class TestHTTPQueryForAccount :public openpeer::services::internal::HTTP::HTTPQuery
       {
       protected:
         TestHTTPQueryForAccount(
@@ -166,7 +166,7 @@ namespace hookflash
         //IServiceIdentitySessionDelegate methods
         virtual void onServiceIdentitySessionStateChanged(
                                                           IServiceIdentitySessionPtr session,
-                                                          hookflash::stack::IServiceIdentitySession::SessionStates state
+                                                          openpeer::stack::IServiceIdentitySession::SessionStates state
                                                           );
         
         virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session);
@@ -174,14 +174,14 @@ namespace hookflash
         //IServiceLockboxSessionDelegate methods
         virtual void onServiceLockboxSessionStateChanged(
                                                              IServiceLockboxSessionPtr session,
-                                                             hookflash::stack::IServiceLockboxSession::SessionStates state
+                                                             openpeer::stack::IServiceLockboxSession::SessionStates state
                                                              );
         virtual void onServiceLockboxSessionAssociatedIdentitiesChanged(IServiceLockboxSessionPtr session);
         
         //IAccountDelegate methods
         virtual void onAccountStateChanged(
                                            IAccountPtr account,
-                                           hookflash::stack::internal::Account::AccountStates state
+                                           openpeer::stack::internal::Account::AccountStates state
                                            );
         
       public:
@@ -401,7 +401,7 @@ namespace hookflash
 #pragma mark TestFactoryForAccount
 #pragma mark
       
-      class TestServicesFactoryForAccount : public hookflash::services::internal::Factory
+      class TestServicesFactoryForAccount : public openpeer::services::internal::Factory
       {
       public:
         TestServicesFactoryForAccount() {}

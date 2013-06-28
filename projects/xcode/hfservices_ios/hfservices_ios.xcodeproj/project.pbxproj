@@ -95,7 +95,7 @@
 		0095DCBC16CA8A16005F53D3 /* IRUDPChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRUDPChannel.h; sourceTree = "<group>"; };
 		0095DCBD16CA8A16005F53D3 /* IRUDPICESocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRUDPICESocket.h; sourceTree = "<group>"; };
 		0095DCBE16CA8A16005F53D3 /* IRUDPICESocketSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRUDPICESocketSession.h; sourceTree = "<group>"; };
-		0095DCBF16CA8A16005F53D3 /* IRUDPListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRUDPListener.h; sourceTree = "<group>"; };
+		0095DCBF16CA8A16005F53D3 /* IRUDPListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = IRUDPListener.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		0095DCC016CA8A16005F53D3 /* IRUDPMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRUDPMessaging.h; sourceTree = "<group>"; };
 		0095DCC116CA8A16005F53D3 /* ISTUNDiscovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISTUNDiscovery.h; sourceTree = "<group>"; };
 		0095DCC216CA8A16005F53D3 /* ISTUNRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISTUNRequester.h; sourceTree = "<group>"; };

@@ -41,11 +41,11 @@
 #include "config.h"
 #include "boost_replacement.h"
 
-using hookflash::services::ICanonicalXML;
+using openpeer::services::ICanonicalXML;
 
 void doTestCanonicalXML()
 {
-  if (!HOOKFLASH_SERVICE_TEST_DO_CANONICAL_XML_TEST) return;
+  if (!OPENPEER_SERVICE_TEST_DO_CANONICAL_XML_TEST) return;
 
   BOOST_INSTALL_LOGGER();
 

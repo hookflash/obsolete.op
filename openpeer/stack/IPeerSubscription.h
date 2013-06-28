@@ -36,7 +36,7 @@
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/ILocation.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -106,13 +106,13 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::IPeerSubscriptionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionPtr, IPeerSubscriptionPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerPtr, IPeerPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::ILocationPtr, ILocationPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IMessageIncomingPtr, IMessageIncomingPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionDelegate::LocationConnectionStates, LocationConnectionStates)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::IPeerSubscriptionDelegate::PeerFindStates, PeerFindStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IPeerSubscriptionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPeerSubscriptionPtr, IPeerSubscriptionPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPeerPtr, IPeerPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::ILocationPtr, ILocationPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageIncomingPtr, IMessageIncomingPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPeerSubscriptionDelegate::LocationConnectionStates, LocationConnectionStates)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IPeerSubscriptionDelegate::PeerFindStates, PeerFindStates)
 ZS_DECLARE_PROXY_METHOD_1(onPeerSubscriptionShutdown, IPeerSubscriptionPtr)
 ZS_DECLARE_PROXY_METHOD_3(onPeerSubscriptionFindStateChanged, IPeerSubscriptionPtr, IPeerPtr, PeerFindStates)
 ZS_DECLARE_PROXY_METHOD_3(onPeerSubscriptionLocationConnectionStateChanged, IPeerSubscriptionPtr, ILocationPtr, LocationConnectionStates)

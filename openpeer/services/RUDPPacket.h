@@ -36,9 +36,9 @@
 
 #include <zsLib/Log.h>
 
-#define HOOKFLASH_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN (512)
+#define OPENPEER_SERVICES_RUDP_MAX_PACKET_SIZE_WHEN_PMTU_IS_NOT_KNOWN (512)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

@@ -42,9 +42,9 @@
 #include <zsLib/Socket.h>
 
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -58,11 +58,11 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::core::internal::IShutdownCheckAgainDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IShutdownCheckAgainDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onShutdownCheckAgain)
 ZS_DECLARE_PROXY_END()
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
@@ -660,9 +660,9 @@ namespace hookflash
 
         Socket::ignoreSIGPIPEOnThisThread();
 
-        mCoreThreadQueue = MessageQueueThread::createBasic("com.hookflash.core.mainThread");
-        mMediaThreadQueue = MessageQueueThread::createBasic("com.hookflash.core.mediaThread", zsLib::ThreadPriority_RealtimePriority);
-        mServicesThreadQueue = MessageQueueThread::createBasic("com.hookflash.core.servicesThread");
+        mCoreThreadQueue = MessageQueueThread::createBasic("org.openpeer.core.mainThread");
+        mMediaThreadQueue = MessageQueueThread::createBasic("org.openpeer.core.mediaThread", zsLib::ThreadPriority_RealtimePriority);
+        mServicesThreadQueue = MessageQueueThread::createBasic("org.openpeer.core.servicesThread");
         if (!mStackMessageQueueDelegate) {
           mApplicationThreadQueue = MessageQueueThread::singletonUsingCurrentGUIThreadsMessageQueue();
         } else {

@@ -46,15 +46,15 @@
 #include <iostream>
 #include <fstream>
 
-namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_stack_test) } } }
+namespace openpeer { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_stack_test) } } }
 
-namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_stack_test) } } }
+namespace openpeer { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(openpeer_stack_test) } } }
 
-//#define HOOKFLASH_MEDIA_ENGINE_DEBUG_LOG_LEVEL
-//#define HOOKFLASH_MEDIA_ENGINE_ENABLE_TIMER
-#define HOOKFLASH_STACK_TEST_ACCOUNT_TIMEOUT_IN_SECONDS (60*2)
+//#define OPENPEER_MEDIA_ENGINE_DEBUG_LOG_LEVEL
+//#define OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
+#define OPENPEER_STACK_TEST_ACCOUNT_TIMEOUT_IN_SECONDS (60*2)
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -256,9 +256,9 @@ namespace hookflash
         boost::shared_array<char> postData = doc->writeAsJSON(&postDataLengthInBytes);
         
         
-        Duration timeout = Duration(Seconds(HOOKFLASH_STACK_TEST_ACCOUNT_TIMEOUT_IN_SECONDS));
+        Duration timeout = Duration(Seconds(OPENPEER_STACK_TEST_ACCOUNT_TIMEOUT_IN_SECONDS));
         
-        TestHTTPQueryForAccountPtr query = TestHTTPQueryForAccount::create(hookflash::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
+        TestHTTPQueryForAccountPtr query = TestHTTPQueryForAccount::create(openpeer::services::internal::HTTPPtr(), mThisWeak.lock(), true, "Bojan's test app", "local", (const BYTE *)postData.get(), postDataLengthInBytes,"", timeout);
         
         mPendingRequests[query] = message;
         
@@ -703,7 +703,7 @@ namespace hookflash
         TestRUDPICESocketForAccountPtr pThis(new TestRUDPICESocketForAccount());
         pThis->mThisWeak = pThis;
         //pThis->init(turnServer, turnServerUsername, turnServerPassword, stunServer, port);
-        pThis->setState(hookflash::services::IRUDPICESocket::RUDPICESocketState_Ready);
+        pThis->setState(openpeer::services::IRUDPICESocket::RUDPICESocketState_Ready);
         return pThis;
       }
       
@@ -721,7 +721,7 @@ namespace hookflash
         TestRUDPICESocketForAccountPtr pThis(new TestRUDPICESocketForAccount());
         pThis->mThisWeak = pThis;
         //pThis->init(turnServer, turnServerUsername, turnServerPassword, stunServer, port);
-        pThis->setState(hookflash::services::IRUDPICESocket::RUDPICESocketState_Ready);
+        pThis->setState(openpeer::services::IRUDPICESocket::RUDPICESocketState_Ready);
         return pThis;
       }
       //-----------------------------------------------------------------------
@@ -775,7 +775,7 @@ namespace hookflash
         AutoRecursiveLock lock(mLock);
         mNetworkDone = true;
         
-        mIdentitySession = hookflash::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
+        mIdentitySession = openpeer::stack::IServiceIdentitySession::loginWithIdentity(mThisWeak.lock(), "bogus", "bogus");
         
         zsLib::String filePassword, fileText;
         bool ret = readFromFile(filePassword, fileText);
@@ -789,13 +789,13 @@ namespace hookflash
           
           mPeerFilesPtr = IPeerFiles::loadFromElement(mPeerFilePassword.c_str(), mPeerFilesElement);
           
-          mPeerContactSession = hookflash::stack::IServiceLockboxSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
+          mPeerContactSession = openpeer::stack::IServiceLockboxSession::relogin(mThisWeak.lock(), mPeerFilesPtr);
         }
         else
         {
           //peer file not found, do Login
           mLoginScenario = LoginScenario_Login;
-          mPeerContactSession = hookflash::stack::IServiceLockboxSession::login(mThisWeak.lock(), hookflash::stack::IServiceLockbox::createServiceLockboxFrom(mNetwork), mIdentitySession);
+          mPeerContactSession = openpeer::stack::IServiceLockboxSession::login(mThisWeak.lock(), openpeer::stack::IServiceLockbox::createServiceLockboxFrom(mNetwork), mIdentitySession);
         }
         
         
@@ -817,7 +817,7 @@ namespace hookflash
       
       void TestCallbackForAccount::onServiceLockboxSessionStateChanged(
                                                                  IServiceLockboxSessionPtr session,
-                                                                 hookflash::stack::IServiceLockboxSession::SessionStates state
+                                                                 openpeer::stack::IServiceLockboxSession::SessionStates state
                                                                  )
       {
         if (state == IServiceLockboxSession::SessionState_Ready)
@@ -845,7 +845,7 @@ namespace hookflash
       
       void TestCallbackForAccount::onAccountStateChanged(
                                  IAccountPtr account,
-                                 hookflash::stack::internal::Account::AccountStates state
+                                 openpeer::stack::internal::Account::AccountStates state
                                  )
       {
         if (state == Account::AccountState_Ready)
@@ -883,33 +883,33 @@ namespace hookflash
 }
 
 //service peer contact session
-using hookflash::stack::test::TestServiceLockboxSessionForAccount;
-using hookflash::stack::test::TestServiceLockboxSessionForAccountPtr;
+using openpeer::stack::test::TestServiceLockboxSessionForAccount;
+using openpeer::stack::test::TestServiceLockboxSessionForAccountPtr;
 
 //service identity session
-using hookflash::stack::test::TestServiceIdentitySessionForAccount;
-using hookflash::stack::test::TestServiceIdentitySessionForAccountPtr;
+using openpeer::stack::test::TestServiceIdentitySessionForAccount;
+using openpeer::stack::test::TestServiceIdentitySessionForAccountPtr;
 
 //bootstrapped network
-using hookflash::stack::test::TestBootstrappedNetworkForAccount;
-using hookflash::stack::test::TestBootstrappedNetworkForAccountPtr;
+using openpeer::stack::test::TestBootstrappedNetworkForAccount;
+using openpeer::stack::test::TestBootstrappedNetworkForAccountPtr;
 
 //delegate callback
-using hookflash::stack::test::TestCallbackForAccount;
-using hookflash::stack::test::TestCallbackForAccountPtr;
+using openpeer::stack::test::TestCallbackForAccount;
+using openpeer::stack::test::TestCallbackForAccountPtr;
 
 //factory
-using hookflash::stack::test::TestFactoryForAccount;
-using hookflash::stack::test::TestFactoryForAccountPtr;
+using openpeer::stack::test::TestFactoryForAccount;
+using openpeer::stack::test::TestFactoryForAccountPtr;
 
 //services factory
-using hookflash::stack::test::TestServicesFactoryForAccount;
-using hookflash::stack::test::TestServicesFactoryForAccountPtr;
+using openpeer::stack::test::TestServicesFactoryForAccount;
+using openpeer::stack::test::TestServicesFactoryForAccountPtr;
 
 
 void doTestAccount()
 {
-  if (!HOOKFLASH_STACK_TEST_DO_ACCOUNT_TEST) return;
+  if (!OPENPEER_STACK_TEST_DO_ACCOUNT_TEST) return;
   
   BOOST_INSTALL_LOGGER();
   
@@ -921,14 +921,14 @@ void doTestAccount()
   
   //override factory
   TestFactoryForAccountPtr overrideFactory(new TestFactoryForAccount);
-  hookflash::stack::internal::Factory::override(overrideFactory);
+  openpeer::stack::internal::Factory::override(overrideFactory);
   
   //override services factory
   TestServicesFactoryForAccountPtr overrideServicesFactory(new TestServicesFactoryForAccount);
-  hookflash::services::internal::Factory::override(overrideServicesFactory);
+  openpeer::services::internal::Factory::override(overrideServicesFactory);
   
   //prepare stack
-  hookflash::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");
+  openpeer::stack::IStack::setup(threadDelegate, threadStack, threadServices, "123456", "Bojan's Test app", "iOS 5.0.3", "iPad 2");
   
   //start test
   TestCallbackForAccountPtr testObject = TestCallbackForAccount::create(thread);

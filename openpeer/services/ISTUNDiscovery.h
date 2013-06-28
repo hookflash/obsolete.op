@@ -37,7 +37,7 @@
 #include <openpeer/services/STUNPacket.h>
 #include <boost/shared_array.hpp>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -131,7 +131,7 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::ISTUNDiscoveryDelegate)
-ZS_DECLARE_PROXY_METHOD_4(onSTUNDiscoverySendPacket, hookflash::services::ISTUNDiscoveryPtr, IPAddress, boost::shared_array<BYTE>, ULONG)
-ZS_DECLARE_PROXY_METHOD_1(onSTUNDiscoveryCompleted, hookflash::services::ISTUNDiscoveryPtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::ISTUNDiscoveryDelegate)
+ZS_DECLARE_PROXY_METHOD_4(onSTUNDiscoverySendPacket, openpeer::services::ISTUNDiscoveryPtr, IPAddress, boost::shared_array<BYTE>, ULONG)
+ZS_DECLARE_PROXY_METHOD_1(onSTUNDiscoveryCompleted, openpeer::services::ISTUNDiscoveryPtr)
 ZS_DECLARE_PROXY_END()

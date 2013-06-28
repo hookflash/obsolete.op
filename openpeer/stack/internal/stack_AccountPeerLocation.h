@@ -48,7 +48,7 @@
 #include <map>
 #include <list>
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -404,14 +404,14 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountPeerLocationDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountPeerLocationPtr, AccountPeerLocationPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::internal::AccountPeerLocation::AccountStates, AccountStates)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountPeerLocationDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountPeerLocationPtr, AccountPeerLocationPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountPeerLocation::AccountStates, AccountStates)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationStateChanged, AccountPeerLocationPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationMessageIncoming, AccountPeerLocationPtr, MessagePtr)
 ZS_DECLARE_PROXY_END()
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::stack::internal::IAccountPeerLocationAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountPeerLocationAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

@@ -61,21 +61,21 @@
 
 #include <algorithm>
 
-#define HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS (60)
-#define HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRES_TIMER_IN_SECONDS (60)
+#define OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS (60)
+#define OPENPEER_STACK_PUBLICATIONREPOSITORY_EXPIRES_TIMER_IN_SECONDS (60)
 
 //*****************************************************************************
 //*****************************************************************************
 //*****************************************************************************
 //*****************************************************************************
 // HERE - DO NOT LEAVE THIS SET TO THE TEMP FOR PRODUCTION!
-//#define HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS (60)  // temp expire in 1 minute
-#define HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS (2*(60*60))  // expire in 2 hrs
+//#define OPENPEER_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS (60)  // temp expire in 1 minute
+#define OPENPEER_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS (2*(60*60))  // expire in 2 hrs
 
 
-namespace hookflash { namespace stack { ZS_DECLARE_SUBSYSTEM(hookflash_stack) } }
+namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -158,7 +158,7 @@ namespace hookflash
         ZS_THROW_BAD_STATE_IF(!account)
 
         mPeerSubscription = IPeerSubscription::subscribeAll(account, mThisWeak.lock());
-        mExpiresTimer = Timer::create(mThisWeak.lock(), Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRES_TIMER_IN_SECONDS));
+        mExpiresTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_EXPIRES_TIMER_IN_SECONDS));
 
         ZS_LOG_BASIC(log("init"))
       }
@@ -426,7 +426,7 @@ namespace hookflash
 
             ZS_LOG_DEBUG(log("requesting to remove remote finder publication"))
 
-            remover->setMonitor(IMessageMonitor::monitorAndSendToLocation(remover, publishedLocation, request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+            remover->setMonitor(IMessageMonitor::monitorAndSendToLocation(remover, publishedLocation, request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
             break;
           }
         }
@@ -489,7 +489,7 @@ namespace hookflash
 
             request->publicationMetaData(metaData->forRepo().toPublicationMetaData());
 
-            subscriber->setMonitor(IMessageMonitor::monitorAndSendToLocation(subscriber, subscribeToLocation, request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+            subscriber->setMonitor(IMessageMonitor::monitorAndSendToLocation(subscriber, subscribeToLocation, request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
 
             mPeerSubscriptionsOutgoing[subscriber->getID()] = subscriber;
             ZS_LOG_TRACE(log("outgoing subscription is created"))
@@ -545,7 +545,7 @@ namespace hookflash
           return;
         }
 
-        Time recommendedExpires = zsLib::now() + Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS);
+        Time recommendedExpires = zsLib::now() + Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_EXPIRE_DISCONNECTED_REMOTE_PUBLICATIONS_IN_SECONDS);
 
         LocationPtr location = Location::convert(inLocation);
 
@@ -1276,7 +1276,7 @@ namespace hookflash
           request->domain(account->forRepo().getDomain());
           request->publicationMetaData(metaData->forRepo().toPublicationMetaData());
 
-          fetcher->setMonitor(IMessageMonitor::monitorAndSendToLocation(fetcher, metaData->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+          fetcher->setMonitor(IMessageMonitor::monitorAndSendToLocation(fetcher, metaData->forRepo().getPublishedLocation(), request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
           return;
         }
 
@@ -1321,7 +1321,7 @@ namespace hookflash
           request->publishedFromVersion(publication->forRepo().getBaseVersion());
           request->publishedToVersion(publication->forRepo().getVersion());
 
-          publisher->setMonitor(IMessageMonitor::monitorAndSendToLocation(publisher, publication->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
+          publisher->setMonitor(IMessageMonitor::monitorAndSendToLocation(publisher, publication->forRepo().getPublishedLocation(), request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS)));
           return;
         }
 
@@ -1623,7 +1623,7 @@ namespace hookflash
               AutoRecursiveLockPtr docLock;
               DocumentPtr doc = publication->forRepo().getJSON(docLock);
               if (doc) {
-                ElementPtr diffEl = doc->findFirstChildElement(HOOKFLASH_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
+                ElementPtr diffEl = doc->findFirstChildElement(OPENPEER_STACK_DIFF_DOCUMENT_ROOT_ELEMENT_NAME);
                 okayToCreate = !diffEl;
                 if (!okayToCreate) {
                   ZS_LOG_WARNING(Detail, log("new entry for remote cache cannot be created for publication which only contains diff updates") + publication->forRepo().getDebugValuesString())
@@ -3215,7 +3215,7 @@ namespace hookflash
         request->publicationList(list);
         request->peerCache(PeerCache::find(mPeerSource, outer));
 
-        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
+        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
 
         mNotificationMonitors.push_back(monitor);
       }
@@ -3288,7 +3288,7 @@ namespace hookflash
         request->domain(account->forRepo().getDomain());
         request->publicationList(list);
 
-        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
+        IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToLocation(mThisWeak.lock(), mSubscriptionInfo->forRepo().getCreatorLocation(), request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
 
         mNotificationMonitors.push_back(monitor);
       }
@@ -3727,7 +3727,7 @@ namespace hookflash
               IPublicationMetaData::SubscribeToRelationshipsMap empty;
               request->publicationMetaData(mSubscriptionInfo->forRepo().toPublicationMetaData());
 
-              mCancelMonitor = IMessageMonitor::monitorAndSendToLocation(pThis, mSubscriptionInfo->forRepo().getPublishedLocation(), request, Seconds(HOOKFLASH_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
+              mCancelMonitor = IMessageMonitor::monitorAndSendToLocation(pThis, mSubscriptionInfo->forRepo().getPublishedLocation(), request, Seconds(OPENPEER_STACK_PUBLICATIONREPOSITORY_REQUEST_TIMEOUT_IN_SECONDS));
               return;
             }
           }

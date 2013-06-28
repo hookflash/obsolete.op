@@ -34,7 +34,7 @@
 #include <openpeer/services/types.h>
 #include <openpeer/services/STUNPacket.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {

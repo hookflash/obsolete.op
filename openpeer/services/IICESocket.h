@@ -39,9 +39,9 @@
 
 #include <list>
 
-#define HOOKFLASH_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS (10*60)
+#define OPENPEER_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS (10*60)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -145,7 +145,7 @@ namespace hookflash
       //          are ready. For example, TURN is shutdown while not in use
       //          and it must become active otherwise the TURN candidates will
       //          not be available.
-      virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(HOOKFLASH_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS)) = 0;
+      virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(OPENPEER_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS)) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Base all the usernames/passwords upon the foundation socket
@@ -205,6 +205,6 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IICESocketDelegate)
-ZS_DECLARE_PROXY_METHOD_2(onICESocketStateChanged, hookflash::services::IICESocketPtr, hookflash::services::IICESocketDelegate::ICESocketStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IICESocketDelegate)
+ZS_DECLARE_PROXY_METHOD_2(onICESocketStateChanged, openpeer::services::IICESocketPtr, openpeer::services::IICESocketDelegate::ICESocketStates)
 ZS_DECLARE_PROXY_END()

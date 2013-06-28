@@ -35,9 +35,9 @@
 #include <openpeer/services/IICESocket.h>
 #include <zsLib/Proxy.h>
 
-#define HOOKFLASH_SERVICES_IRUDPSOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS (10*60)
+#define OPENPEER_SERVICES_IRUDPSOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS (10*60)
 
-namespace hookflash
+namespace openpeer
 {
   namespace services
   {
@@ -103,7 +103,7 @@ namespace hookflash
 
       //-----------------------------------------------------------------------
       // PURPOSE: see IICESocket::prepareLocalCandidates for information
-      virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(HOOKFLASH_SERVICES_IRUDPSOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS)) = 0;
+      virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(OPENPEER_SERVICES_IRUDPSOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS)) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Gets a local list of offered candidates
@@ -155,8 +155,8 @@ namespace hookflash
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(hookflash::services::IRUDPICESocketDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketPtr, IRUDPICESocketPtr)
-ZS_DECLARE_PROXY_TYPEDEF(hookflash::services::IRUDPICESocketDelegate::RUDPICESocketStates, RUDPICESocketStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPICESocketDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketPtr, IRUDPICESocketPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketDelegate::RUDPICESocketStates, RUDPICESocketStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPICESocketStateChanged, IRUDPICESocketPtr, RUDPICESocketStates)
 ZS_DECLARE_PROXY_END()

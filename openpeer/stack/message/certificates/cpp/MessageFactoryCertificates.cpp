@@ -38,10 +38,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_CERTIFICATES_HANDLER "certificates"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_CERTIFICATES_HANDLER "certificates"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -83,7 +83,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryCertificates::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_CERTIFICATES_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_CERTIFICATES_HANDLER;
         }
 
         //---------------------------------------------------------------------

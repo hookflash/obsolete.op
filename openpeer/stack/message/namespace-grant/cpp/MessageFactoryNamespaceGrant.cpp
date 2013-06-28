@@ -39,10 +39,10 @@
 
 #include <openpeer/stack/IHelper.h>
 
-#define HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_NAMESPACE_GRANT_HANDLER "namespace-grant"
+#define OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_NAMESPACE_GRANT_HANDLER "namespace-grant"
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {
@@ -84,7 +84,7 @@ namespace hookflash
         //---------------------------------------------------------------------
         const char *MessageFactoryNamespaceGrant::getHandler() const
         {
-          return HOOKFLASH_STACK_MESSAGE_MESSAGE_FACTORY_NAMESPACE_GRANT_HANDLER;
+          return OPENPEER_STACK_MESSAGE_MESSAGE_FACTORY_NAMESPACE_GRANT_HANDLER;
         }
 
         //---------------------------------------------------------------------

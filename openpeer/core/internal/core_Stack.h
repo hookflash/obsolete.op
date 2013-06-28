@@ -34,7 +34,7 @@
 #include <openpeer/core/IStack.h>
 #include <openpeer/core/internal/types.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

@@ -34,7 +34,7 @@
 #include <openpeer/stack/message/IMessageFactory.h>
 
 
-namespace hookflash
+namespace openpeer
 {
   namespace stack
   {

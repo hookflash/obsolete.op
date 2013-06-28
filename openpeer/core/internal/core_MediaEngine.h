@@ -53,7 +53,7 @@
 #include <vie_rtp_rtcp.h>
 #include <vie_file.h>
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {

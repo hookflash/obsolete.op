@@ -32,10 +32,10 @@
 #include <openpeer/core/internal/core_Logger.h>
 #include <openpeer/services/IHelper.h>
 
-namespace hookflash { namespace core { ZS_DECLARE_SUBSYSTEM(hookflash_core) } }
-namespace hookflash { namespace core { namespace application { ZS_DECLARE_SUBSYSTEM(hookflash_application) } } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
+namespace openpeer { namespace core { namespace application { ZS_DECLARE_SUBSYSTEM(openpeer_application) } } }
 
-namespace hookflash
+namespace openpeer
 {
   namespace core
   {
