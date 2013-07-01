@@ -128,10 +128,10 @@ namespace openpeer
               const NamespaceInfoMap &namespaces = (*iterChallenge).second;
 
               if (namespaceGrantChallengeInfo.hasData()) {
-                ElementPtr namespaceGrantChallengesEl = MessageHelper::createElement(namespaceGrantChallengeInfo);
-
+                ElementPtr namespaceGrantChallengeEl = MessageHelper::createElement(namespaceGrantChallengeInfo);
+                
                 ElementPtr namespacesEl = IMessageHelper::createElement("namespaces");
-
+                
                 for (NamespaceInfoMap::const_iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
                 {
                   const NamespaceInfo &namespaceInfo = (*iter).second;
@@ -139,22 +139,26 @@ namespace openpeer
                     namespacesEl->adoptAsLastChild(MessageHelper::createElement(namespaceInfo));
                   }
                 }
-
+                
                 if (namespacesEl->hasChildren()) {
-                  namespaceGrantChallengesEl->adoptAsLastChild(namespacesEl);
+                  namespaceGrantChallengeEl->adoptAsLastChild(namespacesEl);
                 } else {
-                  namespaceGrantChallengesEl.reset();
+                  namespaceGrantChallengeEl.reset();
                 }
-
-                if (namespaceGrantChallengesEl) {
-                  namespaceGrantChallengesEl->adoptAsLastChild(namespaceGrantChallengesEl);
+                
+                if (namespaceGrantChallengeEl) {
+                  namespaceGrantChallengesEl->adoptAsLastChild(namespaceGrantChallengeEl);
                 }
+              }
+              if (namespaceGrantChallengesEl) {
+                root->adoptAsLastChild(namespaceGrantChallengesEl);
               }
             }
           }
-
+          
+          
           if (hasAttribute(AttributeType_BrowserVisibility)) {
-            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visbility", toString(mVisibility)));
+            browserEl->adoptAsLastChild(IMessageHelper::createElementWithText("visibility", toString(mVisibility)));
           }
 
           if (hasAttribute(AttributeType_BrowserPopup)) {

@@ -488,7 +488,9 @@ namespace openpeer
           ZS_LOG_WARNING(Detail, log("lockbox has no message pending for inner browser window frame"))
           return ElementPtr();
         }
-        return doc->getFirstChildElement();
+        ElementPtr root = doc->getFirstChildElement();
+        root->orphan();
+        return root;
       }
 
       //-----------------------------------------------------------------------

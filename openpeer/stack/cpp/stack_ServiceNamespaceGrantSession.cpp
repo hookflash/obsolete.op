@@ -898,6 +898,8 @@ namespace openpeer
         request->outerFrameURL(mOuterFrameURLUponReload);
         request->popup(false);
         request->browserVisibility(NamespaceGrantStartNotify::BrowserVisibility_VisibleOnDemand);
+        
+        sendInnerWindowMessage(request);
 
         mNamespaceGrantStartNotificationSent = true;
 

@@ -623,7 +623,7 @@ namespace openpeer
           if (!info.mAccessSecretProof.isEmpty()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
           }
-          if (Time() != info.mAccessSecretExpires) {
+          if (Time() != info.mAccessSecretProofExpires) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
           }
 
