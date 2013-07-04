@@ -1389,8 +1389,8 @@ namespace openpeer
         request->lockboxInfo(mLockboxInfo);
         request->namespaceGrantChallengeBundle(bundleEl);
 
-        mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxAccessResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "rolodex-namespace-grant-challenge-validate", request);
+        mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxNamespaceGrantChallengeValidateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-namespace-grant-challenge-validate", request);
 
         return true;
       }

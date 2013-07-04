@@ -114,7 +114,7 @@ namespace openpeer
 
             case Method_LockboxAccess:                              return "lockbox-access";
             case Method_LockboxAccessValidate:                      return "lockbox-access-validate";
-            case Method_LockboxNamespaceGrantChallengeValidate:     return "lockbox-namespace-challenge-grant-validate";
+            case Method_LockboxNamespaceGrantChallengeValidate:     return "lockbox-namespace-grant-challenge-validate";
             case Method_LockboxIdentitiesUpdate:                    return "lockbox-identities-update";
             case Method_LockboxContentGet:                          return "lockbox-content-get";
             case Method_LockboxContentSet:                          return "lockbox-content-set";

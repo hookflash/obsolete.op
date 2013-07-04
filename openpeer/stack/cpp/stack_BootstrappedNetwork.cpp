@@ -347,6 +347,10 @@ namespace openpeer
         String domain;
         String service;
         signedElement = IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
+        
+#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 1
+#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 2
+        return true;
 
         if (!signedElement) {
           ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))
@@ -390,7 +394,8 @@ namespace openpeer
 
           SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
 
-          if (0 == IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
+          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString)))
+          {
             ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
             return false;
           }

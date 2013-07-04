@@ -105,7 +105,7 @@ namespace openpeer
 
           SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
 
-          if (0 == IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
+          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
             ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
             return;
           }
