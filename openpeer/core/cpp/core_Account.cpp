@@ -489,6 +489,7 @@ namespace openpeer
           return ElementPtr();
         }
         ElementPtr root = doc->getFirstChildElement();
+        ZS_THROW_BAD_STATE_IF(!root)
         root->orphan();
         return root;
       }
