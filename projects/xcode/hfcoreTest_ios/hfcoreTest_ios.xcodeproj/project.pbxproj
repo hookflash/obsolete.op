@@ -1280,11 +1280,7 @@
 				GCC_PREFIX_HEADER = "hfcoreTest_ios/hfcoreTest_ios-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "hfcoreTest_ios/hfcoreTest_ios-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-frrwhhecfahwlxfdbcewmnrdavmc/Build/Products/Debug-iphoneos\"",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-frrwhhecfahwlxfdbcewmnrdavmc/Build/Products/Debug\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1297,11 +1293,7 @@
 				GCC_PREFIX_HEADER = "hfcoreTest_ios/hfcoreTest_ios-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "hfcoreTest_ios/hfcoreTest_ios-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-frrwhhecfahwlxfdbcewmnrdavmc/Build/Products/Debug-iphoneos\"",
-					"\"/Users/robin/Library/Developer/Xcode/DerivedData/hfcore-frrwhhecfahwlxfdbcewmnrdavmc/Build/Products/Debug\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
