@@ -1606,11 +1606,11 @@ namespace openpeer
 
           ElementPtr protocolsEl = elem->findFirstChildElement("protocols");
           if (protocolsEl) {
-            ElementPtr protocolEl = elem->findFirstChildElement("protocol");
+            ElementPtr protocolEl = protocolsEl->findFirstChildElement("protocol");
             while (protocolEl) {
               Finder::Protocol protocol;
-              protocol.mTransport = IMessageHelper::getElementText(elem->findFirstChildElement("transport"));
-              protocol.mSRV = IMessageHelper::getElementText(elem->findFirstChildElement("srv"));
+              protocol.mTransport = IMessageHelper::getElementText(protocolEl->findFirstChildElement("transport"));
+              protocol.mSRV = IMessageHelper::getElementText(protocolEl->findFirstChildElement("srv"));
 
               if ((protocol.mTransport.hasData()) ||
                   (protocol.mSRV.hasData())) {
