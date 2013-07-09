@@ -65,6 +65,10 @@
 //#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
 //#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
 #define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE "https://openpeer.org/permission/identity-signatures"
+
+#define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 1
+#define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 2
+
 #define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://hcs-javascript.hookflash.me/hfservice/static/permission/permission1"
 #define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://hcs-javascript.hookflash.me/hfservice/static/permission/permission2"
 
