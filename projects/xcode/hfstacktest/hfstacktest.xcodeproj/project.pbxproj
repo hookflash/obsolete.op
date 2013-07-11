@@ -111,6 +111,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0024391D178F468200B79368 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0063C7B016CAB81A00E6DB4D /* hfstackTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hfstackTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063C97716CAB85000E6DB4D /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
 		0063C97816CAB85000E6DB4D /* boost_replacement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = boost_replacement.h; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				0063CA7116CABA6100E6DB4D /* libcurl.dylib */,
+				0024391D178F468200B79368 /* Security.framework */,
 				0063CA6916CABA3400E6DB4D /* CoreFoundation.framework */,
 			);
 			name = Frameworks;

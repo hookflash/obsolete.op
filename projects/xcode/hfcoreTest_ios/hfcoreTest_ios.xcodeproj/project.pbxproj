@@ -14,6 +14,7 @@
 		0012C513177CACA00017FF5E /* libudns_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012C4FD177CAB800017FF5E /* libudns_ios.a */; };
 		0012C514177CACA80017FF5E /* libcryptopp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012C502177CAB8B0017FF5E /* libcryptopp_ios.a */; };
 		0012C516177CE1E80017FF5E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012C515177CE1E70017FF5E /* libz.dylib */; };
+		00243922178F473500B79368 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00243921178F473500B79368 /* Security.framework */; };
 		0063D5D616CB35D700E6DB4D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D5D516CB35D700E6DB4D /* UIKit.framework */; };
 		0063D5D816CB35D700E6DB4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D5D716CB35D700E6DB4D /* Foundation.framework */; };
 		0063D5DA16CB35D800E6DB4D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D5D916CB35D700E6DB4D /* CoreGraphics.framework */; };
@@ -309,6 +310,7 @@
 
 /* Begin PBXFileReference section */
 		0012C515177CE1E70017FF5E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		00243921178F473500B79368 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0063D5D216CB35D700E6DB4D /* hfcoreTest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hfcoreTest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063D5D516CB35D700E6DB4D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0063D5D716CB35D700E6DB4D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -457,8 +459,6 @@
 				00EC473B177D494500D68AF7 /* libwebrtc_vp8.a in Frameworks */,
 				00EC4739177D493500D68AF7 /* libyuv.a in Frameworks */,
 				00EC4737177D491A00D68AF7 /* libG711.a in Frameworks */,
-				E2FD1DC51753A06100C3D4A3 /* MobileCoreServices.framework in Frameworks */,
-				E2FD1DC41753A03B00C3D4A3 /* CoreImage.framework in Frameworks */,
 				0063D8C616CB3ACA00E6DB4D /* libhfcore_ios.a in Frameworks */,
 				0063D8C516CB3AC200E6DB4D /* libhfstack_ios.a in Frameworks */,
 				0063D8C416CB3ABD00E6DB4D /* libhfservices_ios.a in Frameworks */,
@@ -472,11 +472,14 @@
 				0063DA1116CB488D00E6DB4D /* AudioToolbox.framework in Frameworks */,
 				0063DA1716CB4A0F00E6DB4D /* AVFoundation.framework in Frameworks */,
 				0063DA0D16CB487400E6DB4D /* CoreAudio.framework in Frameworks */,
+				E2FD1DC41753A03B00C3D4A3 /* CoreImage.framework in Frameworks */,
 				0063DA0F16CB488200E6DB4D /* CoreFoundation.framework in Frameworks */,
 				0063D5DA16CB35D800E6DB4D /* CoreGraphics.framework in Frameworks */,
 				0063DA1916CB4A8200E6DB4D /* CoreMedia.framework in Frameworks */,
 				0063DA1316CB48A400E6DB4D /* CoreVideo.framework in Frameworks */,
 				0063D5D816CB35D700E6DB4D /* Foundation.framework in Frameworks */,
+				E2FD1DC51753A06100C3D4A3 /* MobileCoreServices.framework in Frameworks */,
+				00243922178F473500B79368 /* Security.framework in Frameworks */,
 				0063D5D616CB35D700E6DB4D /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -605,6 +608,7 @@
 			isa = PBXGroup;
 			children = (
 				0012C515177CE1E70017FF5E /* libz.dylib */,
+				00243921178F473500B79368 /* Security.framework */,
 				E2506E55170DA584005A43D2 /* AssetsLibrary.framework */,
 				E2506E53170DA55C005A43D2 /* CoreImage.framework */,
 				E2506E4C170DA49E005A43D2 /* MobileCoreServices.framework */,

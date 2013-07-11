@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0012C518177CE23D0017FF5E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0012C517177CE23D0017FF5E /* libz.dylib */; };
+		00243920178F46B900B79368 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0024391F178F46B900B79368 /* Security.framework */; };
 		0063CA8016CAC8AA00E6DB4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063CA7F16CAC8AA00E6DB4D /* Foundation.framework */; };
 		0063CD0516CADE4200E6DB4D /* boost_replacement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063CC4816CADE4200E6DB4D /* boost_replacement.cpp */; };
 		0063CD0716CADE4200E6DB4D /* TestStack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063CC4C16CADE4200E6DB4D /* TestStack.cpp */; };
@@ -117,6 +118,7 @@
 
 /* Begin PBXFileReference section */
 		0012C517177CE23D0017FF5E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		0024391F178F46B900B79368 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0063CA7C16CAC8AA00E6DB4D /* libhfstackTest_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfstackTest_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063CA7F16CAC8AA00E6DB4D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		0063CC4816CADE4200E6DB4D /* boost_replacement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = boost_replacement.cpp; sourceTree = "<group>"; };
@@ -162,6 +164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00243920178F46B900B79368 /* Security.framework in Frameworks */,
 				0012C518177CE23D0017FF5E /* libz.dylib in Frameworks */,
 				0069B07B177C9A2600A7A4EA /* libzsLib_ios.a in Frameworks */,
 				0069B07A177C9A1F00A7A4EA /* libudns_ios.a in Frameworks */,
@@ -203,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				0012C517177CE23D0017FF5E /* libz.dylib */,
+				0024391F178F46B900B79368 /* Security.framework */,
 				0063CA7F16CAC8AA00E6DB4D /* Foundation.framework */,
 			);
 			name = Frameworks;

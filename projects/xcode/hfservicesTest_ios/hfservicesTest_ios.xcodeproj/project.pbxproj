@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0024391C178F438C00B79368 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0024391B178F438C00B79368 /* Security.framework */; };
 		0063C4AD16CAA54300E6DB4D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C4AC16CAA54300E6DB4D /* UIKit.framework */; };
 		0063C4AF16CAA54300E6DB4D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C4AE16CAA54300E6DB4D /* Foundation.framework */; };
 		0063C4B116CAA54300E6DB4D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C4B016CAA54300E6DB4D /* CoreGraphics.framework */; };
@@ -98,6 +99,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0024391B178F438C00B79368 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		0063C4A916CAA54300E6DB4D /* hfservicesTest_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hfservicesTest_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0063C4AC16CAA54300E6DB4D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0063C4AE16CAA54300E6DB4D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -142,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0024391C178F438C00B79368 /* Security.framework in Frameworks */,
 				00AD901D177BFB78009590EB /* libz.dylib in Frameworks */,
 				00AD9019177BF981009590EB /* libudns_ios.a in Frameworks */,
 				00AD9014177BF871009590EB /* libcryptopp_ios.a in Frameworks */,
@@ -184,6 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				00AD901C177BFB78009590EB /* libz.dylib */,
+				0024391B178F438C00B79368 /* Security.framework */,
 				0063C4AC16CAA54300E6DB4D /* UIKit.framework */,
 				0063C4AE16CAA54300E6DB4D /* Foundation.framework */,
 				0063C4B016CAA54300E6DB4D /* CoreGraphics.framework */,
