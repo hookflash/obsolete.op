@@ -316,6 +316,7 @@ namespace openpeer
           ZS_LOG_ERROR(Detail, log("failed to create video engine"))
           return;
         }
+        
         mVideoBase = webrtc::ViEBase::GetInterface(mVideoEngine);
         if (mVideoBase == NULL) {
           ZS_LOG_ERROR(Detail, log("failed to get interface for video base"))
@@ -1724,7 +1725,7 @@ namespace openpeer
           memset(deviceName, 0, KMaxDeviceNameLength);
           char uniqueId[KMaxUniqueIdLength];
           memset(uniqueId, 0, KMaxUniqueIdLength);
-          WebRtc_UWord32 captureIdx;
+          uint32_t captureIdx;
           
           if (mCameraType == CameraType_Back)
           {

@@ -71,7 +71,7 @@
     openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
     openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
     
-    mediaEngine->stopRecordVideoCapture();
+//    mediaEngine->stopRecordVideoCapture();
     mediaEngine->stopVideoCapture();
 }
 

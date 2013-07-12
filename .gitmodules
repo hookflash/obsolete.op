@@ -13,3 +13,6 @@
 [submodule "libs/udns"]
 	path = libs/udns
 	url = git@github.com:openpeer/udns.git
+[submodule "libs/webrtc"]
+	path = libs/webrtc
+	url = https://github.com/openpeer/webrtc.git
