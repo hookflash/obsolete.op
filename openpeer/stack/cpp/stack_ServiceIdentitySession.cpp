@@ -1168,11 +1168,10 @@ namespace openpeer
         if (!stepIdentityLookup()) return;
         if (!stepLockboxReady()) return;
         if (!stepLockboxUpdate()) return;
-        if (!stepLookupUpdate()) return;
-        if (!stepSign()) return;
-        if (!stepAllRequestsCompleted()) return;
         if (!stepCloseBrowserWindow()) return;
         if (!stepClearWait()) return;
+        if (!stepLookupUpdate()) return;
+        if (!stepSign()) return;
 
         if (mKillAssociation) {
           ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
@@ -1505,8 +1504,8 @@ namespace openpeer
         }
 
         if (mIdentityAccessLockboxUpdateMonitor) {
-          ZS_LOG_DEBUG(log("lockbox update already in progress (but does not prevent other events from continuing"))
-          return true;
+          ZS_LOG_DEBUG(log("lockbox update already in progress"))
+          return false;
         }
 
         if (mKillAssociation) {
@@ -1521,7 +1520,7 @@ namespace openpeer
           mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
 
-          return true;
+          return false;
         }
 
         ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
@@ -1551,9 +1550,39 @@ namespace openpeer
         mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         sendInnerWindowMessage(request);
 
-        return true;
+        return false;
       }
 
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepCloseBrowserWindow()
+      {
+        if (mBrowserWindowClosed) {
+          ZS_LOG_DEBUG(log("browser window is closed"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("waiting for browser window to close"))
+
+        setState(SessionState_WaitingForBrowserWindowToClose);
+
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepClearWait()
+      {
+        if (!mGrantWait) {
+          ZS_LOG_DEBUG(log("wait already cleared"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("clearing grant wait"))
+
+        mGrantWait->cancel();
+        mGrantWait.reset();
+        return true;
+      }
+      
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepLookupUpdate()
       {
@@ -1564,7 +1593,7 @@ namespace openpeer
 
         if (mIdentityLookupUpdateMonitor) {
           ZS_LOG_DEBUG(log("lookup update already in progress (but does not prevent other events from completing)"))
-          return true;
+          return false;
         }
 
         if (mKillAssociation) {
@@ -1582,12 +1611,12 @@ namespace openpeer
           mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
-          return true;
+          return false;
         }
 
         if (mPreviousLookupInfo.mURI.isEmpty()) {
-          ZS_LOG_DEBUG(log("waiting for identity lookup to complete (but will not prevent other events from completing)"))
-          return true;
+          ZS_LOG_DEBUG(log("waiting for identity lookup to complete"))
+          return false;
         }
 
         ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
@@ -1621,7 +1650,7 @@ namespace openpeer
         mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
-        return true;
+        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -1639,7 +1668,7 @@ namespace openpeer
 
         if (mIdentitySignMonitor) {
           ZS_LOG_DEBUG(log("waiting for sign monitor to complete (but not preventing other requests from continuing)"))
-          return true;
+          return false;
         }
 
         setState(SessionState_Pending);
@@ -1663,7 +1692,8 @@ namespace openpeer
           mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
           mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-sign", request);
 
-          return true;
+          ZS_LOG_DEBUG(log("fetching identity signature from server"))
+          return false;
         }
 
         // scope: validate the identity bundle
@@ -1726,65 +1756,13 @@ namespace openpeer
 
           // try again shortly...
           IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-          return true;
+          return false;
 
         valid_certificate:
           mSignedIdentityBundleVerfiedEl = mSignedIdentityBundleUncheckedEl;
           ZS_LOG_DEBUG(log("identity signature is valid"))
         }
 
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepAllRequestsCompleted()
-      {
-        if (!mLockboxUpdated) {
-          ZS_LOG_DEBUG(log("waiting for lockbox update to complete"))
-          return false;
-        }
-        if (!mIdentityLookupUpdated) {
-          ZS_LOG_DEBUG(log("waiting for identity lookup update to complete"))
-          return false;
-        }
-
-        if (!mKillAssociation) {
-          if (!mSignedIdentityBundleVerfiedEl) {
-            ZS_LOG_DEBUG(log("waiting to validate a signed identity bundle"))
-            return false;
-          }
-        }
-
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepCloseBrowserWindow()
-      {
-        if (mBrowserWindowClosed) {
-          ZS_LOG_DEBUG(log("browser window is closed"))
-          return true;
-        }
-
-        ZS_LOG_DEBUG(log("waiting for browser window to close"))
-
-        setState(SessionState_WaitingForBrowserWindowToClose);
-
-        return false;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepClearWait()
-      {
-        if (!mGrantWait) {
-          ZS_LOG_DEBUG(log("wait already cleared"))
-          return true;
-        }
-
-        ZS_LOG_DEBUG(log("clearing grant wait"))
-
-        mGrantWait->cancel();
-        mGrantWait.reset();
         return true;
       }
 

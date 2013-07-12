@@ -393,11 +393,10 @@ namespace openpeer
         bool stepIdentityLookup();
         bool stepLockboxReady();
         bool stepLockboxUpdate();
-        bool stepLookupUpdate();
-        bool stepSign();
-        bool stepAllRequestsCompleted();
         bool stepCloseBrowserWindow();
         bool stepClearWait();
+        bool stepLookupUpdate();
+        bool stepSign();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
