@@ -575,8 +575,15 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IdentityInfo ServiceLockboxSession::getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const
+      IdentityInfo ServiceLockboxSession::getIdentityInfoForIdentity(
+                                                                     ServiceIdentitySessionPtr session,
+                                                                     IPeerFilesPtr *outPeerFiles
+                                                                     ) const
       {
+        if (outPeerFiles) {
+          *outPeerFiles = IPeerFilesPtr();
+        }
+
         AutoRecursiveLock lock(getLock());
 
         IdentityInfo info;
@@ -585,6 +592,10 @@ namespace openpeer
 
         if (mPeerFiles) {
           info.mPeerFilePublic = mPeerFiles->getPeerFilePublic();
+
+          if (outPeerFiles) {
+            *outPeerFiles = mPeerFiles;
+          }
         }
 
         WORD priority = 0;

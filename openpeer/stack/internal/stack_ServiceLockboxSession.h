@@ -121,7 +121,10 @@ namespace openpeer
         virtual IPeerFilesPtr getPeerFiles() const = 0;
 
         virtual LockboxInfo getLockboxInfo() const = 0;
-        virtual IdentityInfo getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const = 0;
+        virtual IdentityInfo getIdentityInfoForIdentity(
+                                                        ServiceIdentitySessionPtr session,
+                                                        IPeerFilesPtr *outPeerFiles = NULL
+                                                        ) const = 0;
         virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const = 0;
 
         virtual void notifyStateChanged() = 0;
@@ -291,7 +294,10 @@ namespace openpeer
         // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
 
         virtual LockboxInfo getLockboxInfo() const;
-        virtual IdentityInfo getIdentityInfoForIdentity(ServiceIdentitySessionPtr session) const;
+        virtual IdentityInfo getIdentityInfoForIdentity(
+                                                        ServiceIdentitySessionPtr session,
+                                                        IPeerFilesPtr *outPeerFiles = NULL
+                                                        ) const;
         virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const;
 
         virtual void notifyStateChanged();

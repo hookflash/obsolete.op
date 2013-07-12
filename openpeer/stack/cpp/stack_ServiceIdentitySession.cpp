@@ -1597,7 +1597,8 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IdentityInfo identityInfo = lockbox->forServiceIdentity().getIdentityInfoForIdentity(mThisWeak.lock());
+        IPeerFilesPtr peerFiles;
+        IdentityInfo identityInfo = lockbox->forServiceIdentity().getIdentityInfoForIdentity(mThisWeak.lock(), &peerFiles);
         mIdentityInfo.mergeFrom(identityInfo, true);
 
         if ((identityInfo.mStableID == mPreviousLookupInfo.mStableID) &&
@@ -1613,6 +1614,8 @@ namespace openpeer
 
         IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
         request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->peerFiles(peerFiles);
+        request->lockboxInfo(mLockboxInfo);
         request->identityInfo(mIdentityInfo);
 
         mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));

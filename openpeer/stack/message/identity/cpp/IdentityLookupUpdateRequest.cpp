@@ -89,7 +89,31 @@ namespace openpeer
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
 
+          IPeerFilePrivatePtr peerFilePrivate;
+          IPeerFilePublicPtr peerFilePublic;
+
+          if (mPeerFiles) {
+            peerFilePrivate = mPeerFiles->getPeerFilePrivate();
+            if (!peerFilePrivate) {
+              ZS_LOG_ERROR(Detail, "IdentityLookupUpdateRequest [] peer file private was null")
+              return DocumentPtr();
+            }
+            peerFilePublic = mPeerFiles->getPeerFilePublic();
+            if (!peerFilePublic) {
+              ZS_LOG_ERROR(Detail, "IdentityLookupUpdateRequest [] peer file public was null")
+              return DocumentPtr();
+            }
+          }
+
           String clientNonce = IHelper::randomString(32);
+
+          LockboxInfo lockboxInfo;
+
+          lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
+          if (mLockboxInfo.mAccessSecret.hasData()) {
+            lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":identity-lookup-update"));
+          }
 
           IdentityInfo identityInfo;
 
@@ -104,13 +128,29 @@ namespace openpeer
 
           identityInfo.mStableID = mIdentityInfo.mStableID;
           identityInfo.mPeerFilePublic = mIdentityInfo.mPeerFilePublic;
+          if (!identityInfo.mPeerFilePublic) {
+            identityInfo.mPeerFilePublic = peerFilePublic;
+          }
 
           identityInfo.mPriority = mIdentityInfo.mPriority;
           identityInfo.mWeight = mIdentityInfo.mWeight;
 
           root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+
+          if (lockboxInfo.hasData()) {
+            root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
+          }
+
           if (identityInfo.hasData()) {
-            root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
+            ElementPtr identityEl = MessageHelper::createElement(identityInfo);
+            if (peerFilePrivate) {
+              ElementPtr identityBundleEl = IMessageHelper::createElement("identityBundle");
+              identityBundleEl->adoptAsLastChild(identityEl);
+
+              peerFilePrivate->signElement(identityEl);
+            } else {
+              root->adoptAsLastChild(identityEl);
+            }
           }
 
           return ret;

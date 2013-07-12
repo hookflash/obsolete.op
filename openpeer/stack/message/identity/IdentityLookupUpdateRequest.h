@@ -66,6 +66,15 @@ namespace openpeer
 
           bool hasAttribute(AttributeTypes type) const;
 
+          // LockboxInfo
+          //
+          // mID
+          // mAccessToken
+          // mAccessSeecret
+          
+          const LockboxInfo &lockboxInfo() const      {return mLockboxInfo;}
+          void lockboxInfo(const LockboxInfo &val)    {mLockboxInfo = val;}
+
           // IdentityInfo members need to be set:
           //
           // mURI
@@ -84,10 +93,16 @@ namespace openpeer
           const IdentityInfo &identityInfo() const    {return mIdentityInfo;}
           void identityInfo(const IdentityInfo &val)  {mIdentityInfo = val;}
 
+          IPeerFilesPtr peerFiles() const             {return mPeerFiles;}
+          void peerFiles(IPeerFilesPtr peerFiles)     {mPeerFiles = peerFiles;}
+
         protected:
           IdentityLookupUpdateRequest();
 
+          LockboxInfo mLockboxInfo;
+
           IdentityInfo mIdentityInfo;
+          IPeerFilesPtr mPeerFiles;
         };
       }
     }
