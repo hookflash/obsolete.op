@@ -233,6 +233,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::init()
       {
+        calculateAndNotifyIdentityChanges();  // calculate the identities hash for the firs ttime
+
         IBootstrappedNetworkForServices::prepare(mBootstrappedNetwork->forServices().getDomain(), mThisWeak.lock());
       }
 
@@ -1286,13 +1288,8 @@ namespace openpeer
 
           if (mForceNewAccount) {
             ZS_LOG_DEBUG(log("forcing a new lockbox account to be created for the identity"))
-            mLockboxInfo.mResetFlag = true;
             mForceNewAccount = false;
-          }
-
-          if (lockboxInfo.mResetFlag) {
-            // when reseting the account, all of these values need to become wiped out
-            mLockboxInfo.mKeyLockboxHalf.reset();
+            mLockboxInfo.mKeyIdentityHalf.reset();
           }
 
           do {
@@ -1301,6 +1298,7 @@ namespace openpeer
               mLockboxInfo.mKeyLockboxHalf.reset();
               mLockboxInfo.mKeyIdentityHalf.reset();
               mLockboxInfo.mHash.clear();
+              mLockboxInfo.mResetFlag = true;
 
               SecureByteBlockPtr newKey = stack::IHelper::random(32);
 
@@ -1309,16 +1307,22 @@ namespace openpeer
               ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
             }
 
-            if ((mLockboxInfo.mKeyIdentityHalf) &&
-                (mLockboxInfo.mKeyLockboxHalf)) {
-              SecureByteBlockPtr combined = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
-              if (combined) {
-                ZS_LOG_DEBUG(log("creating lockbox key hash"))
-                mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
-              } else {
-                mLockboxInfo.mHash.clear();
-              }
+            if (!mLockboxInfo.mKeyLockboxHalf) {
+              ZS_LOG_DEBUG(log("will discovery lockbox half after accessing lockbox"))
+              break;
             }
+
+            ZS_THROW_BAD_STATE_IF(!mLockboxInfo.mKeyIdentityHalf)
+
+            SecureByteBlockPtr combined = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+            if (combined) {
+              ZS_LOG_DEBUG(log("creating lockbox key hash"))
+              mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
+            } else {
+              ZS_LOG_DEBUG(log("key combination failed"))
+              mLockboxInfo.mHash.clear();
+            }
+
           } while (mLockboxInfo.mHash.isEmpty());
         }
 
@@ -2031,32 +2035,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceLockboxSession::postStep()
       {
-        MD5 hasher;
-        SecureByteBlockPtr output(new SecureByteBlock(hasher.DigestSize()));
-
-        for (ServiceIdentitySessionMap::iterator iter = mAssociatedIdentities.begin(); iter != mAssociatedIdentities.end(); ++iter)
-        {
-          PUID id = (*iter).first;
-          hasher.Update((const BYTE *)(&id), sizeof(id));
-        }
-        hasher.Final(*output);
-
-        if (mLastNotificationHash) {
-          if (0 == IHelper::compare(*output, *mLastNotificationHash)) {
-            // no change
-            return;
-          }
-        }
-
-        mLastNotificationHash = output;
-
-        if (mDelegate) {
-          try {
-            mDelegate->onServiceLockboxSessionAssociatedIdentitiesChanged(mThisWeak.lock());
-          } catch(IServiceLockboxSessionDelegateProxy::Exceptions::DelegateGone &) {
-            ZS_LOG_WARNING(Detail, log("delegate gone"))
-          }
-        }
+        calculateAndNotifyIdentityChanges();
       }
 
       //-----------------------------------------------------------------------
@@ -2104,6 +2083,41 @@ namespace openpeer
         mLastError = errorCode;
         mLastErrorReason = reason;
         ZS_LOG_ERROR(Detail, log("error set") + getDebugValueString())
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceLockboxSession::calculateAndNotifyIdentityChanges()
+      {
+        MD5 hasher;
+        SecureByteBlockPtr output(new SecureByteBlock(hasher.DigestSize()));
+
+        for (ServiceIdentitySessionMap::iterator iter = mAssociatedIdentities.begin(); iter != mAssociatedIdentities.end(); ++iter)
+        {
+          PUID id = (*iter).first;
+          hasher.Update((const BYTE *)(&id), sizeof(id));
+        }
+        hasher.Final(*output);
+
+        if (!mLastNotificationHash) {
+          ZS_LOG_DEBUG(log("calculated identities for the first time"))
+          mLastNotificationHash = output;
+          return;
+        }
+
+        if (0 == IHelper::compare(*output, *mLastNotificationHash)) {
+          // no change
+          return;
+        }
+
+        mLastNotificationHash = output;
+
+        if (mDelegate) {
+          try {
+            mDelegate->onServiceLockboxSessionAssociatedIdentitiesChanged(mThisWeak.lock());
+          } catch(IServiceLockboxSessionDelegateProxy::Exceptions::DelegateGone &) {
+            ZS_LOG_WARNING(Detail, log("delegate gone"))
+          }
+        }
       }
 
       //-----------------------------------------------------------------------

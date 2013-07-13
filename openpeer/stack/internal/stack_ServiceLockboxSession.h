@@ -476,6 +476,7 @@ namespace openpeer
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
+        void calculateAndNotifyIdentityChanges();
         void sendInnerWindowMessage(MessagePtr message);
         String getContent(
                           const char *namespaceURL,

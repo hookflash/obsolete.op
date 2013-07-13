@@ -576,8 +576,8 @@ namespace openpeer
 
           ZS_LOG_DEBUG(log("received complete notification") + identityInfo.getDebugValueString() + lockboxInfo.getDebugValueString())
 
-          mIdentityInfo.mergeFrom(completeNotify->identityInfo(), true);
-          mLockboxInfo.mergeFrom(completeNotify->lockboxInfo(), true);
+          mIdentityInfo.mergeFrom(identityInfo, true);
+          mLockboxInfo.mergeFrom(lockboxInfo, true);
 
           if ((mIdentityInfo.mAccessToken.isEmpty()) ||
               (mIdentityInfo.mAccessSecret.isEmpty()) ||
@@ -1275,6 +1275,7 @@ namespace openpeer
           return false;
         }
 
+        ZS_LOG_DEBUG(log("obtained grant wait"))
         return true;
       }
 
@@ -1545,7 +1546,7 @@ namespace openpeer
         request->identityInfo(mIdentityInfo);
         request->lockboxInfo(lockboxInfo);
 
-        ZS_LOG_DEBUG(log("updating lockbox information (but not preventing other requests from continuing)"))
+        ZS_LOG_DEBUG(log("updating lockbox information"))
 
         mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
         sendInnerWindowMessage(request);

@@ -611,16 +611,22 @@ namespace openpeer
         {
           ElementPtr lockboxEl = Element::create("lockbox");
 
-          if (!info.mAccessToken.isEmpty()) {
+          if (info.mDomain.hasData()) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("domain", info.mDomain));
+          }
+          if (info.mAccountID.hasData()) {
+            lockboxEl->setAttribute("id", info.mAccountID);
+          }
+          if (info.mAccessToken.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessToken", info.mAccessToken));
           }
-          if (!info.mAccessSecret.isEmpty()) {
+          if (info.mAccessSecret.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", info.mAccessSecret));
           }
           if (Time() != info.mAccessSecretExpires) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(info.mAccessSecretExpires)));
           }
-          if (!info.mAccessSecretProof.isEmpty()) {
+          if (info.mAccessSecretProof.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
           }
           if (Time() != info.mAccessSecretProofExpires) {
@@ -633,7 +639,7 @@ namespace openpeer
           if (info.mKeyLockboxHalf) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", (const char *)(info.mKeyLockboxHalf->BytePtr())));
           }
-          if (!info.mHash.isEmpty()) {
+          if (info.mHash.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("hash", info.mHash));
           }
 
@@ -1752,6 +1758,8 @@ namespace openpeer
 
           if (!elem) return info;
 
+          info.mDomain = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("domain"));
+          info.mAccountID = MessageHelper::getAttributeID(elem);
           info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
           info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
           info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
