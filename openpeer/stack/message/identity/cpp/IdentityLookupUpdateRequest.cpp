@@ -40,6 +40,7 @@
 #include <zsLib/helpers.h>
 
 #define OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS ((60*60)*24)
+#define OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_CONTACT_PROOF_EXPIRES_IN_HOURS ((24)*365*2)
 
 namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
@@ -52,6 +53,7 @@ namespace openpeer
       namespace identity
       {
         using zsLib::Seconds;
+        using zsLib::Hours;
         using internal::MessageHelper;
 
         //---------------------------------------------------------------------
@@ -135,6 +137,30 @@ namespace openpeer
           identityInfo.mPriority = mIdentityInfo.mPriority;
           identityInfo.mWeight = mIdentityInfo.mWeight;
 
+          // all needed to create contact proof bundle
+          if ((identityInfo.mURI.hasData()) &&
+              (identityInfo.mStableID.hasData()) &&
+              (identityInfo.mPeerFilePublic) &&
+              (peerFilePrivate)) {
+
+            ElementPtr contactProofEl = Element::create("contactProof");
+
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("stableID", identityInfo.mStableID));
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("contact", identityInfo.mPeerFilePublic->getPeerURI()));
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("uri", identityInfo.mURI));
+            Time created = zsLib::now();
+            Time expires = created + Hours(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_CONTACT_PROOF_EXPIRES_IN_HOURS);
+
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("created", IMessageHelper::timeToString(created)));
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("expires", IMessageHelper::timeToString(expires)));
+
+            identityInfo.mContactProofBundle = Element::create("contactProofBundle");
+            identityInfo.mContactProofBundle->adoptAsLastChild(contactProofEl);
+
+            peerFilePrivate->signElement(contactProofEl);
+          }
+
+
           root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
 
           if (lockboxInfo.hasData()) {
@@ -143,14 +169,7 @@ namespace openpeer
 
           if (identityInfo.hasData()) {
             ElementPtr identityEl = MessageHelper::createElement(identityInfo);
-            if (peerFilePrivate) {
-              ElementPtr identityBundleEl = IMessageHelper::createElement("identityBundle");
-              identityBundleEl->adoptAsLastChild(identityEl);
-
-              peerFilePrivate->signElement(identityEl);
-            } else {
-              root->adoptAsLastChild(identityEl);
-            }
+            root->adoptAsLastChild(identityEl);
           }
 
           return ret;

@@ -68,8 +68,6 @@
 		0063BB9716CA92D000E6DB4D /* stack_message_MessageRequestUnknown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8016CA92CF00E6DB4D /* stack_message_MessageRequestUnknown.cpp */; };
 		0063BB9816CA92D000E6DB4D /* stack_message_MessageResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8116CA92CF00E6DB4D /* stack_message_MessageResult.cpp */; };
 		0063BB9916CA92D000E6DB4D /* stack_message_messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8216CA92CF00E6DB4D /* stack_message_messages.cpp */; };
-		0063BBA216CA92D000E6DB4D /* IdentitySignRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8D16CA92CF00E6DB4D /* IdentitySignRequest.cpp */; };
-		0063BBA316CA92D000E6DB4D /* IdentitySignResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8E16CA92CF00E6DB4D /* IdentitySignResult.cpp */; };
 		0063BBA416CA92D000E6DB4D /* MessageFactoryIdentity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA8F16CA92CF00E6DB4D /* MessageFactoryIdentity.cpp */; };
 		0063BBA516CA92D000E6DB4D /* IdentityLookupRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA9D16CA92CF00E6DB4D /* IdentityLookupRequest.cpp */; };
 		0063BBA616CA92D000E6DB4D /* IdentityLookupResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA9E16CA92CF00E6DB4D /* IdentityLookupResult.cpp */; };
@@ -282,11 +280,7 @@
 		0063BA8016CA92CF00E6DB4D /* stack_message_MessageRequestUnknown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageRequestUnknown.cpp; sourceTree = "<group>"; };
 		0063BA8116CA92CF00E6DB4D /* stack_message_MessageResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_MessageResult.cpp; sourceTree = "<group>"; };
 		0063BA8216CA92CF00E6DB4D /* stack_message_messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_message_messages.cpp; sourceTree = "<group>"; };
-		0063BA8D16CA92CF00E6DB4D /* IdentitySignRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentitySignRequest.cpp; sourceTree = "<group>"; };
-		0063BA8E16CA92CF00E6DB4D /* IdentitySignResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentitySignResult.cpp; sourceTree = "<group>"; };
 		0063BA8F16CA92CF00E6DB4D /* MessageFactoryIdentity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryIdentity.cpp; sourceTree = "<group>"; };
-		0063BA9816CA92CF00E6DB4D /* IdentitySignRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentitySignRequest.h; sourceTree = "<group>"; };
-		0063BA9916CA92CF00E6DB4D /* IdentitySignResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdentitySignResult.h; sourceTree = "<group>"; };
 		0063BA9A16CA92CF00E6DB4D /* MessageFactoryIdentity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageFactoryIdentity.h; sourceTree = "<group>"; };
 		0063BA9D16CA92CF00E6DB4D /* IdentityLookupRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityLookupRequest.cpp; sourceTree = "<group>"; };
 		0063BA9E16CA92CF00E6DB4D /* IdentityLookupResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityLookupResult.cpp; sourceTree = "<group>"; };
@@ -756,8 +750,6 @@
 				006FB4E0175EA3F0000C53A8 /* IdentityAccessRolodexCredentialsGetResult.h */,
 				00AF4DF9171E3E3400DCA0A8 /* IdentityLookupUpdateRequest.h */,
 				00AF4DFA171E3E3400DCA0A8 /* IdentityLookupUpdateResult.h */,
-				0063BA9816CA92CF00E6DB4D /* IdentitySignRequest.h */,
-				0063BA9916CA92CF00E6DB4D /* IdentitySignResult.h */,
 			);
 			path = identity;
 			sourceTree = "<group>";
@@ -776,8 +768,6 @@
 				00AF4DFD171E3E4A00DCA0A8 /* IdentityAccessLockboxUpdateResult.cpp */,
 				00AF4E00171E3E4A00DCA0A8 /* IdentityLookupUpdateRequest.cpp */,
 				00AF4E01171E3E4A00DCA0A8 /* IdentityLookupUpdateResult.cpp */,
-				0063BA8D16CA92CF00E6DB4D /* IdentitySignRequest.cpp */,
-				0063BA8E16CA92CF00E6DB4D /* IdentitySignResult.cpp */,
 			);
 			path = cpp;
 			sourceTree = "<group>";
@@ -1095,8 +1085,6 @@
 				0063BB9716CA92D000E6DB4D /* stack_message_MessageRequestUnknown.cpp in Sources */,
 				0063BB9816CA92D000E6DB4D /* stack_message_MessageResult.cpp in Sources */,
 				0063BB9916CA92D000E6DB4D /* stack_message_messages.cpp in Sources */,
-				0063BBA216CA92D000E6DB4D /* IdentitySignRequest.cpp in Sources */,
-				0063BBA316CA92D000E6DB4D /* IdentitySignResult.cpp in Sources */,
 				0063BBA416CA92D000E6DB4D /* MessageFactoryIdentity.cpp in Sources */,
 				0063BBA516CA92D000E6DB4D /* IdentityLookupRequest.cpp in Sources */,
 				0063BBA616CA92D000E6DB4D /* IdentityLookupResult.cpp in Sources */,

@@ -571,7 +571,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::notifyWaitGone(PUID waitID)
       {
-        ZS_LOG_WARNING(Debug, log("removing wait") + ", wait ID=" + Stringize<typeof(waitID)>(waitID).string())
+        ZS_LOG_DEBUG(log("removing wait") + ", wait ID=" + Stringize<typeof(waitID)>(waitID).string())
 
         AutoRecursiveLock lock(getLock());
 

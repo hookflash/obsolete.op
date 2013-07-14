@@ -35,7 +35,6 @@
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
-#include <openpeer/stack/message/identity/IdentitySignResult.h>
 #include <openpeer/stack/message/Message.h>
 #include <openpeer/stack/message/IMessageFactoryManager.h>
 
@@ -119,7 +118,6 @@ namespace openpeer
             case Method_IdentityAccessLockboxUpdate:                return "identity-access-lockbox-update";
             case Method_IdentityAccessRolodexCredentialsGetUpdate:  return "identity-access-rolodex-credentials-get";
             case Method_IdentityLookupUpdate:                       return "identity-lookup-update";
-            case Method_IdentitySign:                               return "identity-sign";
           }
           return "";
         }
@@ -149,7 +147,6 @@ namespace openpeer
                 case Method_IdentityAccessLockboxUpdate:                return MessagePtr();
                 case Method_IdentityAccessRolodexCredentialsGetUpdate:  return MessagePtr();
                 case Method_IdentityLookupUpdate:                       return MessagePtr();
-                case Method_IdentitySign:                               return MessagePtr();
               }
               break;
             }
@@ -164,7 +161,6 @@ namespace openpeer
                 case Method_IdentityAccessLockboxUpdate:                return IdentityAccessLockboxUpdateResult::create(root, messageSource);
                 case Method_IdentityAccessRolodexCredentialsGetUpdate:  return IdentityAccessRolodexCredentialsGetResult::create(root, messageSource);
                 case Method_IdentityLookupUpdate:                       return IdentityLookupUpdateResult::create(root, messageSource);
-                case Method_IdentitySign:                               return IdentitySignResult::create(root, messageSource);
               }
               break;
             }
@@ -179,7 +175,6 @@ namespace openpeer
                 case Method_IdentityAccessLockboxUpdate:                return MessagePtr();
                 case Method_IdentityAccessRolodexCredentialsGetUpdate:  return MessagePtr();
                 case Method_IdentityLookupUpdate:                       return MessagePtr();
-                case Method_IdentitySign:                               return MessagePtr();
               }
               break;
             }

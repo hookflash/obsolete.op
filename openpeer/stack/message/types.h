@@ -220,6 +220,9 @@ namespace openpeer
 
         AvatarList mAvatars;
 
+        ElementPtr mContactProofBundle;
+        ElementPtr mIdentityProofBundle;
+
         IdentityInfo() : mDisposition(Disposition_NA), mPriority(0), mWeight(0) {}
         bool hasData() const;
         String getDebugValueString(bool includeCommaPrefix = true) const;
@@ -511,14 +514,6 @@ namespace openpeer
         class IdentityLookupUpdateResult;
         typedef boost::shared_ptr<IdentityLookupUpdateResult> IdentityLookupUpdateResultPtr;
         typedef boost::weak_ptr<IdentityLookupUpdateResult> IdentityLookupUpdateResultWeakPtr;
-
-        class IdentitySignRequest;
-        typedef boost::shared_ptr<IdentitySignRequest> IdentitySignRequestPtr;
-        typedef boost::weak_ptr<IdentitySignRequest> IdentitySignRequestWeakPtr;
-
-        class IdentitySignResult;
-        typedef boost::shared_ptr<IdentitySignResult> IdentitySignResultPtr;
-        typedef boost::weak_ptr<IdentitySignResult> IdentitySignResultWeakPtr;
       }
 
       namespace identity_lockbox

@@ -66,12 +66,40 @@ namespace openpeer
 
 
       static IServiceIdentityPtr createServiceIdentityFrom(IBootstrappedNetworkPtr bootstrappedNetwork);
+      static IServiceIdentityPtr createServiceIdentityFromIdentityProofBundle(ElementPtr identityProofBundleEl);
 
       virtual PUID getID() const = 0;
 
       virtual IBootstrappedNetworkPtr getBootstrappedNetwork() const = 0;
 
       virtual String getDomain() const = 0;
+
+      // PURPOSE: check if an identity proof provided is valid
+      // NOTE:    - will use "createServiceIdentityFromIdentityProofBundle" to create an IServiceIdentity
+      //          - bootstrapped network returned from "getBootstrappedNetwork()" must return true for its methods
+      //            "isPreparationComplete()" and "wasSuccessful()" or this method will return "false".
+      static bool isValidIdentityProofBundle(
+                                             ElementPtr identityProofBundleEl,
+                                             IPeerFilePublicPtr peerFilePublic, // recommended optional check of associated peer file, can pass in IPeerFilePublicPtr() if not known yet
+                                             String *outPeerURI = NULL,
+                                             String *outIdentityURI = NULL,
+                                             String *outStableID = NULL,
+                                             Time *outCreated = NULL,
+                                             Time *outExpires = NULL
+                                             );
+
+      // PURPOSE: query if an identity proof is valid asynchronously
+      // NOTE:    bootstrapped network returned from "getBootstrappedNetwork" does not necessarily have to be prepared yet
+      static IServiceIdentityProofBundleQueryPtr isValidIdentityProofBundle(
+                                                                            ElementPtr identityProofBundleEl,
+                                                                            IServiceIdentityProofBundleQueryDelegatePtr delegate,
+                                                                            IPeerFilePublicPtr peerFilePublic, // optional recommended check of associated peer file, can pass in IPeerFilePublicPtr() if not known yet
+                                                                            String *outPeerURI = NULL,
+                                                                            String *outIdentityURI = NULL,
+                                                                            String *outStableID = NULL,
+                                                                            Time *outCreated = NULL,
+                                                                            Time *outExpires = NULL
+                                                                            );
     };
 
     //-------------------------------------------------------------------------
@@ -120,16 +148,6 @@ namespace openpeer
                                                                   const char *legacyIdentityBaseURI = NULL
                                                                   );
 
-      // use when a signed identity bundle is available
-      static IServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                IServiceIdentitySessionDelegatePtr delegate,
-                                                                IServiceIdentityPtr provider,
-                                                                IServiceNamespaceGrantSessionPtr grantSession,
-                                                                IServiceLockboxSessionPtr existingLockbox,      // pass NULL IServiceLockboxSessionPtr() if none exists
-                                                                const char *outerFrameURLUponReload,
-                                                                ElementPtr signedIdentityBundle
-                                                                );
-
       virtual PUID getID() const = 0;
 
       virtual IServiceIdentityPtr getService() const = 0;
@@ -147,7 +165,6 @@ namespace openpeer
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
-      virtual ElementPtr getSignedIdentityBundle() const = 0;   // must clone if you intend to adopt
 
       virtual String getInnerBrowserWindowFrameURL() const = 0;
 
@@ -179,6 +196,37 @@ namespace openpeer
 
       virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IServiceIdentityProofBundleQuery
+    #pragma mark
+
+    interaction IServiceIdentityProofBundleQuery
+    {
+      virtual bool isComplete() const = 0;
+      virtual bool wasSuccessful(
+                                 WORD *outErrorCode = NULL,
+                                 String *outErrorReason = NULL
+                                 ) const = 0;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IServiceIdentityProofBundleQueryDelegate
+    #pragma mark
+
+    interaction IServiceIdentityProofBundleQueryDelegate
+    {
+      virtual void onServiceIdentityProofBundleQueryCompleted(IServiceIdentityProofBundleQueryPtr query) = 0;
+    };
+    
   }
 }
 
@@ -187,4 +235,9 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceIdentitySessionPtr, IServiceId
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceIdentitySessionDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onServiceIdentitySessionStateChanged, IServiceIdentitySessionPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame, IServiceIdentitySessionPtr)
+ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IServiceIdentityProofBundleQueryDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceIdentityProofBundleQueryPtr, IServiceIdentityProofBundleQueryPtr)
+ZS_DECLARE_PROXY_METHOD_1(onServiceIdentityProofBundleQueryCompleted, IServiceIdentityProofBundleQueryPtr)
 ZS_DECLARE_PROXY_END()

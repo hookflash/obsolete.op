@@ -63,9 +63,8 @@ namespace openpeer
             Method_IdentityAccessLockboxUpdate,
             Method_IdentityAccessRolodexCredentialsGetUpdate,
             Method_IdentityLookupUpdate,
-            Method_IdentitySign,
 
-            Method_Last = Method_IdentitySign,
+            Method_Last = Method_IdentityLookupUpdate,
           };
 
         protected:

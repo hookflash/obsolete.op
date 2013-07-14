@@ -262,13 +262,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ElementPtr Identity::getSignedIdentityBundle() const
-      {
-        ElementPtr bundleEl = mSession->getSignedIdentityBundle();
-        return bundleEl->clone()->toElement();
-      }
-
-      //-----------------------------------------------------------------------
       String Identity::getInnerBrowserWindowFrameURL() const
       {
         return mSession->getInnerBrowserWindowFrameURL();

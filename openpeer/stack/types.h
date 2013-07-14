@@ -297,6 +297,15 @@ namespace openpeer
     typedef boost::weak_ptr<IServiceIdentitySessionDelegate> IServiceIdentitySessionDelegateWeakPtr;
     typedef zsLib::Proxy<IServiceIdentitySessionDelegate> IServiceIdentitySessionDelegateProxy;
 
+    interaction IServiceIdentityProofBundleQuery;
+    typedef boost::shared_ptr<IServiceIdentityProofBundleQuery> IServiceIdentityProofBundleQueryPtr;
+    typedef boost::weak_ptr<IServiceIdentityProofBundleQuery> IServiceIdentityProofBundleQueryWeakPtr;
+
+    interaction IServiceIdentityProofBundleQueryDelegate;
+    typedef boost::shared_ptr<IServiceIdentityProofBundleQueryDelegate> IServiceIdentityProofBundleQueryDelegatePtr;
+    typedef boost::weak_ptr<IServiceIdentityProofBundleQueryDelegate> IServiceIdentityProofBundleQueryDelegateWeakPtr;
+    typedef zsLib::Proxy<IServiceIdentityProofBundleQueryDelegate> IServiceIdentityProofBundleQueryDelegateProxy;
+
     typedef std::list<IServiceIdentitySessionPtr> ServiceIdentitySessionList;
     typedef boost::shared_ptr<ServiceIdentitySessionList> ServiceIdentitySessionListPtr;
     typedef boost::weak_ptr<ServiceIdentitySessionList> ServiceIdentitySessionListWeakPtr;

@@ -86,7 +86,6 @@ namespace openpeer
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
-      virtual ElementPtr getSignedIdentityBundle() const = 0;
 
       virtual String getInnerBrowserWindowFrameURL() const = 0;
 

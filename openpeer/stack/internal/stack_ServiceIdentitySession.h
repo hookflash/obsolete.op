@@ -38,7 +38,6 @@
 #include <openpeer/stack/IServiceIdentity.h>
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
-#include <openpeer/stack/message/identity/IdentitySignResult.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
 
 #include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
@@ -57,8 +56,6 @@ namespace openpeer
       using message::identity::IdentityAccessLockboxUpdateResultPtr;
       using message::identity::IdentityLookupUpdateResult;
       using message::identity::IdentityLookupUpdateResultPtr;
-      using message::identity::IdentitySignResult;
-      using message::identity::IdentitySignResultPtr;
       using message::identity_lookup::IdentityLookupResult;
       using message::identity_lookup::IdentityLookupResultPtr;
 
@@ -91,8 +88,6 @@ namespace openpeer
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const = 0;
-
-        virtual ElementPtr getSignedIdentityBundle() const = 0;
 
         virtual void associate(ServiceLockboxSessionPtr lockbox) = 0;
         virtual void killAssociation(ServiceLockboxSessionPtr lockbox) = 0;
@@ -138,7 +133,6 @@ namespace openpeer
                                      public IServiceNamespaceGrantSessionForServicesQueryDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
-                                     public IMessageMonitorResultDelegate<IdentitySignResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupResult>
       {
       public:
@@ -196,15 +190,6 @@ namespace openpeer
                                                                    const char *legacyIdentityBaseURI = NULL
                                                                    );
 
-        static ServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                 IServiceIdentitySessionDelegatePtr delegate,
-                                                                 IServiceIdentityPtr provider,
-                                                                 IServiceNamespaceGrantSessionPtr grantSession,
-                                                                 IServiceLockboxSessionPtr existingLockbox,
-                                                                 const char *outerFrameURLUponReload,
-                                                                 ElementPtr signedIdentityBundleEl
-                                                                 );
-
         virtual PUID getID() const {return mID;}
 
         virtual IServiceIdentityPtr getService() const;
@@ -222,7 +207,6 @@ namespace openpeer
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
-        virtual ElementPtr getSignedIdentityBundle() const;
 
         virtual String getInnerBrowserWindowFrameURL() const;
 
@@ -260,8 +244,6 @@ namespace openpeer
         //                                WORD *outLastErrorCode,
         //                                String *outLastErrorReason
         //                                ) const;
-
-        // virtual ElementPtr getSignedIdentityBundle() const;
 
         virtual void associate(ServiceLockboxSessionPtr lockbox);
         virtual void killAssociation(ServiceLockboxSessionPtr lockbox);
@@ -339,22 +321,6 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentitySignResult>
-        #pragma mark
-
-        virtual bool handleMessageMonitorResultReceived(
-                                                        IMessageMonitorPtr monitor,
-                                                        IdentitySignResultPtr result
-                                                        );
-
-        virtual bool handleMessageMonitorErrorResultReceived(
-                                                             IMessageMonitorPtr monitor,
-                                                             IdentitySignResultPtr ignore, // will always be NULL
-                                                             message::MessageResultPtr result
-                                                             );
-
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupResult>
         #pragma mark
 
@@ -396,7 +362,6 @@ namespace openpeer
         bool stepCloseBrowserWindow();
         bool stepClearWait();
         bool stepLookupUpdate();
-        bool stepSign();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
@@ -436,7 +401,6 @@ namespace openpeer
 
         IMessageMonitorPtr mIdentityAccessLockboxUpdateMonitor;
         IMessageMonitorPtr mIdentityLookupUpdateMonitor;
-        IMessageMonitorPtr mIdentitySignMonitor;
         IMessageMonitorPtr mIdentityLookupMonitor;
 
         LockboxInfo mLockboxInfo;
@@ -453,10 +417,6 @@ namespace openpeer
         IdentityInfo mPreviousLookupInfo;
 
         String mOuterFrameURLUponReload;
-
-        ElementPtr mSignedIdentityBundleVerfiedEl;
-        ElementPtr mSignedIdentityBundleUncheckedEl;
-        ElementPtr mSignedIdentityBundleOldEl;
 
         DocumentList mPendingMessagesToDeliver;
       };
@@ -490,15 +450,6 @@ namespace openpeer
                                                                     const char *outerFrameURLUponReload,
                                                                     const char *legacyIdentityBaseURI = NULL
                                                                     );
-
-        virtual ServiceIdentitySessionPtr loginWithIdentityBundle(
-                                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                                  IServiceIdentityPtr provider,
-                                                                  IServiceNamespaceGrantSessionPtr grantSession,
-                                                                  IServiceLockboxSessionPtr existingLockbox,
-                                                                  const char *outerFrameURLUponReload,
-                                                                  ElementPtr signedIdentityBundle
-                                                                  );
 
         static ServiceIdentitySessionPtr reload(
                                                 BootstrappedNetworkPtr provider,

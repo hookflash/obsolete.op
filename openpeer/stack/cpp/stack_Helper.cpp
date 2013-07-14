@@ -374,6 +374,41 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hash(
+                                      const SecureByteBlock &buffer,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        SecureByteBlockPtr output;
+
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            MD5 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA1:     {
+            SHA1 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA256:   {
+            SHA256 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+        }
+
+        return output;
+      }
+      
+      //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hmac(
                                       const SecureByteBlock &key,
                                       const String &value,
@@ -955,6 +990,15 @@ namespace openpeer
                                      )
     {
       return internal::Helper::hash(buffer.c_str(), algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hash(
+                                     const SecureByteBlock &buffer,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hash(buffer, algorithm);
     }
 
     //-------------------------------------------------------------------------

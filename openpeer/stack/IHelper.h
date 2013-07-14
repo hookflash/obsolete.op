@@ -161,6 +161,10 @@ namespace openpeer
                                      const std::string &value,
                                      HashAlgorthms algorithm = HashAlgorthm_SHA1
                                      );
+      static SecureByteBlockPtr hash(
+                                     const SecureByteBlock &value,
+                                     HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                     );
 
       static SecureByteBlockPtr hmac(
                                      const SecureByteBlock &key,

@@ -257,7 +257,10 @@ namespace openpeer
                 (mProfile.hasData()) ||
                 (mVProfile.hasData()) ||
 
-                (mAvatars.size() > 0));
+                (mAvatars.size() > 0) ||
+
+                (mContactProofBundle) ||
+                (mIdentityProofBundle));
       }
 
       //-----------------------------------------------------------------------
@@ -284,7 +287,9 @@ namespace openpeer
                Helper::getDebugValue("name", mName, firstTime) +
                Helper::getDebugValue("profile", mProfile, firstTime) +
                Helper::getDebugValue("vprofile", mVProfile, firstTime) +
-               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? Stringize<AvatarList::size_type>(mAvatars.size()).string() : String(), firstTime);
+               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? Stringize<AvatarList::size_type>(mAvatars.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("identity contact proof", mContactProofBundle ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("identity proof", mIdentityProofBundle ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -368,6 +373,16 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      static void merge(ElementPtr &result, const ElementPtr &source, bool overwrite)
+      {
+        if (!source) return;
+        if (result) {
+          if (!overwrite) return;
+        }
+        result = source;
+      }
+
+      //-----------------------------------------------------------------------
       void IdentityInfo::mergeFrom(
                                    const IdentityInfo &source,
                                    bool overwriteExisting
@@ -401,6 +416,9 @@ namespace openpeer
         merge(mProfile, source.mProfile, overwriteExisting);
         merge(mVProfile, source.mVProfile, overwriteExisting);
         merge(mAvatars, source.mAvatars, overwriteExisting);
+
+        merge(mContactProofBundle, source.mContactProofBundle, overwriteExisting);
+        merge(mIdentityProofBundle, source.mIdentityProofBundle, overwriteExisting);
       }
 
       //-----------------------------------------------------------------------

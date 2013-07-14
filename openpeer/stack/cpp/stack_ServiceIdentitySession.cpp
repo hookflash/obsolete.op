@@ -37,7 +37,6 @@
 #include <openpeer/stack/message/identity/IdentityAccessCompleteNotify.h>
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateRequest.h>
-#include <openpeer/stack/message/identity/IdentitySignRequest.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_Helper.h>
@@ -57,12 +56,11 @@
 
 #include <zsLib/RegEx.h>
 
-#define OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
-
 #define OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define OPENPEER_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
 
 #define OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
+#define OPENPEER_STACK_SERVIC_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH (80)
 
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://openpeer.org/permission/rolodex-contacts"
 
@@ -73,11 +71,13 @@ namespace openpeer
 {
   namespace stack
   {
+    using zsLib::Stringize;
+    using zsLib::Hours;
+    using stack::message::IMessageHelper;
+
     namespace internal
     {
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
-
-      using zsLib::Stringize;
 
       using message::identity::IdentityAccessWindowRequest;
       using message::identity::IdentityAccessWindowRequestPtr;
@@ -91,8 +91,6 @@ namespace openpeer
       using message::identity::IdentityAccessLockboxUpdateRequestPtr;
       using message::identity::IdentityLookupUpdateRequest;
       using message::identity::IdentityLookupUpdateRequestPtr;
-      using message::identity::IdentitySignRequest;
-      using message::identity::IdentitySignRequestPtr;
       using message::identity_lookup::IdentityLookupRequest;
       using message::identity_lookup::IdentityLookupRequestPtr;
 
@@ -146,6 +144,101 @@ namespace openpeer
         if (!peerFilePublic2) return false;
 
         return peerFilePublic1->getPeerURI() == peerFilePublic2->getPeerURI();
+      }
+
+      //-------------------------------------------------------------------------
+      static bool extractAndVerifyProof(
+                                        ElementPtr identityProofBundleEl,
+                                        IPeerFilePublicPtr peerFilePublic,
+                                        String *outPeerURI,
+                                        String *outIdentityURI,
+                                        String *outStableID,
+                                        Time *outCreated,
+                                        Time *outExpires
+                                        )
+      {
+        if (outPeerURI) {
+          *outPeerURI = String();
+        }
+        if (outIdentityURI) {
+          *outIdentityURI = String();
+        }
+        if (outStableID) {
+          *outStableID = String();
+        }
+        if (outCreated) {
+          *outCreated = Time();
+        }
+        if (outExpires) {
+          *outExpires = Time();
+        }
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
+
+        try {
+          ElementPtr identityProofEl = identityProofBundleEl->findFirstChildElementChecked("identityProof");
+          ElementPtr contactProofBundleEl = identityProofEl->findFirstChildElementChecked("contactProofBundle");
+          ElementPtr contactProofEl = contactProofBundleEl->findFirstChildElementChecked("contactProof");
+
+          ElementPtr stableIDEl = contactProofEl->findFirstChildElement("stableID");      // optional
+
+          ElementPtr contactEl = contactProofEl->findFirstChildElementChecked("contact");
+          ElementPtr uriEl = contactProofEl->findFirstChildElementChecked("uri");
+          ElementPtr createdEl = contactProofEl->findFirstChildElementChecked("created");
+          ElementPtr expiresEl = contactProofEl->findFirstChildElementChecked("expires");
+
+          Time created = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(createdEl));
+          Time expires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(expiresEl));
+
+          if ((outStableID) &&
+              (stableIDEl)) {
+            *outStableID = IMessageHelper::getElementTextAndDecode(stableIDEl);
+          }
+          if (outCreated) {
+            *outCreated = created;
+          }
+          if (outExpires) {
+            *outExpires = expires;
+          }
+
+          if (outIdentityURI) {
+            *outIdentityURI = IMessageHelper::getElementTextAndDecode(uriEl);
+          }
+
+          String peerURI = IMessageHelper::getElementTextAndDecode(contactEl);
+
+          if (outPeerURI) {
+            *outPeerURI = peerURI;
+          }
+
+          if (peerFilePublic) {
+            if (peerURI != peerFilePublic->getPeerURI()) {
+              ZS_LOG_WARNING(Detail, String("IServiceIdentity [] peer URI check failed") + ", bundle URI=" + peerURI + ", peer file URI=" + peerFilePublic->getPeerURI())
+              return false;
+            }
+            if (peerFilePublic->verifySignature(contactProofEl)) {
+              ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature validation failed") + ", peer URI=" + peerURI)
+              return false;
+            }
+          }
+
+          Time tick = zsLib::now();
+          if (created < tick + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS)) {
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IMessageHelper::timeToString(created) + ", now=" + IMessageHelper::timeToString(tick))
+            return false;
+          }
+
+          if (tick > expires) {
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature expired") + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(tick))
+            return false;
+          }
+          
+        } catch (zsLib::XML::Exceptions::CheckFailed &) {
+          ZS_LOG_WARNING(Detail, "IServiceIdentity [] check failure")
+          return false;
+        }
+        
+        return true;
       }
       
       //-----------------------------------------------------------------------
@@ -331,66 +424,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentityBundle(
-                                                                                IServiceIdentitySessionDelegatePtr delegate,
-                                                                                IServiceIdentityPtr provider,
-                                                                                IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                IServiceLockboxSessionPtr existingLockbox,
-                                                                                const char *outerFrameURLUponReload,
-                                                                                ElementPtr signedIdentityBundleEl
-                                                                                )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!grantSession)
-        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
-        ZS_THROW_INVALID_ARGUMENT_IF(!signedIdentityBundleEl)
-
-        ElementPtr signatureEl;
-        ElementPtr signedIdentityEl = IHelper::getSignatureInfo(signedIdentityBundleEl, &signatureEl);
-
-        if (!signedIdentityEl) {
-          ZS_LOG_DEBUG("failed to obtain signature from signed identity")
-          return ServiceIdentitySessionPtr();
-        }
-
-        String domain;
-        String peerURI;
-        String identityURI;
-
-        try
-        {
-          domain = signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("domain")->getTextDecoded();
-          peerURI = signedIdentityEl->findFirstChildElementChecked("contact")->getTextDecoded();
-          identityURI = signedIdentityEl->findFirstChildElementChecked("uri")->getTextDecoded();
-        } catch(CheckFailed &) {
-          ZS_LOG_DEBUG("failed to obtain signature information from signed identity")
-          return ServiceIdentitySessionPtr();
-        }
-
-        if (!IHelper::isValidDomain(domain)) {
-          ZS_LOG_WARNING(Detail, "identity domain information is not valid, domain=" + domain)
-          return ServiceIdentitySessionPtr();
-        }
-        if (!IPeer::isValid(peerURI)) {
-          ZS_LOG_WARNING(Detail, "peer URI is not valid, peer URI=" + peerURI)
-          return ServiceIdentitySessionPtr();
-        }
-        if (!IServiceIdentity::isValid(identityURI)) {
-          ZS_LOG_WARNING(Detail, "identity URI is not valid, identity URI=" + identityURI)
-          return ServiceIdentitySessionPtr();
-        }
-
-        BootstrappedNetworkPtr network = IBootstrappedNetworkForServices::prepare(domain);
-
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, BootstrappedNetwork::convert(provider), network, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
-        pThis->mThisWeak = pThis;
-        pThis->mIdentityInfo.mURI = identityURI;
-        pThis->mSignedIdentityBundleUncheckedEl = signedIdentityBundleEl->clone()->toElement();
-        pThis->init();
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
       IServiceIdentityPtr ServiceIdentitySession::getService() const
       {
         AutoRecursiveLock lock(getLock());
@@ -463,14 +496,6 @@ namespace openpeer
           return mIdentityBootstrappedNetwork->forServices().getDomain();
         }
         return mProviderBootstrappedNetwork->forServices().getDomain();
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr ServiceIdentitySession::getSignedIdentityBundle() const
-      {
-        AutoRecursiveLock lock(getLock());
-        if (!mSignedIdentityBundleVerfiedEl) return ElementPtr();
-        return mSignedIdentityBundleVerfiedEl;
       }
 
       //-----------------------------------------------------------------------
@@ -629,11 +654,6 @@ namespace openpeer
           mIdentityLookupUpdateMonitor.reset();
         }
 
-        if (mIdentitySignMonitor) {
-          mIdentitySignMonitor->cancel();
-          mIdentitySignMonitor.reset();
-        }
-
         if (mIdentityLookupMonitor) {
           mIdentityLookupMonitor->cancel();
           mIdentityLookupMonitor.reset();
@@ -745,11 +765,6 @@ namespace openpeer
         if (mIdentityLookupUpdateMonitor) {
           mIdentityLookupUpdateMonitor->cancel();
           mIdentityLookupUpdateMonitor.reset();
-        }
-
-        if (mIdentitySignMonitor) {
-          mIdentitySignMonitor->cancel();
-          mIdentitySignMonitor.reset();
         }
 
         if (mIdentityLookupMonitor) {
@@ -976,65 +991,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentitySignResult>
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
-                                                                      IMessageMonitorPtr monitor,
-                                                                      IdentitySignResultPtr result
-                                                                      )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mIdentitySignMonitor) {
-          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
-          return false;
-        }
-
-        mSignedIdentityBundleUncheckedEl = result->identityBundle();
-
-        if (!mSignedIdentityBundleUncheckedEl) {
-          ZS_LOG_ERROR(Detail, log("failed to obtain a signed identity bundle"))
-          setError(IHTTP::HTTPStatusCode_CertError, "failed to obtain an identity bundle from the server");
-          cancel();
-          return true;
-        }
-
-        mSignedIdentityBundleUncheckedEl = mSignedIdentityBundleUncheckedEl->clone()->toElement();
-
-        ZS_LOG_DEBUG(log("identity sign complete"))
-
-        step();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
-                                                                           IMessageMonitorPtr monitor,
-                                                                           IdentitySignResultPtr ignore, // will always be NULL
-                                                                           message::MessageResultPtr result
-                                                                           )
-      {
-        AutoRecursiveLock lock(getLock());
-        if (monitor != mIdentitySignMonitor) {
-          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
-          return false;
-        }
-
-        setError(result->errorCode(), result->errorReason());
-
-        ZS_LOG_DEBUG(log("identity sign failed"))
-
-        cancel();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentitySignResult>
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -1054,7 +1011,53 @@ namespace openpeer
 
         const IdentityInfoList &infos = result->identities();
         if (infos.size() > 0) {
-          mPreviousLookupInfo.mergeFrom(infos.front(), true);
+
+          const IdentityInfo &identityInfo = infos.front();
+
+          bool validProof = false;
+
+          if (identityInfo.mIdentityProofBundle) {
+            // validate the identity proof bundle...
+            String stableID;
+            Time created;
+            Time expires;
+            validProof = IServiceIdentity::isValidIdentityProofBundle(
+                                                                      identityInfo.mIdentityProofBundle,
+                                                                      identityInfo.mPeerFilePublic,
+                                                                      NULL, // outPeerURI
+                                                                      NULL, // outIdentityURI
+                                                                      &stableID,
+                                                                      &created,
+                                                                      &expires
+                                                                      );
+
+            Time tick = zsLib::now();
+            if (tick < created) {
+              tick = created; // for calculation safety
+            }
+
+            Duration consumed = (tick - created);
+            Duration total = (expires - created);
+            if (consumed > total) {
+              consumed = total; // for calculation safety
+            }
+
+            Duration::sec_type percentageUsed = ((consumed.total_seconds() * 100) / total.total_seconds());
+            if (percentageUsed > OPENPEER_STACK_SERVIC_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH) {
+              ZS_LOG_WARNING(Detail, log("identity bundle proof too close to expiry, will recreate identity proof") + ", percentage used=" + Stringize<typeof(percentageUsed)>(percentageUsed).string() + ", consumed=" + Stringize<Duration::sec_type>(consumed.total_seconds()).string() + ", total=" + Stringize<Duration::sec_type>(total.total_seconds()).string())
+              validProof = false;
+            }
+
+            if (stableID != identityInfo.mStableID) {
+              ZS_LOG_WARNING(Detail, log("stabled ID from proof bundle does not match stable ID in identity") + ", proof stable ID=" + stableID + ", identity stable id=" + identityInfo.mStableID)
+              validProof = false;
+            }
+          }
+
+          mPreviousLookupInfo.mergeFrom(identityInfo, true);
+          if (!validProof) {
+            mPreviousLookupInfo.mIdentityProofBundle.reset(); // identity proof bundle isn't valid, later will be forced to recreated if it is missing
+          }
         }
 
         ZS_LOG_DEBUG(log("identity lookup (of self) complete"))
@@ -1125,7 +1128,6 @@ namespace openpeer
                Helper::getDebugValue("grant wait id", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identity sign monitor", mIdentitySignMonitor ? String("true") : String(), firstTime) +
                (mLockboxInfo.hasData() ? mLockboxInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
@@ -1136,9 +1138,6 @@ namespace openpeer
                Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
                (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("signed element (verified)", mSignedIdentityBundleVerfiedEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("signed element (unchecked)", mSignedIdentityBundleUncheckedEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("signed element (old)", mSignedIdentityBundleOldEl ? String("true") : String(), firstTime) +
                Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 1 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime);
       }
 
@@ -1171,7 +1170,6 @@ namespace openpeer
         if (!stepCloseBrowserWindow()) return;
         if (!stepClearWait()) return;
         if (!stepLookupUpdate()) return;
-        if (!stepSign()) return;
 
         if (mKillAssociation) {
           ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
@@ -1634,7 +1632,8 @@ namespace openpeer
         if ((identityInfo.mStableID == mPreviousLookupInfo.mStableID) &&
             (isSame(identityInfo.mPeerFilePublic, mPreviousLookupInfo.mPeerFilePublic)) &&
             (identityInfo.mPriority == mPreviousLookupInfo.mPriority) &&
-            (identityInfo.mWeight == mPreviousLookupInfo.mWeight)) {
+            (identityInfo.mWeight == mPreviousLookupInfo.mWeight) &&
+            (mPreviousLookupInfo.mIdentityProofBundle)) {
           ZS_LOG_DEBUG(log("identity information already up-to-date"))
           mIdentityLookupUpdated = true;
           return true;
@@ -1652,119 +1651,6 @@ namespace openpeer
         mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
         return false;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepSign()
-      {
-        if (mKillAssociation) {
-          ZS_LOG_DEBUG(log("no need to sign identity if the association is being killed"))
-          return true;
-        }
-
-        if (mSignedIdentityBundleVerfiedEl) {
-          ZS_LOG_DEBUG(log("identity bundle already verified"))
-          return true;
-        }
-
-        if (mIdentitySignMonitor) {
-          ZS_LOG_DEBUG(log("waiting for sign monitor to complete (but not preventing other requests from continuing)"))
-          return false;
-        }
-
-        setState(SessionState_Pending);
-
-        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
-        if (!lockbox) {
-          return stepLockboxAssociation();
-        }
-
-        if (!mSignedIdentityBundleUncheckedEl) {
-          // attempt to get a signed identity bundle from the lockbox
-          mSignedIdentityBundleUncheckedEl = lockbox->forServiceIdentity().getSignatureForIdentity(mThisWeak.lock());
-        }
-
-        if (!mSignedIdentityBundleUncheckedEl) {
-          // obtained a signed bundle since one is not found
-          IdentitySignRequestPtr request = IdentitySignRequest::create();
-          request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
-          request->identityInfo(mIdentityInfo);
-
-          mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentitySignResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-          mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-sign", request);
-
-          ZS_LOG_DEBUG(log("fetching identity signature from server"))
-          return false;
-        }
-
-        // scope: validate the identity bundle
-        {
-          // figure out of the signed identity bundle still has enough life time left
-          try {
-            ElementPtr signatureEl;
-            ElementPtr signedEl = IHelper::getSignatureInfo(mSignedIdentityBundleUncheckedEl, &signatureEl);
-
-            if (!mActiveBootstrappedNetwork->forServices().isValidSignature(signedEl)) {
-              ZS_LOG_WARNING(Detail, log("bootstrapper reported signature as invalid"))
-              goto invalid_certificate;
-            }
-
-            Time created = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("created")->getTextDecoded());
-            Time expires = IMessageHelper::stringToTime(signedEl->findFirstChildElementChecked("expires")->getTextDecoded());
-            Time now = zsLib::now();
-
-            if ((Time() == created) ||
-                (Time() == expires) ||
-                (created > expires) ||
-                (now + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS) < created)) {
-              ZS_LOG_WARNING(Detail, log("certificate has invalid date range") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
-              goto invalid_certificate;
-            }
-
-            if (now > expires) {
-              ZS_LOG_WARNING(Detail, log("certificate has expired"))
-              goto invalid_certificate;
-            }
-
-            long durationFromCreated = (now - created).total_seconds();
-            long durationToTotal = (expires - created).total_seconds();
-
-            if ((durationFromCreated * 100) / durationToTotal > (100-OPENPEER_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED)) {
-              ZS_LOG_WARNING(Detail, log("resign identity required since certificate will expire soon") + ", created=" + IMessageHelper::timeToString(created) + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(now))
-              goto invalid_certificate;
-            }
-
-            mSignedIdentityBundleVerfiedEl = mSignedIdentityBundleUncheckedEl;
-            goto valid_certificate;
-          } catch(CheckFailed &) {
-            ZS_LOG_DEBUG(log("failed to obtain information from signature"))
-            goto invalid_certificate;
-          }
-
-        invalid_certificate:
-          if (mSignedIdentityBundleOldEl) {
-            // already have an old bundle thus there is no point to trying again to download a new bundle
-            ZS_LOG_ERROR(Detail, log("download new certificate but the signature returned was not valid"))
-            setError(IHTTP::HTTPStatusCode_ServiceUnavailable, "downloaded signed identity is not valid");
-            cancel();
-            return false;
-          }
-
-          ZS_LOG_DEBUG(log("signed identity bundle did not pass validation check (will attempt to sign a new identity bundle)"))
-
-          mSignedIdentityBundleOldEl = mSignedIdentityBundleUncheckedEl;
-          mSignedIdentityBundleUncheckedEl.reset();
-
-          // try again shortly...
-          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-          return false;
-
-        valid_certificate:
-          mSignedIdentityBundleVerfiedEl = mSignedIdentityBundleUncheckedEl;
-          ZS_LOG_DEBUG(log("identity signature is valid"))
-        }
-
-        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -1808,7 +1694,7 @@ namespace openpeer
         mLastError = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -1849,6 +1735,218 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IdentityProofBundleQuery
+      #pragma mark
+
+      class IdentityProofBundleQuery;
+      typedef boost::shared_ptr<IdentityProofBundleQuery> IdentityProofBundleQueryPtr;
+      typedef boost::weak_ptr<IdentityProofBundleQuery> IdentityProofBundleQueryWeakPtr;
+
+      class IdentityProofBundleQuery : public MessageQueueAssociator,
+                                       public IServiceIdentityProofBundleQuery,
+                                       public IBootstrappedNetworkDelegate
+      {
+      protected:
+        //---------------------------------------------------------------------
+        IdentityProofBundleQuery(
+                                 IMessageQueuePtr queue,
+                                 ElementPtr identityProofBundleEl,
+                                 IServiceIdentityProofBundleQueryDelegatePtr delegate,
+                                 String identityURI
+                                 ) :
+          MessageQueueAssociator(queue),
+          mID(zsLib::createPUID()),
+          mIdentityProofBundleEl(identityProofBundleEl->clone()->toElement()),
+          mDelegate(IServiceIdentityProofBundleQueryDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
+          mIdentityURI(identityURI),
+          mErrorCode(0)
+        {
+        }
+
+        //---------------------------------------------------------------------
+        void init()
+        {
+          if (0 != mErrorReason) {
+            notifyComplete();
+          }
+
+          IServiceIdentityPtr serviceIdentity = IServiceIdentity::createServiceIdentityFromIdentityProofBundle(mIdentityProofBundleEl);
+
+          mBootstrappedNetwork = serviceIdentity->getBootstrappedNetwork();
+
+          if (mBootstrappedNetwork->isPreparationComplete()) {
+            ZS_LOG_DEBUG(log("bootstrapped network is already prepared, short-circuit answer now..."))
+            onBootstrappedNetworkPreparationCompleted(mBootstrappedNetwork);
+            return;
+          }
+
+          ZS_LOG_DEBUG(log("bootstrapped network is not ready yet, check for validity when ready"))
+          IBootstrappedNetwork::prepare(mBootstrappedNetwork->getDomain(), mThisWeak.lock());
+        }
+
+      public:
+        //---------------------------------------------------------------------
+        ~IdentityProofBundleQuery()
+        {
+          mThisWeak.reset();
+        }
+
+        //---------------------------------------------------------------------
+        static IdentityProofBundleQueryPtr create(
+                                                  ElementPtr identityProofBundleEl,
+                                                  IServiceIdentityProofBundleQueryDelegatePtr delegate,
+                                                  String identityURI,
+                                                  WORD failedErrorCode,
+                                                  const String &failedReason
+                                                  )
+        {
+          ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
+          ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+
+          IdentityProofBundleQueryPtr pThis = IdentityProofBundleQueryPtr(new IdentityProofBundleQuery(IStackForInternal::queueStack(), identityProofBundleEl, delegate, identityURI));
+          pThis->mThisWeak = pThis;
+          pThis->mErrorCode = failedErrorCode;
+          pThis->mErrorReason = failedReason;
+          pThis->init();
+          return pThis;
+        }
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark IdentityProofBundleQuery => IServiceIdentityProofBundleQuery
+        #pragma mark
+
+        //---------------------------------------------------------------------
+        virtual bool isComplete() const
+        {
+          AutoRecursiveLock lock(mLock);
+          if (0 != mErrorReason) return true;
+          return !mDelegate;
+        }
+
+        //---------------------------------------------------------------------
+        virtual bool wasSuccessful(
+                                   WORD *outErrorCode = NULL,
+                                   String *outErrorReason = NULL
+                                   ) const
+        {
+          AutoRecursiveLock lock(mLock);
+          if (outErrorCode) {
+            *outErrorCode = mErrorCode;
+          }
+          if (outErrorReason) {
+            *outErrorReason = mErrorReason;
+          }
+          if (0 != mErrorReason) {
+            return false;
+          }
+          return !mDelegate;
+        }
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark IdentityProofBundleQuery => IBootstrappedNetworkDelegate
+        #pragma mark
+
+        //---------------------------------------------------------------------
+        virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork)
+        {
+          AutoRecursiveLock lock(mLock);
+          if (isComplete()) return;
+
+          WORD errorCode = 0;
+          String reason;
+          if (!bootstrappedNetwork->wasSuccessful(&errorCode, &reason)) {
+            if (0 == errorCode) {
+              errorCode = IHTTP::HTTPStatusCode_NoResponse;
+            }
+            setError(errorCode, reason);
+          }
+
+          IServiceCertificatesPtr serviceCertificates = IServiceCertificates::createServiceCertificatesFrom(mBootstrappedNetwork);
+          ZS_THROW_BAD_STATE_IF(!serviceCertificates)
+
+          ElementPtr identityProofEl = mIdentityProofBundleEl->findFirstChildElement("identityProof");
+          ZS_THROW_BAD_STATE_IF(!identityProofEl)
+
+          if (!serviceCertificates->isValidSignature(mIdentityProofBundleEl)) {
+            setError(IHTTP::HTTPStatusCode_CertError, (String("identity failed to validate") + ", identity uri=" + mIdentityURI).c_str());
+          }
+
+          notifyComplete();
+        }
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark IdentityProofBundleQuery => (internal)
+        #pragma mark
+
+        //---------------------------------------------------------------------
+        String log(const char *message) const
+        {
+          return String("IdentityProofBundleQuery [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        }
+
+        //---------------------------------------------------------------------
+        void setError(WORD errorCode, const char *reason = NULL)
+        {
+          if (!reason) {
+            reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
+          }
+
+          if (0 != mErrorCode) {
+            ZS_LOG_WARNING(Debug, log("attempting to set an error when error already set") + ", new error code=" + Stringize<typeof(errorCode)>(mErrorCode).string() + ", new reason=" + reason + ", existing error code=" + Stringize<typeof(mErrorCode)>(mErrorCode).string() + ", existing reason=" + mErrorReason)
+            return;
+          }
+
+          mErrorCode = errorCode;
+          mErrorReason = reason;
+
+          ZS_LOG_WARNING(Debug, log("setting error code") + ", identity uri=" + mIdentityURI + ", error code=" + Stringize<typeof(errorCode)>(mErrorCode).string() + ", reason=" + reason)
+        }
+
+        //---------------------------------------------------------------------
+        void notifyComplete()
+        {
+          if (!mDelegate) return;
+
+          IdentityProofBundleQueryPtr pThis = mThisWeak.lock();
+          if (!pThis) return;
+
+          try {
+            mDelegate->onServiceIdentityProofBundleQueryCompleted(pThis);
+          } catch (IServiceIdentityProofBundleQueryDelegateProxy::Exceptions::DelegateGone &) {
+          }
+
+          mDelegate.reset();
+        }
+
+      protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark IdentityProofBundleQuery => (data)
+        #pragma mark
+
+        mutable RecursiveLock mLock;
+        PUID mID;
+        IdentityProofBundleQueryWeakPtr mThisWeak;
+        String mIdentityURI;
+
+        IServiceIdentityProofBundleQueryDelegatePtr mDelegate;
+        IBootstrappedNetworkPtr mBootstrappedNetwork;
+
+        ElementPtr mIdentityProofBundleEl;
+
+        WORD mErrorCode;
+        String mErrorReason;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
     }
 
     //-------------------------------------------------------------------------
@@ -1856,7 +1954,7 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IServiceIdentitySession
+    #pragma mark IServiceIdentity
     #pragma mark
 
     //-------------------------------------------------------------------------
@@ -2010,6 +2108,115 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    bool IServiceIdentity::isValidIdentityProofBundle(
+                                                      ElementPtr identityProofBundleEl,
+                                                      IPeerFilePublicPtr peerFilePublic,
+                                                      String *outPeerURI,
+                                                      String *outIdentityURI,
+                                                      String *outStableID,
+                                                      Time *outCreated,
+                                                      Time *outExpires
+                                                      )
+    {
+      ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
+
+      IServiceIdentityPtr serviceIdentity = createServiceIdentityFromIdentityProofBundle(identityProofBundleEl);
+      if (!serviceIdentity) {
+        ZS_LOG_WARNING(Detail, "IServiceIdentity [] failed to obtain bootstrapped network from identity proof bundle")
+        return false;
+      }
+
+      IBootstrappedNetworkPtr bootstrapper = serviceIdentity->getBootstrappedNetwork();
+      if (!bootstrapper->isPreparationComplete()) {
+        ZS_LOG_WARNING(Detail, "IServiceIdentity [] bootstapped network isn't prepared yet")
+        return false;
+      }
+
+      WORD errorCode = 0;
+      String reason;
+      if (!bootstrapper->wasSuccessful(&errorCode, &reason)) {
+        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] bootstapped network was not successful") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+        return false;
+      }
+
+      String identityURI;
+
+      bool result = internal::extractAndVerifyProof(
+                                                    identityProofBundleEl,
+                                                    peerFilePublic,
+                                                    outPeerURI,
+                                                    &identityURI,
+                                                    outStableID,
+                                                    outCreated,
+                                                    outExpires
+                                                    );
+
+      if (outIdentityURI) {
+        *outIdentityURI = identityURI;
+      }
+
+      if (!result) {
+        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature validation failed on identity bundle") + ", identity=" + identityURI)
+        return false;
+      }
+
+      IServiceCertificatesPtr serviceCertificate = IServiceCertificates::createServiceCertificatesFrom(bootstrapper);
+      ZS_THROW_BAD_STATE_IF(!serviceCertificate)
+
+      ElementPtr identityProofEl = identityProofBundleEl->findFirstChildElement("identityProof");
+      ZS_THROW_BAD_STATE_IF(!identityProofEl)
+
+      if (!serviceCertificate->isValidSignature(identityProofEl)) {
+        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature failed to validate on identity bundle") + "identity=" + identityURI)
+        return false;
+      }
+
+      ZS_LOG_TRACE(String("IServiceIdentity [] signature verified for identity") + ", identity=" + identityURI)
+      return true;
+    }
+
+    //-------------------------------------------------------------------------
+    IServiceIdentityProofBundleQueryPtr IServiceIdentity::isValidIdentityProofBundle(
+                                                                                     ElementPtr identityProofBundleEl,
+                                                                                     IServiceIdentityProofBundleQueryDelegatePtr delegate,
+                                                                                     IPeerFilePublicPtr peerFilePublic, // optional recommended check of associated peer file, can pass in IPeerFilePublicPtr() if not known yet
+                                                                                     String *outPeerURI,
+                                                                                     String *outIdentityURI,
+                                                                                     String *outStableID,
+                                                                                     Time *outCreated,
+                                                                                     Time *outExpires
+                                                                                     )
+    {
+      ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
+      ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+
+      String identityURI;
+
+      bool result = internal::extractAndVerifyProof(
+                                                    identityProofBundleEl,
+                                                    peerFilePublic,
+                                                    outPeerURI,
+                                                    &identityURI,
+                                                    outStableID,
+                                                    outCreated,
+                                                    outExpires
+                                                    );
+
+      if (outIdentityURI) {
+        *outIdentityURI = identityURI;
+      }
+
+      WORD errorCode = 0;
+      String reason;
+      if (!result) {
+        errorCode = IHTTP::HTTPStatusCode_CertError;
+        reason = "identity failed to validate, identity=" + identityURI;
+      }
+
+      return internal::IdentityProofBundleQuery::create(identityProofBundleEl, delegate, identityURI, errorCode, reason);
+    }
+
+    //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -2064,19 +2271,6 @@ namespace openpeer
                                                                                   )
     {
       return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityProvider(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, legacyIdentityBaseURI);
-    }
-
-    //-------------------------------------------------------------------------
-    IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentityBundle(
-                                                                                IServiceIdentitySessionDelegatePtr delegate,
-                                                                                IServiceIdentityPtr provider,
-                                                                                IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                IServiceLockboxSessionPtr existingLockbox,
-                                                                                const char *outerFrameURLUponReload,
-                                                                                ElementPtr signedIdentityBundle
-                                                                                )
-    {
-      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityBundle(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, signedIdentityBundle);
     }
   }
 }

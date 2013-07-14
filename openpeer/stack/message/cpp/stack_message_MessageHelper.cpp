@@ -603,6 +603,13 @@ namespace openpeer
             }
           }
 
+          if (identity.mContactProofBundle) {
+            identityEl->adoptAsLastChild(identity.mContactProofBundle->clone()->toElement());
+          }
+          if (identity.mIdentityProofBundle) {
+            identityEl->adoptAsLastChild(identity.mIdentityProofBundle->clone()->toElement());
+          }
+
           return identityEl;
         }
 
@@ -1746,6 +1753,15 @@ namespace openpeer
               }
               avatarEl = elem->findNextSiblingElement("avatar");
             }
+          }
+
+          ElementPtr contactProofBundleEl = elem->findFirstChildElement("contactProofBundle");
+          if (contactProofBundleEl) {
+            info.mContactProofBundle = contactProofBundleEl->clone()->toElement();
+          }
+          ElementPtr identityProofBundleEl = elem->findFirstChildElement("identityProofBundle");
+          if (contactProofBundleEl) {
+            info.mIdentityProofBundle = identityProofBundleEl->clone()->toElement();
           }
 
           return info;

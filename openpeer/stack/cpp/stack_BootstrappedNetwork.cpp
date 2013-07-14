@@ -1172,6 +1172,33 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    IServiceIdentityPtr IServiceIdentity::createServiceIdentityFromIdentityProofBundle(ElementPtr identityProofBundleEl)
+    {
+      ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
+      String domain;
+      IHelper::getSignatureInfo(
+                                identityProofBundleEl,
+                                NULL,
+                                NULL,
+                                NULL,
+                                &domain,
+                                NULL
+                                );
+
+      if (domain.isEmpty()) {
+        ZS_LOG_WARNING(Detail, "IServiceIdentity [] domain missing from signture")
+        return IServiceIdentityPtr();
+      }
+
+      if (!IHelper::isValidDomain(domain)) {
+        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] domain from signture is not valid") + ", domain=" + domain)
+        return IServiceIdentityPtr();
+      }
+
+      return createServiceIdentityFrom(IBootstrappedNetwork::prepare(domain));
+    }
+
+    //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------

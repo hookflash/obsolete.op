@@ -125,7 +125,6 @@ namespace openpeer
                                                         ServiceIdentitySessionPtr session,
                                                         IPeerFilesPtr *outPeerFiles = NULL
                                                         ) const = 0;
-        virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const = 0;
 
         virtual void notifyStateChanged() = 0;
       };
@@ -298,7 +297,6 @@ namespace openpeer
                                                         ServiceIdentitySessionPtr session,
                                                         IPeerFilesPtr *outPeerFiles = NULL
                                                         ) const;
-        virtual ElementPtr getSignatureForIdentity(ServiceIdentitySessionPtr session) const;
 
         virtual void notifyStateChanged();
 

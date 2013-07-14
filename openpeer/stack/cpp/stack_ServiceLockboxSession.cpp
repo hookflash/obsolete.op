@@ -64,7 +64,6 @@
 
 //#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
 //#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
-#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE "https://openpeer.org/permission/identity-signatures"
 
 #define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 1
 #define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 2
@@ -117,7 +116,6 @@ namespace openpeer
         static const char *gPermissions[] = {
           OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE,
           OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE,
-          //OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE,
           NULL
         };
 
@@ -138,24 +136,50 @@ namespace openpeer
         if (!part1Str) return SecureByteBlockPtr();
         if (!part2Str) return SecureByteBlockPtr();
 
+        SecureByteBlockPtr extracted = IHelper::hash("empty");
+
         SecureByteBlockPtr part1 = IHelper::convertFromBase64((const char *) part1Str->BytePtr());
         SecureByteBlockPtr part2 = IHelper::convertFromBase64((const char *) part2Str->BytePtr());
 
-        if ((!part1) || (!part2)) return SecureByteBlockPtr();
+        if ((!part1) || (!part2)) {
+          ZS_LOG_WARNING(Detail, String("value missing") + ", part1=" + (part1Str ? "true" : "(null)") + ", part2=" + (part2Str ? "true" : "(null)"))
+          return SecureByteBlockPtr();
+        }
 
-        if (part1->SizeInBytes() != part2->SizeInBytes()) return SecureByteBlockPtr();
+        if (part1->SizeInBytes() != part2->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", part2 size=" + Stringize<SecureByteBlock::size_type>(part2->SizeInBytes()).string())
+          return SecureByteBlockPtr();
+        }
+        if (part1->SizeInBytes() <= extracted->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", hash size=" + Stringize<SecureByteBlock::size_type>(extracted->SizeInBytes()).string())
+          return SecureByteBlockPtr();
+        }
 
         SecureByteBlockPtr buffer(new SecureByteBlock);
-        buffer->CleanNew(part1->SizeInBytes());
+        buffer->CleanNew(part1->SizeInBytes() - extracted->SizeInBytes());
 
         BYTE *dest = buffer->BytePtr();
         const BYTE *src1 = part1->BytePtr();
         const BYTE *src2 = part2->BytePtr();
-        SecureByteBlock::size_type length = part1->SizeInBytes();
 
-        for (; 0 != length; --length, ++dest, ++src1, ++src2)
+        SecureByteBlock::size_type length1 = part1->SizeInBytes() - extracted->SizeInBytes();
+        for (; 0 != length1; --length1, ++dest, ++src1, ++src2)
         {
           *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlock::size_type length2 = extracted->SizeInBytes();
+        dest = extracted->BytePtr();
+        for (; 0 != length2; --length2, ++dest, ++src1, ++src2)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlockPtr hash = IHelper::hash(*buffer);
+
+        if (0 != IHelper::compare(*extracted, *hash)) {
+          ZS_LOG_WARNING(Detail, String("extracted hash does not match calculated hash") + ", extracted=" + IHelper::convertToBase64(*extracted) + ", calculated=" + IHelper::convertToBase64(*hash))
+          return SecureByteBlockPtr();
         }
 
         return buffer;
@@ -170,17 +194,27 @@ namespace openpeer
       {
         if (key.size() < 1) return;
 
-        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes());
+        SecureByteBlockPtr hash = IHelper::hash(key);
+        ZS_THROW_BAD_STATE_IF(!hash)
+
+        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes() + hash->SizeInBytes());
 
         SecureByteBlockPtr final(new SecureByteBlock);
-        final->CleanNew(key.SizeInBytes());
+        final->CleanNew(key.SizeInBytes() + hash->SizeInBytes());
 
         BYTE *dest = final->BytePtr();
         const BYTE *source = key.BytePtr();
         const BYTE *random = randomData->BytePtr();
 
-        SecureByteBlock::size_type length = final->SizeInBytes();
-        for (; length > 0; --length, ++dest, ++source, ++random)
+        SecureByteBlock::size_type length1 = key.SizeInBytes();
+        for (; length1 > 0; --length1, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        SecureByteBlock::size_type length2 = hash->SizeInBytes();
+        source = hash->BytePtr();
+        for (; length2 > 0; --length2, ++dest, ++source, ++random)
         {
           *dest = (*source) ^ (*random);
         }
@@ -277,6 +311,9 @@ namespace openpeer
         pThis->mThisWeak = pThis;
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
         pThis->mForceNewAccount = forceNewAccount;
+        if (forceNewAccount) {
+          ZS_LOG_WARNING(Detail, pThis->log("forcing creation of a new lockbox account (user must have indicated their account is compromised or corrupted)"))
+        }
         pThis->init();
         return pThis;
       }
@@ -619,32 +656,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ElementPtr ServiceLockboxSession::getSignatureForIdentity(ServiceIdentitySessionPtr session) const
-      {
-        AutoRecursiveLock lock(getLock());
-
-        IdentityInfo info = session->forLockbox().getIdentityInfo();
-
-        String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + info.mURI + ":" + info.mProvider));
-
-        String signatureStr = getContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
-
-        if (signatureStr.isEmpty()) {
-          ZS_LOG_WARNING(Detail, log("no signture present for identity yet (probably okay)") + info.getDebugValueString())
-          return ElementPtr();
-        }
-
-        DocumentPtr doc = Document::createFromParsedJSON(signatureStr);
-        if (!doc) {
-          ZS_LOG_WARNING(Detail, log("failed to parse signature for identity)") + ", data to parse=" + signatureStr + info.getDebugValueString())
-          return ElementPtr();
-        }
-
-        ZS_LOG_DEBUG(log("found signature for identity") + info.getDebugValueString() + ", signature=" + signatureStr)
-        return doc->getFirstChildElement();
-      }
-
-      //-----------------------------------------------------------------------
       void ServiceLockboxSession::notifyStateChanged()
       {
         AutoRecursiveLock lock(getLock());
@@ -763,6 +774,14 @@ namespace openpeer
         mLockboxAccessMonitor.reset();
 
         LockboxInfo info = result->lockboxInfo();
+        if ((mLockboxInfo.mKeyLockboxHalf) &&
+            (info.mKeyLockboxHalf)) {
+          if (0 != IHelper::compare(*mLockboxInfo.mKeyLockboxHalf, *info.mKeyLockboxHalf)) {
+            setError(IHTTP::HTTPStatusCode_Conflict, (String("Lockbox keyhalf returned from lockbox-access does not mach the value sent into the request, key sent=") + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf) + ", key received=" + IHelper::convertToString(*info.mKeyLockboxHalf)).c_str());
+            cancel();
+            return true;
+          }
+        }
         mLockboxInfo.mergeFrom(info, true);
 
         mServerIdentities = result->identities();
@@ -1315,8 +1334,9 @@ namespace openpeer
             ZS_THROW_BAD_STATE_IF(!mLockboxInfo.mKeyIdentityHalf)
 
             SecureByteBlockPtr combined = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+            ZS_LOG_DEBUG(log("combined key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
             if (combined) {
-              ZS_LOG_DEBUG(log("creating lockbox key hash"))
+              ZS_LOG_DEBUG(log("creating lockbox key hash") + ", combined=" + IHelper::convertToBase64(*combined))
               mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
             } else {
               ZS_LOG_DEBUG(log("key combination failed"))
@@ -1475,6 +1495,9 @@ namespace openpeer
 
         if ((privatePeerSecretStr.hasData()) &&
             (privatePeerFileStr.hasData())) {
+
+          ZS_LOG_TRACE(log("loading private peer file"))
+
           // attempt to load the private peer file data
           DocumentPtr doc = Document::createFromParsedJSON(privatePeerFileStr);
           if (doc) {
@@ -1892,13 +1915,6 @@ namespace openpeer
               clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
             }
 
-            // clear signature (if present)
-            {
-              String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
-              signatureValues[hash] = "-";
-              clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
-            }
-
             removedIdentities[pendingRemovalIdentity->forLockbox().getID()] = pendingRemovalIdentity;
 
             // force the identity to disassociate from the lockbox
@@ -1924,12 +1940,6 @@ namespace openpeer
 
           if (!pendingUpdateIdentity->forLockbox().isLoginComplete()) continue;
 
-          ElementPtr signatureEl = pendingUpdateIdentity->forLockbox().getSignedIdentityBundle();
-          if (!signatureEl) {
-            ZS_LOG_DEBUG(log("identity may be logged in but the signature is not ready (must wait for signature to be prepared)"))
-            continue;
-          }
-
           ZS_LOG_DEBUG(log("pending identity is now logged in (thus can cause the association)") + IServiceIdentitySession::toDebugString(pendingUpdateIdentity))
           completedIdentities[pendingUpdateIdentity->forLockbox().getID()] = pendingUpdateIdentity;
 
@@ -1941,20 +1951,6 @@ namespace openpeer
             String rawValue = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
             reloginValues[hash] = rawValue;
           }
-
-          // prepare signature
-          {
-            String hash = IHelper::convertToHex(*IHelper::hash(String("identity-signature:") + info.mURI + ":" + info.mProvider));
-
-            GeneratorPtr generator = Generator::createJSONGenerator();
-            boost::shared_array<char> output = generator->write(signatureEl);
-
-            String signatureStr((const char *) output.get());
-
-            setContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash, signatureStr);
-            String rawValue = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE, hash);
-            signatureValues[hash] = rawValue;
-          }
         }
 
         NamespaceURLNameValueMap namespaces;
@@ -1962,10 +1958,6 @@ namespace openpeer
         if (reloginValues.size() > 0) {
           ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + Stringize<size_t>(reloginValues.size()).string())
           namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
-        }
-        if (signatureValues.size() > 0) {
-          ZS_LOG_DEBUG(log("contains signature values to update") + "values=" + Stringize<size_t>(signatureValues.size()).string())
-          namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_SIGNATURES_NAMESPACE] = signatureValues;
         }
 
         if (namespaces.size() > 0) {
@@ -2082,7 +2074,8 @@ namespace openpeer
 
         mLastError = errorCode;
         mLastErrorReason = reason;
-        ZS_LOG_ERROR(Detail, log("error set") + getDebugValueString())
+
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -2147,11 +2140,13 @@ namespace openpeer
 
         const String &value = (*foundValue).second;
 
-        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyLockboxHalf, mLockboxInfo.mKeyLockboxHalf);
+        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
         if (!combinedKey) {
           ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return String();
         }
+
+        ZS_LOG_TRACE(log("decrypting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key (lockbox half)=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf) + ", key (identity half)=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", combined=" + IHelper::convertToBase64(*combinedKey))
 
         SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
         SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
@@ -2170,7 +2165,7 @@ namespace openpeer
 
         String output = IHelper::convertToString(*result);
 
-        ZS_LOG_TRACE(log("obtained content") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value)
+        ZS_LOG_TRACE(log("obtained content") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", output=" + output)
         return output;
       }
 
@@ -2230,7 +2225,7 @@ namespace openpeer
 
         NameValueMap &values = (*found).second;
 
-        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyLockboxHalf, mLockboxInfo.mKeyLockboxHalf);
+        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
         if (!combinedKey) {
           ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return;

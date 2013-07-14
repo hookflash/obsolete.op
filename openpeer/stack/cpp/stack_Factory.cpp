@@ -739,19 +739,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityBundle(
-                                                                                        IServiceIdentitySessionDelegatePtr delegate,
-                                                                                        IServiceIdentityPtr provider,
-                                                                                        IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                        IServiceLockboxSessionPtr existingLockbox,
-                                                                                        const char *outerFrameURLUponReload,
-                                                                                        ElementPtr signedIdentityBundle
-                                                                                        )
-      {
-        return ServiceIdentitySession::loginWithIdentityBundle(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, signedIdentityBundle);
-      }
-
-      //-----------------------------------------------------------------------
       ServiceIdentitySessionPtr IServiceIdentitySessionFactory::reload(
                                                                        BootstrappedNetworkPtr provider,
                                                                        IServiceNamespaceGrantSessionPtr grantSession,

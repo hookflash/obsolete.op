@@ -64,8 +64,6 @@
 #include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateRequest.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
-#include <openpeer/stack/message/identity/IdentitySignRequest.h>
-#include <openpeer/stack/message/identity/IdentitySignResult.h>
 
 #include <openpeer/stack/message/identity-lockbox/MessageFactoryIdentityLockbox.h>
 
