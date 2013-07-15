@@ -55,8 +55,7 @@ namespace openpeer
 
         static ContactPtr createFromPeer(
                                          AccountPtr account,
-                                         IPeerPtr peer,
-                                         const char *stableIDIfKnown = NULL
+                                         IPeerPtr peer
                                          );
 
         virtual String getPeerURI() const = 0;
@@ -115,26 +114,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IContactForIdentityLookup
-      #pragma mark
-
-      interaction IContactForIdentityLookup
-      {
-        IContactForIdentityLookup &forIdentityLookup() {return *this;}
-        const IContactForIdentityLookup &forIdentityLookup() const {return *this;}
-
-        static ContactPtr createFromPeerFilePublic(
-                                                   IAccountPtr account,
-                                                   IPeerFilePublicPtr peerFilePublic,
-                                                   const char *stableIDIfKnown = NULL // (if known)
-                                                   );
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark Contact
       #pragma mark
 
@@ -142,8 +121,7 @@ namespace openpeer
                       public IContact,
                       public IContactForAccount,
                       public IContactForConversationThread,
-                      public IContactForCall,
-                      public IContactForIdentityLookup
+                      public IContactForCall
       {
       public:
         friend interaction IContactFactory;
@@ -170,9 +148,8 @@ namespace openpeer
         static String toDebugString(IContactPtr contact, bool includeCommaPrefix = true);
 
         static ContactPtr createFromPeerFilePublic(
-                                                   IAccountPtr account,
-                                                   ElementPtr peerFilePublicEl,
-                                                   const char *stableIDIfKnown = NULL // (if known)
+                                                   AccountPtr account,
+                                                   IPeerFilePublicPtr peerFilePublic
                                                    );
 
         static ContactPtr getForSelf(IAccountPtr account);
@@ -182,11 +159,7 @@ namespace openpeer
         virtual bool isSelf() const;
 
         virtual String getPeerURI() const;
-        virtual String getFindSecret() const;
-        virtual String getStableUniqueID() const;
-
-        virtual bool hasPeerFilePublic() const;
-        virtual ElementPtr savePeerFilePublic() const;
+        virtual IPeerFilePublicPtr getPeerFilePublic() const;
 
         virtual IAccountPtr getAssociatedAccount() const;
 
@@ -199,25 +172,23 @@ namespace openpeer
 
         static ContactPtr createFromPeer(
                                          AccountPtr account,
-                                         IPeerPtr peer,
-                                         const char *userIDIfKnown = NULL
+                                         IPeerPtr peer
                                          );
 
         // (duplicate) virtual String getPeerURI() const;
         virtual IPeerPtr getPeer() const;
 
-        virtual IPeerFilePublicPtr getPeerFilePublic() const;
+        // (duplicate) virtual IPeerFilePublicPtr getPeerFilePublic() const;
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Contact => IContactForConversationThread
         #pragma mark
 
-        static ContactPtr createFromPeerFilePublic(
-                                                   AccountPtr account,
-                                                   IPeerFilePublicPtr publicPeerFile,
-                                                   const char *stableIDIfKnown = NULL // (if known)
-                                                   );
+        // (duplicate) static ContactPtr createFromPeerFilePublic(
+        //                                                        IAccountPtr account,
+        //                                                        IPeerFilePublicPtr peerFilePublic
+        //                                                        );
 
         // (duplicate) virtual String getPeerURI() const;
         // (duplicate) virtual IPeerPtr getPeer() const;
@@ -235,17 +206,6 @@ namespace openpeer
 
         // (duplicate) virtual String getPeerURI() const;
         // (duplicate) virtual IPeerPtr getPeer() const;
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Contact => IContactForIdentityLookup
-        #pragma mark
-
-        // (duplicate) static ContactPtr createFromPeerFilePublic(
-        //                                                        IAccountPtr account,
-        //                                                        IPeerFilePublicPtr peerFilePublic,
-        //                                                        const char *stableIDIfKnown = NULL // (if known)
-        //                                                        );
 
       private:
         //---------------------------------------------------------------------
@@ -269,11 +229,7 @@ namespace openpeer
         ContactWeakPtr mThisWeak;
 
         AccountWeakPtr mAccount;
-
         IPeerPtr mPeer;
-        String mStableID;
-
-        String mFindSecret;
       };
 
       //-----------------------------------------------------------------------
@@ -290,20 +246,12 @@ namespace openpeer
 
         virtual ContactPtr createFromPeer(
                                           AccountPtr account,
-                                          IPeerPtr peer,
-                                          const char *userIDIfKnown = NULL
+                                          IPeerPtr peer
                                           );
 
         virtual ContactPtr createFromPeerFilePublic(
-                                                    IAccountPtr account,
-                                                    ElementPtr peerFilePublicEl,
-                                                    const char *stableIDIfKnown = NULL // (if known)
-                                                    );
-
-        virtual ContactPtr createFromPeerFilePublic(
                                                     AccountPtr account,
-                                                    IPeerFilePublicPtr publicPeerFile,
-                                                    const char *previousStableUniqueID = NULL // (if known)
+                                                    IPeerFilePublicPtr publicPeerFile
                                                     );
 
         virtual ContactPtr getForSelf(IAccountPtr account);

@@ -60,6 +60,9 @@ namespace openpeer
     using openpeer::stack::SecureByteBlockPtr;
     using openpeer::stack::message::IMessageHelper;
 
+    using openpeer::stack::IPeerFilePublic;
+    using openpeer::stack::IPeerFilePublicPtr;
+
     interaction IAccount;
     typedef boost::shared_ptr<IAccount> IAccountPtr;
     typedef boost::weak_ptr<IAccount> IAccountWeakPtr;
@@ -166,6 +169,8 @@ namespace openpeer
 
 
     // other types
+    struct IdentityInfo;
+    struct RolodexContact;
 
     struct ContactProfileInfo
     {
@@ -175,7 +180,7 @@ namespace openpeer
       bool hasData() const;
     };
 
-    struct IdentityLookupInfo
+    struct IdentityInfo
     {
       struct Avatar
       {
@@ -186,11 +191,12 @@ namespace openpeer
       };
       typedef std::list<Avatar> AvatarList;
 
-      IContactPtr mContact;
-
       String mIdentityURI;
       String mIdentityProvider;
       String mStableID;
+
+      IPeerFilePublicPtr mPeerFilePublic;
+      ElementPtr mIdentityProofBundleEl;
 
       WORD mPriority;
       WORD mWeight;
@@ -204,7 +210,34 @@ namespace openpeer
 
       AvatarList mAvatars;
 
-      IdentityLookupInfo();
+      IdentityInfo();
+      IdentityInfo(const RolodexContact &);
+      bool hasData() const;
+    };
+
+    struct RolodexContact
+    {
+      typedef IdentityInfo::Avatar Avatar;
+      typedef IdentityInfo::AvatarList AvatarList;
+
+      enum Dispositions
+      {
+        Disposition_NA,
+        Disposition_Update,
+        Disposition_Remove,
+      };
+
+      Dispositions mDisposition;
+      String mIdentityURI;
+      String mIdentityProvider;
+
+      String mName;
+      String mProfileURL;
+      String mVProfileURL;
+
+      AvatarList mAvatars;
+
+      RolodexContact();
       bool hasData() const;
     };
 
@@ -224,11 +257,12 @@ namespace openpeer
     typedef boost::shared_ptr<IdentityList> IdentityListPtr;
     typedef boost::weak_ptr<IdentityList> IdentityListWeakPtr;
 
-    typedef String IdentityURI;
-    typedef std::list<IdentityURI> IdentityURIList;
+    typedef std::list<IdentityInfo> IdentityInfoList;
+    typedef boost::shared_ptr<IdentityInfoList> IdentityInfoListPtr;
+    typedef boost::weak_ptr<IdentityInfoList> IdentityInfoListWeakPtr;
 
-    typedef std::list<IdentityLookupInfo> IdentityLookupInfoList;
-    typedef boost::shared_ptr<IdentityLookupInfoList> IdentityLookupInfoListPtr;
-    typedef boost::weak_ptr<IdentityLookupInfoList> IdentityLookupInfoListWeakPtr;
+    typedef std::list<RolodexContact> RolodexContactList;
+    typedef boost::shared_ptr<RolodexContactList> RolodexContactListPtr;
+    typedef boost::weak_ptr<RolodexContactList> RolodexContactListWeakPtr;
   }
 }

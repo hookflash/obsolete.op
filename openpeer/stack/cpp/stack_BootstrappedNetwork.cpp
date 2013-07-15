@@ -460,7 +460,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark BootstrappedNetwork => IBootstrappedNetworkForCertificateServiceValidationQuery
+      #pragma mark BootstrappedNetwork => IBootstrappedNetworkForServices
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -518,6 +518,13 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("signature validated") + certificate.getDebugValueString())
         return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool BootstrappedNetwork::supportsRolodex() const
+      {
+        String serviceURL = getServiceURI("identity", "identity-access-rolodex-credentials-get");
+        return serviceURL.hasData();
       }
 
       //-----------------------------------------------------------------------

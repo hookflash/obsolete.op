@@ -203,31 +203,19 @@ namespace openpeer
       //-----------------------------------------------------------------------
       ContactPtr IContactFactory::createFromPeer(
                                                  AccountPtr account,
-                                                 IPeerPtr peer,
-                                                 const char *stableIDIfKnown
+                                                 IPeerPtr peer
                                                  )
       {
-        return Contact::createFromPeer(account, peer, stableIDIfKnown);
-      }
-
-      //-----------------------------------------------------------------------
-      ContactPtr IContactFactory::createFromPeerFilePublic(
-                                                           IAccountPtr account,
-                                                           ElementPtr peerFilePublicEl,
-                                                           const char *stableIDIfKnown
-                                                           )
-      {
-        return Contact::createFromPeerFilePublic(account, peerFilePublicEl, stableIDIfKnown);
+        return Contact::createFromPeer(account, peer);
       }
 
       //-----------------------------------------------------------------------
       ContactPtr IContactFactory::createFromPeerFilePublic(
                                                            AccountPtr account,
-                                                           IPeerFilePublicPtr peerFilePublic,
-                                                           const char *stableIDIfKnown
+                                                           IPeerFilePublicPtr peerFilePublic
                                                            )
       {
-        return Contact::createFromPeerFilePublic(account, peerFilePublic, stableIDIfKnown);
+        return Contact::createFromPeerFilePublic(account, peerFilePublic);
       }
 
       //-----------------------------------------------------------------------
@@ -390,12 +378,11 @@ namespace openpeer
       IdentityLookupPtr IIdentityLookupFactory::create(
                                                        IAccountPtr account,
                                                        IIdentityLookupDelegatePtr delegate,
-                                                       const IdentityURIList &identityURIs,
-                                                       const char *identityServiceDomain,
-                                                       bool checkForUpdatesOnly
+                                                       const IdentityLookupInfoList &identityLookupInfos,
+                                                       const char *identityServiceDomain
                                                        )
       {
-        return IdentityLookup::create(account, delegate, identityURIs, identityServiceDomain, checkForUpdatesOnly);
+        return IdentityLookup::create(account, delegate, identityLookupInfos, identityServiceDomain);
       }
 
       //-----------------------------------------------------------------------

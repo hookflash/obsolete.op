@@ -41,6 +41,24 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    interaction IIdentityDatabase
+    {
+      virtual bool getEntry(
+                            const char *identityURI,
+                            const char *domain,
+                            IdentityInfo &outIdentityInfo
+                            );
+      virtual void setEntry(
+                            const char *identityURI,
+                            const char *domain,
+                            const IdentityInfo &identityInfo
+                            );
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     #pragma mark
     #pragma mark IIdentity
     #pragma mark
@@ -95,6 +113,13 @@ namespace openpeer
       virtual ElementPtr getNextMessageForInnerBrowerWindowFrame() = 0;
       virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr message) = 0;
 
+      virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL) = 0;  // if a previous version of the rolodex was downloaded/stored, pass in the version of the last information downloaded to prevent redownloading infomration again
+      virtual bool getDownloadedRolodexContacts(                                          // returns "true" if rolodex contacts were obtained, otherwise returns "false"
+                                                bool &outFlushAllRolodexContacts,         // if true, all rolodex contacts for this identity must be flushed out entirely
+                                                String &outVersionDownloaded,             // returns version information of downloaded rolodex contacts
+                                                RolodexContactListPtr &outRolodexContacts    // output list of contacts of rolodex contacts
+                                                ) = 0;
+
       virtual void cancel() = 0;
     };
 
@@ -114,7 +139,10 @@ namespace openpeer
                                           IIdentityPtr identity,
                                           IdentityStates state
                                           ) = 0;
+
       virtual void onIdentityPendingMessageForInnerBrowserWindowFrame(IIdentityPtr identity) = 0;
+
+      virtual void onIdentityRolodexContactsDownloaded(IIdentityPtr identity) = 0;
     };
   }
 }
@@ -124,4 +152,5 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IIdentityPtr, IIdentityPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IIdentity::IdentityStates, IdentityStates)
 ZS_DECLARE_PROXY_METHOD_2(onIdentityStateChanged, IIdentityPtr, IdentityStates)
 ZS_DECLARE_PROXY_METHOD_1(onIdentityPendingMessageForInnerBrowserWindowFrame, IIdentityPtr)
+ZS_DECLARE_PROXY_METHOD_1(onIdentityRolodexContactsDownloaded, IIdentityPtr)
 ZS_DECLARE_PROXY_END()

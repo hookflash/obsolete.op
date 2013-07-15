@@ -49,12 +49,20 @@ namespace openpeer
     {
       static String toDebugString(IIdentityLookupPtr lookup, bool includeCommaPrefix = true);
 
+      struct IdentityLookupInfo
+      {
+        String mIdentityURI;
+        Time mLastUpdated;    // if already have information about this identity, copy the "mLastUpdated" from the IdentityInfo structure, otherwise leave value as Time() if information about this identity is not previously known
+
+        IdentityLookupInfo(const IdentityInfo &); // construct from a previous "IdentityInfo" structure
+      };
+      typedef std::list<IdentityLookupInfo> IdentityLookupInfoList;
+
       static IIdentityLookupPtr create(
                                        IAccountPtr account,
                                        IIdentityLookupDelegatePtr delegate,
-                                       const IdentityURIList &identityURIs,
-                                       const char *identityServiceDomain,
-                                       bool checkForUpdatesOnly   // "true" is a "cheap" server operation; "false" is "expensive" server operation
+                                       const IdentityLookupInfoList &identityLookupInfos,
+                                       const char *identityServiceDomain
                                        );
 
       virtual PUID getID() const = 0;
@@ -67,7 +75,7 @@ namespace openpeer
 
       virtual void cancel() = 0;
 
-      virtual IdentityLookupInfoListPtr getIdentities() const = 0;
+      virtual IdentityInfoListPtr getIdentities() const = 0;
     };
 
     //-------------------------------------------------------------------------

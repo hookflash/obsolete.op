@@ -38,7 +38,12 @@
 #include <openpeer/stack/IServiceIdentity.h>
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
+#include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <openpeer/stack/message/rolodex/RolodexAccessResult.h>
+#include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
+#include <openpeer/stack/message/rolodex/RolodexContactsGetResult.h>
+
 
 #include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
 
@@ -56,8 +61,16 @@ namespace openpeer
       using message::identity::IdentityAccessLockboxUpdateResultPtr;
       using message::identity::IdentityLookupUpdateResult;
       using message::identity::IdentityLookupUpdateResultPtr;
+      using message::identity::IdentityAccessRolodexCredentialsGetResult;
+      using message::identity::IdentityAccessRolodexCredentialsGetResultPtr;
       using message::identity_lookup::IdentityLookupResult;
       using message::identity_lookup::IdentityLookupResultPtr;
+      using message::rolodex::RolodexAccessResult;
+      using message::rolodex::RolodexAccessResultPtr;
+      using message::rolodex::RolodexNamespaceGrantChallengeValidateResult;
+      using message::rolodex::RolodexNamespaceGrantChallengeValidateResultPtr;
+      using message::rolodex::RolodexContactsGetResult;
+      using message::rolodex::RolodexContactsGetResultPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -133,7 +146,11 @@ namespace openpeer
                                      public IServiceNamespaceGrantSessionForServicesQueryDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
                                      public IMessageMonitorResultDelegate<IdentityLookupUpdateResult>,
-                                     public IMessageMonitorResultDelegate<IdentityLookupResult>
+                                     public IMessageMonitorResultDelegate<IdentityAccessRolodexCredentialsGetResult>,
+                                     public IMessageMonitorResultDelegate<IdentityLookupResult>,
+                                     public IMessageMonitorResultDelegate<RolodexAccessResult>,
+                                     public IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>,
+                                     public IMessageMonitorResultDelegate<RolodexContactsGetResult>
       {
       public:
         friend interaction IServiceIdentitySessionFactory;
@@ -215,6 +232,13 @@ namespace openpeer
 
         virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
+
+        virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL);
+        virtual bool getDownloadedRolodexContacts(
+                                                  bool &outFlushAllRolodexContacts,
+                                                  String &outVersionDownloaded,
+                                                  IdentityInfoListPtr &outRolodexContacts
+                                                  );
 
         virtual void cancel();
 
@@ -321,6 +345,21 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAccessRolodexCredentialsGetResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        IdentityAccessRolodexCredentialsGetResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             IdentityAccessRolodexCredentialsGetResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupResult>
         #pragma mark
 
@@ -332,6 +371,54 @@ namespace openpeer
         virtual bool handleMessageMonitorErrorResultReceived(
                                                              IMessageMonitorPtr monitor,
                                                              IdentityLookupResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexAccessResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        RolodexAccessResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             RolodexAccessResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        RolodexNamespaceGrantChallengeValidateResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             RolodexNamespaceGrantChallengeValidateResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexContactsGetResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        RolodexContactsGetResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             RolodexContactsGetResultPtr ignore, // will always be NULL
                                                              message::MessageResultPtr result
                                                              );
 
@@ -355,6 +442,8 @@ namespace openpeer
         bool stepMakeBrowserWindowVisible();
         bool stepIdentityAccessStartNotification();
         bool stepIdentityAccessCompleteNotification();
+        bool stepRolodexCredentialsGet();
+        bool stepRolodexAccess();
         bool stepLockboxAssociation();
         bool stepIdentityLookup();
         bool stepLockboxReady();
@@ -401,7 +490,11 @@ namespace openpeer
 
         IMessageMonitorPtr mIdentityAccessLockboxUpdateMonitor;
         IMessageMonitorPtr mIdentityLookupUpdateMonitor;
+        IMessageMonitorPtr mIdentityAccessRolodexCredentialsGetMonitor;
         IMessageMonitorPtr mIdentityLookupMonitor;
+        IMessageMonitorPtr mRolodexAccessMonitor;
+        IMessageMonitorPtr mRolodexNamespaceGrantChallengeValidateMonitor;
+        IMessageMonitorPtr mRolodexContactsGetMonitor;
 
         LockboxInfo mLockboxInfo;
 
@@ -419,6 +512,10 @@ namespace openpeer
         String mOuterFrameURLUponReload;
 
         DocumentList mPendingMessagesToDeliver;
+
+        // rolodex related
+        bool mIdentityAccessRolodexCredentialsGetIssued;
+        RolodexInfo mRolodexInfo;
       };
 
       //-----------------------------------------------------------------------

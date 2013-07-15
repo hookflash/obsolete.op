@@ -49,10 +49,13 @@ namespace openpeer
     {
       static const char *convertToString(SecureByteBlock &buffer);
 
-      static ElementPtr createFromString(const String &elementStr);
+      static ElementPtr createElement(const String &elementStr);
       static String convertToString(const ElementPtr &element);
 
       static ElementPtr clone(const ElementPtr &element);
+
+      IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element);
+      ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic);
     };
   }
 }

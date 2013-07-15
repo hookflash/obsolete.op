@@ -125,6 +125,8 @@ namespace openpeer
                                      const char *serviceMethodName
                                      ) const = 0;
 
+        virtual bool supportsRolodex() const = 0;
+
         virtual bool isValidSignature(ElementPtr signedElement) const = 0;
 
         virtual bool isValidSignature(
@@ -358,6 +360,8 @@ namespace openpeer
                                      const char *serviceType,
                                      const char *serviceMethodName
                                      ) const;
+
+        virtual bool supportsRolodex() const;
 
         virtual bool isValidSignature(
                                       const String &id,

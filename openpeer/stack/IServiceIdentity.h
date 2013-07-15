@@ -112,6 +112,8 @@ namespace openpeer
 
     interaction IServiceIdentitySession
     {
+      typedef message::IdentityInfoListPtr IdentityInfoListPtr;
+
       enum SessionStates
       {
         SessionState_Pending,
@@ -173,6 +175,13 @@ namespace openpeer
 
       virtual DocumentPtr getNextMessageForInnerBrowerWindowFrame() = 0;
       virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;
+
+      virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL) = 0;  // if a previous version of the rolodex was downloaded/stored, pass in the version of the last information downloaded to prevent redownloading infomration again
+      virtual bool getDownloadedRolodexContacts(                                          // returns "true" if rolodex contacts were obtained, otherwise returns "false"
+                                                bool &outFlushAllRolodexContacts,         // if true, all rolodex contacts for this identity must be flushed out entirely
+                                                String &outVersionDownloaded,             // returns version information of downloaded rolodex contacts
+                                                IdentityInfoListPtr &outRolodexContacts    // output list of contacts of rolodex contacts
+                                                ) = 0;
 
       virtual void cancel() = 0;
     };

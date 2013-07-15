@@ -30,6 +30,7 @@
  */
 
 #include <openpeer/core/internal/core_Helper.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 
 #include <zsLib/XML.h>
 
@@ -61,7 +62,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ElementPtr Helper::createFromString(const String &elementStr)
+      ElementPtr Helper::createElement(const String &elementStr)
       {
         if (!elementStr) return ElementPtr();
 
@@ -91,6 +92,19 @@ namespace openpeer
         if (!element) return ElementPtr();
         return element->clone()->toElement();
       }
+
+      //-----------------------------------------------------------------------
+      IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element)
+      {
+        if (!element) return IPeerFilePublicPtr();
+        return IPeerFilePublic::loadFromElement(element);
+      }
+
+      ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic)
+      {
+        if (!peerFilePublic) return ElementPtr();
+        return peerFilePublic->saveToElement();
+      }
     }
 
     //-------------------------------------------------------------------------
@@ -102,9 +116,9 @@ namespace openpeer
     #pragma mark
 
     //-------------------------------------------------------------------------
-    ElementPtr IHelper::createFromString(const String &elementStr)
+    ElementPtr IHelper::createElement(const String &elementStr)
     {
-      return internal::Helper::createFromString(elementStr);
+      return internal::Helper::createElement(elementStr);
     }
 
     //-------------------------------------------------------------------------

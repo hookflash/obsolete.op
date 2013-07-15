@@ -51,8 +51,7 @@ namespace openpeer
 
       static IContactPtr createFromPeerFilePublic(
                                                   IAccountPtr account,
-                                                  ElementPtr peerFilePublicEl,
-                                                  const char *stableIDIfKnown = NULL // (if known)
+                                                  IPeerFilePublicPtr peerFilePublic
                                                   );
 
       static IContactPtr getForSelf(IAccountPtr account);
@@ -62,11 +61,7 @@ namespace openpeer
       virtual bool isSelf() const = 0;
 
       virtual String getPeerURI() const = 0;
-      virtual String getFindSecret() const = 0;
-      virtual String getStableUniqueID() const = 0;                                 // get stable unique ID (if known - can only be known via identity lookup)
-
-      virtual bool hasPeerFilePublic() const = 0;
-      virtual ElementPtr savePeerFilePublic() const = 0;
+      virtual IPeerFilePublicPtr getPeerFilePublic() const = 0;
 
       virtual IAccountPtr getAssociatedAccount() const = 0;
 

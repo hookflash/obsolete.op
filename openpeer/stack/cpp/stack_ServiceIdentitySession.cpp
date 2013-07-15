@@ -37,7 +37,11 @@
 #include <openpeer/stack/message/identity/IdentityAccessCompleteNotify.h>
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateRequest.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateRequest.h>
+#include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetRequest.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
+#include <openpeer/stack/message/rolodex/RolodexAccessRequest.h>
+#include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateRequest.h>
+#include <openpeer/stack/message/rolodex/RolodexContactsGetRequest.h>
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/IHelper.h>
@@ -91,8 +95,16 @@ namespace openpeer
       using message::identity::IdentityAccessLockboxUpdateRequestPtr;
       using message::identity::IdentityLookupUpdateRequest;
       using message::identity::IdentityLookupUpdateRequestPtr;
+      using message::identity::IdentityAccessRolodexCredentialsGetRequest;
+      using message::identity::IdentityAccessRolodexCredentialsGetRequestPtr;
       using message::identity_lookup::IdentityLookupRequest;
       using message::identity_lookup::IdentityLookupRequestPtr;
+      using message::rolodex::RolodexAccessRequest;
+      using message::rolodex::RolodexAccessRequestPtr;
+      using message::rolodex::RolodexNamespaceGrantChallengeValidateRequest;
+      using message::rolodex::RolodexNamespaceGrantChallengeValidateRequestPtr;
+      using message::rolodex::RolodexContactsGetRequest;
+      using message::rolodex::RolodexContactsGetRequestPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -298,7 +310,8 @@ namespace openpeer
         mNeedsBrowserWindowVisible(false),
         mIdentityAccessStartNotificationSent(false),
         mLockboxUpdated(false),
-        mIdentityLookupUpdated(false)
+        mIdentityLookupUpdated(false),
+        mIdentityAccessRolodexCredentialsGetIssued(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -631,6 +644,25 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void ServiceIdentitySession::startRolodexDownload(const char *inLastDownloadedVersion)
+      {
+#define TODO_IMPLEMENT_startRolodexDownload 1
+#define TODO_IMPLEMENT_startRolodexDownload 2
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::getDownloadedRolodexContacts(
+                                                                bool &outFlushAllRolodexContacts,
+                                                                String &outVersionDownloaded,
+                                                                IdentityInfoListPtr &outRolodexContacts
+                                                                )
+      {
+#define TODO_IMPLEMENT_getDownloadedRolodexContacts 1
+#define TODO_IMPLEMENT_getDownloadedRolodexContacts 2
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
       void ServiceIdentitySession::cancel()
       {
         AutoRecursiveLock lock(getLock());
@@ -652,6 +684,11 @@ namespace openpeer
         if (mIdentityLookupUpdateMonitor) {
           mIdentityLookupUpdateMonitor->cancel();
           mIdentityLookupUpdateMonitor.reset();
+        }
+
+        if (mIdentityAccessRolodexCredentialsGetMonitor) {
+          mIdentityAccessRolodexCredentialsGetMonitor->cancel();
+          mIdentityAccessRolodexCredentialsGetMonitor.reset();
         }
 
         if (mIdentityLookupMonitor) {
@@ -941,7 +978,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLoginCompleteResult>
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityLookupUpdateResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -986,6 +1023,56 @@ namespace openpeer
         return true;
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<IdentityAccessRolodexCredentialsGetResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
+                                                                      IMessageMonitorPtr monitor,
+                                                                      IdentityAccessRolodexCredentialsGetResultPtr result
+                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mIdentityAccessRolodexCredentialsGetMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        mIdentityAccessRolodexCredentialsGetMonitor->cancel();
+        mIdentityAccessRolodexCredentialsGetMonitor.reset();
+
+        mRolodexInfo = result->rolodexInfo();
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
+                                                                           IMessageMonitorPtr monitor,
+                                                                           IdentityAccessRolodexCredentialsGetResultPtr ignore, // will always be NULL
+                                                                           message::MessageResultPtr result
+                                                                           )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mIdentityAccessRolodexCredentialsGetMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        setError(result->errorCode(), result->errorReason());
+
+        ZS_LOG_DEBUG(log("identity rolodex credentials failure"))
+
+        cancel();
+        return true;
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1086,6 +1173,164 @@ namespace openpeer
         cancel();
         return true;
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexAccessResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
+                                                                      IMessageMonitorPtr monitor,
+                                                                      RolodexAccessResultPtr result
+                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexAccessMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        mRolodexAccessMonitor->cancel();
+        mRolodexAccessMonitor.reset();
+
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived 1
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived 2
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
+                                                                           IMessageMonitorPtr monitor,
+                                                                           RolodexAccessResultPtr ignore, // will always be NULL
+                                                                           message::MessageResultPtr result
+                                                                           )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexAccessMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        setError(result->errorCode(), result->errorReason());
+
+        ZS_LOG_DEBUG(log("rolodex access failure"))
+
+        cancel();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
+                                                                      IMessageMonitorPtr monitor,
+                                                                      RolodexNamespaceGrantChallengeValidateResultPtr result
+                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexNamespaceGrantChallengeValidateMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        mRolodexNamespaceGrantChallengeValidateMonitor->cancel();
+        mRolodexNamespaceGrantChallengeValidateMonitor.reset();
+
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2 1
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2 2
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
+                                                                           IMessageMonitorPtr monitor,
+                                                                           RolodexNamespaceGrantChallengeValidateResultPtr ignore, // will always be NULL
+                                                                           message::MessageResultPtr result
+                                                                           )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexNamespaceGrantChallengeValidateMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        setError(result->errorCode(), result->errorReason());
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2a 1
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2a 2
+
+        ZS_LOG_DEBUG(log("rolodex namespace grant challenge failure"))
+
+        cancel();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+#pragma mark
+#pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>
+#pragma mark
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorResultReceived(
+                                                                      IMessageMonitorPtr monitor,
+                                                                      RolodexContactsGetResultPtr result
+                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexContactsGetMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+        mRolodexContactsGetMonitor->cancel();
+        mRolodexContactsGetMonitor.reset();
+
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part3 1
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part3 2
+
+        step();
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::handleMessageMonitorErrorResultReceived(
+                                                                           IMessageMonitorPtr monitor,
+                                                                           RolodexContactsGetResultPtr ignore, // will always be NULL
+                                                                           message::MessageResultPtr result
+                                                                           )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mRolodexContactsGetMonitor) {
+          ZS_LOG_WARNING(Detail, log("monitor notified for obsolete request"))
+          return false;
+        }
+
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part4 1
+#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part4 2
+
+        setError(result->errorCode(), result->errorReason());
+
+        ZS_LOG_DEBUG(log("rolodex contacts get failure"))
+
+        cancel();
+        return true;
+      }
       
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1128,6 +1373,10 @@ namespace openpeer
                Helper::getDebugValue("grant wait id", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("identity access rolodex credentials get monitor", mIdentityAccessRolodexCredentialsGetMonitor ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("rolodex access monitor", mRolodexAccessMonitor ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("rolodex grant monitor", mRolodexNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("rolodex contacts get monitor", mRolodexContactsGetMonitor ? String("true") : String(), firstTime) +
                (mLockboxInfo.hasData() ? mLockboxInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
@@ -1138,7 +1387,9 @@ namespace openpeer
                Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
                (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 1 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime);
+               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 1 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("rolodex credentials get issued", mIdentityAccessRolodexCredentialsGetIssued ? String("true") : String(), firstTime) +
+               (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String());
       }
 
       //-----------------------------------------------------------------------
@@ -1163,6 +1414,8 @@ namespace openpeer
         if (!stepIdentityAccessStartNotification()) return;
         if (!stepMakeBrowserWindowVisible()) return;
         if (!stepIdentityAccessCompleteNotification()) return;
+        if (!stepRolodexCredentialsGet()) return;
+        if (!stepRolodexAccess()) return;
         if (!stepLockboxAssociation()) return;
         if (!stepIdentityLookup()) return;
         if (!stepLockboxReady()) return;
@@ -1256,8 +1509,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepGrantCheck()
       {
-        if (mBrowserWindowReady) {
-          ZS_LOG_DEBUG(log("already informed browser window ready thus no need to make sure grant wait lock is obtained"))
+        if (mBrowserWindowClosed) {
+          ZS_LOG_DEBUG(log("already informed browser window closed thus no need to make sure grant wait lock is obtained"))
           return true;
         }
 
@@ -1385,6 +1638,62 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("waiting for identity access complete notification"))
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepRolodexCredentialsGet()
+      {
+        if (mRolodexInfo.mServerToken.hasData()) {
+          ZS_LOG_DEBUG(log("already have rolodex server token credentials"))
+          return true;
+        }
+
+        if (mIdentityAccessRolodexCredentialsGetMonitor) {
+          ZS_LOG_DEBUG(log("rolodex credentials get issued (allowing other requests to continue)"))
+          return true;
+        }
+
+        if (mIdentityAccessRolodexCredentialsGetIssued) {
+          ZS_LOG_DEBUG(log("rolodex credentials get did not obtain credentials (skipping)"))
+          return true;
+        }
+
+        mIdentityAccessRolodexCredentialsGetIssued = true;
+
+        if (!mActiveBootstrappedNetwork->forServices().supportsRolodex()) {
+          ZS_LOG_WARNING(Detail, log("rolodex service not supported on this domain") + ", domain=" + mActiveBootstrappedNetwork->forServices().getDomain())
+          return true;
+        }
+
+        IdentityAccessRolodexCredentialsGetRequestPtr request = IdentityAccessRolodexCredentialsGetRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->identityInfo(mIdentityInfo);
+
+        ZS_LOG_DEBUG(log("fetching rolodex credentials"))
+
+        mIdentityAccessRolodexCredentialsGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessRolodexCredentialsGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-rolodex-credentials-get", request);
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepRolodexAccess()
+      {
+        if (mIdentityAccessRolodexCredentialsGetMonitor) {
+          ZS_LOG_DEBUG(log("rolodex credentials still pending (allowing other requests to continue)"))
+          return true;
+        }
+
+        if (!mActiveBootstrappedNetwork->forServices().supportsRolodex()) {
+          ZS_LOG_WARNING(Detail, log("rolodex service not supported on this domain") + ", domain=" + mActiveBootstrappedNetwork->forServices().getDomain())
+          return true;
+        }
+
+#define TODO_COMPLETE_THIS_stepRolodexAccess 1
+#define TODO_COMPLETE_THIS_stepRolodexAccess 2
+
+        return true;
       }
 
       //-----------------------------------------------------------------------

@@ -78,8 +78,8 @@ namespace openpeer
         typedef std::map<Domain, IBootstrappedNetworkPtr> BootstrappedNetworkMap;
 
         typedef String Identifier;
-        typedef bool Bogus;
-        typedef std::map<Identifier, Bogus> IdentifierMap;
+        typedef Time LastUpdated;
+        typedef std::map<Identifier, LastUpdated> IdentifierMap;
 
         typedef String StringConcatinatedIdentifiers;
 
@@ -99,13 +99,12 @@ namespace openpeer
                        IMessageQueuePtr queue,
                        AccountPtr account,
                        IIdentityLookupDelegatePtr delegate,
-                       const char *identityServiceDomain,
-                       bool checkForUpdatesOnly
+                       const char *identityServiceDomain
                        );
-        
+
         IdentityLookup(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
-        void init(const IdentityURIList &identityURIs);
+        void init(const IdentityLookupInfoList &identities);
 
       public:
         ~IdentityLookup();
@@ -123,9 +122,8 @@ namespace openpeer
         static IdentityLookupPtr create(
                                         IAccountPtr account,
                                         IIdentityLookupDelegatePtr delegate,
-                                        const IdentityURIList &identityURIs,
-                                        const char *identityServiceDomain,
-                                        bool checkForUpdatesOnly
+                                        const IdentityLookupInfoList &identities,
+                                        const char *identityServiceDomain
                                         );
 
         virtual PUID getID() const {return mID;}
@@ -138,7 +136,7 @@ namespace openpeer
 
         virtual void cancel();
 
-        virtual IdentityLookupInfoListPtr getIdentities() const;
+        virtual IdentityInfoListPtr getIdentities() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -193,7 +191,8 @@ namespace openpeer
         void prepareIdentity(
                              const String &domain,
                              const String &type,
-                             const String &identifier
+                             const String &identifier,
+                             const Time &lastUpdated
                              );
 
         void step();
@@ -217,7 +216,6 @@ namespace openpeer
         String mErrorReason;
 
         String mIdentityServiceDomain;
-        bool mCheckForUpdatesOnly;
 
         bool mAlreadyIssuedForProviderDomain;
 
@@ -230,7 +228,7 @@ namespace openpeer
 
         DomainOrLegacyTypeToDomainMap mTypeToDomainMap;
 
-        IdentityLookupInfoList mResults;
+        IdentityInfoList mResults;
 
         FailedBootstrappedNetworkDomainMap mFailedBootstrappedNetworks;
       };
@@ -245,14 +243,15 @@ namespace openpeer
 
       interaction IIdentityLookupFactory
       {
+        typedef IIdentityLookup::IdentityLookupInfoList IdentityLookupInfoList;
+
         static IIdentityLookupFactory &singleton();
 
         virtual IdentityLookupPtr create(
                                          IAccountPtr account,
                                          IIdentityLookupDelegatePtr delegate,
-                                         const IdentityURIList &identityURIs,
-                                         const char *identityServiceDomain,
-                                         bool checkForUpdatesOnly
+                                         const IdentityLookupInfoList &identities,
+                                         const char *identityServiceDomain
                                          );
       };
     }

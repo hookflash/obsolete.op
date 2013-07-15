@@ -305,6 +305,75 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void Identity::startRolodexDownload(const char *inLastDownloadedVersion)
+      {
+        mSession->startRolodexDownload(inLastDownloadedVersion);
+      }
+
+      //-----------------------------------------------------------------------
+      bool Identity::getDownloadedRolodexContacts(
+                                                  bool &outFlushAllRolodexContacts,
+                                                  String &outVersionDownloaded,
+                                                  RolodexContactListPtr &outRolodexContacts
+                                                  )
+      {
+        typedef stack::message::IdentityInfo StackIdentityInfo;
+        typedef stack::message::IdentityInfoList StackIdentityInfoList;
+        typedef stack::message::IdentityInfoListPtr StackIdentityInfoListPtr;
+
+        StackIdentityInfoListPtr identities;
+        bool result = mSession->getDownloadedRolodexContacts(
+                                                             outFlushAllRolodexContacts,
+                                                             outVersionDownloaded,
+                                                             identities
+                                                             );
+        if (!result) {
+          outRolodexContacts = RolodexContactListPtr();
+          return result;
+        }
+
+        RolodexContactListPtr rolodexInfoList(new RolodexContactList);
+        outRolodexContacts = rolodexInfoList;
+
+        ZS_THROW_BAD_STATE_IF(!identities)
+
+        for (StackIdentityInfoList::iterator iter = identities->begin(); iter != identities->end(); ++iter)
+        {
+          const StackIdentityInfo &identityInfo = (*iter);
+
+          RolodexContact rolodexInfo;
+          switch (identityInfo.mDisposition) {
+            case StackIdentityInfo::Disposition_NA:     rolodexInfo.mDisposition = RolodexContact::Disposition_NA; break;
+            case StackIdentityInfo::Disposition_Update: rolodexInfo.mDisposition = RolodexContact::Disposition_Update; break;
+            case StackIdentityInfo::Disposition_Remove: rolodexInfo.mDisposition = RolodexContact::Disposition_Remove; break;
+          }
+
+          rolodexInfo.mIdentityURI = identityInfo.mURI;
+          rolodexInfo.mIdentityProvider = identityInfo.mProvider;
+
+          rolodexInfo.mName = identityInfo.mName;
+          rolodexInfo.mProfileURL = identityInfo.mProfile;
+          rolodexInfo.mVProfileURL = identityInfo.mVProfile;
+
+          for (StackIdentityInfo::AvatarList::const_iterator avIter = identityInfo.mAvatars.begin();  avIter != identityInfo.mAvatars.end(); ++avIter)
+          {
+            const StackIdentityInfo::Avatar &resultAvatar = (*avIter);
+            RolodexContact::Avatar avatar;
+
+            avatar.mName = resultAvatar.mName;
+            avatar.mURL = resultAvatar.mURL;
+            avatar.mWidth = resultAvatar.mWidth;
+            avatar.mHeight = resultAvatar.mHeight;
+            rolodexInfo.mAvatars.push_back(avatar);
+          }
+
+          rolodexInfoList->push_back(rolodexInfo);
+        }
+
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

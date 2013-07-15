@@ -233,6 +233,8 @@ namespace openpeer
                        );
       };
       typedef std::list<IdentityInfo> IdentityInfoList;
+      typedef boost::shared_ptr<IdentityInfoList> IdentityInfoListPtr;
+      typedef boost::weak_ptr<IdentityInfoList> IdentityInfoListWeakPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

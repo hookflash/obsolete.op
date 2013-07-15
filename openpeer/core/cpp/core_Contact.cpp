@@ -61,11 +61,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       ContactPtr IContactForAccount::createFromPeer(
                                                     AccountPtr account,
-                                                    IPeerPtr peer,
-                                                    const char *stableIDIfKnown
+                                                    IPeerPtr peer
                                                     )
       {
-        return IContactFactory::singleton().createFromPeer(account, peer, stableIDIfKnown);
+        return IContactFactory::singleton().createFromPeer(account, peer);
       }
 
       //-----------------------------------------------------------------------
@@ -92,24 +91,6 @@ namespace openpeer
       #pragma mark
       #pragma mark IContactForCall
       #pragma mark
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IContactForIdentityLookup
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      ContactPtr IContactForIdentityLookup::createFromPeerFilePublic(
-                                                                     IAccountPtr account,
-                                                                     IPeerFilePublicPtr peerFilePublic,
-                                                                     const char *stableIDIfKnown
-                                                                     )
-      {
-        return IContactFactory::singleton().createFromPeerFilePublic(Account::convert(account), peerFilePublic, stableIDIfKnown);
-      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -164,25 +145,41 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       ContactPtr Contact::createFromPeerFilePublic(
-                                                   IAccountPtr inAccount,
-                                                   ElementPtr peerFilePublicEl,
-                                                   const char *stableID
+                                                   AccountPtr account,
+                                                   IPeerFilePublicPtr peerFilePublic
                                                    )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
-        ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublicEl)
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
+        stack::IAccountPtr stackAcount = account->forContact().getStackAccount();
 
-        AccountPtr account = Account::convert(inAccount);
-
-        IPeerFilePublicPtr peerFilePublic = IPeerFilePublic::loadFromElement(peerFilePublicEl);
-        if (!peerFilePublic) {
-          ZS_LOG_ERROR(Detail, "failed to load peer file public from element")
+        if (!stackAcount) {
+          ZS_LOG_ERROR(Detail, "stack account is not ready")
           return ContactPtr();
         }
 
-        return IContactFactory::singleton().createFromPeerFilePublic(account, peerFilePublic, stableID);
-      }
+        IPeerPtr peer = IPeer::create(stackAcount, peerFilePublic);
+        if (!peer) {
+          ZS_LOG_ERROR(Detail, "failed to create peer object")
+          return ContactPtr();
+        }
 
+        AutoRecursiveLock lock(account->forContact().getLock());
+
+        String peerURI = peer->getPeerURI();
+        ContactPtr existingPeer = account->forContact().findContact(peerURI);
+        if (existingPeer) {
+          return existingPeer;
+        }
+
+        ContactPtr pThis(new Contact);
+        pThis->mThisWeak = pThis;
+        pThis->mAccount = account;
+        pThis->mPeer = peer;
+        pThis->init();
+        account->forContact().notifyAboutContact(pThis);
+        return pThis;
+      }
+      
       //-----------------------------------------------------------------------
       ContactPtr Contact::getForSelf(IAccountPtr inAccount)
       {
@@ -211,36 +208,9 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      String Contact::getFindSecret() const
-      {
-        IPeerFilePublicPtr peerFilePublic = mPeer->getPeerFilePublic();
-        if (peerFilePublic) {
-          return peerFilePublic->getFindSecret();
-        }
-        AutoRecursiveLock lock(getLock());
-        return mFindSecret;
-      }
-
-      //-----------------------------------------------------------------------
-      String Contact::getStableUniqueID() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mStableID;
-      }
-
-      //-----------------------------------------------------------------------
-      bool Contact::hasPeerFilePublic() const
+      IPeerFilePublicPtr Contact::getPeerFilePublic() const
       {
         return mPeer->getPeerFilePublic();
-      }
-
-      //-----------------------------------------------------------------------
-      ElementPtr Contact::savePeerFilePublic() const
-      {
-        IPeerFilePublicPtr peerFilePublic = mPeer->getPeerFilePublic();
-        if (!peerFilePublic) return ElementPtr();
-
-        return peerFilePublic->saveToElement();
       }
 
       //-----------------------------------------------------------------------
@@ -273,8 +243,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       ContactPtr Contact::createFromPeer(
                                          AccountPtr account,
-                                         IPeerPtr peer,
-                                         const char *stableIDIfKnown
+                                         IPeerPtr peer
                                          )
       {
         stack::IAccountPtr stackAcount = account->forContact().getStackAccount();
@@ -288,9 +257,6 @@ namespace openpeer
 
         ContactPtr existingPeer = account->forContact().findContact(peer->getPeerURI());
         if (existingPeer) {
-          if (existingPeer->mStableID.isEmpty()) {
-            existingPeer->mStableID = String(stableIDIfKnown);
-          }
           return existingPeer;
         }
 
@@ -298,7 +264,6 @@ namespace openpeer
         pThis->mThisWeak = pThis;
         pThis->mAccount = account;
         pThis->mPeer = peer;
-        pThis->mStableID = String(stableIDIfKnown);
         pThis->init();
         account->forContact().notifyAboutContact(pThis);
         return pThis;
@@ -311,60 +276,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IPeerFilePublicPtr Contact::getPeerFilePublic() const
-      {
-        return mPeer->getPeerFilePublic();
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark Contact => IContactForConversationThread
       #pragma mark
-
-      //-----------------------------------------------------------------------
-      ContactPtr Contact::createFromPeerFilePublic(
-                                                   AccountPtr account,
-                                                   IPeerFilePublicPtr peerFilePublic,
-                                                   const char *stableID
-                                                   )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
-        stack::IAccountPtr stackAcount = account->forContact().getStackAccount();
-
-        if (!stackAcount) {
-          ZS_LOG_ERROR(Detail, "stack account is not ready")
-          return ContactPtr();
-        }
-
-        IPeerPtr peer = IPeer::create(stackAcount, peerFilePublic);
-        if (!peer) {
-          ZS_LOG_ERROR(Detail, "failed to create peer object")
-          return ContactPtr();
-        }
-
-        AutoRecursiveLock lock(account->forContact().getLock());
-
-        String peerURI = peer->getPeerURI();
-        ContactPtr existingPeer = account->forContact().findContact(peerURI);
-        if (existingPeer) {
-          if (existingPeer->mStableID.isEmpty()) {
-            existingPeer->mStableID = String(stableID);
-          }
-          return existingPeer;
-        }
-
-        ContactPtr pThis(new Contact);
-        pThis->mThisWeak = pThis;
-        pThis->mAccount = account;
-        pThis->mPeer = peer;
-        pThis->mStableID = String(stableID);
-        pThis->init();
-        account->forContact().notifyAboutContact(pThis);
-        return pThis;
-      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -401,9 +318,7 @@ namespace openpeer
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               IPeer::toDebugString(mPeer, false) + (isSelf() ? String(" (self)") : String()) +
-               Helper::getDebugValue("stable ID", mStableID, firstTime) +
-               Helper::getDebugValue("find secret", mFindSecret, firstTime);
+               IPeer::toDebugString(mPeer, false) + (isSelf() ? String(" (self)") : String());
       }
 
       //-----------------------------------------------------------------------
@@ -437,13 +352,13 @@ namespace openpeer
     //-------------------------------------------------------------------------
     IContactPtr IContact::createFromPeerFilePublic(
                                                    IAccountPtr account,
-                                                   ElementPtr peerFilePublicEl,
-                                                   const char *stableIDIfKnown
+                                                   IPeerFilePublicPtr peerFilePublic
                                                    )
     {
-      return internal::IContactFactory::singleton().createFromPeerFilePublic(account, peerFilePublicEl, stableIDIfKnown);
+      return internal::IContactFactory::singleton().createFromPeerFilePublic(internal::Account::convert(account), peerFilePublic);
     }
 
+    //-------------------------------------------------------------------------
     IContactPtr IContact::getForSelf(IAccountPtr account)
     {
       return internal::IContactFactory::singleton().getForSelf(account);

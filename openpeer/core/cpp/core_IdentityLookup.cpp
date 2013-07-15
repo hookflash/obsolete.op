@@ -38,6 +38,7 @@
 #include <openpeer/stack/IServiceIdentity.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 
+#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
 
@@ -58,8 +59,9 @@ namespace openpeer
     {
       using zsLib::Stringize;
 
-      using stack::message::IdentityInfoList;
-      using stack::message::IdentityInfo;
+      typedef stack::message::IdentityInfoList StackIdentityInfoList;
+      typedef stack::message::IdentityInfo StackIdentityInfo;
+      using stack::message::IMessageHelper;
       using stack::message::identity_lookup::IdentityLookupCheckRequest;
       using stack::message::identity_lookup::IdentityLookupCheckRequestPtr;
       using stack::message::identity_lookup::IdentityLookupRequest;
@@ -102,8 +104,7 @@ namespace openpeer
                                      IMessageQueuePtr queue,
                                      AccountPtr account,
                                      IIdentityLookupDelegatePtr delegate,
-                                     const char *identityServiceDomain,
-                                     bool checkForUpdatesOnly
+                                     const char *identityServiceDomain
                                      ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
@@ -111,28 +112,28 @@ namespace openpeer
         mDelegate(IIdentityLookupDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate)),
         mErrorCode(0),
         mIdentityServiceDomain(identityServiceDomain),
-        mCheckForUpdatesOnly(checkForUpdatesOnly),
         mAlreadyIssuedForProviderDomain(false)
       {
         ZS_LOG_DEBUG(log("created"))
       }
 
       //-----------------------------------------------------------------------
-      void IdentityLookup::init(const IdentityURIList &identityURIs)
+      void IdentityLookup::init(const IdentityLookupInfoList &identities)
       {
         AutoRecursiveLock lock(getLock());
 
-        for (IdentityURIList::const_iterator iter = identityURIs.begin(); iter != identityURIs.end(); ++iter) {
-          const IdentityURI &identityURI = (*iter);
+        for (IdentityLookupInfoList::const_iterator iter = identities.begin(); iter != identities.end(); ++iter) {
+          const String &identityURI = (*iter).mIdentityURI;
+          const Time &lastUpdated = (*iter).mLastUpdated;
 
           if (!IServiceIdentity::isValid(identityURI)) {
             ZS_LOG_WARNING(Detail, log("identity not valid") + ", identity=" + identityURI)
             continue;
           }
 
-          String domain;
+          String domainOrType;
           String identifier;
-          if (!IServiceIdentity::splitURI(identityURI, domain, identifier)) {
+          if (!IServiceIdentity::splitURI(identityURI, domainOrType, identifier)) {
             ZS_LOG_WARNING(Detail, log("failed to parse identity") + ", identity=" + identityURI)
             continue;
           }
@@ -143,9 +144,9 @@ namespace openpeer
           }
 
           if (IServiceIdentity::isLegacy(identityURI)) {
-            prepareIdentity(mIdentityServiceDomain, domain, identifier);
+            prepareIdentity(mIdentityServiceDomain, domainOrType, identifier, lastUpdated);
           } else {
-            prepareIdentity(domain, domain, identifier);
+            prepareIdentity(domainOrType, domainOrType, identifier, lastUpdated);
           }
         }
 
@@ -188,9 +189,6 @@ namespace openpeer
           mSafeCharDomains[type] = String() + safeChar;
         }
 
-        // no longer needed
-        mDomainOrLegacyTypeIdentifiers.clear();
-
         // we now have a list of domains and a list types/identifiers
         step();
       }
@@ -230,9 +228,8 @@ namespace openpeer
       IdentityLookupPtr IdentityLookup::create(
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
-                                               const IdentityURIList &identityURIs,
-                                               const char *identityServiceDomain,
-                                               bool checkForUpdatesOnly
+                                               const IdentityLookupInfoList &identities,
+                                               const char *identityServiceDomain
                                                )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
@@ -241,9 +238,9 @@ namespace openpeer
 
         ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(identityServiceDomain))
 
-        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain, checkForUpdatesOnly));
+        IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain));
         pThis->mThisWeak = pThis;
-        pThis->init(identityURIs);
+        pThis->init(identities);
         return pThis;
       }
 
@@ -299,14 +296,14 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IdentityLookupInfoListPtr IdentityLookup::getIdentities() const
+      IdentityInfoListPtr IdentityLookup::getIdentities() const
       {
         AutoRecursiveLock lock(getLock());
-        IdentityLookupInfoListPtr result(new IdentityLookupInfoList);
+        IdentityInfoListPtr result(new IdentityInfoList);
 
-        for (IdentityLookupInfoList::const_iterator iter = mResults.begin(); iter != mResults.end(); ++iter)
+        for (IdentityInfoList::const_iterator iter = mResults.begin(); iter != mResults.end(); ++iter)
         {
-          const IdentityLookupInfo &info = (*iter);
+          const IdentityInfo &info = (*iter);
           ZS_LOG_TRACE(log("found result") + ", identity=" + info.mIdentityURI)
           result->push_back(info);
         }
@@ -403,7 +400,7 @@ namespace openpeer
         // find all identities using this domain
         for (DomainOrLegacyTypeToDomainMap::iterator iter = mTypeToDomainMap.begin(); iter != mTypeToDomainMap.end(); ++iter)
         {
-          const String &type = (*iter).first;
+          const String &domainOrType = (*iter).first;
           String &domain = (*iter).second;
 
           bool lookupThisDomain = (network->getDomain() == domain);
@@ -419,11 +416,11 @@ namespace openpeer
           }
 
           if (lookupThisDomain) {
-            ZS_LOG_DEBUG(log("will perform lookup on type") + ", type=" + type)
+            ZS_LOG_DEBUG(log("will perform lookup on type") + ", type/domain=" + domainOrType)
 
             // this type uses this domain
-            IdentifierSafeCharDomainLegacyTypeMap::iterator foundConcat = mConcatDomains.find(type);
-            IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafeChar = mSafeCharDomains.find(type);
+            IdentifierSafeCharDomainLegacyTypeMap::iterator foundConcat = mConcatDomains.find(domainOrType);
+            IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafeChar = mSafeCharDomains.find(domainOrType);
 
             ZS_THROW_BAD_STATE_IF(foundConcat == mConcatDomains.end())
             ZS_THROW_BAD_STATE_IF(foundSafeChar == mSafeCharDomains.end())
@@ -432,12 +429,12 @@ namespace openpeer
             const String &splitChar = (*foundSafeChar).second;
 
             if (identifiers.isEmpty()) {
-              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + network->getDomain() + ", type=" + type)
+              ZS_LOG_WARNING(Detail, log("no identifiers found for this domain/type") + ", domain=" + network->getDomain() + ", type/domain=" + domainOrType)
               continue;
             }
 
             Provider provider;
-            provider.mBase = IServiceIdentity::joinURI(type, "");
+            provider.mBase = IServiceIdentity::joinURI(domainOrType, "");
             provider.mSeparator = splitChar;
             provider.mIdentities = identifiers;
 
@@ -452,23 +449,12 @@ namespace openpeer
         mFailedBootstrappedNetworks.clear();
 
         if (providers.size() > 0) {
-          IMessageMonitorPtr monitor;
+          // let's issue a request to discover these identities
+          IdentityLookupCheckRequestPtr request = IdentityLookupCheckRequest::create();
+          request->domain(network->getDomain());
+          request->providers(providers);
 
-          if (mCheckForUpdatesOnly) {
-            // let's issue a request to discover these identities
-            IdentityLookupCheckRequestPtr request = IdentityLookupCheckRequest::create();
-            request->domain(network->getDomain());
-            request->providers(providers);
-
-            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
-          } else {
-            // let's issue a request to discover these identities
-            IdentityLookupRequestPtr request = IdentityLookupRequest::create();
-            request->domain(network->getDomain());
-            request->providers(providers);
-
-            monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
-          }
+          IMessageMonitorPtr monitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupCheckResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup-check", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
 
           if (!monitor) {
             ZS_LOG_ERROR(Detail, log("failed to create monitor for request"))
@@ -508,23 +494,112 @@ namespace openpeer
 
         mMonitors.erase(found);
 
-        const IdentityInfoList &resultInfos = result->identities();
+        IdentityLookupCheckRequestPtr originalRequest = IdentityLookupCheckRequest::convert(monitor->getMonitoredMessage());
+        ZS_THROW_BAD_STATE_IF(!originalRequest)
 
-        for (IdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
+        String originalDomain = originalRequest->domain();
+        ZS_THROW_BAD_STATE_IF(!stack::IHelper::isValidDomain(originalDomain))
+
+        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(originalDomain);
+        ZS_THROW_BAD_STATE_IF(!originalRequest)
+
+        const StackIdentityInfoList &resultInfos = result->identities();
+
+        typedef IdentityLookupCheckRequest::Provider Provider;
+        typedef IdentityLookupCheckRequest::ProviderList ProviderList;
+
+        const ProviderList &originalRequestProviders = originalRequest->providers();
+
+        ProviderList providers;
+
+        for (StackIdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
         {
-          const IdentityInfo &resultInfo = (*iter);
+          const StackIdentityInfo &resultInfo = (*iter);
 
-          if (!resultInfo.mPeerFilePublic) {
-            ZS_LOG_WARNING(Detail, log("peer URI found in result not valid") + resultInfo.getDebugValueString())
+          String domainOrType;
+          String identifier;
+          if (!IServiceIdentity::splitURI(resultInfo.mURI, domainOrType, identifier)) {
+            ZS_LOG_ERROR(Detail, log("failed to split an identity") + ", identity url=" + resultInfo.mURI)
             continue;
           }
 
-          IdentityLookupInfo info;
+          IdentifierDomainOrLegacyTypeMap::iterator foundType = mDomainOrLegacyTypeIdentifiers.find(domainOrType);
+          if (foundType == mDomainOrLegacyTypeIdentifiers.end()) {
+            ZS_LOG_ERROR(Detail, log("failed to find previous known last update for identity") + ", identity url=" + resultInfo.mURI)
+            continue;
+          }
 
-          info.mIdentityURI = resultInfo.mURI;
-          info.mIdentityProvider = resultInfo.mProvider;
+          IdentifierMap &identifiers = (*foundType).second;
+          IdentifierMap::iterator foundIdentifier = identifiers.find(identifier);
+          if (foundIdentifier == identifiers.end()) {
+            ZS_LOG_ERROR(Detail, log("failed to find previous identifier in identitifers map") + ", identity url=" + resultInfo.mURI)
+            continue;
+          }
 
-          mResults.push_back(info);
+          Time lastKnownUpdate = (*foundIdentifier).second;
+
+          if (lastKnownUpdate == resultInfo.mUpdated) {
+            ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity url=" + resultInfo.mURI + ", last updated=" + IMessageHelper::timeToString(resultInfo.mUpdated))
+
+            // nothing about this identity has changed since last time
+            IdentityInfo info;
+
+            info.mIdentityURI = resultInfo.mURI;
+            info.mIdentityProvider = resultInfo.mProvider;
+            info.mLastUpdated = resultInfo.mUpdated;
+
+            mResults.push_back(info);
+            continue;
+          }
+
+          String base = IServiceIdentity::joinURI(domainOrType, "");
+
+          bool found = false;
+
+          // scope: see if a provider for the type/domain has already beena added before, if so append the identifier to the list
+          {
+            for (ProviderList::iterator provIter = providers.begin(); provIter != providers.end(); ++provIter) {
+              Provider &provider = (*provIter);
+              if (base == provider.mBase) {
+                // correct base to use, add identifier
+                provider.mIdentities += provider.mSeparator + identifier;
+                found = true;
+                break;
+              }
+            }
+          }
+
+          if (!found) {
+            // this provider has not been seen before - find a template to base it upon from the last issued request
+            for (ProviderList::const_iterator provIter = originalRequestProviders.begin(); provIter != originalRequestProviders.end(); ++provIter) {
+              const Provider &provider = (*provIter);
+              if (base == provider.mBase) {
+                // found correct template for a provider to use
+                Provider newProvider(provider);
+                newProvider.mIdentities = identifier; // only need to lookup this one identifier (some more may be found later)
+                providers.push_back(newProvider);
+                found = true;
+                break;
+              }
+            }
+          }
+
+          if (!found) {
+            ZS_LOG_ERROR(Detail, log("failed to find a previous provider base that can satisfy this identifier's type/domain") + ", identity url=" + resultInfo.mURI)
+            continue;
+          }
+
+          ZS_LOG_TRACE(log("will perform new detailed lookup for identity") + ", identity" + resultInfo.mURI)
+        }
+
+        if (providers.size() > 0) {
+          // let's issue a request to discover these identities
+          IdentityLookupRequestPtr request = IdentityLookupRequest::create();
+          request->domain(originalDomain);
+          request->providers(providers);
+
+          IMessageMonitorPtr newMonitor = IMessageMonitor::monitorAndSendToService(IMessageMonitorResultDelegate<IdentityLookupResult>::convert(mThisWeak.lock()), network, "identity-lookup", "identity-lookup", request, Seconds(OPENPEER_CORE_IDENTITY_LOOK_REQUEST_TIMEOUT_SECONDS));
+          mMonitors[newMonitor->getID()] = newMonitor;
         }
 
         step();
@@ -577,36 +652,25 @@ namespace openpeer
 
         mMonitors.erase(found);
 
-        const IdentityInfoList &resultInfos = result->identities();
+        const StackIdentityInfoList &resultInfos = result->identities();
 
-        for (IdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
+        for (StackIdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
         {
-          const IdentityInfo &resultInfo = (*iter);
+          const StackIdentityInfo &resultInfo = (*iter);
 
           if (!resultInfo.mPeerFilePublic) {
             ZS_LOG_WARNING(Detail, log("peer URI found in result not valid") + resultInfo.getDebugValueString())
             continue;
           }
 
-          IdentityLookupInfo info;
-          ContactPtr contact = mAccount->forIdentityLookup().findContact(resultInfo.mPeerFilePublic->getPeerURI());
-
-          if (!contact) {
-            // attempt to create a contact
-            info.mContact = IContactForIdentityLookup::createFromPeerFilePublic(mAccount, resultInfo.mPeerFilePublic, resultInfo.mStableID);
-            if (!info.mContact) {
-              ZS_LOG_WARNING(Detail, log("failed to create contact based on identity") + resultInfo.getDebugValueString())
-              continue;
-            }
-            ZS_LOG_DEBUG(log("created new contact") + IContact::toDebugString(info.mContact))
-          } else {
-            ZS_LOG_DEBUG(log("found existing contact") + IContact::toDebugString(contact))
-            info.mContact = contact;
-          }
+          IdentityInfo info;
 
           info.mIdentityURI = resultInfo.mURI;
           info.mIdentityProvider = resultInfo.mProvider;
           info.mStableID = resultInfo.mStableID;
+
+          info.mPeerFilePublic = resultInfo.mPeerFilePublic;
+          info.mIdentityProofBundleEl = resultInfo.mIdentityProofBundle;
 
           info.mPriority = resultInfo.mPriority;
           info.mWeight = resultInfo.mWeight;
@@ -618,10 +682,10 @@ namespace openpeer
           info.mProfileURL = resultInfo.mProfile;
           info.mVProfileURL = resultInfo.mVProfile;
 
-          for (IdentityInfo::AvatarList::const_iterator avIter = resultInfo.mAvatars.begin();  avIter != resultInfo.mAvatars.end(); ++avIter)
+          for (StackIdentityInfo::AvatarList::const_iterator avIter = resultInfo.mAvatars.begin();  avIter != resultInfo.mAvatars.end(); ++avIter)
           {
-            const IdentityInfo::Avatar &resultAvatar = (*avIter);
-            IdentityLookupInfo::Avatar avatar;
+            const StackIdentityInfo::Avatar &resultAvatar = (*avIter);
+            IdentityInfo::Avatar avatar;
 
             avatar.mName = resultAvatar.mName;
             avatar.mURL = resultAvatar.mURL;
@@ -682,7 +746,6 @@ namespace openpeer
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
-               Helper::getDebugValue("check updates only", mCheckForUpdatesOnly ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity service domain", mIdentityServiceDomain, firstTime) +
                Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? Stringize<size_t>(mBootstrappedNetworks.size()).string() : String(), firstTime) +
                Helper::getDebugValue("monitors", mMonitors.size() > 0 ? Stringize<size_t>(mMonitors.size()).string() : String(), firstTime) +
@@ -703,7 +766,8 @@ namespace openpeer
       void IdentityLookup::prepareIdentity(
                                            const String &domain,
                                            const String &type,
-                                           const String &identifier
+                                           const String &identifier,
+                                           const Time &lastUpdated
                                            )
       {
         ZS_LOG_DEBUG(log("preparing domain") + ", domain=" + domain + ", identifier=" + identifier)
@@ -739,7 +803,7 @@ namespace openpeer
           }
 
           IdentifierMap &identifiers = (*found).second;
-          identifiers[identifier] = true;
+          identifiers[identifier] = lastUpdated;
 
           IdentifierSafeCharDomainLegacyTypeMap::iterator foundSafe = mConcatDomains.find(type);
           ZS_THROW_BAD_STATE_IF(foundSafe == mConcatDomains.end())
@@ -813,12 +877,26 @@ namespace openpeer
     IIdentityLookupPtr IIdentityLookup::create(
                                                IAccountPtr account,
                                                IIdentityLookupDelegatePtr delegate,
-                                               const IdentityURIList &identityURIs,
-                                               const char *identityServiceDomain,
-                                               bool checkForUpdatesOnly
+                                               const IdentityLookupInfoList &identities,
+                                               const char *identityServiceDomain
                                                )
     {
-      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identityURIs, identityServiceDomain, checkForUpdatesOnly);
+      return internal::IIdentityLookupFactory::singleton().create(account, delegate, identities, identityServiceDomain);
+    }
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IIdentityLookup::IdentityLookupInfo
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    IIdentityLookup::IdentityLookupInfo::IdentityLookupInfo(const IdentityInfo &identity)
+    {
+      mIdentityURI = identity.mIdentityURI;
+      mLastUpdated = identity.mLastUpdated;
     }
 
     //-------------------------------------------------------------------------

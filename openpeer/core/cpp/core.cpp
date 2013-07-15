@@ -48,18 +48,45 @@ namespace openpeer
               (mProfileBundleEl));
     }
 
-    IdentityLookupInfo::IdentityLookupInfo() :
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IdentityInfo
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    IdentityInfo::IdentityInfo() :
       mPriority(0),
       mWeight(0)
     {
     }
 
 
-    bool IdentityLookupInfo::hasData() const
+    //-------------------------------------------------------------------------
+    IdentityInfo::IdentityInfo(const RolodexContact &rolodexInfo) :
+      mPriority(0),
+      mWeight(0)
     {
-      return ((mContact) ||
-              (mIdentityURI.hasData()) ||
+      // rolodex disposition is "lost" as it has no meaning once translated into an actual identity structure
+      mIdentityURI = rolodexInfo.mIdentityURI;
+      mIdentityProvider = rolodexInfo.mIdentityProvider;
+
+      mName = rolodexInfo.mName;
+      mProfileURL = rolodexInfo.mProfileURL;
+      mVProfileURL = rolodexInfo.mVProfileURL;
+      mAvatars = rolodexInfo.mAvatars;
+    }
+
+    //-------------------------------------------------------------------------
+    bool IdentityInfo::hasData() const
+    {
+      return ((mIdentityURI.hasData()) ||
+              (mIdentityProvider.hasData()) ||
               (mStableID.hasData()) ||
+              (mPeerFilePublic) ||
+              (mIdentityProofBundleEl) ||
               (0 != mPriority) ||
               (0 != mWeight) ||
               (Time() != mLastUpdated) ||
@@ -68,39 +95,32 @@ namespace openpeer
               (mProfileURL.hasData()) ||
               (mVProfileURL.hasData()) ||
               (mAvatars.size() > 0));
-    }
-    
-/*
-    struct IdentityLookupInfo
+    }    
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark RolodexContact
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    RolodexContact::RolodexContact() :
+      mDisposition(Disposition_NA)
     {
-      struct Avatar
-      {
-        String mName;
-        String mURL;
-        int mWidth;
-        int mHeight;
-      };
-      typedef std::list<Avatar> AvatarList;
+    }
 
-      IContactPtr mContact;
-
-      String mIdentityURI;
-      String mUserID;
-
-      WORD mPriority;
-      WORD mWeight;
-
-      Time mLastUpdated;
-      Time mExpires;
-
-      String mName;
-      String mProfileURL;
-      String mVProfileURL;
-
-      AvatarList mAvatars;
-
-      IdentityLookupInfo();
-      bool hasData()
- */
+    //-------------------------------------------------------------------------
+    bool RolodexContact::hasData() const
+    {
+      return ((Disposition_NA != mDisposition) ||
+              (mIdentityURI.hasData()) ||
+              (mIdentityProvider.hasData()) ||
+              (mName.hasData()) ||
+              (mProfileURL.hasData()) ||
+              (mVProfileURL.hasData()) ||
+              (mAvatars.size() > 0));
+    }
   }
 }

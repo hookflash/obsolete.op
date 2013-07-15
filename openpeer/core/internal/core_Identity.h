@@ -134,6 +134,13 @@ namespace openpeer
         virtual ElementPtr getNextMessageForInnerBrowerWindowFrame();
         virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr message);
 
+        virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL);
+        virtual bool getDownloadedRolodexContacts(
+                                                  bool &outFlushAllRolodexContacts,
+                                                  String &outVersionDownloaded,
+                                                  RolodexContactListPtr &outRolodexContacts
+                                                  );
+        
         virtual void cancel();
 
         //---------------------------------------------------------------------

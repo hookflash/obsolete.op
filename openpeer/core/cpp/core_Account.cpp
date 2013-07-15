@@ -1384,7 +1384,7 @@ namespace openpeer
           return false;
         }
 
-        mSelfContact = IContactForAccount::createFromPeer(mThisWeak.lock(), selfLocation->getPeer(), mLockboxSession->getStableID());
+        mSelfContact = IContactForAccount::createFromPeer(mThisWeak.lock(), selfLocation->getPeer());
         ZS_THROW_BAD_STATE_IF(!mSelfContact)
         return true;
       }
