@@ -296,14 +296,14 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IdentityInfoListPtr IdentityLookup::getIdentities() const
+      IdentityContactListPtr IdentityLookup::getIdentities() const
       {
         AutoRecursiveLock lock(getLock());
-        IdentityInfoListPtr result(new IdentityInfoList);
+        IdentityContactListPtr result(new IdentityContactList);
 
-        for (IdentityInfoList::const_iterator iter = mResults.begin(); iter != mResults.end(); ++iter)
+        for (IdentityContactList::const_iterator iter = mResults.begin(); iter != mResults.end(); ++iter)
         {
-          const IdentityInfo &info = (*iter);
+          const IdentityContact &info = (*iter);
           ZS_LOG_TRACE(log("found result") + ", identity=" + info.mIdentityURI)
           result->push_back(info);
         }
@@ -542,7 +542,7 @@ namespace openpeer
             ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity url=" + resultInfo.mURI + ", last updated=" + IMessageHelper::timeToString(resultInfo.mUpdated))
 
             // nothing about this identity has changed since last time
-            IdentityInfo info;
+            IdentityContact info;
 
             info.mIdentityURI = resultInfo.mURI;
             info.mIdentityProvider = resultInfo.mProvider;
@@ -663,7 +663,7 @@ namespace openpeer
             continue;
           }
 
-          IdentityInfo info;
+          IdentityContact info;
 
           info.mIdentityURI = resultInfo.mURI;
           info.mIdentityProvider = resultInfo.mProvider;
@@ -685,7 +685,7 @@ namespace openpeer
           for (StackIdentityInfo::AvatarList::const_iterator avIter = resultInfo.mAvatars.begin();  avIter != resultInfo.mAvatars.end(); ++avIter)
           {
             const StackIdentityInfo::Avatar &resultAvatar = (*avIter);
-            IdentityInfo::Avatar avatar;
+            IdentityContact::Avatar avatar;
 
             avatar.mName = resultAvatar.mName;
             avatar.mURL = resultAvatar.mURL;
@@ -893,10 +893,16 @@ namespace openpeer
     #pragma mark
 
     //-------------------------------------------------------------------------
-    IIdentityLookup::IdentityLookupInfo::IdentityLookupInfo(const IdentityInfo &identity)
+    IIdentityLookup::IdentityLookupInfo::IdentityLookupInfo(const RolodexContact &identity) :
+      mIdentityURI(identity.mIdentityURI)
     {
-      mIdentityURI = identity.mIdentityURI;
-      mLastUpdated = identity.mLastUpdated;
+    }
+
+    //-------------------------------------------------------------------------
+    IIdentityLookup::IdentityLookupInfo::IdentityLookupInfo(const IdentityContact &identity) :
+      mIdentityURI(identity.mIdentityURI),
+      mLastUpdated(identity.mLastUpdated)
+    {
     }
 
     //-------------------------------------------------------------------------

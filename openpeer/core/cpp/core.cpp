@@ -79,11 +79,11 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IdentityInfo
+    #pragma mark IdentityContact
     #pragma mark
 
     //-------------------------------------------------------------------------
-    IdentityInfo::IdentityInfo() :
+    IdentityContact::IdentityContact() :
       RolodexContact(),
       mPriority(0),
       mWeight(0)
@@ -91,7 +91,7 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    IdentityInfo::IdentityInfo(const RolodexContact &rolodexInfo) :
+    IdentityContact::IdentityContact(const RolodexContact &rolodexInfo) :
       mPriority(0),
       mWeight(0)
     {
@@ -107,7 +107,7 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    bool IdentityInfo::hasData() const
+    bool IdentityContact::hasData() const
     {
       return ((mIdentityURI.hasData()) ||
               (mIdentityProvider.hasData()) ||

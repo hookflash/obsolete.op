@@ -65,7 +65,7 @@ namespace openpeer
 
     // other types
     struct ContactProfileInfo;
-    struct IdentityInfo;
+    struct IdentityContact;
     struct RolodexContact;
 
     interaction IContact;
@@ -133,10 +133,10 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IdentityInfo
+    #pragma mark IdentityContact
     #pragma mark
 
-    struct IdentityInfo : public RolodexContact
+    struct IdentityContact : public RolodexContact
     {
       String mStableID;
 
@@ -149,8 +149,8 @@ namespace openpeer
       Time mLastUpdated;
       Time mExpires;
 
-      IdentityInfo();
-      IdentityInfo(const RolodexContact &);
+      IdentityContact();
+      IdentityContact(const RolodexContact &);
       bool hasData() const;
     };
 
@@ -278,9 +278,9 @@ namespace openpeer
     typedef boost::shared_ptr<IdentityList> IdentityListPtr;
     typedef boost::weak_ptr<IdentityList> IdentityListWeakPtr;
 
-    typedef std::list<IdentityInfo> IdentityInfoList;
-    typedef boost::shared_ptr<IdentityInfoList> IdentityInfoListPtr;
-    typedef boost::weak_ptr<IdentityInfoList> IdentityInfoListWeakPtr;
+    typedef std::list<IdentityContact> IdentityContactList;
+    typedef boost::shared_ptr<IdentityContactList> IdentityContactListPtr;
+    typedef boost::weak_ptr<IdentityContactList> IdentityContactListWeakPtr;
 
     typedef std::list<RolodexContact> RolodexContactList;
     typedef boost::shared_ptr<RolodexContactList> RolodexContactListPtr;

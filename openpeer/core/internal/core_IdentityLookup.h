@@ -136,7 +136,7 @@ namespace openpeer
 
         virtual void cancel();
 
-        virtual IdentityInfoListPtr getIdentities() const;
+        virtual IdentityContactListPtr getIdentities() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -228,7 +228,7 @@ namespace openpeer
 
         DomainOrLegacyTypeToDomainMap mTypeToDomainMap;
 
-        IdentityInfoList mResults;
+        IdentityContactList mResults;
 
         FailedBootstrappedNetworkDomainMap mFailedBootstrappedNetworks;
       };

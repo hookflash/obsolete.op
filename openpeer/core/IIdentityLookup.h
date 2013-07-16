@@ -54,7 +54,8 @@ namespace openpeer
         String mIdentityURI;
         Time mLastUpdated;    // if already have information about this identity, copy the "mLastUpdated" from the IdentityInfo structure, otherwise leave value as Time() if information about this identity is not previously known
 
-        IdentityLookupInfo(const IdentityInfo &); // construct from a previous "IdentityInfo" structure
+        IdentityLookupInfo(const RolodexContact &); // construct from a previous "RolodexContact" structure
+        IdentityLookupInfo(const IdentityContact &); // construct from a previous "IdentityInfo" structure
       };
       typedef std::list<IdentityLookupInfo> IdentityLookupInfoList;
 
@@ -75,7 +76,7 @@ namespace openpeer
 
       virtual void cancel() = 0;
 
-      virtual IdentityInfoListPtr getIdentities() const = 0;
+      virtual IdentityContactListPtr getIdentities() const = 0;
     };
 
     //-------------------------------------------------------------------------
