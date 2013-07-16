@@ -311,6 +311,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void Identity::refreshRolodexContacts()
+      {
+        mSession->refreshRolodexContacts();
+      }
+
+      //-----------------------------------------------------------------------
       bool Identity::getDownloadedRolodexContacts(
                                                   bool &outFlushAllRolodexContacts,
                                                   String &outVersionDownloaded,
@@ -425,6 +431,16 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(!mDelegate)
         try {
           mDelegate->onIdentityPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
+        } catch (IIdentityDelegateProxy::Exceptions::DelegateGone &) {
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void Identity::onServiceIdentitySessionRolodexContactsDownloaded(IServiceIdentitySessionPtr identity)
+      {
+        ZS_THROW_BAD_STATE_IF(!mDelegate)
+        try {
+          mDelegate->onIdentityRolodexContactsDownloaded(mThisWeak.lock());
         } catch (IIdentityDelegateProxy::Exceptions::DelegateGone &) {
         }
       }

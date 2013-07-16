@@ -177,6 +177,7 @@ namespace openpeer
       virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage) = 0;
 
       virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL) = 0;  // if a previous version of the rolodex was downloaded/stored, pass in the version of the last information downloaded to prevent redownloading infomration again
+      virtual void refreshRolodexContacts() = 0;                                          // force a refresh of the contact list
       virtual bool getDownloadedRolodexContacts(                                          // returns "true" if rolodex contacts were obtained, otherwise returns "false"
                                                 bool &outFlushAllRolodexContacts,         // if true, all rolodex contacts for this identity must be flushed out entirely
                                                 String &outVersionDownloaded,             // returns version information of downloaded rolodex contacts
@@ -204,6 +205,8 @@ namespace openpeer
                                                         ) = 0;
 
       virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session) = 0;
+
+      virtual void onServiceIdentitySessionRolodexContactsDownloaded(IServiceIdentitySessionPtr identity) = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -244,6 +247,7 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceIdentitySessionPtr, IServiceId
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceIdentitySessionDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onServiceIdentitySessionStateChanged, IServiceIdentitySessionPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame, IServiceIdentitySessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onServiceIdentitySessionRolodexContactsDownloaded, IServiceIdentitySessionPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IServiceIdentityProofBundleQueryDelegate)

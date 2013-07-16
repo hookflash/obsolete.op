@@ -62,8 +62,10 @@ namespace openpeer
 
         static ElementPtr clone(const ElementPtr &element);
 
-        IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element);
-        ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic);
+        static String getPeerURI(IPeerFilePublicPtr peerFilePublic);
+
+        static IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element);
+        static ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic);
       };
     }
   }

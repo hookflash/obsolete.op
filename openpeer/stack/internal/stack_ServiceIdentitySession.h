@@ -44,9 +44,9 @@
 #include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateResult.h>
 #include <openpeer/stack/message/rolodex/RolodexContactsGetResult.h>
 
-
 #include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
 
+#include <zsLib/Timer.h>
 #include <zsLib/MessageQueueAssociator.h>
 
 #include <list>
@@ -142,6 +142,7 @@ namespace openpeer
                                      public IServiceIdentitySessionForServiceLockbox,
                                      public IServiceIdentitySessionAsyncDelegate,
                                      public IBootstrappedNetworkDelegate,
+                                     public zsLib::ITimerDelegate,
                                      public IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate,
                                      public IServiceNamespaceGrantSessionForServicesQueryDelegate,
                                      public IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>,
@@ -234,6 +235,7 @@ namespace openpeer
         virtual void handleMessageFromInnerBrowserWindowFrame(DocumentPtr unparsedMessage);
 
         virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL);
+        virtual void refreshRolodexContacts();
         virtual bool getDownloadedRolodexContacts(
                                                   bool &outFlushAllRolodexContacts,
                                                   String &outVersionDownloaded,
@@ -293,6 +295,13 @@ namespace openpeer
         #pragma mark
 
         virtual void onBootstrappedNetworkPreparationCompleted(IBootstrappedNetworkPtr bootstrappedNetwork);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ServiceIdentitySession => ITimerDelegate
+        #pragma mark
+
+        virtual void onTimer(TimerPtr timer);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -449,8 +458,11 @@ namespace openpeer
         bool stepLockboxReady();
         bool stepLockboxUpdate();
         bool stepCloseBrowserWindow();
-        bool stepClearWait();
+        bool stepPreGrantChallenge();
+        bool stepClearGrantWait();
+        bool stepGrantChallenge();
         bool stepLookupUpdate();
+        bool stepDownloadContacts();
 
         void setState(SessionStates state);
         void setError(WORD errorCode, const char *reason = NULL);
@@ -514,8 +526,18 @@ namespace openpeer
         DocumentList mPendingMessagesToDeliver;
 
         // rolodex related
-        bool mIdentityAccessRolodexCredentialsGetIssued;
         RolodexInfo mRolodexInfo;
+
+        TimerPtr mTimer;
+
+        String mLastVersionDownloaded;
+        Time mForceRefresh;
+
+        Time mFreshDownload;
+        IdentityInfoList mIdentities;
+
+        ULONG mFailuresInARow;
+        Duration mNextRetryAfterFailureTime;
       };
 
       //-----------------------------------------------------------------------

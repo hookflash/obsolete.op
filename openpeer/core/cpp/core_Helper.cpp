@@ -94,13 +94,21 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element)
+      String Helper::getPeerURI(IPeerFilePublicPtr peerFilePublic)
+      {
+        if (!peerFilePublic) return String();
+        return peerFilePublic->getPeerURI();
+      }
+
+      //-----------------------------------------------------------------------
+      IPeerFilePublicPtr Helper::createPeerFilePublic(const ElementPtr &element)
       {
         if (!element) return IPeerFilePublicPtr();
         return IPeerFilePublic::loadFromElement(element);
       }
 
-      ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic)
+      //-----------------------------------------------------------------------
+      ElementPtr Helper::convertToElement(IPeerFilePublicPtr peerFilePublic)
       {
         if (!peerFilePublic) return ElementPtr();
         return peerFilePublic->saveToElement();

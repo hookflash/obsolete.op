@@ -63,6 +63,116 @@ namespace openpeer
     using openpeer::stack::IPeerFilePublic;
     using openpeer::stack::IPeerFilePublicPtr;
 
+    // other types
+    struct ContactProfileInfo;
+    struct IdentityInfo;
+    struct RolodexContact;
+
+    interaction IContact;
+    typedef boost::shared_ptr<IContact> IContactPtr;
+    typedef boost::weak_ptr<IContact> IContactWeakPtr;
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ContactProfileInfo
+    #pragma mark
+
+    struct ContactProfileInfo
+    {
+      IContactPtr mContact;
+      ElementPtr mProfileBundleEl;
+
+      bool hasData() const;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IdentityInfo
+    #pragma mark
+
+    struct IdentityInfo
+    {
+      struct Avatar
+      {
+        String mName;
+        String mURL;
+        int mWidth;
+        int mHeight;
+      };
+      typedef std::list<Avatar> AvatarList;
+
+      String mIdentityURI;
+      String mIdentityProvider;
+      String mStableID;
+
+      IPeerFilePublicPtr mPeerFilePublic;
+      ElementPtr mIdentityProofBundleEl;
+
+      WORD mPriority;
+      WORD mWeight;
+
+      Time mLastUpdated;
+      Time mExpires;
+
+      String mName;
+      String mProfileURL;
+      String mVProfileURL;
+
+      AvatarList mAvatars;
+
+      IdentityInfo();
+      IdentityInfo(const RolodexContact &);
+      bool hasData() const;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark RolodexContact
+    #pragma mark
+
+    struct RolodexContact
+    {
+      typedef IdentityInfo::Avatar Avatar;
+      typedef IdentityInfo::AvatarList AvatarList;
+
+      enum Dispositions
+      {
+        Disposition_NA,
+        Disposition_Update,
+        Disposition_Remove,
+      };
+
+      Dispositions mDisposition;
+      String mIdentityURI;
+      String mIdentityProvider;
+
+      String mName;
+      String mProfileURL;
+      String mVProfileURL;
+
+      AvatarList mAvatars;
+
+      RolodexContact();
+      bool hasData() const;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark (other)
+    #pragma mark
+
     interaction IAccount;
     typedef boost::shared_ptr<IAccount> IAccountPtr;
     typedef boost::weak_ptr<IAccount> IAccountWeakPtr;
@@ -105,10 +215,6 @@ namespace openpeer
     typedef boost::shared_ptr<IConversationThreadDelegate> IConversationThreadDelegatePtr;
     typedef boost::weak_ptr<IConversationThreadDelegate> IConversationThreadDelegateWeakPtr;
     typedef zsLib::Proxy<IConversationThreadDelegate> IConversationThreadDelegateProxy;
-
-    interaction IContact;
-    typedef boost::shared_ptr<IContact> IContactPtr;
-    typedef boost::weak_ptr<IContact> IContactWeakPtr;
 
     interaction IContactPeerFilePublicLookup;
     typedef boost::shared_ptr<IContactPeerFilePublicLookup> IContactPeerFilePublicLookupPtr;
@@ -166,81 +272,7 @@ namespace openpeer
     interaction IStackMessageQueueDelegate;
     typedef boost::shared_ptr<IStackMessageQueueDelegate> IStackMessageQueueDelegatePtr;
     typedef boost::weak_ptr<IStackMessageQueueDelegate> IStackMessageQueueDelegateWeakPtr;
-
-
-    // other types
-    struct IdentityInfo;
-    struct RolodexContact;
-
-    struct ContactProfileInfo
-    {
-      IContactPtr mContact;
-      ElementPtr mProfileBundleEl;
-
-      bool hasData() const;
-    };
-
-    struct IdentityInfo
-    {
-      struct Avatar
-      {
-        String mName;
-        String mURL;
-        int mWidth;
-        int mHeight;
-      };
-      typedef std::list<Avatar> AvatarList;
-
-      String mIdentityURI;
-      String mIdentityProvider;
-      String mStableID;
-
-      IPeerFilePublicPtr mPeerFilePublic;
-      ElementPtr mIdentityProofBundleEl;
-
-      WORD mPriority;
-      WORD mWeight;
-
-      Time mLastUpdated;
-      Time mExpires;
-
-      String mName;
-      String mProfileURL;
-      String mVProfileURL;
-
-      AvatarList mAvatars;
-
-      IdentityInfo();
-      IdentityInfo(const RolodexContact &);
-      bool hasData() const;
-    };
-
-    struct RolodexContact
-    {
-      typedef IdentityInfo::Avatar Avatar;
-      typedef IdentityInfo::AvatarList AvatarList;
-
-      enum Dispositions
-      {
-        Disposition_NA,
-        Disposition_Update,
-        Disposition_Remove,
-      };
-
-      Dispositions mDisposition;
-      String mIdentityURI;
-      String mIdentityProvider;
-
-      String mName;
-      String mProfileURL;
-      String mVProfileURL;
-
-      AvatarList mAvatars;
-
-      RolodexContact();
-      bool hasData() const;
-    };
-
+    
     typedef std::list<IContactPtr> ContactList;
     typedef boost::shared_ptr<ContactList> ContactListPtr;
     typedef boost::weak_ptr<ContactList> ContactListWeakPtr;

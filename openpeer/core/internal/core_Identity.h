@@ -135,6 +135,7 @@ namespace openpeer
         virtual void handleMessageFromInnerBrowserWindowFrame(ElementPtr message);
 
         virtual void startRolodexDownload(const char *inLastDownloadedVersion = NULL);
+        virtual void refreshRolodexContacts();
         virtual bool getDownloadedRolodexContacts(
                                                   bool &outFlushAllRolodexContacts,
                                                   String &outVersionDownloaded,
@@ -165,6 +166,8 @@ namespace openpeer
                                                           );
 
         virtual void onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session);
+
+        virtual void onServiceIdentitySessionRolodexContactsDownloaded(IServiceIdentitySessionPtr identity);
 
       private:
         //---------------------------------------------------------------------

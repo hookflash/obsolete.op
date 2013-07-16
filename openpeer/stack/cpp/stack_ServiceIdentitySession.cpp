@@ -68,6 +68,9 @@
 
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://openpeer.org/permission/rolodex-contacts"
 
+#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE "FREEZE"
+#define OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS ((60)*2)
+#define OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS (((60)*60) * 24)
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
@@ -311,9 +314,11 @@ namespace openpeer
         mIdentityAccessStartNotificationSent(false),
         mLockboxUpdated(false),
         mIdentityLookupUpdated(false),
-        mIdentityAccessRolodexCredentialsGetIssued(false)
+        mFailuresInARow(0),
+        mNextRetryAfterFailureTime(Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS))
       {
         ZS_LOG_DEBUG(log("created"))
+        mRolodexInfo.mVersion = OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE;
       }
 
       //-----------------------------------------------------------------------
@@ -646,8 +651,25 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::startRolodexDownload(const char *inLastDownloadedVersion)
       {
-#define TODO_IMPLEMENT_startRolodexDownload 1
-#define TODO_IMPLEMENT_startRolodexDownload 2
+        AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_DEBUG(log("allowing rolodex downloading to start"))
+
+        mRolodexInfo.mVersion = String(inLastDownloadedVersion);
+
+        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceIdentitySession::refreshRolodexContacts()
+      {
+        AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_DEBUG(log("forcing rolodex server to refresh its contact list"))
+
+        mRolodexInfo.mUpdateNext = Time();  // reset when the next update is allowed to occur
+        mForceRefresh = zsLib::now();
+        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -657,9 +679,28 @@ namespace openpeer
                                                                 IdentityInfoListPtr &outRolodexContacts
                                                                 )
       {
-#define TODO_IMPLEMENT_getDownloadedRolodexContacts 1
-#define TODO_IMPLEMENT_getDownloadedRolodexContacts 2
-        return false;
+        AutoRecursiveLock lock(getLock());
+
+        bool refreshed = (Time() != mFreshDownload);
+        mFreshDownload = Time();
+
+        if ((mIdentities.size() < 1) &&
+            (!refreshed)) {
+          ZS_LOG_DEBUG(log("no contacts downloaded"))
+          return false;
+        }
+
+        ZS_LOG_DEBUG(log("returning downloaded contacts") + ", total=" + Stringize<IdentityInfoList::size_type>(mIdentities.size()).string())
+
+        outFlushAllRolodexContacts = refreshed;
+        outVersionDownloaded = mRolodexInfo.mVersion;
+
+        outRolodexContacts = IdentityInfoListPtr(new IdentityInfoList);
+
+        (*outRolodexContacts) = mIdentities;
+        mIdentities.clear();
+
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -696,6 +737,19 @@ namespace openpeer
           mIdentityLookupMonitor.reset();
         }
 
+        if (mRolodexAccessMonitor) {
+          mRolodexAccessMonitor->cancel();
+          mRolodexAccessMonitor.reset();
+        }
+        if (mRolodexNamespaceGrantChallengeValidateMonitor) {
+          mRolodexNamespaceGrantChallengeValidateMonitor->cancel();
+          mRolodexNamespaceGrantChallengeValidateMonitor.reset();
+        }
+        if (mRolodexContactsGetMonitor) {
+          mRolodexContactsGetMonitor->cancel();
+          mRolodexContactsGetMonitor.reset();
+        }
+
         if (mGrantQuery) {
           mGrantQuery->cancel();
           mGrantQuery.reset();
@@ -705,6 +759,8 @@ namespace openpeer
           mGrantWait->cancel();
           mGrantWait.reset();
         }
+
+        mTimer.reset();
 
         setState(SessionState_Shutdown);
       }
@@ -888,6 +944,20 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
+      void ServiceIdentitySession::onTimer(TimerPtr timer)
+      {
+        ZS_LOG_DEBUG(log("on timer fired"))
+        AutoRecursiveLock lock(getLock());
+
+        mTimer.reset();
+
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark ServiceIdentitySession => IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate
       #pragma mark
@@ -1048,6 +1118,12 @@ namespace openpeer
 
         mRolodexInfo = result->rolodexInfo();
 
+        if (mRolodexInfo.mServerToken.isEmpty()) {
+          setError(IHTTP::HTTPStatusCode_MethodFailure, "rolodex credentials gets did not return a server token");
+          cancel();
+          return true;
+        }
+
         step();
         return true;
       }
@@ -1197,8 +1273,24 @@ namespace openpeer
         mRolodexAccessMonitor->cancel();
         mRolodexAccessMonitor.reset();
 
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived 1
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived 2
+        mRolodexInfo.mergeFrom(result->rolodexInfo());
+
+        if ((mRolodexInfo.mAccessToken.isEmpty()) ||
+            (mRolodexInfo.mAccessSecret.isEmpty()))
+        {
+          setError(IHTTP::HTTPStatusCode_MethodFailure, "rolodex access did not return a proper access token/secret");
+          cancel();
+          return true;
+        }
+
+        NamespaceGrantChallengeInfo challengeInfo = result->namespaceGrantChallengeInfo();
+
+        if (challengeInfo.mID.hasData()) {
+          // a namespace grant challenge was issue
+          NamespaceInfoMap namespaces;
+          getNamespaces(namespaces);
+          mGrantQuery = mGrantSession->forServices().query(mThisWeak.lock(), challengeInfo, namespaces);
+        }
 
         step();
         return true;
@@ -1248,9 +1340,6 @@ namespace openpeer
         mRolodexNamespaceGrantChallengeValidateMonitor->cancel();
         mRolodexNamespaceGrantChallengeValidateMonitor.reset();
 
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2 1
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2 2
-
         step();
         return true;
       }
@@ -1269,8 +1358,6 @@ namespace openpeer
         }
 
         setError(result->errorCode(), result->errorReason());
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2a 1
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part2a 2
 
         ZS_LOG_DEBUG(log("rolodex namespace grant challenge failure"))
 
@@ -1282,9 +1369,9 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
-#pragma mark
-#pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>
-#pragma mark
+      #pragma mark
+      #pragma mark ServiceIdentitySession => IMessageMonitorResultDelegate<RolodexContactsGetResult>
+      #pragma mark
 
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::handleMessageMonitorResultReceived(
@@ -1301,8 +1388,27 @@ namespace openpeer
         mRolodexContactsGetMonitor->cancel();
         mRolodexContactsGetMonitor.reset();
 
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part3 1
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part3 2
+        // reset the failure case
+        mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
+        mFailuresInARow = 0;
+
+        const IdentityInfoList &identities = result->identities();
+
+        mRolodexInfo.mergeFrom(result->rolodexInfo());
+
+        for (IdentityInfoList::const_iterator iter = identities.begin(); iter != identities.end(); ++iter)
+        {
+          const IdentityInfo &identityInfo = (*iter);
+          mIdentities.push_back(identityInfo);
+        }
+
+        ZS_THROW_BAD_STATE_IF(!mDelegate)
+
+        try {
+          mDelegate->onServiceIdentitySessionRolodexContactsDownloaded(mThisWeak.lock());
+        } catch(IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
 
         step();
         return true;
@@ -1321,14 +1427,29 @@ namespace openpeer
           return false;
         }
 
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part4 1
-#define TODO_COMPLETE_METHOD_handleMessageMonitorResultReceived_part4 2
+        ZS_LOG_WARNING(Detail, log("rolodex contacts get failure") + ", error code=" + Stringize<RolodexContactsGetResult::ErrorCodeType>(result->errorCode()).string() + ", error reason=" + result->errorReason())
+        ++mFailuresInARow;
 
-        setError(result->errorCode(), result->errorReason());
+        if ((mFailuresInARow < 2) &&
+            (result->errorCode() == IHTTP::HTTPStatusCode_MethodFailure)) { // error 424
+          ZS_LOG_DEBUG(log("performing complete rolodex refresh"))
+          refreshRolodexContacts();
+          step();
+          return true;
+        }
 
-        ZS_LOG_DEBUG(log("rolodex contacts get failure"))
+        // try again later
+        mRolodexInfo.mUpdateNext = zsLib::now() + mNextRetryAfterFailureTime;
 
-        cancel();
+        // double the wait time for the next error
+        mNextRetryAfterFailureTime = mNextRetryAfterFailureTime + mNextRetryAfterFailureTime;
+
+        // cap the retry method at a maximum retrial value
+        if (mNextRetryAfterFailureTime > Seconds(OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS)) {
+          mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
+        }
+
+        step();
         return true;
       }
       
@@ -1387,9 +1508,14 @@ namespace openpeer
                Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
                (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 1 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("rolodex credentials get issued", mIdentityAccessRolodexCredentialsGetIssued ? String("true") : String(), firstTime) +
-               (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String());
+               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime) +
+               (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String()) +
+               Helper::getDebugValue("download timer", mTimer ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("force refresh", Time() != mForceRefresh ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("fresh download", Time() != mFreshDownload ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("pending identities", mIdentities.size() > 0 ? Stringize<IdentityInfoList::size_type>(mIdentities.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("failures in a row", mFailuresInARow > 0 ? Stringize<typeof(mFailuresInARow)>(mFailuresInARow).string() : String(), firstTime) +
+               Helper::getDebugValue("next retry (seconds)", mNextRetryAfterFailureTime.total_seconds() ? Stringize<Duration::sec_type>(mNextRetryAfterFailureTime.total_seconds()).string() : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1421,8 +1547,11 @@ namespace openpeer
         if (!stepLockboxReady()) return;
         if (!stepLockboxUpdate()) return;
         if (!stepCloseBrowserWindow()) return;
-        if (!stepClearWait()) return;
+        if (!stepPreGrantChallenge()) return;
+        if (!stepClearGrantWait()) return;
+        if (!stepGrantChallenge()) return;
         if (!stepLookupUpdate()) return;
+        if (!stepDownloadContacts()) return;
 
         if (mKillAssociation) {
           ZS_LOG_DEBUG(log("association is now killed") + getDebugValueString())
@@ -1649,16 +1778,9 @@ namespace openpeer
         }
 
         if (mIdentityAccessRolodexCredentialsGetMonitor) {
-          ZS_LOG_DEBUG(log("rolodex credentials get issued (allowing other requests to continue)"))
-          return true;
+          ZS_LOG_DEBUG(log("rolodex credentials get pending"))
+          return false;
         }
-
-        if (mIdentityAccessRolodexCredentialsGetIssued) {
-          ZS_LOG_DEBUG(log("rolodex credentials get did not obtain credentials (skipping)"))
-          return true;
-        }
-
-        mIdentityAccessRolodexCredentialsGetIssued = true;
 
         if (!mActiveBootstrappedNetwork->forServices().supportsRolodex()) {
           ZS_LOG_WARNING(Detail, log("rolodex service not supported on this domain") + ", domain=" + mActiveBootstrappedNetwork->forServices().getDomain())
@@ -1672,27 +1794,42 @@ namespace openpeer
         ZS_LOG_DEBUG(log("fetching rolodex credentials"))
 
         mIdentityAccessRolodexCredentialsGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessRolodexCredentialsGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        sendInnerWindowMessage(request);
 
-        mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-rolodex-credentials-get", request);
-        return true;
+        return false;
       }
 
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepRolodexAccess()
       {
-        if (mIdentityAccessRolodexCredentialsGetMonitor) {
-          ZS_LOG_DEBUG(log("rolodex credentials still pending (allowing other requests to continue)"))
+        if (mRolodexInfo.mAccessToken.hasData()) {
+          ZS_LOG_DEBUG(log("rolodex access token obtained"))
           return true;
         }
 
-        if (!mActiveBootstrappedNetwork->forServices().supportsRolodex()) {
-          ZS_LOG_WARNING(Detail, log("rolodex service not supported on this domain") + ", domain=" + mActiveBootstrappedNetwork->forServices().getDomain())
+        if (!mRolodexInfo.mServerToken.hasData()) {
+          ZS_LOG_DEBUG(log("rolodex not supported"))
           return true;
         }
 
-#define TODO_COMPLETE_THIS_stepRolodexAccess 1
-#define TODO_COMPLETE_THIS_stepRolodexAccess 2
+        if (mRolodexAccessMonitor) {
+          ZS_LOG_DEBUG(log("rolodex access still pending (continuing to next step so other steps can run in parallel)"))
+          return true;
+        }
 
+        ZS_THROW_BAD_STATE_IF(!mActiveBootstrappedNetwork->forServices().supportsRolodex())
+
+        RolodexAccessRequestPtr request = RolodexAccessRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+        request->rolodexInfo(mRolodexInfo);
+        request->identityInfo(mIdentityInfo);
+        request->grantID(mGrantSession->forServices().getGrantID());
+
+        ZS_LOG_DEBUG(log("accessing rolodex (continuing to next step so other steps can run in parallel)"))
+
+        mRolodexAccessMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<RolodexAccessResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("rolodex", "rolodex-access", request);
         return true;
       }
 
@@ -1877,7 +2014,25 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepClearWait()
+      bool ServiceIdentitySession::stepPreGrantChallenge()
+      {
+        if (mRolodexInfo.mServerToken.isEmpty()) {
+          ZS_LOG_DEBUG(log("rolodex service is not supported"))
+          return true;
+        }
+
+        // before continuing, make sure rolodex access is completed
+        if (mRolodexInfo.mAccessToken.isEmpty()) {
+          ZS_LOG_DEBUG(log("rolodex access is still pending"))
+          return false;
+        }
+
+        ZS_LOG_DEBUG(log("rolodex access has already completed"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepClearGrantWait()
       {
         if (!mGrantWait) {
           ZS_LOG_DEBUG(log("wait already cleared"))
@@ -1888,6 +2043,69 @@ namespace openpeer
 
         mGrantWait->cancel();
         mGrantWait.reset();
+        return true;
+      }
+      
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepGrantChallenge()
+      {
+        if (mRolodexInfo.mServerToken.isEmpty()) {
+          ZS_LOG_DEBUG(log("rolodex service is not supported"))
+          return true;
+        }
+
+        if (mRolodexNamespaceGrantChallengeValidateMonitor) {
+          ZS_LOG_DEBUG(log("waiting for rolodex namespace grant challenge validate monitor to complete"))
+          return false;
+        }
+
+        if (!mGrantQuery) {
+          ZS_LOG_DEBUG(log("no grant challenge query thus continuing..."))
+          return true;
+        }
+
+        if (!mGrantQuery->isComplete()) {
+          ZS_LOG_DEBUG(log("waiting for the grant query to complete"))
+          return false;
+        }
+
+        ElementPtr bundleEl = mGrantQuery->getNamespaceGrantChallengeBundle();
+        if (!bundleEl) {
+          ZS_LOG_ERROR(Detail, log("namespaces were no granted in challenge"))
+          setError(IHTTP::HTTPStatusCode_Forbidden, "namespaces were not granted to access rolodex");
+          cancel();
+          return false;
+        }
+
+        NamespaceInfoMap namespaces;
+        getNamespaces(namespaces);
+
+        for (NamespaceInfoMap::iterator iter = namespaces.begin(); iter != namespaces.end(); ++iter)
+        {
+          NamespaceInfo &namespaceInfo = (*iter).second;
+
+          if (!mGrantSession->forServices().isNamespaceURLInNamespaceGrantChallengeBundle(bundleEl, namespaceInfo.mURL)) {
+            ZS_LOG_WARNING(Detail, log("rolodex was not granted required namespace") + ", namespace" + namespaceInfo.mURL)
+            setError(IHTTP::HTTPStatusCode_Forbidden, "namespaces were not granted to access rolodex");
+            cancel();
+            return false;
+          }
+        }
+
+        mGrantQuery->cancel();
+        mGrantQuery.reset();
+
+        ZS_LOG_DEBUG(log("all namespaces required were correctly granted, notify the rolodex of the newly created access"))
+
+        RolodexNamespaceGrantChallengeValidateRequestPtr request = RolodexNamespaceGrantChallengeValidateRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+
+        request->rolodexInfo(mRolodexInfo);
+        request->namespaceGrantChallengeBundle(bundleEl);
+
+        mRolodexNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<RolodexNamespaceGrantChallengeValidateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("rolodex", "rolodex-namespace-grant-challenge-validate", request);
+        
         return true;
       }
       
@@ -1960,6 +2178,60 @@ namespace openpeer
         mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-lookup-update", request);
 
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepDownloadContacts()
+      {
+        if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE == mRolodexInfo.mVersion) {
+          ZS_LOG_DEBUG(log("rolodex download has not been initiated yet"))
+          return true;
+        }
+
+        if (mRolodexContactsGetMonitor) {
+          ZS_LOG_DEBUG(log("rolodex contact download already active"))
+          return true;
+        }
+
+        bool forceRefresh = (Time() != mForceRefresh);
+        mForceRefresh = Time();
+
+        if (forceRefresh) {
+          ZS_LOG_DEBUG(log("will force refresh of contact list immediately"))
+          mRolodexInfo.mUpdateNext = Time();  // download immediately
+          mFreshDownload = zsLib::now();
+          mIdentities.clear();
+          mRolodexInfo.mVersion.clear();
+        }
+
+        Time tick = zsLib::now();
+        if ((Time() != mRolodexInfo.mUpdateNext) &&
+            (tick < mRolodexInfo.mUpdateNext)) {
+          // not ready to issue the request yet, must wait, calculate how long to wait
+          Duration waitTime = mRolodexInfo.mUpdateNext - tick;
+          if (waitTime < Seconds(1)) {
+            waitTime = Seconds(1);
+          }
+          mTimer = Timer::create(mThisWeak.lock(), waitTime, false);
+
+          ZS_LOG_DEBUG(log("delaying downloading contacts") + ", wait time (seconds)=" + Stringize<Duration::sec_type>(waitTime.total_seconds()).string())
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("attempting to download contacts from rolodex"))
+
+        RolodexContactsGetRequestPtr request = RolodexContactsGetRequest::create();
+        request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+
+        RolodexInfo rolodexInfo(mRolodexInfo);
+        rolodexInfo.mRefreshFlag = forceRefresh;
+
+        request->rolodexInfo(mRolodexInfo);
+
+        mRolodexContactsGetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<RolodexContactsGetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
+        mActiveBootstrappedNetwork->forServices().sendServiceMessage("rolodex", "rolodex-contacts-get", request);
+
+        return true;
       }
 
       //-----------------------------------------------------------------------

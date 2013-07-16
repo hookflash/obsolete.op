@@ -523,7 +523,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool BootstrappedNetwork::supportsRolodex() const
       {
-        String serviceURL = getServiceURI("identity", "identity-access-rolodex-credentials-get");
+        String serviceURL = getServiceURI("rolodex", "rolodex-access");
         return serviceURL.hasData();
       }
 
