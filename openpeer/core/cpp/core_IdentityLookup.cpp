@@ -39,8 +39,6 @@
 #include <openpeer/stack/IPeerFilePublic.h>
 
 #include <openpeer/stack/message/IMessageHelper.h>
-#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
-#include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -62,10 +60,6 @@ namespace openpeer
       typedef stack::message::IdentityInfoList StackIdentityInfoList;
       typedef stack::message::IdentityInfo StackIdentityInfo;
       using stack::message::IMessageHelper;
-      using stack::message::identity_lookup::IdentityLookupCheckRequest;
-      using stack::message::identity_lookup::IdentityLookupCheckRequestPtr;
-      using stack::message::identity_lookup::IdentityLookupRequest;
-      using stack::message::identity_lookup::IdentityLookupRequestPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -296,7 +290,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IdentityContactListPtr IdentityLookup::getIdentities() const
+      IdentityContactListPtr IdentityLookup::getUpdatedIdentities() const
       {
         AutoRecursiveLock lock(getLock());
         IdentityContactListPtr result(new IdentityContactList);
@@ -311,6 +305,38 @@ namespace openpeer
         return result;
       }
 
+      //-----------------------------------------------------------------------
+      IdentityLookup::IdentityLookupInfoListPtr IdentityLookup::getUnchangedIdentities() const
+      {
+        AutoRecursiveLock lock(getLock());
+        IdentityLookupInfoListPtr result(new IdentityLookupInfoList);
+
+        for (IdentityLookupInfoList::const_iterator iter = mUnchangedResults.begin(); iter != mUnchangedResults.end(); ++iter)
+        {
+          const IdentityLookupInfo &info = (*iter);
+          ZS_LOG_TRACE(log("found unchanged result") + ", identity=" + info.mIdentityURI)
+          result->push_back(info);
+        }
+
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityLookup::IdentityLookupInfoListPtr IdentityLookup::getInvalidIdentities() const
+      {
+        AutoRecursiveLock lock(getLock());
+        IdentityLookupInfoListPtr result(new IdentityLookupInfoList);
+
+        for (IdentityLookupInfoList::const_iterator iter = mInvalidResults.begin(); iter != mInvalidResults.end(); ++iter)
+        {
+          const IdentityLookupInfo &info = (*iter);
+          ZS_LOG_TRACE(log("found invalid result") + ", identity=" + info.mIdentityURI)
+          result->push_back(info);
+        }
+
+        return result;
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -484,6 +510,9 @@ namespace openpeer
                                                               IdentityLookupCheckResultPtr result
                                                               )
       {
+        typedef IdentityLookupCheckRequest::Provider Provider;
+        typedef IdentityLookupCheckRequest::ProviderList ProviderList;
+
         AutoRecursiveLock lock(getLock());
 
         MonitorMap::iterator found = mMonitors.find(monitor->getID());
@@ -505,12 +534,11 @@ namespace openpeer
 
         const StackIdentityInfoList &resultInfos = result->identities();
 
-        typedef IdentityLookupCheckRequest::Provider Provider;
-        typedef IdentityLookupCheckRequest::ProviderList ProviderList;
-
         const ProviderList &originalRequestProviders = originalRequest->providers();
-
         ProviderList providers;
+
+        IdentityMap previousIdentities;
+        getPreviousIdentities(originalRequestProviders, previousIdentities);
 
         for (StackIdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
         {
@@ -519,8 +547,17 @@ namespace openpeer
           String domainOrType;
           String identifier;
           if (!IServiceIdentity::splitURI(resultInfo.mURI, domainOrType, identifier)) {
-            ZS_LOG_ERROR(Detail, log("failed to split an identity") + ", identity url=" + resultInfo.mURI)
+            ZS_LOG_ERROR(Detail, log("failed to split an identity") + ", identity uri=" + resultInfo.mURI)
             continue;
+          }
+
+          // scope: forget previous identity if now found in result list
+          {
+            IdentityMap::iterator found = previousIdentities.find(resultInfo.mURI);
+            if (found != previousIdentities.end()) {
+              ZS_LOG_TRACE(log("previous identifier was found in result") + ", identity uri=" + resultInfo.mURI)
+              previousIdentities.erase(found);
+            }
           }
 
           IdentifierDomainOrLegacyTypeMap::iterator foundType = mDomainOrLegacyTypeIdentifiers.find(domainOrType);
@@ -539,7 +576,7 @@ namespace openpeer
           Time lastKnownUpdate = (*foundIdentifier).second;
 
           if (lastKnownUpdate == resultInfo.mUpdated) {
-            ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity url=" + resultInfo.mURI + ", last updated=" + IMessageHelper::timeToString(resultInfo.mUpdated))
+            ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity uri=" + resultInfo.mURI + ", last updated=" + IMessageHelper::timeToString(resultInfo.mUpdated))
 
             // nothing about this identity has changed since last time
             IdentityContact info;
@@ -548,7 +585,7 @@ namespace openpeer
             info.mIdentityProvider = resultInfo.mProvider;
             info.mLastUpdated = resultInfo.mUpdated;
 
-            mResults.push_back(info);
+            mUnchangedResults.push_back(info);
             continue;
           }
 
@@ -590,6 +627,18 @@ namespace openpeer
           }
 
           ZS_LOG_TRACE(log("will perform new detailed lookup for identity") + ", identity" + resultInfo.mURI)
+        }
+
+        // scope: these identities failed to lookup for whatever reason
+        {
+          for (IdentityMap::iterator iter = previousIdentities.begin(); iter != previousIdentities.end(); ++iter)
+          {
+            const String &identityURI = (*iter).first;
+            ZS_LOG_WARNING(Trace, log("identity was not found on server when performing lookup") + ", identity uri=" + identityURI)
+            IdentityLookupInfo info;
+            info.mIdentityURI = identityURI;
+            mInvalidResults.push_back(info);
+          }
         }
 
         if (providers.size() > 0) {
@@ -642,6 +691,8 @@ namespace openpeer
                                                               IdentityLookupResultPtr result
                                                               )
       {
+        typedef IdentityLookupRequest::ProviderList ProviderList;
+
         AutoRecursiveLock lock(getLock());
 
         MonitorMap::iterator found = mMonitors.find(monitor->getID());
@@ -652,6 +703,14 @@ namespace openpeer
 
         mMonitors.erase(found);
 
+        IdentityLookupRequestPtr originalRequest = IdentityLookupRequest::convert(monitor->getMonitoredMessage());
+        ZS_THROW_BAD_STATE_IF(!originalRequest)
+
+        const ProviderList &originalRequestProviders = originalRequest->providers();
+
+        IdentityMap previousIdentities;
+        getPreviousIdentities(originalRequestProviders, previousIdentities);
+
         const StackIdentityInfoList &resultInfos = result->identities();
 
         for (StackIdentityInfoList::const_iterator iter = resultInfos.begin(); iter != resultInfos.end(); ++iter)
@@ -661,6 +720,15 @@ namespace openpeer
           if (!resultInfo.mPeerFilePublic) {
             ZS_LOG_WARNING(Detail, log("peer URI found in result not valid") + resultInfo.getDebugValueString())
             continue;
+          }
+
+          // scope: forget previous identity if now found in result list
+          {
+            IdentityMap::iterator found = previousIdentities.find(resultInfo.mURI);
+            if (found != previousIdentities.end()) {
+              ZS_LOG_TRACE(log("previous identifier was found in result") + ", identity uri=" + resultInfo.mURI)
+              previousIdentities.erase(found);
+            }
           }
 
           IdentityContact info;
@@ -695,6 +763,18 @@ namespace openpeer
           }
 
           mResults.push_back(info);
+        }
+
+        // scope: these identities failed to lookup for whatever reason
+        {
+          for (IdentityMap::iterator iter = previousIdentities.begin(); iter != previousIdentities.end(); ++iter)
+          {
+            const String &identityURI = (*iter).first;
+            ZS_LOG_WARNING(Trace, log("identity was not found on server when performing lookup") + ", identity uri=" + identityURI)
+            IdentityLookupInfo info;
+            info.mIdentityURI = identityURI;
+            mInvalidResults.push_back(info);
+          }
         }
 
         step();
@@ -851,6 +931,45 @@ namespace openpeer
         mErrorReason = reason;
 
         ZS_LOG_ERROR(Detail, log("error set") + getDebugValueString())
+      }
+
+      //-----------------------------------------------------------------------
+      void IdentityLookup::getPreviousIdentities(
+                                                 const IdentityLookupCheckRequest::ProviderList &providers,
+                                                 IdentityMap &outIdentities
+                                                 )
+      {
+        typedef IdentityLookupCheckRequest::ProviderList ProviderList;
+        typedef IdentityLookupCheckRequest::Provider Provider;
+        typedef stack::IHelper::SplitMap SplitMap;
+
+        for (ProviderList::const_iterator provIter = providers.begin(); provIter != providers.end(); ++provIter)
+        {
+          const Provider &provider = (*provIter);
+
+          if (provider.mSeparator.length() != 1) {
+            continue;
+          }
+
+          String domainOrType;
+          String bogusIdentifier;
+          IServiceIdentity::splitURI(provider.mBase, domainOrType, bogusIdentifier);
+
+          SplitMap results;
+          stack::IHelper::split(
+                                provider.mIdentities,
+                                results,
+                                (provider.mSeparator.c_str())[0]
+                                );
+
+          for (SplitMap::iterator iter = results.begin(); iter != results.end(); ++iter)
+          {
+            String identifier = (*iter).second;
+            String identityURI = IServiceIdentity::joinURI(domainOrType, identifier);
+
+            outIdentities[identityURI] = true;
+          }
+        }
       }
 
       //-----------------------------------------------------------------------

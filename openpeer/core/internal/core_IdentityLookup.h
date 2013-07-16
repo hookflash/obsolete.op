@@ -38,6 +38,8 @@
 #include <openpeer/stack/IMessageMonitor.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupCheckResult.h>
 #include <openpeer/stack/message/identity-lookup/IdentityLookupResult.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupCheckRequest.h>
+#include <openpeer/stack/message/identity-lookup/IdentityLookupRequest.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -54,6 +56,10 @@ namespace openpeer
       using stack::message::identity_lookup::IdentityLookupCheckResultPtr;
       using stack::message::identity_lookup::IdentityLookupResult;
       using stack::message::identity_lookup::IdentityLookupResultPtr;
+      using stack::message::identity_lookup::IdentityLookupCheckRequest;
+      using stack::message::identity_lookup::IdentityLookupCheckRequestPtr;
+      using stack::message::identity_lookup::IdentityLookupRequest;
+      using stack::message::identity_lookup::IdentityLookupRequestPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -80,6 +86,10 @@ namespace openpeer
         typedef String Identifier;
         typedef Time LastUpdated;
         typedef std::map<Identifier, LastUpdated> IdentifierMap;
+
+        typedef String IdentityURI;
+        typedef bool Bogus;
+        typedef std::map<IdentityURI, Bogus> IdentityMap;
 
         typedef String StringConcatinatedIdentifiers;
 
@@ -136,7 +146,9 @@ namespace openpeer
 
         virtual void cancel();
 
-        virtual IdentityContactListPtr getIdentities() const;
+        virtual IdentityContactListPtr getUpdatedIdentities() const;
+        virtual IdentityLookupInfoListPtr getUnchangedIdentities() const;
+        virtual IdentityLookupInfoListPtr getInvalidIdentities() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -198,6 +210,10 @@ namespace openpeer
         void step();
 
         void setError(WORD errorCode, const char *errorReason);
+        static void getPreviousIdentities(
+                                          const IdentityLookupCheckRequest::ProviderList &providers,
+                                          IdentityMap &outIdentities
+                                          );
 
       protected:
         //---------------------------------------------------------------------
@@ -229,6 +245,8 @@ namespace openpeer
         DomainOrLegacyTypeToDomainMap mTypeToDomainMap;
 
         IdentityContactList mResults;
+        IdentityLookupInfoList mUnchangedResults;
+        IdentityLookupInfoList mInvalidResults;
 
         FailedBootstrappedNetworkDomainMap mFailedBootstrappedNetworks;
       };
