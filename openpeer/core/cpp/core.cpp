@@ -53,16 +53,42 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
+    #pragma mark RolodexContact
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    RolodexContact::RolodexContact() :
+      mDisposition(Disposition_NA)
+    {
+    }
+
+    //-------------------------------------------------------------------------
+    bool RolodexContact::hasData() const
+    {
+      return ((Disposition_NA != mDisposition) ||
+              (mIdentityURI.hasData()) ||
+              (mIdentityProvider.hasData()) ||
+              (mName.hasData()) ||
+              (mProfileURL.hasData()) ||
+              (mVProfileURL.hasData()) ||
+              (mAvatars.size() > 0));
+    }
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
     #pragma mark IdentityInfo
     #pragma mark
 
     //-------------------------------------------------------------------------
     IdentityInfo::IdentityInfo() :
+      RolodexContact(),
       mPriority(0),
       mWeight(0)
     {
     }
-
 
     //-------------------------------------------------------------------------
     IdentityInfo::IdentityInfo(const RolodexContact &rolodexInfo) :
@@ -70,6 +96,7 @@ namespace openpeer
       mWeight(0)
     {
       // rolodex disposition is "lost" as it has no meaning once translated into an actual identity structure
+      mDisposition = rolodexInfo.mDisposition;
       mIdentityURI = rolodexInfo.mIdentityURI;
       mIdentityProvider = rolodexInfo.mIdentityProvider;
 
@@ -96,31 +123,5 @@ namespace openpeer
               (mVProfileURL.hasData()) ||
               (mAvatars.size() > 0));
     }    
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark RolodexContact
-    #pragma mark
-
-    //-------------------------------------------------------------------------
-    RolodexContact::RolodexContact() :
-      mDisposition(Disposition_NA)
-    {
-    }
-
-    //-------------------------------------------------------------------------
-    bool RolodexContact::hasData() const
-    {
-      return ((Disposition_NA != mDisposition) ||
-              (mIdentityURI.hasData()) ||
-              (mIdentityProvider.hasData()) ||
-              (mName.hasData()) ||
-              (mProfileURL.hasData()) ||
-              (mVProfileURL.hasData()) ||
-              (mAvatars.size() > 0));
-    }
   }
 }

@@ -93,10 +93,10 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IdentityInfo
+    #pragma mark RolodexContact
     #pragma mark
 
-    struct IdentityInfo
+    struct RolodexContact
     {
       struct Avatar
       {
@@ -106,43 +106,6 @@ namespace openpeer
         int mHeight;
       };
       typedef std::list<Avatar> AvatarList;
-
-      String mIdentityURI;
-      String mIdentityProvider;
-      String mStableID;
-
-      IPeerFilePublicPtr mPeerFilePublic;
-      ElementPtr mIdentityProofBundleEl;
-
-      WORD mPriority;
-      WORD mWeight;
-
-      Time mLastUpdated;
-      Time mExpires;
-
-      String mName;
-      String mProfileURL;
-      String mVProfileURL;
-
-      AvatarList mAvatars;
-
-      IdentityInfo();
-      IdentityInfo(const RolodexContact &);
-      bool hasData() const;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark RolodexContact
-    #pragma mark
-
-    struct RolodexContact
-    {
-      typedef IdentityInfo::Avatar Avatar;
-      typedef IdentityInfo::AvatarList AvatarList;
 
       enum Dispositions
       {
@@ -162,6 +125,32 @@ namespace openpeer
       AvatarList mAvatars;
 
       RolodexContact();
+      bool hasData() const;
+    };
+    
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IdentityInfo
+    #pragma mark
+
+    struct IdentityInfo : public RolodexContact
+    {
+      String mStableID;
+
+      IPeerFilePublicPtr mPeerFilePublic;
+      ElementPtr mIdentityProofBundleEl;
+
+      WORD mPriority;
+      WORD mWeight;
+
+      Time mLastUpdated;
+      Time mExpires;
+
+      IdentityInfo();
+      IdentityInfo(const RolodexContact &);
       bool hasData() const;
     };
 
