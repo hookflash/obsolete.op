@@ -50,6 +50,9 @@
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
+// FOR COMPATIBILITY WITH ENCYPRTION ALGORITHMS, SEE:
+// http://www.codeproject.com/Articles/21877/Applied-Crypto-Block-Ciphers
+
 using namespace zsLib::XML;
 
 namespace openpeer

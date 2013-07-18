@@ -552,12 +552,26 @@ namespace openpeer
     IIdentityPtr IIdentity::login(
                                   IAccountPtr account,
                                   IIdentityDelegatePtr delegate,
-                                  const char *outerFrameURLUponReload,
+                                  const char *identityProviderDomain,
                                   const char *identityURI_or_identityBaseURI,
-                                  const char *identityProviderDomain
+                                  const char *outerFrameURLUponReload
                                   )
     {
-      return internal::IIdentityFactory::singleton().login(account, delegate, outerFrameURLUponReload, identityURI_or_identityBaseURI, identityProviderDomain);
+      return internal::IIdentityFactory::singleton().login(account, delegate, identityProviderDomain, identityURI_or_identityBaseURI, outerFrameURLUponReload);
+    }
+
+    //-------------------------------------------------------------------------
+    IIdentityPtr IIdentity::loginWithIdentityPreauthorized(
+                                                           IAccountPtr account,
+                                                           IIdentityDelegatePtr delegate,
+                                                           const char *identityProviderDomain,
+                                                           const char *identityURI,
+                                                           const char *identityAccessToken,
+                                                           const char *identityAccessSecret,
+                                                           Time identityAccessSecretExpires
+                                                           )
+    {
+      return internal::IIdentityFactory::singleton().loginWithIdentityPreauthorized(account, delegate, identityProviderDomain, identityURI, identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
     }
 
     //-------------------------------------------------------------------------
