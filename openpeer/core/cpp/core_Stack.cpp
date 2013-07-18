@@ -33,9 +33,12 @@
 #include <openpeer/core/internal/core_MediaEngine.h>
 #include <openpeer/core/IConversationThread.h>
 #include <openpeer/core/ICall.h>
-#include <openpeer/services/IHelper.h>
 
 #include <openpeer/stack/IStack.h>
+#include <openpeer/stack/IHelper.h>
+#include <openpeer/stack/message/IMessageHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/MessageQueueThread.h>
@@ -80,6 +83,8 @@ namespace openpeer
 
     namespace internal
     {
+      using stack::message::IMessageHelper;
+
       class ShutdownCheckAgain;
       typedef boost::shared_ptr<ShutdownCheckAgain> ShutdownCheckAgainPtr;
       typedef boost::weak_ptr<ShutdownCheckAgain> ShutdownCheckAgainWeakPtr;
@@ -481,6 +486,32 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      String Stack::createAuthorizedApplicationID(
+                                                  const char *applicationID,
+                                                  const char *applicationIDSharedSecret,
+                                                  Time expires
+                                                  )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!applicationID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!applicationIDSharedSecret)
+        ZS_THROW_INVALID_ARGUMENT_IF(Time() == expires)
+
+        String appID(applicationID);
+        String random = stack::IHelper::randomString(20);
+        String time = IMessageHelper::timeToString(expires);
+
+        String merged = appID + "-" + random + "-" + time;
+
+        String hash = stack::IHelper::convertToHex(*stack::IHelper::hmac(*stack::IHelper::convertToBuffer(applicationIDSharedSecret), merged));
+
+        String final = merged + "-" + hash;
+
+        ZS_LOG_WARNING(Basic, String("core::Stack [] Method should only be called during development") + ", authorized application ID=" + final)
+
+        return final;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -684,6 +715,16 @@ namespace openpeer
     IStackPtr IStack::singleton()
     {
       return internal::Stack::singleton();
+    }
+
+    //-------------------------------------------------------------------------
+    String IStack::createAuthorizedApplicationID(
+                                                 const char *applicationID,
+                                                 const char *applicationIDSharedSecret,
+                                                 Time expires
+                                                 )
+    {
+      return internal::Stack::createAuthorizedApplicationID(applicationID, applicationIDSharedSecret, expires);
     }
 
     //-------------------------------------------------------------------------

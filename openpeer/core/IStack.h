@@ -56,14 +56,14 @@ namespace openpeer
       virtual void setup(
                          IStackDelegatePtr stackDelegate,
                          IMediaEngineDelegatePtr mediaEngineDelegate,
-                         const char *appID,       // organization assigned ID for the application e.g. "com.xyz123.app1"
-                         const char *appName,     // a branded human readable application name, e.g. "Hookflash"
-                         const char *appImageURL, // an HTTPS downloadable branded image for the application
-                         const char *appURL,      // an HTTPS URL webpage / website that offers more information about application
-                         const char *userAgent,   // e.g. "hookflash/1.0.1001a (iOS/iPad)"
-                         const char *deviceID,    // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
-                         const char *os,          // e.g. "iOS 5.0.3
-                         const char *system       // e.g. "iPad 2"
+                         const char *authorizedAppID, // organization assigned ID for the application e.g. "com.xyz123.app1-random-expires-validation"
+                         const char *appName,         // a branded human readable application name, e.g. "Hookflash"
+                         const char *appImageURL,     // an HTTPS downloadable branded image for the application
+                         const char *appURL,          // an HTTPS URL webpage / website that offers more information about application
+                         const char *userAgent,       // e.g. "hookflash/1.0.1001a (iOS/iPad)"
+                         const char *deviceID,        // e.g. uuid of device "7bff560b84328f161494eabcba5f8b47a316be8b"
+                         const char *os,              // e.g. "iOS 5.0.3
+                         const char *system           // e.g. "iPad 2"
                          ) = 0;
 
       //-----------------------------------------------------------------------
@@ -73,6 +73,19 @@ namespace openpeer
       //          has completed. After it has completed, the application
       //          can be safely exited.
       virtual void shutdown() = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Create an authorized application ID from an application ID.
+      // WARNING:
+      //
+      //          This method should only be used during development. An
+      //          authorized application ID should be generated from a server
+      //          and given to the application.
+      static String createAuthorizedApplicationID(
+                                                  const char *applicationID,
+                                                  const char *applicationIDSharedSecret,
+                                                  Time expires
+                                                  );
     };
 
     //-------------------------------------------------------------------------

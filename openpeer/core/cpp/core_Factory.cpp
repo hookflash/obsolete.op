@@ -176,12 +176,12 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       CallTransportPtr ICallTransportFactory::create(
-                                               ICallTransportDelegatePtr delegate,
-                                               const char *turnServer,
-                                               const char *turnServerUsername,
-                                               const char *turnServerPassword,
-                                               const char *stunServer
-                                               )
+                                                     ICallTransportDelegatePtr delegate,
+                                                     const char *turnServer,
+                                                     const char *turnServerUsername,
+                                                     const char *turnServerPassword,
+                                                     const char *stunServer
+                                                     )
       {
         return CallTransport::create(delegate, turnServer, turnServerUsername, turnServerPassword, stunServer);
       }
@@ -346,12 +346,26 @@ namespace openpeer
       IdentityPtr IIdentityFactory::login(
                                           IAccountPtr account,
                                           IIdentityDelegatePtr delegate,
-                                          const char *outerFrameURLUponReload,
+                                          const char *identityProviderDomain,
                                           const char *identityURI_or_identityBaseURI,
-                                          const char *identityProviderDomain
+                                          const char *outerFrameURLUponReload
                                           )
       {
-        return Identity::login(account, delegate, outerFrameURLUponReload, identityURI_or_identityBaseURI, identityProviderDomain);
+        return Identity::login(account, delegate, identityProviderDomain, identityURI_or_identityBaseURI, outerFrameURLUponReload);
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityPtr IIdentityFactory::loginWithIdentityPreauthorized(
+                                                                   IAccountPtr account,
+                                                                   IIdentityDelegatePtr delegate,
+                                                                   const char *identityProviderDomain,
+                                                                   const char *identityURI,
+                                                                   const char *identityAccessToken,
+                                                                   const char *identityAccessSecret,
+                                                                   Time identityAccessSecretExpires
+                                                                   )
+      {
+        return Identity::loginWithIdentityPreauthorized(account, delegate, identityProviderDomain, identityURI, identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
       }
 
       //-----------------------------------------------------------------------

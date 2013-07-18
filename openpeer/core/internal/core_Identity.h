@@ -105,10 +105,20 @@ namespace openpeer
         static IdentityPtr login(
                                  IAccountPtr account,
                                  IIdentityDelegatePtr delegate,
-                                 const char *outerFrameURLUponReload,
+                                 const char *identityProviderDomain,
                                  const char *identityURI_or_identityBaseURI,
-                                 const char *identityProviderDomain
+                                 const char *outerFrameURLUponReload
                                  );
+
+        static IdentityPtr loginWithIdentityPreauthorized(
+                                                          IAccountPtr account,
+                                                          IIdentityDelegatePtr delegate,
+                                                          const char *identityProviderDomain,
+                                                          const char *identityURI,
+                                                          const char *identityAccessToken,
+                                                          const char *identityAccessSecret,
+                                                          Time identityAccessSecretExpires
+                                                          );
 
         virtual IdentityStates getState(
                                         WORD *outLastErrorCode,
@@ -214,10 +224,20 @@ namespace openpeer
         virtual IdentityPtr login(
                                   IAccountPtr account,
                                   IIdentityDelegatePtr delegate,
-                                  const char *outerFrameURLUponReload,
+                                  const char *identityProviderDomain,
                                   const char *identityURI_or_identityBaseURI,
-                                  const char *identityProviderDomain
+                                  const char *outerFrameURLUponReload
                                   );
+
+        virtual IdentityPtr loginWithIdentityPreauthorized(
+                                                           IAccountPtr account,
+                                                           IIdentityDelegatePtr delegate,
+                                                           const char *identityProviderDomain,
+                                                           const char *identityURI,
+                                                           const char *identityAccessToken,
+                                                           const char *identityAccessSecret,
+                                                           Time identityAccessSecretExpires
+                                                           );
 
         virtual IdentityPtr createFromExistingSession(IServiceIdentitySessionPtr session);
       };

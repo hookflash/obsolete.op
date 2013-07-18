@@ -66,14 +66,15 @@ namespace openpeer
       static IIdentityPtr login(
                                 IAccountPtr account,
                                 IIdentityDelegatePtr delegate,
-                                const char *outerFrameURLUponReload,
+                                const char *identityProviderDomain,          // used when identity URI is of legacy or oauth-type
                                 const char *identityURI_or_identityBaseURI,
-                                const char *identityProviderDomain          // used when identity URI is of legacy or oauth-type
+                                const char *outerFrameURLUponReload
                                 );
 
       static IIdentityPtr loginWithIdentityPreauthorized(
                                                          IAccountPtr account,
                                                          IIdentityDelegatePtr delegate,
+                                                         const char *identityProviderDomain,          // used when identity URI is of legacy or oauth-type
                                                          const char *identityURI,
                                                          const char *identityAccessToken,
                                                          const char *identityAccessSecret,

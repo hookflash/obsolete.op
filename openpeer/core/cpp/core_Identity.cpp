@@ -167,9 +167,9 @@ namespace openpeer
       IdentityPtr Identity::login(
                                   IAccountPtr inAccount,
                                   IIdentityDelegatePtr delegate,
-                                  const char *outerFrameURLUponReload,
+                                  const char *identityProviderDomain,
                                   const char *identityURI_or_identityBaseURI,
-                                  const char *identityProviderDomain
+                                  const char *outerFrameURLUponReload
                                   )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
@@ -205,6 +205,57 @@ namespace openpeer
         IServiceLockboxSessionPtr lockboxSession = account->forIdentity().getLockboxSession();
 
         pThis->mSession = IServiceIdentitySession::loginWithIdentity(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identityURI_or_identityBaseURI);
+        pThis->init();
+        account->forIdentity().associateIdentity(pThis);
+
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      IdentityPtr Identity::loginWithIdentityPreauthorized(
+                                                           IAccountPtr inAccount,
+                                                           IIdentityDelegatePtr delegate,
+                                                           const char *identityProviderDomain,
+                                                           const char *identityURI,
+                                                           const char *identityAccessToken,
+                                                           const char *identityAccessSecret,
+                                                           Time identityAccessSecretExpires
+                                                           )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!inAccount)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
+
+        AccountPtr account = Account::convert(inAccount);
+
+        IdentityPtr pThis(new Identity(IStackForInternal::queueCore()));
+        pThis->mThisWeak = pThis;
+        pThis->mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+
+        String identity(identityURI);
+
+        String domain(identityProviderDomain);
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(domain))
+
+        IServiceIdentityPtr provider;
+        ZS_LOG_DEBUG(pThis->log("preparing bootstrapped network domain") + ", identity=" + identity + ", domain=" + domain)
+
+        IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(domain);
+        if (!network) {
+          ZS_LOG_ERROR(Detail, pThis->log("bootstrapper failed for domain specified") + ", identity=" + identity + ", domain=" + domain)
+          return IdentityPtr();
+        }
+
+        provider = IServiceIdentity::createServiceIdentityFrom(network);
+        ZS_THROW_BAD_STATE_IF(!provider)
+
+        IServiceNamespaceGrantSessionPtr grantSession = account->forIdentity().getNamespaceGrantSession();
+        IServiceLockboxSessionPtr lockboxSession = account->forIdentity().getLockboxSession();
+
+        pThis->mSession = IServiceIdentitySession::loginWithIdentityPreauthorized(pThis, provider, grantSession, lockboxSession, identityURI, identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
         pThis->init();
         account->forIdentity().associateIdentity(pThis);
 
