@@ -208,15 +208,13 @@ namespace openpeer
         String lockboxDomain;
         String accountID;
         String grantID;
-        String keyIdentityHalf;
-        String keyLockboxHalf;
+        SecureByteBlockPtr lockboxKey;
 
         try {
           lockboxDomain = reloginInformation->findFirstChildElementChecked("lockboxDomain")->getTextDecoded();
           accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
           grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
-          keyIdentityHalf = reloginInformation->findFirstChildElementChecked("keyIdentityHalf")->getTextDecoded();
-          keyLockboxHalf = reloginInformation->findFirstChildElementChecked("keyLockboxHalf")->getTextDecoded();
+          lockboxKey = stack::IHelper::convertFromBase64(reloginInformation->findFirstChildElementChecked("lockboxKey")->getTextDecoded());
         } catch (CheckFailed &) {
           return AccountPtr();
         }
@@ -224,6 +222,11 @@ namespace openpeer
         IBootstrappedNetworkPtr lockboxNetwork = IBootstrappedNetwork::prepare(lockboxDomain);
         if (!lockboxNetwork) {
           ZS_LOG_ERROR(Detail, pThis->log("failed to prepare bootstrapped network for domain") + ", domain=" + lockboxDomain)
+          return AccountPtr();
+        }
+
+        if (!lockboxKey) {
+          ZS_LOG_ERROR(Detail, pThis->log("lockbox key specified in relogin information is not valid"))
           return AccountPtr();
         }
 
@@ -235,7 +238,7 @@ namespace openpeer
 
         pThis->mLockboxForceCreateNewAccount = false;
 
-        pThis->mLockboxSession = IServiceLockboxSession::relogin(pThis, pThis->mLockboxService, pThis->mGrantSession, accountID, keyIdentityHalf, keyLockboxHalf);
+        pThis->mLockboxSession = IServiceLockboxSession::relogin(pThis, pThis->mLockboxService, pThis->mGrantSession, accountID, *lockboxKey);
         pThis->init();
 
         if (!pThis->mLockboxSession) {
@@ -299,26 +302,19 @@ namespace openpeer
           return ElementPtr();
         }
 
-        SecureByteBlockPtr identityHalf;
-        SecureByteBlockPtr lockboxHalf;
-        mLockboxSession->getLockboxKey(identityHalf, lockboxHalf);
+        SecureByteBlockPtr lockboxKey = mLockboxSession->getLockboxKey();
 
-        if ((!identityHalf) &&
-            (!lockboxHalf)) {
+        if (!lockboxKey) {
           ZS_LOG_WARNING(Detail, log("missing lockbox key information"))
           return ElementPtr();
         }
-
-        String keyIdentityHalf = stack::IHelper::convertToString(*identityHalf);
-        String keyLockboxHalf = stack::IHelper::convertToString(*lockboxHalf);
 
         ElementPtr reloginEl = Element::create("relogin");
 
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxDomain", lockboxDomain));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accountID", accountID));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantID", grantID));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", keyIdentityHalf));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", keyLockboxHalf));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", stack::IHelper::convertToBase64(*lockboxKey)));
 
         return reloginEl;
       }

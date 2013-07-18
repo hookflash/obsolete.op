@@ -107,7 +107,6 @@ namespace openpeer
           LockboxInfo lockboxInfo;
           lockboxInfo.mDomain = mLockboxInfo.mDomain;
           lockboxInfo.mAccountID = mLockboxInfo.mAccountID;
-          lockboxInfo.mKeyLockboxHalf = mLockboxInfo.mKeyLockboxHalf;
           lockboxInfo.mHash = mLockboxInfo.mHash;
           lockboxInfo.mResetFlag = mLockboxInfo.mResetFlag;
 

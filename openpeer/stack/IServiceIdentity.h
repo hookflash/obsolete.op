@@ -130,25 +130,25 @@ namespace openpeer
 
       static String toDebugString(IServiceIdentitySessionPtr session, bool includeCommaPrefix = true);
 
-      // use when the identity URI is known (or partially known), provider is required if type is legacy
       static IServiceIdentitySessionPtr loginWithIdentity(
                                                           IServiceIdentitySessionDelegatePtr delegate,
                                                           IServiceIdentityPtr provider,
                                                           IServiceNamespaceGrantSessionPtr grantSession,
-                                                          IServiceLockboxSessionPtr existingLockbox,            // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                          IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
                                                           const char *outerFrameURLUponReload,
-                                                          const char *identityURI
+                                                          const char *identityURI_or_identityBaseURI  // NULL is legal if wanting to login with just "provider"
                                                           );
 
-      // use when provider is known but nothing more
-      static IServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                                  IServiceIdentityPtr provider,
-                                                                  IServiceNamespaceGrantSessionPtr grantSession,
-                                                                  IServiceLockboxSessionPtr existingLockbox,    // pass NULL IServiceLockboxSessionPtr() if none exists
-                                                                  const char *outerFrameURLUponReload,
-                                                                  const char *legacyIdentityBaseURI = NULL
-                                                                  );
+      static IServiceIdentitySessionPtr loginWithIdentityPreauthorized(
+                                                                       IServiceIdentitySessionDelegatePtr delegate,
+                                                                       IServiceIdentityPtr provider,
+                                                                       IServiceNamespaceGrantSessionPtr grantSession,
+                                                                       IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                       const char *identityURI,
+                                                                       const char *identityAccessToken,
+                                                                       const char *identityAccessSecret,
+                                                                       Time identityAccessSecretExpires
+                                                                       );
 
       virtual PUID getID() const = 0;
 
@@ -164,6 +164,12 @@ namespace openpeer
                                   IServiceIdentitySessionDelegatePtr delegate,
                                   const char *outerFrameURLUponReload
                                   ) = 0;
+      virtual void attachDelegateAndPreauthorizeLogin(
+                                                      IServiceIdentitySessionDelegatePtr delegate,
+                                                      const char *identityAccessToken,
+                                                      const char *identityAccessSecret,
+                                                      Time identityAccessSecretExpires
+                                                      ) = 0;
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;

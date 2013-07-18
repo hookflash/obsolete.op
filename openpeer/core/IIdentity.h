@@ -71,6 +71,15 @@ namespace openpeer
                                 const char *identityProviderDomain          // used when identity URI is of legacy or oauth-type
                                 );
 
+      static IIdentityPtr loginWithIdentityPreauthorized(
+                                                         IAccountPtr account,
+                                                         IIdentityDelegatePtr delegate,
+                                                         const char *identityURI,
+                                                         const char *identityAccessToken,
+                                                         const char *identityAccessSecret,
+                                                         Time identityAccessSecretExpires
+                                                         );
+
       virtual IdentityStates getState(
                                      WORD *outLastErrorCode,
                                      String *outLastErrorReason
@@ -83,6 +92,13 @@ namespace openpeer
                                   IIdentityDelegatePtr delegate,
                                   const char *outerFrameURLUponReload
                                   ) = 0;
+
+      virtual void attachDelegateAndPreauthorizedLogin(
+                                                       IIdentityDelegatePtr delegate,
+                                                       const char *identityAccessToken,
+                                                       const char *identityAccessSecret,
+                                                       Time identityAccessSecretExpires
+                                                       ) = 0;
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;

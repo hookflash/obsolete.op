@@ -75,6 +75,9 @@ namespace openpeer
                          const SecureByteBlock &right
                          );
 
+      static SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer);
+      static SecureByteBlockPtr clone(const SecureByteBlock &buffer);
+
       static String convertToString(const SecureByteBlock &buffer);
       static SecureByteBlockPtr convertToBuffer(
                                                 const char *input,
@@ -189,6 +192,16 @@ namespace openpeer
                                      size_t bufferLengthInBytes,
                                      HashAlgorthms algorithm = HashAlgorthm_SHA1
                                      );
+
+      static void splitKey(
+                           const SecureByteBlock &key,
+                           SecureByteBlockPtr &part1,
+                           SecureByteBlockPtr &part2
+                           );
+      static SecureByteBlockPtr combineKey(
+                                           const SecureByteBlockPtr &part1,
+                                           const SecureByteBlockPtr &part2
+                                           );
 
       // RETURNS: returns the actual signed element, rather than the bundle element (if bundle was passed in) or NULL if no signature was found
       static ElementPtr getSignatureInfo(

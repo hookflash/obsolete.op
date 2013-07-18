@@ -373,22 +373,82 @@ namespace openpeer
                                                                           IServiceNamespaceGrantSessionPtr grantSession,
                                                                           IServiceLockboxSessionPtr existingLockbox,
                                                                           const char *outerFrameURLUponReload,
-                                                                          const char *identityURI
+                                                                          const char *identityURI_or_identityBaseURI
                                                                           )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!grantSession)
         ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
-        ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
 
-        if (!provider) {
-          if (IServiceIdentity::isLegacy(identityURI)) {
-            ZS_THROW_INVALID_ARGUMENT_IF(!provider) // provider can be derived from the identity but only if the identity contains a provider
+        if (identityURI_or_identityBaseURI) {
+          if (!provider) {
+            if (IServiceIdentity::isLegacy(identityURI_or_identityBaseURI)) {
+              ZS_THROW_INVALID_ARGUMENT_IF(!provider) // provider can normally be derived from the identity but only if the identity contains a provider
+            }
+          }
+
+          if ((!IServiceIdentity::isValid(identityURI_or_identityBaseURI)) &&
+              (!IServiceIdentity::isValidBase(identityURI_or_identityBaseURI))) {
+            ZS_LOG_ERROR(Detail, String("identity URI specified is not valid, uri=") + identityURI_or_identityBaseURI)
+            return ServiceIdentitySessionPtr();
+          }
+        } else {
+          ZS_THROW_INVALID_ARGUMENT_IF(!provider) // provider can normally be derived from the identity but only if the identity contains a provider
+        }
+
+        BootstrappedNetworkPtr identityNetwork;
+        BootstrappedNetworkPtr providerNetwork = BootstrappedNetwork::convert(provider);
+
+        if (identityURI_or_identityBaseURI) {
+          if (IServiceIdentity::isValid(identityURI_or_identityBaseURI)) {
+            if (!IServiceIdentity::isLegacy(identityURI_or_identityBaseURI)) {
+              String domain;
+              String identifier;
+              IServiceIdentity::splitURI(identityURI_or_identityBaseURI, domain, identifier);
+              identityNetwork = IBootstrappedNetworkForServices::prepare(domain);
+            }
           }
         }
 
-        if ((!IServiceIdentity::isValid(identityURI)) &&
-            (!IServiceIdentity::isValidBase(identityURI))) {
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, providerNetwork, identityNetwork, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
+        pThis->mThisWeak = pThis;
+        if (identityURI_or_identityBaseURI) {
+          if (IServiceIdentity::isValidBase(identityURI_or_identityBaseURI)) {
+            pThis->mIdentityInfo.mBase = identityURI_or_identityBaseURI;
+          } else {
+            pThis->mIdentityInfo.mURI = identityURI_or_identityBaseURI;
+          }
+        }
+        pThis->init();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentityPreauthorized(
+                                                                                       IServiceIdentitySessionDelegatePtr delegate,
+                                                                                       IServiceIdentityPtr provider,
+                                                                                       IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                       IServiceLockboxSessionPtr existingLockbox,
+                                                                                       const char *identityURI,
+                                                                                       const char *identityAccessToken,
+                                                                                       const char *identityAccessSecret,
+                                                                                       Time identityAccessSecretExpires
+                                                                                       )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!grantSession)
+        ZS_THROW_INVALID_ARGUMENT_IF(!existingLockbox)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityURI)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
+
+        if (!provider) {
+          if (IServiceIdentity::isLegacy(identityURI)) {
+            ZS_THROW_INVALID_ARGUMENT_IF(!provider) // provider can normally be derived from the identity but only if the identity contains a provider
+          }
+        }
+
+        if (!IServiceIdentity::isValid(identityURI)) {
           ZS_LOG_ERROR(Detail, String("identity URI specified is not valid, uri=") + identityURI)
           return ServiceIdentitySessionPtr();
         }
@@ -405,38 +465,12 @@ namespace openpeer
           }
         }
 
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, providerNetwork, identityNetwork, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
+        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, providerNetwork, identityNetwork, ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), NULL));
         pThis->mThisWeak = pThis;
-        if (IServiceIdentity::isValidBase(identityURI)) {
-          pThis->mIdentityInfo.mBase = identityURI;
-        } else {
-          pThis->mIdentityInfo.mURI = identityURI;
-        }
-        pThis->init();
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr ServiceIdentitySession::loginWithIdentityProvider(
-                                                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                                                  IServiceIdentityPtr provider,
-                                                                                  IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                  IServiceLockboxSessionPtr existingLockbox,
-                                                                                  const char *outerFrameURLUponReload,
-                                                                                  const char *legacyIdentityBaseURI
-                                                                                  )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!provider)
-        ZS_THROW_INVALID_ARGUMENT_IF(!grantSession)
-        ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
-
-        if (legacyIdentityBaseURI) {
-          return loginWithIdentity(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, legacyIdentityBaseURI);
-        }
-
-        ServiceIdentitySessionPtr pThis(new ServiceIdentitySession(IStackForInternal::queueStack(), delegate, BootstrappedNetwork::convert(provider), BootstrappedNetworkPtr(), ServiceNamespaceGrantSession::convert(grantSession), ServiceLockboxSession::convert(existingLockbox), outerFrameURLUponReload));
-        pThis->mThisWeak = pThis;
+        pThis->mIdentityInfo.mURI = identityURI;
+        pThis->mIdentityInfo.mAccessToken = String(identityAccessToken);
+        pThis->mIdentityInfo.mAccessSecret = String(identityAccessSecret);
+        pThis->mIdentityInfo.mAccessSecretExpires = identityAccessSecretExpires;
         pThis->init();
         return pThis;
       }
@@ -491,6 +525,38 @@ namespace openpeer
           }
           if (mPendingMessagesToDeliver.size() > 0) {
             mDelegate->onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
+          }
+        } catch(IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
+
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void ServiceIdentitySession::attachDelegateAndPreauthorizeLogin(
+                                                                      IServiceIdentitySessionDelegatePtr delegate,
+                                                                      const char *identityAccessToken,
+                                                                      const char *identityAccessSecret,
+                                                                      Time identityAccessSecretExpires
+                                                                      )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
+
+        AutoRecursiveLock lock(getLock());
+
+        mDelegate = IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate);
+
+        mIdentityInfo.mAccessToken = String(identityAccessToken);
+        mIdentityInfo.mAccessSecret = String(identityAccessSecret);
+        mIdentityInfo.mAccessSecretExpires = identityAccessSecretExpires;
+
+        try {
+          if (mCurrentState != mLastReportedState) {
+            mDelegate->onServiceIdentitySessionStateChanged(mThisWeak.lock(), mCurrentState);
+            mLastReportedState = mCurrentState;
           }
         } catch(IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
           ZS_LOG_WARNING(Detail, log("delegate gone"))
@@ -1674,6 +1740,11 @@ namespace openpeer
           return false;
         }
 
+        if (mIdentityInfo.mAccessToken.hasData()) {
+          ZS_LOG_DEBUG(log("already have access token, no need to load browser"))
+          return true;
+        }
+
         String url = getInnerBrowserWindowFrameURL();
         if (!url) {
           ZS_LOG_ERROR(Detail, log("bootstrapper did not return a valid inner window frame URL"))
@@ -1701,6 +1772,11 @@ namespace openpeer
           setError(IHTTP::HTTPStatusCode_Gone, "association is killed");
           cancel();
           return false;
+        }
+
+        if (mIdentityInfo.mAccessToken.hasData()) {
+          ZS_LOG_DEBUG(log("already have access token, no need to load browser"))
+          return true;
         }
 
         setState(SessionState_Pending);
@@ -1953,6 +2029,13 @@ namespace openpeer
           return false;
         }
 
+        if (!mBrowserWindowReady) {
+#define TODO_how_to_update_lockbox_info 1
+#define TODO_how_to_update_lockbox_info 2
+          ZS_LOG_DEBUG(log("never loaded browser window so no need to perform lockbox update"))
+          return true;
+        }
+
         if (mKillAssociation) {
           setState(SessionState_Pending);
 
@@ -1963,7 +2046,7 @@ namespace openpeer
           ZS_LOG_DEBUG(log("clearing lockbox information (but not preventing other requests from continuing)"))
 
           mIdentityAccessLockboxUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityAccessLockboxUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
-          mActiveBootstrappedNetwork->forServices().sendServiceMessage("identity", "identity-access-lockbox-update", request);
+          sendInnerWindowMessage(request);
 
           return false;
         }
@@ -1976,8 +2059,15 @@ namespace openpeer
         setState(SessionState_Pending);
 
         LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
+
+        bool equalKeys = (((bool)lockboxInfo.mKey) == ((bool)mLockboxInfo.mKey));
+        bool hasKeys = (((bool)lockboxInfo.mKey) && ((bool)mLockboxInfo.mKey));
+        if (hasKeys) {
+          equalKeys = (0 == IHelper::compare(*lockboxInfo.mKey, *mLockboxInfo.mKey));
+        }
+
         if ((lockboxInfo.mDomain == mLockboxInfo.mDomain) &&
-            (lockboxInfo.mKeyIdentityHalf == mLockboxInfo.mKeyIdentityHalf)) {
+            (equalKeys)) {
           ZS_LOG_DEBUG(log("lockbox info already updated correctly"))
           mLockboxUpdated = true;
           return true;
@@ -2001,6 +2091,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepCloseBrowserWindow()
       {
+        if (!mBrowserWindowReady) {
+          ZS_LOG_DEBUG(log("browser window was never made visible"))
+          return true;
+        }
+
         if (mBrowserWindowClosed) {
           ZS_LOG_DEBUG(log("browser window is closed"))
           return true;
@@ -2842,16 +2937,18 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentityProvider(
-                                                                                  IServiceIdentitySessionDelegatePtr delegate,
-                                                                                  IServiceIdentityPtr provider,
-                                                                                  IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                  IServiceLockboxSessionPtr existingLockbox,
-                                                                                  const char *outerFrameURLUponReload,
-                                                                                  const char *legacyIdentityBaseURI
-                                                                                  )
+    IServiceIdentitySessionPtr IServiceIdentitySession::loginWithIdentityPreauthorized(
+                                                                                       IServiceIdentitySessionDelegatePtr delegate,
+                                                                                       IServiceIdentityPtr provider,
+                                                                                       IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                       IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                                       const char *identityURI,
+                                                                                       const char *identityAccessToken,
+                                                                                       const char *identityAccessSecret,
+                                                                                       Time identityAccessSecretExpires
+                                                                                       )
     {
-      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityProvider(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, legacyIdentityBaseURI);
+      return internal::IServiceIdentitySessionFactory::singleton().loginWithIdentityPreauthorized(delegate, provider, grantSession, existingLockbox, identityURI, identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
     }
   }
 }

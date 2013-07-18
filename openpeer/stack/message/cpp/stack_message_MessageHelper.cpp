@@ -640,11 +640,8 @@ namespace openpeer
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
           }
 
-          if (info.mKeyIdentityHalf) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyIdentityHalf", (const char *)(info.mKeyIdentityHalf->BytePtr())));
-          }
-          if (info.mKeyLockboxHalf) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("keyLockboxHalf", (const char *)(info.mKeyLockboxHalf->BytePtr())));
+          if (info.mKey) {
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("key", IHelper::convertToBase64(*info.mKey)));
           }
           if (info.mHash.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("hash", info.mHash));
@@ -1782,14 +1779,10 @@ namespace openpeer
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
           info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
-          String identityHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyIdentityHalf"));
-          String lockboxHalf = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("keyLockboxHalf"));
+          String key = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("key"));
 
-          if (identityHalf.hasData()) {
-            info.mKeyIdentityHalf = stack::IHelper::convertToBuffer(identityHalf);
-          }
-          if (lockboxHalf.hasData()) {
-            info.mKeyLockboxHalf = stack::IHelper::convertToBuffer(lockboxHalf);
+          if (key.hasData()) {
+            info.mKey = stack::IHelper::convertFromBase64(key);
           }
           info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
 

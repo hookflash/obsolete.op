@@ -122,6 +122,12 @@ namespace openpeer
                                     IIdentityDelegatePtr delegate,
                                     const char *outerFrameURLUponReload
                                     );
+        virtual void attachDelegateAndPreauthorizedLogin(
+                                                         IIdentityDelegatePtr delegate,
+                                                         const char *identityAccessToken,
+                                                         const char *identityAccessSecret,
+                                                         Time identityAccessSecretExpires
+                                                         );
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;

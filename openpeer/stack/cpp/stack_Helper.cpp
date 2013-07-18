@@ -56,6 +56,8 @@ namespace openpeer
 {
   namespace stack
   {
+    using zsLib::Stringize;
+
     using CryptoPP::CFB_Mode;
     using CryptoPP::HMAC;
 
@@ -123,6 +125,25 @@ namespace openpeer
           return 1;
         }
         return memcmp(left, right, left.SizeInBytes());
+      }
+
+      //-------------------------------------------------------------------------
+      SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer)
+      {
+        if (!pBuffer) return SecureByteBlockPtr();
+        return Helper::clone(*pBuffer);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::clone(const SecureByteBlock &buffer)
+      {
+        SecureByteBlockPtr pBuffer(new SecureByteBlock);
+        SecureByteBlock::size_type size = buffer.SizeInBytes();
+        if (size < 1) return pBuffer;
+        pBuffer->CleanNew(size);
+
+        memcpy(pBuffer->BytePtr(), buffer.BytePtr(), size);
+        return pBuffer;
       }
 
       //-----------------------------------------------------------------------
@@ -463,6 +484,97 @@ namespace openpeer
         }
 
         return output;
+      }
+
+      //-----------------------------------------------------------------------
+      void Helper::splitKey(
+                            const SecureByteBlock &key,
+                            SecureByteBlockPtr &part1,
+                            SecureByteBlockPtr &part2
+                            )
+      {
+        if (key.size() < 1) return;
+
+        SecureByteBlockPtr hash = IHelper::hash(key);
+        ZS_THROW_BAD_STATE_IF(!hash)
+
+        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes() + hash->SizeInBytes());
+
+        SecureByteBlockPtr final(new SecureByteBlock);
+        final->CleanNew(key.SizeInBytes() + hash->SizeInBytes());
+
+        BYTE *dest = final->BytePtr();
+        const BYTE *source = key.BytePtr();
+        const BYTE *random = randomData->BytePtr();
+
+        SecureByteBlock::size_type length1 = key.SizeInBytes();
+        for (; length1 > 0; --length1, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        SecureByteBlock::size_type length2 = hash->SizeInBytes();
+        source = hash->BytePtr();
+        for (; length2 > 0; --length2, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        // set the output split key into the base 64 values
+        part1 = randomData;
+        part2 = final;
+      }
+      
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::combineKey(
+                                            const SecureByteBlockPtr &part1,
+                                            const SecureByteBlockPtr &part2
+                                            )
+      {
+        if ((!part1) || (!part2)) {
+          ZS_LOG_WARNING(Detail, String("value missing") + ", part1=" + (part1 ? "true" : "(null)") + ", part2=" + (part2 ? "true" : "(null)"))
+          return SecureByteBlockPtr();
+        }
+
+        SecureByteBlockPtr extracted = IHelper::hash("empty");
+
+        if (part1->SizeInBytes() != part2->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", part2 size=" + Stringize<SecureByteBlock::size_type>(part2->SizeInBytes()).string())
+          return SecureByteBlockPtr();
+        }
+        if (part1->SizeInBytes() <= extracted->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", hash size=" + Stringize<SecureByteBlock::size_type>(extracted->SizeInBytes()).string())
+          return SecureByteBlockPtr();
+        }
+
+        SecureByteBlockPtr buffer(new SecureByteBlock);
+        buffer->CleanNew(part1->SizeInBytes() - extracted->SizeInBytes());
+
+        BYTE *dest = buffer->BytePtr();
+        const BYTE *src1 = part1->BytePtr();
+        const BYTE *src2 = part2->BytePtr();
+
+        SecureByteBlock::size_type length1 = part1->SizeInBytes() - extracted->SizeInBytes();
+        for (; 0 != length1; --length1, ++dest, ++src1, ++src2)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlock::size_type length2 = extracted->SizeInBytes();
+        dest = extracted->BytePtr();
+        for (; 0 != length2; --length2, ++dest, ++src1, ++src2)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlockPtr hash = IHelper::hash(*buffer);
+
+        if (0 != IHelper::compare(*extracted, *hash)) {
+          ZS_LOG_WARNING(Detail, String("extracted hash does not match calculated hash") + ", extracted=" + IHelper::convertToBase64(*extracted) + ", calculated=" + IHelper::convertToBase64(*hash))
+          return SecureByteBlockPtr();
+        }
+
+        return buffer;
       }
 
       //-----------------------------------------------------------------------
@@ -821,6 +933,18 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer)
+    {
+      return internal::Helper::clone(pBuffer);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::clone(const SecureByteBlock &buffer)
+    {
+      return internal::Helper::clone(buffer);
+    }
+
+    //-------------------------------------------------------------------------
     String IHelper::convertToString(const SecureByteBlock &buffer)
     {
       return internal::Helper::convertToString(buffer);
@@ -1040,6 +1164,25 @@ namespace openpeer
                                      )
     {
       return internal::Helper::hmac(key, buffer, bufferLengthInBytes, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    void IHelper::splitKey(
+                           const SecureByteBlock &key,
+                           SecureByteBlockPtr &part1,
+                           SecureByteBlockPtr &part2
+                           )
+    {
+      return internal::Helper::splitKey(key, part1, part2);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::combineKey(
+                                           const SecureByteBlockPtr &part1,
+                                           const SecureByteBlockPtr &part2
+                                           )
+    {
+      return internal::Helper::combineKey(part1, part2);
     }
 
     //-------------------------------------------------------------------------

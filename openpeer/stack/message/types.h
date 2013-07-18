@@ -255,8 +255,7 @@ namespace openpeer
         String mAccessSecretProof;
         Time mAccessSecretProofExpires;
 
-        SecureByteBlockPtr mKeyLockboxHalf;
-        SecureByteBlockPtr mKeyIdentityHalf;
+        SecureByteBlockPtr mKey;
         String mHash;
 
         bool mResetFlag;

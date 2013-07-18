@@ -204,17 +204,7 @@ namespace openpeer
         IServiceNamespaceGrantSessionPtr grantSession = account->forIdentity().getNamespaceGrantSession();
         IServiceLockboxSessionPtr lockboxSession = account->forIdentity().getLockboxSession();
 
-        if (IServiceIdentity::isValid(identity)) {
-          // this is a fully validated identity scenario
-          pThis->mSession = IServiceIdentitySession::loginWithIdentity(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identityURI_or_identityBaseURI);
-        } else {
-          if (!IServiceIdentity::isValidBase(identity)) {
-            ZS_LOG_ERROR(Detail, pThis->log("identit specified is not valid") + ", identity=" + identity + ", domain=" + domain)
-            return IdentityPtr();
-          }
-          pThis->mSession = IServiceIdentitySession::loginWithIdentityProvider(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identity);
-        }
-
+        pThis->mSession = IServiceIdentitySession::loginWithIdentity(pThis, provider, grantSession, lockboxSession, outerFrameURLUponReload, identityURI_or_identityBaseURI);
         pThis->init();
         account->forIdentity().associateIdentity(pThis);
 
@@ -247,6 +237,22 @@ namespace openpeer
 
         mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
         mSession->attachDelegate(mThisWeak.lock(), outerFrameURLUponReload);
+      }
+
+      //-----------------------------------------------------------------------
+      void Identity::attachDelegateAndPreauthorizedLogin(
+                                                         IIdentityDelegatePtr delegate,
+                                                         const char *identityAccessToken,
+                                                         const char *identityAccessSecret,
+                                                         Time identityAccessSecretExpires
+                                                         )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
+
+        mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+        mSession->attachDelegateAndPreauthorizeLogin(mThisWeak.lock(), identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
       }
 
       //-----------------------------------------------------------------------

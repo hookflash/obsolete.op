@@ -219,8 +219,7 @@ namespace openpeer
                                                 IServiceLockboxPtr serviceLockbox,
                                                 IServiceNamespaceGrantSessionPtr grantSession,
                                                 const char *lockboxAccountID,
-                                                const char *identityHalfLockboxKey,
-                                                const char *lockboxHalfLockboxKey
+                                                const SecureByteBlock &lockboxKey
                                                 );
 
         virtual PUID getID() const {return mID;}
@@ -238,10 +237,7 @@ namespace openpeer
         virtual String getDomain() const;
         virtual String getStableID() const;
 
-        virtual void getLockboxKey(
-                                   SecureByteBlockPtr &outIdentityHalf,
-                                   SecureByteBlockPtr &outLockboxHalf
-                                   );
+        virtual SecureByteBlockPtr getLockboxKey() const;
         
 
         virtual ServiceIdentitySessionListPtr getAssociatedIdentities() const;
@@ -576,8 +572,7 @@ namespace openpeer
                                                  IServiceLockboxPtr serviceLockbox,
                                                  IServiceNamespaceGrantSessionPtr grantSession,
                                                  const char *lockboxAccountID,
-                                                 const char *identityHalfLockboxKey,
-                                                 const char *lockboxHalfLockboxKey
+                                                 const SecureByteBlock &lockboxKey
                                                  );
       };
       

@@ -441,8 +441,7 @@ namespace openpeer
                 (mAccessSecretProof.hasData()) ||
                 (Time() != mAccessSecretProofExpires) ||
 
-                (mKeyIdentityHalf) ||
-                (mKeyLockboxHalf) ||
+                (mKey) ||
                 (mHash.hasData()) ||
 
                 (mResetFlag));
@@ -459,8 +458,7 @@ namespace openpeer
                Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("lockbox access secret proof", mAccessSecretProof, firstTime) +
                Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
-               Helper::getDebugValue("lockbox key (identity half)", mKeyIdentityHalf ? String((const char *) mKeyIdentityHalf->BytePtr()) : String(), firstTime) +
-               Helper::getDebugValue("lockbox key (lockbox half)", mKeyLockboxHalf ? String((const char *) mKeyLockboxHalf->BytePtr()) : String(), firstTime) +
+               Helper::getDebugValue("lockbox key", mKey ? IHelper::convertToBase64(*mKey) : String(), firstTime) +
                Helper::getDebugValue("lockbox hash", mHash, firstTime) +
                Helper::getDebugValue("lockbox reset", mResetFlag ? "true" : "false", firstTime);
       }
@@ -480,8 +478,7 @@ namespace openpeer
         merge(mAccessSecretProof, source.mAccessSecretProof, overwriteExisting);
         merge(mAccessSecretProofExpires, source.mAccessSecretProofExpires, overwriteExisting);
 
-        merge(mKeyIdentityHalf, source.mKeyIdentityHalf, overwriteExisting);
-        merge(mKeyLockboxHalf, source.mKeyLockboxHalf, overwriteExisting);
+        merge(mKey, source.mKey, overwriteExisting);
         merge(mHash, source.mHash, overwriteExisting);
         merge(mResetFlag, source.mResetFlag, overwriteExisting);
       }

@@ -128,103 +128,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      static SecureByteBlockPtr combineKey(
-                                           const SecureByteBlockPtr &part1Str,
-                                           const SecureByteBlockPtr &part2Str
-                                           )
-      {
-        if (!part1Str) return SecureByteBlockPtr();
-        if (!part2Str) return SecureByteBlockPtr();
-
-        SecureByteBlockPtr extracted = IHelper::hash("empty");
-
-        SecureByteBlockPtr part1 = IHelper::convertFromBase64((const char *) part1Str->BytePtr());
-        SecureByteBlockPtr part2 = IHelper::convertFromBase64((const char *) part2Str->BytePtr());
-
-        if ((!part1) || (!part2)) {
-          ZS_LOG_WARNING(Detail, String("value missing") + ", part1=" + (part1Str ? "true" : "(null)") + ", part2=" + (part2Str ? "true" : "(null)"))
-          return SecureByteBlockPtr();
-        }
-
-        if (part1->SizeInBytes() != part2->SizeInBytes()) {
-          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", part2 size=" + Stringize<SecureByteBlock::size_type>(part2->SizeInBytes()).string())
-          return SecureByteBlockPtr();
-        }
-        if (part1->SizeInBytes() <= extracted->SizeInBytes()) {
-          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", hash size=" + Stringize<SecureByteBlock::size_type>(extracted->SizeInBytes()).string())
-          return SecureByteBlockPtr();
-        }
-
-        SecureByteBlockPtr buffer(new SecureByteBlock);
-        buffer->CleanNew(part1->SizeInBytes() - extracted->SizeInBytes());
-
-        BYTE *dest = buffer->BytePtr();
-        const BYTE *src1 = part1->BytePtr();
-        const BYTE *src2 = part2->BytePtr();
-
-        SecureByteBlock::size_type length1 = part1->SizeInBytes() - extracted->SizeInBytes();
-        for (; 0 != length1; --length1, ++dest, ++src1, ++src2)
-        {
-          *dest = (*src1) ^ (*src2);
-        }
-
-        SecureByteBlock::size_type length2 = extracted->SizeInBytes();
-        dest = extracted->BytePtr();
-        for (; 0 != length2; --length2, ++dest, ++src1, ++src2)
-        {
-          *dest = (*src1) ^ (*src2);
-        }
-
-        SecureByteBlockPtr hash = IHelper::hash(*buffer);
-
-        if (0 != IHelper::compare(*extracted, *hash)) {
-          ZS_LOG_WARNING(Detail, String("extracted hash does not match calculated hash") + ", extracted=" + IHelper::convertToBase64(*extracted) + ", calculated=" + IHelper::convertToBase64(*hash))
-          return SecureByteBlockPtr();
-        }
-
-        return buffer;
-      }
-
-      //-----------------------------------------------------------------------
-      static void splitKey(
-                           const SecureByteBlock &key,
-                           SecureByteBlockPtr &part1Str,
-                           SecureByteBlockPtr &part2Str
-                           )
-      {
-        if (key.size() < 1) return;
-
-        SecureByteBlockPtr hash = IHelper::hash(key);
-        ZS_THROW_BAD_STATE_IF(!hash)
-
-        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes() + hash->SizeInBytes());
-
-        SecureByteBlockPtr final(new SecureByteBlock);
-        final->CleanNew(key.SizeInBytes() + hash->SizeInBytes());
-
-        BYTE *dest = final->BytePtr();
-        const BYTE *source = key.BytePtr();
-        const BYTE *random = randomData->BytePtr();
-
-        SecureByteBlock::size_type length1 = key.SizeInBytes();
-        for (; length1 > 0; --length1, ++dest, ++source, ++random)
-        {
-          *dest = (*source) ^ (*random);
-        }
-
-        SecureByteBlock::size_type length2 = hash->SizeInBytes();
-        source = hash->BytePtr();
-        for (; length2 > 0; --length2, ++dest, ++source, ++random)
-        {
-          *dest = (*source) ^ (*random);
-        }
-
-        // set the output split key into the base 64 values
-        part1Str = IHelper::convertToBuffer(IHelper::convertToBase64(*randomData));
-        part2Str = IHelper::convertToBuffer(IHelper::convertToBase64(*final));
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -324,32 +227,20 @@ namespace openpeer
                                                               IServiceLockboxPtr serviceLockbox,
                                                               IServiceNamespaceGrantSessionPtr grantSession,
                                                               const char *lockboxAccountID,
-                                                              const char *identityHalfLockboxKey,
-                                                              const char *lockboxHalfLockboxKey
+                                                              const SecureByteBlock &lockboxKey
                                                               )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!serviceLockbox)
         ZS_THROW_INVALID_ARGUMENT_IF(!grantSession)
         ZS_THROW_INVALID_ARGUMENT_IF(!lockboxAccountID)
-        ZS_THROW_INVALID_ARGUMENT_IF(!identityHalfLockboxKey)
-        ZS_THROW_INVALID_ARGUMENT_IF(!lockboxHalfLockboxKey)
+        ZS_THROW_INVALID_ARGUMENT_IF(lockboxKey.SizeInBytes() < 1)
 
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, ServiceNamespaceGrantSession::convert(grantSession)));
         pThis->mThisWeak = pThis;
         pThis->mLockboxInfo.mAccountID = String(lockboxAccountID);
-        pThis->mLockboxInfo.mKeyIdentityHalf = IHelper::convertToBuffer(identityHalfLockboxKey);
-        pThis->mLockboxInfo.mKeyLockboxHalf = IHelper::convertToBuffer(lockboxHalfLockboxKey);
-
-        if ((pThis->mLockboxInfo.mKeyIdentityHalf) &&
-            (pThis->mLockboxInfo.mKeyLockboxHalf)) {
-          SecureByteBlockPtr combined = combineKey(pThis->mLockboxInfo.mKeyIdentityHalf, pThis->mLockboxInfo.mKeyLockboxHalf);
-          if (!combined) {
-            ZS_LOG_WARNING(Detail, pThis->log("relogin lockbox key information specified is not valid"))
-            return ServiceLockboxSessionPtr();
-          }
-          pThis->mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
-        }
+        pThis->mLockboxInfo.mKey = IHelper::clone(lockboxKey);
+        pThis->mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(lockboxKey));
         pThis->init();
         return pThis;
       }
@@ -407,16 +298,11 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void ServiceLockboxSession::getLockboxKey(
-                                                SecureByteBlockPtr &outIdentityHalf,
-                                                SecureByteBlockPtr &outLockboxHalf
-                                                )
+      SecureByteBlockPtr ServiceLockboxSession::getLockboxKey() const
       {
         AutoRecursiveLock lock(getLock());
 
-        // make a copy
-        outIdentityHalf = stack::IHelper::convertToBuffer((const char *) mLockboxInfo.mKeyIdentityHalf->BytePtr());
-        outLockboxHalf = stack::IHelper::convertToBuffer((const char *) mLockboxInfo.mKeyLockboxHalf->BytePtr());
+        return IHelper::clone(mLockboxInfo.mKey);
       }
 
       //-----------------------------------------------------------------------
@@ -774,14 +660,6 @@ namespace openpeer
         mLockboxAccessMonitor.reset();
 
         LockboxInfo info = result->lockboxInfo();
-        if ((mLockboxInfo.mKeyLockboxHalf) &&
-            (info.mKeyLockboxHalf)) {
-          if (0 != IHelper::compare(*mLockboxInfo.mKeyLockboxHalf, *info.mKeyLockboxHalf)) {
-            setError(IHTTP::HTTPStatusCode_Conflict, (String("Lockbox keyhalf returned from lockbox-access does not mach the value sent into the request, key sent=") + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf) + ", key received=" + IHelper::convertToString(*info.mKeyLockboxHalf)).c_str());
-            cancel();
-            return true;
-          }
-        }
         mLockboxInfo.mergeFrom(info, true);
 
         mServerIdentities = result->identities();
@@ -1295,7 +1173,7 @@ namespace openpeer
             mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();
 
             // account/keying information must also be incorrect if domain is not valid
-            mLockboxInfo.mKeyLockboxHalf.reset();
+            mLockboxInfo.mKey.reset();
           }
 
           if (mBootstrappedNetwork->forServices().getDomain() != mLockboxInfo.mDomain) {
@@ -1308,42 +1186,24 @@ namespace openpeer
           if (mForceNewAccount) {
             ZS_LOG_DEBUG(log("forcing a new lockbox account to be created for the identity"))
             mForceNewAccount = false;
-            mLockboxInfo.mKeyIdentityHalf.reset();
+            mLockboxInfo.mKey.reset();
           }
 
-          do {
-            if (!mLockboxInfo.mKeyIdentityHalf) {
-              mLockboxInfo.mAccountID.clear();
-              mLockboxInfo.mKeyLockboxHalf.reset();
-              mLockboxInfo.mKeyIdentityHalf.reset();
-              mLockboxInfo.mHash.clear();
-              mLockboxInfo.mResetFlag = true;
+          if (!mLockboxInfo.mKey) {
+            mLockboxInfo.mAccountID.clear();
+            mLockboxInfo.mKey.reset();
+            mLockboxInfo.mHash.clear();
+            mLockboxInfo.mResetFlag = true;
 
-              SecureByteBlockPtr newKey = stack::IHelper::random(32);
+            mLockboxInfo.mKey = stack::IHelper::random(32);
 
-              splitKey(*newKey, mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
+            ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
+          }
 
-              ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
-            }
+          ZS_THROW_BAD_STATE_IF(!mLockboxInfo.mKey)
 
-            if (!mLockboxInfo.mKeyLockboxHalf) {
-              ZS_LOG_DEBUG(log("will discovery lockbox half after accessing lockbox"))
-              break;
-            }
-
-            ZS_THROW_BAD_STATE_IF(!mLockboxInfo.mKeyIdentityHalf)
-
-            SecureByteBlockPtr combined = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
-            ZS_LOG_DEBUG(log("combined key") + ", identity half=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", lockbox half=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf))
-            if (combined) {
-              ZS_LOG_DEBUG(log("creating lockbox key hash") + ", combined=" + IHelper::convertToBase64(*combined))
-              mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(IHelper::convertToString(*combined)));
-            } else {
-              ZS_LOG_DEBUG(log("key combination failed"))
-              mLockboxInfo.mHash.clear();
-            }
-
-          } while (mLockboxInfo.mHash.isEmpty());
+          ZS_LOG_DEBUG(log("creating lockbox key hash") + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
+          mLockboxInfo.mHash = IHelper::convertToHex(*IHelper::hash(*mLockboxInfo.mKey));
         }
 
         mLockboxInfo.mDomain = mBootstrappedNetwork->forServices().getDomain();
@@ -2140,15 +2000,14 @@ namespace openpeer
 
         const String &value = (*foundValue).second;
 
-        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
-        if (!combinedKey) {
+        if (!mLockboxInfo.mKey) {
           ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return String();
         }
 
-        ZS_LOG_TRACE(log("decrypting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key (lockbox half)=" + IHelper::convertToString(*mLockboxInfo.mKeyLockboxHalf) + ", key (identity half)=" + IHelper::convertToString(*mLockboxInfo.mKeyIdentityHalf) + ", combined=" + IHelper::convertToBase64(*combinedKey))
+        ZS_LOG_TRACE(log("decrypting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
 
-        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
+        SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
         SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertFromBase64(value);
@@ -2225,13 +2084,14 @@ namespace openpeer
 
         NameValueMap &values = (*found).second;
 
-        SecureByteBlockPtr combinedKey = combineKey(mLockboxInfo.mKeyIdentityHalf, mLockboxInfo.mKeyLockboxHalf);
-        if (!combinedKey) {
+        if (!mLockboxInfo.mKey) {
           ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return;
         }
 
-        SecureByteBlockPtr key = IHelper::hmac(*combinedKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
+        ZS_LOG_TRACE(log("encrpting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
+
+        SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
         SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertToBuffer(value);
@@ -2345,11 +2205,10 @@ namespace openpeer
                                                               IServiceLockboxPtr serviceLockbox,
                                                               IServiceNamespaceGrantSessionPtr grantSession,
                                                               const char *lockboxAccountID,
-                                                              const char *identityHalfLockboxKey,
-                                                              const char *lockboxHalfLockboxKey
+                                                              const SecureByteBlock &lockboxKey
                                                               )
     {
-      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, grantSession, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+      return internal::IServiceLockboxSessionFactory::singleton().relogin(delegate, serviceLockbox, grantSession, lockboxAccountID, lockboxKey);
     }
 
   }

@@ -719,23 +719,25 @@ namespace openpeer
                                                                                   IServiceNamespaceGrantSessionPtr grantSession,
                                                                                   IServiceLockboxSessionPtr existingLockbox,
                                                                                   const char *outerFrameURLUponReload,
-                                                                                  const char *identityURI
+                                                                                  const char *identityURI_or_identityBaseURI
                                                                                   )
       {
-        return ServiceIdentitySession::loginWithIdentity(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, identityURI);
+        return ServiceIdentitySession::loginWithIdentity(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, identityURI_or_identityBaseURI);
       }
 
       //-----------------------------------------------------------------------
-      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityProvider(
-                                                                                          IServiceIdentitySessionDelegatePtr delegate,
-                                                                                          IServiceIdentityPtr provider,
-                                                                                          IServiceNamespaceGrantSessionPtr grantSession,
-                                                                                          IServiceLockboxSessionPtr existingLockbox,
-                                                                                          const char *outerFrameURLUponReload,
-                                                                                          const char *legacyIdentityBaseURI
-                                                                                          )
+      ServiceIdentitySessionPtr IServiceIdentitySessionFactory::loginWithIdentityPreauthorized(
+                                                                                               IServiceIdentitySessionDelegatePtr delegate,
+                                                                                               IServiceIdentityPtr provider,
+                                                                                               IServiceNamespaceGrantSessionPtr grantSession,
+                                                                                               IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                                               const char *identityURI,
+                                                                                               const char *identityAccessToken,
+                                                                                               const char *identityAccessSecret,
+                                                                                               Time identityAccessSecretExpires
+                                                                                               )
       {
-        return ServiceIdentitySession::loginWithIdentityProvider(delegate, provider, grantSession, existingLockbox, outerFrameURLUponReload, legacyIdentityBaseURI);
+        return ServiceIdentitySession::loginWithIdentityPreauthorized(delegate, provider, grantSession, existingLockbox, identityURI, identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
       }
 
       //-----------------------------------------------------------------------
@@ -782,11 +784,10 @@ namespace openpeer
                                                                       IServiceLockboxPtr serviceLockbox,
                                                                       IServiceNamespaceGrantSessionPtr grantSession,
                                                                       const char *lockboxAccountID,
-                                                                      const char *identityHalfLockboxKey,
-                                                                      const char *lockboxHalfLockboxKey
+                                                                      const SecureByteBlock &lockboxKey
                                                                       )
       {
-        return ServiceLockboxSession::relogin(delegate, serviceLockbox, grantSession, lockboxAccountID, identityHalfLockboxKey, lockboxHalfLockboxKey);
+        return ServiceLockboxSession::relogin(delegate, serviceLockbox, grantSession, lockboxAccountID, lockboxKey);
       }
 
       //-----------------------------------------------------------------------

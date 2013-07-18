@@ -196,18 +196,19 @@ namespace openpeer
                                                            IServiceNamespaceGrantSessionPtr grantSession,
                                                            IServiceLockboxSessionPtr existingLockbox,
                                                            const char *outerFrameURLUponReload,
-                                                           const char *identityURI
+                                                           const char *identityURI_or_identityBaseURI
                                                            );
 
-        static ServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                   IServiceIdentitySessionDelegatePtr delegate,
-                                                                   IServiceIdentityPtr provider,
-                                                                   IServiceNamespaceGrantSessionPtr grantSession,
-                                                                   IServiceLockboxSessionPtr existingLockbox,
-                                                                   const char *outerFrameURLUponReload,
-                                                                   const char *legacyIdentityBaseURI = NULL
-                                                                   );
-
+        static ServiceIdentitySessionPtr loginWithIdentityPreauthorized(
+                                                                        IServiceIdentitySessionDelegatePtr delegate,
+                                                                        IServiceIdentityPtr provider,
+                                                                        IServiceNamespaceGrantSessionPtr grantSession,
+                                                                        IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                        const char *identityURI,
+                                                                        const char *identityAccessToken,
+                                                                        const char *identityAccessSecret,
+                                                                        Time identityAccessSecretExpires
+                                                                        );
         virtual PUID getID() const {return mID;}
 
         virtual IServiceIdentityPtr getService() const;
@@ -222,6 +223,12 @@ namespace openpeer
                                     IServiceIdentitySessionDelegatePtr delegate,
                                     const char *outerFrameURLUponReload
                                     );
+        virtual void attachDelegateAndPreauthorizeLogin(
+                                                        IServiceIdentitySessionDelegatePtr delegate,
+                                                        const char *identityAccessToken,
+                                                        const char *identityAccessSecret,
+                                                        Time identityAccessSecretExpires
+                                                        );
 
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
@@ -558,17 +565,19 @@ namespace openpeer
                                                             IServiceNamespaceGrantSessionPtr grantSession,
                                                             IServiceLockboxSessionPtr existingLockbox,
                                                             const char *outerFrameURLUponReload,
-                                                            const char *identityURI
+                                                            const char *identityURI_or_identityBaseURI
                                                             );
 
-        virtual ServiceIdentitySessionPtr loginWithIdentityProvider(
-                                                                    IServiceIdentitySessionDelegatePtr delegate,
-                                                                    IServiceIdentityPtr provider,
-                                                                    IServiceNamespaceGrantSessionPtr grantSession,
-                                                                    IServiceLockboxSessionPtr existingLockbox,
-                                                                    const char *outerFrameURLUponReload,
-                                                                    const char *legacyIdentityBaseURI = NULL
-                                                                    );
+        static ServiceIdentitySessionPtr loginWithIdentityPreauthorized(
+                                                                        IServiceIdentitySessionDelegatePtr delegate,
+                                                                        IServiceIdentityPtr provider,
+                                                                        IServiceNamespaceGrantSessionPtr grantSession,
+                                                                        IServiceLockboxSessionPtr existingLockbox,  // pass NULL IServiceLockboxSessionPtr() if none exists
+                                                                        const char *identityURI,
+                                                                        const char *identityAccessToken,
+                                                                        const char *identityAccessSecret,
+                                                                        Time identityAccessSecretExpires
+                                                                        );
 
         static ServiceIdentitySessionPtr reload(
                                                 BootstrappedNetworkPtr provider,
