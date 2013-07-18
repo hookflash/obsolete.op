@@ -138,6 +138,12 @@ namespace openpeer
 
         virtual void shutdown();
 
+        static String createAuthorizedApplicationID(
+                                                    const char *applicationID,
+                                                    const char *applicationIDSharedSecret,
+                                                    Time expires
+                                                    );
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Stack => IStackMessageQueue
