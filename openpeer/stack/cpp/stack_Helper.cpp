@@ -128,7 +128,7 @@ namespace openpeer
       }
 
       //-------------------------------------------------------------------------
-      SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer)
+      SecureByteBlockPtr Helper::clone(SecureByteBlockPtr pBuffer)
       {
         if (!pBuffer) return SecureByteBlockPtr();
         return Helper::clone(*pBuffer);
@@ -933,7 +933,7 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer)
+    SecureByteBlockPtr IHelper::clone(SecureByteBlockPtr pBuffer)
     {
       return internal::Helper::clone(pBuffer);
     }
