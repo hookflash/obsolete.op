@@ -146,7 +146,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Notifies that a message needs to be processed from within the
       //          context of the custom thread.
-      virtual void onStackMessageQueueWakeUpCustomThreadAndProcess() = 0;
+      virtual void onStackMessageQueueWakeUpCustomThreadAndProcessOnCustomThread() = 0;
     };
   }
 }

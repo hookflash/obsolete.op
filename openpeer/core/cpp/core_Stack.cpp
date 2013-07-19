@@ -244,7 +244,7 @@ namespace openpeer
             AutoLock lock(mLock);
             delegate = mDelegate;
           }
-          delegate->onStackMessageQueueWakeUpCustomThreadAndProcess();
+          delegate->onStackMessageQueueWakeUpCustomThreadAndProcessOnCustomThread();
         }
 
         //---------------------------------------------------------------------
