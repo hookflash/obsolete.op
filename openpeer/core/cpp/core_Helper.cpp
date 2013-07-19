@@ -140,5 +140,17 @@ namespace openpeer
     {
       return internal::Helper::clone(element);
     }
+    
+    //-------------------------------------------------------------------------  
+    IPeerFilePublicPtr IHelper::createPeerFilePublic(const ElementPtr &element)
+    {
+      return internal::Helper::createPeerFilePublic(element);
+    }
+     
+    //-------------------------------------------------------------------------  
+    ElementPtr IHelper::convertToElement(IPeerFilePublicPtr peerFilePublic)
+    {
+      return internal::Helper::convertToElement(peerFilePublic);
+    }
   }
 }
