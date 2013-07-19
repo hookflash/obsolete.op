@@ -38,12 +38,14 @@
 
 #include <boost/thread.hpp>
 
-#include <sys/sysctl.h>
-
 #include <video_capture_factory.h>
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>
+#endif
+
+#ifdef TARGET_OS_IPHONE
+#include <sys/sysctl.h>
 #endif
 
 #define OPENPEER_MEDIA_ENGINE_VOICE_CODEC_ISAC
@@ -160,6 +162,7 @@ namespace openpeer
         mLifetimeVideoRecordFile(""),
         mLifetimeSaveVideoToLibrary(false)
       {
+#ifdef TARGET_OS_IPHONE
         int name[] = {CTL_HW, HW_MACHINE};
         size_t size;
         sysctl(name, 2, NULL, &size, NULL, 0);
@@ -167,6 +170,7 @@ namespace openpeer
         sysctl(name, 2, machine, &size, NULL, 0);
         mMachineName = machine;
         free(machine);
+#endif
       }
       
       MediaEngine::MediaEngine(Noop) :
