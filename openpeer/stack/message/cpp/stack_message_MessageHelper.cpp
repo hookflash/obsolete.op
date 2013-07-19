@@ -108,7 +108,7 @@ namespace openpeer
 
         String appID = message.appID();
         if (appID.hasData()) {
-          IMessageHelper::setAttribute(rootEl, "appID", appID);
+          IMessageHelper::setAttribute(rootEl, "appid", appID);
         }
 
         IMessageHelper::setAttribute(rootEl, "handler", factory->getHandler());
@@ -352,7 +352,7 @@ namespace openpeer
       {
         String id = IMessageHelper::getAttribute(root, "id");
         String domain = IMessageHelper::getAttribute(root, "domain");
-        String appID = IMessageHelper::getAttribute(root, "appID");
+        String appID = IMessageHelper::getAttribute(root, "appid");
 
         if (id.hasData()) {
           message.messageID(id);

@@ -126,7 +126,7 @@ namespace openpeer
                Helper::getDebugValue("handler", handler, firstTime) +
                Helper::getDebugValue("method", method, firstTime) +
                Helper::getDebugValue("domain", domain, firstTime) +
-               Helper::getDebugValue("appID", appID, firstTime) +
+               Helper::getDebugValue("appid", appID, firstTime) +
                Helper::getDebugValue("id", messageID, firstTime) +
                Helper::getDebugValue("error code", errorCode, firstTime) +
                Helper::getDebugValue("error reason", errorReason, firstTime);

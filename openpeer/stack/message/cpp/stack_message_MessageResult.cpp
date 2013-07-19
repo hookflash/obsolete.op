@@ -119,7 +119,7 @@ namespace openpeer
         MessageResultPtr pThis(new MessageResult);
 
         pThis->mDomain = IMessageHelper::getAttribute(root, "domain");
-        pThis->mAppID = IMessageHelper::getAttribute(root, "appID");
+        pThis->mAppID = IMessageHelper::getAttribute(root, "appid");
         pThis->mID = IMessageHelper::getAttributeID(root);
         pThis->mErrorCode = errorCode;
         pThis->mErrorReason = String(reason ? String(reason) : String());
