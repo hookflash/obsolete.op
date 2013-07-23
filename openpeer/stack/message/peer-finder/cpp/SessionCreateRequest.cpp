@@ -118,7 +118,7 @@ namespace openpeer
             sessionProofEl->adoptAsLastChild(IMessageHelper::createElementWithID("finder", mFinderID));
           }
 
-          sessionProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", IHelper::convertToHex(*IHelper::random(16))));
+          sessionProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", IHelper::convertToHex(*IHelper::random(16))));
 
           Time expires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_PEER_FINDER_SESSION_CREATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
 

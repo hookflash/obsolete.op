@@ -135,7 +135,7 @@ namespace openpeer
             }
           }
 
-          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (lockboxInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }

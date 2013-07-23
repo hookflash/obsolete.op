@@ -134,7 +134,7 @@ namespace openpeer
         struct Protocol
         {
           String mTransport;
-          String mSRV;
+          String mHost;
         };
         typedef std::list<Protocol> ProtocolList;
 

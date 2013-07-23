@@ -1620,10 +1620,10 @@ namespace openpeer
             while (protocolEl) {
               Finder::Protocol protocol;
               protocol.mTransport = IMessageHelper::getElementText(protocolEl->findFirstChildElement("transport"));
-              protocol.mSRV = IMessageHelper::getElementText(protocolEl->findFirstChildElement("srv"));
+              protocol.mHost = IMessageHelper::getElementText(protocolEl->findFirstChildElement("host"));
 
               if ((protocol.mTransport.hasData()) ||
-                  (protocol.mSRV.hasData())) {
+                  (protocol.mHost.hasData())) {
                 ret.mProtocols.push_back(protocol);
               }
 
@@ -1671,7 +1671,11 @@ namespace openpeer
             while (methodEl) {
               Service::Method method;
               method.mName = IMessageHelper::getElementText(methodEl->findFirstChildElement("name"));
-              method.mURI = IMessageHelper::getElementText(methodEl->findFirstChildElement("uri"));
+
+              String uri = IMessageHelper::getElementText(methodEl->findFirstChildElement("uri"));
+              String host = IMessageHelper::getElementText(methodEl->findFirstChildElement("host"));
+
+              method.mURI = (host.hasData() ? host : uri);
               method.mUsername = IMessageHelper::getElementText(methodEl->findFirstChildElement("username"));
               method.mPassword = IMessageHelper::getElementText(methodEl->findFirstChildElement("password"));
 

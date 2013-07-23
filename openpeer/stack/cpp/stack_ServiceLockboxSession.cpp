@@ -62,8 +62,8 @@
 
 #define OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION (80)
 
-//#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://openpeer.org/permission/private-peer-file"
-//#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://openpeer.org/permission/identity-relogins"
+//#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://meta.openpeer.org/permission/private-peer-file"
+//#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://meta.openpeer.org/permission/identity-relogins"
 
 #define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 1
 #define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 2
@@ -1423,7 +1423,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("generating peer files (may take a while)..."))
         setState(SessionState_PendingPeerFilesGeneration);
 
-        mPeerFiles = IPeerFiles::generate(IHelper::randomString(64), signedSaltEl);
+        mPeerFiles = IPeerFiles::generate(IHelper::randomString((32*8)/5+1), signedSaltEl);
         if (!mPeerFiles) {
           ZS_LOG_ERROR(Detail, log("failed to generate peer files"))
           setError(IHTTP::HTTPStatusCode_InternalServerError, "failed to generate peer files");
@@ -1979,10 +1979,16 @@ namespace openpeer
                                                const char *valueName
                                                ) const
       {
+        typedef IHelper::SplitMap SplitMap;
         typedef LockboxContentGetResult::NameValueMap NameValueMap;
 
         ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
         ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
+
+        if (!mLockboxInfo.mKey) {
+          ZS_LOG_DEBUG(log("lockbox key is not known") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
+          return String();
+        }
 
         NamespaceURLNameValueMap::const_iterator found = mContent.find(namespaceURL);
         if (found == mContent.end()) {
@@ -1998,17 +2004,23 @@ namespace openpeer
           return String();
         }
 
-        const String &value = (*foundValue).second;
+        const String &preSplitValue = (*foundValue).second;
 
-        if (!mLockboxInfo.mKey) {
-          ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
+        IHelper::SplitMap split;
+        IHelper::split(preSplitValue, split, ':');
+
+        if (split.size() != 2) {
+          ZS_LOG_DEBUG(log("failed to split value into salt and encrypted value") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return String();
         }
+
+        const String &salt = split[0];
+        const String &value = split[1];
 
         ZS_LOG_TRACE(log("decrypting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
 
         SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
-        SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
+        SecureByteBlockPtr iv = IHelper::hash(salt, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertFromBase64(value);
         if (!dataToConvert) {
@@ -2091,8 +2103,10 @@ namespace openpeer
 
         ZS_LOG_TRACE(log("encrpting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
 
+        String salt = IHelper::randomString((20*8)/5);
+
         SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
-        SecureByteBlockPtr iv = IHelper::hash(String(namespaceURL) + ":" + valueName, IHelper::HashAlgorthm_MD5);
+        SecureByteBlockPtr iv = IHelper::hash(salt, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertToBuffer(value);
         if (!dataToConvert) {
@@ -2106,7 +2120,7 @@ namespace openpeer
           return;
         }
 
-        String encodedValue = IHelper::convertToBase64(*result);
+        String encodedValue = salt + ":" + IHelper::convertToBase64(*result);
         if (encodedValue.isEmpty()) {
           ZS_LOG_WARNING(Detail, log("failed to encode encrypted to base64") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
           return;

@@ -35,8 +35,8 @@
 #include <openpeer/stack/internal/types.h>
 
 #define OPENPEER_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS (24*365*2)
-#define OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM "http://openpeer.org/2012/12/14/jsonsig#rsa-sha1"
-#define OPENPEER_STACK_PEER_FILE_CIPHER "sha256/aes256"
+#define OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM "http://meta.openpeer.org/2012/12/14/jsonsig#rsa-sha1"
+#define OPENPEER_STACK_PEER_FILE_CIPHER "http://meta.openpeer.org/2013/07/21/jsonmsg#rsa-sha1-aes-cfb-32-16-16-sha256-md5"
 
 namespace openpeer
 {

@@ -99,7 +99,7 @@ namespace openpeer
             lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-content-set"));
           }
 
-          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (lockboxInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(lockboxInfo));
           }

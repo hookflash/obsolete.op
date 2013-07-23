@@ -99,7 +99,7 @@ namespace openpeer
             rolodexInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(mRolodexInfo.mAccessSecret), "rolodex-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(rolodexInfo.mAccessSecretProofExpires) + ":" + rolodexInfo.mAccessToken + ":rolodex-contacts-get"));
           }
 
-          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (rolodexInfo.hasData()) {
             rootEl->adoptAsLastChild(MessageHelper::createElement(rolodexInfo));
           }

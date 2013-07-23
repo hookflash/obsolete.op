@@ -108,7 +108,7 @@ namespace openpeer
           lockboxInfo.mDomain = mLockboxInfo.mDomain;
           lockboxInfo.mKey = mLockboxInfo.mKey;
 
-          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (identityInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
