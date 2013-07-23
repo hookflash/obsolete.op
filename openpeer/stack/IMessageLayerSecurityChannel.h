@@ -197,8 +197,6 @@ namespace openpeer
 ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IMessageLayerSecurityChannelDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::SecureByteBlockPtr, SecureByteBlockPtr)
 ZS_DECLARE_PROXY_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
