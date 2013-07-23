@@ -143,6 +143,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000CA5E2179EA7F800B7FA99 /* IMessageLayerSecurityChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMessageLayerSecurityChannel.h; sourceTree = "<group>"; };
 		00384C42175BFEE900113845 /* stack_ServiceNamespaceGrantSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceNamespaceGrantSession.h; sourceTree = "<group>"; };
 		00384C43175BFEFA00113845 /* stack_ServiceNamespaceGrantSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceNamespaceGrantSession.cpp; sourceTree = "<group>"; };
 		00384C47175BFF9500113845 /* MessageFactoryRolodex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryRolodex.cpp; sourceTree = "<group>"; };
@@ -528,6 +529,7 @@
 				0063BA2E16CA92CF00E6DB4D /* IMessageIncoming.h */,
 				0063BA2F16CA92CF00E6DB4D /* IMessageMonitor.h */,
 				0063BA3016CA92CF00E6DB4D /* IMessageSource.h */,
+				000CA5E2179EA7F800B7FA99 /* IMessageLayerSecurityChannel.h */,
 				0063BA4F16CA92CF00E6DB4D /* IPeer.h */,
 				0063BA5016CA92CF00E6DB4D /* IPeerFilePrivate.h */,
 				0063BA5116CA92CF00E6DB4D /* IPeerFilePublic.h */,
