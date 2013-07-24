@@ -48,12 +48,11 @@ namespace openpeer
 
     interaction IMessageLayerSecurityChannel
     {
-      static String toDebugString(IMessageLayerSecurityChannelPtr subscription, bool includeCommaPrefix = true);
+      static String toDebugString(IMessageLayerSecurityChannelPtr channel, bool includeCommaPrefix = true);
 
       enum SessionStates
       {
         SessionState_SendOnly,
-        SessionState_ReceiveOnly,
         SessionState_Connected,
         SessionState_Shutdown,
       };
@@ -67,11 +66,15 @@ namespace openpeer
 
       enum RemotePublicKeyReferenceTypes
       {
-        RemotePublicKeyReferenceType_Unkonwn,                     // information about the remote party is not known yet
+        RemotePublicKeyReferenceType_Unknown,                     // information about the remote party is not known yet
         RemotePublicKeyReferenceType_FullPublicKey,               // the remote party referenced a full public key
         RemotePublicKeyReferenceType_PeerURI,                     // the remote party referenced a peer URI in its signatures that was resolved into a full public key
         RemotePublicKeyReferenceType_DomainCertificatesGet,       // the remote party referenced a domain where the "certificates get" was used to resolve into a full public key
       };
+
+      static const char *toString(SessionStates state);
+      static const char *toString(LocalPublicKeyReferenceTypes type);
+      static const char *toString(RemotePublicKeyReferenceTypes type);
 
       //-----------------------------------------------------------------------
       // PURPOSE: create a new channel to a remote connection
@@ -93,8 +96,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: return the current statte of the connection
       virtual SessionStates getState(
-                                     WORD *lastErrorCode,
-                                     String *lastErrorReason
+                                     WORD *outLastErrorCode = NULL,
+                                     String *outLastErrorReason = NULL
                                      ) const = 0;
 
       //-----------------------------------------------------------------------
@@ -118,7 +121,7 @@ namespace openpeer
       // NOTE:    This method only returns the remote public key if the
       //          public key was sent by the remote party, or the remote
       //          public key was resolved by its siganture reference.
-      virtual IRSAPublicKeyPtr getRemotePublicKey() = 0;
+      virtual IRSAPublicKeyPtr getRemotePublicKey() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This method will return the remotely referenced
@@ -126,7 +129,7 @@ namespace openpeer
       // NOTE:    This method returns a valid peer file public if the remote
       //          party referenced a peer URI in its cryptographic signature
       //          which was resolved to a peer file public locally.
-      virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() = 0;
+      virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This method will return the remotely referenced service
@@ -136,7 +139,7 @@ namespace openpeer
       //          remote party referenced a verifified domain/service as the
       //          party responsible for this connection in its cryptographic
       //          signatures.
-      virtual String getRemoteReferencedDomain(String *outService = NULL) = 0;
+      virtual String getRemoteReferencedDomain(String *outService = NULL) const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Obtains the next pending data buffer that needs to be

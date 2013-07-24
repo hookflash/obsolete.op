@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000CA5FA179EE6D500B7FA99 /* stack_MessageLayerSecurityChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CA5F8179EE6D500B7FA99 /* stack_MessageLayerSecurityChannel.cpp */; };
 		00384C44175BFEFA00113845 /* stack_ServiceNamespaceGrantSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C43175BFEFA00113845 /* stack_ServiceNamespaceGrantSession.cpp */; };
 		00384C51175BFF9500113845 /* MessageFactoryRolodex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C47175BFF9500113845 /* MessageFactoryRolodex.cpp */; };
 		00384C52175BFF9500113845 /* RolodexAccessRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C48175BFF9500113845 /* RolodexAccessRequest.cpp */; };
@@ -144,6 +145,8 @@
 
 /* Begin PBXFileReference section */
 		000CA5E2179EA7F800B7FA99 /* IMessageLayerSecurityChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMessageLayerSecurityChannel.h; sourceTree = "<group>"; };
+		000CA5F8179EE6D500B7FA99 /* stack_MessageLayerSecurityChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_MessageLayerSecurityChannel.cpp; sourceTree = "<group>"; };
+		000CA5FB179EE77A00B7FA99 /* stack_MessageLayerSecurityChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_MessageLayerSecurityChannel.h; sourceTree = "<group>"; };
 		00384C42175BFEE900113845 /* stack_ServiceNamespaceGrantSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceNamespaceGrantSession.h; sourceTree = "<group>"; };
 		00384C43175BFEFA00113845 /* stack_ServiceNamespaceGrantSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_ServiceNamespaceGrantSession.cpp; sourceTree = "<group>"; };
 		00384C47175BFF9500113845 /* MessageFactoryRolodex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryRolodex.cpp; sourceTree = "<group>"; };
@@ -527,9 +530,9 @@
 				0063BA2C16CA92CF00E6DB4D /* IHelper.h */,
 				0063BA2D16CA92CF00E6DB4D /* ILocation.h */,
 				0063BA2E16CA92CF00E6DB4D /* IMessageIncoming.h */,
+				000CA5E2179EA7F800B7FA99 /* IMessageLayerSecurityChannel.h */,
 				0063BA2F16CA92CF00E6DB4D /* IMessageMonitor.h */,
 				0063BA3016CA92CF00E6DB4D /* IMessageSource.h */,
-				000CA5E2179EA7F800B7FA99 /* IMessageLayerSecurityChannel.h */,
 				0063BA4F16CA92CF00E6DB4D /* IPeer.h */,
 				0063BA5016CA92CF00E6DB4D /* IPeerFilePrivate.h */,
 				0063BA5116CA92CF00E6DB4D /* IPeerFilePublic.h */,
@@ -564,6 +567,7 @@
 				0063BA1516CA92CF00E6DB4D /* stack_Helper.cpp */,
 				0063BA1616CA92CF00E6DB4D /* stack_Location.cpp */,
 				0063BA1716CA92CF00E6DB4D /* stack_MessageIncoming.cpp */,
+				000CA5F8179EE6D500B7FA99 /* stack_MessageLayerSecurityChannel.cpp */,
 				0063BA1816CA92CF00E6DB4D /* stack_MessageMonitor.cpp */,
 				0063BA1916CA92CF00E6DB4D /* stack_MessageMonitorManager.cpp */,
 				0063BA1A16CA92CF00E6DB4D /* stack_Peer.cpp */,
@@ -602,6 +606,7 @@
 				0063BA3A16CA92CF00E6DB4D /* stack_Helper.h */,
 				0063BA3B16CA92CF00E6DB4D /* stack_Location.h */,
 				0063BA3C16CA92CF00E6DB4D /* stack_MessageIncoming.h */,
+				000CA5FB179EE77A00B7FA99 /* stack_MessageLayerSecurityChannel.h */,
 				0063BA3D16CA92CF00E6DB4D /* stack_MessageMonitor.h */,
 				0063BA3E16CA92CF00E6DB4D /* stack_MessageMonitorManager.h */,
 				0063BA3F16CA92CF00E6DB4D /* stack_Peer.h */,
@@ -1161,6 +1166,7 @@
 				006FB4D8175E5FDE000C53A8 /* LockboxNamespaceGrantChallengeValidateResult.cpp in Sources */,
 				006FB4DD175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetRequest.cpp in Sources */,
 				006FB4DE175EA3C8000C53A8 /* IdentityAccessRolodexCredentialsGetResult.cpp in Sources */,
+				000CA5FA179EE6D500B7FA99 /* stack_MessageLayerSecurityChannel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

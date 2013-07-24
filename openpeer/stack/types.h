@@ -164,6 +164,7 @@ namespace openpeer
     interaction IMessageLayerSecurityChannelDelegate;
     typedef boost::shared_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegatePtr;
     typedef boost::weak_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateWeakPtr;
+    typedef zsLib::Proxy<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateProxy;
 
     interaction ILocation;
     typedef boost::shared_ptr<ILocation> ILocationPtr;
