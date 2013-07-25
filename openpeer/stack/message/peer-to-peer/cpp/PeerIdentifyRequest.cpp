@@ -209,7 +209,7 @@ namespace openpeer
           ElementPtr peerIdentityProofBundleEl = Element::create("peerIdentityProofBundle");
           ElementPtr peerIdentityProofEl = Element::create("peerIdentityProof");
 
-          peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", IHelper::randomString(32)));
+          peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", IHelper::randomString(32)));
 
           Time expires = zsLib::now() + Duration(Seconds(OPENPEER_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS));
           peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("expires", IMessageHelper::timeToString(expires)));

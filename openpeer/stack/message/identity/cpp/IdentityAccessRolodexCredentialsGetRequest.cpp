@@ -102,7 +102,7 @@ namespace openpeer
             identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":rolodex-credentials-get"));
           }
 
-          root->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (identityInfo.hasData()) {
             root->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }

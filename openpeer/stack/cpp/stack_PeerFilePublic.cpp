@@ -444,7 +444,7 @@ namespace openpeer
         }
 
         try {
-          String cipher = sectionAEl->findFirstChildElementChecked("cipher")->getTextDecoded();
+          String cipher = sectionAEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
           if (OPENPEER_STACK_PEER_FILE_CIPHER != cipher) {
             ZS_LOG_WARNING(Detail, log("cipher suite is not understood, cipher suite=") + cipher + ", expecting=" + OPENPEER_STACK_PEER_FILE_CIPHER)
             return false;

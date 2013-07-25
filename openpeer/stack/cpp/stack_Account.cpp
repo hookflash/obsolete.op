@@ -128,7 +128,7 @@ namespace openpeer
           const Finder::Protocol &protocol = (*iter);
 
           if (OPENPEER_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
-            return protocol.mSRV;
+            return protocol.mHost;
           }
         }
         return String();

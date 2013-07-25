@@ -493,7 +493,7 @@ namespace openpeer
             ElementPtr sectionBundleEl = Element::create("sectionBundle");
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", OPENPEER_STACK_PEER_FILE_CIPHER));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", OPENPEER_STACK_PEER_FILE_CIPHER));
 
             Time created = zsLib::now();
             Time expires = created + Duration(Hours(OPENPEER_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS));
@@ -555,7 +555,7 @@ namespace openpeer
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "B");
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("contact", mPeerURI));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("findSecret", IHelper::randomString(32)));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithTextAndJSONEncode("findSecret", IHelper::randomString((32*8)/5+1)));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
@@ -595,7 +595,7 @@ namespace openpeer
 
             ElementPtr sectionEl = message::IMessageHelper::createElementWithID("section", "A");
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("contact", mPeerURI));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("cipher", OPENPEER_STACK_PEER_FILE_CIPHER));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", OPENPEER_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
@@ -674,7 +674,7 @@ namespace openpeer
 
         try {
           String contact = sectionAEl->findFirstChildElementChecked("contact")->getTextDecoded();
-          String cipher = sectionAEl->findFirstChildElementChecked("cipher")->getTextDecoded();
+          String cipher = sectionAEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
           String salt = sectionAEl->findFirstChildElementChecked("salt")->getTextDecoded();
           String secretProof = sectionAEl->findFirstChildElementChecked("secretProof")->getTextDecoded();
 

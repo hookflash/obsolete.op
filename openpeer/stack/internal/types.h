@@ -176,6 +176,10 @@ namespace openpeer
       typedef boost::shared_ptr<PublicationRepository> PublicationRepositoryPtr;
       typedef boost::weak_ptr<PublicationRepository> PublicationRepositoryWeakPtr;
 
+      interaction MessageLayerSecurityChannel;
+      typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
+      typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
+
       class MessageMonitor;
       typedef boost::shared_ptr<MessageMonitor> MessageMonitorPtr;
       typedef boost::weak_ptr<MessageMonitor> MessageMonitorWeakPtr;

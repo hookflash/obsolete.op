@@ -150,7 +150,7 @@ namespace openpeer
         {
           const Finder::Protocol &protocol = (*iter);
           result += Helper::getDebugValue((String("transport") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mTransport, ioFirstTime);
-          result += Helper::getDebugValue((String("srv") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mSRV, ioFirstTime);
+          result += Helper::getDebugValue((String("host") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mHost, ioFirstTime);
         }
         return result;
       }

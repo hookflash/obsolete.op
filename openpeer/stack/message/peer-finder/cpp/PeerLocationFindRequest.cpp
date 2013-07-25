@@ -120,7 +120,7 @@ namespace openpeer
           try {
             ElementPtr findProofEl = root->findFirstChildElementChecked("findProofBundle")->findFirstChildElementChecked("findProof");
 
-            String clientNonce = findProofEl->findFirstChildElementChecked("clientNonce")->getText();
+            String clientNonce = findProofEl->findFirstChildElementChecked("nonce")->getText();
 
             String peerURI = findProofEl->findFirstChildElementChecked("find")->getText();
 
@@ -283,7 +283,7 @@ namespace openpeer
           ElementPtr findProofBundleEl = Element::create("findProofBundle");
           ElementPtr findProofEl = Element::create("findProof");
 
-          findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
 
           if (mFindPeer) {
             findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("find", mFindPeer->getPeerURI()));

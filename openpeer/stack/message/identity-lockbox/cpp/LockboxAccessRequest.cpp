@@ -110,7 +110,7 @@ namespace openpeer
           lockboxInfo.mHash = mLockboxInfo.mHash;
           lockboxInfo.mResetFlag = mLockboxInfo.mResetFlag;
 
-          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("clientNonce", clientNonce));
+          rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
           if (identityInfo.hasData()) {
             rootEl->adoptAsLastChild(MessageHelper::createElement(identityInfo));
           }
