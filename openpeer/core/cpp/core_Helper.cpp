@@ -141,7 +141,13 @@ namespace openpeer
       return internal::Helper::clone(element);
     }
     
-    //-------------------------------------------------------------------------  
+    //-------------------------------------------------------------------------
+    String IHelper::getPeerURI(IPeerFilePublicPtr peerFilePublic)
+    {
+      return internal::Helper::getPeerURI(peerFilePublic);
+    }
+      
+    //-------------------------------------------------------------------------
     IPeerFilePublicPtr IHelper::createPeerFilePublic(const ElementPtr &element)
     {
       return internal::Helper::createPeerFilePublic(element);
