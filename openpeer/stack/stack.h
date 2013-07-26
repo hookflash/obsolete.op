@@ -41,6 +41,7 @@
 #include <openpeer/stack/IMessageIncoming.h>
 #include <openpeer/stack/IMessageMonitor.h>
 #include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/IMessageLayerSecurityChannel.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFilePrivate.h>

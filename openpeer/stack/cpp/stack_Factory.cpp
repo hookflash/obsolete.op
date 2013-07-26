@@ -227,6 +227,24 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMessageLayerSecurityChannelFactory
+      #pragma mark
+
+      MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
+                                                                                 IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                                 IPeerFilesPtr localPeerFiles,
+                                                                                 LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
+                                                                                 IAccountPtr account
+                                                                                 )
+      {
+        return MessageLayerSecurityChannel::create(delegate, localPeerFiles, localPublicKeyReferenceType, account);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMessageMonitorFactory
       #pragma mark
 
