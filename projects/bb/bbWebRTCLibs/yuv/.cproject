@@ -33,7 +33,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.695064145" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1004444845" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -48,7 +48,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.336699565" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1393751742" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.99630387" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.99630387" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1045731018" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.239831982" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -64,8 +64,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="libyuv/unit_test/" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc|libyuv/unit_test/" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -76,8 +76,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Release"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -98,7 +100,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.2066149292" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1605544585" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -116,7 +118,7 @@
 								<inputType id="com.qnx.qcc.inputType.compiler.456049268" superClass="com.qnx.qcc.inputType.compiler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1624087551" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
-								<option id="com.qnx.qcc.option.assembler.asoptions.1375308088" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.1375308088" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1355112943" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1821906776" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -132,8 +134,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -144,8 +146,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Profile"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -168,7 +172,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1438979408" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.740113606" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -183,7 +187,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1126983131" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.1023767591" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.1510369971" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.1510369971" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.455695827" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1868024730" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -200,8 +204,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -212,8 +216,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Device-Coverage"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -236,7 +242,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.832159533" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1987220886" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -251,7 +257,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1140268161" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.564629737" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.173333774" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.173333774" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.173415123" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.1714735769" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -268,8 +274,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -280,8 +286,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Debug"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -302,7 +310,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.1637222352" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.2128335127" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -317,7 +325,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.847756773" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.2130241812" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.1066947932" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.1066947932" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.77394284" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.939148427" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -333,8 +341,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -345,8 +353,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Profile"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -368,7 +378,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.912828782" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.558495852" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -383,7 +393,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1935232125" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.2024095394" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.2142524622" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.2142524622" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1627022439" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.984494609" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -400,8 +410,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -412,8 +422,10 @@
 				<externalSettings>
 					<externalSetting>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv/public"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="includePath" name="/yuv"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="libraryPath" name="/yuv/Simulator-Coverage"/>
 						<entry flags="" kind="libraryFile" name="yuv"/>
+						<entry flags="RESOLVED" kind="libraryFile" name="yuv"/>
 					</externalSetting>
 				</externalSettings>
 				<extensions>
@@ -435,7 +447,7 @@
 									<listOptionValue builtIn="false" value="${workspace_loc:/${ProjName}/public}"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/usr/include/freetype2"/>
 									<listOptionValue builtIn="false" value="${QNX_TARGET}/../target-override/usr/include"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../../hookflash-libs/webRTC/third_party/libyuv/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/../../../../libs/webrtc/third_party/libyuv/include&quot;"/>
 								</option>
 								<option id="com.qnx.qcc.option.compiler.security.746280561" name="Enhanced Security (-fstack-protector-strong)" superClass="com.qnx.qcc.option.compiler.security" value="true" valueType="boolean"/>
 								<option id="com.qnx.qcc.option.compiler.defines.1237462146" name="Defines (-D)" superClass="com.qnx.qcc.option.compiler.defines" valueType="definedSymbols">
@@ -450,7 +462,7 @@
 							</tool>
 							<tool id="com.qnx.qcc.tool.assembler.1596808316" name="QCC Assembler" superClass="com.qnx.qcc.tool.assembler">
 								<option id="com.qnx.qcc.option.assembler.debug.588967304" name="Debug (-g)" superClass="com.qnx.qcc.option.assembler.debug" value="true" valueType="boolean"/>
-								<option id="com.qnx.qcc.option.assembler.asoptions.39272601" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions" valueType="stringList"/>
+								<option id="com.qnx.qcc.option.assembler.asoptions.39272601" name="Assembler Options (-Wa,)" superClass="com.qnx.qcc.option.assembler.asoptions"/>
 								<inputType id="com.qnx.qcc.inputType.assembler.1950800447" superClass="com.qnx.qcc.inputType.assembler"/>
 							</tool>
 							<tool id="com.qnx.qcc.tool.linker.843862101" name="QCC Linker" superClass="com.qnx.qcc.tool.linker">
@@ -467,8 +479,8 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="public"/>
+						<entry excluding="libyuv/source/scale_mips.cc|libyuv/source/row_win.cc|libyuv/source/x86inc.asm|libyuv/source/row_x86.asm|libyuv/source/rotate_mips.cc|libyuv/source/compare_win.cc|libyuv/source/row_mips.cc" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
