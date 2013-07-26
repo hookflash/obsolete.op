@@ -114,7 +114,7 @@ namespace openpeer
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":identity-lookup-update"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":identity-lookup-update"));
           }
 
           IdentityInfo identityInfo;
@@ -125,7 +125,7 @@ namespace openpeer
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
             identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":identity-lookup-update"));
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":identity-lookup-update"));
           }
 
           identityInfo.mStableID = mIdentityInfo.mStableID;

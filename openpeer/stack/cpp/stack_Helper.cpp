@@ -116,6 +116,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG Helper::random(ULONG minValue, ULONG maxValue)
+      {
+        return services::IHelper::random(minValue, maxValue);
+      }
+
+      //-----------------------------------------------------------------------
       int Helper::compare(
                           const SecureByteBlock &left,
                           const SecureByteBlock &right
@@ -363,6 +369,27 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      size_t Helper::getHashDigestSize(HashAlgorthms algorithm)
+      {
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            MD5 hasher;
+            return hasher.DigestSize();
+          }
+          case HashAlgorthm_SHA1:     {
+            SHA1 hasher;
+            return hasher.DigestSize();
+          }
+          case HashAlgorthm_SHA256:   {
+            SHA256 hasher;
+            return hasher.DigestSize();
+          }
+        }
+
+        return 0;
+      }
+
+      //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hash(
                                       const char *value,
                                       HashAlgorthms algorithm
@@ -432,6 +459,18 @@ namespace openpeer
         return output;
       }
       
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const char *passphrase)
+      {
+        return convertToBuffer(passphrase, false);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const std::string &passphrase)
+      {
+        return convertToBuffer(passphrase.c_str(), false);
+      }
+
       //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hmac(
                                       const SecureByteBlock &key,
@@ -587,7 +626,9 @@ namespace openpeer
                                           String *outPeerURI,
                                           String *outKeyID,
                                           String *outKeyDomain,
-                                          String *outService
+                                          String *outService,
+                                          String *outFullPublicKey,
+                                          String *outFingerprint
                                           )
       {
         if (!signedEl) {
@@ -653,6 +694,12 @@ namespace openpeer
           }
           if (outService) {
             *outService = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("service"));
+          }
+          if (outFullPublicKey) {
+            *outFullPublicKey = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("x509Data"));
+          }
+          if (outFingerprint) {
+            *outFingerprint = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElement("fingerprint"));
           }
         }
 
@@ -927,6 +974,12 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    ULONG IHelper::random(ULONG minValue, ULONG maxValue)
+    {
+      return internal::Helper::random(minValue, maxValue);
+    }
+
+    //-------------------------------------------------------------------------
     int IHelper::compare(
                          const SecureByteBlock &left,
                          const SecureByteBlock &right
@@ -1102,6 +1155,12 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    size_t IHelper::getHashDigestSize(HashAlgorthms algorithm)
+    {
+      return internal::Helper::getHashDigestSize(algorithm);
+    }
+    
+    //-------------------------------------------------------------------------
     SecureByteBlockPtr IHelper::hash(
                                      const char *buffer,
                                      HashAlgorthms algorithm
@@ -1126,6 +1185,18 @@ namespace openpeer
                                      )
     {
       return internal::Helper::hash(buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmacKeyFromPassphrase(const char *passphrase)
+    {
+      return internal::Helper::hmacKeyFromPassphrase(passphrase);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmacKeyFromPassphrase(const std::string &passphrase)
+    {
+      return internal::Helper::hmacKeyFromPassphrase(passphrase);
     }
 
     //-------------------------------------------------------------------------
@@ -1195,10 +1266,12 @@ namespace openpeer
                                          String *outPeerURI,
                                          String *outKeyID,
                                          String *outKeyDomain,
-                                         String *outService
+                                         String *outService,
+                                         String *outFullPublicKey,
+                                         String *outFingerprint
                                          )
     {
-      return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outPeerURI, outKeyID, outKeyDomain, outService);
+      return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outPeerURI, outKeyID, outKeyDomain, outService, outFullPublicKey, outFingerprint);
     }
 
     //-------------------------------------------------------------------------

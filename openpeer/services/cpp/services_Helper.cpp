@@ -1572,6 +1572,24 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG Helper::random(ULONG minValue, ULONG maxValue)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(minValue > maxValue)
+        if (minValue == maxValue) return minValue;
+
+        ULONG range = maxValue - minValue;
+
+        ULONG value = 0;
+        
+        AutoSeededRandomPool rng;
+        rng.GenerateBlock((BYTE *) &value, sizeof(ULONG));
+
+        value = minValue + (value % range);
+
+        return value;
+      }
+
+      //-----------------------------------------------------------------------
       IMessageQueuePtr Helper::getServiceQueue()
       {
         ServiceThreadPtr thread = ServiceThread::singleton();
@@ -1604,6 +1622,12 @@ namespace openpeer
     SecureByteBlockPtr IHelper::random(UINT lengthInBytes)
     {
       return internal::Helper::random(lengthInBytes);
+    }
+
+    //-------------------------------------------------------------------------
+    ULONG IHelper::random(ULONG minValue, ULONG maxValue)
+    {
+      return internal::Helper::random(minValue, maxValue);
     }
 
     //-------------------------------------------------------------------------

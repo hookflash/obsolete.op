@@ -100,7 +100,7 @@ namespace openpeer
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
             identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-update"));
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-update"));
           }
 
           LockboxInfo lockboxInfo;

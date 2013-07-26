@@ -234,10 +234,11 @@ namespace openpeer
                                                                                  IMessageLayerSecurityChannelDelegatePtr delegate,
                                                                                  IPeerFilesPtr localPeerFiles,
                                                                                  LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
+                                                                                 const char *contextID,
                                                                                  IAccountPtr account
                                                                                  )
       {
-        return MessageLayerSecurityChannel::create(delegate, localPeerFiles, localPublicKeyReferenceType, account);
+        return MessageLayerSecurityChannel::create(delegate, localPeerFiles, localPublicKeyReferenceType, contextID, account);
       }
 
       //-----------------------------------------------------------------------

@@ -99,6 +99,8 @@ namespace openpeer
 
         virtual SecureByteBlockPtr save() const;
 
+        virtual String getFingerprint() const;
+
         virtual bool verify(
                             const SecureByteBlock &inOriginalBufferSigned,
                             const SecureByteBlock &inSignature
@@ -108,6 +110,8 @@ namespace openpeer
                             const String &inOriginalStringSigned,
                             const SecureByteBlock &inSignature
                             ) const;
+
+        virtual bool verifySignature(ElementPtr signedEl) const;
 
         virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const;
 
@@ -133,6 +137,7 @@ namespace openpeer
 
         PUID mID;
         PublicKey mPublicKey;
+        String mFingerprint;
       };
 
       //-----------------------------------------------------------------------

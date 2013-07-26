@@ -129,7 +129,7 @@ namespace openpeer
 
         virtual void signElement(
                                  ElementPtr elementToSign,
-                                 bool referenceKeyOnlyInSignature = true,
+                                 SignatureTypes signatureType = SignatureType_PeerURI,
                                  IRSAPublicKeyPtr publicKey = IRSAPublicKeyPtr()
                                  ) const;
 

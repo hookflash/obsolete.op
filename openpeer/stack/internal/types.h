@@ -180,6 +180,11 @@ namespace openpeer
       typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
       typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
 
+      interaction IMessageLayerSecurityChannelAsyncDelegate;
+      typedef boost::shared_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegatePtr;
+      typedef boost::weak_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateWeakPtr;
+      typedef zsLib::Proxy<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateProxy;
+
       class MessageMonitor;
       typedef boost::shared_ptr<MessageMonitor> MessageMonitorPtr;
       typedef boost::weak_ptr<MessageMonitor> MessageMonitorWeakPtr;

@@ -70,6 +70,8 @@ namespace openpeer
 
       static SecureByteBlockPtr random(UINT lengthInBytes);
 
+      static ULONG random(ULONG minValue, ULONG maxValue);
+
       static int compare(
                          const SecureByteBlock &left,
                          const SecureByteBlock &right
@@ -156,6 +158,8 @@ namespace openpeer
                                         EncryptionAlgorthms algorithm = EncryptionAlgorthm_AES
                                         );
 
+      static size_t getHashDigestSize(HashAlgorthms algorithm); // returns hash algorithm's digest output size in bytes
+
       static SecureByteBlockPtr hash(
                                      const char *value,
                                      HashAlgorthms algorithm = HashAlgorthm_SHA1
@@ -168,6 +172,9 @@ namespace openpeer
                                      const SecureByteBlock &value,
                                      HashAlgorthms algorithm = HashAlgorthm_SHA1
                                      );
+
+      static SecureByteBlockPtr hmacKeyFromPassphrase(const char *passphrase);
+      static SecureByteBlockPtr hmacKeyFromPassphrase(const std::string &passphrase);
 
       static SecureByteBlockPtr hmac(
                                      const SecureByteBlock &key,
@@ -210,7 +217,9 @@ namespace openpeer
                                          String *outPeerURI = NULL,
                                          String *outKeyID = NULL,
                                          String *outKeyDomain = NULL,
-                                         String *outService = NULL
+                                         String *outService = NULL,
+                                         String *outFullPublicKey = NULL,
+                                         String *outFingerprint = NULL
                                          );
 
       static ElementPtr cloneAsCanonicalJSON(ElementPtr element);

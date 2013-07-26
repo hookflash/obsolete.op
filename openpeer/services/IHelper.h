@@ -55,6 +55,7 @@ namespace openpeer
 
       static String randomString(UINT lengthInChars);
       static SecureByteBlockPtr random(UINT lengthInBytes);
+      static ULONG random(ULONG minValue, ULONG maxValue);
 
       static void installStdOutLogger(bool colorizeOutput);
       static void installFileLogger(const char *fileName, bool colorizeOutput);

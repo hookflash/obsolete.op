@@ -49,6 +49,15 @@ namespace openpeer
 
     interaction IPeerFilePrivate
     {
+      enum SignatureTypes
+      {
+        SignatureType_FullPublicKey,
+        SignatureType_PeerURI,
+        SignatureType_Fingerprint,
+      };
+
+      static const char *toString(SignatureTypes signatureType);
+
       static String toDebugString(IPeerFilePrivatePtr peerFilePrivate, bool includeCommaPrefix = true);
 
       virtual PUID getID() const = 0;
@@ -68,7 +77,7 @@ namespace openpeer
 
       virtual void signElement(
                                ElementPtr elementToSign,
-                               bool referenceKeyOnlyInSignature = true,
+                               SignatureTypes signatureType = SignatureType_PeerURI,
                                IRSAPublicKeyPtr publicKey = IRSAPublicKeyPtr()
                                ) const = 0;
 

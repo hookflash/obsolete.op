@@ -58,6 +58,7 @@ namespace openpeer
         static String getDebugValue(const char *name, const String &value, bool &firstTime);
 
         static String randomString(UINT lengthInChars);
+        static ULONG random(ULONG minValue, ULONG maxValue);
 
         static SecureByteBlockPtr random(UINT lengthInBytes);
 

@@ -95,7 +95,7 @@ namespace openpeer
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_LOCKBOX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-namespace-grant-challenge-validate"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-namespace-grant-challenge-validate"));
           }
 
           rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));

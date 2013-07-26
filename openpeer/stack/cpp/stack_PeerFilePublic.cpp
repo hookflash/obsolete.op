@@ -299,53 +299,37 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(!mPublicKey)
         ZS_THROW_INVALID_ARGUMENT_IF(!signedEl)
 
+        String peerURI;
+        String fullPublicKey;
+        String fingerprint;
+
         ElementPtr signatureEl;
-        signedEl = IHelper::getSignatureInfo(signedEl, &signatureEl);
+        signedEl = IHelper::getSignatureInfo(signedEl, &signatureEl, &peerURI, NULL, NULL, NULL, &fullPublicKey, &fingerprint);
 
         if (!signedEl) {
           ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))
           return false;
         }
 
-        // found the signature reference, now check if the peer URIs match - they must...
-        try {
-          String foundURI = signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("uri")->getTextDecoded();
-          if (foundURI != mPeerURI) {
-            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file, signature's URI=") + foundURI + ", peer file URI=" + mPeerURI)
+        if (peerURI.hasData()) {
+          if (peerURI != mPeerURI) {
+            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file") + ", signature's URI=" + peerURI + ", peer file URI=" + mPeerURI)
             return false;
           }
+        }
 
-          String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
-            ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
+        if (fingerprint.hasData()) {
+          if (fingerprint != mPublicKey->getFingerprint()) {
+            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file") + ", signature's fingerprint=" + fingerprint + ", peer fingerprint=" + mPublicKey->getFingerprint() + ", peer file URI=" + mPeerURI)
             return false;
           }
+        }
 
-          String signatureDigestAsString = signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded();
-
-          ElementPtr canonicalSigned = Helper::cloneAsCanonicalJSON(signedEl);
-
-          GeneratorPtr generator = Generator::createJSONGenerator();
-          boost::shared_array<char> signedElAsJSON = generator->write(canonicalSigned);
-
-          SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
-
-          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
-            ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
-            return false;
-          }
-
-          SecureByteBlockPtr signatureDigestSigned = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
-
-          if (!mPublicKey->verify(*actualDigest, *signatureDigestSigned)) {
-            ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", peer URI=" + mPeerURI)
-            return false;
-          }
-
-        } catch(CheckFailed &) {
-          ZS_LOG_WARNING(Detail, log("signature missing element"))
+        if (!mPublicKey->verifySignature(signedEl)) {
+          ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", peer URI=" + peerURI + ", fingerprint=" + fingerprint + ", full public key=" + fullPublicKey)
           return false;
         }
+
         return true;
       }
 

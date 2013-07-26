@@ -52,6 +52,7 @@ namespace openpeer
 
       enum SessionStates
       {
+        SessionState_ReceiveOnly,
         SessionState_SendOnly,
         SessionState_Connected,
         SessionState_Shutdown,
@@ -61,7 +62,6 @@ namespace openpeer
       {
         LocalPublicKeyReferenceType_FullPublicKey,                // in this mode, the remote party may not know anything about the local peer thus include the full public key in the channel negotiation
         LocalPublicKeyReferenceType_PeerURI,                      // in this mode the remote party is presumed to know the local peer's public peer file so the signature used in the channel negotiations will reference the local public peer file by peer URI
-        LocalPublicKeyReferenceType_FingerPrint,                  // in this mode the remote party is presumed to know the local peer's public key in advance (but not the local peer file public) so reference the public key by its fingerprint
       };
 
       enum RemotePublicKeyReferenceTypes
@@ -69,7 +69,6 @@ namespace openpeer
         RemotePublicKeyReferenceType_Unknown,                     // information about the remote party is not known yet
         RemotePublicKeyReferenceType_FullPublicKey,               // the remote party referenced a full public key
         RemotePublicKeyReferenceType_PeerURI,                     // the remote party referenced a peer URI in its signatures that was resolved into a full public key
-        RemotePublicKeyReferenceType_DomainCertificatesGet,       // the remote party referenced a domain where the "certificates get" was used to resolve into a full public key
       };
 
       static const char *toString(SessionStates state);
@@ -82,7 +81,8 @@ namespace openpeer
                                                     IMessageLayerSecurityChannelDelegatePtr delegate,
                                                     IPeerFilesPtr localPeerFiles,                                   // needs a public / private keer pair to operate
                                                     LocalPublicKeyReferenceTypes localPublicKeyReferenceType,       // how should the local public key be referenced in the MLS channel negotiations
-                                                    IAccountPtr account = IAccountPtr()                             // if specified, the account object will be used to resolve peer URI remotely referenced public keys
+                                                    const char *contextID = NULL,                                   // the session context ID
+                                                    IAccountPtr account = IAccountPtr()                             // used to auto-resolve peer URIs [if possible] that were referenced from the remote party (can specify IAccountPtr() to prevent auto-resolving)
                                                     );
 
       //-----------------------------------------------------------------------
@@ -103,14 +103,50 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Send a message object over the MLS channel to the remote peer
       // NOTE:    messages are queued until a send connection is established
-      virtual bool send(message::MessagePtr message) = 0;
+      virtual bool send(
+                        const BYTE *buffer,
+                        ULONG bufferSizeInBytes
+                        ) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Obtains the next pending message received over the wire.
       // NOTE:    Messages are queued in the public key referenced in the
       //          cryptographic negotiations is resolved.
       //          Returns MessagePtr() if no message is pending.
-      virtual message::MessagePtr getNextPendingIncomingMessage() = 0;
+      virtual SecureByteBlockPtr getNextIncomingMessage() = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: If the remote party encoded their keying materials using
+      //          a passphrase, this rountine can be called to decode that
+      //          keying material.
+      // NOTE:    The "onMessageLayerSecurityChannelNeedDecodingPassphrase"
+      //          will be called to indicate a passphrase is required
+      //          to decrypt the keying material.
+      virtual void setReceiveKeyingDecoding(const char *passphrase) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Calling this routine causes the keying material to be
+      //          encoded using the public key specified.
+      // NOTE:    This method can only be called once.
+      virtual void setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Calling this routine causes the keying material to be
+      //          encoded using the pass phrase specified.
+      // NOTE:    This method can only be called once.
+      virtual void setSendKeyingEncoding(const char *passphrase) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Obtain the context ID specified in the construction of this
+      //          object (and sent to the remote party).
+      virtual String getLocalConextID() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Obtain the context ID specified by the remote party.
+      // NOTE:    This can be useful to pick the correct keying material
+      //          when the remote party encodes keying materials using
+      //          a passphrase.
+      virtual String getRemoteConextID() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This method will return the remote public key (if known).
@@ -130,16 +166,6 @@ namespace openpeer
       //          party referenced a peer URI in its cryptographic signature
       //          which was resolved to a peer file public locally.
       virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() const = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: This method will return the remotely referenced service
-      //          domain referenced in the cyrptography signature.
-      // NOTE:    This method returns a string with the remote domain (and
-      //          optional service) attached to this connectionn if the
-      //          remote party referenced a verifified domain/service as the
-      //          party responsible for this connection in its cryptographic
-      //          signatures.
-      virtual String getRemoteReferencedDomain(String *outService = NULL) const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Obtains the next pending data buffer that needs to be
@@ -184,6 +210,11 @@ namespace openpeer
                                                              ) = 0;
 
       //-----------------------------------------------------------------------
+      // PURPOSE: Notifies the delegate that the stream needs a passphrase to
+      //          be able to decode the incoming messages.
+      virtual void onMessageLayerSecurityChannelNeedDecodingPassphrase(IMessageLayerSecurityChannelPtr channel) = 0;
+
+      //-----------------------------------------------------------------------
       // PURPOSE: Notifies the delegate of an incoming message that will be
       //          queued until ready to be read.
       virtual void onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel) = 0;
@@ -201,6 +232,7 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IMessageLayerSecurityChannelDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
+ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelNeedDecodingPassphrase, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_END()

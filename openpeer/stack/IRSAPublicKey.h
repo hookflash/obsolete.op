@@ -54,6 +54,8 @@ namespace openpeer
 
       virtual SecureByteBlockPtr save() const = 0;
 
+      virtual String getFingerprint() const = 0;
+
       virtual bool verify(
                           const SecureByteBlock &inOriginalBufferSigned,
                           const SecureByteBlock &inSignature
@@ -63,6 +65,8 @@ namespace openpeer
                           const String &inOriginalStringSigned,
                           const SecureByteBlock &inSignature
                           ) const = 0;
+
+      virtual bool verifySignature(ElementPtr signedEl) const = 0;
 
       virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const = 0;
     };

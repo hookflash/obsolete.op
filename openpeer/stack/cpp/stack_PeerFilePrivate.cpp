@@ -214,7 +214,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void PeerFilePrivate::signElement(
                                         ElementPtr elementToSign,
-                                        bool referenceKeyOnlyInSignature,
+                                        SignatureTypes signatureType,
                                         IRSAPublicKeyPtr publicKey
                                         ) const
       {
@@ -222,8 +222,10 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!elementToSign)
 
         if (mPeerURI.length() < 1) {
-          // cannot sign with reference when peer URI is not set
-          referenceKeyOnlyInSignature = false;
+          if (SignatureType_PeerURI == signatureType) {
+            // cannot sign with reference when peer URI is not set
+            signatureType = SignatureType_FullPublicKey;
+          }
         }
 
         ElementPtr signatureEl;
@@ -276,12 +278,42 @@ namespace openpeer
 
         ElementPtr keyEl = Element::create("key");
 
-        if (referenceKeyOnlyInSignature) {
-          ElementPtr uriEl = message::IMessageHelper::createElementWithText("uri", mPeerURI);
-          keyEl->adoptAsLastChild(uriEl);
-        } else {
-          ElementPtr x509DataEl = message::IMessageHelper::createElementWithText("x509Data", IHelper::convertToBase64(*publicKey->save()));
-          keyEl->adoptAsLastChild(x509DataEl);
+
+        switch (signatureType) {
+          case SignatureType_FullPublicKey:
+          case SignatureType_Fingerprint:
+          {
+            if (!publicKey) {
+              IPeerFilePublicPtr peerFilePublic = getAssociatedPeerFilePublic();
+              ZS_THROW_BAD_STATE_IF(!peerFilePublic)
+
+              publicKey = peerFilePublic->getPublicKey();
+              ZS_THROW_BAD_STATE_IF(!publicKey)
+            }
+            break;
+          }
+          case SignatureType_PeerURI:       break;
+        }
+
+        switch (signatureType) {
+          case SignatureType_FullPublicKey:
+          {
+            ElementPtr x509DataEl = message::IMessageHelper::createElementWithText("x509Data", IHelper::convertToBase64(*publicKey->save()));
+            keyEl->adoptAsLastChild(x509DataEl);
+            break;
+          }
+          case SignatureType_PeerURI:
+          {
+            ElementPtr uriEl = message::IMessageHelper::createElementWithText("uri", mPeerURI);
+            keyEl->adoptAsLastChild(uriEl);
+            break;
+          }
+          case SignatureType_Fingerprint:
+          {
+            ElementPtr fingerprintEl = message::IMessageHelper::createElementWithText("fingerprint", publicKey->getFingerprint());
+            keyEl->adoptAsLastChild(fingerprintEl);
+            break;
+          }
         }
 
         signatureEl->adoptAsLastChild(keyEl);
@@ -408,7 +440,7 @@ namespace openpeer
                                                  const char *saltInBase64
                                                  )
       {
-        return IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
+        return IHelper::hmac(*IHelper::hmacKeyFromPassphrase((const char *)((const BYTE *)(*mPassword))), String(phrase) + ":" + saltInBase64, IHelper::HashAlgorthm_SHA256);
       }
 
       //-----------------------------------------------------------------------
@@ -506,7 +538,7 @@ namespace openpeer
             sectionBundleEl->adoptAsLastChild(sectionEl);
             peerEl->adoptAsLastChild(sectionBundleEl);
 
-            signElement(sectionEl, false, publicKey);
+            signElement(sectionEl, SignatureType_FullPublicKey, publicKey);
 
             ElementPtr domainEl;
             try {
@@ -598,7 +630,7 @@ namespace openpeer
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("algorithm", OPENPEER_STACK_PEER_FILE_CIPHER));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("salt", saltAsString));
 
-            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+            String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
             sectionBundleEl->adoptAsLastChild(sectionEl);
@@ -697,7 +729,7 @@ namespace openpeer
             return false;
           }
 
-          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+          String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
 
           if (calculatedSecretProof != secretProof) {
             ZS_LOG_ERROR(Detail, log("private peer file password appears to be incorrect, secret proof calculated=") + calculatedSecretProof + ", expecting=" + secretProof)
@@ -796,6 +828,17 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    const char *IPeerFilePrivate::toString(SignatureTypes signatureType)
+    {
+      switch (signatureType) {
+        case SignatureType_FullPublicKey:   return "Full public key";
+        case SignatureType_PeerURI:         return "Peer URI";
+        case SignatureType_Fingerprint:     return "Fingerprint";
+      }
+      return "UNDEFINED";
+    }
+
     //-------------------------------------------------------------------------
     String IPeerFilePrivate::toDebugString(IPeerFilePrivatePtr peerFilePrivate, bool includeCommaPrefix)
     {

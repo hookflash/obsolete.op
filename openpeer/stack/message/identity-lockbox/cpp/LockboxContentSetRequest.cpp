@@ -96,7 +96,7 @@ namespace openpeer
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_LOCKBOX_CONTENT_SET_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-content-set"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":lockbox-content-set"));
           }
 
           root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
