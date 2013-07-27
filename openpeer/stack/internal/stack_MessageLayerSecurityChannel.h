@@ -101,7 +101,7 @@ namespace openpeer
 
         MessageLayerSecurityChannel(Noop) :
           Noop(true),
-        zsLib::MessageQueueAssociator(IMessageQueuePtr()) {}
+          zsLib::MessageQueueAssociator(IMessageQueuePtr()) {}
 
         void init();
 
@@ -140,6 +140,7 @@ namespace openpeer
                           ULONG bufferSizeInBytes
                           );
 
+        virtual ULONG getTotalIncomingMessages() const;
         virtual SecureByteBlockPtr getNextIncomingMessage();
 
         virtual void setReceiveKeyingDecoding(const char *passphrase);
@@ -147,8 +148,10 @@ namespace openpeer
         virtual void setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey);
         virtual void setSendKeyingEncoding(const char *passphrase);
 
-        virtual String getLocalConextID() const;
-        virtual String getRemoteConextID() const;
+        virtual String getLocalContextID() const;
+        virtual void setLocalContextID(const char *contextID);
+
+        virtual String getRemoteContextID() const;
 
         virtual RemotePublicKeyReferenceTypes getRemotePublicKeyReferencedType() const;
 
@@ -156,7 +159,8 @@ namespace openpeer
 
         virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() const;
 
-        virtual SecureByteBlockPtr getNextPendingBufferToSendOnWrite();
+        virtual ULONG getTotalPendingBuffersToSendOnWire() const;
+        virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire();
 
         virtual void notifyReceivedFromWire(
                                             const BYTE *buffer,

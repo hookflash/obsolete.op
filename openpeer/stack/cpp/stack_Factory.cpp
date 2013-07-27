@@ -203,6 +203,37 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IFinderRelayChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      FinderRelayChannelPtr IFinderRelayChannelFactory::connect(
+                                                                IFinderRelayChannelDelegatePtr delegate,
+                                                                AccountPtr account,
+                                                                IPAddress remoteFinderIP,
+                                                                const char *localContextID,
+                                                                const char *relayAccessToken,
+                                                                const char *relayAccessSecretProof,
+                                                                const char *encryptDataUsingEncodingPassphrase
+                                                                )
+      {
+        return FinderRelayChannel::connect(delegate, account, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+      }
+
+      //-----------------------------------------------------------------------
+      FinderRelayChannelPtr IFinderRelayChannelFactory::createIncoming(
+                                                                       IFinderRelayChannelDelegatePtr delegate,
+                                                                       AccountPtr account
+                                                                       )
+      {
+        return FinderRelayChannel::createIncoming(delegate, account);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMessageIncomingFactory
       #pragma mark
 

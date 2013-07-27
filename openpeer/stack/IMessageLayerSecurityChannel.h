@@ -109,7 +109,12 @@ namespace openpeer
                         ) = 0;
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the next pending message received over the wire.
+      // PURPOSE: Obtains the total number of incoming messages that have
+      //          been received and decoded.
+      virtual ULONG getTotalIncomingMessages() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Obtains the next pending message received and decoded.
       // NOTE:    Messages are queued in the public key referenced in the
       //          cryptographic negotiations is resolved.
       //          Returns MessagePtr() if no message is pending.
@@ -139,14 +144,20 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Obtain the context ID specified in the construction of this
       //          object (and sent to the remote party).
-      virtual String getLocalConextID() const = 0;
+      virtual String getLocalContextID() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Set the local context ID
+      // NOTE:    A local context ID is reuqired before any data can be sent
+      //          to the remote party.
+      virtual void setLocalContextID(const char *contextID) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Obtain the context ID specified by the remote party.
       // NOTE:    This can be useful to pick the correct keying material
       //          when the remote party encodes keying materials using
       //          a passphrase.
-      virtual String getRemoteConextID() const = 0;
+      virtual String getRemoteContextID() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This method will return the remote public key (if known).
@@ -168,11 +179,16 @@ namespace openpeer
       virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() const = 0;
 
       //-----------------------------------------------------------------------
+      // PURPOSE: Obtains the total pending data buffers that need to be
+      //          delivered over-the-wire.
+      virtual ULONG getTotalPendingBuffersToSendOnWire() const = 0;
+
+      //-----------------------------------------------------------------------
       // PURPOSE: Obtains the next pending data buffer that needs to be
       //          delivered over-the-wire.
       // NOTE:    Messages are queued for delivery until the wire protocol is
       //          ready to deliver the buffered data.
-      virtual SecureByteBlockPtr getNextPendingBufferToSendOnWrite() = 0;
+      virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire() = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Notifies of data received on-the-wire from a remote party's
@@ -223,7 +239,6 @@ namespace openpeer
       // PURPOSE: Notifies the delegate a data buffer is queued and needs to be
       //          delivered on-the-wire.
       virtual void onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel) = 0;
-
     };
   }
 }

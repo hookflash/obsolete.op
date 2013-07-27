@@ -144,6 +144,32 @@ namespace openpeer
       typedef boost::shared_ptr<Factory> FactoryPtr;
       typedef boost::weak_ptr<Factory> FactoryWeakPtr;
 
+      interaction IFinderRelayChannel;
+      typedef boost::shared_ptr<IFinderRelayChannel> IFinderRelayChannelPtr;
+      typedef boost::weak_ptr<IFinderRelayChannel> IFinderRelayChannelWeakPtr;
+
+      interaction IFinderRelayChannelDelegate;
+      typedef boost::shared_ptr<IFinderRelayChannelDelegate> IFinderRelayChannelDelegatePtr;
+      typedef boost::weak_ptr<IFinderRelayChannelDelegate> IFinderRelayChannelDelegateWeakPtr;
+      typedef zsLib::Proxy<IFinderRelayChannelDelegate> IFinderRelayChannelDelegateProxy;
+
+      interaction IFinderRelayChannelSubscription;
+      typedef boost::shared_ptr<IFinderRelayChannelSubscription> IFinderRelayChannelSubscriptionPtr;
+      typedef boost::weak_ptr<IFinderRelayChannelSubscription> IFinderRelayChannelSubscriptionWeakPtr;
+
+      interaction FinderRelayChannel;
+      typedef boost::shared_ptr<FinderRelayChannel> FinderRelayChannelPtr;
+      typedef boost::weak_ptr<FinderRelayChannel> FinderRelayChannelWeakPtr;
+
+      interaction IFinderRelayChannelTCPOutgoing;
+      typedef boost::shared_ptr<IFinderRelayChannelTCPOutgoing> IFinderRelayChannelTCPOutgoingPtr;
+      typedef boost::weak_ptr<IFinderRelayChannelTCPOutgoing> IFinderRelayChannelTCPOutgoingWeakPtr;
+
+      interaction IFinderRelayChannelTCPOutgoingDelegate;
+      typedef boost::shared_ptr<IFinderRelayChannelTCPOutgoingDelegate> IFinderRelayChannelTCPOutgoingDelegatePtr;
+      typedef boost::weak_ptr<IFinderRelayChannelTCPOutgoingDelegate> IFinderRelayChannelTCPOutgoingDelegateWeakPtr;
+      typedef zsLib::Proxy<IFinderRelayChannelTCPOutgoingDelegate> IFinderRelayChannelTCPOutgoingDelegateProxy;
+
       class Helper;
       typedef boost::shared_ptr<Helper> HelperPtr;
       typedef boost::weak_ptr<Helper> HelperWeakPtr;

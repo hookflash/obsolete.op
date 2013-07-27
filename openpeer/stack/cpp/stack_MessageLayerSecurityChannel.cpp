@@ -285,6 +285,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG MessageLayerSecurityChannel::getTotalIncomingMessages() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mMessagesReceived.size();
+      }
+
+      //-----------------------------------------------------------------------
       SecureByteBlockPtr MessageLayerSecurityChannel::getNextIncomingMessage()
       {
         AutoRecursiveLock lock(getLock());
@@ -331,15 +338,32 @@ namespace openpeer
         IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
-      //-----------------------------------------------------------------------
-      String MessageLayerSecurityChannel::getLocalConextID() const
+      //-----------------------d------------------------------------------------
+      String MessageLayerSecurityChannel::getLocalContextID() const
       {
         AutoRecursiveLock lock(getLock());
         return mLocalContextID;
       }
 
       //-----------------------------------------------------------------------
-      String MessageLayerSecurityChannel::getRemoteConextID() const
+      void MessageLayerSecurityChannel::setLocalContextID(const char *contextID)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!contextID)
+
+        AutoRecursiveLock lock(getLock());
+        if (mLocalContextID.hasData()) {
+          ZS_THROW_INVALID_ARGUMENT_IF(contextID != mLocalContextID)
+        }
+
+        ZS_LOG_DEBUG(log("setting local context ID") + ", context ID=" + contextID)
+
+        mLocalContextID = contextID;
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      String MessageLayerSecurityChannel::getRemoteContextID() const
       {
         AutoRecursiveLock lock(getLock());
         return mRemoteContextID;
@@ -374,7 +398,14 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      SecureByteBlockPtr MessageLayerSecurityChannel::getNextPendingBufferToSendOnWrite()
+      ULONG MessageLayerSecurityChannel::getTotalPendingBuffersToSendOnWire() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mPendingBuffersToSendOnWire.size();
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr MessageLayerSecurityChannel::getNextPendingBufferToSendOnWire()
       {
         AutoRecursiveLock lock(getLock());
 
@@ -518,6 +549,8 @@ namespace openpeer
           cancel();
           return;
         }
+
+        ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepReceive()) return;
         if (!stepSendKeying()) return;
@@ -836,6 +869,11 @@ namespace openpeer
           return true;
         }
 
+        if (mLocalContextID.isEmpty()) {
+          ZS_LOG_DEBUG(log("missing local context ID thus cannot send data remotely"))
+          return false;
+        }
+
         if ((!mSendingRemotePublicKey) &&
             (mSendingPassphrase.isEmpty())) {
           ZS_LOG_DEBUG(log("send keying material is not ready"))
@@ -852,9 +890,7 @@ namespace openpeer
         String nonce = IHelper::randomString(32);
 
         keyingEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("nonce", nonce));
-        if (mLocalContextID.hasData()) {
-          keyingEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("context", mLocalContextID));
-        }
+        keyingEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("context", mLocalContextID));
 
         Time expires = zsLib::now() + Seconds(OPENPEER_STACK_MLS_DEFAULT_KEYING_EXPIRES_TIME_IN_SECONDS);
 
