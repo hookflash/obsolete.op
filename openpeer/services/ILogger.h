@@ -44,18 +44,33 @@ namespace openpeer
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IHelper
+    #pragma mark ILogger
     #pragma mark
 
-    interaction IHelper
+    interaction ILogger
     {
-      static RecursiveLock &getGlobalLock();
+      static void installStdOutLogger(bool colorizeOutput);
+      static void installFileLogger(const char *fileName, bool colorizeOutput);
+      static void installTelnetLogger(
+                                      WORD listenPort,
+                                      ULONG maxSecondsWaitForSocketToBeAvailable,
+                                      bool colorizeOutput
+                                      );
+      static void installOutgoingTelnetLogger(
+                                              const char *serverHostWithPort,
+                                              bool colorizeOutput,
+                                              const char *sendStringUponConnection
+                                              );
+      static void installDebuggerLogger(bool colorizeOutput = false);
 
-      static IMessageQueuePtr getServiceQueue();
+      static void uninstallStdOutLogger();
+      static void uninstallFileLogger();
+      static void uninstallTelnetLogger();
+      static void uninstallOutgoingTelnetLogger();
+      static void uninstallDebuggerLogger();
 
-      static String randomString(UINT lengthInChars);
-      static SecureByteBlockPtr random(UINT lengthInBytes);
-      static ULONG random(ULONG minValue, ULONG maxValue);
+      static void setLogLevel(Log::Level logLevel);
+      static void setLogLevel(const char *component, Log::Level logLevel);
     };
   }
 }

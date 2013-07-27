@@ -156,6 +156,7 @@ namespace openpeer
       interaction IFinderRelayChannelSubscription;
       typedef boost::shared_ptr<IFinderRelayChannelSubscription> IFinderRelayChannelSubscriptionPtr;
       typedef boost::weak_ptr<IFinderRelayChannelSubscription> IFinderRelayChannelSubscriptionWeakPtr;
+      typedef zsLib::ProxySubscriptions<IFinderRelayChannelDelegate, IFinderRelayChannelSubscription> IFinderRelayChannelDelegateSubscriptions;
 
       interaction FinderRelayChannel;
       typedef boost::shared_ptr<FinderRelayChannel> FinderRelayChannelPtr;

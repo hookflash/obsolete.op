@@ -92,6 +92,14 @@ namespace openpeer
         virtual PUID getID() const = 0;
 
         //---------------------------------------------------------------------
+        // PURPOSE: subscribe to the relay channel events
+        // NOTE:    If IFinderRelayChannelDelegatePtr() is specified, the
+        //          default subscription used during object creation will be
+        //          returned (thus allowing the default delegate subscription
+        //          to be cancelled if needed).
+        virtual IFinderRelayChannelSubscriptionPtr subscribe(IFinderRelayChannelDelegatePtr delegate) = 0;
+
+        //---------------------------------------------------------------------
         // PURPOSE: immediately disconnects the channel (no signaling is needed)
         virtual void cancel() = 0;
 
@@ -101,14 +109,6 @@ namespace openpeer
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: subscribe to the relay channel events
-        // NOTE:    If IFinderRelayChannelDelegatePtr() is specified, the
-        //          default subscription used during object creation will be
-        //          returned (thus allowing the default delegate subscription
-        //          to be cancelled if needed).
-        virtual IFinderRelayChannelSubscriptionPtr subscribe(IFinderRelayChannelDelegatePtr delegate) = 0;
 
         //---------------------------------------------------------------------
         // PURPOSE: Send a message object over the channel to the remote peer
@@ -256,3 +256,12 @@ ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelNeedsContext, IFinderRelayChannelP
 ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelIncomingMessage, IFinderRelayChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelBufferPendingToSendOnTheWire, IFinderRelayChannelPtr)
 ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::stack::internal::IFinderRelayChannelDelegate, openpeer::stack::internal::IFinderRelayChannelSubscription)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::internal::IFinderRelayChannelPtr, IFinderRelayChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::internal::IFinderRelayChannel::SessionStates, SessionStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onFinderRelayChannelStateChanged, IFinderRelayChannelPtr, SessionStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelNeedsContext, IFinderRelayChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelIncomingMessage, IFinderRelayChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelBufferPendingToSendOnTheWire, IFinderRelayChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()

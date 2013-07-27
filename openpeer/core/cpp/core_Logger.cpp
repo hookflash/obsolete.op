@@ -30,7 +30,7 @@
  */
 
 #include <openpeer/core/internal/core_Logger.h>
-#include <openpeer/services/IHelper.h>
+#include <openpeer/services/ILogger.h>
 
 namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_core) } }
 namespace openpeer { namespace core { namespace application { ZS_DECLARE_SUBSYSTEM(openpeer_application) } } }
@@ -211,13 +211,13 @@ namespace openpeer
     //---------------------------------------------------------------------------
     void ILogger::installStdOutLogger(bool colorizeOutput)
     {
-      services::IHelper::installStdOutLogger(colorizeOutput);
+      services::ILogger::installStdOutLogger(colorizeOutput);
     }
 
     //---------------------------------------------------------------------------
     void ILogger::installFileLogger(const char *fileName, bool colorizeOutput)
     {
-      services::IHelper::installFileLogger(fileName, colorizeOutput);
+      services::ILogger::installFileLogger(fileName, colorizeOutput);
     }
 
     //---------------------------------------------------------------------------
@@ -227,7 +227,7 @@ namespace openpeer
                                       bool colorizeOutput
                                       )
     {
-      services::IHelper::installTelnetLogger(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
+      services::ILogger::installTelnetLogger(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
     }
 
     //---------------------------------------------------------------------------
@@ -237,13 +237,13 @@ namespace openpeer
                                               const char *stringToSendUponConnection
                                               )
     {
-      services::IHelper::installOutgoingTelnetLogger(serverToConnect, colorizeOutput, stringToSendUponConnection);
+      services::ILogger::installOutgoingTelnetLogger(serverToConnect, colorizeOutput, stringToSendUponConnection);
     }
 
     //---------------------------------------------------------------------------
     void ILogger::installDebuggerLogger()
     {
-      services::IHelper::installDebuggerLogger();
+      services::ILogger::installDebuggerLogger();
     }
 
     //---------------------------------------------------------------------------
@@ -278,7 +278,7 @@ namespace openpeer
     //---------------------------------------------------------------------------
     void ILogger::setLogLevel(ILogger::Level level)
     {
-      services::IHelper::setLogLevel(internal::levelToLevel(level));
+      services::ILogger::setLogLevel(internal::levelToLevel(level));
     }
 
     //---------------------------------------------------------------------------
@@ -296,7 +296,7 @@ namespace openpeer
                               ILogger::Level level
                               )
     {
-      services::IHelper::setLogLevel(subsystemName, internal::levelToLevel(level));
+      services::ILogger::setLogLevel(subsystemName, internal::levelToLevel(level));
     }
 
     //---------------------------------------------------------------------------

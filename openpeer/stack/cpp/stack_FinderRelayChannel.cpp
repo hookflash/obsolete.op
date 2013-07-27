@@ -87,7 +87,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void FinderRelayChannel::init(IFinderRelayChannelDelegatePtr delegate)
       {
-        mDefaultSubscription = Subscription::create(mThisWeak.lock(), delegate);
+        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
 
         step();
       }
@@ -181,53 +181,57 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IFinderRelayChannelSubscriptionPtr FinderRelayChannel::subscribe(IFinderRelayChannelDelegatePtr delegate)
+      IFinderRelayChannelSubscriptionPtr FinderRelayChannel::subscribe(IFinderRelayChannelDelegatePtr originalDelegate)
       {
         ZS_LOG_TRACE(log("subscribe called"))
 
         AutoRecursiveLock lock(getLock());
 
-        if (!delegate) return mDefaultSubscription;
+        if (!originalDelegate) return mDefaultSubscription;
 
-        SubscriptionPtr subscription = Subscription::create(mThisWeak.lock(), delegate);
+        IFinderRelayChannelSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate, IStackForInternal::queueDelegate());
 
-        if (SessionState_Pending != mCurrentState) {
-          subscription->notifyStateChanged(mCurrentState);
-        }
+        IFinderRelayChannelDelegatePtr delegate = mSubscriptions.delegate(subscription);
 
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("subscription created after shutdown"))
-          return subscription;
-        }
+        if (delegate) {
+          FinderRelayChannelPtr pThis(mThisWeak.lock());
 
-        if (mMLSChannel) {
-          if (mMLSChannel->getRemoteContextID().hasData()) {
-            // have remote context ID, but have we set local context ID?
-            if (mMLSChannel->getLocalContextID().isEmpty()) {
-              subscription->notifylNeedsContext();
-            }
+          if (SessionState_Pending != mCurrentState) {
+            delegate->onFinderRelayChannelStateChanged(pThis, mCurrentState);
           }
 
-          // scope: notify about incoming messages
-          {
-            ULONG total = mMLSChannel->getTotalIncomingMessages();
-            while (total > 0) {
-              subscription->notifyIncomingMessage();
-              --total;
-            }
+          if (isShutdown()) {
+            ZS_LOG_WARNING(Detail, log("subscription created after shutdown"))
+            return subscription;
           }
 
-          // scope: notify about message needing to be sent on the wire
-          {
-            ULONG total = mMLSChannel->getTotalPendingBuffersToSendOnWire();
-            while (total > 0) {
-              subscription->notifyBufferPendingToSendOnTheWire();
-              --total;
+          if (mMLSChannel) {
+            if (mMLSChannel->getRemoteContextID().hasData()) {
+              // have remote context ID, but have we set local context ID?
+              if (mMLSChannel->getLocalContextID().isEmpty()) {
+                delegate->onFinderRelayChannelNeedsContext(pThis);
+              }
+            }
+
+            // scope: notify about incoming messages
+            {
+              ULONG total = mMLSChannel->getTotalIncomingMessages();
+              while (total > 0) {
+                delegate->onFinderRelayChannelIncomingMessage(pThis);
+                --total;
+              }
+            }
+
+            // scope: notify about message needing to be sent on the wire
+            {
+              ULONG total = mMLSChannel->getTotalPendingBuffersToSendOnWire();
+              while (total > 0) {
+                delegate->onFinderRelayChannelBufferPendingToSendOnTheWire(pThis);
+                --total;
+              }
             }
           }
         }
-
-        mSubscriptions[subscription->getID()] = subscription;
 
         return subscription;
       }
@@ -399,7 +403,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderRelayChannel::onMessageLayerSecurityChannelNeedDecodingPassphrase(IMessageLayerSecurityChannelPtr channel)
+      void FinderRelayChannel::onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(IMessageLayerSecurityChannelPtr channel)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -408,13 +412,7 @@ namespace openpeer
           return;
         }
 
-        for (SubscriptionMap::iterator iter = mSubscriptions.begin(); iter != mSubscriptions.end(); ++iter)
-        {
-          SubscriptionPtr subscription = (*iter).second.lock();
-          ZS_THROW_BAD_STATE_IF(!subscription)
-
-          subscription->notifylNeedsContext();
-        }
+        mSubscriptions.delegate()->onFinderRelayChannelNeedsContext(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -427,13 +425,7 @@ namespace openpeer
           return;
         }
 
-        for (SubscriptionMap::iterator iter = mSubscriptions.begin(); iter != mSubscriptions.end(); ++iter)
-        {
-          SubscriptionPtr subscription = (*iter).second.lock();
-          ZS_THROW_BAD_STATE_IF(!subscription)
-
-          subscription->notifyIncomingMessage();
-        }
+        mSubscriptions.delegate()->onFinderRelayChannelIncomingMessage(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -446,39 +438,7 @@ namespace openpeer
           return;
         }
 
-        for (SubscriptionMap::iterator iter = mSubscriptions.begin(); iter != mSubscriptions.end(); ++iter)
-        {
-          SubscriptionPtr subscription = (*iter).second.lock();
-          ZS_THROW_BAD_STATE_IF(!subscription)
-
-          subscription->notifyBufferPendingToSendOnTheWire();
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FinderRelayChannel => IFinderRelayChannel
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::notifySubscriptionGone(Subscription &subscription)
-      {
-        AutoRecursiveLock lock(getLock());
-
-        SubscriptionID id = subscription.getID();
-
-        ZS_LOG_DEBUG(log("removing subscription") + ", subscription ID=" + Stringize<typeof(id)>(id).string())
-
-        SubscriptionMap::iterator found = mSubscriptions.find(subscription.getID());
-        if (found == mSubscriptions.end()) {
-          ZS_LOG_WARNING(Debug, log("subscription being destroyed already gone (likely okay)"))
-          return;
-        }
-
-        mSubscriptions.erase(found);
+        mSubscriptions.delegate()->onFinderRelayChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -513,27 +473,21 @@ namespace openpeer
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("account", mAccount.lock() ? String("true") : String(), firstTime) +
                Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<SubscriptionMap::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IFinderRelayChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
                IMessageLayerSecurityChannel::toDebugString(mMLSChannel);
       }
 
       //-----------------------------------------------------------------------
       void FinderRelayChannel::setState(SessionStates state)
       {
-        if (state != mCurrentState) {
-          ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
-          mCurrentState = state;
-        }
+        if (state == mCurrentState) return;
 
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
+        mCurrentState = state;
         FinderRelayChannelPtr pThis = mThisWeak.lock();
-        if (pThis) {
-          for (SubscriptionMap::iterator iter = mSubscriptions.begin(); iter != mSubscriptions.end(); ++iter)
-          {
-            SubscriptionPtr subscription = (*iter).second.lock();
-            ZS_THROW_BAD_STATE_IF(!subscription)
 
-            subscription->notifyStateChanged(state);
-          }
+        if (pThis) {
+          mSubscriptions.delegate()->onFinderRelayChannelStateChanged(pThis, mCurrentState);
         }
       }
 
@@ -570,162 +524,6 @@ namespace openpeer
         // TODO
 
         setState(SessionState_Connected);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FinderRelayChannel::Subscription
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      FinderRelayChannel::Subscription::Subscription(
-                                                     FinderRelayChannelPtr outer,
-                                                     IFinderRelayChannelDelegatePtr delegate
-                                                     ) :
-        mID(zsLib::createPUID()),
-        mOuter(outer),
-        mDelegate(delegate ? IFinderRelayChannelDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IFinderRelayChannelDelegatePtr())
-      {
-        ZS_LOG_DEBUG(log("created"))
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::init()
-      {
-      }
-
-      //-----------------------------------------------------------------------
-      FinderRelayChannel::Subscription::~Subscription()
-      {
-        mThisWeak.reset();
-
-        AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("destroyed"))
-        cancel();
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FinderRelayChannel::Subscription => IFinderRelayChannelSubscription
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::cancel()
-      {
-        AutoRecursiveLock lock(getLock());
-
-        mDelegate.reset();
-
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (outer) outer->notifySubscriptionGone(*this);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FinderRelayChannel::Subscription => friend FinderRelayChannel
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      FinderRelayChannel::SubscriptionPtr FinderRelayChannel::Subscription::create(
-                                                                                   FinderRelayChannelPtr outer,
-                                                                                   IFinderRelayChannelDelegatePtr delegate
-                                                                                   )
-      {
-        SubscriptionPtr pThis(new Subscription(outer, delegate));
-        pThis->mThisWeak = pThis;
-        pThis->init();
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::notifyStateChanged(IFinderRelayChannel::SessionStates state)
-      {
-        if (!mDelegate) return;
-
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (!outer) return;
-
-        try {
-          mDelegate->onFinderRelayChannelStateChanged(outer, state);
-        } catch(IFinderRelayChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Debug, log("delegate gone"))
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::notifylNeedsContext()
-      {
-        if (!mDelegate) return;
-
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (!outer) return;
-
-        try {
-          mDelegate->onFinderRelayChannelNeedsContext(outer);
-        } catch(IFinderRelayChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Debug, log("delegate gone"))
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::notifyIncomingMessage()
-      {
-        if (!mDelegate) return;
-
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (!outer) return;
-
-        try {
-          mDelegate->onFinderRelayChannelIncomingMessage(outer);
-        } catch(IFinderRelayChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Debug, log("delegate gone"))
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::Subscription::notifyBufferPendingToSendOnTheWire()
-      {
-        if (!mDelegate) return;
-
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (!outer) return;
-
-        try {
-          mDelegate->onFinderRelayChannelBufferPendingToSendOnTheWire(outer);
-        } catch(IFinderRelayChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Debug, log("delegate gone"))
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FinderRelayChannel::Subscription => (internal)
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      RecursiveLock &FinderRelayChannel::Subscription::getLock() const
-      {
-        FinderRelayChannelPtr outer = mOuter.lock();
-        if (outer) return outer->getLock();
-        return mBogusLock;
-      }
-
-      //-----------------------------------------------------------------------
-      String FinderRelayChannel::Subscription::log(const char *message) const
-      {
-        return String("FinderRelayChannel::Subscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
       }
 
       //-----------------------------------------------------------------------

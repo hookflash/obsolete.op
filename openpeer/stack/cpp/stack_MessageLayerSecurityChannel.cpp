@@ -148,7 +148,6 @@ namespace openpeer
                                                                ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mDelegate(IMessageLayerSecurityChannelDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mAccount(Account::convert(account)),
         mCurrentState(SessionState_ReceiveOnly),
         mLastError(0),
@@ -158,7 +157,8 @@ namespace openpeer
         mNextReceiveSequenceNumber(0)
       {
         ZS_LOG_DEBUG(log("created"))
-        ZS_THROW_BAD_STATE_IF(!mDelegate)
+        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
+        ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
       }
 
       //-----------------------------------------------------------------------
@@ -217,6 +217,44 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      IMessageLayerSecurityChannelSubscriptionPtr MessageLayerSecurityChannel::subscribe(IMessageLayerSecurityChannelDelegatePtr originalDelegate)
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!originalDelegate) return mDefaultSubscription;
+
+        IMessageLayerSecurityChannelSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate, IStackForInternal::queueDelegate());
+
+        IMessageLayerSecurityChannelDelegatePtr delegate = mSubscriptions.delegate(subscription);
+
+        if (delegate) {
+          MessageLayerSecurityChannelPtr pThis = mThisWeak.lock();
+          
+          if (SessionState_ReceiveOnly != mCurrentState) {
+            delegate->onMessageLayerSecurityChannelStateChanged(pThis, mCurrentState);
+          }
+
+          for (int index = 0; index < mPendingBuffersToSendOnWire.size(); ++index) {
+            delegate->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(pThis);
+          }
+          for (int index = 0; index < mMessagesReceived.size(); ++index) {
+            delegate->onMessageLayerSecurityChannelIncomingMessage(pThis);
+          }
+
+          if (mRemoteContextID.hasData()) {
+            if (mReceiveKeys.size() < 1) {
+              delegate->onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(pThis);
+            }
+          }
+        }
+
+        if (isShutdown()) {
+          mSubscriptions.clear();
+        }
+
+        return subscription;
+      }
+
+      //-----------------------------------------------------------------------
       void MessageLayerSecurityChannel::cancel()
       {
         ZS_LOG_DEBUG(log("cancel called"))
@@ -225,7 +263,7 @@ namespace openpeer
 
         setState(SessionState_Shutdown);
 
-        mDelegate.reset();
+        mSubscriptions.clear();
 
         mAccount.reset();
 
@@ -481,6 +519,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("mls channel id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IMessageLayerSecurityChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
@@ -505,20 +544,15 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void MessageLayerSecurityChannel::setState(SessionStates state)
       {
-        if (state != mCurrentState) {
-          ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
-          mCurrentState = state;
-        }
+        if (state == mCurrentState) return;
+
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
+        mCurrentState = state;
 
         MessageLayerSecurityChannelPtr pThis = mThisWeak.lock();
-        if ((pThis) &&
-            (mDelegate)) {
-          try {
-            ZS_LOG_DEBUG(log("attempting to report state to delegate") + getDebugValueString())
-            mDelegate->onMessageLayerSecurityChannelStateChanged(pThis, mCurrentState);
-          } catch (IMessageLayerSecurityChannelDelegateProxy::Exceptions::DelegateGone &) {
-            ZS_LOG_WARNING(Detail, log("delegate gone"))
-          }
+        if (pThis) {
+          ZS_LOG_DEBUG(log("attempting to report state to delegate") + getDebugValueString())
+          mSubscriptions.delegate()->onMessageLayerSecurityChannelStateChanged(pThis, mCurrentState);
         }
       }
 
@@ -663,11 +697,7 @@ namespace openpeer
 
             mMessagesReceived.push_back(output);
 
-            try {
-              mDelegate->onMessageLayerSecurityChannelIncomingMessage(mThisWeak.lock());
-            } catch (IMessageLayerSecurityChannelDelegateProxy::Exceptions::DelegateGone &) {
-              ZS_LOG_WARNING(Detail, log("delegate gone"))
-            }
+            mSubscriptions.delegate()->onMessageLayerSecurityChannelIncomingMessage(mThisWeak.lock());
 
             // process next buffer
             continue;
@@ -739,11 +769,7 @@ namespace openpeer
               if (mReceivingPassphrase.isEmpty()) {
                 ZS_LOG_DEBUG(log("cannot continue decoding as missing decoding passphrase (will notify delegate)"))
 
-                try {
-                  mDelegate->onMessageLayerSecurityChannelNeedDecodingPassphrase(mThisWeak.lock());
-                } catch (IMessageLayerSecurityChannelDelegateProxy::Exceptions::DelegateGone &) {
-                  ZS_LOG_WARNING(Detail, log("delegate gone"))
-                }
+                mSubscriptions.delegate()->onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(mThisWeak.lock());
                 return true;
               }
 
@@ -977,7 +1003,7 @@ namespace openpeer
 
         try {
           ZS_LOG_DEBUG(log("notify delegate needs to send keying information on-the-wire") + getDebugValueString())
-          mDelegate->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
+          mSubscriptions.delegate()->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
         } catch (IMessageLayerSecurityChannelDelegateProxy::Exceptions::DelegateGone &) {
           ZS_LOG_WARNING(Detail, log("delegate gone"))
         }
@@ -1172,6 +1198,12 @@ namespace openpeer
         case RemotePublicKeyReferenceType_PeerURI:                return "Peer URI";
       }
       return "UNDEFINED";
+    }
+
+    //-----------------------------------------------------------------------
+    String IMessageLayerSecurityChannel::toDebugString(IMessageLayerSecurityChannelPtr channel, bool includeCommaPrefix)
+    {
+      return internal::MessageLayerSecurityChannel::toDebugString(channel, includeCommaPrefix);
     }
 
     //-----------------------------------------------------------------------

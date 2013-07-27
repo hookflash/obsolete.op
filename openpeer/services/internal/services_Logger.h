@@ -31,24 +31,18 @@
 
 #pragma once
 
-
-#include <openpeer/services/types.h>
-#include <openpeer/services/ICanonicalXML.h>
-#include <openpeer/services/IDNS.h>
-#include <openpeer/services/IHelper.h>
-#include <openpeer/services/IHTTP.h>
+#include <openpeer/services/internal/types.h>
 #include <openpeer/services/ILogger.h>
-#include <openpeer/services/ISTUNDiscovery.h>
-#include <openpeer/services/IICESocket.h>
-#include <openpeer/services/IICESocketSession.h>
-#include <openpeer/services/RUDPProtocol.h>
-#include <openpeer/services/RUDPPacket.h>
-#include <openpeer/services/RUDPProtocol.h>
-#include <openpeer/services/IRUDPChannel.h>
-#include <openpeer/services/IRUDPICESocket.h>
-#include <openpeer/services/IRUDPICESocketSession.h>
-#include <openpeer/services/IRUDPListener.h>
-#include <openpeer/services/IRUDPMessaging.h>
-#include <openpeer/services/ISTUNRequester.h>
-#include <openpeer/services/ISTUNRequesterManager.h>
-#include <openpeer/services/ITURNSocket.h>
+
+#include <zsLib/String.h>
+
+namespace openpeer
+{
+  namespace services
+  {
+    namespace internal
+    {
+
+    }
+  }
+}

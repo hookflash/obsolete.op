@@ -39,6 +39,7 @@
 #include <openpeer/stack/message/IMessageHelper.h>
 
 #include <openpeer/services/IHelper.h>
+#include <openpeer/services/ILogger.h>
 
 #include <zsLib/helpers.h>
 #include <zsLib/MessageQueueThread.h>
@@ -592,7 +593,7 @@ namespace openpeer
         mStackDelegate.reset();
 
         // the telnet logger must disconnect here before anything can continue
-        services::IHelper::uninstallTelnetLogger();
+        services::ILogger::uninstallTelnetLogger();
 
         // at this point all proxies to delegates should be completely destroyed - if they are not then someone forgot to do some clean-up!
         ULONG totalProxiesCreated = zsLib::proxyGetTotalConstructed();

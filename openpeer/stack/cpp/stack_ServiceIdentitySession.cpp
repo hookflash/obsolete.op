@@ -2342,12 +2342,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::setState(SessionStates state)
       {
-        if (state != mCurrentState) {
-          ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
-          mCurrentState = state;
+        if (state == mCurrentState) return;
 
-          notifyLockboxStateChanged();
-        }
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
+        mCurrentState = state;
+
+        notifyLockboxStateChanged();
 
         if (mLastReportedState != mCurrentState) {
           ServiceIdentitySessionPtr pThis = mThisWeak.lock();

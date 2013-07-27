@@ -35,6 +35,7 @@
 #include <zsLib/String.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
+#include <zsLib/ProxySubscriptions.h>
 
 #include <cryptopp/secblock.h>
 
@@ -165,6 +166,11 @@ namespace openpeer
     typedef boost::shared_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegatePtr;
     typedef boost::weak_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateWeakPtr;
     typedef zsLib::Proxy<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateProxy;
+
+    interaction IMessageLayerSecurityChannelSubscription;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionPtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<IMessageLayerSecurityChannelDelegate, IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelDelegateSubscriptions;
 
     interaction ILocation;
     typedef boost::shared_ptr<ILocation> ILocationPtr;

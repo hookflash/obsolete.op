@@ -64,15 +64,6 @@ namespace openpeer
 
         typedef IFinderRelayChannel::SessionStates SessionStates;
 
-        class Subscription;
-        typedef boost::shared_ptr<Subscription> SubscriptionPtr;
-        typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
-
-        typedef PUID SubscriptionID;
-        typedef std::map<SubscriptionID, SubscriptionWeakPtr> SubscriptionMap;
-
-        friend class Subscription;
-
       protected:
         FinderRelayChannel(
                            IMessageQueuePtr queue,
@@ -115,14 +106,14 @@ namespace openpeer
 
         virtual PUID getID() const {return mID;}
 
+        virtual IFinderRelayChannelSubscriptionPtr subscribe(IFinderRelayChannelDelegatePtr delegate);
+
         virtual void cancel();
 
         virtual SessionStates getState(
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const;
-
-        virtual IFinderRelayChannelSubscriptionPtr subscribe(IFinderRelayChannelDelegatePtr delegate);
 
         virtual bool send(
                           const BYTE *buffer,
@@ -161,21 +152,11 @@ namespace openpeer
                                                                IMessageLayerSecurityChannel::SessionStates state
                                                                );
 
-        virtual void onMessageLayerSecurityChannelNeedDecodingPassphrase(IMessageLayerSecurityChannelPtr channel);
+        virtual void onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(IMessageLayerSecurityChannelPtr channel);
 
         virtual void onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel);
 
         virtual void onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel);
-
-      protected:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark FinderRelayChannel => IFinderRelayChannel
-        #pragma mark
-
-        // (duplicate) RecursiveLock &getLock() const;
-
-        void notifySubscriptionGone(Subscription &subscription);
 
       protected:
         //---------------------------------------------------------------------
@@ -195,86 +176,6 @@ namespace openpeer
 
         void step();
         
-      public:
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark FinderRelayChannel::Subscription
-        #pragma mark
-
-        class Subscription : public IFinderRelayChannelSubscription
-        {
-        public:
-          friend class FinderRelayChannel;
-
-        protected:
-          Subscription(
-                       FinderRelayChannelPtr outer,
-                       IFinderRelayChannelDelegatePtr delegate
-                       );
-
-          void init();
-
-        public:
-          ~Subscription();
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark FinderRelayChannel::Subscription => IFinderRelayChannelSubscription
-          #pragma mark
-
-          virtual PUID getID() const {return mID;}
-
-          virtual void cancel();
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark FinderRelayChannel::Subscription => friend FinderRelayChannel
-          #pragma mark
-
-          static SubscriptionPtr create(
-                                        FinderRelayChannelPtr outer,
-                                        IFinderRelayChannelDelegatePtr delegate
-                                        );
-
-          // (duplicate) virtual PUID getID() const;
-
-          void notifyStateChanged(IFinderRelayChannel::SessionStates state);
-
-          void notifylNeedsContext();
-
-          void notifyIncomingMessage();
-
-          void notifyBufferPendingToSendOnTheWire();
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark FinderRelayChannel::Subscription => (internal)
-          #pragma mark
-
-          RecursiveLock &getLock() const;
-          String log(const char *message) const;
-
-        protected:
-          //-------------------------------------------------------------------
-          #pragma mark
-          #pragma mark FinderRelayChannel::Subscription => (data)
-          #pragma mark
-
-          PUID mID;
-          mutable RecursiveLock mBogusLock;
-          SubscriptionWeakPtr mThisWeak;
-
-          FinderRelayChannelWeakPtr mOuter;
-
-          IFinderRelayChannelDelegatePtr mDelegate;
-        };
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -285,6 +186,9 @@ namespace openpeer
         mutable RecursiveLock mLock;
         FinderRelayChannelWeakPtr mThisWeak;
 
+        IFinderRelayChannelDelegateSubscriptions mSubscriptions;
+        IFinderRelayChannelSubscriptionPtr mDefaultSubscription;
+
         SessionStates mCurrentState;
 
         WORD mLastError;
@@ -293,9 +197,6 @@ namespace openpeer
         AccountWeakPtr mAccount;
 
         IMessageLayerSecurityChannelPtr mMLSChannel;
-
-        SubscriptionPtr mDefaultSubscription;
-        SubscriptionMap mSubscriptions;
       };
 
       //-----------------------------------------------------------------------

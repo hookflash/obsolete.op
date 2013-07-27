@@ -207,6 +207,12 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
+      IFinderRelayChannelFactory &IFinderRelayChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
       FinderRelayChannelPtr IFinderRelayChannelFactory::connect(
                                                                 IFinderRelayChannelDelegatePtr delegate,
                                                                 AccountPtr account,
@@ -261,6 +267,13 @@ namespace openpeer
       #pragma mark IMessageLayerSecurityChannelFactory
       #pragma mark
 
+      //-----------------------------------------------------------------------
+      IMessageLayerSecurityChannelFactory &IMessageLayerSecurityChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
       MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
                                                                                  IMessageLayerSecurityChannelDelegatePtr delegate,
                                                                                  IPeerFilesPtr localPeerFiles,

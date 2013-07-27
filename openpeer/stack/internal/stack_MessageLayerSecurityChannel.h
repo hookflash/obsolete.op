@@ -74,6 +74,7 @@ namespace openpeer
       {
       public:
         friend interaction IMessageLayerSecurityChannelFactory;
+        friend interaction IMessageLayerSecurityChannel;
 
         typedef std::list<SecureByteBlockPtr> BufferList;
 
@@ -125,6 +126,8 @@ namespace openpeer
                                                      const char *contextID = NULL,
                                                      IAccountPtr account = IAccountPtr()
                                                      );
+
+        virtual IMessageLayerSecurityChannelSubscriptionPtr subscribe(IMessageLayerSecurityChannelDelegatePtr delegate);
 
         virtual PUID getID() const {return mID;}
 
@@ -208,7 +211,8 @@ namespace openpeer
         mutable RecursiveLock mLock;
         MessageLayerSecurityChannelWeakPtr mThisWeak;
 
-        IMessageLayerSecurityChannelDelegatePtr mDelegate;
+        IMessageLayerSecurityChannelDelegateSubscriptions mSubscriptions;
+        IMessageLayerSecurityChannelSubscriptionPtr mDefaultSubscription;
 
         SessionStates mCurrentState;
 

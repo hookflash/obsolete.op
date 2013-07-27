@@ -35,7 +35,7 @@
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
-#include <openpeer/services/IHelper.h>
+#include <openpeer/services/ILogger.h>
 
 #include <iostream>
 
@@ -43,7 +43,7 @@ namespace openpeer { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTE
 
 
 
-typedef openpeer::services::IHelper IHelper;
+typedef openpeer::services::ILogger ILogger;
 
 void doTestCanonicalXML();
 void doTestDNS();
@@ -81,23 +81,23 @@ namespace BoostReplacement
   void installLogger()
   {
     BOOST_STDOUT() << "INSTALLING LOGGER...\n\n";
-    IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
-    IHelper::setLogLevel("hookflash_services", zsLib::Log::Trace);
+    ILogger::setLogLevel("zsLib", zsLib::Log::Trace);
+    ILogger::setLogLevel("hookflash_services", zsLib::Log::Trace);
 
     if (OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING) {
-      IHelper::installStdOutLogger(false);
+      ILogger::installStdOutLogger(false);
     }
 
     if (OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING) {
-      IHelper::installFileLogger(OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE, true);
+      ILogger::installFileLogger(OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE, true);
     }
 
     if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
-      IHelper::installTelnetLogger(OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
+      ILogger::installTelnetLogger(OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
     }
 
     if (OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
-      IHelper::installDebuggerLogger();
+      ILogger::installDebuggerLogger();
     }
 
     BOOST_STDOUT() << "INSTALLED LOGGER...\n\n";
@@ -108,16 +108,16 @@ namespace BoostReplacement
     BOOST_STDOUT() << "REMOVING LOGGER...\n\n";
 
     if (OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING) {
-      IHelper::uninstallStdOutLogger();
+      ILogger::uninstallStdOutLogger();
     }
     if (OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING) {
-      IHelper::uninstallFileLogger();
+      ILogger::uninstallFileLogger();
     }
     if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
-      IHelper::uninstallTelnetLogger();
+      ILogger::uninstallTelnetLogger();
     }
     if (OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
-      IHelper::uninstallDebuggerLogger();
+      ILogger::uninstallDebuggerLogger();
     }
 
     BOOST_STDOUT() << "REMOVED LOGGER...\n\n";

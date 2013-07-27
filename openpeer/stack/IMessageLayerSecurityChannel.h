@@ -48,8 +48,6 @@ namespace openpeer
 
     interaction IMessageLayerSecurityChannel
     {
-      static String toDebugString(IMessageLayerSecurityChannelPtr channel, bool includeCommaPrefix = true);
-
       enum SessionStates
       {
         SessionState_ReceiveOnly,
@@ -75,6 +73,8 @@ namespace openpeer
       static const char *toString(LocalPublicKeyReferenceTypes type);
       static const char *toString(RemotePublicKeyReferenceTypes type);
 
+      static String toDebugString(IMessageLayerSecurityChannelPtr channel, bool includeCommaPrefix = true);
+
       //-----------------------------------------------------------------------
       // PURPOSE: create a new channel to a remote connection
       static IMessageLayerSecurityChannelPtr create(
@@ -88,6 +88,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: get process unique ID for object
       virtual PUID getID() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: subscribe to class events
+      virtual IMessageLayerSecurityChannelSubscriptionPtr subscribe(IMessageLayerSecurityChannelDelegatePtr delegate) = 0;  // if passing in IMessageLayerSecurityChannelDelegatePtr() will return the default subscription
 
       //-----------------------------------------------------------------------
       // PURPOSE: immediately disconnects the channel (no signaling is needed)
@@ -124,7 +128,7 @@ namespace openpeer
       // PURPOSE: If the remote party encoded their keying materials using
       //          a passphrase, this rountine can be called to decode that
       //          keying material.
-      // NOTE:    The "onMessageLayerSecurityChannelNeedDecodingPassphrase"
+      // NOTE:    The "onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase"
       //          will be called to indicate a passphrase is required
       //          to decrypt the keying material.
       virtual void setReceiveKeyingDecoding(const char *passphrase) = 0;
@@ -228,7 +232,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Notifies the delegate that the stream needs a passphrase to
       //          be able to decode the incoming messages.
-      virtual void onMessageLayerSecurityChannelNeedDecodingPassphrase(IMessageLayerSecurityChannelPtr channel) = 0;
+      virtual void onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(IMessageLayerSecurityChannelPtr channel) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Notifies the delegate of an incoming message that will be
@@ -240,6 +244,19 @@ namespace openpeer
       //          delivered on-the-wire.
       virtual void onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IMessageLayerSecurityChannelSubscription
+    #pragma mark
+
+    interaction IMessageLayerSecurityChannelSubscription
+    {
+      virtual void cancel() = 0;
+    };
   }
 }
 
@@ -247,7 +264,16 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::stack::IMessageLayerSecurityChannelDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
-ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelNeedDecodingPassphrase, IMessageLayerSecurityChannelPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::stack::IMessageLayerSecurityChannelDelegate, openpeer::stack::IMessageLayerSecurityChannelSubscription)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase, IMessageLayerSecurityChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()
