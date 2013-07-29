@@ -139,7 +139,8 @@ namespace openpeer
         //          passphrase was issued to encrypt the data.
         virtual void setIncomingContext(
                                         const char *contextID,
-                                        const char *decryptUsingEncodingPassphrase
+                                        const char *decryptUsingEncodingPassphrase,
+                                        IPeerPtr remotePeer
                                         ) = 0;
 
         //---------------------------------------------------------------------

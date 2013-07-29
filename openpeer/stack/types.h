@@ -68,6 +68,11 @@ namespace openpeer
     using zsLib::XML::NodePtr;
     using services::IHTTP;
 
+    using services::IRSAPrivateKey;
+    using services::IRSAPrivateKeyPtr;
+    using services::IRSAPublicKey;
+    using services::IRSAPublicKeyPtr;
+
     typedef CryptoPP::SecByteBlock SecureByteBlock;
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
@@ -158,20 +163,6 @@ namespace openpeer
     typedef boost::shared_ptr<IMessageSource> IMessageSourcePtr;
     typedef boost::weak_ptr<IMessageSource> IMessageSourceWeakPtr;
 
-    interaction IMessageLayerSecurityChannel;
-    typedef boost::shared_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelPtr;
-    typedef boost::weak_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelWeakPtr;
-
-    interaction IMessageLayerSecurityChannelDelegate;
-    typedef boost::shared_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegatePtr;
-    typedef boost::weak_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateWeakPtr;
-    typedef zsLib::Proxy<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateProxy;
-
-    interaction IMessageLayerSecurityChannelSubscription;
-    typedef boost::shared_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionPtr;
-    typedef boost::weak_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionWeakPtr;
-    typedef zsLib::ProxySubscriptions<IMessageLayerSecurityChannelDelegate, IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelDelegateSubscriptions;
-
     interaction ILocation;
     typedef boost::shared_ptr<ILocation> ILocationPtr;
     typedef boost::weak_ptr<ILocation> ILocationWeakPtr;
@@ -260,14 +251,6 @@ namespace openpeer
     typedef boost::shared_ptr<IPublicationSubscriptionDelegate> IPublicationSubscriptionDelegatePtr;
     typedef boost::weak_ptr<IPublicationSubscriptionDelegate> IPublicationSubscriptionDelegateWeakPtr;
     typedef zsLib::Proxy<IPublicationSubscriptionDelegate> IPublicationSubscriptionDelegateProxy;
-
-    interaction IRSAPrivateKey;
-    typedef boost::shared_ptr<IRSAPrivateKey> IRSAPrivateKeyPtr;
-    typedef boost::weak_ptr<IRSAPrivateKey> IRSAPrivateKeyWeakPtr;
-
-    interaction IRSAPublicKey;
-    typedef boost::shared_ptr<IRSAPublicKey> IRSAPublicKeyPtr;
-    typedef boost::weak_ptr<IRSAPublicKey> IRSAPublicKeyWeakPtr;
 
     interaction IStack;
     typedef boost::shared_ptr<IStack> IStackPtr;

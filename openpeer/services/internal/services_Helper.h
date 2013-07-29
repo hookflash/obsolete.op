@@ -53,9 +53,12 @@ namespace openpeer
       class Helper : public IHelper
       {
       public:
+        static String getDebugValue(const char *name, const String &value, bool &firstTime);
+
         static RecursiveLock &getGlobalLock();
 
-        static String getDebugValue(const char *name, const String &value, bool &firstTime);
+        static String timeToString(const Time &value);
+        static Time stringToTime(const String &str);
 
         static String randomString(UINT lengthInChars);
         static ULONG random(ULONG minValue, ULONG maxValue);
@@ -63,6 +66,144 @@ namespace openpeer
         static SecureByteBlockPtr random(UINT lengthInBytes);
 
         static IMessageQueuePtr getServiceQueue();
+
+        static int compare(
+                           const SecureByteBlock &left,
+                           const SecureByteBlock &right
+                           );
+        static SecureByteBlockPtr clone(SecureByteBlockPtr pBuffer);
+        static SecureByteBlockPtr clone(const SecureByteBlock &buffer);
+
+        static String convertToString(const SecureByteBlock &buffer);
+        static SecureByteBlockPtr convertToBuffer(
+                                                  const char *input,
+                                                  bool appendNUL = true
+                                                  );
+        static SecureByteBlockPtr convertToBuffer(
+                                                  const BYTE *buffer,
+                                                  ULONG bufferLengthInBytes,
+                                                  bool appendNULIfMissing = false
+                                                  );
+        static SecureByteBlockPtr makeBufferStringSafe(const SecureByteBlock &input);
+
+        static String convertToBase64(
+                                      const BYTE *buffer,
+                                      ULONG bufferLengthInBytes
+                                      );
+
+        static String convertToBase64(const SecureByteBlock &input);
+
+        static String convertToBase64(const String &input);
+
+        static SecureByteBlockPtr convertFromBase64(const String &input);
+
+        static String convertToHex(
+                                   const BYTE *buffer,
+                                   ULONG bufferLengthInBytes,
+                                   bool outputUpperCase = false
+                                   );
+
+        static String convertToHex(
+                                   SecureByteBlock &input,
+                                   bool outputUpperCase = false
+                                   );
+
+        static SecureByteBlockPtr convertFromHex(const String &input);
+
+        static SecureByteBlockPtr encrypt(
+                                          const SecureByteBlock &key, // key length of 32 = AES/256
+                                          const SecureByteBlock &iv,
+                                          const SecureByteBlock &buffer,
+                                          EncryptionAlgorthms algorithm = EncryptionAlgorthm_AES
+                                          );
+
+        static SecureByteBlockPtr encrypt(
+                                          const SecureByteBlock &key, // key length of 32 = AES/256
+                                          const SecureByteBlock &iv,
+                                          const char *value,
+                                          EncryptionAlgorthms algorithm = EncryptionAlgorthm_AES
+                                          );
+
+        static SecureByteBlockPtr encrypt(
+                                          const SecureByteBlock &key, // key length of 32 = AES/256
+                                          const SecureByteBlock &iv,
+                                          const BYTE *buffer,
+                                          size_t bufferLengthInBytes,
+                                          EncryptionAlgorthms algorithm = EncryptionAlgorthm_AES
+                                          );
+
+        static SecureByteBlockPtr decrypt(
+                                          const SecureByteBlock &key,
+                                          const SecureByteBlock &iv,
+                                          const SecureByteBlock &buffer,
+                                          EncryptionAlgorthms algorithm = EncryptionAlgorthm_AES
+                                          );
+
+        static size_t getHashDigestSize(HashAlgorthms algorithm);
+
+        static SecureByteBlockPtr hash(
+                                       const char *buffer,
+                                       HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                       );
+
+        static SecureByteBlockPtr hash(
+                                       const SecureByteBlock &buffer,
+                                       HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                       );
+
+        static SecureByteBlockPtr hmacKeyFromPassphrase(const char *passphrase);
+        static SecureByteBlockPtr hmacKeyFromPassphrase(const std::string &passphrase);
+
+        static SecureByteBlockPtr hmac(
+                                       const SecureByteBlock &key,
+                                       const String &value,
+                                       HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                       );
+
+        static SecureByteBlockPtr hmac(
+                                       const SecureByteBlock &key,
+                                       const SecureByteBlock &buffer,
+                                       HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                       );
+
+        static SecureByteBlockPtr hmac(
+                                       const SecureByteBlock &key,
+                                       const BYTE *buffer,
+                                       size_t bufferLengthInBytes,
+                                       HashAlgorthms algorithm = HashAlgorthm_SHA1
+                                       );
+
+        static void splitKey(
+                             const SecureByteBlock &key,
+                             SecureByteBlockPtr &part1,
+                             SecureByteBlockPtr &part2
+                             );
+        static SecureByteBlockPtr combineKey(
+                                             const SecureByteBlockPtr &part1,
+                                             const SecureByteBlockPtr &part2
+                                             );
+
+        static ElementPtr getSignatureInfo(
+                                           ElementPtr signedEl,
+                                           ElementPtr *outSignatureEl = NULL,
+                                           String *outFullPublicKey = NULL,
+                                           String *outFingerprint = NULL
+                                           );
+
+        static ElementPtr cloneAsCanonicalJSON(ElementPtr element);
+
+        static bool isValidDomain(const char *domain);
+
+        static void split(
+                          const String &input,
+                          SplitMap &outResult,
+                          char splitChar = '/'
+                          );
+        
+        static const String &get(
+                                 const SplitMap &inResult,
+                                 Index index
+                                 );
       };
     }
   }

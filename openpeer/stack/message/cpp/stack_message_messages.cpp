@@ -33,6 +33,8 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 
@@ -46,6 +48,7 @@ namespace openpeer
     {
       using zsLib::Stringize;
 
+      using services::IHelper;
       using stack::internal::Helper;
 
       //-----------------------------------------------------------------------
@@ -117,7 +120,7 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("certificate id", mID, firstTime) +
                Helper::getDebugValue("service", mService, firstTime) +
-               Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
+               Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("public key", mPublicKey ? String("true") : String(), firstTime);
       }
 
@@ -165,8 +168,8 @@ namespace openpeer
                Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
                Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mWeight).string() : String(), firstTime) +
                Helper::getDebugValue("region", mRegion, firstTime) +
-               Helper::getDebugValue("created", Time() != mCreated ? IMessageHelper::timeToString(mCreated) : String(), firstTime) +
-               Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime);
+               Helper::getDebugValue("created", Time() != mCreated ? IHelper::timeToString(mCreated) : String(), firstTime) +
+               Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -270,9 +273,9 @@ namespace openpeer
         return Helper::getDebugValue("identity disposition", IdentityInfo::Disposition_NA != mDisposition ? String(toString(mDisposition)) : String(), firstTime) +
                Helper::getDebugValue("identity access token", mAccessToken, firstTime) +
                Helper::getDebugValue("identity access secret", mAccessSecret, firstTime) +
-               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretExpires ? IHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("identity access secret proof", mAccessSecretProof, firstTime) +
-               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("identity access secret expires", Time() != mAccessSecretProofExpires ? IHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
                Helper::getDebugValue("identity relogin key", mReloginKey, firstTime) +
                Helper::getDebugValue("identity base", mBase, firstTime) +
                Helper::getDebugValue("identity", mURI, firstTime) +
@@ -281,9 +284,9 @@ namespace openpeer
                IPeerFilePublic::toDebugString(mPeerFilePublic, !firstTime) +
                Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
                Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mPriority).string() : String(), firstTime) +
-               Helper::getDebugValue("created", Time() != mCreated ? IMessageHelper::timeToString(mCreated) : String(), firstTime) +
-               Helper::getDebugValue("updated", Time() != mUpdated ? IMessageHelper::timeToString(mUpdated) : String(), firstTime) +
-               Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
+               Helper::getDebugValue("created", Time() != mCreated ? IHelper::timeToString(mCreated) : String(), firstTime) +
+               Helper::getDebugValue("updated", Time() != mUpdated ? IHelper::timeToString(mUpdated) : String(), firstTime) +
+               Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("name", mName, firstTime) +
                Helper::getDebugValue("profile", mProfile, firstTime) +
                Helper::getDebugValue("vprofile", mVProfile, firstTime) +
@@ -455,9 +458,9 @@ namespace openpeer
                Helper::getDebugValue("lockbox account ID", mAccountID, firstTime) +
                Helper::getDebugValue("lockbox access token", mAccessToken, firstTime) +
                Helper::getDebugValue("lockbox access secret", mAccessSecret, firstTime) +
-               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretExpires ? IHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("lockbox access secret proof", mAccessSecretProof, firstTime) +
-               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("lockbox access secret expires", Time() != mAccessSecretProofExpires ? IHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
                Helper::getDebugValue("lockbox key", mKey ? IHelper::convertToBase64(*mKey) : String(), firstTime) +
                Helper::getDebugValue("lockbox hash", mHash, firstTime) +
                Helper::getDebugValue("lockbox reset", mResetFlag ? "true" : "false", firstTime);
@@ -584,7 +587,7 @@ namespace openpeer
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("namespace url", mURL, firstTime) +
-               Helper::getDebugValue("last updated", Time() != mLastUpdated ? IMessageHelper::timeToString(mLastUpdated) : String(), firstTime);
+               Helper::getDebugValue("last updated", Time() != mLastUpdated ? IHelper::timeToString(mLastUpdated) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -629,11 +632,11 @@ namespace openpeer
         return Helper::getDebugValue("rolodex server token", mServerToken, firstTime) +
                Helper::getDebugValue("rolodex access token", mAccessToken, firstTime) +
                Helper::getDebugValue("rolodex access secret", mAccessSecret, firstTime) +
-               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretExpires ? IMessageHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
+               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretExpires ? IHelper::timeToString(mAccessSecretExpires) : String(), firstTime) +
                Helper::getDebugValue("rolodex access secret proof", mAccessSecretProof, firstTime) +
-               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretProofExpires ? IMessageHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
+               Helper::getDebugValue("rolodex access secret expires", Time() != mAccessSecretProofExpires ? IHelper::timeToString(mAccessSecretProofExpires) : String(), firstTime) +
                Helper::getDebugValue("rolodex version", mVersion, firstTime) +
-               Helper::getDebugValue("rolodex update next", Time() != mUpdateNext ? IMessageHelper::timeToString(mUpdateNext) : String(), firstTime) +
+               Helper::getDebugValue("rolodex update next", Time() != mUpdateNext ? IHelper::timeToString(mUpdateNext) : String(), firstTime) +
                Helper::getDebugValue("refresh", mRefreshFlag ? "true" : "false", firstTime);
       }
 

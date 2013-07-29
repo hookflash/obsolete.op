@@ -35,7 +35,7 @@
 #include <openpeer/stack/message/types.h>
 #include <openpeer/stack/internal/types.h>
 
-#include <openpeer/stack/IMessageLayerSecurityChannel.h>
+#include <openpeer/services/IMessageLayerSecurityChannel.h>
 
 #include <list>
 #include <map>
@@ -46,6 +46,12 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IMessageLayerSecurityChannel;
+      using services::IMessageLayerSecurityChannelPtr;
+
+      using services::IMessageLayerSecurityChannelDelegate;
+      using services::IMessageLayerSecurityChannelDelegatePtr;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -67,6 +73,7 @@ namespace openpeer
       protected:
         FinderRelayChannel(
                            IMessageQueuePtr queue,
+                           IFinderRelayChannelDelegatePtr delegate,
                            AccountPtr account
                            );
 
@@ -74,7 +81,7 @@ namespace openpeer
           Noop(true),
           zsLib::MessageQueueAssociator(IMessageQueuePtr()) {}
 
-        void init(IFinderRelayChannelDelegatePtr delegate);
+        void init();
 
       public:
         ~FinderRelayChannel();
@@ -124,7 +131,8 @@ namespace openpeer
 
         virtual void setIncomingContext(
                                         const char *contextID,
-                                        const char *decryptUsingEncodingPassphrase
+                                        const char *decryptUsingEncodingPassphrase,
+                                        IPeerPtr remotePeer
                                         );
 
         virtual String getLocalContextID() const;
@@ -151,8 +159,6 @@ namespace openpeer
                                                                IMessageLayerSecurityChannelPtr channel,
                                                                IMessageLayerSecurityChannel::SessionStates state
                                                                );
-
-        virtual void onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(IMessageLayerSecurityChannelPtr channel);
 
         virtual void onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel);
 
@@ -196,7 +202,12 @@ namespace openpeer
 
         AccountWeakPtr mAccount;
 
+        bool mIncoming;
+
         IMessageLayerSecurityChannelPtr mMLSChannel;
+
+        IPeerPtr mRemotePeer;
+        IRSAPublicKeyPtr mRemotePublicKey;
       };
 
       //-----------------------------------------------------------------------

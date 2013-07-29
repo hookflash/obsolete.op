@@ -43,7 +43,6 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Location.h>
 #include <openpeer/stack/internal/stack_MessageIncoming.h>
-#include <openpeer/stack/internal/stack_MessageLayerSecurityChannel.h>
 #include <openpeer/stack/internal/stack_MessageMonitor.h>
 #include <openpeer/stack/internal/stack_MessageMonitorManager.h>
 #include <openpeer/stack/internal/stack_Peer.h>
@@ -54,8 +53,6 @@
 #include <openpeer/stack/internal/stack_Publication.h>
 #include <openpeer/stack/internal/stack_PublicationMetaData.h>
 #include <openpeer/stack/internal/stack_PublicationRepository.h>
-#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
-#include <openpeer/stack/internal/stack_RSAPublicKey.h>
 #include <openpeer/stack/internal/stack_ServiceCertificatesValidateQuery.h>
 #include <openpeer/stack/internal/stack_ServiceIdentitySession.h>
 #include <openpeer/stack/internal/stack_ServiceLockboxSession.h>

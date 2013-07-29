@@ -32,10 +32,11 @@
 #include <openpeer/stack/internal/stack_Publication.h>
 #include <openpeer/stack/internal/stack_PublicationMetaData.h>
 #include <openpeer/stack/message/IMessageHelper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/internal/stack_Diff.h>
 #include <openpeer/stack/internal/stack_Location.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -830,7 +831,7 @@ namespace openpeer
         switch (encoding) {
           case IPublicationMetaData::Encoding_Binary: {
             String base64String = dataEl->getTextDecoded();
-            pThis->mData = IHelper::convertFromBase64(base64String);
+            pThis->mData = services::IHelper::convertFromBase64(base64String);
             break;
           }
           case IPublicationMetaData::Encoding_JSON: {
@@ -873,7 +874,7 @@ namespace openpeer
 
           ZS_LOG_WARNING(Detail, log("returning data as base 64 encoded") + getDebugValuesString())
 
-          String data = IHelper::convertToBase64(*mData);
+          String data = services::IHelper::convertToBase64(*mData);
           TextPtr text = Text::create();
           text->setValue(data);
           return text;

@@ -29,15 +29,11 @@
 
  */
 
-#include <openpeer/stack/internal/stack_MessageLayerSecurityChannel.h>
-#include <openpeer/stack/internal/stack_Helper.h>
-#include <openpeer/stack/internal/stack_Account.h>
-#include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/message/IMessageHelper.h>
-#include <openpeer/stack/IPeerFilePrivate.h>
-#include <openpeer/stack/IPeerFilePublic.h>
-#include <openpeer/stack/IPeerFiles.h>
-#include <openpeer/stack/IRSAPublicKey.h>
+#include <openpeer/services/internal/services_MessageLayerSecurityChannel.h>
+#include <openpeer/services/internal/services_Helper.h>
+#include <openpeer/services/IRSAPrivateKey.h>
+#include <openpeer/services/IRSAPublicKey.h>
+#include <openpeer/services/IHTTP.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -46,20 +42,19 @@
 #include <zsLib/Stringize.h>
 #include <zsLib/Numeric.h>
 
-#define OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_TOTAL_SEND_KEYS 3
+#define OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_TOTAL_SEND_KEYS 3
 
-#define OPENPEER_STACK_MLS_DEFAULT_KEYING_EXPIRES_TIME_IN_SECONDS (60*3)
+#define OPENPEER_SERVICES_MLS_DEFAULT_KEYING_EXPIRES_TIME_IN_SECONDS (60*3)
 
-namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     using zsLib::DWORD;
     using zsLib::Stringize;
     using zsLib::Numeric;
-    using stack::message::IMessageHelper;
 
     namespace internal
     {
@@ -73,6 +68,45 @@ namespace openpeer
       #pragma mark (helpers)
       #pragma mark
 
+      //-----------------------------------------------------------------------
+      static String getElementTextAndDecode(ElementPtr node)
+      {
+        if (!node) return String();
+        return node->getTextDecoded();
+      }
+
+      //-----------------------------------------------------------------------
+      static ElementPtr createElementWithText(
+                                              const String &elName,
+                                              const String &textVal
+                                              )
+      {
+        ElementPtr tmp = Element::create(elName);
+        if (textVal.isEmpty()) return tmp;
+
+        TextPtr tmpTxt = Text::create();
+        tmpTxt->setValueAndJSONEncode(textVal);
+        tmp->adoptAsFirstChild(tmpTxt);
+        return tmp;
+      }
+
+      //-----------------------------------------------------------------------
+      static ElementPtr createElementWithNumber(
+                                                const String &elName,
+                                                const String &numberAsStringValue
+                                                )
+      {
+        ElementPtr tmp = Element::create(elName);
+
+        if (numberAsStringValue.isEmpty()) return tmp;
+
+        TextPtr tmpTxt = Text::create();
+        tmpTxt->setValue(numberAsStringValue, Text::Format_JSONNumberEncoded);
+        tmp->adoptAsFirstChild(tmpTxt);
+
+        return tmp;
+      }
+      
       //-----------------------------------------------------------------------
       static SecureByteBlockPtr decryptUsingPassphraseEncoding(
                                                                const String &passphrase,
@@ -138,26 +172,33 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
+      const char *MessageLayerSecurityChannel::toString(DecodingTypes decodingType)
+      {
+        switch (decodingType)
+        {
+          case DecodingType_Unknown:    return "Unknown";
+          case DecodingType_PrivateKey: return "Private key";
+          case DecodingType_Passphrase: return "Passphrase";
+        }
+        return "UNDEFINED";
+      }
+
+      //-----------------------------------------------------------------------
       MessageLayerSecurityChannel::MessageLayerSecurityChannel(
                                                                IMessageQueuePtr queue,
                                                                IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                               IPeerFilesPtr localPeerFiles,
-                                                               LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                               const char *contextID,
-                                                               IAccountPtr account
+                                                               const char *contextID
                                                                ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mAccount(Account::convert(account)),
-        mCurrentState(SessionState_ReceiveOnly),
+        mCurrentState(SessionState_Pending),
         mLastError(0),
-        mPeerFiles(localPeerFiles),
-        mLocalReferenceType(localPublicKeyReferenceType),
         mLocalContextID(contextID),
-        mNextReceiveSequenceNumber(0)
+        mNextReceiveSequenceNumber(0),
+        mReceiveDecodingType(DecodingType_Unknown)
       {
         ZS_LOG_DEBUG(log("created"))
-        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
+        mDefaultSubscription = mSubscriptions.subscribe(delegate);
         ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
       }
 
@@ -201,16 +242,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       MessageLayerSecurityChannelPtr MessageLayerSecurityChannel::create(
                                                                          IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                                         IPeerFilesPtr localPeerFiles,
-                                                                         LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                                         const char *contextID,
-                                                                         IAccountPtr account
+                                                                         const char *contextID
                                                                          )
       {
-        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
-        ZS_THROW_INVALID_ARGUMENT_IF(!localPeerFiles)
-
-        MessageLayerSecurityChannelPtr pThis(new MessageLayerSecurityChannel(IStackForInternal::queueStack(), delegate, localPeerFiles, localPublicKeyReferenceType, contextID, account));
+        MessageLayerSecurityChannelPtr pThis(new MessageLayerSecurityChannel(IHelper::getServiceQueue(), delegate, contextID));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -222,14 +257,14 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         if (!originalDelegate) return mDefaultSubscription;
 
-        IMessageLayerSecurityChannelSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate, IStackForInternal::queueDelegate());
+        IMessageLayerSecurityChannelSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate);
 
         IMessageLayerSecurityChannelDelegatePtr delegate = mSubscriptions.delegate(subscription);
 
         if (delegate) {
           MessageLayerSecurityChannelPtr pThis = mThisWeak.lock();
           
-          if (SessionState_ReceiveOnly != mCurrentState) {
+          if (SessionState_Pending != mCurrentState) {
             delegate->onMessageLayerSecurityChannelStateChanged(pThis, mCurrentState);
           }
 
@@ -238,12 +273,6 @@ namespace openpeer
           }
           for (int index = 0; index < mMessagesReceived.size(); ++index) {
             delegate->onMessageLayerSecurityChannelIncomingMessage(pThis);
-          }
-
-          if (mRemoteContextID.hasData()) {
-            if (mReceiveKeys.size() < 1) {
-              delegate->onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(pThis);
-            }
           }
         }
 
@@ -265,14 +294,17 @@ namespace openpeer
 
         mSubscriptions.clear();
 
-        mAccount.reset();
+        mSendingEncodingRemotePublicKey.reset();
 
-        mPeerFiles.reset();
+        mSendKeyingNeedingToSignDoc.reset();
+        mSendKeyingNeedToSignEl.reset();
 
-        mSendingRemotePublicKey.reset();
+        mReceiveDecodingPrivateKey.reset();
+        mReceiveDecodingPublicKey.reset();
 
-        mReceivingRemotePublicKey.reset();
-        mReceivingRemotePublicPeerFile.reset();
+        mReceiveSigningPublicKey.reset();
+        mReceiveKeyingSignedDoc.reset();
+        mReceiveKeyingSignedEl.reset();
 
         mMessagesToEncode.clear();
         mPendingBuffersToSendOnWire.clear();
@@ -342,100 +374,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::setReceiveKeyingDecoding(const char *passphrase)
-      {
-        AutoRecursiveLock lock(getLock());
-        ZS_THROW_INVALID_USAGE_IF(mReceivingPassphrase.hasData())
-
-        mReceivingPassphrase = String(passphrase);
-
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-      }
-
-      //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey)
-      {
-        AutoRecursiveLock lock(getLock());
-        ZS_THROW_INVALID_USAGE_IF(mSendingRemotePublicKey)
-        ZS_THROW_INVALID_USAGE_IF(mReceivingPassphrase.hasData())
-
-        mSendingRemotePublicKey = remotePublicKey;
-
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-      }
-
-      //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::setSendKeyingEncoding(const char *passphrase)
-      {
-        AutoRecursiveLock lock(getLock());
-        ZS_THROW_INVALID_USAGE_IF(mSendingRemotePublicKey)
-        ZS_THROW_INVALID_USAGE_IF(mReceivingPassphrase.hasData())
-
-        mSendingPassphrase = String(passphrase);
-
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-      }
-
-      //-----------------------d------------------------------------------------
-      String MessageLayerSecurityChannel::getLocalContextID() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mLocalContextID;
-      }
-
-      //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::setLocalContextID(const char *contextID)
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!contextID)
-
-        AutoRecursiveLock lock(getLock());
-        if (mLocalContextID.hasData()) {
-          ZS_THROW_INVALID_ARGUMENT_IF(contextID != mLocalContextID)
-        }
-
-        ZS_LOG_DEBUG(log("setting local context ID") + ", context ID=" + contextID)
-
-        mLocalContextID = contextID;
-
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-      }
-
-      //-----------------------------------------------------------------------
-      String MessageLayerSecurityChannel::getRemoteContextID() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mRemoteContextID;
-      }
-
-      //-----------------------------------------------------------------------
-      IMessageLayerSecurityChannel::RemotePublicKeyReferenceTypes MessageLayerSecurityChannel::getRemotePublicKeyReferencedType() const
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (mReceivingRemotePublicPeerFile) {
-          return IMessageLayerSecurityChannel::RemotePublicKeyReferenceType_PeerURI;
-        }
-        if (mReceivingRemotePublicKey) {
-          return IMessageLayerSecurityChannel::RemotePublicKeyReferenceType_FullPublicKey;
-        }
-        return RemotePublicKeyReferenceType_Unknown;
-      }
-
-      //-----------------------------------------------------------------------
-      IRSAPublicKeyPtr MessageLayerSecurityChannel::getRemotePublicKey() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mReceivingRemotePublicKey;
-      }
-
-      //-----------------------------------------------------------------------
-      IPeerFilePublicPtr MessageLayerSecurityChannel::getRemoteReferencedPeerFilePublic() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mReceivingRemotePublicPeerFile;
-      }
-
-      //-----------------------------------------------------------------------
       ULONG MessageLayerSecurityChannel::getTotalPendingBuffersToSendOnWire() const
       {
         AutoRecursiveLock lock(getLock());
@@ -453,7 +391,7 @@ namespace openpeer
         mPendingBuffersToSendOnWire.pop_front();
         return result;
       }
-      
+
       //-----------------------------------------------------------------------
       void MessageLayerSecurityChannel::notifyReceivedFromWire(
                                                                const BYTE *buffer,
@@ -474,6 +412,295 @@ namespace openpeer
         mReceivedBuffersToDecode.push_back(pendingBuffer);
 
         // process it later...
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsLocalContextID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+
+        return mLocalContextID.isEmpty();
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsReceiveKeyingDecodingPrivateKey(
+                                                                             String *outFingerprint
+                                                                             ) const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+
+        if (outFingerprint) {
+          *outFingerprint = mReceiveDecodingPublicKeyFingerprint;
+        }
+
+        return DecodingType_PrivateKey == mReceiveDecodingType;
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsReceiveKeyingDecodingPassphrase() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+        return DecodingType_Passphrase == mReceiveDecodingType;
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsReceiveKeyingMaterialSigningPublicKey() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+
+        return !((bool)(mReceiveSigningPublicKey));
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsSendKeyingEncodingMaterial() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+        return (!((bool)(mSendingEncodingRemotePublicKey))) &&
+               (mSendingEncodingPassphrase.isEmpty());
+      }
+
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::needsSendKeyingMaterialToeBeSigned() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot need information as already shutdown"))
+          return false;
+        }
+
+        return (mSendKeyingNeedingToSignDoc) && (mSendKeyingNeedToSignEl);
+      }
+
+      //-----------------------------------------------------------------------
+      String MessageLayerSecurityChannel::getLocalContextID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mLocalContextID;
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setLocalContextID(const char *contextID)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!contextID)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        if (mLocalContextID.hasData()) {
+          ZS_THROW_INVALID_ARGUMENT_IF(contextID != mLocalContextID)
+        }
+
+        ZS_LOG_DEBUG(log("setting local context ID") + ", context ID=" + contextID)
+
+        mLocalContextID = contextID;
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      String MessageLayerSecurityChannel::getRemoteContextID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mRemoteContextID;
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setReceiveKeyingDecoding(
+                                                                 IRSAPrivateKeyPtr decodingPrivateKey,
+                                                                 IRSAPublicKeyPtr decodingPublicKey
+                                                                 )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!decodingPrivateKey)
+        ZS_THROW_INVALID_ARGUMENT_IF(!decodingPublicKey)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        ZS_THROW_INVALID_USAGE_IF(mReceivingDecodingPassphrase.hasData()) // mutually exclusive, can't use both
+
+        if (mReceiveDecodingPrivateKey) {
+          ZS_THROW_INVALID_ARGUMENT_IF(mReceiveDecodingPrivateKey != decodingPrivateKey)
+        }
+        if (mReceiveDecodingPublicKey) {
+          ZS_THROW_INVALID_ARGUMENT_IF(mReceiveDecodingPublicKey != decodingPublicKey)
+        }
+
+        mReceiveDecodingPrivateKey = decodingPrivateKey;
+        mReceiveDecodingPublicKey = decodingPublicKey;
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setReceiveKeyingDecoding(const char *passphrase)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!passphrase)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        ZS_THROW_INVALID_USAGE_IF(mReceiveDecodingPrivateKey) // mutually exclusive, can't use both
+
+        if (mReceivingDecodingPassphrase.hasData()) {
+          ZS_THROW_INVALID_ARGUMENT_IF(passphrase != mReceivingDecodingPassphrase)
+        }
+        mReceivingDecodingPassphrase = String(passphrase);
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr MessageLayerSecurityChannel::getSignedReceivingKeyingMaterial() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mReceiveKeyingSignedEl;
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setReceiveKeyingMaterialSigningPublicKey(IRSAPublicKeyPtr remotePublicKey)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!remotePublicKey)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        if (mReceiveSigningPublicKey) {
+          ZS_THROW_INVALID_ARGUMENT_IF(remotePublicKey != mReceiveSigningPublicKey)
+        }
+
+        mReceiveSigningPublicKey = remotePublicKey;
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!remotePublicKey)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        ZS_THROW_INVALID_USAGE_IF(mSendingEncodingPassphrase.hasData())
+
+        if (mSendingEncodingRemotePublicKey) {
+          ZS_THROW_INVALID_ARGUMENT_IF(remotePublicKey != mSendingEncodingRemotePublicKey)
+        }
+
+        mSendingEncodingRemotePublicKey = remotePublicKey;
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::setSendKeyingEncoding(const char *passphrase)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!passphrase)
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        ZS_THROW_INVALID_USAGE_IF(mSendingEncodingRemotePublicKey)
+
+        if (mSendingEncodingPassphrase.hasData()) {
+          ZS_THROW_INVALID_ARGUMENT_IF(passphrase != mSendingEncodingPassphrase)
+        }
+
+        mSendingEncodingPassphrase = String(passphrase);
+
+        setState(SessionState_Pending);
+
+        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::getSendKeyingMaterialNeedingToBeSigned(
+                                                                               DocumentPtr &outDocumentContainedElementToSign,
+                                                                               ElementPtr &outElementToSign
+                                                                               ) const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if ((!outDocumentContainedElementToSign) ||
+            (!outElementToSign)) {
+          ZS_LOG_WARNING(Detail, log("no keying material available needing to be signed"))
+          return;
+        }
+
+        outDocumentContainedElementToSign = mReceiveKeyingSignedDoc;
+        outElementToSign = mReceiveKeyingSignedEl;
+      }
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::notifySendKeyingMaterialSigned()
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
+        // by clearing out the receive key needing to be signed (but leaving the paired doc), it signals the "step" that the signing process was complete
+        mReceiveKeyingSignedEl.reset();
+
+        setState(SessionState_Pending);
+
         IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
@@ -520,19 +747,24 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("mls channel id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IMessageLayerSecurityChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
+               Helper::getDebugValue("state", IMessageLayerSecurityChannel::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
-               Helper::getDebugValue("peer files", mPeerFiles ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("local reference type", toString(mLocalReferenceType), firstTime) +
                Helper::getDebugValue("local context ID", mLocalContextID, firstTime) +
-               Helper::getDebugValue("remote context ID", mRemoteContextID, firstTime) +        
-               Helper::getDebugValue("sending remote public key", mSendingRemotePublicKey ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("sending passphrase", mSendingPassphrase, firstTime) +
+               Helper::getDebugValue("remote context ID", mRemoteContextID, firstTime) +
+               Helper::getDebugValue("sending remote public key", mSendingEncodingRemotePublicKey ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("sending passphrase", mSendingEncodingPassphrase, firstTime) +
+               Helper::getDebugValue("sending keying needs sign doc", mSendKeyingNeedingToSignDoc ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("sending keying needs sign element", mSendKeyingNeedToSignEl ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive seq number", Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string(), firstTime) +
-               Helper::getDebugValue("receiving remote public key", mReceivingRemotePublicKey ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("receiving remote public peer file", mReceivingRemotePublicPeerFile ? mReceivingRemotePublicPeerFile->getPeerURI() : String(), firstTime) +
-               Helper::getDebugValue("receiving passphrase", mReceivingPassphrase, firstTime) +
+               Helper::getDebugValue("decoding type", toString(mReceiveDecodingType), firstTime) +
+               Helper::getDebugValue("decoding public key fingerprint", mReceiveDecodingPublicKeyFingerprint, firstTime) +
+               Helper::getDebugValue("receive decoding private key", mReceiveDecodingPrivateKey ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive decoding public key", mReceiveDecodingPublicKey ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive decoding passphrase", mReceivingDecodingPassphrase, firstTime) +
+               Helper::getDebugValue("receive signing public key", mReceiveSigningPublicKey ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive keying signed doc", mReceiveKeyingSignedDoc ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive keying signed element", mReceiveKeyingSignedEl ? String("true") : String(), firstTime) +
                Helper::getDebugValue("messages to encode/send", mMessagesToEncode.size() > 0 ? Stringize<BufferList::size_type>(mMessagesToEncode.size()).string() : String(), firstTime) +
                Helper::getDebugValue("pending buffers to send on-wire", mPendingBuffersToSendOnWire.size() > 0 ? Stringize<BufferList::size_type>(mPendingBuffersToSendOnWire.size()).string() : String(), firstTime) +
                Helper::getDebugValue("messages received", mMessagesReceived.size() > 0 ? Stringize<BufferList::size_type>(mMessagesReceived.size()).string() : String(), firstTime) +
@@ -546,7 +778,7 @@ namespace openpeer
       {
         if (state == mCurrentState) return;
 
-        ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + IMessageLayerSecurityChannel::toString(state) + ", old state=" + IMessageLayerSecurityChannel::toString(mCurrentState))
         mCurrentState = state;
 
         MessageLayerSecurityChannelPtr pThis = mThisWeak.lock();
@@ -605,10 +837,31 @@ namespace openpeer
         if (mRemoteContextID.hasData()) {
           ZS_LOG_DEBUG(log("already decoded at least one packet"))
           if (mReceiveKeys.size() < 1) {
-            if (mReceivingPassphrase.isEmpty()) {
+            bool hasReceiveInformation = true;
+
+            switch(mReceiveDecodingType) {
+              case DecodingType_Unknown:    break;
+              case DecodingType_PrivateKey: hasReceiveInformation = hasReceiveInformation && (mReceiveDecodingPrivateKey); break;
+              case DecodingType_Passphrase: hasReceiveInformation = hasReceiveInformation && (mReceivingDecodingPassphrase.hasData()); break;
+            }
+
+            hasReceiveInformation = hasReceiveInformation && (mReceiveSigningPublicKey);
+
+            if (!hasReceiveInformation) {
               ZS_LOG_DEBUG(log("waiting for receive keying materials"))
+              setState(SessionState_WaitingForNeededInformation);
               return true;
             }
+          }
+        }
+
+        if ((mReceiveKeyingSignedDoc) &&
+            (mReceiveKeyingSignedEl)) {
+          
+          if (!mReceiveSigningPublicKey) {
+            ZS_LOG_DEBUG(log("waiting for receive keying materials"))
+            setState(SessionState_WaitingForNeededInformation);
+            return true;
           }
         }
 
@@ -703,11 +956,24 @@ namespace openpeer
             continue;
           }
 
-          // create a NUL terminated JSON string buffer
-          SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining, true);
-
           // parse the buffer
-          DocumentPtr doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
+          DocumentPtr doc;
+
+          if (mReceiveKeyingSignedDoc) {
+            // reuse the signing doc if one exists (to avoid decoding the first packet twice)
+            doc = mReceiveKeyingSignedDoc;
+
+            mReceiveKeyingSignedDoc.reset();
+            mReceiveKeyingSignedEl.reset();
+          }
+
+          if (!doc) {
+            // create a NUL terminated JSON string buffer
+            SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining, true);
+            
+            // clear out the receive signed document since it's validated
+            doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
+          }
 
           mReceiveKeys.clear(); // all previous keys are being destroyed
 
@@ -716,12 +982,25 @@ namespace openpeer
 
             bool encodingPKI = true;
 
-            if (!verifyReceiveSignature(keyingEl)) {
+            if (!mReceiveSigningPublicKey) {
+              ZS_LOG_DEBUG(log("waiting for receive material signing public key"))
+
+              mReceiveKeyingSignedDoc = doc;
+              mReceiveKeyingSignedEl = keyingEl;
+
+              setState(SessionState_WaitingForNeededInformation);
+              return true;
+            }
+
+            if (!mReceiveSigningPublicKey->verifySignature(keyingEl)) {
               ZS_LOG_ERROR(Detail, log("failed to validate receiving stream signature"))
+              setError(IHTTP::HTTPStatusCode_Forbidden, "keyhing encoding not using expecting passphrase");
+              cancel();
               return false;
             }
 
-            String sequenceNumber = IMessageHelper::getElementTextAndDecode(keyingEl->findFirstChildElement("sequence"));
+
+            String sequenceNumber = getElementTextAndDecode(keyingEl->findFirstChildElement("sequence"));
 
             if (sequenceNumber != Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string()) {
               ZS_LOG_ERROR(Detail, log("sequence number mismatch") + ", sequence=" + sequenceNumber + ", expecting=" + Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string())
@@ -731,33 +1010,37 @@ namespace openpeer
             }
 
             if (!mRemoteContextID) {
-              mRemoteContextID = IMessageHelper::getElementTextAndDecode(keyingEl->findFirstChildElement("context"));
+              mRemoteContextID = getElementTextAndDecode(keyingEl->findFirstChildElement("context"));
             }
 
-            Time expires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(keyingEl->findFirstChildElement("expires")));
+            Time expires = IHelper::stringToTime(getElementTextAndDecode(keyingEl->findFirstChildElement("expires")));
             Time tick = zsLib::now();
             if (tick > expires) {
-              ZS_LOG_ERROR(Detail, log("signed keying bundle has expired") + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(tick))
+              ZS_LOG_ERROR(Detail, log("signed keying bundle has expired") + ", expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(tick))
               setError(IHTTP::HTTPStatusCode_RequestTimeout, "signed keying bundle has expired");
               cancel();
               return false;
             }
 
             ElementPtr encodingEl = keyingEl->findFirstChildElementChecked("encoding");
-            String type = IMessageHelper::getElementTextAndDecode(encodingEl->findFirstChildElementChecked("type"));
-            String nonce = IMessageHelper::getElementTextAndDecode(encodingEl->findFirstChildElementChecked("nonce"));
-
-#define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 1
-#define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 2
-
-            IPeerFilePublicPtr peerFilePublic = mPeerFiles->getPeerFilePublic();
-            IPeerFilePrivatePtr peerFilePrivate = mPeerFiles->getPeerFilePrivate();
-            ZS_THROW_BAD_STATE_IF(!peerFilePublic)
-            ZS_THROW_BAD_STATE_IF(!peerFilePrivate)
+            String type = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("type"));
+            String nonce = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("nonce"));
 
             if ("pki" == type) {
-              String encodingFingerprint = IMessageHelper::getElementTextAndDecode(encodingEl->findFirstChildElementChecked("fingerprint"));
-              String expectingFingerprint = peerFilePublic->getPublicKey()->getFingerprint();
+              String encodingFingerprint = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("fingerprint"));
+
+              if (!mReceiveDecodingPublicKeyFingerprint.hasData()) {
+                mReceiveDecodingPublicKeyFingerprint = encodingFingerprint;
+              }
+
+              if (!mReceiveDecodingPrivateKey) {
+                ZS_LOG_DEBUG(log("waiting for keying materials"))
+                setState(SessionState_WaitingForNeededInformation);
+                return true;
+              }
+              ZS_THROW_BAD_STATE_IF(!mReceiveDecodingPublicKey)
+
+              String expectingFingerprint = mReceiveDecodingPublicKey->getFingerprint();
               if (encodingFingerprint != expectingFingerprint) {
                 ZS_LOG_ERROR(Detail, log("encoding not using local public key") + ", encoding fingerprint=" + encodingFingerprint + ", expecting fingerprint=" + expectingFingerprint)
                 setError(IHTTP::HTTPStatusCode_RequestTimeout, "signed keying bundle has expired");
@@ -766,30 +1049,29 @@ namespace openpeer
               }
             } else if ("passphrase" == type) {
               encodingPKI = false;
-              if (mReceivingPassphrase.isEmpty()) {
+              if (mReceivingDecodingPassphrase.isEmpty()) {
                 ZS_LOG_DEBUG(log("cannot continue decoding as missing decoding passphrase (will notify delegate)"))
-
-                mSubscriptions.delegate()->onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(mThisWeak.lock());
+                setState(SessionState_WaitingForNeededInformation);
                 return true;
               }
 
               // scope: we have a passphrase, see if the proof validates before attempting to decrypt any keys...
               {
-                String algorithm = IMessageHelper::getElementTextAndDecode(encodingEl->findFirstChildElementChecked("algorithm"));
-                if (OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM != algorithm) {
-                  ZS_LOG_ERROR(Detail, log("keying encoding not using known algorithm") + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
+                String algorithm = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("algorithm"));
+                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM != algorithm) {
+                  ZS_LOG_ERROR(Detail, log("keying encoding not using known algorithm") + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
                   setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
                   cancel();
                   return false;
                 }
 
-                String proof = IMessageHelper::getElementTextAndDecode(encodingEl->findFirstChildElementChecked("proof"));
+                String proof = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("proof"));
 
                 // hex(hmac(`<external-passphrase>`, "keying:" + `<nonce>`))
-                String calculatedProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mReceivingPassphrase), "keying:" + nonce));
+                String calculatedProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mReceivingDecodingPassphrase), "keying:" + nonce));
 
                 if (proof != calculatedProof) {
-                  ZS_LOG_ERROR(Detail, log("keying encoding not using expecting passphrase") + ", encoding proof=" + proof + ", expecting proof=" + calculatedProof + ", using passphrase=" + mReceivingPassphrase)
+                  ZS_LOG_ERROR(Detail, log("keying encoding not using expecting passphrase") + ", encoding proof=" + proof + ", expecting proof=" + calculatedProof + ", using passphrase=" + mReceivingDecodingPassphrase)
                   setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
                   cancel();
                   return false;
@@ -797,13 +1079,16 @@ namespace openpeer
               }
             }
 
+#define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 1
+#define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 2
+
             // scope: santity check on algorithms receiving
             {
               bool found = false;
               ElementPtr algorithmEl = keyingEl->findFirstChildElementChecked("algorithms")->findFirstChildElementChecked("algorithm");
               while (algorithmEl) {
-                String algorithm = IMessageHelper::getElementTextAndDecode(algorithmEl);
-                if (OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
+                String algorithm = getElementTextAndDecode(algorithmEl);
+                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
                   ZS_LOG_TRACE(log("found mandated algorithm"))
                   found = true;
                   break;
@@ -811,7 +1096,7 @@ namespace openpeer
                 algorithmEl->findNextSiblingElement("algorithm");
               }
               if (!found) {
-                ZS_LOG_ERROR(Detail, log("did not find mandated MLS algorithm") + ", expecting=" + OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
+                ZS_LOG_ERROR(Detail, log("did not find mandated MLS algorithm") + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
                 setError(IHTTP::HTTPStatusCode_ExpectationFailed, "did not find mandated MLS algorithm");
                 cancel();
                 return false;
@@ -824,7 +1109,7 @@ namespace openpeer
               while (keyEl) {
                 AlgorithmIndex index = 0;
                 try {
-                    index = Numeric<AlgorithmIndex>(IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElementChecked("index")));
+                    index = Numeric<AlgorithmIndex>(getElementTextAndDecode(keyEl->findFirstChildElementChecked("index")));
                 } catch(Numeric<AlgorithmIndex>::ValueOutOfRange &) {
                   ZS_LOG_WARNING(Detail, log("algorithm index value out of range"))
                 }
@@ -833,8 +1118,8 @@ namespace openpeer
                   continue;
                 }
 
-                String algorithm = IMessageHelper::getElementTextAndDecode(keyEl->findFirstChildElementChecked("algorithm"));
-                if (OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
+                String algorithm = getElementTextAndDecode(keyEl->findFirstChildElementChecked("algorithm"));
+                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
                   ZS_LOG_WARNING(Detail, log("unsupported algorithm (thus skipping)") + ", algorithm=" + algorithm)
                   continue;
                 }
@@ -845,13 +1130,13 @@ namespace openpeer
                 SecureByteBlockPtr integrityPassphrase;
                 if (encodingPKI) {
                   // base64(rsa_encrypt(`<remote-public-key>`, `<value>`))
-                  key.mSendKey = peerFilePrivate->decrypt(*IHelper::convertFromBase64(IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("secret"))));
-                  key.mNextIV = peerFilePrivate->decrypt(*IHelper::convertFromBase64(IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("iv"))));
-                  integrityPassphrase = peerFilePrivate->decrypt(*IHelper::convertFromBase64(IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey"))));
+                  key.mSendKey = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("secret"))));
+                  key.mNextIV = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("iv"))));
+                  integrityPassphrase = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey"))));
                 } else {
-                  key.mSendKey = decryptUsingPassphraseEncoding(mReceivingPassphrase, nonce, IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("secret")));
-                  key.mNextIV = decryptUsingPassphraseEncoding(mReceivingPassphrase, nonce, IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("iv")));
-                  integrityPassphrase = decryptUsingPassphraseEncoding(mReceivingPassphrase, nonce, IMessageHelper::getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey")));
+                  key.mSendKey = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("secret")));
+                  key.mNextIV = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("iv")));
+                  integrityPassphrase = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey")));
                 }
                 if (integrityPassphrase) {
                   key.mIntegrityPassphrase = IHelper::convertToString(*integrityPassphrase);
@@ -890,62 +1175,109 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool MessageLayerSecurityChannel::stepSendKeying()
       {
-        if (mSendKeys.size() > 0) {
-          ZS_LOG_DEBUG(log("already sent keying materials"))
-          return true;
-        }
-
         if (mLocalContextID.isEmpty()) {
           ZS_LOG_DEBUG(log("missing local context ID thus cannot send data remotely"))
           return false;
         }
 
-        if ((!mSendingRemotePublicKey) &&
-            (mSendingPassphrase.isEmpty())) {
+        if ((!mSendingEncodingRemotePublicKey) &&
+            (mSendingEncodingPassphrase.isEmpty())) {
           ZS_LOG_DEBUG(log("send keying material is not ready"))
+          setState(SessionState_WaitingForNeededInformation);
           return false;
         }
+
+        if (mSendKeyingNeedingToSignDoc) {
+          if (mSendKeyingNeedToSignEl) {
+            ZS_LOG_DEBUG(log("send signature not created"))
+            return false;
+          }
+
+          ElementPtr keyingEl;
+          try {
+            keyingEl = mSendKeyingNeedingToSignDoc->findFirstChildElementChecked("keyingBundle")->findFirstChildElementChecked("keying");
+          } catch(CheckFailed &) {
+          }
+
+          if (!keyingEl) {
+            ZS_LOG_ERROR(Detail, log("failed to obtain signed keying element"))
+            setError(IHTTP::HTTPStatusCode_BadRequest, "failed to obtain signed keying element");
+            cancel();
+            return false;
+          }
+
+          // developer using this class should have signed this bundle if enters this spot
+          ElementPtr signatureEl;
+          IHelper::getSignatureInfo(keyingEl, &signatureEl);
+          ZS_THROW_INVALID_USAGE_IF(!signatureEl)
+
+          // signature has been applied
+          ULONG outputLength = 0;
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> output = generator->write(mSendKeyingNeedingToSignDoc, &outputLength);
+
+          SecureByteBlockPtr buffer(new SecureByteBlock(sizeof(DWORD) + (outputLength * sizeof(char))));
+
+          ((DWORD *)(buffer->BytePtr()))[0] = htonl(0);
+
+          BYTE *dest = (buffer->BytePtr() + sizeof(DWORD));
+
+          memcpy(dest, output.get(), sizeof(char)*outputLength);
+
+          mPendingBuffersToSendOnWire.push_back(buffer);
+
+          ZS_LOG_DEBUG(log("notify delegate needs to send keying information on-the-wire") + getDebugValueString())
+          mSubscriptions.delegate()->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
+
+          return true;
+        }
+
+        if (mSendKeys.size() > 0) {
+          ZS_LOG_DEBUG(log("already sent keying materials"))
+          return true;
+        }
+
         // create initial encryption offer (hint: it won't change)
 
         ElementPtr keyingBundleEl = Element::create("keyingBundle");
 
         ElementPtr keyingEl = Element::create("keying");
         
-        keyingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("sequence", "0"));
+        keyingEl->adoptAsLastChild(createElementWithNumber("sequence", "0"));
 
         String nonce = IHelper::randomString(32);
 
-        keyingEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("nonce", nonce));
-        keyingEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("context", mLocalContextID));
+        keyingEl->adoptAsLastChild(createElementWithText("nonce", nonce));
+        keyingEl->adoptAsLastChild(createElementWithText("context", mLocalContextID));
 
-        Time expires = zsLib::now() + Seconds(OPENPEER_STACK_MLS_DEFAULT_KEYING_EXPIRES_TIME_IN_SECONDS);
+        Time expires = zsLib::now() + Seconds(OPENPEER_SERVICES_MLS_DEFAULT_KEYING_EXPIRES_TIME_IN_SECONDS);
 
-        keyingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(expires)));
+        keyingEl->adoptAsLastChild(createElementWithNumber("expires", IHelper::timeToString(expires)));
 
         ElementPtr encodingEl = Element::create("encoding");
         keyingEl->adoptAsLastChild(encodingEl);
 
         String encodingPassphrase = IHelper::randomString(32*8/5);
 
-        if (mSendingPassphrase.hasData()) {
-          encodingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("type", "passphrase"));
-          encodingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("algorithm", OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
+        if (mSendingEncodingPassphrase.hasData()) {
+          encodingEl->adoptAsLastChild(createElementWithText("type", "passphrase"));
+          encodingEl->adoptAsLastChild(createElementWithText("algorithm", OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
 
           String calculatedProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(encodingPassphrase), "keying:" + nonce));
 
-          encodingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("proof", calculatedProof));
+          encodingEl->adoptAsLastChild(createElementWithText("proof", calculatedProof));
         } else {
-          ZS_THROW_BAD_STATE_IF(!mSendingRemotePublicKey)
-          encodingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("type", "pki"));
-          encodingEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("fingerprint", mSendingRemotePublicKey->getFingerprint()));
+          ZS_THROW_BAD_STATE_IF(!mSendingEncodingRemotePublicKey)
+          encodingEl->adoptAsLastChild(createElementWithText("type", "pki"));
+          encodingEl->adoptAsLastChild(createElementWithText("fingerprint", mSendingEncodingRemotePublicKey->getFingerprint()));
         }
 
         ElementPtr algorithmsEl = Element::create("algorithms");
-        algorithmsEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("algorithm", OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
+        algorithmsEl->adoptAsLastChild(createElementWithText("algorithm", OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
 
         ElementPtr keysEl = Element::create("keys");
 
-        for (AlgorithmIndex index = 1; index <= OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_TOTAL_SEND_KEYS; ++index) {
+        for (AlgorithmIndex index = 1; index <= OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_TOTAL_SEND_KEYS; ++index) {
           KeyInfo key;
 
           key.mIntegrityPassphrase = IHelper::randomString((20*8/5));
@@ -953,13 +1285,13 @@ namespace openpeer
           key.mNextIV = IHelper::hash(*IHelper::random(16), IHelper::HashAlgorthm_MD5);
 
           ElementPtr keyEl = Element::create("key");
-          keyEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("index", Stringize<typeof(index)>(index).string()));
-          keyEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("algorithm", OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
+          keyEl->adoptAsLastChild(createElementWithNumber("index", Stringize<typeof(index)>(index).string()));
+          keyEl->adoptAsLastChild(createElementWithText("algorithm", OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
 
           ElementPtr inputsEl = Element::create("inputs");
-          inputsEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("secret", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mSendKey)));
-          inputsEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("iv", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mNextIV)));
-          inputsEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("hmacIntegrityKey", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *IHelper::convertToBuffer(key.mIntegrityPassphrase, false))));
+          inputsEl->adoptAsLastChild(createElementWithText("secret", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mSendKey)));
+          inputsEl->adoptAsLastChild(createElementWithText("iv", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mNextIV)));
+          inputsEl->adoptAsLastChild(createElementWithText("hmacIntegrityKey", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *IHelper::convertToBuffer(key.mIntegrityPassphrase, false))));
 
           keyEl->adoptAsLastChild(inputsEl);
 
@@ -967,48 +1299,16 @@ namespace openpeer
         }
 
         keyingEl->adoptAsLastChild(keysEl);
-
-        IPeerFilePrivatePtr peerFilePrivate = mPeerFiles->getPeerFilePrivate();
-        ZS_THROW_BAD_STATE_IF(!peerFilePrivate)
-
-        IPeerFilePrivate::SignatureTypes signatureType = IPeerFilePrivate::SignatureType_PeerURI;
-        switch (mLocalReferenceType) {
-          case LocalPublicKeyReferenceType_FullPublicKey: signatureType = IPeerFilePrivate::SignatureType_FullPublicKey;
-          case LocalPublicKeyReferenceType_PeerURI:       signatureType = IPeerFilePrivate::SignatureType_PeerURI;
-        }
-
-        peerFilePrivate->signElement(
-                                     keyingEl,
-                                     signatureType
-                                     );
-        
         keyingBundleEl->adoptAsLastChild(keyingEl);
 
-        ULONG outputLength = 0;
-        GeneratorPtr generator = Generator::createJSONGenerator();
-        boost::shared_array<char> output = generator->write(keyingBundleEl, &outputLength);
+        mSendKeyingNeedingToSignDoc = Document::create();
+        mSendKeyingNeedingToSignDoc->adoptAsLastChild(keyingBundleEl);
+        mSendKeyingNeedToSignEl = keyingEl;
 
-        SecureByteBlockPtr buffer(new SecureByteBlock(sizeof(DWORD) + (outputLength * sizeof(char))));
+        ZS_LOG_DEBUG(log("waiting for sending keying information to be signed locally"))
 
-        ((DWORD *)(buffer->BytePtr()))[0] = htonl(0);
-
-        BYTE *dest = (buffer->BytePtr() + sizeof(DWORD));
-
-        memcpy(dest, output.get(), sizeof(char)*outputLength);
-
-        mPendingBuffersToSendOnWire.push_back(buffer);
-
-        // now in a position where we can sent (but not necessarily receive yet)
-        setState(SessionState_SendOnly);
-
-        try {
-          ZS_LOG_DEBUG(log("notify delegate needs to send keying information on-the-wire") + getDebugValueString())
-          mSubscriptions.delegate()->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
-        } catch (IMessageLayerSecurityChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Detail, log("delegate gone"))
-        }
-
-        return true;
+        setState(SessionState_WaitingForNeededInformation);
+        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -1081,78 +1381,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool MessageLayerSecurityChannel::verifyReceiveSignature(ElementPtr keyingEl)
-      {
-        String peerURI;
-        String fullPublicKey;
-        String fingerprint;
-        IHelper::getSignatureInfo(keyingEl, NULL, &peerURI, NULL, NULL, NULL, &fullPublicKey, &fingerprint);
-
-        // attempt to resolve public key used in signature...
-
-        if (peerURI.hasData()) {
-
-          if (!mReceivingRemotePublicPeerFile) {
-            AccountPtr account = mAccount.lock();
-            if (account) {
-              IPeerPtr peer = IPeer::create(account, peerURI);
-              if (peer) {
-                mReceivingRemotePublicPeerFile = peer->getPeerFilePublic();
-              }
-            }
-          }
-
-          if (mReceivingRemotePublicPeerFile) {
-            if (peerURI != mReceivingRemotePublicPeerFile->getPeerURI()) {
-              ZS_LOG_ERROR(Debug,log("signing peer changed mid stream (illegal)") + ", signature peer URI=" + peerURI + ", original signing peer URI=" + mReceivingRemotePublicPeerFile->getPeerURI())
-              setError(IHTTP::HTTPStatusCode_Conflict, "signing peer changed mid stream (illegal)");
-              cancel();
-              return false;
-            }
-            if (!mReceivingRemotePublicKey) {
-              mReceivingRemotePublicKey = mReceivingRemotePublicPeerFile->getPublicKey();
-            }
-          }
-        }
-
-        if (fullPublicKey.hasData()) {
-          IRSAPublicKeyPtr publicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(fullPublicKey));
-          fingerprint = publicKey->getFingerprint();
-          if (!mReceivingRemotePublicKey) {
-            mReceivingRemotePublicKey = publicKey;
-          }
-        }
-
-        if (fingerprint.hasData()) {
-          if (mReceivingRemotePublicKey) {
-            if (fingerprint != mReceivingRemotePublicKey->getFingerprint()) {
-              ZS_LOG_ERROR(Debug,log("signing peer changed mid stream (illegal)") + ", signature fingerprint=" + fingerprint + ", original signing peer URI=" + mReceivingRemotePublicKey->getFingerprint())
-              setError(IHTTP::HTTPStatusCode_Conflict, "signing peer stream mid stream (illegal)");
-              cancel();
-              return false;
-            }
-          }
-        }
-
-        if (!mReceivingRemotePublicKey) {
-          ZS_LOG_ERROR(Debug,log("unable to verify signer as do not have public key of signing peer") + ", peer URI=" + peerURI + ", fingerprint=" + fingerprint + ", full key=" + fullPublicKey)
-          setError(IHTTP::HTTPStatusCode_Conflict, "unable to verify signer as do not have public key of signing peer");
-          cancel();
-          return false;
-        }
-
-        if (!mReceivingRemotePublicKey->verifySignature(keyingEl)) {
-          ZS_LOG_ERROR(Debug,log("signature failed verification") + ", peer URI=" + peerURI + ", fingerprint=" + fingerprint + ", full key=" + fullPublicKey)
-          setError(IHTTP::HTTPStatusCode_Conflict, "signature failed verification");
-          cancel();
-          return false;
-        }
-
-        ZS_LOG_DEBUG(log("signature validation passed"))
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1171,31 +1399,10 @@ namespace openpeer
     {
       switch (state)
       {
-        case SessionState_ReceiveOnly:  return "Send only";
-        case SessionState_SendOnly:     return "Send only";
-        case SessionState_Connected:    return "Connected";
-        case SessionState_Shutdown:     return "Shutdown";
-      }
-      return "UNDEFINED";
-    }
-
-    //-----------------------------------------------------------------------
-    const char *IMessageLayerSecurityChannel::toString(LocalPublicKeyReferenceTypes type)
-    {
-      switch (type) {
-        case LocalPublicKeyReferenceType_FullPublicKey: return "Full public key";
-        case LocalPublicKeyReferenceType_PeerURI:       return "Peer URI";
-      }
-      return "UNDEFINED";
-    }
-
-    //-----------------------------------------------------------------------
-    const char *IMessageLayerSecurityChannel::toString(RemotePublicKeyReferenceTypes type)
-    {
-      switch (type) {
-        case RemotePublicKeyReferenceType_Unknown:                return "Unknown";
-        case RemotePublicKeyReferenceType_FullPublicKey:          return "Full public key";
-        case RemotePublicKeyReferenceType_PeerURI:                return "Peer URI";
+        case SessionState_Pending:                      return "Pending";
+        case SessionState_WaitingForNeededInformation:  return "Waiting for needed information";
+        case SessionState_Connected:                    return "Connected";
+        case SessionState_Shutdown:                     return "Shutdown";
       }
       return "UNDEFINED";
     }
@@ -1209,13 +1416,10 @@ namespace openpeer
     //-----------------------------------------------------------------------
     IMessageLayerSecurityChannelPtr IMessageLayerSecurityChannel::create(
                                                                          IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                                         IPeerFilesPtr localPeerFiles,
-                                                                         LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                                         const char *contextID,
-                                                                         IAccountPtr account
+                                                                         const char *contextID
                                                                          )
     {
-      return internal::IMessageLayerSecurityChannelFactory::singleton().create(delegate, localPeerFiles, localPublicKeyReferenceType, contextID, account);
+      return internal::IMessageLayerSecurityChannelFactory::singleton().create(delegate, contextID);
     }
   }
 }

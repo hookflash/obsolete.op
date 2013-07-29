@@ -37,9 +37,10 @@
 
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_Helper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -56,6 +57,8 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
+
       using zsLib::Stringize;
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 

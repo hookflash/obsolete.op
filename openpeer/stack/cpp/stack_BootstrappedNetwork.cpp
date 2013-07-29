@@ -34,15 +34,16 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_PeerFilePrivate.h>
 #include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/IMessageMonitor.h>
-#include <openpeer/stack/IRSAPublicKey.h>
 
 #include <openpeer/stack/message/bootstrapper/ServicesGetRequest.h>
 #include <openpeer/stack/message/bootstrapper/ServicesGetResult.h>
 #include <openpeer/stack/message/certificates/CertificatesGetRequest.h>
 #include <openpeer/stack/message/certificates/CertificatesGetResult.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPublicKey.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
@@ -61,6 +62,7 @@ namespace openpeer
     namespace internal
     {
       using zsLib::Stringize;
+      using services::IHelper;
 
       using namespace stack::message;
       using namespace stack::message::bootstrapper;
@@ -346,10 +348,11 @@ namespace openpeer
         String id;
         String domain;
         String service;
-        signedElement = IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
+        signedElement = stack::IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
         
-#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 1
-#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 2
+#define FIX_VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 1
+#define FIX_VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 2
+
         return true;
 
         if (!signedElement) {
@@ -1183,21 +1186,21 @@ namespace openpeer
     {
       ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
       String domain;
-      IHelper::getSignatureInfo(
-                                identityProofBundleEl,
-                                NULL,
-                                NULL,
-                                NULL,
-                                &domain,
-                                NULL
-                                );
+      stack::IHelper::getSignatureInfo(
+                                       identityProofBundleEl,
+                                       NULL,
+                                       NULL,
+                                       NULL,
+                                       &domain,
+                                       NULL
+                                       );
 
       if (domain.isEmpty()) {
         ZS_LOG_WARNING(Detail, "IServiceIdentity [] domain missing from signture")
         return IServiceIdentityPtr();
       }
 
-      if (!IHelper::isValidDomain(domain)) {
+      if (!services::IHelper::isValidDomain(domain)) {
         ZS_LOG_WARNING(Detail, String("IServiceIdentity [] domain from signture is not valid") + ", domain=" + domain)
         return IServiceIdentityPtr();
       }

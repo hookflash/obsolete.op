@@ -264,32 +264,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMessageLayerSecurityChannelFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IMessageLayerSecurityChannelFactory &IMessageLayerSecurityChannelFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
-                                                                                 IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                                                 IPeerFilesPtr localPeerFiles,
-                                                                                 LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                                                 const char *contextID,
-                                                                                 IAccountPtr account
-                                                                                 )
-      {
-        return MessageLayerSecurityChannel::create(delegate, localPeerFiles, localPublicKeyReferenceType, contextID, account);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark IMessageMonitorFactory
       #pragma mark
 
@@ -690,52 +664,6 @@ namespace openpeer
       PublicationRepositoryPtr IPublicationRepositoryFactory::createPublicationRepository(AccountPtr account)
       {
         return PublicationRepository::create(account);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IRSAPrivateKeyFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IRSAPrivateKeyFactory &IRSAPrivateKeyFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr IRSAPrivateKeyFactory::generate(RSAPublicKeyPtr &outPublicKey)
-      {
-        return RSAPrivateKey::generate(outPublicKey);
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr IRSAPrivateKeyFactory::loadPrivateKey(const SecureByteBlock &buffer)
-      {
-        return RSAPrivateKey::load(buffer);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IRSAPublicKeyFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IRSAPublicKeyFactory &IRSAPublicKeyFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPublicKeyPtr IRSAPublicKeyFactory::loadPublicKey(const SecureByteBlock &buffer)
-      {
-        return RSAPublicKey::load(buffer);
       }
 
       //-----------------------------------------------------------------------

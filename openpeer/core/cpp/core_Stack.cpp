@@ -36,7 +36,6 @@
 
 #include <openpeer/stack/IStack.h>
 #include <openpeer/stack/IHelper.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 
 #include <openpeer/services/IHelper.h>
 #include <openpeer/services/ILogger.h>
@@ -84,8 +83,6 @@ namespace openpeer
 
     namespace internal
     {
-      using stack::message::IMessageHelper;
-
       class ShutdownCheckAgain;
       typedef boost::shared_ptr<ShutdownCheckAgain> ShutdownCheckAgainPtr;
       typedef boost::weak_ptr<ShutdownCheckAgain> ShutdownCheckAgainWeakPtr;
@@ -498,12 +495,12 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(Time() == expires)
 
         String appID(applicationID);
-        String random = stack::IHelper::randomString(20);
-        String time = IMessageHelper::timeToString(expires);
+        String random = services::IHelper::randomString(20);
+        String time = services::IHelper::timeToString(expires);
 
         String merged = appID + "-" + random + "-" + time;
 
-        String hash = stack::IHelper::convertToHex(*stack::IHelper::hmac(*stack::IHelper::convertToBuffer(applicationIDSharedSecret), merged));
+        String hash = services::IHelper::convertToHex(*services::IHelper::hmac(*services::IHelper::convertToBuffer(applicationIDSharedSecret), merged));
 
         String final = merged + "-" + hash;
 

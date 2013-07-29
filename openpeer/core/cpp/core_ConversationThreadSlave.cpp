@@ -116,7 +116,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mBaseThread(baseThread),
         mAccount(account),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mPeerLocation(peerLocation),
         mCurrentState(ConversationThreadSlaveState_Pending),
         mConvertedToHostBecauseOriginalHostLikelyGoneForever(false)
@@ -527,7 +527,7 @@ namespace openpeer
         AccountPtr account = baseThread->forHostOrSlave().getAccount();
         if (!account) return ConversationThreadSlavePtr();
 
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ConversationThreadSlavePtr pThis(new ConversationThreadSlave(IStackForInternal::queueCore(), account, peerLocation, baseThread, hostThreadID));

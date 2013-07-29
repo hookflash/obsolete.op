@@ -33,16 +33,17 @@
 #include <openpeer/stack/internal/stack_PeerFilePublic.h>
 #include <openpeer/stack/internal/stack_PeerFilePrivate.h>
 #include <openpeer/stack/IPeer.h>
-#include <openpeer/stack/IHelper.h>
-#include <openpeer/stack/IRSAPrivateKey.h>
-#include <openpeer/stack/IRSAPublicKey.h>
 #include <openpeer/stack/message/IMessageHelper.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPrivateKey.h>
+#include <openpeer/services/IRSAPublicKey.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
 
 #include <cryptopp/sha.h>
-
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
@@ -56,8 +57,9 @@ namespace openpeer
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
-      using CryptoPP::SHA256;
+      using services::IHelper;
 
+      using CryptoPP::SHA256;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

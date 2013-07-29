@@ -128,6 +128,23 @@ namespace openpeer
       typedef boost::shared_ptr<HTTP> HTTPPtr;
       typedef boost::weak_ptr<HTTP> HTTPWeakPtr;
 
+      interaction MessageLayerSecurityChannel;
+      typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
+      typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
+
+      interaction IMessageLayerSecurityChannelAsyncDelegate;
+      typedef boost::shared_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegatePtr;
+      typedef boost::weak_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateWeakPtr;
+      typedef zsLib::Proxy<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateProxy;
+
+      class RSAPrivateKey;
+      typedef boost::shared_ptr<RSAPrivateKey> RSAPrivateKeyPtr;
+      typedef boost::weak_ptr<RSAPrivateKey> RSAPrivateKeyWeakPtr;
+
+      class RSAPublicKey;
+      typedef boost::shared_ptr<RSAPublicKey> RSAPublicKeyPtr;
+      typedef boost::weak_ptr<RSAPublicKey> RSAPublicKeyWeakPtr;
+
       class RUDPChannel;
       typedef boost::shared_ptr<RUDPChannel> RUDPChannelPtr;
       typedef boost::weak_ptr<RUDPChannel> RUDPChannelWeakPtr;

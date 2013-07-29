@@ -41,13 +41,13 @@
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_Account.h>
 #include <openpeer/stack/internal/stack_Helper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFilePublic.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -83,6 +83,8 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
+
       using CryptoPP::Weak::MD5;
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
@@ -1195,7 +1197,7 @@ namespace openpeer
             mLockboxInfo.mHash.clear();
             mLockboxInfo.mResetFlag = true;
 
-            mLockboxInfo.mKey = stack::IHelper::random(32);
+            mLockboxInfo.mKey = IHelper::random(32);
 
             ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
           }
@@ -1380,7 +1382,7 @@ namespace openpeer
           Time now = zsLib::now();
 
           if (now > expires) {
-            ZS_LOG_WARNING(Detail, log("peer file expired") + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            ZS_LOG_WARNING(Detail, log("peer file expired") + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IHelper::timeToString(now))
             mPeerFiles.reset();
           }
 
@@ -1388,7 +1390,7 @@ namespace openpeer
           Duration lifeConsumed (now - created);
 
           if (((lifeConsumed.seconds() * 100) / totalLifetime.seconds()) > OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION) {
-            ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + Stringize<Duration::sec_type>(lifeConsumed.seconds()).string() + ", " + Stringize<Duration::sec_type>(totalLifetime.seconds()).string() + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + Stringize<Duration::sec_type>(lifeConsumed.seconds()).string() + ", " + Stringize<Duration::sec_type>(totalLifetime.seconds()).string() + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IHelper::timeToString(now))
             mPeerFiles.reset();
           }
 

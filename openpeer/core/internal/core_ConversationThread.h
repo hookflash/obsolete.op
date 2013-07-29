@@ -35,8 +35,7 @@
 #include <openpeer/core/IConversationThread.h>
 #include <openpeer/core/internal/core_IConversationThreadParser.h>
 
-//#include <openpeer/stack/types.h>
-#include <openpeer/stack/IHelper.h>
+#include <openpeer/services/IHelper.h>
 
 #define OPENPEER_CONVERSATION_THREAD_TYPE_INDEX (2)
 #define OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX (3)
@@ -50,7 +49,7 @@ namespace openpeer
   {
     namespace internal
     {
-      typedef stack::IHelper::SplitMap SplitMap;
+      typedef services::IHelper::SplitMap SplitMap;
       typedef IConversationThreadParser::DialogPtr DialogPtr;
       typedef IConversationThreadParser::ThreadContactMap ThreadContactMap;
       typedef IConversationThreadParser::MessageList MessageList;

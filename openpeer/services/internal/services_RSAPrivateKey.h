@@ -31,15 +31,15 @@
 
 #pragma once
 
-#include <openpeer/stack/internal/types.h>
-#include <openpeer/stack/IRSAPublicKey.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IRSAPrivateKey.h>
 
 #include <cryptopp/rsa.h>
 #include <cryptopp/secblock.h>
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
@@ -48,15 +48,15 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRSAPublicKeyForRSAPrivateKey
+      #pragma mark IRSAPrivateKeyForRSAPublicKey
       #pragma mark
 
-      interaction IRSAPublicKeyForRSAPrivateKey
+      interaction IRSAPrivateKeyForRSAPublicKey
       {
-        IRSAPublicKeyForRSAPrivateKey &forPrivateKey() {return *this;}
-        const IRSAPublicKeyForRSAPrivateKey &forPrivateKey() const {return *this;}
+        IRSAPrivateKeyForRSAPublicKey &forRSAPublicKey() {return *this;}
+        const IRSAPrivateKeyForRSAPublicKey &forRSAPublicKey() const {return *this;}
 
-        static RSAPublicKeyPtr load(const SecureByteBlock &buffer);
+        static RSAPrivateKeyPtr generate(RSAPublicKeyPtr &outPublicKey);
       };
 
       //-----------------------------------------------------------------------
@@ -64,70 +64,60 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark RSAPublicKey
+      #pragma mark RSAPrivateKey
       #pragma mark
 
-      class RSAPublicKey : public Noop,
-                           public IRSAPublicKey,
-                           public IRSAPublicKeyForRSAPrivateKey
+      class RSAPrivateKey : public Noop,
+                            public IRSAPrivateKey
       {
       public:
-        friend interaction IRSAPublicKeyFactory;
-        friend interaction IRSAPublicKey;
+        friend interaction IRSAPrivateKeyFactory;
 
-        typedef CryptoPP::RSA::PublicKey PublicKey;
+        typedef CryptoPP::RSA::PrivateKey PrivateKey;
 
       protected:
-        RSAPublicKey();
+        RSAPrivateKey();
         
-        RSAPublicKey(Noop) : Noop(true) {};
+        RSAPrivateKey(Noop) : Noop(true) {};
 
       public:
-        ~RSAPublicKey();
+        ~RSAPrivateKey();
 
-        static RSAPublicKeyPtr convert(IRSAPublicKeyPtr publicKey);
+        static RSAPrivateKeyPtr convert(IRSAPrivateKeyPtr privateKey);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RSAPublicKey => IRSAPublicKey
+        #pragma mark RSAPrivateKey => IRSAPrivateKey
         #pragma mark
 
-        static RSAPublicKeyPtr generate(RSAPrivateKeyPtr &outPrivatekey);
+        static RSAPrivateKeyPtr generate(
+                                         RSAPublicKeyPtr &outPublicKey,
+                                         ULONG keySizeInBites = OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE
+                                         );
 
-        static RSAPublicKeyPtr load(const SecureByteBlock &buffer);
+        static RSAPrivateKeyPtr load(const SecureByteBlock &buffer);
 
         virtual SecureByteBlockPtr save() const;
 
-        virtual String getFingerprint() const;
+        virtual SecureByteBlockPtr sign(const SecureByteBlock &inBufferToSign) const;
 
-        virtual bool verify(
-                            const SecureByteBlock &inOriginalBufferSigned,
-                            const SecureByteBlock &inSignature
-                            ) const;
+        virtual SecureByteBlockPtr sign(const String &stringToSign) const;
 
-        virtual bool verify(
-                            const String &inOriginalStringSigned,
-                            const SecureByteBlock &inSignature
-                            ) const;
-
-        virtual bool verifySignature(ElementPtr signedEl) const;
-
-        virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const;
+        virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const;
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RSAPublicKey => (internal)
+        #pragma mark RSAPrivateKey => (internal)
         #pragma mark
 
         String log(const char *message) const;
 
-        bool verify(
-                    const BYTE *inBuffer,
-                    size_t inBufferLengthInBytes,
-                    const SecureByteBlock &inSignature
-                    ) const;
+        virtual SecureByteBlockPtr sign(
+                                        const BYTE *inBuffer,
+                                        size_t inBufferSizeInBytes
+                                        ) const;
 
       private:
         //-------------------------------------------------------------------
@@ -136,8 +126,8 @@ namespace openpeer
         #pragma mark
 
         PUID mID;
-        PublicKey mPublicKey;
-        String mFingerprint;
+
+        PrivateKey mPrivateKey;
       };
 
       //-----------------------------------------------------------------------
@@ -145,15 +135,21 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRSAPublicKeyFactory
+      #pragma mark IRSAPrivateKeyFactory
       #pragma mark
 
-      interaction IRSAPublicKeyFactory
+      interaction IRSAPrivateKeyFactory
       {
-        static IRSAPublicKeyFactory &singleton();
+        static IRSAPrivateKeyFactory &singleton();
 
-        virtual RSAPublicKeyPtr loadPublicKey(const SecureByteBlock &buffer);
+        virtual RSAPrivateKeyPtr generate(
+                                          RSAPublicKeyPtr &outPublicKey,
+                                          ULONG keySizeInBites = OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE
+                                          );
+
+        virtual RSAPrivateKeyPtr loadPrivateKey(const SecureByteBlock &buffer);
       };
+      
     }
   }
 }

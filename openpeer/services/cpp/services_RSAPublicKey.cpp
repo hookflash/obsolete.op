@@ -29,10 +29,9 @@
 
  */
 
-#include <openpeer/stack/internal/stack_RSAPublicKey.h>
-#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
-#include <openpeer/stack/internal/stack_PeerFilePrivate.h>
-#include <openpeer/stack/internal/stack_Helper.h>
+#include <openpeer/services/internal/services_RSAPublicKey.h>
+#include <openpeer/services/internal/services_RSAPrivateKey.h>
+#include <openpeer/services/internal/services_Helper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -44,12 +43,12 @@
 #include <cryptopp/rsa.h>
 
 
-namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
@@ -206,7 +205,7 @@ namespace openpeer
         // found the signature reference, now check if the peer URIs match - they must...
         try {
           String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
+          if (algorithm != OPENPEER_SERVICES_JSON_SIGNATURE_ALGORITHM) {
             ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
             return false;
           }

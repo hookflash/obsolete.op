@@ -41,7 +41,6 @@
 #include <openpeer/stack/IMessageIncoming.h>
 #include <openpeer/stack/IMessageMonitor.h>
 #include <openpeer/stack/IMessageSource.h>
-#include <openpeer/stack/IMessageLayerSecurityChannel.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
@@ -50,8 +49,6 @@
 #include <openpeer/stack/IPublication.h>
 #include <openpeer/stack/IPublicationMetaData.h>
 #include <openpeer/stack/IPublicationRepository.h>
-#include <openpeer/stack/IRSAPrivateKey.h>
-#include <openpeer/stack/IRSAPublicKey.h>
 #include <openpeer/stack/IServiceCertificates.h>
 #include <openpeer/stack/IServiceIdentity.h>
 #include <openpeer/stack/IServiceLockbox.h>

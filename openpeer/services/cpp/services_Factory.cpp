@@ -255,6 +255,78 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMessageLayerSecurityChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IMessageLayerSecurityChannelFactory &IMessageLayerSecurityChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
+                                                                                 IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                                 const char *contextID
+                                                                                 )
+      {
+        return MessageLayerSecurityChannel::create(delegate, contextID);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPrivateKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPrivateKeyFactory &IRSAPrivateKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::generate(
+                                                       RSAPublicKeyPtr &outPublicKey,
+                                                       ULONG keySizeInBites
+                                                       )
+      {
+        return RSAPrivateKey::generate(outPublicKey, keySizeInBites);
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::loadPrivateKey(const SecureByteBlock &buffer)
+      {
+        return RSAPrivateKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPublicKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPublicKeyFactory &IRSAPublicKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPublicKeyPtr IRSAPublicKeyFactory::loadPublicKey(const SecureByteBlock &buffer)
+      {
+        return RSAPublicKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IRUDPChannelFactory
       #pragma mark
 

@@ -38,10 +38,11 @@
 
 #include <openpeer/stack/IAccount.h>
 #include <openpeer/stack/IPeerSubscription.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPublicationRepository.h>
 #include <openpeer/stack/IServiceLockbox.h>
 #include <openpeer/stack/IServiceNamespaceGrant.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -51,7 +52,7 @@ namespace openpeer
   {
     namespace internal
     {
-      typedef stack::IHelper::SplitMap SplitMap;
+      typedef services::IHelper::SplitMap SplitMap;
 
 
       //-----------------------------------------------------------------------

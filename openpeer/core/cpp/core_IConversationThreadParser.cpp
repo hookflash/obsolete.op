@@ -89,7 +89,7 @@ namespace openpeer
       typedef IConversationThreadParser::ThreadPtr ThreadPtr;
 
       using stack::IDiff;
-      typedef stack::IHelper::SplitMap SplitMap;
+      typedef services::IHelper::SplitMap SplitMap;
 
       typedef IPublication::PublishToRelationshipsMap PublishToRelationshipsMap;
       typedef IPublication::RelationshipList RelationshipList;
@@ -296,7 +296,7 @@ namespace openpeer
         ElementPtr messageBundleEl = Element::create("messageBundle");
         ElementPtr messageEl = createElement("message", messageID);
         ElementPtr fromEl = createElement("from", fromPeerURI);
-        ElementPtr sentEl = createElementWithNumber("sent", IMessageHelper::timeToString(sent));
+        ElementPtr sentEl = createElementWithNumber("sent", services::IHelper::timeToString(sent));
         ElementPtr mimeTypeEl = createElementWithText("mimeType", mimeType);
         ElementPtr bodyEl = createElementWithTextAndJSONEncode("body", body);
 
@@ -335,7 +335,7 @@ namespace openpeer
           pThis->mFromPeerURI = fromEl->getAttributeValue("id");
           pThis->mMimeType = mimeTypeEl->getText();
           pThis->mBody = bodyEl->getTextDecoded();
-          pThis->mSent = IMessageHelper::stringToTime(sentEl->getText());
+          pThis->mSent = services::IHelper::stringToTime(sentEl->getText());
           pThis->mBundleEl = messageBundleEl;
         } catch (CheckFailed &) {
           ZS_LOG_ERROR(Detail, "message bundle XML parse element check failure")
@@ -367,7 +367,7 @@ namespace openpeer
                Helper::getDebugValue("from peer URI", mFromPeerURI, firstTime) +
                Helper::getDebugValue("mime type", mMimeType, firstTime) +
                Helper::getDebugValue("body", mBody, firstTime) +
-               Helper::getDebugValue("sent", Time() != mSent ? IMessageHelper::timeToString(mSent) : String(), firstTime);
+               Helper::getDebugValue("sent", Time() != mSent ? services::IHelper::timeToString(mSent) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -437,7 +437,7 @@ namespace openpeer
         {
           const String &messageID = (*iter).first;
           const Time &time = (*iter).second;
-          ElementPtr receiptEl = createElementWithNumber("receipt", messageID, IMessageHelper::timeToString(time));
+          ElementPtr receiptEl = createElementWithNumber("receipt", messageID, services::IHelper::timeToString(time));
           receiptsEl->adoptAsLastChild(receiptEl);
         }
 
@@ -462,7 +462,7 @@ namespace openpeer
             String id = receiptEl->getAttributeValue("id");
             String timeStr = receiptEl->getText();
             ZS_LOG_TRACE(String("Parsing receipt") + ", receipt ID=" + id + ", acknowledged at=" + timeStr)
-            Time time = IMessageHelper::stringToTime(timeStr);
+            Time time = services::IHelper::stringToTime(timeStr);
 
             if (Time() == time) {
               ZS_LOG_ERROR(Detail, "message receipt parse time invalid")
@@ -1417,7 +1417,7 @@ namespace openpeer
         ElementPtr replacesEl = createElement("replaces", replaces);
         ElementPtr stateEl = createElementWithText("state", toString(state));
         ElementPtr topicEl = createElementWithTextAndJSONEncode("topic", pThis->mTopic);
-        ElementPtr createdEl = createElementWithNumber("created", IMessageHelper::timeToString(pThis->mCreated));
+        ElementPtr createdEl = createElementWithNumber("created", services::IHelper::timeToString(pThis->mCreated));
 
         detailsEl->adoptAsLastChild(threadBaseEl);
         detailsEl->adoptAsLastChild(threadHostEl);
@@ -1453,7 +1453,7 @@ namespace openpeer
           state.trim();
           pThis->mState = toConversationThreadState(state);
           pThis->mTopic = detailsEl->findFirstChildElementChecked("topic")->getTextDecoded();
-          pThis->mCreated = IMessageHelper::stringToTime(detailsEl->findFirstChildElementChecked("created")->getText());
+          pThis->mCreated = services::IHelper::stringToTime(detailsEl->findFirstChildElementChecked("created")->getText());
           if (Time() == pThis->mCreated) {
             ZS_LOG_ERROR(Detail, "details parse time value not valid")
             return DetailsPtr();
@@ -1479,7 +1479,7 @@ namespace openpeer
                Helper::getDebugValue("replaces thread id (s)", mReplacesThreadID, firstTime) +
                Helper::getDebugValue("state", toString(mState), firstTime) +
                Helper::getDebugValue("topic", mTopic, firstTime) +
-               Helper::getDebugValue("created", Time() != mCreated ? IMessageHelper::timeToString(mCreated) : String(), firstTime);
+               Helper::getDebugValue("created", Time() != mCreated ? services::IHelper::timeToString(mCreated) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1567,8 +1567,8 @@ namespace openpeer
         pThis->mPublication = publication;
 
         SplitMap result;
-        stack::IHelper::split(publication->getName(), result);
-        String type = stack::IHelper::get(result, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
+        services::IHelper::split(publication->getName(), result);
+        String type = services::IHelper::get(result, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
 
         try {
           pThis->mType = toThreadTypes(type);
@@ -2664,7 +2664,7 @@ namespace openpeer
                Helper::getDebugValue("contacts to remove changed", mContactsToRemoveChanged.size() > 0 ? Stringize<size_t>(mContactsToRemoveChanged.size()).string() : String(), firstTime) +
                Helper::getDebugValue("contacts to remove removed", mContactsToRemoveRemoved.size() > 0 ? Stringize<size_t>(mContactsToRemoveRemoved.size()).string() : String(), firstTime) +
                Helper::getDebugValue("messages changed", mMessagesChanged.size() > 0 ? Stringize<size_t>(mMessagesChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("messages changed time", Time() != mMessagesChangedTime ? IMessageHelper::timeToString(mMessagesChangedTime) : String(), firstTime) +
+               Helper::getDebugValue("messages changed time", Time() != mMessagesChangedTime ? services::IHelper::timeToString(mMessagesChangedTime) : String(), firstTime) +
                Helper::getDebugValue("messages receipts changed", mMessageReceiptsChanged.size() > 0 ? Stringize<size_t>(mMessageReceiptsChanged.size()).string() : String(), firstTime) +
                Helper::getDebugValue("dialogs changed", mDialogsChanged.size() > 0 ? Stringize<size_t>(mDialogsChanged.size()).string() : String(), firstTime) +
                Helper::getDebugValue("dialogs removed", mDialogsRemoved.size() > 0 ? Stringize<size_t>(mDialogsRemoved.size()).string() : String(), firstTime) +

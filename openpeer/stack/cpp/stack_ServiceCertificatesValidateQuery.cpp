@@ -35,6 +35,8 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -52,6 +54,7 @@ namespace openpeer
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using zsLib::Stringize;
+      using services::IHelper;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -78,7 +81,7 @@ namespace openpeer
         String domain;
         String service;
 
-        signedElement = IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
+        signedElement = stack::IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
 
         if (!signedElement) {
           ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))

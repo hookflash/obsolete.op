@@ -38,7 +38,8 @@
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
-#include <openpeer/stack/IHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -55,6 +56,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer_finder
       {
         using zsLib::Stringize;
@@ -130,11 +133,11 @@ namespace openpeer
             }
 
             String findSecretProof = findProofEl->findFirstChildElementChecked("findSecretProof")->getText();
-            Time expires = IMessageHelper::stringToTime(findProofEl->findFirstChildElementChecked("findSecretProofExpires")->getText());
+            Time expires = IHelper::stringToTime(findProofEl->findFirstChildElementChecked("findSecretProofExpires")->getText());
             String peerSecretEncrypted = findProofEl->findFirstChildElementChecked("peerSecretEncrypted")->getText();
 
             String findSecret = peerFilePublic->getFindSecret();
-            String calculatedFindSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
+            String calculatedFindSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(findSecret), "proof:" + clientNonce + ":" + IHelper::timeToString(expires)));
 
             if (calculatedFindSecretProof != findSecretProof) {
               ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] calculated find secret proof did not match request, calculated=" + calculatedFindSecretProof + ", request=" + findSecretProof)
@@ -142,7 +145,7 @@ namespace openpeer
             }
 
             if (zsLib::now() > expires) {
-              ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] request expired, expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(zsLib::now()))
+              ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] request expired, expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(zsLib::now()))
               return PeerLocationFindRequestPtr();
             }
 
@@ -294,9 +297,9 @@ namespace openpeer
             if (remotePeerFilePublic) {
               String findSecret = remotePeerFilePublic->getFindSecret();
               if (findSecret.length() > 0) {
-                String findSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(findSecret), "proof:" + clientNonce + ":" + IMessageHelper::timeToString(expires)));
+                String findSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(findSecret), "proof:" + clientNonce + ":" + IHelper::timeToString(expires)));
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("findSecretProof", findSecretProof));
-                findProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("findSecretProofExpires", IMessageHelper::timeToString(expires)));
+                findProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("findSecretProofExpires", IHelper::timeToString(expires)));
               }
 
               if (hasAttribute(AttributeType_PeerSecret)) {

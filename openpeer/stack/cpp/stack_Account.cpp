@@ -43,17 +43,16 @@
 #include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetResult.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPublicationRepository.h>
 
+#include <openpeer/services/IHelper.h>
 #include <openpeer/services/IRUDPICESocket.h>
 
 #include <zsLib/Log.h>
@@ -86,9 +85,8 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
       using zsLib::Stringize;
-
-      using message::IMessageHelper;
 
       using message::peer_finder::PeerLocationFindRequest;
       using message::peer_finder::PeerLocationFindRequestPtr;
@@ -1566,15 +1564,15 @@ namespace openpeer
                Helper::getDebugValue("location ID", mLocationID, firstTime) +
                Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               Helper::getDebugValue("timer last fired", Time() != mLastTimerFired ? IMessageHelper::timeToString(mLastTimerFired) : String(), firstTime) +
-               Helper::getDebugValue("block until", Time() != mBlockLocationShutdownsUntil ? IMessageHelper::timeToString(mBlockLocationShutdownsUntil) : String(), firstTime) +
+               Helper::getDebugValue("timer last fired", Time() != mLastTimerFired ? IHelper::timeToString(mLastTimerFired) : String(), firstTime) +
+               Helper::getDebugValue("block until", Time() != mBlockLocationShutdownsUntil ? IHelper::timeToString(mBlockLocationShutdownsUntil) : String(), firstTime) +
                Helper::getDebugValue("turn", turn, firstTime) +
                Helper::getDebugValue("turn username", username, firstTime) +
                Helper::getDebugValue("turn password", password, firstTime) +
                Helper::getDebugValue("stun", stun, firstTime) +
                //mSelfLocation->forAccount().getDebugValueString() +
                Helper::getDebugValue("finder", mFinder ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IMessageHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
+               Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
                Helper::getDebugValue("peer infos", mPeers.size() > 0 ? Stringize<size_t>(mPeers.size()).string() : String(), firstTime) +
                Helper::getDebugValue("peer infos", mPeerInfos.size() > 0 ? Stringize<size_t>(mPeerInfos.size()).string() : String(), firstTime) +
                Helper::getDebugValue("subscribers", mPeerSubscriptions.size() > 0 ? Stringize<size_t>(mPeerSubscriptions.size()).string() : String(), firstTime) +
@@ -2454,7 +2452,7 @@ namespace openpeer
                Helper::getDebugValue("find redo because", mPeerFindNeedsRedoingBecauseOfLocations.size() > 0 ? Stringize<size_t>(mPeerFindNeedsRedoingBecauseOfLocations.size()).string() : String(), firstTime) +
                Helper::getDebugValue("find state", IPeer::toString(mCurrentFindState), firstTime) +
                Helper::getDebugValue("subscribers", 0 != mTotalSubscribers ? Stringize<typeof(mTotalSubscribers)>(mTotalSubscribers).string() : String(), firstTime) +
-               Helper::getDebugValue("next find", Time() != mNextScheduledFind ? IMessageHelper::timeToString(mNextScheduledFind) : String(), firstTime) +
+               Helper::getDebugValue("next find", Time() != mNextScheduledFind ? IHelper::timeToString(mNextScheduledFind) : String(), firstTime) +
                Helper::getDebugValue("last duration", 0 != mLastScheduleFindDuration.total_milliseconds() ? Stringize<Duration::tick_type>(mLastScheduleFindDuration.total_milliseconds()).string() : String(), firstTime) +
                Helper::getDebugValue("prevent crazy refind", mPreventCrazyRefindNextTime ? String("true") : String(), firstTime);
       }

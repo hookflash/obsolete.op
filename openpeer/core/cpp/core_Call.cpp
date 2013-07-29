@@ -35,7 +35,6 @@
 #include <openpeer/core/internal/core_Account.h>
 #include <openpeer/core/internal/core_Contact.h>
 #include <openpeer/core/internal/core_Helper.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 
 #include <zsLib/helpers.h>
 
@@ -62,7 +61,6 @@ namespace openpeer
     namespace internal
     {
       using zsLib::ITimerDelegateProxy;
-      using stack::message::IMessageHelper;
 
       typedef IConversationThreadParser::Dialog Dialog;
 
@@ -187,7 +185,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mQueue(IStackForInternal::queueCore()),
         mDelegate(delegate),
-        mCallID(callID ? Stringize<CSTR>(callID).string() : stack::IHelper::randomString(32)),
+        mCallID(callID ? Stringize<CSTR>(callID).string() : services::IHelper::randomString(32)),
         mHasAudio(hasAudio),
         mHasVideo(hasVideo),
         mIncomingCall(false),
@@ -885,11 +883,11 @@ namespace openpeer
                     Helper::getDebugValue("ring called", mRingCalled ? String("true") : String(), firstTime) +
                     Helper::getDebugValue("answer called", mAnswerCalled ? String("true") : String(), firstTime) +
                     Helper::getDebugValue("local on hold", mLocalOnHold ? String("true") : String(), firstTime) +
-                    Helper::getDebugValue("creation", Time() != mCreationTime ? IMessageHelper::timeToString(mCreationTime) : String(), firstTime) +
-                    Helper::getDebugValue("ring", Time() != mRingTime ? IMessageHelper::timeToString(mRingTime) : String(), firstTime) +
-                    Helper::getDebugValue("answer", Time() != mAnswerTime ? IMessageHelper::timeToString(mAnswerTime) : String(), firstTime) +
-                    Helper::getDebugValue("closed", Time() != mClosedTime ? IMessageHelper::timeToString(mClosedTime) : String(), firstTime) +
-                    Helper::getDebugValue("first closed", Time() != mFirstClosedRemoteCallTime ? IMessageHelper::timeToString(mFirstClosedRemoteCallTime) : String(), firstTime);
+                    Helper::getDebugValue("creation", Time() != mCreationTime ? services::IHelper::timeToString(mCreationTime) : String(), firstTime) +
+                    Helper::getDebugValue("ring", Time() != mRingTime ? services::IHelper::timeToString(mRingTime) : String(), firstTime) +
+                    Helper::getDebugValue("answer", Time() != mAnswerTime ? services::IHelper::timeToString(mAnswerTime) : String(), firstTime) +
+                    Helper::getDebugValue("closed", Time() != mClosedTime ? services::IHelper::timeToString(mClosedTime) : String(), firstTime) +
+                    Helper::getDebugValue("first closed", Time() != mFirstClosedRemoteCallTime ? services::IHelper::timeToString(mFirstClosedRemoteCallTime) : String(), firstTime);
         }
         if (mediaData)
         {
@@ -1307,7 +1305,7 @@ namespace openpeer
           if (hasAudio()) {
             DescriptionPtr desc = Description::create();
             desc->mVersion = 1;
-            desc->mDescriptionID = stack::IHelper::randomString(20);
+            desc->mDescriptionID = services::IHelper::randomString(20);
             desc->mType = "audio";
             desc->mSSRC = 0;
             desc->mCandidateLists[0] = audioRTPCandidates;
@@ -1319,7 +1317,7 @@ namespace openpeer
           if (hasVideo()) {
             DescriptionPtr desc = Description::create();
             desc->mVersion = 1;
-            desc->mDescriptionID = stack::IHelper::randomString(20);
+            desc->mDescriptionID = services::IHelper::randomString(20);
             desc->mType = "video";
             desc->mSSRC = 0;
             desc->mCandidateLists[0] = videoRTPCandidates;

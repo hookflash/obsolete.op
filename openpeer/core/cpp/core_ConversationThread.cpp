@@ -163,7 +163,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mAccount(account),
         mDelegate(account->forConversationThread().getConversationThreadDelegate()),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mCurrentState(ConversationThreadState_Pending),
         mMustNotifyAboutNewThread(false),
         mHandleContactsChangedCRC(0)
@@ -589,7 +589,7 @@ namespace openpeer
                                                        const SplitMap &split
                                                        )
       {
-        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
+        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
         pThis->mThisWeak = pThis;
         pThis->mMustNotifyAboutNewThread = true;
         pThis->init();
@@ -610,13 +610,13 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);
         if (found == mThreads.end()) {
           // could not find the publication... must be a host document or something is wrong...
-          String type = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
+          String type = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
           if (type != "host") {
             // whatever this is it cannot be understood...
             ZS_LOG_WARNING(Detail, log("expecting a host document type but received something else") + ", type=" + type + IPublicationMetaData::toDebugString(metaData))
@@ -647,7 +647,7 @@ namespace openpeer
                                                      )
       {
         AutoRecursiveLock lock(getLock());
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);

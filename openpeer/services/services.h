@@ -41,6 +41,9 @@
 #include <openpeer/services/ISTUNDiscovery.h>
 #include <openpeer/services/IICESocket.h>
 #include <openpeer/services/IICESocketSession.h>
+#include <openpeer/services/IMessageLayerSecurity.h>
+#include <openpeer/services/IRSAPrivateKey.h>
+#include <openpeer/services/IRSAPublicKey.h>
 #include <openpeer/services/RUDPProtocol.h>
 #include <openpeer/services/RUDPPacket.h>
 #include <openpeer/services/RUDPProtocol.h>

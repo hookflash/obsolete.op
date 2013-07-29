@@ -36,6 +36,8 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
@@ -49,6 +51,7 @@ namespace openpeer
     namespace message
     {
       using zsLib::Stringize;
+      using services::IHelper;
 
       using stack::internal::IStackForInternal;
       using stack::internal::Helper;

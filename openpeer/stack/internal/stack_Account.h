@@ -85,6 +85,22 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountForFinderRelayChannel
+      #pragma mark
+
+      interaction IAccountForFinderRelayChannel
+      {
+        IAccountForFinderRelayChannel &forFinderRelay() {return *this;}
+        const IAccountForFinderRelayChannel &forFinderRelay() const {return *this;}
+
+        virtual IPeerFilesPtr getPeerFiles() const = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountForAccountPeerLocation
       #pragma mark
 
@@ -276,6 +292,7 @@ namespace openpeer
                       public MessageQueueAssociator,
                       public IAccount,
                       public IAccountForAccountFinder,
+                      public IAccountForFinderRelayChannel,
                       public IAccountForAccountPeerLocation,
                       public IAccountForLocation,
                       public IAccountForMessageIncoming,
@@ -380,6 +397,13 @@ namespace openpeer
                                        Finder &outFinder,
                                        IPAddress &outFinderIP
                                        );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForFinderRelayChannel
+        #pragma mark
+
+        // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
 
         //---------------------------------------------------------------------
         #pragma mark

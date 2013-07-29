@@ -50,6 +50,11 @@ namespace openpeer
       using zsLib::XML::Attribute;
       using zsLib::XML::AttributePtr;
 
+      using services::IRSAPrivateKey;
+      using services::IRSAPrivateKeyPtr;
+      using services::IRSAPublicKey;
+      using services::IRSAPublicKeyPtr;
+
       typedef std::list<String> RouteList;
       typedef std::list<String> StringList;
 

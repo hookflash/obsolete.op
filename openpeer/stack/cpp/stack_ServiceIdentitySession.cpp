@@ -52,6 +52,8 @@
 #include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -84,6 +86,8 @@ namespace openpeer
 
     namespace internal
     {
+      using services::IHelper;
+
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using message::identity::IdentityAccessWindowRequest;
@@ -202,8 +206,8 @@ namespace openpeer
           ElementPtr createdEl = contactProofEl->findFirstChildElementChecked("created");
           ElementPtr expiresEl = contactProofEl->findFirstChildElementChecked("expires");
 
-          Time created = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(createdEl));
-          Time expires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(expiresEl));
+          Time created = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(createdEl));
+          Time expires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(expiresEl));
 
           if ((outStableID) &&
               (stableIDEl)) {
@@ -239,12 +243,12 @@ namespace openpeer
 
           Time tick = zsLib::now();
           if (created < tick + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS)) {
-            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IMessageHelper::timeToString(created) + ", now=" + IMessageHelper::timeToString(tick))
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IHelper::timeToString(created) + ", now=" + IHelper::timeToString(tick))
             return false;
           }
 
           if (tick > expires) {
-            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature expired") + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(tick))
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature expired") + ", expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(tick))
             return false;
           }
           

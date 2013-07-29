@@ -32,7 +32,8 @@
 #include <openpeer/stack/message/rolodex/RolodexNamespaceGrantChallengeValidateRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/IHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -47,6 +48,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace rolodex
       {
         using zsLib::Seconds;
@@ -99,7 +102,7 @@ namespace openpeer
           rolodexInfo.mAccessToken = mRolodexInfo.mAccessToken;
           if (mRolodexInfo.mAccessSecret.hasData()) {
             rolodexInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_ROLODEX_NAMESPACE_GRANT_CHALLENGE_VALIDATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            rolodexInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(mRolodexInfo.mAccessSecret), "rolodex-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(rolodexInfo.mAccessSecretProofExpires) + ":" + rolodexInfo.mAccessToken + ":rolodex-namespace-grant-challenge-validate"));
+            rolodexInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hash(mRolodexInfo.mAccessSecret), "rolodex-access-validate:" + clientNonce + ":" + IHelper::timeToString(rolodexInfo.mAccessSecretProofExpires) + ":" + rolodexInfo.mAccessToken + ":rolodex-namespace-grant-challenge-validate"));
           }
 
           rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));

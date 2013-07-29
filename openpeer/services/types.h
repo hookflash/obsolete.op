@@ -33,6 +33,7 @@
 
 #include <zsLib/types.h>
 #include <zsLib/Proxy.h>
+#include <zsLib/ProxySubscriptions.h>
 #include <cryptopp/secblock.h>
 
 namespace openpeer
@@ -57,6 +58,8 @@ namespace openpeer
     using zsLib::Log;
     using zsLib::XML::Element;
     using zsLib::XML::ElementPtr;
+    using zsLib::XML::Document;
+    using zsLib::XML::DocumentPtr;
 
     typedef CryptoPP::SecByteBlock SecureByteBlock;
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
@@ -114,6 +117,28 @@ namespace openpeer
     typedef boost::weak_ptr<IHTTPQueryDelegate> IHTTPQueryDelegateWeakPtr;
     typedef zsLib::Proxy<IHTTPQueryDelegate> IHTTPQueryDelegateProxy;
 
+    interaction IMessageLayerSecurityChannel;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelPtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelWeakPtr;
+
+    interaction IMessageLayerSecurityChannelDelegate;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegatePtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateWeakPtr;
+    typedef zsLib::Proxy<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateProxy;
+
+    interaction IMessageLayerSecurityChannelSubscription;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionPtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<IMessageLayerSecurityChannelDelegate, IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelDelegateSubscriptions;
+
+    interaction IRSAPrivateKey;
+    typedef boost::shared_ptr<IRSAPrivateKey> IRSAPrivateKeyPtr;
+    typedef boost::weak_ptr<IRSAPrivateKey> IRSAPrivateKeyWeakPtr;
+
+    interaction IRSAPublicKey;
+    typedef boost::shared_ptr<IRSAPublicKey> IRSAPublicKeyPtr;
+    typedef boost::weak_ptr<IRSAPublicKey> IRSAPublicKeyWeakPtr;
+    
     interaction IRUDPListener;
     typedef boost::shared_ptr<IRUDPListener> IRUDPListenerPtr;
     typedef boost::weak_ptr<IRUDPListener> IRUDPListenerWeakPtr;

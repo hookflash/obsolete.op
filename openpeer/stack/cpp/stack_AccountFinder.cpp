@@ -43,9 +43,10 @@
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
@@ -81,6 +82,8 @@ namespace openpeer
     namespace internal
     {
       using zsLib::Stringize;
+
+      using services::IHelper;
 
       using message::peer_finder::SessionCreateRequest;
       using message::peer_finder::SessionCreateRequestPtr;
@@ -705,7 +708,7 @@ namespace openpeer
                mFinder.getDebugValueString() +
                Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
                Helper::getDebugValue("server agent", mServerAgent, firstTime) +
-               Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IMessageHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
+               Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
                Helper::getDebugValue("session create monitor", mSessionCreateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("session keep alive monitor", mSessionKeepAliveMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("session delete monitor", mSessionDeleteMonitor ? String("true") : String(), firstTime);

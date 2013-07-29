@@ -38,7 +38,7 @@
 #include <openpeer/stack/IServiceIdentity.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 
-#include <openpeer/stack/message/IMessageHelper.h>
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -59,7 +59,6 @@ namespace openpeer
 
       typedef stack::message::IdentityInfoList StackIdentityInfoList;
       typedef stack::message::IdentityInfo StackIdentityInfo;
-      using stack::message::IMessageHelper;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -230,7 +229,7 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityServiceDomain)
 
-        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(identityServiceDomain))
+        ZS_THROW_INVALID_ARGUMENT_IF(!services::IHelper::isValidDomain(identityServiceDomain))
 
         IdentityLookupPtr pThis(new IdentityLookup(IStackForInternal::queueCore(), Account::convert(account), delegate, identityServiceDomain));
         pThis->mThisWeak = pThis;
@@ -527,7 +526,7 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(!originalRequest)
 
         String originalDomain = originalRequest->domain();
-        ZS_THROW_BAD_STATE_IF(!stack::IHelper::isValidDomain(originalDomain))
+        ZS_THROW_BAD_STATE_IF(!services::IHelper::isValidDomain(originalDomain))
 
         IBootstrappedNetworkPtr network = IBootstrappedNetwork::prepare(originalDomain);
         ZS_THROW_BAD_STATE_IF(!originalRequest)
@@ -576,7 +575,7 @@ namespace openpeer
           Time lastKnownUpdate = (*foundIdentifier).second;
 
           if (lastKnownUpdate == resultInfo.mUpdated) {
-            ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity uri=" + resultInfo.mURI + ", last updated=" + IMessageHelper::timeToString(resultInfo.mUpdated))
+            ZS_LOG_TRACE(log("identity information has not changed since last time") + ", identity uri=" + resultInfo.mURI + ", last updated=" + services::IHelper::timeToString(resultInfo.mUpdated))
 
             // nothing about this identity has changed since last time
             IdentityContact info;
@@ -941,7 +940,7 @@ namespace openpeer
       {
         typedef IdentityLookupCheckRequest::ProviderList ProviderList;
         typedef IdentityLookupCheckRequest::Provider Provider;
-        typedef stack::IHelper::SplitMap SplitMap;
+        typedef services::IHelper::SplitMap SplitMap;
 
         for (ProviderList::const_iterator provIter = providers.begin(); provIter != providers.end(); ++provIter)
         {
@@ -956,11 +955,11 @@ namespace openpeer
           IServiceIdentity::splitURI(provider.mBase, domainOrType, bogusIdentifier);
 
           SplitMap results;
-          stack::IHelper::split(
-                                provider.mIdentities,
-                                results,
-                                (provider.mSeparator.c_str())[0]
-                                );
+          services::IHelper::split(
+                                   provider.mIdentities,
+                                   results,
+                                   (provider.mSeparator.c_str())[0]
+                                   );
 
           for (SplitMap::iterator iter = results.begin(); iter != results.end(); ++iter)
           {

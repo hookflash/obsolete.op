@@ -214,7 +214,7 @@ namespace openpeer
           lockboxDomain = reloginInformation->findFirstChildElementChecked("lockboxDomain")->getTextDecoded();
           accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
           grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
-          lockboxKey = stack::IHelper::convertFromBase64(reloginInformation->findFirstChildElementChecked("lockboxKey")->getTextDecoded());
+          lockboxKey = services::IHelper::convertFromBase64(reloginInformation->findFirstChildElementChecked("lockboxKey")->getTextDecoded());
         } catch (CheckFailed &) {
           return AccountPtr();
         }
@@ -314,7 +314,7 @@ namespace openpeer
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxDomain", lockboxDomain));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accountID", accountID));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantID", grantID));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", stack::IHelper::convertToBase64(*lockboxKey)));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", services::IHelper::convertToBase64(*lockboxKey)));
 
         return reloginEl;
       }
@@ -1049,8 +1049,8 @@ namespace openpeer
           return ConversationThreadPtr();
         }
 
-        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -1082,8 +1082,8 @@ namespace openpeer
                                           const SplitMap &split
                                           )
       {
-        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -2109,7 +2109,7 @@ namespace openpeer
         String name = metaData->getName();
 
         SplitMap result;
-        stack::IHelper::split(name, result);
+        services::IHelper::split(name, result);
 
         if (result.size() < 6) {
           ZS_LOG_WARNING(Debug, log("subscription path is too short") + IPublicationMetaData::toDebugString(metaData))
@@ -2164,7 +2164,7 @@ namespace openpeer
         String name = metaData->getName();
 
         SplitMap result;
-        stack::IHelper::split(name, result);
+        services::IHelper::split(name, result);
 
         if (result.size() < 6) {
           ZS_LOG_WARNING(Debug, log("subscription path is too short") + ", path=" + name)

@@ -44,7 +44,8 @@
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
-#include <openpeer/stack/message/IMessageHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -72,6 +73,7 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
       using zsLib::Stringize;
 
       using message::peer_to_peer::PeerIdentifyRequest;
@@ -860,7 +862,7 @@ namespace openpeer
         return Helper::getDebugValue("account peer location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("last activity", Time() != mLastActivity ? IMessageHelper::timeToString(mLastActivity) : String(), firstTime) +
+               Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
                Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? Stringize<size_t>(mPendingRequests.size()).string() : String(), firstTime) +
                mLocationInfo.getDebugValueString() +
                (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
@@ -869,7 +871,7 @@ namespace openpeer
                Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<PUID>(mSocketSession->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<PUID>(mMessaging->getID()).string() : String(), firstTime) +
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IMessageHelper::timeToString(mIdentifyTime) : String(), firstTime) +
+               Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
                Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("keep alive monitor", mKeepAliveMonitor ? String("true") : String(), firstTime);
       }

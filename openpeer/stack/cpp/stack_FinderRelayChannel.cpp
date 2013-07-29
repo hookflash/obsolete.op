@@ -34,8 +34,13 @@
 #include <openpeer/stack/internal/stack_Account.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeer.h>
 
+#include <openpeer/services/IRSAPublicKey.h>
+#include <openpeer/services/IHelper.h>
 #include <openpeer/services/IHTTP.h>
 
 #include <zsLib/Log.h>
@@ -54,6 +59,8 @@ namespace openpeer
 
     namespace internal
     {
+      using services::IHelper;
+
 //      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       //-----------------------------------------------------------------------
@@ -75,20 +82,21 @@ namespace openpeer
       //-----------------------------------------------------------------------
       FinderRelayChannel::FinderRelayChannel(
                                              IMessageQueuePtr queue,
+                                             IFinderRelayChannelDelegatePtr delegate,
                                              AccountPtr account
                                              ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mAccount(account)
+        mAccount(account),
+        mIncoming(false)
       {
         ZS_LOG_DEBUG(log("created"))
+        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
       }
 
       //-----------------------------------------------------------------------
-      void FinderRelayChannel::init(IFinderRelayChannelDelegatePtr delegate)
+      void FinderRelayChannel::init()
       {
-        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
-
         step();
       }
 
@@ -134,7 +142,15 @@ namespace openpeer
                                                         const char *encryptDataUsingEncodingPassphrase
                                                         )
       {
-        //TODO
+        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account));
+        pThis->mThisWeak = pThis;
+        pThis->mMLSChannel = IMessageLayerSecurityChannel::create(pThis, localContextID);
+        pThis->mMLSChannel->setSendKeyingEncoding(encryptDataUsingEncodingPassphrase);
+        pThis->init();
+
+        return pThis;
+
+        // TODO
       }
 
       //-----------------------------------------------------------------------
@@ -143,7 +159,12 @@ namespace openpeer
                                                                AccountPtr account
                                                                )
       {
-        //TODO
+        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account));
+        pThis->mThisWeak = pThis;
+        pThis->mMLSChannel = IMessageLayerSecurityChannel::create(pThis);
+        pThis->init();
+
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
@@ -271,9 +292,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void FinderRelayChannel::setIncomingContext(
                                                   const char *contextID,
-                                                  const char *decryptUsingEncodingPassphrase
+                                                  const char *decryptUsingEncodingPassphrase,
+                                                  IPeerPtr remotePeer
                                                   )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!contextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!decryptUsingEncodingPassphrase)
+        ZS_THROW_INVALID_ARGUMENT_IF(!remotePeer)
+
         AutoRecursiveLock lock(getLock());
 
         if (!mMLSChannel) {
@@ -284,10 +310,15 @@ namespace openpeer
         mMLSChannel->setLocalContextID(contextID);
         mMLSChannel->setReceiveKeyingDecoding(decryptUsingEncodingPassphrase);
 
+        IPeerFilePublicPtr peerFilePublic = remotePeer->getPeerFilePublic();
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerFilePublic)
+
+        mMLSChannel->setSendKeyingEncoding(peerFilePublic->getPublicKey());
+
         step();
       }
 
-      //-----------------------d------------------------------------------------
+      //-----------------------------------------------------------------------
       String FinderRelayChannel::getLocalContextID() const
       {
         AutoRecursiveLock lock(getLock());
@@ -317,39 +348,14 @@ namespace openpeer
       IPeerPtr FinderRelayChannel::getRemotePeer() const
       {
         AutoRecursiveLock lock(getLock());
-
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return IPeerPtr();
-        }
-
-        IPeerFilePublicPtr peerFilePublic = mMLSChannel->getRemoteReferencedPeerFilePublic();
-
-        if (!peerFilePublic) {
-          ZS_LOG_WARNING(Detail, log("no remote peer file reference known yet"))
-          return IPeerPtr();
-        }
-
-        AccountPtr account = mAccount.lock();
-        if (!account) {
-          ZS_LOG_WARNING(Detail, log("account is gone thus peer cannot be known"))
-          return IPeerPtr();
-        }
-
-        return IPeer::create(mAccount.lock(), peerFilePublic);
+        return mRemotePeer;
       }
 
       //-----------------------------------------------------------------------
       IRSAPublicKeyPtr FinderRelayChannel::getRemotePublicKey() const
       {
         AutoRecursiveLock lock(getLock());
-
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return IRSAPublicKeyPtr();
-        }
-
-        return mMLSChannel->getRemotePublicKey();
+        return mRemotePublicKey;
       }
 
       //-----------------------------------------------------------------------
@@ -399,20 +405,66 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        step();
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::onMessageLayerSecurityChannelNeedReceiveKeyingDecodingPassphrase(IMessageLayerSecurityChannelPtr channel)
-      {
-        AutoRecursiveLock lock(getLock());
-
         if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("received event after shutdown"))
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
           return;
         }
 
-        mSubscriptions.delegate()->onFinderRelayChannelNeedsContext(mThisWeak.lock());
+        ZS_THROW_BAD_STATE_IF(channel != mMLSChannel)
+
+        AccountPtr account = mAccount.lock();
+        if (!account) return;
+
+        IPeerFilesPtr peerFiles = account->forFinderRelay().getPeerFiles();
+        if (!peerFiles) return;
+
+        IPeerFilePrivatePtr peerFilePrivate = peerFiles->getPeerFilePrivate();
+        IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
+
+        if (IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation == state) {
+          if (mMLSChannel->needsReceiveKeyingDecodingPrivateKey()) {
+
+            mMLSChannel->setReceiveKeyingDecoding(peerFilePrivate->getPrivateKey(), peerFilePublic->getPublicKey());
+          }
+
+          if (mMLSChannel->needsReceiveKeyingMaterialSigningPublicKey()) {
+            ElementPtr receiveSignedEl = mMLSChannel->getSignedReceivingKeyingMaterial();
+            String peerURI;
+            String fullPublicKey;
+            stack::IHelper::getSignatureInfo(receiveSignedEl, NULL, &peerURI, NULL, NULL, NULL, &fullPublicKey);
+
+            if (peerURI.hasData()) {
+              mRemotePeer = IPeer::create(account, peerURI);
+              if (mRemotePeer) {
+                IPeerFilePublicPtr remotePeerFilePublic = mRemotePeer->getPeerFilePublic();
+                if (remotePeerFilePublic) {
+                  mRemotePublicKey = remotePeerFilePublic->getPublicKey();
+                }
+              }
+            }
+
+            if (fullPublicKey) {
+              mRemotePublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(fullPublicKey));
+            }
+
+            if (mRemotePublicKey) {
+              mMLSChannel->setReceiveKeyingMaterialSigningPublicKey(mRemotePublicKey);
+            }
+          }
+
+          if (mMLSChannel->needsSendKeyingMaterialToeBeSigned()) {
+            DocumentPtr doc;
+            ElementPtr signEl;
+            mMLSChannel->getSendKeyingMaterialNeedingToBeSigned(doc, signEl);
+
+            if (signEl) {
+              peerFilePrivate->signElement(signEl, mIncoming ? IPeerFilePrivate::SignatureType_FullPublicKey : IPeerFilePrivate::SignatureType_PeerURI);
+              mMLSChannel->notifySendKeyingMaterialSigned();
+            }
+          }
+        }
+
+        step();
       }
 
       //-----------------------------------------------------------------------
@@ -468,13 +520,16 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
 
         return Helper::getDebugValue("relay channel id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IFinderRelayChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("account", mAccount.lock() ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IFinderRelayChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
-               IMessageLayerSecurityChannel::toDebugString(mMLSChannel);
+               Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
+               IMessageLayerSecurityChannel::toDebugString(mMLSChannel) +
+               IPeer::toDebugString(mRemotePeer) +
+               Helper::getDebugValue("remote public key", mRemotePublicKey ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

@@ -203,15 +203,6 @@ namespace openpeer
       typedef boost::shared_ptr<PublicationRepository> PublicationRepositoryPtr;
       typedef boost::weak_ptr<PublicationRepository> PublicationRepositoryWeakPtr;
 
-      interaction MessageLayerSecurityChannel;
-      typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
-      typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
-
-      interaction IMessageLayerSecurityChannelAsyncDelegate;
-      typedef boost::shared_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegatePtr;
-      typedef boost::weak_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateProxy;
-
       class MessageMonitor;
       typedef boost::shared_ptr<MessageMonitor> MessageMonitorPtr;
       typedef boost::weak_ptr<MessageMonitor> MessageMonitorWeakPtr;
@@ -293,14 +284,6 @@ namespace openpeer
       class Stack;
       typedef boost::shared_ptr<Stack> StackPtr;
       typedef boost::weak_ptr<Stack> StackWeakPtr;
-
-      class RSAPrivateKey;
-      typedef boost::shared_ptr<RSAPrivateKey> RSAPrivateKeyPtr;
-      typedef boost::weak_ptr<RSAPrivateKey> RSAPrivateKeyWeakPtr;
-
-      class RSAPublicKey;
-      typedef boost::shared_ptr<RSAPublicKey> RSAPublicKeyPtr;
-      typedef boost::weak_ptr<RSAPublicKey> RSAPublicKeyWeakPtr;
     }
   }
 }

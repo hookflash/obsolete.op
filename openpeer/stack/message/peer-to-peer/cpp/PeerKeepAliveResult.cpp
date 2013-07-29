@@ -33,6 +33,8 @@
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/XML.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -44,6 +46,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer_to_peer
       {
         using zsLib::Stringize;
@@ -80,7 +84,7 @@ namespace openpeer
           ret->mID = IMessageHelper::getAttributeID(root);
           ret->mTime = IMessageHelper::getAttributeEpoch(root);
 
-          ret->mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementText(root->findFirstChildElement("expires")));
+          ret->mExpires = IHelper::stringToTime(IMessageHelper::getElementText(root->findFirstChildElement("expires")));
 
           return ret;
         }

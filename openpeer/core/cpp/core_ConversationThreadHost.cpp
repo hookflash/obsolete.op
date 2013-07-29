@@ -41,6 +41,8 @@
 #include <openpeer/stack/IPublication.h>
 #include <openpeer/stack/IHelper.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 
@@ -113,7 +115,7 @@ namespace openpeer
                                                      ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mBaseThread(baseThread),
         mCurrentState(ConversationThreadHostState_Pending),
         mAccount(account),

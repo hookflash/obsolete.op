@@ -40,7 +40,6 @@
 #include <openpeer/stack/internal/stack_Diff.h>
 #include <openpeer/stack/IMessageIncoming.h>
 
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <openpeer/stack/message/peer-common/PeerPublishRequest.h>
 #include <openpeer/stack/message/peer-common/PeerPublishResult.h>
@@ -54,6 +53,8 @@
 #include <openpeer/stack/message/peer-common/PeerPublishNotifyResult.h>
 
 #include <openpeer/stack/message/MessageResult.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -81,9 +82,8 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
       using zsLib::Stringize;
-
-      using message::IMessageHelper;
 
       typedef PublicationRepository::PublisherPtr PublisherPtr;
       typedef PublicationRepository::FetcherPtr FetcherPtr;
@@ -1962,7 +1962,7 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("peer cache id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                IPublicationMetaData::toDebugString(mPeerSource) +
-               Helper::getDebugValue("expires", Time() != mExpires ? IMessageHelper::timeToString(mExpires) : String(), firstTime) +
+               Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("cached remote", mCachedPublications.size() > 0 ? Stringize<size_t>(mCachedPublications.size()).string() : String(), firstTime);
       }
 

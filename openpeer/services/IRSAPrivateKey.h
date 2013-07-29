@@ -34,41 +34,36 @@
 #include <openpeer/stack/types.h>
 
 
+#define OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE (2048)
+
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IRSAPublicKey
+    #pragma mark IRSAPrivateKey
     #pragma mark
 
-    interaction IRSAPublicKey
+    interaction IRSAPrivateKey
     {
-      static IRSAPublicKeyPtr generate(IRSAPrivateKeyPtr &outPrivateKey);
+      static IRSAPrivateKeyPtr generate(
+                                        IRSAPublicKeyPtr &outPublicKey,
+                                        ULONG keySizeInBites = OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE
+                                        );
 
-      static IRSAPublicKeyPtr load(const SecureByteBlock &buffer);
+      static IRSAPrivateKeyPtr load(const SecureByteBlock &buffer);
 
       virtual SecureByteBlockPtr save() const = 0;
 
-      virtual String getFingerprint() const = 0;
+      virtual SecureByteBlockPtr sign(const SecureByteBlock &inBufferToSign) const = 0;
 
-      virtual bool verify(
-                          const SecureByteBlock &inOriginalBufferSigned,
-                          const SecureByteBlock &inSignature
-                          ) const = 0;
+      virtual SecureByteBlockPtr sign(const String &stringToSign) const = 0;
 
-      virtual bool verify(
-                          const String &inOriginalStringSigned,
-                          const SecureByteBlock &inSignature
-                          ) const = 0;
-
-      virtual bool verifySignature(ElementPtr signedEl) const = 0;
-
-      virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const = 0;
+      virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const = 0;
     };
   }
 }

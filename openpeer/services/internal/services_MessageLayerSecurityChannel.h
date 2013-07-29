@@ -31,18 +31,17 @@
 
 #pragma once
 
-#include <openpeer/stack/IMessageLayerSecurityChannel.h>
-#include <openpeer/stack/message/types.h>
-#include <openpeer/stack/internal/types.h>
+#include <openpeer/services/IMessageLayerSecurityChannel.h>
+#include <openpeer/services/internal/types.h>
 
 #include <list>
 #include <map>
 
-#define OPENPEER_STACK_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM "http://meta.openpeer.org/2012/12/14/jsonmls#aes-cfb-32-16-16-sha1-md5"
+#define OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM "http://meta.openpeer.org/2012/12/14/jsonmls#aes-cfb-32-16-16-sha1-md5"
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
@@ -78,6 +77,15 @@ namespace openpeer
 
         typedef std::list<SecureByteBlockPtr> BufferList;
 
+        enum DecodingTypes
+        {
+          DecodingType_Unknown,
+          DecodingType_PrivateKey,
+          DecodingType_Passphrase,
+        };
+
+        static const char *toString(DecodingTypes decodingType);
+
         struct KeyInfo
         {
           String mIntegrityPassphrase;
@@ -94,10 +102,7 @@ namespace openpeer
         MessageLayerSecurityChannel(
                                     IMessageQueuePtr queue,
                                     IMessageLayerSecurityChannelDelegatePtr delegate,
-                                    IPeerFilesPtr localPeerFiles,
-                                    LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                    const char *contextID = NULL,
-                                    IAccountPtr account = IAccountPtr()
+                                    const char *contextID = NULL
                                     );
 
         MessageLayerSecurityChannel(Noop) :
@@ -121,10 +126,7 @@ namespace openpeer
 
         static MessageLayerSecurityChannelPtr create(
                                                      IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                     IPeerFilesPtr localPeerFiles,
-                                                     LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                     const char *contextID = NULL,
-                                                     IAccountPtr account = IAccountPtr()
+                                                     const char *contextID = NULL
                                                      );
 
         virtual IMessageLayerSecurityChannelSubscriptionPtr subscribe(IMessageLayerSecurityChannelDelegatePtr delegate);
@@ -144,31 +146,59 @@ namespace openpeer
                           );
 
         virtual ULONG getTotalIncomingMessages() const;
+
         virtual SecureByteBlockPtr getNextIncomingMessage();
 
-        virtual void setReceiveKeyingDecoding(const char *passphrase);
-
-        virtual void setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey);
-        virtual void setSendKeyingEncoding(const char *passphrase);
-
-        virtual String getLocalContextID() const;
-        virtual void setLocalContextID(const char *contextID);
-
-        virtual String getRemoteContextID() const;
-
-        virtual RemotePublicKeyReferenceTypes getRemotePublicKeyReferencedType() const;
-
-        virtual IRSAPublicKeyPtr getRemotePublicKey() const;
-
-        virtual IPeerFilePublicPtr getRemoteReferencedPeerFilePublic() const;
-
         virtual ULONG getTotalPendingBuffersToSendOnWire() const;
+
         virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire();
 
         virtual void notifyReceivedFromWire(
                                             const BYTE *buffer,
                                             ULONG bufferLengthInBytes
                                             );
+
+        virtual bool needsLocalContextID() const;
+
+        virtual bool needsReceiveKeyingDecodingPrivateKey(
+                                                          String *outFingerprint = NULL
+                                                          ) const;
+
+        virtual bool needsReceiveKeyingDecodingPassphrase() const;
+
+        virtual bool needsReceiveKeyingMaterialSigningPublicKey() const;
+
+        virtual bool needsSendKeyingEncodingMaterial() const;
+
+        virtual bool needsSendKeyingMaterialToeBeSigned() const;
+
+        virtual String getLocalContextID() const;
+
+        virtual void setLocalContextID(const char *contextID);
+
+        virtual String getRemoteContextID() const;
+
+        virtual void setReceiveKeyingDecoding(
+                                              IRSAPrivateKeyPtr decodingPrivateKey,
+                                              IRSAPublicKeyPtr decodingPublicKey
+                                              );
+
+        virtual void setReceiveKeyingDecoding(const char *passphrase);
+
+        virtual ElementPtr getSignedReceivingKeyingMaterial() const;
+
+        virtual void setReceiveKeyingMaterialSigningPublicKey(IRSAPublicKeyPtr remotePublicKey);
+
+        virtual void setSendKeyingEncoding(IRSAPublicKeyPtr remotePublicKey);
+
+        virtual void setSendKeyingEncoding(const char *passphrase);
+
+        virtual void getSendKeyingMaterialNeedingToBeSigned(
+                                                            DocumentPtr &outDocumentContainedElementToSign,
+                                                            ElementPtr &outElementToSign
+                                                            ) const;
+
+        virtual void notifySendKeyingMaterialSigned();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -199,8 +229,6 @@ namespace openpeer
         bool stepSend();
         bool stepCheckConnected();
 
-        bool verifyReceiveSignature(ElementPtr keyingEl);
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -219,22 +247,26 @@ namespace openpeer
         WORD mLastError;
         String mLastErrorReason;
 
-        AccountWeakPtr mAccount;
-
-        IPeerFilesPtr mPeerFiles;
-
-        LocalPublicKeyReferenceTypes mLocalReferenceType;
-
         String mLocalContextID;
         String mRemoteContextID;
 
-        IRSAPublicKeyPtr mSendingRemotePublicKey;
-        String mSendingPassphrase;
+        IRSAPublicKeyPtr mSendingEncodingRemotePublicKey;
+        String mSendingEncodingPassphrase;
+
+        DocumentPtr mSendKeyingNeedingToSignDoc;  // temporary document containing the send keying material needing to be signed
+        ElementPtr mSendKeyingNeedToSignEl;       // temporary element containing the send keying material needing to be signed (once notified it is signed, this element get set to EleemntPtr())
 
         ULONG mNextReceiveSequenceNumber;
-        IRSAPublicKeyPtr mReceivingRemotePublicKey;
-        IPeerFilePublicPtr mReceivingRemotePublicPeerFile;
-        String mReceivingPassphrase;
+
+        DecodingTypes mReceiveDecodingType;
+        String mReceiveDecodingPublicKeyFingerprint;
+        IRSAPrivateKeyPtr mReceiveDecodingPrivateKey;
+        IRSAPublicKeyPtr mReceiveDecodingPublicKey;
+        String mReceivingDecodingPassphrase;
+
+        IRSAPublicKeyPtr mReceiveSigningPublicKey;
+        DocumentPtr mReceiveKeyingSignedDoc;      // temporary document needed to resolve receive signing public key
+        ElementPtr mReceiveKeyingSignedEl;        // temporary eleemnt needed to resolve receive signing public key
 
         BufferList mMessagesToEncode;
         BufferList mPendingBuffersToSendOnWire;
@@ -256,16 +288,11 @@ namespace openpeer
 
       interaction IMessageLayerSecurityChannelFactory
       {
-        typedef IMessageLayerSecurityChannel::LocalPublicKeyReferenceTypes LocalPublicKeyReferenceTypes;
-
         static IMessageLayerSecurityChannelFactory &singleton();
 
         virtual MessageLayerSecurityChannelPtr create(
                                                       IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                      IPeerFilesPtr localPeerFiles,
-                                                      LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                      const char *contextID = NULL,
-                                                      IAccountPtr account = IAccountPtr()
+                                                      const char *contextID = NULL
                                                       );
       };
       
@@ -273,6 +300,6 @@ namespace openpeer
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IMessageLayerSecurityChannelAsyncDelegate)
+ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IMessageLayerSecurityChannelAsyncDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

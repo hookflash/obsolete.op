@@ -38,6 +38,8 @@
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IHelper.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/XML.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -52,6 +54,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer_finder
       {
         using zsLib::Stringize;
@@ -122,7 +126,7 @@ namespace openpeer
 
           Time expires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_PEER_FINDER_SESSION_CREATE_REQUEST_EXPIRES_TIME_IN_SECONDS);
 
-          sessionProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(expires)));
+          sessionProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IHelper::timeToString(expires)));
 
           if (hasAttribute(AttributeType_LocationInfo)) {
             sessionProofEl->adoptAsLastChild(MessageHelper::createElement(mLocationInfo));

@@ -33,32 +33,43 @@
 
 #include <openpeer/stack/types.h>
 
+#define OPENPEER_SERVICES_JSON_SIGNATURE_ALGORITHM "http://meta.openpeer.org/2012/12/14/jsonsig#rsa-sha1"
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
     #pragma mark
-    #pragma mark IRSAPrivateKey
+    #pragma mark IRSAPublicKey
     #pragma mark
 
-    interaction IRSAPrivateKey
+    interaction IRSAPublicKey
     {
-      static IRSAPrivateKeyPtr generate(IRSAPublicKeyPtr &outPublicKey);
+      static IRSAPublicKeyPtr generate(IRSAPrivateKeyPtr &outPrivateKey);
 
-      static IRSAPrivateKeyPtr load(const SecureByteBlock &buffer);
+      static IRSAPublicKeyPtr load(const SecureByteBlock &buffer);
 
       virtual SecureByteBlockPtr save() const = 0;
 
-      virtual SecureByteBlockPtr sign(const SecureByteBlock &inBufferToSign) const = 0;
+      virtual String getFingerprint() const = 0;
 
-      virtual SecureByteBlockPtr sign(const String &stringToSign) const = 0;
+      virtual bool verify(
+                          const SecureByteBlock &inOriginalBufferSigned,
+                          const SecureByteBlock &inSignature
+                          ) const = 0;
 
-      virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const = 0;
+      virtual bool verify(
+                          const String &inOriginalStringSigned,
+                          const SecureByteBlock &inSignature
+                          ) const = 0;
+
+      virtual bool verifySignature(ElementPtr signedEl) const = 0;
+
+      virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const = 0;
     };
   }
 }

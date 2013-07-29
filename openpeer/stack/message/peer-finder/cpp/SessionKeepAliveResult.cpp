@@ -32,6 +32,8 @@
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/XML.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -43,6 +45,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer_finder
       {
         using zsLib::Stringize;
@@ -67,7 +71,7 @@ namespace openpeer
           SessionKeepAliveResultPtr ret(new SessionKeepAliveResult);
           IMessageHelper::fill(*ret, root, messageSource);
 
-          ret->mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementText(root->findFirstChildElement("expires")));
+          ret->mExpires = IHelper::stringToTime(IMessageHelper::getElementText(root->findFirstChildElement("expires")));
 
           return ret;
         }
@@ -80,7 +84,7 @@ namespace openpeer
           ElementPtr root = ret->getFirstChildElement();
 
           if (hasAttribute(AttributeType_Expires)) {
-            root->adoptAsFirstChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(mExpires)));
+            root->adoptAsFirstChild(IMessageHelper::createElementWithNumber("expires", IHelper::timeToString(mExpires)));
           }
 
           return ret;
