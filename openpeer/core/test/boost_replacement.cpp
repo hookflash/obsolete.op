@@ -115,6 +115,6 @@ namespace BoostReplacement
   void runAllTests()
   {
     //doFakeGUITest();
-    doMediaEngineTest();
+    //doMediaEngineTest();
   }
 }
