@@ -29,6 +29,7 @@
 
  */
 
+#include <openpeer/services/services.h>
 #include <openpeer/services/internal/services.h>
 
 #include <zsLib/Log.h>

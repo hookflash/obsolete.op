@@ -11,6 +11,7 @@
 		003BEDD617A607190002EB47 /* services_MessageLayerSecurityChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003BEDD317A607190002EB47 /* services_MessageLayerSecurityChannel.cpp */; };
 		003BEDD717A607190002EB47 /* services_RSAPrivateKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003BEDD417A607190002EB47 /* services_RSAPrivateKey.cpp */; };
 		003BEDD817A607190002EB47 /* services_RSAPublicKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003BEDD517A607190002EB47 /* services_RSAPublicKey.cpp */; };
+		003BEECE17A747510002EB47 /* services_TransportStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003BEECD17A747510002EB47 /* services_TransportStream.cpp */; };
 		0095DACC16CA83EB005F53D3 /* services_CanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D91D16CA83EA005F53D3 /* services_CanonicalXML.cpp */; };
 		0095DACD16CA83EB005F53D3 /* services_DNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D91E16CA83EA005F53D3 /* services_DNS.cpp */; };
 		0095DACE16CA83EB005F53D3 /* services_DNSMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D91F16CA83EA005F53D3 /* services_DNSMonitor.cpp */; };
@@ -47,6 +48,9 @@
 		003BEDD317A607190002EB47 /* services_MessageLayerSecurityChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_MessageLayerSecurityChannel.cpp; sourceTree = "<group>"; };
 		003BEDD417A607190002EB47 /* services_RSAPrivateKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RSAPrivateKey.cpp; sourceTree = "<group>"; };
 		003BEDD517A607190002EB47 /* services_RSAPublicKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RSAPublicKey.cpp; sourceTree = "<group>"; };
+		003BEECB17A747270002EB47 /* ITransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITransportStream.h; sourceTree = "<group>"; };
+		003BEECC17A7473B0002EB47 /* services_TransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TransportStream.h; sourceTree = "<group>"; };
+		003BEECD17A747510002EB47 /* services_TransportStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TransportStream.cpp; sourceTree = "<group>"; };
 		0095D8B116CA83CB005F53D3 /* libhfservices.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfservices.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0095D91D16CA83EA005F53D3 /* services_CanonicalXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_CanonicalXML.cpp; sourceTree = "<group>"; };
 		0095D91E16CA83EA005F53D3 /* services_DNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_DNS.cpp; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 				0095D95316CA83EA005F53D3 /* ISTUNDiscovery.h */,
 				0095D95416CA83EA005F53D3 /* ISTUNRequester.h */,
 				0095D95516CA83EA005F53D3 /* ISTUNRequesterManager.h */,
+				003BEECB17A747270002EB47 /* ITransportStream.h */,
 				0095D95616CA83EA005F53D3 /* ITURNSocket.h */,
 				0095D95716CA83EA005F53D3 /* RUDPPacket.h */,
 				0095D95816CA83EA005F53D3 /* RUDPProtocol.h */,
@@ -208,6 +213,7 @@
 				0095D92E16CA83EA005F53D3 /* services_STUNPacket.cpp */,
 				0095D92F16CA83EA005F53D3 /* services_STUNRequester.cpp */,
 				0095D93016CA83EA005F53D3 /* services_STUNRequesterManager.cpp */,
+				003BEECD17A747510002EB47 /* services_TransportStream.cpp */,
 				0095D93116CA83EA005F53D3 /* services_TURNSocket.cpp */,
 			);
 			path = cpp;
@@ -239,6 +245,7 @@
 				0095D94916CA83EA005F53D3 /* services_STUNDiscovery.h */,
 				0095D94A16CA83EA005F53D3 /* services_STUNRequester.h */,
 				0095D94B16CA83EA005F53D3 /* services_STUNRequesterManager.h */,
+				003BEECC17A7473B0002EB47 /* services_TransportStream.h */,
 				0095D94C16CA83EA005F53D3 /* services_TURNSocket.h */,
 				0095D94D16CA83EA005F53D3 /* types.h */,
 			);
@@ -331,6 +338,7 @@
 				003BEDD617A607190002EB47 /* services_MessageLayerSecurityChannel.cpp in Sources */,
 				003BEDD717A607190002EB47 /* services_RSAPrivateKey.cpp in Sources */,
 				003BEDD817A607190002EB47 /* services_RSAPublicKey.cpp in Sources */,
+				003BEECE17A747510002EB47 /* services_TransportStream.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

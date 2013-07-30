@@ -267,10 +267,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
                                                                                  IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                                 ITransportStreamPtr receiveStreamEncoded,
+                                                                                 ITransportStreamPtr receiveStreamDecoded,
+                                                                                 ITransportStreamPtr sendStreamDecoded,
+                                                                                 ITransportStreamPtr sendStreamEncoded,
                                                                                  const char *contextID
                                                                                  )
       {
-        return MessageLayerSecurityChannel::create(delegate, contextID);
+        return MessageLayerSecurityChannel::create(delegate, receiveStreamEncoded, receiveStreamDecoded, sendStreamDecoded, sendStreamEncoded, contextID);
       }
 
       //-----------------------------------------------------------------------
@@ -632,6 +636,29 @@ namespace openpeer
       STUNRequesterManagerPtr ISTUNRequesterManagerFactory::createSTUNRequesterManager()
       {
         return STUNRequesterManager::create();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITransportStreamFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ITransportStreamFactory &ITransportStreamFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      TransportStreamPtr ITransportStreamFactory::create(
+                                                         ITransportStreamWriterDelegatePtr writerDelegate,
+                                                         ITransportStreamReaderDelegatePtr readerDelegate
+                                                         )
+      {
+        return internal::TransportStream::create(writerDelegate, readerDelegate);
       }
 
       //-----------------------------------------------------------------------

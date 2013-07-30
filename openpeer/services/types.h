@@ -214,6 +214,36 @@ namespace openpeer
     typedef boost::shared_ptr<STUNPacket> STUNPacketPtr;
     typedef boost::weak_ptr<STUNPacket> STUNPacketWeakPtr;
 
+    interaction ITransportStream;
+    typedef boost::shared_ptr<ITransportStream> ITransportStreamPtr;
+    typedef boost::weak_ptr<ITransportStream> ITransportStreamWeakPtr;
+
+    interaction ITransportStreamWriter;
+    typedef boost::shared_ptr<ITransportStreamWriter> ITransportStreamWriterPtr;
+    typedef boost::weak_ptr<ITransportStreamWriter> ITransportStreamWriterWeakPtr;
+
+    interaction ITransportStreamWriterDelegate;
+    typedef boost::shared_ptr<ITransportStreamWriterDelegate> ITransportStreamWriterDelegatePtr;
+    typedef boost::weak_ptr<ITransportStreamWriterDelegate> ITransportStreamWriterDelegateWeakPtr;
+
+    interaction ITransportStreamWriterSubscription;
+    typedef boost::shared_ptr<ITransportStreamWriterSubscription> ITransportStreamWriterSubscriptionPtr;
+    typedef boost::weak_ptr<ITransportStreamWriterSubscription> ITransportStreamWriterSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITransportStreamWriterDelegate, ITransportStreamWriterSubscription> ITransportStreamWriterDelegateSubscriptions;
+
+    interaction ITransportStreamReader;
+    typedef boost::shared_ptr<ITransportStreamReader> ITransportStreamReaderPtr;
+    typedef boost::weak_ptr<ITransportStreamReader> ITransportStreamReaderWeakPtr;
+
+    interaction ITransportStreamReaderDelegate;
+    typedef boost::shared_ptr<ITransportStreamReaderDelegate> ITransportStreamReaderDelegatePtr;
+    typedef boost::weak_ptr<ITransportStreamReaderDelegate> ITransportStreamReaderDelegateWeakPtr;
+
+    interaction ITransportStreamReaderSubscription;
+    typedef boost::shared_ptr<ITransportStreamReaderSubscription> ITransportStreamReaderSubscriptionPtr;
+    typedef boost::weak_ptr<ITransportStreamReaderSubscription> ITransportStreamReaderSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITransportStreamReaderDelegate, ITransportStreamReaderSubscription> ITransportStreamReaderDelegateSubscriptions;
+
     interaction ITURNSocket;
     typedef boost::shared_ptr<ITURNSocket> ITURNSocketPtr;
     typedef boost::weak_ptr<ITURNSocket> ITURNSocketWeakPtr;

@@ -36,6 +36,7 @@
 #include <openpeer/stack/internal/types.h>
 
 #include <openpeer/services/IMessageLayerSecurityChannel.h>
+#include <openpeer/services/ITransportStream.h>
 
 #include <list>
 #include <map>
@@ -70,11 +71,22 @@ namespace openpeer
 
         typedef IFinderRelayChannel::SessionStates SessionStates;
 
+        struct ConnectInfo
+        {
+          IPAddress mFinderIP;
+          String mLocalContextID;
+          String mRelayAccessToken;
+          String mRelayAccessSecretProof;
+          String mEncryptionPassphrase;
+        };
+
       protected:
         FinderRelayChannel(
                            IMessageQueuePtr queue,
                            IFinderRelayChannelDelegatePtr delegate,
-                           AccountPtr account
+                           AccountPtr account,
+                           ITransportStreamPtr receiveStream,
+                           ITransportStreamPtr sendStream
                            );
 
         FinderRelayChannel(Noop) :
@@ -99,6 +111,8 @@ namespace openpeer
         static FinderRelayChannelPtr connect(
                                              IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                              AccountPtr account,
+                                             ITransportStreamPtr receiveStream,
+                                             ITransportStreamPtr sendStream,
                                              IPAddress remoteFinderIP,
                                              const char *localContextID,
                                              const char *relayAccessToken,
@@ -108,7 +122,9 @@ namespace openpeer
 
         static FinderRelayChannelPtr createIncoming(
                                                     IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                    AccountPtr account
+                                                    AccountPtr account,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream
                                                     );
 
         virtual PUID getID() const {return mID;}
@@ -121,13 +137,6 @@ namespace openpeer
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const;
-
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferSizeInBytes
-                          );
-
-        virtual SecureByteBlockPtr getNextIncomingMessage();
 
         virtual void setIncomingContext(
                                         const char *contextID,
@@ -143,13 +152,6 @@ namespace openpeer
 
         virtual IRSAPublicKeyPtr getRemotePublicKey() const;
 
-        virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire();
-
-        virtual void notifyReceivedFromWire(
-                                            const BYTE *buffer,
-                                            ULONG bufferLengthInBytes
-                                            );
-
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark FinderRelayChannel => IMessageLayerSecurityChannelDelegate
@@ -159,10 +161,6 @@ namespace openpeer
                                                                IMessageLayerSecurityChannelPtr channel,
                                                                IMessageLayerSecurityChannel::SessionStates state
                                                                );
-
-        virtual void onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel);
-
-        virtual void onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel);
 
       protected:
         //---------------------------------------------------------------------
@@ -203,11 +201,18 @@ namespace openpeer
         AccountWeakPtr mAccount;
 
         bool mIncoming;
+        ConnectInfo mConnectInfo;
 
         IMessageLayerSecurityChannelPtr mMLSChannel;
 
         IPeerPtr mRemotePeer;
         IRSAPublicKeyPtr mRemotePublicKey;
+
+        ITransportStreamPtr mOuterReceiveStream;
+        ITransportStreamPtr mOuterSendStream;
+
+        ITransportStreamPtr mTCPReceiveStream;
+        ITransportStreamPtr mTCPSendStream;
       };
 
       //-----------------------------------------------------------------------
@@ -225,6 +230,8 @@ namespace openpeer
         virtual FinderRelayChannelPtr connect(
                                               IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                               AccountPtr account,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream,
                                               IPAddress remoteFinderIP,
                                               const char *localContextID,
                                               const char *relayAccessToken,
@@ -234,7 +241,9 @@ namespace openpeer
 
         virtual FinderRelayChannelPtr createIncoming(
                                                      IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                     AccountPtr account
+                                                     AccountPtr account,
+                                                     ITransportStreamPtr receiveStream,
+                                                     ITransportStreamPtr sendStream
                                                      );
       };
       

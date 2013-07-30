@@ -216,6 +216,8 @@ namespace openpeer
       FinderRelayChannelPtr IFinderRelayChannelFactory::connect(
                                                                 IFinderRelayChannelDelegatePtr delegate,
                                                                 AccountPtr account,
+                                                                ITransportStreamPtr receiveStream,
+                                                                ITransportStreamPtr sendStream,
                                                                 IPAddress remoteFinderIP,
                                                                 const char *localContextID,
                                                                 const char *relayAccessToken,
@@ -223,16 +225,18 @@ namespace openpeer
                                                                 const char *encryptDataUsingEncodingPassphrase
                                                                 )
       {
-        return FinderRelayChannel::connect(delegate, account, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+        return FinderRelayChannel::connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
       }
 
       //-----------------------------------------------------------------------
       FinderRelayChannelPtr IFinderRelayChannelFactory::createIncoming(
                                                                        IFinderRelayChannelDelegatePtr delegate,
-                                                                       AccountPtr account
+                                                                       AccountPtr account,
+                                                                       ITransportStreamPtr receiveStream,
+                                                                       ITransportStreamPtr sendStream
                                                                        )
       {
-        return FinderRelayChannel::createIncoming(delegate, account);
+        return FinderRelayChannel::createIncoming(delegate, account, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------

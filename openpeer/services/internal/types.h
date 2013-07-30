@@ -210,6 +210,10 @@ namespace openpeer
       typedef boost::shared_ptr<STUNRequesterManager> STUNRequesterManagerPtr;
       typedef boost::weak_ptr<STUNRequesterManager> STUNRequesterManagerWeakPtr;
 
+      class TransportStream;
+      typedef boost::shared_ptr<TransportStream> TransportStreamPtr;
+      typedef boost::weak_ptr<TransportStream> TransportStreamWeakPtr;
+
       interaction ITURNSocketAsyncDelegate;
       typedef boost::shared_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegatePtr;
       typedef boost::weak_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegateWeakPtr;

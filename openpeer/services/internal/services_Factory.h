@@ -64,6 +64,7 @@ namespace openpeer
                       public ISTUNDiscoveryFactory,
                       public ISTUNRequesterFactory,
                       public ISTUNRequesterManagerFactory,
+                      public ITransportStreamFactory,
                       public ITURNSocketFactory
       {
       public:

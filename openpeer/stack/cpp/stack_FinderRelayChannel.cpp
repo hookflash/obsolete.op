@@ -83,12 +83,16 @@ namespace openpeer
       FinderRelayChannel::FinderRelayChannel(
                                              IMessageQueuePtr queue,
                                              IFinderRelayChannelDelegatePtr delegate,
-                                             AccountPtr account
+                                             AccountPtr account,
+                                             ITransportStreamPtr receiveStream,
+                                             ITransportStreamPtr sendStream
                                              ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
         mAccount(account),
-        mIncoming(false)
+        mIncoming(false),
+        mOuterReceiveStream(receiveStream),
+        mOuterSendStream(sendStream)
       {
         ZS_LOG_DEBUG(log("created"))
         mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
@@ -97,6 +101,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void FinderRelayChannel::init()
       {
+        mTCPReceiveStream = ITransportStream::create();
+        mTCPSendStream = ITransportStream::create();
+
+        mMLSChannel = mMLSChannel->create(mThisWeak.lock(), mTCPReceiveStream, mOuterReceiveStream, mOuterSendStream, mTCPSendStream);
+
         step();
       }
 
@@ -135,6 +144,8 @@ namespace openpeer
       FinderRelayChannelPtr FinderRelayChannel::connect(
                                                         IFinderRelayChannelDelegatePtr delegate,
                                                         AccountPtr account,
+                                                        ITransportStreamPtr receiveStream,
+                                                        ITransportStreamPtr sendStream,
                                                         IPAddress remoteFinderIP,
                                                         const char *localContextID,
                                                         const char *relayAccessToken,
@@ -142,26 +153,41 @@ namespace openpeer
                                                         const char *encryptDataUsingEncodingPassphrase
                                                         )
       {
-        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account));
+        ZS_THROW_INVALID_ARGUMENT_IF(!account)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessSecretProof)
+        ZS_THROW_INVALID_ARGUMENT_IF(!encryptDataUsingEncodingPassphrase)
+
+        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account, receiveStream, sendStream));
         pThis->mThisWeak = pThis;
-        pThis->mMLSChannel = IMessageLayerSecurityChannel::create(pThis, localContextID);
-        pThis->mMLSChannel->setSendKeyingEncoding(encryptDataUsingEncodingPassphrase);
+
+        pThis->mConnectInfo.mFinderIP = remoteFinderIP;
+        pThis->mConnectInfo.mLocalContextID = String(localContextID);
+        pThis->mConnectInfo.mRelayAccessToken = String(relayAccessToken);
+        pThis->mConnectInfo.mRelayAccessSecretProof = String(relayAccessSecretProof);
+        pThis->mConnectInfo.mEncryptionPassphrase = String(encryptDataUsingEncodingPassphrase);
+
         pThis->init();
 
         return pThis;
-
-        // TODO
       }
 
       //-----------------------------------------------------------------------
       FinderRelayChannelPtr FinderRelayChannel::createIncoming(
                                                                IFinderRelayChannelDelegatePtr delegate,
-                                                               AccountPtr account
+                                                               AccountPtr account,
+                                                               ITransportStreamPtr receiveStream,
+                                                               ITransportStreamPtr sendStream
                                                                )
       {
-        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account));
+        ZS_THROW_INVALID_ARGUMENT_IF(!account)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        FinderRelayChannelPtr pThis(new FinderRelayChannel(IStackForInternal::queueStack(), delegate, account, receiveStream, sendStream));
         pThis->mThisWeak = pThis;
-        pThis->mMLSChannel = IMessageLayerSecurityChannel::create(pThis);
         pThis->init();
 
         return pThis;
@@ -226,67 +252,15 @@ namespace openpeer
             return subscription;
           }
 
-          if (mMLSChannel) {
-            if (mMLSChannel->getRemoteContextID().hasData()) {
-              // have remote context ID, but have we set local context ID?
-              if (mMLSChannel->getLocalContextID().isEmpty()) {
-                delegate->onFinderRelayChannelNeedsContext(pThis);
-              }
-            }
-
-            // scope: notify about incoming messages
-            {
-              ULONG total = mMLSChannel->getTotalIncomingMessages();
-              while (total > 0) {
-                delegate->onFinderRelayChannelIncomingMessage(pThis);
-                --total;
-              }
-            }
-
-            // scope: notify about message needing to be sent on the wire
-            {
-              ULONG total = mMLSChannel->getTotalPendingBuffersToSendOnWire();
-              while (total > 0) {
-                delegate->onFinderRelayChannelBufferPendingToSendOnTheWire(pThis);
-                --total;
-              }
+          if (mMLSChannel->getRemoteContextID().hasData()) {
+            // have remote context ID, but have we set local context ID?
+            if (mMLSChannel->getLocalContextID().isEmpty()) {
+              delegate->onFinderRelayChannelNeedsContext(pThis);
             }
           }
         }
 
         return subscription;
-      }
-
-      //-----------------------------------------------------------------------
-      bool FinderRelayChannel::send(
-                                    const BYTE *buffer,
-                                    ULONG bufferSizeInBytes
-                                    )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
-        ZS_THROW_INVALID_ARGUMENT_IF(0 == bufferSizeInBytes)
-
-        AutoRecursiveLock lock(getLock());
-
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return SecureByteBlockPtr();
-        }
-
-        return mMLSChannel->send(buffer, bufferSizeInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      SecureByteBlockPtr FinderRelayChannel::getNextIncomingMessage()
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return SecureByteBlockPtr();
-        }
-
-        return mMLSChannel->getNextIncomingMessage();
       }
 
       //-----------------------------------------------------------------------
@@ -356,37 +330,6 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         return mRemotePublicKey;
-      }
-
-      //-----------------------------------------------------------------------
-      SecureByteBlockPtr FinderRelayChannel::getNextPendingBufferToSendOnWire()
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return SecureByteBlockPtr();
-        }
-
-        return mMLSChannel->getNextPendingBufferToSendOnWire();
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::notifyReceivedFromWire(
-                                                      const BYTE *buffer,
-                                                      ULONG bufferLengthInBytes
-                                                      )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
-        ZS_THROW_INVALID_ARGUMENT_IF(0 != bufferLengthInBytes)
-
-        AutoRecursiveLock lock(getLock());
-        if (!mMLSChannel) {
-          ZS_LOG_WARNING(Detail, log("MLS channel is gone"))
-          return;
-        }
-
-        return mMLSChannel->notifyReceivedFromWire(buffer, bufferLengthInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -465,32 +408,6 @@ namespace openpeer
         }
 
         step();
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel)
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("received event after shutdown"))
-          return;
-        }
-
-        mSubscriptions.delegate()->onFinderRelayChannelIncomingMessage(mThisWeak.lock());
-      }
-
-      //-----------------------------------------------------------------------
-      void FinderRelayChannel::onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel)
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("received event after shutdown"))
-          return;
-        }
-
-        mSubscriptions.delegate()->onFinderRelayChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -605,6 +522,8 @@ namespace openpeer
       IFinderRelayChannelPtr IFinderRelayChannel::connect(
                                                           IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                                           AccountPtr account,
+                                                          ITransportStreamPtr receiveStream,
+                                                          ITransportStreamPtr sendStream,
                                                           IPAddress remoteFinderIP,
                                                           const char *localContextID,
                                                           const char *relayAccessToken,
@@ -612,16 +531,18 @@ namespace openpeer
                                                           const char *encryptDataUsingEncodingPassphrase
                                                           )
       {
-        return internal::IFinderRelayChannelFactory::singleton().connect(delegate, account, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+        return internal::IFinderRelayChannelFactory::singleton().connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
       }
 
       //-----------------------------------------------------------------------
       IFinderRelayChannelPtr IFinderRelayChannel::createIncoming(
                                                                  IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                                 AccountPtr account
+                                                                 AccountPtr account,
+                                                                 ITransportStreamPtr receiveStream,
+                                                                 ITransportStreamPtr sendStream
                                                                  )
       {
-        return internal::IFinderRelayChannelFactory::singleton().createIncoming(delegate, account);
+        return internal::IFinderRelayChannelFactory::singleton().createIncoming(delegate, account, receiveStream, sendStream);
       }
     }
   }

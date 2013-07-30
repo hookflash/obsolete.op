@@ -187,6 +187,10 @@ namespace openpeer
       MessageLayerSecurityChannel::MessageLayerSecurityChannel(
                                                                IMessageQueuePtr queue,
                                                                IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                               ITransportStreamPtr receiveStreamEncoded,
+                                                               ITransportStreamPtr receiveStreamDecoded,
+                                                               ITransportStreamPtr sendStreamDecoded,
+                                                               ITransportStreamPtr sendStreamEncoded,
                                                                const char *contextID
                                                                ) :
         zsLib::MessageQueueAssociator(queue),
@@ -195,11 +199,18 @@ namespace openpeer
         mLastError(0),
         mLocalContextID(contextID),
         mNextReceiveSequenceNumber(0),
-        mReceiveDecodingType(DecodingType_Unknown)
+        mReceiveDecodingType(DecodingType_Unknown),
+        mReceiveStreamEncoded(receiveStreamEncoded->getReader()),
+        mReceiveStreamDecoded(receiveStreamDecoded->getWriter()),
+        mSendStreamDecoded(sendStreamDecoded->getReader()),
+        mSendStreamEncoded(sendStreamEncoded->getWriter())
       {
         ZS_LOG_DEBUG(log("created"))
         mDefaultSubscription = mSubscriptions.subscribe(delegate);
         ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
+
+        mReceiveStreamEncoded->subscribe(mThisWeak.lock());
+        mSendStreamDecoded->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -233,7 +244,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MessageLayerSecurityChannel::toDebugString(IMessageLayerSecurityChannelPtr channel, bool includeCommaPrefix)
       {
-        if (!channel) return String(includeCommaPrefix ? ", message incoming=(null)" : "message incoming=(null)");
+        if (!channel) return String(includeCommaPrefix ? ", mls channel=(null)" : "mls channel=(null)");
 
         MessageLayerSecurityChannelPtr pThis = MessageLayerSecurityChannel::convert(channel);
         return pThis->getDebugValueString(includeCommaPrefix);
@@ -242,10 +253,18 @@ namespace openpeer
       //-----------------------------------------------------------------------
       MessageLayerSecurityChannelPtr MessageLayerSecurityChannel::create(
                                                                          IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                         ITransportStreamPtr receiveStreamEncoded,
+                                                                         ITransportStreamPtr receiveStreamDecoded,
+                                                                         ITransportStreamPtr sendStreamDecoded,
+                                                                         ITransportStreamPtr sendStreamEncoded,
                                                                          const char *contextID
                                                                          )
       {
-        MessageLayerSecurityChannelPtr pThis(new MessageLayerSecurityChannel(IHelper::getServiceQueue(), delegate, contextID));
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStreamEncoded)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStreamDecoded)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStreamDecoded)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStreamEncoded)
+        MessageLayerSecurityChannelPtr pThis(new MessageLayerSecurityChannel(IHelper::getServiceQueue(), delegate, receiveStreamEncoded, receiveStreamDecoded, sendStreamDecoded, sendStreamEncoded, contextID));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -266,13 +285,6 @@ namespace openpeer
           
           if (SessionState_Pending != mCurrentState) {
             delegate->onMessageLayerSecurityChannelStateChanged(pThis, mCurrentState);
-          }
-
-          for (int index = 0; index < mPendingBuffersToSendOnWire.size(); ++index) {
-            delegate->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(pThis);
-          }
-          for (int index = 0; index < mMessagesReceived.size(); ++index) {
-            delegate->onMessageLayerSecurityChannelIncomingMessage(pThis);
           }
         }
 
@@ -306,14 +318,11 @@ namespace openpeer
         mReceiveKeyingSignedDoc.reset();
         mReceiveKeyingSignedEl.reset();
 
-        mMessagesToEncode.clear();
-        mPendingBuffersToSendOnWire.clear();
+        mReceiveStreamEncoded->cancel();
+        mReceiveStreamDecoded->cancel();
 
-        mMessagesReceived.clear();
-        mReceivedBuffersToDecode.clear();
-
-        mReceiveKeys.clear();
-        mSendKeys.clear();
+        mSendStreamDecoded->cancel();
+        mSendStreamEncoded->cancel();
 
         ZS_LOG_DEBUG(log("cancel complete"))
       }
@@ -328,91 +337,6 @@ namespace openpeer
         if (outLastErrorCode) *outLastErrorCode = mLastError;
         if (outLastErrorReason) *outLastErrorReason = mLastErrorReason;
         return mCurrentState;
-      }
-
-      //-----------------------------------------------------------------------
-      bool MessageLayerSecurityChannel::send(
-                                             const BYTE *buffer,
-                                             ULONG bufferSizeInBytes
-                                             )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
-        ZS_THROW_INVALID_ARGUMENT_IF(0 == bufferSizeInBytes)
-
-        AutoRecursiveLock lock(getLock());
-
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("cannot send data as already shutdown"))
-          return false;
-        }
-
-        SecureByteBlockPtr pendingBuffer = IHelper::convertToBuffer(buffer, bufferSizeInBytes);
-        mMessagesToEncode.push_back(pendingBuffer);
-
-        // process it later...
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG MessageLayerSecurityChannel::getTotalIncomingMessages() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mMessagesReceived.size();
-      }
-
-      //-----------------------------------------------------------------------
-      SecureByteBlockPtr MessageLayerSecurityChannel::getNextIncomingMessage()
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (mMessagesReceived.size() < 1) return SecureByteBlockPtr();
-
-        SecureByteBlockPtr result = mMessagesReceived.front();
-        mMessagesReceived.pop_front();
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG MessageLayerSecurityChannel::getTotalPendingBuffersToSendOnWire() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mPendingBuffersToSendOnWire.size();
-      }
-
-      //-----------------------------------------------------------------------
-      SecureByteBlockPtr MessageLayerSecurityChannel::getNextPendingBufferToSendOnWire()
-      {
-        AutoRecursiveLock lock(getLock());
-
-        if (mPendingBuffersToSendOnWire.size() < 1) return SecureByteBlockPtr();
-
-        SecureByteBlockPtr result = mPendingBuffersToSendOnWire.front();
-        mPendingBuffersToSendOnWire.pop_front();
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::notifyReceivedFromWire(
-                                                               const BYTE *buffer,
-                                                               ULONG bufferLengthInBytes
-                                                               )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
-        ZS_THROW_INVALID_ARGUMENT_IF(0 != bufferLengthInBytes)
-
-        AutoRecursiveLock lock(getLock());
-
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("cannot receive data as already shutdown"))
-          return;
-        }
-
-        SecureByteBlockPtr pendingBuffer = IHelper::convertToBuffer(buffer, bufferLengthInBytes);
-        mReceivedBuffersToDecode.push_back(pendingBuffer);
-
-        // process it later...
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
       //-----------------------------------------------------------------------
@@ -709,6 +633,22 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark MessageLayerSecurityChannel => ITransportStreamReaderDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
+        AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("transport stream reader ready"))
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark MessageLayerSecurityChannel => IMessageLayerSecurityChannelAsyncDelegate
       #pragma mark
 
@@ -765,10 +705,10 @@ namespace openpeer
                Helper::getDebugValue("receive signing public key", mReceiveSigningPublicKey ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keying signed doc", mReceiveKeyingSignedDoc ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keying signed element", mReceiveKeyingSignedEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("messages to encode/send", mMessagesToEncode.size() > 0 ? Stringize<BufferList::size_type>(mMessagesToEncode.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("pending buffers to send on-wire", mPendingBuffersToSendOnWire.size() > 0 ? Stringize<BufferList::size_type>(mPendingBuffersToSendOnWire.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("messages received", mMessagesReceived.size() > 0 ? Stringize<BufferList::size_type>(mMessagesReceived.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("receive buffers to decode", mReceivedBuffersToDecode.size() > 0 ? Stringize<BufferList::size_type>(mReceivedBuffersToDecode.size()).string() : String(), firstTime) +
+               "receive stream encoded: " + ITransportStream::toDebugString(mReceiveStreamEncoded->getStream(), false) +
+               "receive stream decode: " + ITransportStream::toDebugString(mReceiveStreamDecoded->getStream(), false) +
+               "send stream decoded: " + ITransportStream::toDebugString(mSendStreamDecoded->getStream(), false) +
+               "send stream encoded: " + ITransportStream::toDebugString(mSendStreamEncoded->getStream(), false) +
                Helper::getDebugValue("receive keys", mReceiveKeys.size() > 0 ? Stringize<KeyMap::size_type>(mReceiveKeys.size()).string() : String(), firstTime) +
                Helper::getDebugValue("send keys", mSendKeys.size() > 0 ? Stringize<KeyMap::size_type>(mSendKeys.size()).string() : String(), firstTime);
       }
@@ -829,7 +769,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool MessageLayerSecurityChannel::stepReceive()
       {
-        if (mReceivedBuffersToDecode.size() < 1) {
+        if (mReceiveStreamEncoded->getNextReadSizeInBytes() < 1) {
           ZS_LOG_DEBUG(log("nothing to decode"))
           return true;
         }
@@ -863,29 +803,34 @@ namespace openpeer
             setState(SessionState_WaitingForNeededInformation);
             return true;
           }
+
+          bool returnResult = false;
+          if (!stepProcessReceiveKeying(returnResult)) {
+            ZS_LOG_DEBUG(log("receive keying did not complete"))
+            return returnResult;
+          }
         }
 
-        while (mReceivedBuffersToDecode.size() > 0) {
-          SecureByteBlockPtr listBuffer = mReceivedBuffersToDecode.front();
+        while (mReceiveStreamEncoded->getNextReadSizeInBytes() > 0) {
+          ITransportStream::StreamHeaderPtr streamHeader;
+          SecureByteBlockPtr streamBuffer = mReceiveStreamEncoded->read(&streamHeader);
 
           // has to be greater than the size of a DWORD
-          if (listBuffer->SizeInBytes() <= sizeof(DWORD)) {
-            ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(listBuffer->SizeInBytes()).string())
+          if (streamBuffer->SizeInBytes() <= sizeof(DWORD)) {
+            ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(streamBuffer->SizeInBytes()).string())
             setError(IHTTP::HTTPStatusCode_Unauthorized, "buffer is not decodable");
             cancel();
             return false;
           }
 
-          const BYTE *buffer = listBuffer->BytePtr();
+          const BYTE *buffer = streamBuffer->BytePtr();
 
           DWORD algorithm = ntohl(((DWORD *)buffer)[0]);
 
           const BYTE *source = (const BYTE *)(&(((DWORD *)buffer)[1]));
-          SecureByteBlock::size_type remaining = listBuffer->SizeInBytes() - sizeof(DWORD);
+          SecureByteBlock::size_type remaining = streamBuffer->SizeInBytes() - sizeof(DWORD);
 
           if (0 != algorithm) {
-            mReceivedBuffersToDecode.pop_front();
-
             // attempt to decode now
             if (mReceiveKeys.size() < 1) {
               ZS_LOG_ERROR(Detail, log("attempting to decode a packet where keying material has not been received"))
@@ -909,7 +854,7 @@ namespace openpeer
 
             // must be greater in size than the hash algorithm
             if (remaining <= integritySize) {
-              ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(listBuffer->SizeInBytes()).string())
+              ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(streamBuffer->SizeInBytes()).string())
               setError(IHTTP::HTTPStatusCode_Unauthorized, "buffer is not decodable");
               cancel();
               return false;
@@ -948,226 +893,254 @@ namespace openpeer
             keyInfo.mNextIV = IHelper::hash(hexIV + ":" + IHelper::convertToHex(*calculatedIntegrity));
             keyInfo.mLastIntegrity = calculatedIntegrity;
 
-            mMessagesReceived.push_back(output);
-
-            mSubscriptions.delegate()->onMessageLayerSecurityChannelIncomingMessage(mThisWeak.lock());
+            mReceiveStreamDecoded->write(output, streamHeader);
 
             // process next buffer
             continue;
           }
 
-          // parse the buffer
-          DocumentPtr doc;
+          bool returnResult = false;
+          if (!stepProcessReceiveKeying(returnResult, streamBuffer)) {
+            ZS_LOG_DEBUG(log("receive keying did not complete"))
+            return returnResult;
+          }
+        }
 
-          if (mReceiveKeyingSignedDoc) {
-            // reuse the signing doc if one exists (to avoid decoding the first packet twice)
-            doc = mReceiveKeyingSignedDoc;
+        return true;
+      }
 
-            mReceiveKeyingSignedDoc.reset();
-            mReceiveKeyingSignedEl.reset();
+      //-----------------------------------------------------------------------
+      bool MessageLayerSecurityChannel::stepProcessReceiveKeying(
+                                                                 bool &outReturnResult,
+                                                                 SecureByteBlockPtr keying
+                                                                 )
+      {
+        outReturnResult = true;
+
+        // parse the buffer
+        DocumentPtr doc;
+
+        if (mReceiveKeyingSignedDoc) {
+          // reuse the signing doc if one exists (to avoid decoding the first packet twice)
+          doc = mReceiveKeyingSignedDoc;
+
+          mReceiveKeyingSignedDoc.reset();
+          mReceiveKeyingSignedEl.reset();
+        }
+
+        if (!doc) {
+          const BYTE *buffer = keying->BytePtr();
+
+          const BYTE *source = (const BYTE *)(&(((DWORD *)buffer)[1]));
+          SecureByteBlock::size_type remaining = keying->SizeInBytes() - sizeof(DWORD);
+
+          // create a NUL terminated JSON string buffer
+          SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining, true);
+
+          // clear out the receive signed document since it's validated
+          doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
+        }
+
+        mReceiveKeys.clear(); // all previous keys are being destroyed
+
+        try {
+          ElementPtr keyingEl = doc->findFirstChildElementChecked("keyingBundle")->findFirstChildElementChecked("keying");
+
+          bool encodingPKI = true;
+
+          if (!mReceiveSigningPublicKey) {
+            ZS_LOG_DEBUG(log("waiting for receive material signing public key"))
+
+            mReceiveKeyingSignedDoc = doc;
+            mReceiveKeyingSignedEl = keyingEl;
+
+            setState(SessionState_WaitingForNeededInformation);
+            return false;
           }
 
-          if (!doc) {
-            // create a NUL terminated JSON string buffer
-            SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining, true);
-            
-            // clear out the receive signed document since it's validated
-            doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
+          if (!mReceiveSigningPublicKey->verifySignature(keyingEl)) {
+            ZS_LOG_ERROR(Detail, log("failed to validate receiving stream signature"))
+            setError(IHTTP::HTTPStatusCode_Forbidden, "keyhing encoding not using expecting passphrase");
+            cancel();
+            outReturnResult = false;
+            return false;
           }
 
-          mReceiveKeys.clear(); // all previous keys are being destroyed
 
-          try {
-            ElementPtr keyingEl = doc->findFirstChildElementChecked("keyingBundle")->findFirstChildElementChecked("keying");
+          String sequenceNumber = getElementTextAndDecode(keyingEl->findFirstChildElement("sequence"));
 
-            bool encodingPKI = true;
+          if (sequenceNumber != Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string()) {
+            ZS_LOG_ERROR(Detail, log("sequence number mismatch") + ", sequence=" + sequenceNumber + ", expecting=" + Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string())
+            setError(IHTTP::HTTPStatusCode_RequestTimeout, "sequence number mismatch");
+            cancel();
+            outReturnResult = false;
+            return false;
+          }
 
-            if (!mReceiveSigningPublicKey) {
-              ZS_LOG_DEBUG(log("waiting for receive material signing public key"))
+          if (!mRemoteContextID) {
+            mRemoteContextID = getElementTextAndDecode(keyingEl->findFirstChildElement("context"));
+          }
 
-              mReceiveKeyingSignedDoc = doc;
-              mReceiveKeyingSignedEl = keyingEl;
+          Time expires = IHelper::stringToTime(getElementTextAndDecode(keyingEl->findFirstChildElement("expires")));
+          Time tick = zsLib::now();
+          if (tick > expires) {
+            ZS_LOG_ERROR(Detail, log("signed keying bundle has expired") + ", expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(tick))
+            setError(IHTTP::HTTPStatusCode_RequestTimeout, "signed keying bundle has expired");
+            cancel();
+            outReturnResult = false;
+            return false;
+          }
 
+          ElementPtr encodingEl = keyingEl->findFirstChildElementChecked("encoding");
+          String type = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("type"));
+          String nonce = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("nonce"));
+
+          if ("pki" == type) {
+            String encodingFingerprint = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("fingerprint"));
+
+            if (!mReceiveDecodingPublicKeyFingerprint.hasData()) {
+              mReceiveDecodingPublicKeyFingerprint = encodingFingerprint;
+            }
+
+            if (!mReceiveDecodingPrivateKey) {
+              ZS_LOG_DEBUG(log("waiting for keying materials"))
               setState(SessionState_WaitingForNeededInformation);
-              return true;
-            }
-
-            if (!mReceiveSigningPublicKey->verifySignature(keyingEl)) {
-              ZS_LOG_ERROR(Detail, log("failed to validate receiving stream signature"))
-              setError(IHTTP::HTTPStatusCode_Forbidden, "keyhing encoding not using expecting passphrase");
-              cancel();
+              outReturnResult = false;
               return false;
             }
+            ZS_THROW_BAD_STATE_IF(!mReceiveDecodingPublicKey)
 
-
-            String sequenceNumber = getElementTextAndDecode(keyingEl->findFirstChildElement("sequence"));
-
-            if (sequenceNumber != Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string()) {
-              ZS_LOG_ERROR(Detail, log("sequence number mismatch") + ", sequence=" + sequenceNumber + ", expecting=" + Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string())
-              setError(IHTTP::HTTPStatusCode_RequestTimeout, "sequence number mismatch");
-              cancel();
-              return false;
-            }
-
-            if (!mRemoteContextID) {
-              mRemoteContextID = getElementTextAndDecode(keyingEl->findFirstChildElement("context"));
-            }
-
-            Time expires = IHelper::stringToTime(getElementTextAndDecode(keyingEl->findFirstChildElement("expires")));
-            Time tick = zsLib::now();
-            if (tick > expires) {
-              ZS_LOG_ERROR(Detail, log("signed keying bundle has expired") + ", expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(tick))
+            String expectingFingerprint = mReceiveDecodingPublicKey->getFingerprint();
+            if (encodingFingerprint != expectingFingerprint) {
+              ZS_LOG_ERROR(Detail, log("encoding not using local public key") + ", encoding fingerprint=" + encodingFingerprint + ", expecting fingerprint=" + expectingFingerprint)
               setError(IHTTP::HTTPStatusCode_RequestTimeout, "signed keying bundle has expired");
               cancel();
+              outReturnResult = false;
+              return false;
+            }
+          } else if ("passphrase" == type) {
+            encodingPKI = false;
+            if (mReceivingDecodingPassphrase.isEmpty()) {
+              ZS_LOG_DEBUG(log("cannot continue decoding as missing decoding passphrase (will notify delegate)"))
+              setState(SessionState_WaitingForNeededInformation);
               return false;
             }
 
-            ElementPtr encodingEl = keyingEl->findFirstChildElementChecked("encoding");
-            String type = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("type"));
-            String nonce = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("nonce"));
-
-            if ("pki" == type) {
-              String encodingFingerprint = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("fingerprint"));
-
-              if (!mReceiveDecodingPublicKeyFingerprint.hasData()) {
-                mReceiveDecodingPublicKeyFingerprint = encodingFingerprint;
-              }
-
-              if (!mReceiveDecodingPrivateKey) {
-                ZS_LOG_DEBUG(log("waiting for keying materials"))
-                setState(SessionState_WaitingForNeededInformation);
-                return true;
-              }
-              ZS_THROW_BAD_STATE_IF(!mReceiveDecodingPublicKey)
-
-              String expectingFingerprint = mReceiveDecodingPublicKey->getFingerprint();
-              if (encodingFingerprint != expectingFingerprint) {
-                ZS_LOG_ERROR(Detail, log("encoding not using local public key") + ", encoding fingerprint=" + encodingFingerprint + ", expecting fingerprint=" + expectingFingerprint)
-                setError(IHTTP::HTTPStatusCode_RequestTimeout, "signed keying bundle has expired");
+            // scope: we have a passphrase, see if the proof validates before attempting to decrypt any keys...
+            {
+              String algorithm = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("algorithm"));
+              if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM != algorithm) {
+                ZS_LOG_ERROR(Detail, log("keying encoding not using known algorithm") + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
+                setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
                 cancel();
+                outReturnResult = false;
                 return false;
               }
-            } else if ("passphrase" == type) {
-              encodingPKI = false;
-              if (mReceivingDecodingPassphrase.isEmpty()) {
-                ZS_LOG_DEBUG(log("cannot continue decoding as missing decoding passphrase (will notify delegate)"))
-                setState(SessionState_WaitingForNeededInformation);
-                return true;
-              }
 
-              // scope: we have a passphrase, see if the proof validates before attempting to decrypt any keys...
-              {
-                String algorithm = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("algorithm"));
-                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM != algorithm) {
-                  ZS_LOG_ERROR(Detail, log("keying encoding not using known algorithm") + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
-                  setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
-                  cancel();
-                  return false;
-                }
+              String proof = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("proof"));
 
-                String proof = getElementTextAndDecode(encodingEl->findFirstChildElementChecked("proof"));
+              // hex(hmac(`<external-passphrase>`, "keying:" + `<nonce>`))
+              String calculatedProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mReceivingDecodingPassphrase), "keying:" + nonce));
 
-                // hex(hmac(`<external-passphrase>`, "keying:" + `<nonce>`))
-                String calculatedProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mReceivingDecodingPassphrase), "keying:" + nonce));
-
-                if (proof != calculatedProof) {
-                  ZS_LOG_ERROR(Detail, log("keying encoding not using expecting passphrase") + ", encoding proof=" + proof + ", expecting proof=" + calculatedProof + ", using passphrase=" + mReceivingDecodingPassphrase)
-                  setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
-                  cancel();
-                  return false;
-                }
+              if (proof != calculatedProof) {
+                ZS_LOG_ERROR(Detail, log("keying encoding not using expecting passphrase") + ", encoding proof=" + proof + ", expecting proof=" + calculatedProof + ", using passphrase=" + mReceivingDecodingPassphrase)
+                setError(IHTTP::HTTPStatusCode_ExpectationFailed, "keyhing encoding not using expecting passphrase");
+                cancel();
+                outReturnResult = false;
+                return false;
               }
             }
+          }
 
 #define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 1
 #define WARNING_CHECK_NONCE_NOT_SEEN_BEFORE 2
 
-            // scope: santity check on algorithms receiving
-            {
-              bool found = false;
-              ElementPtr algorithmEl = keyingEl->findFirstChildElementChecked("algorithms")->findFirstChildElementChecked("algorithm");
-              while (algorithmEl) {
-                String algorithm = getElementTextAndDecode(algorithmEl);
-                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
-                  ZS_LOG_TRACE(log("found mandated algorithm"))
-                  found = true;
-                  break;
-                }
-                algorithmEl->findNextSiblingElement("algorithm");
+          // scope: santity check on algorithms receiving
+          {
+            bool found = false;
+            ElementPtr algorithmEl = keyingEl->findFirstChildElementChecked("algorithms")->findFirstChildElementChecked("algorithm");
+            while (algorithmEl) {
+              String algorithm = getElementTextAndDecode(algorithmEl);
+              if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
+                ZS_LOG_TRACE(log("found mandated algorithm"))
+                found = true;
+                break;
               }
-              if (!found) {
-                ZS_LOG_ERROR(Detail, log("did not find mandated MLS algorithm") + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
-                setError(IHTTP::HTTPStatusCode_ExpectationFailed, "did not find mandated MLS algorithm");
-                cancel();
-                return false;
-              }
+              algorithmEl->findNextSiblingElement("algorithm");
             }
-
-            // scope: extract out latest keying material
-            {
-              ElementPtr keyEl = keyingEl->findFirstChildElementChecked("keys")->findFirstChildElementChecked("key");
-              while (keyEl) {
-                AlgorithmIndex index = 0;
-                try {
-                    index = Numeric<AlgorithmIndex>(getElementTextAndDecode(keyEl->findFirstChildElementChecked("index")));
-                } catch(Numeric<AlgorithmIndex>::ValueOutOfRange &) {
-                  ZS_LOG_WARNING(Detail, log("algorithm index value out of range"))
-                }
-                if (0 == index) {
-                  ZS_LOG_WARNING(Detail, log("algorithm index value is not valid") + ", index=" + Stringize<typeof(index)>(index).string())
-                  continue;
-                }
-
-                String algorithm = getElementTextAndDecode(keyEl->findFirstChildElementChecked("algorithm"));
-                if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
-                  ZS_LOG_WARNING(Detail, log("unsupported algorithm (thus skipping)") + ", algorithm=" + algorithm)
-                  continue;
-                }
-
-                ElementPtr inputs = keyEl->findFirstChildElementChecked("inputs");
-
-                KeyInfo key;
-                SecureByteBlockPtr integrityPassphrase;
-                if (encodingPKI) {
-                  // base64(rsa_encrypt(`<remote-public-key>`, `<value>`))
-                  key.mSendKey = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("secret"))));
-                  key.mNextIV = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("iv"))));
-                  integrityPassphrase = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey"))));
-                } else {
-                  key.mSendKey = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("secret")));
-                  key.mNextIV = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("iv")));
-                  integrityPassphrase = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey")));
-                }
-                if (integrityPassphrase) {
-                  key.mIntegrityPassphrase = IHelper::convertToString(*integrityPassphrase);
-                }
-                if ((!key.mSendKey) ||
-                    (!key.mNextIV) ||
-                    (key.mIntegrityPassphrase.isEmpty())) {
-                  ZS_LOG_WARNING(Detail, log("algorithm missing vital secret, iv or integrity information") + ", index=" + Stringize<typeof(index)>(index).string())
-                  continue;
-                }
-
-                ZS_LOG_DEBUG(log("adding algorithm to available keying information") + ", index=" + Stringize<typeof(index)>(index).string())
-                mReceiveKeys[index] = key;
-              }
+            if (!found) {
+              ZS_LOG_ERROR(Detail, log("did not find mandated MLS algorithm") + ", expecting=" + OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM)
+              setError(IHTTP::HTTPStatusCode_ExpectationFailed, "did not find mandated MLS algorithm");
+              cancel();
+              outReturnResult = false;
+              return false;
             }
-
-          } catch(CheckFailed &) {
-            ZS_LOG_ERROR(Detail, log("expecting element in keying bundle that was missing"))
           }
 
-          if (mReceiveKeys.size() < 1) {
-            ZS_LOG_ERROR(Detail, log("did not find any key information"))
-            setError(IHTTP::HTTPStatusCode_ExpectationFailed, "did not find any key information");
-            cancel();
-            return false;
+          // scope: extract out latest keying material
+          {
+            ElementPtr keyEl = keyingEl->findFirstChildElementChecked("keys")->findFirstChildElementChecked("key");
+            while (keyEl) {
+              AlgorithmIndex index = 0;
+              try {
+                index = Numeric<AlgorithmIndex>(getElementTextAndDecode(keyEl->findFirstChildElementChecked("index")));
+              } catch(Numeric<AlgorithmIndex>::ValueOutOfRange &) {
+                ZS_LOG_WARNING(Detail, log("algorithm index value out of range"))
+              }
+              if (0 == index) {
+                ZS_LOG_WARNING(Detail, log("algorithm index value is not valid") + ", index=" + Stringize<typeof(index)>(index).string())
+                continue;
+              }
+
+              String algorithm = getElementTextAndDecode(keyEl->findFirstChildElementChecked("algorithm"));
+              if (OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM == algorithm) {
+                ZS_LOG_WARNING(Detail, log("unsupported algorithm (thus skipping)") + ", algorithm=" + algorithm)
+                continue;
+              }
+
+              ElementPtr inputs = keyEl->findFirstChildElementChecked("inputs");
+
+              KeyInfo key;
+              SecureByteBlockPtr integrityPassphrase;
+              if (encodingPKI) {
+                // base64(rsa_encrypt(`<remote-public-key>`, `<value>`))
+                key.mSendKey = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("secret"))));
+                key.mNextIV = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("iv"))));
+                integrityPassphrase = mReceiveDecodingPrivateKey->decrypt(*IHelper::convertFromBase64(getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey"))));
+              } else {
+                key.mSendKey = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("secret")));
+                key.mNextIV = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("iv")));
+                integrityPassphrase = decryptUsingPassphraseEncoding(mReceivingDecodingPassphrase, nonce, getElementTextAndDecode(inputs->findFirstChildElementChecked("hmacIntegrityKey")));
+              }
+              if (integrityPassphrase) {
+                key.mIntegrityPassphrase = IHelper::convertToString(*integrityPassphrase);
+              }
+              if ((!key.mSendKey) ||
+                  (!key.mNextIV) ||
+                  (key.mIntegrityPassphrase.isEmpty())) {
+                ZS_LOG_WARNING(Detail, log("algorithm missing vital secret, iv or integrity information") + ", index=" + Stringize<typeof(index)>(index).string())
+                continue;
+              }
+
+              ZS_LOG_DEBUG(log("adding algorithm to available keying information") + ", index=" + Stringize<typeof(index)>(index).string())
+              mReceiveKeys[index] = key;
+            }
           }
 
-          ZS_LOG_DEBUG(log("successfully extracted keying materials to receive data from remote MLS stream"))
-          ++mNextReceiveSequenceNumber;
-          mReceivedBuffersToDecode.pop_front();
+        } catch(CheckFailed &) {
+          ZS_LOG_ERROR(Detail, log("expecting element in keying bundle that was missing"))
         }
+
+        if (mReceiveKeys.size() < 1) {
+          ZS_LOG_ERROR(Detail, log("did not find any key information"))
+          setError(IHTTP::HTTPStatusCode_ExpectationFailed, "did not find any key information");
+          cancel();
+          outReturnResult = false;
+          return false;
+        }
+
+        ZS_LOG_DEBUG(log("successfully extracted keying materials to receive data from remote MLS stream"))
+        ++mNextReceiveSequenceNumber;
 
         return true;
       }
@@ -1224,10 +1197,7 @@ namespace openpeer
 
           memcpy(dest, output.get(), sizeof(char)*outputLength);
 
-          mPendingBuffersToSendOnWire.push_back(buffer);
-
-          ZS_LOG_DEBUG(log("notify delegate needs to send keying information on-the-wire") + getDebugValueString())
-          mSubscriptions.delegate()->onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(mThisWeak.lock());
+          mSendStreamEncoded->write(buffer);
 
           return true;
         }
@@ -1319,14 +1289,14 @@ namespace openpeer
           return false;
         }
 
-        if (mMessagesToEncode.size() < 1) {
+        if (mSendStreamDecoded->getNextReadSizeInBytes() < 1) {
           ZS_LOG_DEBUG(log("no data to be sent over the wire"))
           return true;
         }
 
-        while (mMessagesToEncode.size() > 0) {
-          SecureByteBlockPtr buffer = mMessagesToEncode.front();
-          mMessagesToEncode.pop_front();
+        while (mSendStreamDecoded->getNextReadSizeInBytes() > 0) {
+          StreamHeaderPtr header;
+          SecureByteBlockPtr buffer = mSendStreamDecoded->read(&header);
 
           ZS_THROW_BAD_STATE_IF(!buffer)
 
@@ -1359,7 +1329,7 @@ namespace openpeer
           memcpy(integrityPos, calculatedIntegrity->BytePtr(), calculatedIntegrity->SizeInBytes());
           memcpy(outputPos, encrypted->BytePtr(), encrypted->SizeInBytes());
 
-          mPendingBuffersToSendOnWire.push_back(output);
+          mSendStreamEncoded->write(output, header);
         }
 
         return true;
@@ -1416,10 +1386,14 @@ namespace openpeer
     //-----------------------------------------------------------------------
     IMessageLayerSecurityChannelPtr IMessageLayerSecurityChannel::create(
                                                                          IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                         ITransportStreamPtr receiveStreamEncoded,
+                                                                         ITransportStreamPtr receiveStreamDecoded,
+                                                                         ITransportStreamPtr sendStreamDecoded,
+                                                                         ITransportStreamPtr sendStreamEncoded,
                                                                          const char *contextID
                                                                          )
     {
-      return internal::IMessageLayerSecurityChannelFactory::singleton().create(delegate, contextID);
+      return internal::IMessageLayerSecurityChannelFactory::singleton().create(delegate, receiveStreamEncoded, receiveStreamDecoded, sendStreamDecoded, sendStreamEncoded, contextID);
     }
   }
 }

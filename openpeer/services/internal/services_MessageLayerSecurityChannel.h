@@ -34,6 +34,8 @@
 #include <openpeer/services/IMessageLayerSecurityChannel.h>
 #include <openpeer/services/internal/types.h>
 
+#include <openpeer/services/ITransportStream.h>
+
 #include <list>
 #include <map>
 
@@ -69,12 +71,14 @@ namespace openpeer
       class MessageLayerSecurityChannel : public Noop,
                                           public zsLib::MessageQueueAssociator,
                                           public IMessageLayerSecurityChannel,
-                                          public IMessageLayerSecurityChannelAsyncDelegate
+                                          public IMessageLayerSecurityChannelAsyncDelegate,
+                                          public ITransportStreamReaderDelegate
       {
       public:
         friend interaction IMessageLayerSecurityChannelFactory;
         friend interaction IMessageLayerSecurityChannel;
 
+        typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
         typedef std::list<SecureByteBlockPtr> BufferList;
 
         enum DecodingTypes
@@ -102,6 +106,10 @@ namespace openpeer
         MessageLayerSecurityChannel(
                                     IMessageQueuePtr queue,
                                     IMessageLayerSecurityChannelDelegatePtr delegate,
+                                    ITransportStreamPtr receiveStreamEncoded,
+                                    ITransportStreamPtr receiveStreamDecoded,
+                                    ITransportStreamPtr sendStreamDecoded,
+                                    ITransportStreamPtr sendStreamEncoded,
                                     const char *contextID = NULL
                                     );
 
@@ -126,6 +134,10 @@ namespace openpeer
 
         static MessageLayerSecurityChannelPtr create(
                                                      IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                     ITransportStreamPtr receiveStreamEncoded,
+                                                     ITransportStreamPtr receiveStreamDecoded,
+                                                     ITransportStreamPtr sendStreamDecoded,
+                                                     ITransportStreamPtr sendStreamEncoded,
                                                      const char *contextID = NULL
                                                      );
 
@@ -139,24 +151,6 @@ namespace openpeer
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const;
-
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferSizeInBytes
-                          );
-
-        virtual ULONG getTotalIncomingMessages() const;
-
-        virtual SecureByteBlockPtr getNextIncomingMessage();
-
-        virtual ULONG getTotalPendingBuffersToSendOnWire() const;
-
-        virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire();
-
-        virtual void notifyReceivedFromWire(
-                                            const BYTE *buffer,
-                                            ULONG bufferLengthInBytes
-                                            );
 
         virtual bool needsLocalContextID() const;
 
@@ -199,6 +193,13 @@ namespace openpeer
                                                             ) const;
 
         virtual void notifySendKeyingMaterialSigned();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MessageLayerSecurityChannel => ITransportStreamReaderDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -228,6 +229,11 @@ namespace openpeer
         bool stepSendKeying();
         bool stepSend();
         bool stepCheckConnected();
+
+        bool stepProcessReceiveKeying(
+                                      bool &outReturnResult,
+                                      SecureByteBlockPtr keying = SecureByteBlockPtr()
+                                      );
 
       protected:
         //---------------------------------------------------------------------
@@ -268,11 +274,10 @@ namespace openpeer
         DocumentPtr mReceiveKeyingSignedDoc;      // temporary document needed to resolve receive signing public key
         ElementPtr mReceiveKeyingSignedEl;        // temporary eleemnt needed to resolve receive signing public key
 
-        BufferList mMessagesToEncode;
-        BufferList mPendingBuffersToSendOnWire;
-
-        BufferList mMessagesReceived;
-        BufferList mReceivedBuffersToDecode;
+        ITransportStreamReaderPtr mReceiveStreamEncoded;
+        ITransportStreamWriterPtr mReceiveStreamDecoded;
+        ITransportStreamReaderPtr mSendStreamDecoded;
+        ITransportStreamWriterPtr mSendStreamEncoded;
 
         KeyMap mReceiveKeys;
         KeyMap mSendKeys;
@@ -292,6 +297,10 @@ namespace openpeer
 
         virtual MessageLayerSecurityChannelPtr create(
                                                       IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                      ITransportStreamPtr receiveStreamEncoded,
+                                                      ITransportStreamPtr receiveStreamDecoded,
+                                                      ITransportStreamPtr sendStreamDecoded,
+                                                      ITransportStreamPtr sendStreamEncoded,
                                                       const char *contextID = NULL
                                                       );
       };

@@ -63,6 +63,10 @@ namespace openpeer
       // PURPOSE: create a new channel to a remote connection
       static IMessageLayerSecurityChannelPtr create(
                                                     IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStreamEncoded,
+                                                    ITransportStreamPtr receiveStreamDecoded,
+                                                    ITransportStreamPtr sendStreamDecoded,
+                                                    ITransportStreamPtr sendStreamEncoded,
                                                     const char *localContextID = NULL                                    // the session context ID
                                                     );
 
@@ -85,48 +89,6 @@ namespace openpeer
                                      String *outLastErrorReason = NULL
                                      ) const = 0;
 
-      //-----------------------------------------------------------------------
-      // PURPOSE: Send a message object over the MLS channel to the remote peer
-      // NOTE:    messages are queued until a send connection is established
-      virtual bool send(
-                        const BYTE *buffer,
-                        ULONG bufferSizeInBytes
-                        ) = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the total number of incoming messages that have
-      //          been received and decoded.
-      virtual ULONG getTotalIncomingMessages() const = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the next pending message received and decoded.
-      // NOTE:    Messages are queued in the public key referenced in the
-      //          cryptographic negotiations is resolved.
-      //          Returns MessagePtr() if no message is pending.
-      virtual SecureByteBlockPtr getNextIncomingMessage() = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the total pending data buffers that need to be
-      //          delivered over-the-wire.
-      virtual ULONG getTotalPendingBuffersToSendOnWire() const = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the next pending data buffer that needs to be
-      //          delivered over-the-wire.
-      // NOTE:    Messages are queued for delivery until the wire protocol is
-      //          ready to deliver the buffered data.
-      virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire() = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Notifies of data received on-the-wire from a remote party's
-      //          channel connected to this MLS channel object.
-      // NOTE:    This routine will parse and extract out the "message" object
-      //          or handle apply the cryptographic keying materials specified
-      //          in the buffer.
-      virtual void notifyReceivedFromWire(
-                                          const BYTE *buffer,
-                                          ULONG bufferLengthInBytes
-                                          ) = 0;
       //-----------------------------------------------------------------------
       // PURPOSE: Returns true if the local context ID needs to be set
       // NOTE:    Check this method when
@@ -315,16 +277,6 @@ namespace openpeer
                                                              IMessageLayerSecurityChannelPtr channel,
                                                              SessionStates state
                                                              ) = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Notifies the delegate of an incoming message that will be
-      //          queued until ready to be read.
-      virtual void onMessageLayerSecurityChannelIncomingMessage(IMessageLayerSecurityChannelPtr channel) = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Notifies the delegate a data buffer is queued and needs to be
-      //          delivered on-the-wire.
-      virtual void onMessageLayerSecurityChannelBufferPendingToSendOnTheWire(IMessageLayerSecurityChannelPtr channel) = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -346,14 +298,10 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::services::IMessageLayerSecurityChannelDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
-ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
-ZS_DECLARE_PROXY_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::services::IMessageLayerSecurityChannelDelegate, openpeer::services::IMessageLayerSecurityChannelSubscription)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::services::IMessageLayerSecurityChannelPtr, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::services::IMessageLayerSecurityChannelDelegate::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onMessageLayerSecurityChannelStateChanged, IMessageLayerSecurityChannelPtr, SessionStates)
-ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onMessageLayerSecurityChannelIncomingMessage, IMessageLayerSecurityChannelPtr)
-ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onMessageLayerSecurityChannelBufferPendingToSendOnTheWire, IMessageLayerSecurityChannelPtr)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()

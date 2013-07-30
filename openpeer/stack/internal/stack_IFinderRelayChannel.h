@@ -39,6 +39,16 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::ITransportStream;
+      using services::ITransportStreamPtr;
+      using services::ITransportStreamReader;
+      using services::ITransportStreamReaderPtr;
+      using services::ITransportStreamWriter;
+      using services::ITransportStreamWriterPtr;
+
+      using services::ITransportStreamReaderDelegate;
+      using services::ITransportStreamReaderDelegatePtr;
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -68,6 +78,8 @@ namespace openpeer
         static IFinderRelayChannelPtr connect(
                                               IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                               AccountPtr account,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream,
                                               IPAddress remoteFinderIP,
                                               const char *localContextID,
                                               const char *relayAccessToken,
@@ -84,7 +96,9 @@ namespace openpeer
         //          incoming.
         static IFinderRelayChannelPtr createIncoming(
                                                      IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                     AccountPtr account
+                                                     AccountPtr account,
+                                                     ITransportStreamPtr receiveStream,
+                                                     ITransportStreamPtr sendStream
                                                      );
 
         //---------------------------------------------------------------------
@@ -109,21 +123,6 @@ namespace openpeer
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
                                        ) const = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Send a message object over the channel to the remote peer
-        // NOTE:    messages are queued until a send connection is established
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferSizeInBytes
-                          ) = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Obtains the next pending message received over the wire.
-        // NOTE:    Messages are queued in the public key referenced in the
-        //          cryptographic negotiations is resolved.
-        //          Returns MessagePtr() if no message is pending.
-        virtual SecureByteBlockPtr getNextIncomingMessage() = 0;
 
         //---------------------------------------------------------------------
         // PURPOSE: This method provides context for the incoming stream.
@@ -170,24 +169,6 @@ namespace openpeer
         //          location may not known the public key of the remote peer
         //          just yet.
         virtual IRSAPublicKeyPtr getRemotePublicKey() const = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Obtains the next pending data buffer that needs to be
-        //          delivered over-the-wire.
-        // NOTE:    Messages are queued for delivery until the wire protocol is
-        //          ready to deliver the buffered data.
-        virtual SecureByteBlockPtr getNextPendingBufferToSendOnWire() = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Notifies of data received on-the-wire from a remote party's
-        //          channel connected to this MLS channel object.
-        // NOTE:    This routine will parse and extract out the "message" object
-        //          or handle apply the cryptographic keying materials specified
-        //          in the buffer.
-        virtual void notifyReceivedFromWire(
-                                            const BYTE *buffer,
-                                            ULONG bufferLengthInBytes
-                                            ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -215,16 +196,6 @@ namespace openpeer
         //          information and passphrase.
         // NOTE:    This will be called upon an incoming stream data arriving.
         virtual void onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel) = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Notifies the delegate of an incoming message that will be
-        //          queued until ready to be read.
-        virtual void onFinderRelayChannelIncomingMessage(IFinderRelayChannelPtr channel) = 0;
-
-        //---------------------------------------------------------------------
-        // PURPOSE: Notifies the delegate a data buffer is queued and needs to be
-        //          delivered on-the-wire.
-        virtual void onFinderRelayChannelBufferPendingToSendOnTheWire(IFinderRelayChannelPtr channel) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -254,8 +225,6 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderRelayChannelPtr, IFin
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderRelayChannel::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onFinderRelayChannelStateChanged, IFinderRelayChannelPtr, SessionStates)
 ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelNeedsContext, IFinderRelayChannelPtr)
-ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelIncomingMessage, IFinderRelayChannelPtr)
-ZS_DECLARE_PROXY_METHOD_1(onFinderRelayChannelBufferPendingToSendOnTheWire, IFinderRelayChannelPtr)
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::stack::internal::IFinderRelayChannelDelegate, openpeer::stack::internal::IFinderRelayChannelSubscription)
@@ -263,6 +232,4 @@ ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::internal::IFinderRelayCh
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::stack::internal::IFinderRelayChannel::SessionStates, SessionStates)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onFinderRelayChannelStateChanged, IFinderRelayChannelPtr, SessionStates)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelNeedsContext, IFinderRelayChannelPtr)
-ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelIncomingMessage, IFinderRelayChannelPtr)
-ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onFinderRelayChannelBufferPendingToSendOnTheWire, IFinderRelayChannelPtr)
 ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()
