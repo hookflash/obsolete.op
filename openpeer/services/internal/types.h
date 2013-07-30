@@ -69,6 +69,10 @@ namespace openpeer
       using zsLib::Subsystem;
       using zsLib::LogPtr;
       using zsLib::ILogDelegate;
+      using zsLib::Timer;
+      using zsLib::TimerPtr;
+      using zsLib::ITimerDelegate;
+      using zsLib::ITimerDelegatePtr;
       using zsLib::MessageQueueThread;
       using zsLib::MessageQueueThreadPtr;
       using zsLib::XML::AttributePtr;
@@ -89,6 +93,9 @@ namespace openpeer
       using CryptoPP::ByteQueue;
       using CryptoPP::HexEncoder;
       using CryptoPP::HexDecoder;
+
+      typedef boost::shared_ptr<ByteQueue> ByteQueuePtr;
+      typedef boost::weak_ptr<ByteQueue> ByteQueueWeakPtr;
 
       interaction DNS;
       typedef boost::shared_ptr<DNS> DNSPtr;
@@ -209,6 +216,10 @@ namespace openpeer
       class STUNRequesterManager;
       typedef boost::shared_ptr<STUNRequesterManager> STUNRequesterManagerPtr;
       typedef boost::weak_ptr<STUNRequesterManager> STUNRequesterManagerWeakPtr;
+
+      class TCPMessaging;
+      typedef boost::shared_ptr<TCPMessaging> TCPMessagingPtr;
+      typedef boost::weak_ptr<TCPMessaging> TCPMessagingWeakPtr;
 
       class TransportStream;
       typedef boost::shared_ptr<TransportStream> TransportStreamPtr;

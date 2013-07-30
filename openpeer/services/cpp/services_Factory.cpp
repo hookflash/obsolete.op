@@ -643,6 +643,46 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark ITCPMessagingFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ITCPMessagingFactory &ITCPMessagingFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr ITCPMessagingFactory::accept(
+                                                   ITCPMessagingDelegatePtr delegate,
+                                                   ITransportStreamPtr receiveStream,
+                                                   ITransportStreamPtr sendStream,
+                                                   bool framesHaveChannelNumber,
+                                                   SocketPtr socket,
+                                                   ULONG maxMessageSizeInBytes
+                                                   )
+      {
+        return internal::TCPMessaging::accept(delegate, receiveStream, sendStream, framesHaveChannelNumber, socket, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr ITCPMessagingFactory::connect(
+                                                    ITCPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
+                                                    bool framesHaveChannelNumber,
+                                                    IPAddress remoteIP,
+                                                    ULONG maxMessageSizeInBytes
+                                                    )
+      {
+        return internal::TCPMessaging::connect(delegate, receiveStream, sendStream, framesHaveChannelNumber, remoteIP, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark ITransportStreamFactory
       #pragma mark
 

@@ -1,0 +1,700 @@
+/*
+
+ Copyright (c) 2013, SMB Phone Inc.
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright notice, this
+ list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright notice,
+ this list of conditions and the following disclaimer in the documentation
+ and/or other materials provided with the distribution.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+ The views and conclusions contained in the software and documentation are those
+ of the authors and should not be interpreted as representing official policies,
+ either expressed or implied, of the FreeBSD Project.
+
+ */
+
+#include <openpeer/services/internal/services_TCPMessaging.h>
+#include <openpeer/services/internal/services_Helper.h>
+#include <openpeer/services/IHTTP.h>
+
+#include <cryptopp/queue.h>
+
+#include <zsLib/Log.h>
+#include <zsLib/helpers.h>
+
+#include <zsLib/Stringize.h>
+
+#define OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES (64*1024)
+
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
+
+namespace openpeer
+{
+  namespace services
+  {
+    using zsLib::DWORD;
+    using zsLib::Stringize;
+    using zsLib::Timer;
+
+    namespace internal
+    {
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      TCPMessaging::TCPMessaging(
+                                 IMessageQueuePtr queue,
+                                 ITCPMessagingDelegatePtr delegate,
+                                 ITransportStreamPtr receiveStream,
+                                 ITransportStreamPtr sendStream,
+                                 bool framesHaveChannelNumber,
+                                 ULONG maxMessageSizeInBytes
+                                 ) :
+        zsLib::MessageQueueAssociator(queue),
+        mID(zsLib::createPUID()),
+        mCurrentState(SessionState_Pending),
+        mLastError(0),
+        mReceiveStream(receiveStream->getWriter()),
+        mSendStream(sendStream->getReader()),
+        mFramesHaveChannelNumber(framesHaveChannelNumber),
+        mMaxMessageSizeInBytes(maxMessageSizeInBytes),
+        mTCPWriteReady(true),
+        mSendingQueue(new ByteQueue),
+        mReceivingQueue(new ByteQueue)
+      {
+        ZS_LOG_DEBUG(log("created"))
+        mDefaultSubscription = mSubscriptions.subscribe(delegate);
+        ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
+
+        mSendStream->subscribe(mThisWeak.lock());
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::init()
+      {
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessaging::~TCPMessaging()
+      {
+        ZS_LOG_DEBUG(log("destroyed"))
+        mThisWeak.reset();
+        shutdown(Seconds(0));
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr TCPMessaging::convert(ITCPMessagingPtr channel)
+      {
+        return boost::dynamic_pointer_cast<TCPMessaging>(channel);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging => ITCPMessaging
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      String TCPMessaging::toDebugString(ITCPMessagingPtr channel, bool includeCommaPrefix)
+      {
+        if (!channel) return String(includeCommaPrefix ? ", mls channel=(null)" : "mls channel=(null)");
+
+        TCPMessagingPtr pThis = TCPMessaging::convert(channel);
+        return pThis->getDebugValueString(includeCommaPrefix);
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr TCPMessaging::accept(
+                                           ITCPMessagingDelegatePtr delegate,
+                                           ITransportStreamPtr receiveStream,
+                                           ITransportStreamPtr sendStream,
+                                           bool framesHaveChannelNumber,
+                                           SocketPtr socket,
+                                           ULONG maxMessageSizeInBytes
+                                           )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!socket)
+
+        TCPMessagingPtr pThis(new TCPMessaging(IHelper::getServiceQueue(), delegate, receiveStream, sendStream, framesHaveChannelNumber, maxMessageSizeInBytes));
+        pThis->mThisWeak = pThis;
+
+        int errorCode = 0;
+        pThis->mSocket = boost::dynamic_pointer_cast<Socket>(socket->accept(pThis->mRemoteIP, &errorCode));
+        if (!pThis->mSocket) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to accept socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
+          pThis->shutdown(Seconds(0));
+        } else {
+          pThis->mSocket->setDelegate(pThis);
+          pThis->mSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
+        }
+        pThis->init();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr TCPMessaging::connect(
+                                            ITCPMessagingDelegatePtr delegate,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream,
+                                            bool framesHaveChannelNumber,
+                                            IPAddress remoteIP,
+                                            ULONG maxMessageSizeInBytes
+                                            )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(remoteIP.isAddressEmpty())
+        ZS_THROW_INVALID_ARGUMENT_IF(remoteIP.isPortEmpty())
+
+        TCPMessagingPtr pThis(new TCPMessaging(IHelper::getServiceQueue(), delegate, receiveStream, sendStream, framesHaveChannelNumber, maxMessageSizeInBytes));
+        pThis->mThisWeak = pThis;
+        pThis->mRemoteIP = remoteIP;
+
+        bool wouldBlock = false;
+        int errorCode = 0;
+        pThis->mSocket = Socket::createTCP();
+        pThis->mSocket->setDelegate(pThis);
+        pThis->mSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
+        pThis->mSocket->connect(remoteIP, &wouldBlock, &errorCode);
+        if (0 != errorCode) {
+          ZS_LOG_ERROR(Detail, pThis->log("failed to connect socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
+          pThis->shutdown(Seconds(0));
+        }
+        pThis->init();
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      ITCPMessagingSubscriptionPtr TCPMessaging::subscribe(ITCPMessagingDelegatePtr originalDelegate)
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!originalDelegate) return mDefaultSubscription;
+
+        ITCPMessagingSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate);
+
+        ITCPMessagingDelegatePtr delegate = mSubscriptions.delegate(subscription);
+
+        if (delegate) {
+          TCPMessagingPtr pThis = mThisWeak.lock();
+
+          if (SessionState_Pending != mCurrentState) {
+            delegate->onTCPMessagingStateChanged(pThis, mCurrentState);
+          }
+        }
+
+        if (isShutdown()) {
+          mSubscriptions.clear();
+        }
+
+        return subscription;
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::shutdown(Duration lingerTime)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+          return;
+        }
+
+        TCPMessagingPtr pThis = mThisWeak.lock();
+
+        if ((!mLingerTimer) &&
+            (pThis)) {
+          if (lingerTime >= Seconds(0)) {
+            mLingerTimer = Timer::create(mThisWeak.lock(), lingerTime, false);
+          }
+        }
+
+        cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      ITCPMessaging::SessionStates TCPMessaging::getState(
+                                                          WORD *outLastErrorCode,
+                                                          String *outLastErrorReason
+                                                          ) const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (outLastErrorCode) *outLastErrorCode = mLastError;
+        if (outLastErrorReason) *outLastErrorReason = mLastErrorReason;
+        return mCurrentState;
+      }
+
+      //-----------------------------------------------------------------------
+      IPAddress TCPMessaging::getRemoteIP() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mRemoteIP;
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes)
+      {
+        AutoRecursiveLock lock(getLock());
+        mMaxMessageSizeInBytes = maxMessageSizeInBytes;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging => ITransportStreamReaderDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot send data over TCP while shutdown"))
+          return;
+        }
+
+        if (!mTCPWriteReady) {
+          ZS_LOG_DEBUG(log("waiting for TCP socket to indicate write ready before sending"))
+          return;
+        }
+
+        onWriteReady(mSocket);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging => ISocketDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::onReadReady(ISocketPtr socket)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (socket != mSocket) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
+          return;
+        }
+
+        try {
+          SecureByteBlock buffer(OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES);
+          bool wouldBlock = false;
+          ULONG bytesRead = mSocket->receive(buffer.BytePtr(), OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES, &wouldBlock);
+
+          if (0 == bytesRead) {
+            ZS_LOG_WARNING(Detail, log("notified of data to read but no data available to read"))
+            return;
+          }
+
+          mReceivingQueue->Put(buffer.BytePtr(), bytesRead);
+
+        } catch(ISocket::Exceptions::Unspecified &error) {
+          ZS_LOG_ERROR(Detail, log("receive error") + Stringize<ISocket::Exceptions::Unspecified::error_type>(error.getErrorCode()).string())
+          setError(IHTTP::HTTPStatusCode_Networkconnecttimeouterror, (String("network error: ") + error.getMessage()).c_str());
+          cancel();
+          return;
+        }
+
+        do {
+          size_t size = mReceivingQueue->CurrentSize();
+          if (0 == size) {
+            ZS_LOG_TRACE(log("no more data available in receive buffer"))
+            break;
+          }
+
+          size_t needingSize = sizeof(DWORD);
+          if (mFramesHaveChannelNumber) {
+            needingSize += sizeof(DWORD);
+          }
+
+          if (size < needingSize) {
+            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + Stringize<typeof(size)>(size).string())
+            break;
+          }
+
+          DWORD bufferedChannel = 0;
+          DWORD channel = 0;
+
+          if (mFramesHaveChannelNumber) {
+            mReceivingQueue->PeekWord32(channel);
+            mReceivingQueue->Get((BYTE *)(&bufferedChannel), sizeof(bufferedChannel));
+          }
+
+          DWORD bufferSize = 0;
+          mReceivingQueue->PeekWord32(bufferSize);
+
+          needingSize += bufferSize;
+
+          if (size < needingSize) {
+            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + Stringize<typeof(size)>(size).string() + ", needing=" + Stringize<typeof(needingSize)>(needingSize).string())
+            if (mFramesHaveChannelNumber) {
+              // put back the buffered channel number
+              mReceivingQueue->Unget((const BYTE *)(&bufferedChannel), sizeof(bufferedChannel));
+            }
+            break;
+          }
+
+          if (bufferSize > mMaxMessageSizeInBytes) {
+            ZS_LOG_ERROR(Detail, log("read message size exceeds maximum buffer size") + ", message size=" + Stringize<typeof(bufferSize)>(bufferSize).string() + ", max size=" + Stringize<typeof(mMaxMessageSizeInBytes)>(mMaxMessageSizeInBytes).string())
+            setError(IHTTP::HTTPStatusCode_PreconditionFailed, "read message size exceeds maximum buffer size allowed");
+            cancel();
+            return;
+          }
+
+          // skip over the peeked value
+          mReceivingQueue->Skip(sizeof(bufferSize));
+
+          SecureByteBlockPtr message(new SecureByteBlock(bufferSize));
+          mReceivingQueue->Get(message->BytePtr(), bufferSize);
+
+          ChannelHeaderPtr channelHeader;
+          if (mFramesHaveChannelNumber) {
+            channelHeader = ChannelHeaderPtr(new ChannelHeader);
+            channelHeader->mChannelID = channel;
+          }
+
+          ZS_LOG_DEBUG(log("message read from network") + ", message size=" + Stringize<typeof(bufferSize)>(bufferSize).string() + ", channel=" + Stringize<typeof(channel)>(channel).string())
+          mReceiveStream->write(message, channelHeader);
+        } while(true);
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::onWriteReady(ISocketPtr socket)
+      {
+        typedef ITransportStream::StreamHeader StreamHeader;
+        typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
+
+        AutoRecursiveLock lock(getLock());
+        if (socket != mSocket) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
+          return;
+        }
+
+        if (!mSocket) {
+          ZS_LOG_WARNING(Detail, log("socket gone"))
+          return;
+        }
+
+        mTCPWriteReady = false;
+
+        if (!sendQueuedData()) {
+          ZS_LOG_TRACE(log("not all queued data sent"))
+          return;
+        }
+
+        while (mSendStream->getNextReadSizeInBytes() > 0) {
+          // attempt to send the next buffer over TCP
+
+          StreamHeaderPtr header;
+          SecureByteBlockPtr buffer = mSendStream->read(&header);
+
+          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + Stringize<typeof(SecureByteBlock::size_type)>(buffer->SizeInBytes()).string())
+
+          ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ChannelHeader>(header);
+
+          if (mFramesHaveChannelNumber) {
+            if (!channelHeader) {
+              ZS_LOG_ERROR(Detail, log("expecting a channel header but did not receive one"))
+              setError(IHTTP::HTTPStatusCode_ExpectationFailed, "expected channel header for sending buffer but was not given one");
+              cancel();
+              return;
+            }
+            mSendingQueue->PutWord32(channelHeader->mChannelID);
+          }
+
+          mSendingQueue->PutWord32(buffer->SizeInBytes());
+          mSendingQueue->Put(buffer->BytePtr(), buffer->SizeInBytes());
+
+          if (!sendQueuedData()) {
+            ZS_LOG_TRACE(log("not all queued data sent"))
+            return;
+          }
+        }
+
+        mTCPWriteReady = true;
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::onException(ISocketPtr socket)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (socket != mSocket) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
+          return;
+        }
+
+        setError(IHTTP::HTTPStatusCode_Networkconnecttimeouterror, "socket connection failure");
+        cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging => ITimerDelegate
+      #pragma mark
+
+      void TCPMessaging::onTimer(TimerPtr timer)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        mLingerTimer.reset();
+        cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark TCPMessaging  => (internal)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      RecursiveLock &TCPMessaging::getLock() const
+      {
+        return mLock;
+      }
+
+      //-----------------------------------------------------------------------
+      String TCPMessaging::log(const char *message) const
+      {
+        return String("TCPMessaging [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+      }
+
+      //-----------------------------------------------------------------------
+      String TCPMessaging::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return Helper::getDebugValue("tcp messaging id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+               Helper::getDebugValue("graceful shutdown", mGracefulShutdownReference ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<ITCPMessagingDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("state", ITCPMessaging::toString(mCurrentState), firstTime) +
+               Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
+               "receive stream: " + ITransportStream::toDebugString(mReceiveStream->getStream(), false) +
+               "send stream: " + ITransportStream::toDebugString(mSendStream->getStream(), false) +
+               Helper::getDebugValue("max size", Stringize<typeof(mMaxMessageSizeInBytes)>(mMaxMessageSizeInBytes).string(), firstTime) +
+               Helper::getDebugValue("write ready", mTCPWriteReady ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("remote IP", mRemoteIP.string(), firstTime) +
+               Helper::getDebugValue("socket", mSocket ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("linger timer", mLingerTimer ? String("true") : String(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::setState(SessionStates state)
+      {
+        if (state == mCurrentState) return;
+
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + ITCPMessaging::toString(state) + ", old state=" + ITCPMessaging::toString(mCurrentState))
+        mCurrentState = state;
+
+        TCPMessagingPtr pThis = mThisWeak.lock();
+        if (pThis) {
+          ZS_LOG_DEBUG(log("attempting to report state to delegate") + getDebugValueString())
+          mSubscriptions.delegate()->onTCPMessagingStateChanged(pThis, mCurrentState);
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::setError(WORD errorCode, const char *inReason)
+      {
+        String reason(inReason ? String(inReason) : String());
+        if (reason.isEmpty()) {
+          reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
+        }
+
+        if (0 != mLastError) {
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          return;
+        }
+
+        mLastError = errorCode;
+        mLastErrorReason = reason;
+
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+      }
+
+      //-----------------------------------------------------------------------
+      void TCPMessaging::cancel()
+      {
+        ZS_LOG_DEBUG(log("cancel called"))
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+        }
+
+        setState(SessionState_ShuttingDown);
+
+        if (mLingerTimer) {
+          if (!mGracefulShutdownReference) {
+            mGracefulShutdownReference = mThisWeak.lock();
+          }
+
+          ZS_LOG_DEBUG(log("waiting for linger to complete"))
+          return;
+        }
+
+        setState(SessionState_Shutdown);
+
+        mGracefulShutdownReference.reset();
+
+        mSubscriptions.clear();
+
+        mReceiveStream->cancel();
+        mSendStream->cancel();
+
+        if (mSocket) {
+          mSocket->close();
+          mSocket.reset();
+        }
+
+        ZS_LOG_DEBUG(log("cancel complete"))
+      }
+
+      //-----------------------------------------------------------------------
+      bool TCPMessaging::sendQueuedData()
+      {
+        size_t size = mSendingQueue->CurrentSize();
+
+        // attempt to send from the send queue first
+        if (size < 1) {
+          ZS_LOG_TRACE(log("no queued data to send"))
+          return true;
+        }
+
+        SecureByteBlock buffer(size);
+
+        // attempt to grab the entire buffer to be sent
+        mSendingQueue->Peek(buffer.BytePtr(), size);
+
+        try {
+          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", size=" + Stringize<typeof(size)>(size).string())
+          bool wouldBlock = false;
+          ULONG sent = mSocket->send(buffer.BytePtr(), size, &wouldBlock);
+          if (0 != sent) {
+            mSendingQueue->Skip(sent);
+          }
+
+          ZS_LOG_TRACE(log("data sent over TCP") + ", size=" + Stringize<typeof(sent)>(sent).string())
+
+          if (mSendingQueue->CurrentSize() > 0) {
+            ZS_LOG_DEBUG(log("still more data in the sending queue to be sent, wait for next write ready..."))
+            return false;
+          }
+        } catch (ISocket::Exceptions::Unspecified &error) {
+          ZS_LOG_ERROR(Detail, log("send error") + Stringize<ISocket::Exceptions::Unspecified::error_type>(error.getErrorCode()).string())
+          setError(IHTTP::HTTPStatusCode_Networkconnecttimeouterror, (String("network error: ") + error.getMessage()).c_str());
+          cancel();
+          return false;
+        }
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+    }
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ITCPMessaging
+    #pragma mark
+
+    //-----------------------------------------------------------------------
+    const char *ITCPMessaging::toString(SessionStates state)
+    {
+      switch (state)
+      {
+        case SessionState_Pending:                      return "Pending";
+        case SessionState_Connected:                    return "Connected";
+        case SessionState_ShuttingDown:                 return "Shutting down";
+        case SessionState_Shutdown:                     return "Shutdown";
+      }
+      return "UNDEFINED";
+    }
+    
+    //-----------------------------------------------------------------------
+    String ITCPMessaging::toDebugString(ITCPMessagingPtr messaging, bool includeCommaPrefix)
+    {
+      return internal::TCPMessaging::toDebugString(messaging, includeCommaPrefix);
+    }
+    
+    //-----------------------------------------------------------------------
+    ITCPMessagingPtr ITCPMessaging::accept(
+                                   ITCPMessagingDelegatePtr delegate,
+                                   ITransportStreamPtr receiveStream,
+                                   ITransportStreamPtr sendStream,
+                                   bool framesHaveChannelNumber,
+                                   SocketPtr socket,
+                                   ULONG maxMessageSizeInBytes
+                                   )
+    {
+      return internal::ITCPMessagingFactory::singleton().accept(delegate, receiveStream, sendStream, framesHaveChannelNumber, socket, maxMessageSizeInBytes);
+    }
+
+    //-----------------------------------------------------------------------
+    ITCPMessagingPtr ITCPMessaging::connect(
+                                            ITCPMessagingDelegatePtr delegate,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream,
+                                            bool framesHaveChannelNumber,
+                                            IPAddress remoteIP,
+                                            ULONG maxMessageSizeInBytes
+                                            )
+    {
+      return internal::ITCPMessagingFactory::singleton().connect(delegate, receiveStream, sendStream, framesHaveChannelNumber, remoteIP, maxMessageSizeInBytes);
+    }
+  }
+}

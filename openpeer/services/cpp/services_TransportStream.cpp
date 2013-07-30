@@ -431,8 +431,16 @@ namespace openpeer
           if (outHeader) {
             *outHeader = buffer.mHeader;
           }
+          if (buffer.mRead > 0) {
+            ULONG resultSize = result->SizeInBytes() - buffer.mRead;
 
-          ZS_LOG_TRACE(log("buffer read") + ", read=" + Stringize<SecureByteBlock::size_type>(result->SizeInBytes()).string() )
+            SecureByteBlockPtr temp(new SecureByteBlock(resultSize));
+            memcpy(temp->BytePtr(), result->BytePtr() + buffer.mRead, resultSize);
+
+            result = temp;
+          }
+
+          ZS_LOG_TRACE(log("buffer read") + ", read=" + Stringize<SecureByteBlock::size_type>(result->SizeInBytes()).string())
 
           mBuffers.pop_front();
         }

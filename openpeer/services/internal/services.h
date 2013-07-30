@@ -51,5 +51,6 @@
 #include <openpeer/services/internal/services_STUNDiscovery.h>
 #include <openpeer/services/internal/services_STUNRequester.h>
 #include <openpeer/services/internal/services_STUNRequesterManager.h>
+#include <openpeer/services/internal/services_TCPMessaging.h>
 #include <openpeer/services/internal/services_TransportStream.h>
 #include <openpeer/services/internal/services_TURNSocket.h>

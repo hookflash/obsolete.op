@@ -53,6 +53,10 @@ namespace openpeer
     using zsLib::Duration;
     using zsLib::Seconds;
     using zsLib::IPAddress;
+    using zsLib::Socket;
+    using zsLib::SocketPtr;
+    using zsLib::ISocketDelegate;
+    using zsLib::ISocketDelegatePtr;
     using zsLib::RecursiveLock;
     using zsLib::IMessageQueuePtr;
     using zsLib::Log;
@@ -213,6 +217,19 @@ namespace openpeer
     struct STUNPacket;
     typedef boost::shared_ptr<STUNPacket> STUNPacketPtr;
     typedef boost::weak_ptr<STUNPacket> STUNPacketWeakPtr;
+
+    interaction ITCPMessaging;
+    typedef boost::shared_ptr<ITCPMessaging> ITCPMessagingPtr;
+    typedef boost::weak_ptr<ITCPMessaging> ITCPMessagingWeakPtr;
+
+    interaction ITCPMessagingDelegate;
+    typedef boost::shared_ptr<ITCPMessagingDelegate> ITCPMessagingDelegatePtr;
+    typedef boost::weak_ptr<ITCPMessagingDelegate> ITCPMessagingDelegateWeakPtr;
+
+    interaction ITCPMessagingSubscription;
+    typedef boost::shared_ptr<ITCPMessagingSubscription> ITCPMessagingSubscriptionPtr;
+    typedef boost::weak_ptr<ITCPMessagingSubscription> ITCPMessagingSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITCPMessagingDelegate, ITCPMessagingSubscription> ITCPMessagingDelegateSubscriptions;
 
     interaction ITransportStream;
     typedef boost::shared_ptr<ITransportStream> ITransportStreamPtr;
