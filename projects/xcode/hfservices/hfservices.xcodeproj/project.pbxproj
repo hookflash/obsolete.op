@@ -33,6 +33,7 @@
 		0095DADE16CA83EB005F53D3 /* services_STUNRequester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D92F16CA83EA005F53D3 /* services_STUNRequester.cpp */; };
 		0095DADF16CA83EB005F53D3 /* services_STUNRequesterManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D93016CA83EA005F53D3 /* services_STUNRequesterManager.cpp */; };
 		0095DAE016CA83EB005F53D3 /* services_TURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095D93116CA83EA005F53D3 /* services_TURNSocket.cpp */; };
+		00ABD44917A8423900178078 /* services_TCPMessaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ABD44817A8423900178078 /* services_TCPMessaging.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +115,9 @@
 		0095D95916CA83EA005F53D3 /* services.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = services.h; sourceTree = "<group>"; };
 		0095D95A16CA83EA005F53D3 /* STUNPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUNPacket.h; sourceTree = "<group>"; };
 		0095D96816CA83EA005F53D3 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		00ABD44817A8423900178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TCPMessaging.cpp; sourceTree = "<group>"; };
+		00ABD44A17A8424900178078 /* services_TCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TCPMessaging.h; sourceTree = "<group>"; };
+		00ABD44B17A8426100178078 /* ITCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITCPMessaging.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,14 +178,15 @@
 				0095D95016CA83EA005F53D3 /* IRUDPICESocketSession.h */,
 				0095D95116CA83EA005F53D3 /* IRUDPListener.h */,
 				0095D95216CA83EA005F53D3 /* IRUDPMessaging.h */,
-				0095D95316CA83EA005F53D3 /* ISTUNDiscovery.h */,
-				0095D95416CA83EA005F53D3 /* ISTUNRequester.h */,
-				0095D95516CA83EA005F53D3 /* ISTUNRequesterManager.h */,
-				003BEECB17A747270002EB47 /* ITransportStream.h */,
-				0095D95616CA83EA005F53D3 /* ITURNSocket.h */,
 				0095D95716CA83EA005F53D3 /* RUDPPacket.h */,
 				0095D95816CA83EA005F53D3 /* RUDPProtocol.h */,
+				0095D95316CA83EA005F53D3 /* ISTUNDiscovery.h */,
 				0095D95A16CA83EA005F53D3 /* STUNPacket.h */,
+				0095D95416CA83EA005F53D3 /* ISTUNRequester.h */,
+				0095D95516CA83EA005F53D3 /* ISTUNRequesterManager.h */,
+				00ABD44B17A8426100178078 /* ITCPMessaging.h */,
+				003BEECB17A747270002EB47 /* ITransportStream.h */,
+				0095D95616CA83EA005F53D3 /* ITURNSocket.h */,
 			);
 			path = services;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				0095D92E16CA83EA005F53D3 /* services_STUNPacket.cpp */,
 				0095D92F16CA83EA005F53D3 /* services_STUNRequester.cpp */,
 				0095D93016CA83EA005F53D3 /* services_STUNRequesterManager.cpp */,
+				00ABD44817A8423900178078 /* services_TCPMessaging.cpp */,
 				003BEECD17A747510002EB47 /* services_TransportStream.cpp */,
 				0095D93116CA83EA005F53D3 /* services_TURNSocket.cpp */,
 			);
@@ -245,6 +251,7 @@
 				0095D94916CA83EA005F53D3 /* services_STUNDiscovery.h */,
 				0095D94A16CA83EA005F53D3 /* services_STUNRequester.h */,
 				0095D94B16CA83EA005F53D3 /* services_STUNRequesterManager.h */,
+				00ABD44A17A8424900178078 /* services_TCPMessaging.h */,
 				003BEECC17A7473B0002EB47 /* services_TransportStream.h */,
 				0095D94C16CA83EA005F53D3 /* services_TURNSocket.h */,
 				0095D94D16CA83EA005F53D3 /* types.h */,
@@ -339,6 +346,7 @@
 				003BEDD717A607190002EB47 /* services_RSAPrivateKey.cpp in Sources */,
 				003BEDD817A607190002EB47 /* services_RSAPublicKey.cpp in Sources */,
 				003BEECE17A747510002EB47 /* services_TransportStream.cpp in Sources */,
+				00ABD44917A8423900178078 /* services_TCPMessaging.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
