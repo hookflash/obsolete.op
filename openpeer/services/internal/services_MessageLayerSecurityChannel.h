@@ -72,7 +72,8 @@ namespace openpeer
                                           public zsLib::MessageQueueAssociator,
                                           public IMessageLayerSecurityChannel,
                                           public IMessageLayerSecurityChannelAsyncDelegate,
-                                          public ITransportStreamReaderDelegate
+                                          public ITransportStreamReaderDelegate,
+                                          public ITransportStreamWriterDelegate
       {
       public:
         friend interaction IMessageLayerSecurityChannelFactory;
@@ -203,6 +204,13 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark MessageLayerSecurityChannel => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark MessageLayerSecurityChannel => IMessageLayerSecurityChannelAsyncDelegate
         #pragma mark
 
@@ -274,13 +282,18 @@ namespace openpeer
         DocumentPtr mReceiveKeyingSignedDoc;      // temporary document needed to resolve receive signing public key
         ElementPtr mReceiveKeyingSignedEl;        // temporary eleemnt needed to resolve receive signing public key
 
-        ITransportStreamReaderPtr mReceiveStreamEncoded;
-        ITransportStreamWriterPtr mReceiveStreamDecoded;
-        ITransportStreamReaderPtr mSendStreamDecoded;
-        ITransportStreamWriterPtr mSendStreamEncoded;
+        ITransportStreamReaderPtr mReceiveStreamEncoded;  // typically connected to on-the-wire transport
+        ITransportStreamWriterPtr mReceiveStreamDecoded;  // typically connected to "outer" layer
+        ITransportStreamReaderPtr mSendStreamDecoded;     // typically connected to "outer" layer
+        ITransportStreamWriterPtr mSendStreamEncoded;     // typically connected to on-the-wire transport
 
         ITransportStreamReaderSubscriptionPtr mReceiveStreamEncodedSubscription;
+        ITransportStreamWriterSubscriptionPtr mReceiveStreamDecodedSubscription;
         ITransportStreamReaderSubscriptionPtr mSendStreamDecodedSubscription;
+        ITransportStreamWriterSubscriptionPtr mSendStreamEncodedSubscription;
+
+        AutoBool mReceiveStreamDecodedWriteReady;
+        AutoBool mSendStreamEncodedWriteReady;
 
         KeyMap mReceiveKeys;
         KeyMap mSendKeys;

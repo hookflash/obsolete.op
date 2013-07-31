@@ -72,11 +72,7 @@ namespace openpeer
                                        ITransportStreamReaderDelegatePtr readerDelegate
                                        ) :
         zsLib::MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
-        mShutdown(false),
-        mReaderReady(false),
-        mReadReadyNotified(false),
-        mWriteReadyNotified(false)
+        mID(zsLib::createPUID())
       {
         ZS_LOG_DEBUG(log("created"))
         if (writerDelegate) {
@@ -152,7 +148,7 @@ namespace openpeer
       void TransportStream::cancel()
       {
         AutoRecursiveLock lock(getLock());
-        mShutdown = true;
+        get(mShutdown) = true;
 
         mWriterSubscriptions.clear();
         mDefaultWriterSubscription.reset();
@@ -299,7 +295,8 @@ namespace openpeer
           ZS_LOG_WARNING(Detail, log("already shutdown"))
           return;
         }
-        notifySubscribers(true, false);
+        get(mReaderReady) = true;
+        notifySubscribers(false, false);
       }
 
       //-----------------------------------------------------------------------
@@ -512,12 +509,12 @@ namespace openpeer
                                               )
       {
         if (afterRead) {
-          mReaderReady = true;          // reader must be ready if read was called
-          mReadReadyNotified = false;   // after a read operation, a new read notification should fire (if applicable)
+          get(mReaderReady) = true;          // reader must be ready if read was called
+          get(mReadReadyNotified) = false;   // after a read operation, a new read notification should fire (if applicable)
         }
 
         if (afterWrite) {
-          mWriteReadyNotified = false;  // after data is written, the notification will have to fire again later when buffer is emptied
+          get(mWriteReadyNotified) = false;  // after data is written, the notification will have to fire again later when buffer is emptied
         }
 
         // only notify if this is the first buffer added or after each read operation (as have to wait until read called before notifying again)
@@ -532,14 +529,14 @@ namespace openpeer
           ZS_LOG_TRACE(log("notifying ready to read") + ", subscribers=" + Stringize<ITransportStreamReaderDelegateSubscriptions::size_type>(mReaderSubscriptions.size()).string())
           mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
 
-          mReadReadyNotified = true;
+          get(mReadReadyNotified) = true;
         }
 
         if (notifyWrite) {
           ZS_LOG_TRACE(log("notifying ready to write") + ", subscribers=" + Stringize<ITransportStreamWriterDelegateSubscriptions::size_type>(mWriterSubscriptions.size()).string())
           mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
 
-          mWriteReadyNotified = true;
+          get(mWriteReadyNotified) = true;
         }
       }
 

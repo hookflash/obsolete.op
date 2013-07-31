@@ -40,6 +40,7 @@ namespace openpeer
 {
   namespace services
   {
+    using zsLib::AutoBool;
     using zsLib::PUID;
     using zsLib::BYTE;
     using zsLib::WORD;

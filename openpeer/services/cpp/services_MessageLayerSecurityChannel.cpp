@@ -216,7 +216,9 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         mReceiveStreamEncodedSubscription = mReceiveStreamEncoded->subscribe(mThisWeak.lock());
+        mReceiveStreamDecodedSubscription = mReceiveStreamDecoded->subscribe(mThisWeak.lock());
         mSendStreamDecodedSubscription = mSendStreamDecoded->subscribe(mThisWeak.lock());
+        mSendStreamEncodedSubscription = mSendStreamEncoded->subscribe(mThisWeak.lock());
 
         IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
@@ -654,6 +656,35 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark MessageLayerSecurityChannel => ITransportStreamWriterDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void MessageLayerSecurityChannel::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      {
+        AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("transport stream writer ready"))
+
+        if (writer == mReceiveStreamDecoded) {
+          get(mReceiveStreamDecodedWriteReady) = true;
+
+          // event typically fires when "outer" notifies it's ready to send data thus need to inform the wire that it can send data now
+          mReceiveStreamEncoded->notifyReaderReadyToRead();
+        }
+        if (writer == mSendStreamEncoded) {
+          get(mSendStreamEncodedWriteReady) = true;
+
+          // typically happens when the wire notifies that it's ready to read data thus need to notify outer layer that it can send data
+          mSendStreamDecoded->notifyReaderReadyToRead();
+        }
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark MessageLayerSecurityChannel => IMessageLayerSecurityChannelAsyncDelegate
       #pragma mark
 
@@ -715,7 +746,11 @@ namespace openpeer
                ", send stream decoded: " + ITransportStream::toDebugString(mSendStreamDecoded->getStream(), false) +
                ", send stream encoded: " + ITransportStream::toDebugString(mSendStreamEncoded->getStream(), false) +
                Helper::getDebugValue("receive stream encoded subscription", mReceiveStreamEncodedSubscription ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive stream decoded subscription", mReceiveStreamDecodedSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("send stream decoded subscription", mSendStreamDecodedSubscription ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("send stream encoded subscription", mSendStreamEncodedSubscription ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("receive stream decoded write ready", mReceiveStreamDecodedWriteReady ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("send stream encoded write ready", mSendStreamEncodedWriteReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keys", mReceiveKeys.size() > 0 ? Stringize<KeyMap::size_type>(mReceiveKeys.size()).string() : String(), firstTime) +
                Helper::getDebugValue("send keys", mSendKeys.size() > 0 ? Stringize<KeyMap::size_type>(mSendKeys.size()).string() : String(), firstTime);
       }
@@ -776,6 +811,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool MessageLayerSecurityChannel::stepReceive()
       {
+        if (!mReceiveStreamDecodedWriteReady) {
+          ZS_LOG_DEBUG(log("cannot read encoded stream until notified that it's okay to write to decoded stream"))
+          return true;
+        }
         if (mReceiveStreamEncoded->getNextReadSizeInBytes() < 1) {
           ZS_LOG_DEBUG(log("nothing to decode"))
           return true;
@@ -1155,6 +1194,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool MessageLayerSecurityChannel::stepSendKeying()
       {
+        if (!mSendStreamEncodedWriteReady) {
+          ZS_LOG_DEBUG(log("cannot send encoded stream until lower layer transport (typically 'wire' transport) indicates it is ready to send data"))
+          return false;
+        }
+
         if (mLocalContextID.isEmpty()) {
           ZS_LOG_DEBUG(log("missing local context ID thus cannot send data remotely"))
           return false;

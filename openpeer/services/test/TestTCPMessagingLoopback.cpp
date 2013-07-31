@@ -400,13 +400,14 @@ void doTestTCPMessagingLoopback()
 
   ZS_LOG_BASIC("WAITING:      Waiting for TCP messaging testing to complete (max wait is 180 seconds).");
 
-  // check to see if all DNS routines have resolved
   {
     ULONG step = 0;
     ULONG totalSteps = 2;
 
     IPAddress ip1("127.0.0.1");
-    ip1.setPort(IHelper::random(5000, 65534));
+    ip1.setPort(IHelper::random(10000, 29999));
+    IPAddress ip2("127.0.0.1");
+    ip2.setPort(IHelper::random(30000, 49999));
 
     //    IPAddress ip2("127.0.0.1:6543");
 
@@ -423,6 +424,7 @@ void doTestTCPMessagingLoopback()
           break;
         }
         case 1: {
+          testObject1 = TestTCPMessagingLoopback::create(thread, ip2, false);
 //          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
 //          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
           break;
@@ -465,6 +467,12 @@ void doTestTCPMessagingLoopback()
             if (10 == totalWait) {
             }
 
+            if (30 == totalWait) {
+              if (testObject1) testObject1->shutdown();
+              if (testObject2) testObject2->shutdown();
+              if (testObject3) testObject3->shutdown();
+              if (testObject4) testObject4->shutdown();
+            }
             break;
           }
         }
