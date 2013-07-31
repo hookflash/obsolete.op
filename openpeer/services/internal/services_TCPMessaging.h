@@ -197,8 +197,8 @@ namespace openpeer
         bool mFramesHaveChannelNumber;
         ULONG mMaxMessageSizeInBytes;
 
-        bool mConnectIssued;
-        bool mTCPWriteReady;
+        AutoBool mConnectIssued;
+        AutoBool mTCPWriteReady;
         IPAddress mRemoteIP;
         SocketPtr mSocket;
         TimerPtr mLingerTimer;

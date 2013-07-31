@@ -87,8 +87,6 @@ namespace openpeer
         mSendStream(sendStream->getReader()),
         mFramesHaveChannelNumber(framesHaveChannelNumber),
         mMaxMessageSizeInBytes(maxMessageSizeInBytes),
-        mConnectIssued(false),
-        mTCPWriteReady(true),
         mSendingQueue(new ByteQueue),
         mReceivingQueue(new ByteQueue)
       {
@@ -187,7 +185,7 @@ namespace openpeer
         TCPMessagingPtr pThis(new TCPMessaging(IHelper::getServiceQueue(), delegate, receiveStream, sendStream, framesHaveChannelNumber, maxMessageSizeInBytes));
         pThis->mThisWeak = pThis;
         pThis->mRemoteIP = remoteIP;
-        pThis->mConnectIssued = true;
+        get(pThis->mConnectIssued) = true;
 
         bool wouldBlock = false;
         int errorCode = 0;
@@ -422,12 +420,12 @@ namespace openpeer
         if (mConnectIssued) {
           if (!isShuttingdown()) {
             ZS_LOG_TRACE(log("connected"))
-            mConnectIssued = false;
+            get(mConnectIssued) = false;
             setState(SessionState_Connected);
           }
         }
 
-        mTCPWriteReady = true;
+        get(mTCPWriteReady) = true;
 
         sendDataNow();
       }
@@ -601,7 +599,7 @@ namespace openpeer
           return;
         }
 
-        mTCPWriteReady = false;
+        get(mTCPWriteReady) = false;
 
         size_t sent = 0;
 
@@ -614,7 +612,7 @@ namespace openpeer
           // nothing to send?
           if (mSendStream->getNextReadSizeInBytes() < 1) {
             ZS_LOG_DEBUG(log("no data was sent because there was nothing to send (try again when data added to send)"))
-            mTCPWriteReady = true;
+            get(mTCPWriteReady) = true;
             return;
           }
         }
