@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396930246.768358"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "413"
-         endingLineNumber = "413"
+         startingLineNumber = "420"
+         endingLineNumber = "420"
          landmarkName = "doTestTCPMessagingLoopback()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920125.682381"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "194"
-         endingLineNumber = "194"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
          landmarkName = "onTransportStreamWriterReady(ITransportStreamWriterPtr writer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "231"
-         endingLineNumber = "231"
+         startingLineNumber = "233"
+         endingLineNumber = "233"
          landmarkName = "onTransportStreamReaderReady(ITransportStreamReaderPtr reader)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -73,11 +73,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "329"
-         endingLineNumber = "329"
+         startingLineNumber = "336"
+         endingLineNumber = "336"
          landmarkName = "shutdown()"
          landmarkType = "7">
       </FileBreakpoint>
@@ -86,24 +86,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396912864.498532"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "108"
-         endingLineNumber = "108"
-         landmarkName = "init(IPAddress serverIP)"
-         landmarkType = "7">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920125.682381"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "174"
-         endingLineNumber = "174"
+         startingLineNumber = "176"
+         endingLineNumber = "176"
          landmarkName = "onTCPMessagingStateChanged( ITCPMessagingPtr messaging, SessionStates state )"
          landmarkType = "7">
       </FileBreakpoint>
@@ -112,11 +99,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/cpp/services_TCPMessaging.cpp"
-         timestampString = "396932661.719941"
+         timestampString = "396977037.235055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "484"
-         endingLineNumber = "484"
+         startingLineNumber = "438"
+         endingLineNumber = "438"
          landmarkName = "TCPMessaging::onException(ISocketPtr socket)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "294"
-         endingLineNumber = "294"
+         startingLineNumber = "301"
+         endingLineNumber = "301"
          landmarkName = "onWriteReady(ISocketPtr socket)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -138,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "299"
-         endingLineNumber = "299"
+         startingLineNumber = "306"
+         endingLineNumber = "306"
          landmarkName = "onException(ISocketPtr socket)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -151,11 +138,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "287"
-         endingLineNumber = "287"
+         startingLineNumber = "294"
+         endingLineNumber = "294"
          landmarkName = "onReadReady(ISocketPtr socket)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -164,7 +151,7 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920566.711001"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "165"
@@ -177,37 +164,37 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920568.769643"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "168"
-         endingLineNumber = "168"
+         startingLineNumber = "169"
+         endingLineNumber = "169"
          landmarkName = "onTCPMessagingStateChanged( ITCPMessagingPtr messaging, SessionStates state )"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920571.379699"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "179"
-         endingLineNumber = "179"
+         startingLineNumber = "181"
+         endingLineNumber = "181"
          landmarkName = "onTCPMessagingStateChanged( ITCPMessagingPtr messaging, SessionStates state )"
          landmarkType = "7">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "Yes"
+         shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396920574.248293"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "182"
-         endingLineNumber = "182"
+         startingLineNumber = "184"
+         endingLineNumber = "184"
          landmarkName = "onTCPMessagingStateChanged( ITCPMessagingPtr messaging, SessionStates state )"
          landmarkType = "7">
       </FileBreakpoint>
@@ -216,11 +203,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/cpp/services_TCPMessaging.cpp"
-         timestampString = "396932661.719941"
+         timestampString = "396977037.235055"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "408"
-         endingLineNumber = "408"
+         startingLineNumber = "406"
+         endingLineNumber = "406"
          landmarkName = "TCPMessaging::onReadReady(ISocketPtr socket)"
          landmarkType = "5">
       </FileBreakpoint>
@@ -255,11 +242,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925118.895866"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "207"
-         endingLineNumber = "207"
+         startingLineNumber = "209"
+         endingLineNumber = "209"
          landmarkName = "onTransportStreamWriterReady(ITransportStreamWriterPtr writer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -268,11 +255,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925120.422976"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "211"
-         endingLineNumber = "211"
+         startingLineNumber = "213"
+         endingLineNumber = "213"
          landmarkName = "onTransportStreamWriterReady(ITransportStreamWriterPtr writer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -281,11 +268,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "236"
-         endingLineNumber = "236"
+         startingLineNumber = "238"
+         endingLineNumber = "238"
          landmarkName = "onTransportStreamReaderReady(ITransportStreamReaderPtr reader)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -294,11 +281,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396925228.909168"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "244"
-         endingLineNumber = "244"
+         startingLineNumber = "246"
+         endingLineNumber = "246"
          landmarkName = "onTransportStreamReaderReady(ITransportStreamReaderPtr reader)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -306,51 +293,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "../../openpeer/services/cpp/services_TCPMessaging.cpp"
-         timestampString = "396932661.719941"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "422"
-         endingLineNumber = "422"
-         landmarkName = "TCPMessaging::onWriteReady(ISocketPtr socket)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../../openpeer/services/cpp/services_TCPMessaging.cpp"
-         timestampString = "396932661.719941"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "321"
-         endingLineNumber = "321"
-         landmarkName = "TCPMessaging::onReadReady(ISocketPtr socket)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "../../openpeer/services/cpp/services_TCPMessaging.cpp"
-         timestampString = "396932661.719941"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "452"
-         endingLineNumber = "452"
-         landmarkName = "TCPMessaging::onWriteReady(ISocketPtr socket)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396926073.78137"
+         timestampString = "396974403.838247"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "224"
-         endingLineNumber = "224"
+         startingLineNumber = "226"
+         endingLineNumber = "226"
          landmarkName = "onTransportStreamWriterReady(ITransportStreamWriterPtr writer)"
          landmarkType = "7">
       </FileBreakpoint>
@@ -359,13 +307,39 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
-         timestampString = "396930246.768358"
+         timestampString = "396975291.675818"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "394"
-         endingLineNumber = "394"
+         startingLineNumber = "401"
+         endingLineNumber = "401"
          landmarkName = "doTestTCPMessagingLoopback()"
          landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../openpeer/services/test/TestTCPMessagingLoopback.cpp"
+         timestampString = "396974385.284024"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "110"
+         endingLineNumber = "110"
+         landmarkName = "init(IPAddress serverIP)"
+         landmarkType = "7">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "../../openpeer/services/cpp/services_TransportStream.cpp"
+         timestampString = "396975291.675818"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "196"
+         endingLineNumber = "196"
+         landmarkName = "TransportStream::subscribe(ITransportStreamWriterDelegatePtr originalDelegate)"
+         landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
 </Bucket>

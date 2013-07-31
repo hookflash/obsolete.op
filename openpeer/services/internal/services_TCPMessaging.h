@@ -168,7 +168,8 @@ namespace openpeer
         void setError(WORD errorCode, const char *inReason = NULL);
 
         void cancel();
-        bool sendQueuedData();
+        void sendDataNow();
+        bool sendQueuedData(size_t &outSent);
 
       protected:
         //---------------------------------------------------------------------

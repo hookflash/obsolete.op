@@ -290,19 +290,14 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
+        ZS_LOG_TRACE(log("notified stream read ready"))
+
         if (isShutdown()) {
           ZS_LOG_WARNING(Detail, log("cannot send data over TCP while shutdown"))
           return;
         }
 
-        ZS_LOG_TRACE(log("notified stream read ready"))
-
-        if (!mTCPWriteReady) {
-          ZS_LOG_DEBUG(log("waiting for TCP socket to indicate write ready before sending"))
-          return;
-        }
-
-        onWriteReady(mSocket);
+        sendDataNow();
       }
 
       //-----------------------------------------------------------------------
@@ -318,14 +313,17 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        if (isShutdown()) return;
+        ZS_LOG_TRACE(log("notified TCP read ready"))
 
         if (socket != mSocket) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
           return;
         }
 
-        ZS_LOG_TRACE(log("notified read ready"))
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("notified about TCP read ready after already shutdown"))
+          return;
+        }
 
         try {
           SecureByteBlock buffer(OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES);
@@ -412,22 +410,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void TCPMessaging::onWriteReady(ISocketPtr socket)
       {
-        typedef ITransportStream::StreamHeader StreamHeader;
-        typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
-
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_TRACE(log("notified write ready"))
-
-        if (isShutdown()) return;
+        ZS_LOG_TRACE(log("notified TCP write ready"))
 
         if (socket != mSocket) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
-          return;
-        }
-
-        if (!mSocket) {
-          ZS_LOG_WARNING(Detail, log("socket gone"))
           return;
         }
 
@@ -439,43 +427,9 @@ namespace openpeer
           }
         }
 
-        mTCPWriteReady = false;
-
-        if (!sendQueuedData()) {
-          ZS_LOG_TRACE(log("not all queued data sent"))
-          return;
-        }
-
-        while (mSendStream->getNextReadSizeInBytes() > 0) {
-          // attempt to send the next buffer over TCP
-
-          StreamHeaderPtr header;
-          SecureByteBlockPtr buffer = mSendStream->read(&header);
-
-          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + Stringize<typeof(SecureByteBlock::size_type)>(buffer->SizeInBytes()).string())
-
-          ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ChannelHeader>(header);
-
-          if (mFramesHaveChannelNumber) {
-            if (!channelHeader) {
-              ZS_LOG_ERROR(Detail, log("expecting a channel header but did not receive one"))
-              setError(IHTTP::HTTPStatusCode_ExpectationFailed, "expected channel header for sending buffer but was not given one");
-              cancel();
-              return;
-            }
-            mSendingQueue->PutWord32(channelHeader->mChannelID);
-          }
-
-          mSendingQueue->PutWord32(buffer->SizeInBytes());
-          mSendingQueue->Put(buffer->BytePtr(), buffer->SizeInBytes());
-
-          if (!sendQueuedData()) {
-            ZS_LOG_TRACE(log("not all queued data sent"))
-            return;
-          }
-        }
-
         mTCPWriteReady = true;
+
+        sendDataNow();
       }
 
       //-----------------------------------------------------------------------
@@ -563,6 +517,10 @@ namespace openpeer
           ZS_LOG_DEBUG(log("attempting to report state to delegate") + getDebugValueString())
           mSubscriptions.delegate()->onTCPMessagingStateChanged(pThis, mCurrentState);
         }
+
+        if (SessionState_Connected == mCurrentState) {
+          mSendStream->notifyReaderReadyToRead();
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -626,8 +584,76 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool TCPMessaging::sendQueuedData()
+      void TCPMessaging::sendDataNow()
       {
+        typedef ITransportStream::StreamHeader StreamHeader;
+        typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
+
+        if (isShutdown()) return;
+
+        if (!mSocket) {
+          ZS_LOG_WARNING(Detail, log("socket gone"))
+          return;
+        }
+
+        if (!mTCPWriteReady) {
+          ZS_LOG_DEBUG(log("cannot send data until TCP write ready received"))
+          return;
+        }
+
+        mTCPWriteReady = false;
+
+        size_t sent = 0;
+
+        if (!sendQueuedData(sent)) {
+          ZS_LOG_TRACE(log("not all queued data sent (try again when next TCP send ready received)"))
+          return;
+        }
+
+        if (0 == sent) {
+          // nothing to send?
+          if (mSendStream->getNextReadSizeInBytes() < 1) {
+            ZS_LOG_DEBUG(log("no data was sent because there was nothing to send (try again when data added to send)"))
+            mTCPWriteReady = true;
+            return;
+          }
+        }
+
+        while (mSendStream->getNextReadSizeInBytes() > 0) {
+          // attempt to send the next buffer over TCP
+
+          StreamHeaderPtr header;
+          SecureByteBlockPtr buffer = mSendStream->read(&header);
+
+          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + Stringize<typeof(SecureByteBlock::size_type)>(buffer->SizeInBytes()).string())
+
+          ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ChannelHeader>(header);
+
+          if (mFramesHaveChannelNumber) {
+            if (!channelHeader) {
+              ZS_LOG_ERROR(Detail, log("expecting a channel header but did not receive one"))
+              setError(IHTTP::HTTPStatusCode_ExpectationFailed, "expected channel header for sending buffer but was not given one");
+              cancel();
+              return;
+            }
+            mSendingQueue->PutWord32(channelHeader->mChannelID);
+          }
+
+          mSendingQueue->PutWord32(buffer->SizeInBytes());
+          mSendingQueue->Put(buffer->BytePtr(), buffer->SizeInBytes());
+
+          if (!sendQueuedData(sent)) {
+            ZS_LOG_TRACE(log("not all queued data sent (try again when next TCP send ready received)"))
+            return;
+          }
+        }
+      }
+      
+      //-----------------------------------------------------------------------
+      bool TCPMessaging::sendQueuedData(size_t &outSent)
+      {
+        outSent = 0;
+
         size_t size = static_cast<size_t>(mSendingQueue->CurrentSize());
 
         // attempt to send from the send queue first
@@ -645,6 +671,7 @@ namespace openpeer
           ZS_LOG_TRACE(log("attempting to send data over TCP") + ", size=" + Stringize<typeof(size)>(size).string())
           bool wouldBlock = false;
           ULONG sent = mSocket->send(buffer.BytePtr(), size, &wouldBlock);
+          outSent = sent;
           if (0 != sent) {
             mSendingQueue->Skip(sent);
           }

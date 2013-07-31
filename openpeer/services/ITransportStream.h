@@ -176,6 +176,24 @@ namespace openpeer
       virtual void cancel() = 0;
 
       //-----------------------------------------------------------------------
+      // PURPOSE: call to notify the writer that it can start sending data
+      //          to the reader.
+      // NOTE:    By notifying that the writer that the reader is ready to
+      //          read, the writer will get notified of "writer ready" for
+      //          the first time.
+      //
+      //          The reader will not receive "on reader ready" untl this
+      //          method is called (but still can choose to read regardless. If
+      //          data is read then the "notifyReaderReadyToRead" is presumed
+      //          to be called and read/write ready notifications will fire
+      //          for the reader and the writer.
+      //
+      //          The writer can choose to send data before receiving this
+      //          ready notification in which case the read data will be
+      //          cached until the reader decided to reads the data.
+      virtual void notifyReaderReadyToRead() = 0;
+
+      //-----------------------------------------------------------------------
       // PURPOSE: Obtains the size of the next "written" buffer available to
       //          be read.
       // NOTE:    This buffer will match the next FIFO size buffer written to

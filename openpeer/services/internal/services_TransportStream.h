@@ -147,6 +147,8 @@ namespace openpeer
 
         // (duplicate) virtual ITransportStreamPtr getStream() const;
 
+        virtual void notifyReaderReadyToRead();
+
         virtual ULONG getNextReadSizeInBytes() const;
 
         virtual StreamHeaderPtr getNextReadHeader() const;
@@ -174,6 +176,11 @@ namespace openpeer
 
         bool isShutdown() const {return mShutdown;}
 
+        void notifySubscribers(
+                               bool afterRead,
+                               bool afterWrite
+                               );
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -185,6 +192,10 @@ namespace openpeer
         TransportStreamWeakPtr mThisWeak;
 
         bool mShutdown;
+        bool mReaderReady;
+
+        bool mReadReadyNotified;
+        bool mWriteReadyNotified;
 
         ITransportStreamWriterDelegateSubscriptions mWriterSubscriptions;
         ITransportStreamWriterSubscriptionPtr mDefaultWriterSubscription;

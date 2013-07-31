@@ -73,7 +73,10 @@ namespace openpeer
                                        ) :
         zsLib::MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mShutdown(false)
+        mShutdown(false),
+        mReaderReady(false),
+        mReadReadyNotified(false),
+        mWriteReadyNotified(false)
       {
         ZS_LOG_DEBUG(log("created"))
         if (writerDelegate) {
@@ -88,7 +91,6 @@ namespace openpeer
       void TransportStream::init()
       {
         AutoRecursiveLock lock(getLock());
-        mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -186,9 +188,11 @@ namespace openpeer
           return subscription;
         }
 
-        if (mBuffers.size() < 1) {
+        if ((mBuffers.size() < 1) &&
+            (mReaderReady)) {
           ITransportStreamWriterDelegatePtr delegate = mWriterSubscriptions.delegate(subscription);
           if (delegate) {
+            ZS_LOG_DEBUG(log("notifying new subscriber write ready"))
             delegate->onTransportStreamWriterReady(mThisWeak.lock());
           }
         }
@@ -216,7 +220,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          ZS_LOG_WARNING(Detail, log("cannot write as already shutdown"))
           return;
         }
 
@@ -235,7 +239,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          ZS_LOG_WARNING(Detail, log("cannot write as already shutdown"))
           return;
         }
 
@@ -247,11 +251,7 @@ namespace openpeer
 
         mBuffers.push_back(buffer);
 
-        // only notify if this is the first buffer added (as have to wait until read called before notifying again)
-        if (mBuffers.size() == 1) {
-          ZS_LOG_TRACE(log("notifying buffer ready to read"))
-          mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
-        }
+        notifySubscribers(false, true);
       }
 
       //-----------------------------------------------------------------------
@@ -279,15 +279,27 @@ namespace openpeer
           return subscription;
         }
 
-        if (mBuffers.size() > 0) {
+        if ((mBuffers.size() > 0) &&
+            (mReaderReady)) {
           ITransportStreamReaderDelegatePtr delegate = mReaderSubscriptions.delegate(subscription);
           if (delegate) {
-            ZS_LOG_TRACE(log("notifying buffer ready to read"))
+            ZS_LOG_TRACE(log("notifying new subscriber ready to read"))
             delegate->onTransportStreamReaderReady(mThisWeak.lock());
           }
         }
 
         return subscription;
+      }
+
+      //-----------------------------------------------------------------------
+      void TransportStream::notifyReaderReadyToRead()
+      {
+        AutoRecursiveLock lock(getLock());
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+        notifySubscribers(true, false);
       }
 
       //-----------------------------------------------------------------------
@@ -358,6 +370,11 @@ namespace openpeer
 
         AutoRecursiveLock lock(getLock());
 
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot read as already shutdown"))
+          return 0;
+        }
+
         BYTE *dest = outBuffer;
 
         ULONG totalRead = 0;
@@ -402,15 +419,7 @@ namespace openpeer
           }
         }
 
-        if (mBuffers.size() < 1) {
-          ZS_LOG_TRACE(log("notifying buffer ready to write"))
-          mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
-        }
-
-        if (mBuffers.size() > 0) {
-          ZS_LOG_TRACE(log("notifying buffer ready to read"))
-          mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
-        }
+        notifySubscribers(true, false);
 
         return totalRead;
       }
@@ -423,6 +432,12 @@ namespace openpeer
         }
 
         AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot read as already shutdown"))
+          return SecureByteBlockPtr();
+        }
+
         if (mBuffers.size() < 1) return SecureByteBlockPtr();
 
         SecureByteBlockPtr result;
@@ -448,16 +463,8 @@ namespace openpeer
           mBuffers.pop_front();
         }
 
-        if (mBuffers.size() < 1) {
-          ZS_LOG_TRACE(log("notifying buffer ready to write"))
-          mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
-        }
+        notifySubscribers(true, false);
 
-        if (mBuffers.size() > 0) {
-          ZS_LOG_TRACE(log("notifying buffer ready to read"))
-          mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
-        }
-        
         return result;
       }
 
@@ -488,6 +495,9 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("transport stream id", Stringize<typeof(mID)>(mID).string(), firstTime) +
                Helper::getDebugValue("shutdown", mShutdown ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("reader ready", mReaderReady ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("read ready notified", mReadReadyNotified ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("write ready notified", mWriteReadyNotified ? String("true") : String(), firstTime) +
                Helper::getDebugValue("writer subscriptions", mWriterSubscriptions.size() > 0 ? Stringize<ITransportStreamWriterDelegateSubscriptions::size_type>(mWriterSubscriptions.size()).string() : String(), firstTime) +
                Helper::getDebugValue("default writer subscription", mDefaultWriterSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("reader subscriptions", mReaderSubscriptions.size() > 0 ? Stringize<ITransportStreamReaderDelegateSubscriptions::size_type>(mReaderSubscriptions.size()).string() : String(), firstTime) +
@@ -495,6 +505,43 @@ namespace openpeer
                Helper::getDebugValue("buffers", mBuffers.size() > 0 ? Stringize<BufferList::size_type>(mBuffers.size()).string() : String(), firstTime);
       }
 
+      //-----------------------------------------------------------------------
+      void TransportStream::notifySubscribers(
+                                              bool afterRead,
+                                              bool afterWrite
+                                              )
+      {
+        if (afterRead) {
+          mReaderReady = true;          // reader must be ready if read was called
+          mReadReadyNotified = false;   // after a read operation, a new read notification should fire (if applicable)
+        }
+
+        if (afterWrite) {
+          mWriteReadyNotified = false;  // after data is written, the notification will have to fire again later when buffer is emptied
+        }
+
+        // only notify if this is the first buffer added or after each read operation (as have to wait until read called before notifying again)
+        bool notifyRead = ((mBuffers.size() > 0) &&
+                           (mReaderReady) &&
+                           (!mReadReadyNotified));
+
+        bool notifyWrite = ((mBuffers.size() < 1) &&
+                            (!mWriteReadyNotified));
+
+        if (notifyRead) {
+          ZS_LOG_TRACE(log("notifying ready to read") + ", subscribers=" + Stringize<ITransportStreamReaderDelegateSubscriptions::size_type>(mReaderSubscriptions.size()).string())
+          mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
+
+          mReadReadyNotified = true;
+        }
+
+        if (notifyWrite) {
+          ZS_LOG_TRACE(log("notifying ready to write") + ", subscribers=" + Stringize<ITransportStreamWriterDelegateSubscriptions::size_type>(mWriterSubscriptions.size()).string())
+          mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
+
+          mWriteReadyNotified = true;
+        }
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

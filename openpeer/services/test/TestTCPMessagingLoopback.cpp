@@ -163,9 +163,11 @@ namespace openpeer
             {
               if (messaging == mServerMessaging) {
                 mServerConnectTime = zsLib::now();
+                mServerReceiveStream->notifyReaderReadyToRead();
               }
               if (messaging == mClientMessaging) {
                 mClientConnectTime = zsLib::now();
+                mClientReceiveStream->notifyReaderReadyToRead();
               }
               break;
             }
@@ -255,6 +257,11 @@ namespace openpeer
 
           SecureByteBlockPtr buffer = reader->read(&header);
           ITCPMessaging::ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ITCPMessaging::ChannelHeader>(header);
+
+          if (!buffer) {
+            BOOST_CHECK(Time() != mShutdownTime)
+            return;
+          }
 
           if (mHasChannelNumbers) {
             BOOST_CHECK(((bool)header))
