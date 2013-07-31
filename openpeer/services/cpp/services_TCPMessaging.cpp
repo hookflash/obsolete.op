@@ -318,8 +318,9 @@ namespace openpeer
           return;
         }
 
-        if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("notified about TCP read ready after already shutdown"))
+        if ((isShutdown()) ||
+            (isShuttingdown())) {
+          ZS_LOG_WARNING(Detail, log("notified about TCP read ready after already shutting down/shutdown"))
           return;
         }
 
@@ -392,7 +393,9 @@ namespace openpeer
           mReceivingQueue->Skip(sizeof(bufferSize));
 
           SecureByteBlockPtr message(new SecureByteBlock(bufferSize));
-          mReceivingQueue->Get(message->BytePtr(), bufferSize);
+          if (bufferSize > 0) {
+            mReceivingQueue->Get(message->BytePtr(), bufferSize);
+          }
 
           ChannelHeaderPtr channelHeader;
           if (mFramesHaveChannelNumber) {
@@ -452,6 +455,7 @@ namespace openpeer
       #pragma mark TCPMessaging => ITimerDelegate
       #pragma mark
 
+      //-----------------------------------------------------------------------
       void TCPMessaging::onTimer(TimerPtr timer)
       {
         AutoRecursiveLock lock(getLock());
@@ -610,14 +614,14 @@ namespace openpeer
 
         if (0 == sent) {
           // nothing to send?
-          if (mSendStream->getNextReadSizeInBytes() < 1) {
+          if (mSendStream->getTotalReadBuffersAvailable() < 1) {
             ZS_LOG_DEBUG(log("no data was sent because there was nothing to send (try again when data added to send)"))
             get(mTCPWriteReady) = true;
             return;
           }
         }
 
-        while (mSendStream->getNextReadSizeInBytes() > 0) {
+        while (mSendStream->getTotalReadBuffersAvailable() > 0) {
           // attempt to send the next buffer over TCP
 
           StreamHeaderPtr header;
@@ -638,7 +642,9 @@ namespace openpeer
           }
 
           mSendingQueue->PutWord32(buffer->SizeInBytes());
-          mSendingQueue->Put(buffer->BytePtr(), buffer->SizeInBytes());
+          if (buffer->SizeInBytes() > 0) {
+            mSendingQueue->Put(buffer->BytePtr(), buffer->SizeInBytes());
+          }
 
           if (!sendQueuedData(sent)) {
             ZS_LOG_TRACE(log("not all queued data sent (try again when next TCP send ready received)"))

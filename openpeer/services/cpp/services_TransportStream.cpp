@@ -211,7 +211,6 @@ namespace openpeer
                                   )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!inBuffer)
-        ZS_THROW_INVALID_ARGUMENT_IF(bufferLengthInBytes < 1)
 
         AutoRecursiveLock lock(getLock());
 
@@ -230,7 +229,6 @@ namespace openpeer
                                   )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!bufferToAdopt)
-        ZS_THROW_INVALID_ARGUMENT_IF(bufferToAdopt->SizeInBytes() < 1)
 
         AutoRecursiveLock lock(getLock());
 
@@ -336,6 +334,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG TransportStream::getTotalReadBuffersAvailable() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mBuffers.size();
+      }
+      
+      //-----------------------------------------------------------------------
       ULONG TransportStream::getTotalReadSizeAvailableInBytes() const
       {
         AutoRecursiveLock lock(getLock());
@@ -369,6 +374,30 @@ namespace openpeer
 
         if (isShutdown()) {
           ZS_LOG_WARNING(Detail, log("cannot read as already shutdown"))
+          return 0;
+        }
+
+        if (0 == bufferLengthInBytes) {
+          // this is a special case, only legal if there is a "0" sized buffer
+          if (mBuffers.size() < 1) {
+            ZS_LOG_WARNING(Detail, log("no zero sized buffers available to read"))
+            return 0;
+          }
+
+          Buffer &buffer = mBuffers.front();
+          if (0 != buffer.mBuffer->SizeInBytes()) {
+            ZS_LOG_WARNING(Detail, log("no zero sized buffers available to read"))
+            return 0;
+          }
+
+          // this is a special "0" sized buffer, extract it
+          if (outHeader) {
+            *outHeader = buffer.mHeader;
+          }
+
+          ZS_LOG_TRACE(log("reading zero sized buffer"))
+
+          mBuffers.pop_front();
           return 0;
         }
 

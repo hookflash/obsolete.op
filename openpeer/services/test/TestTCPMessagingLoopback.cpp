@@ -196,6 +196,12 @@ namespace openpeer
           SecureByteBlockPtr random = IHelper::random(IHelper::random(50, 5000));
           SecureByteBlockPtr send = IHelper::clone(random);
 
+          if (0 == IHelper::random(0, 25)) {
+            ZS_LOG_DETAIL("sending zero sized buffer")
+            random = SecureByteBlockPtr(new SecureByteBlock(0));
+            send = SecureByteBlockPtr(new SecureByteBlock(0));
+          }
+
           Message info;
           info.mBuffer = random;
 

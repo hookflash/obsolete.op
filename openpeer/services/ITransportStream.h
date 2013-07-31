@@ -199,6 +199,12 @@ namespace openpeer
       // NOTE:    This buffer will match the next FIFO size buffer written to
       //          the ITransportWriter (and not the total amount written thus
       //          far).
+      //
+      //          A "0" sized buffer could have been written to the "write"
+      //          stream thus this is not a reliable method to determine
+      //          if there are any buffers available or not for reading.
+      //          Instead use "getTotalReadBuffersAvailable" to determine if
+      //          buffers are available for reading.
       virtual ULONG getNextReadSizeInBytes() const = 0;
 
       //-----------------------------------------------------------------------
@@ -206,6 +212,11 @@ namespace openpeer
       // NOTE:    Will return StreamHeaderPtr() if no header is available (or
       //          no buffer is available).
       virtual StreamHeaderPtr getNextReadHeader() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Obtains the total number of the buffers "written" to the
+      //          FIFO write stream that are still available to read.
+      virtual ULONG getTotalReadBuffersAvailable() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Obtains the size of all data "written" buffer available to

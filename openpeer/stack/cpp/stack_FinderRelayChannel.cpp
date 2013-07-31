@@ -103,10 +103,10 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        mTCPReceiveStream = ITransportStream::create();
-        mTCPSendStream = ITransportStream::create();
+        mWireReceiveStream = ITransportStream::create();
+        mWireSendStream = ITransportStream::create();
 
-        mMLSChannel = mMLSChannel->create(mThisWeak.lock(), mTCPReceiveStream, mOuterReceiveStream, mOuterSendStream, mTCPSendStream);
+        mMLSChannel = mMLSChannel->create(mThisWeak.lock(), mWireReceiveStream, mOuterReceiveStream, mOuterSendStream, mWireSendStream);
 
         step();
       }

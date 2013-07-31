@@ -815,7 +815,7 @@ namespace openpeer
           ZS_LOG_DEBUG(log("cannot read encoded stream until notified that it's okay to write to decoded stream"))
           return true;
         }
-        if (mReceiveStreamEncoded->getNextReadSizeInBytes() < 1) {
+        if (mReceiveStreamEncoded->getTotalReadBuffersAvailable() < 1) {
           ZS_LOG_DEBUG(log("nothing to decode"))
           return true;
         }
@@ -857,7 +857,7 @@ namespace openpeer
           }
         }
 
-        while (mReceiveStreamEncoded->getNextReadSizeInBytes() > 0) {
+        while (mReceiveStreamEncoded->getTotalReadBuffersAvailable() > 0) {
           ITransportStream::StreamHeaderPtr streamHeader;
           SecureByteBlockPtr streamBuffer = mReceiveStreamEncoded->read(&streamHeader);
 
@@ -1340,12 +1340,12 @@ namespace openpeer
           return false;
         }
 
-        if (mSendStreamDecoded->getNextReadSizeInBytes() < 1) {
+        if (mSendStreamDecoded->getTotalReadBuffersAvailable() < 1) {
           ZS_LOG_DEBUG(log("no data to be sent over the wire"))
           return true;
         }
 
-        while (mSendStreamDecoded->getNextReadSizeInBytes() > 0) {
+        while (mSendStreamDecoded->getTotalReadBuffersAvailable() > 0) {
           StreamHeaderPtr header;
           SecureByteBlockPtr buffer = mSendStreamDecoded->read(&header);
 

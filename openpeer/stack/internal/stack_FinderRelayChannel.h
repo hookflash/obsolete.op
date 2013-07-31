@@ -211,8 +211,8 @@ namespace openpeer
         ITransportStreamPtr mOuterReceiveStream;
         ITransportStreamPtr mOuterSendStream;
 
-        ITransportStreamPtr mTCPReceiveStream;
-        ITransportStreamPtr mTCPSendStream;
+        ITransportStreamPtr mWireReceiveStream;
+        ITransportStreamPtr mWireSendStream;
       };
 
       //-----------------------------------------------------------------------

@@ -153,6 +153,8 @@ namespace openpeer
 
         virtual StreamHeaderPtr getNextReadHeader() const;
 
+        virtual ULONG getTotalReadBuffersAvailable() const;
+
         virtual ULONG getTotalReadSizeAvailableInBytes() const;
 
         virtual ULONG read(

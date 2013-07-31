@@ -362,6 +362,9 @@ namespace openpeer
         if (right.SizeInBytes() < left.SizeInBytes()) {
           return 1;
         }
+        if (0 == left.SizeInBytes()) {
+          return 0;
+        }
         return memcmp(left, right, left.SizeInBytes());
       }
 
