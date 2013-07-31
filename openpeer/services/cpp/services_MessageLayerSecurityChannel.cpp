@@ -208,14 +208,16 @@ namespace openpeer
         ZS_LOG_DEBUG(log("created"))
         mDefaultSubscription = mSubscriptions.subscribe(delegate);
         ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
-
-        mReceiveStreamEncoded->subscribe(mThisWeak.lock());
-        mSendStreamDecoded->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
       void MessageLayerSecurityChannel::init()
       {
+        AutoRecursiveLock lock(getLock());
+
+        mReceiveStreamEncodedSubscription = mReceiveStreamEncoded->subscribe(mThisWeak.lock());
+        mSendStreamDecodedSubscription = mSendStreamDecoded->subscribe(mThisWeak.lock());
+
         IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
       }
 
@@ -323,6 +325,9 @@ namespace openpeer
 
         mSendStreamDecoded->cancel();
         mSendStreamEncoded->cancel();
+
+        mReceiveStreamEncodedSubscription->cancel();
+        mSendStreamDecodedSubscription->cancel();
 
         ZS_LOG_DEBUG(log("cancel complete"))
       }
@@ -705,10 +710,12 @@ namespace openpeer
                Helper::getDebugValue("receive signing public key", mReceiveSigningPublicKey ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keying signed doc", mReceiveKeyingSignedDoc ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keying signed element", mReceiveKeyingSignedEl ? String("true") : String(), firstTime) +
-               "receive stream encoded: " + ITransportStream::toDebugString(mReceiveStreamEncoded->getStream(), false) +
-               "receive stream decode: " + ITransportStream::toDebugString(mReceiveStreamDecoded->getStream(), false) +
-               "send stream decoded: " + ITransportStream::toDebugString(mSendStreamDecoded->getStream(), false) +
-               "send stream encoded: " + ITransportStream::toDebugString(mSendStreamEncoded->getStream(), false) +
+               ", receive stream encoded: " + ITransportStream::toDebugString(mReceiveStreamEncoded->getStream(), false) +
+               ", receive stream decode: " + ITransportStream::toDebugString(mReceiveStreamDecoded->getStream(), false) +
+               ", send stream decoded: " + ITransportStream::toDebugString(mSendStreamDecoded->getStream(), false) +
+               ", send stream encoded: " + ITransportStream::toDebugString(mSendStreamEncoded->getStream(), false) +
+               Helper::getDebugValue("receive stream encoded subscription", mReceiveStreamEncodedSubscription ? String("true") : String(), firstTime) +
+               Helper::getDebugValue("send stream decoded subscription", mSendStreamDecodedSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive keys", mReceiveKeys.size() > 0 ? Stringize<KeyMap::size_type>(mReceiveKeys.size()).string() : String(), firstTime) +
                Helper::getDebugValue("send keys", mSendKeys.size() > 0 ? Stringize<KeyMap::size_type>(mSendKeys.size()).string() : String(), firstTime);
       }

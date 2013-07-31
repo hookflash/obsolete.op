@@ -279,6 +279,9 @@ namespace openpeer
         ITransportStreamReaderPtr mSendStreamDecoded;
         ITransportStreamWriterPtr mSendStreamEncoded;
 
+        ITransportStreamReaderSubscriptionPtr mReceiveStreamEncodedSubscription;
+        ITransportStreamReaderSubscriptionPtr mSendStreamDecodedSubscription;
+
         KeyMap mReceiveKeys;
         KeyMap mSendKeys;
       };

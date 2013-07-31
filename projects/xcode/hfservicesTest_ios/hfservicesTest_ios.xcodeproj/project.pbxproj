@@ -34,6 +34,7 @@
 		0063C78016CAA89900E6DB4D /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C77C16CAA89900E6DB4D /* libcurl.a */; };
 		0063D30616CB0CCC00E6DB4D /* libzsLib_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2EB16CB0C6F00E6DB4D /* libzsLib_ios.a */; };
 		0063D30916CB0CE800E6DB4D /* libhfservices_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2FD16CB0C8600E6DB4D /* libhfservices_ios.a */; };
+		00ABD4A117A8BB8E00178078 /* TestTCPMessagingLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ABD4A017A8BB8E00178078 /* TestTCPMessagingLoopback.cpp */; };
 		00AD9014177BF871009590EB /* libcryptopp_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00AD9008177BF5CC009590EB /* libcryptopp_ios.a */; };
 		00AD9019177BF981009590EB /* libudns_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00AD900D177BF5CC009590EB /* libudns_ios.a */; };
 		00AD901D177BFB78009590EB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 00AD901C177BFB78009590EB /* libz.dylib */; };
@@ -136,6 +137,7 @@
 		0063D2EC16CB0C7900E6DB4D /* udns_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns_ios.xcodeproj; path = ../../../libs/udns/projects/xcode/udns_ios/udns_ios.xcodeproj; sourceTree = "<group>"; };
 		0063D2F216CB0C7F00E6DB4D /* cryptopp_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp_ios.xcodeproj; path = ../../../libs/cryptopp/projects/xcode/cryptopp_ios/cryptopp_ios.xcodeproj; sourceTree = "<group>"; };
 		0063D2F816CB0C8600E6DB4D /* hfservices_ios.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfservices_ios.xcodeproj; path = ../hfservices_ios/hfservices_ios.xcodeproj; sourceTree = "<group>"; };
+		00ABD4A017A8BB8E00178078 /* TestTCPMessagingLoopback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTCPMessagingLoopback.cpp; sourceTree = "<group>"; };
 		00AD901C177BFB78009590EB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -227,6 +229,7 @@
 				0063C58816CAA62600E6DB4D /* TestRUDPListener.cpp */,
 				0063C58916CAA62600E6DB4D /* TestSTUNDiscovery.cpp */,
 				0063C58A16CAA62600E6DB4D /* TestTURNSocket.cpp */,
+				00ABD4A017A8BB8E00178078 /* TestTCPMessagingLoopback.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				0063C77416CAA7F000E6DB4D /* hfservicesTest_iosAppDelegate_iPad.mm in Sources */,
 				0063C77616CAA7F000E6DB4D /* hfservicesTest_iosAppDelegate_iPhone.m in Sources */,
 				0063C77716CAA7F000E6DB4D /* main.m in Sources */,
+				00ABD4A117A8BB8E00178078 /* TestTCPMessagingLoopback.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

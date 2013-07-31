@@ -39,7 +39,7 @@
 
 #include <iostream>
 
-namespace openpeer { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_services_test) } } }
+namespace openpeer { namespace services { namespace test { ZS_IMPLEMENT_SUBSYSTEM(openpeer_services_test) } } }
 
 
 
@@ -53,7 +53,7 @@ void doTestTURNSocket();
 void doTestRUDPListener();
 void doTestRUDPICESocket();
 void doTestRUDPICESocketLoopback();
-
+void doTestTCPMessagingLoopback();
 
 namespace BoostReplacement
 {
@@ -81,8 +81,10 @@ namespace BoostReplacement
   void installLogger()
   {
     BOOST_STDOUT() << "INSTALLING LOGGER...\n\n";
+    ILogger::setLogLevel(zsLib::Log::Trace);
     ILogger::setLogLevel("zsLib", zsLib::Log::Trace);
-    ILogger::setLogLevel("hookflash_services", zsLib::Log::Trace);
+    ILogger::setLogLevel("openpeer_services", zsLib::Log::Trace);
+    ILogger::setLogLevel("openpeer_services_http", zsLib::Log::Trace);
 
     if (OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING) {
       ILogger::installStdOutLogger(false);
@@ -94,6 +96,14 @@ namespace BoostReplacement
 
     if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
       ILogger::installTelnetLogger(OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
+
+      for (int tries = 0; tries < 60; ++tries)
+      {
+        if (ILogger::isTelnetLoggerListening()) {
+          break;
+        }
+        boost::this_thread::sleep(zsLib::Seconds(1));
+      }
     }
 
     if (OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING) {
@@ -141,5 +151,6 @@ namespace BoostReplacement
     BOOST_RUN_TEST_FUNC(doTestRUDPICESocketLoopback)
     BOOST_RUN_TEST_FUNC(doTestRUDPListener)
     BOOST_RUN_TEST_FUNC(doTestRUDPICESocket)
+    BOOST_RUN_TEST_FUNC(doTestTCPMessagingLoopback)
   }
 }

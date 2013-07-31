@@ -87,6 +87,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void TransportStream::init()
       {
+        AutoRecursiveLock lock(getLock());
+        mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -280,6 +282,7 @@ namespace openpeer
         if (mBuffers.size() > 0) {
           ITransportStreamReaderDelegatePtr delegate = mReaderSubscriptions.delegate(subscription);
           if (delegate) {
+            ZS_LOG_TRACE(log("notifying buffer ready to read"))
             delegate->onTransportStreamReaderReady(mThisWeak.lock());
           }
         }
@@ -445,6 +448,16 @@ namespace openpeer
           mBuffers.pop_front();
         }
 
+        if (mBuffers.size() < 1) {
+          ZS_LOG_TRACE(log("notifying buffer ready to write"))
+          mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
+        }
+
+        if (mBuffers.size() > 0) {
+          ZS_LOG_TRACE(log("notifying buffer ready to read"))
+          mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
+        }
+        
         return result;
       }
 

@@ -101,6 +101,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void FinderRelayChannel::init()
       {
+        AutoRecursiveLock lock(getLock());
+
         mTCPReceiveStream = ITransportStream::create();
         mTCPSendStream = ITransportStream::create();
 
@@ -447,10 +449,10 @@ namespace openpeer
                IMessageLayerSecurityChannel::toDebugString(mMLSChannel) +
                IPeer::toDebugString(mRemotePeer) +
                Helper::getDebugValue("remote public key", mRemotePublicKey ? String("true") : String(), firstTime) +
-               "outer recv stream: " + ITransportStream::toDebugString(mOuterReceiveStream, false) +
-               "outer send stream: " + ITransportStream::toDebugString(mOuterSendStream, false) +
-               "tcp recv stream: " + ITransportStream::toDebugString(mTCPReceiveStream, false) +
-               "tcp send stream: " + ITransportStream::toDebugString(mTCPSendStream, false);
+               ", outer recv stream: " + ITransportStream::toDebugString(mOuterReceiveStream, false) +
+               ", outer send stream: " + ITransportStream::toDebugString(mOuterSendStream, false) +
+               ", tcp recv stream: " + ITransportStream::toDebugString(mTCPReceiveStream, false) +
+               ", tcp send stream: " + ITransportStream::toDebugString(mTCPSendStream, false);
       }
 
       //-----------------------------------------------------------------------

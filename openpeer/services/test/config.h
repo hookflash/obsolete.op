@@ -34,22 +34,23 @@
 #ifndef OPENPEER_SERVICE_TEST_CONFIG_H_934e33cf1d24510f40709eb6c69b8c45
 #define OPENPEER_SERVICE_TEST_CONFIG_H_934e33cf1d24510f40709eb6c69b8c45
 
-#define OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE "/tmp/hookflash.fifo"
+#define OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE "/tmp/openpeer.fifo"
 
 #define OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING     (true)
-#define OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING       (true)
+#define OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING       (false)
 #define OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING     (true)
 #define OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING   (true)
 
 #define OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT    (59999)
 
 #define OPENPEER_SERVICE_TEST_DO_CANONICAL_XML_TEST                    (true)
-#define OPENPEER_SERVICE_TEST_DO_DNS_TEST                              (true)
+#define OPENPEER_SERVICE_TEST_DO_DNS_TEST                              (false)
 #define OPENPEER_SERVICE_TEST_DO_ICE_SOCKET_TEST                       (false)
 #define OPENPEER_SERVICE_TEST_DO_STUN_TEST                             (false)
 #define OPENPEER_SERVICE_TEST_DO_TURN_TEST                             (false)
 #define OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_LOOPBACK_TEST           (false)
 #define OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST   (false)
+#define OPENPEER_SERVICE_TEST_DO_TCP_MESSAGING_TEST                    (true)
 
 #define OPENPEER_SERVICE_TEST_DNS_ZONE "dnstest.hookflash.me"
 

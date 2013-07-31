@@ -87,6 +87,7 @@ namespace openpeer
         mSendStream(sendStream->getReader()),
         mFramesHaveChannelNumber(framesHaveChannelNumber),
         mMaxMessageSizeInBytes(maxMessageSizeInBytes),
+        mConnectIssued(false),
         mTCPWriteReady(true),
         mSendingQueue(new ByteQueue),
         mReceivingQueue(new ByteQueue)
@@ -94,13 +95,13 @@ namespace openpeer
         ZS_LOG_DEBUG(log("created"))
         mDefaultSubscription = mSubscriptions.subscribe(delegate);
         ZS_THROW_BAD_STATE_IF(!mDefaultSubscription)
-
-        mSendStream->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
       void TCPMessaging::init()
       {
+        AutoRecursiveLock lock(getLock());
+        mSendStreamSubscription = mSendStream->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -158,10 +159,12 @@ namespace openpeer
           ZS_LOG_ERROR(Detail, pThis->log("failed to accept socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
           pThis->shutdown(Seconds(0));
         } else {
-          pThis->mSocket->setDelegate(pThis);
           pThis->mSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
+          pThis->mSocket->setDelegate(pThis);
+          ZS_LOG_DEBUG(pThis->log("accepted") + ", client IP=" + pThis->mRemoteIP.string())
         }
         pThis->init();
+        pThis->setState(SessionState_Connected);
         return pThis;
       }
 
@@ -184,6 +187,7 @@ namespace openpeer
         TCPMessagingPtr pThis(new TCPMessaging(IHelper::getServiceQueue(), delegate, receiveStream, sendStream, framesHaveChannelNumber, maxMessageSizeInBytes));
         pThis->mThisWeak = pThis;
         pThis->mRemoteIP = remoteIP;
+        pThis->mConnectIssued = true;
 
         bool wouldBlock = false;
         int errorCode = 0;
@@ -191,6 +195,7 @@ namespace openpeer
         pThis->mSocket->setDelegate(pThis);
         pThis->mSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
         pThis->mSocket->connect(remoteIP, &wouldBlock, &errorCode);
+        ZS_LOG_DEBUG(pThis->log("attempting to connect") + ", server IP=" + remoteIP.string())
         if (0 != errorCode) {
           ZS_LOG_ERROR(Detail, pThis->log("failed to connect socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
           pThis->shutdown(Seconds(0));
@@ -290,6 +295,8 @@ namespace openpeer
           return;
         }
 
+        ZS_LOG_TRACE(log("notified stream read ready"))
+
         if (!mTCPWriteReady) {
           ZS_LOG_DEBUG(log("waiting for TCP socket to indicate write ready before sending"))
           return;
@@ -311,10 +318,14 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
+        if (isShutdown()) return;
+
         if (socket != mSocket) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
           return;
         }
+
+        ZS_LOG_TRACE(log("notified read ready"))
 
         try {
           SecureByteBlock buffer(OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES);
@@ -336,7 +347,7 @@ namespace openpeer
         }
 
         do {
-          size_t size = mReceivingQueue->CurrentSize();
+          size_t size = static_cast<size_t>(mReceivingQueue->CurrentSize());
           if (0 == size) {
             ZS_LOG_TRACE(log("no more data available in receive buffer"))
             break;
@@ -405,6 +416,11 @@ namespace openpeer
         typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
 
         AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_TRACE(log("notified write ready"))
+
+        if (isShutdown()) return;
+
         if (socket != mSocket) {
           ZS_LOG_WARNING(Detail, log("notified about obsolete socket"))
           return;
@@ -413,6 +429,14 @@ namespace openpeer
         if (!mSocket) {
           ZS_LOG_WARNING(Detail, log("socket gone"))
           return;
+        }
+
+        if (mConnectIssued) {
+          if (!isShuttingdown()) {
+            ZS_LOG_TRACE(log("connected"))
+            mConnectIssued = false;
+            setState(SessionState_Connected);
+          }
         }
 
         mTCPWriteReady = false;
@@ -516,8 +540,9 @@ namespace openpeer
                Helper::getDebugValue("state", ITCPMessaging::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
-               "receive stream: " + ITransportStream::toDebugString(mReceiveStream->getStream(), false) +
-               "send stream: " + ITransportStream::toDebugString(mSendStream->getStream(), false) +
+               ", receive stream: " + ITransportStream::toDebugString(mReceiveStream->getStream(), false) +
+               ", send stream: " + ITransportStream::toDebugString(mSendStream->getStream(), false) +
+               Helper::getDebugValue("send stream subscription", mSendStreamSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("max size", Stringize<typeof(mMaxMessageSizeInBytes)>(mMaxMessageSizeInBytes).string(), firstTime) +
                Helper::getDebugValue("write ready", mTCPWriteReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("remote IP", mRemoteIP.string(), firstTime) +
@@ -590,6 +615,8 @@ namespace openpeer
         mReceiveStream->cancel();
         mSendStream->cancel();
 
+        mSendStreamSubscription->cancel();
+
         if (mSocket) {
           mSocket->close();
           mSocket.reset();
@@ -601,7 +628,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool TCPMessaging::sendQueuedData()
       {
-        size_t size = mSendingQueue->CurrentSize();
+        size_t size = static_cast<size_t>(mSendingQueue->CurrentSize());
 
         // attempt to send from the send queue first
         if (size < 1) {

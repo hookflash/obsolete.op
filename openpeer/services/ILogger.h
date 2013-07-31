@@ -63,6 +63,10 @@ namespace openpeer
                                               );
       static void installDebuggerLogger(bool colorizeOutput = false);
 
+      static bool isTelnetLoggerListening();
+      static bool isTelnetLoggerConnected();
+      static bool isOutgoingTelnetLoggerConnected();
+
       static void uninstallStdOutLogger();
       static void uninstallFileLogger();
       static void uninstallTelnetLogger();

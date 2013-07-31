@@ -46,9 +46,9 @@
 #include <iostream>
 #include <fstream>
 
-namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(hookflash_peer_contact_test) } } }
+namespace hookflash { namespace stack { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_peer_contact_test) } } }
 
-namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(hookflash_peer_contact_test) } } }
+namespace hookflash { namespace stack { namespace test { ZS_IMPLEMENT_SUBSYSTEM(openpeer_peer_contact_test) } } }
 
 //#define OPENPEER_MEDIA_ENGINE_DEBUG_LOG_LEVEL
 //#define OPENPEER_MEDIA_ENGINE_ENABLE_TIMER

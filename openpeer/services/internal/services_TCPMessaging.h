@@ -191,10 +191,12 @@ namespace openpeer
 
         ITransportStreamWriterPtr mReceiveStream;
         ITransportStreamReaderPtr mSendStream;
+        ITransportStreamReaderSubscriptionPtr mSendStreamSubscription;
 
         bool mFramesHaveChannelNumber;
         ULONG mMaxMessageSizeInBytes;
 
+        bool mConnectIssued;
         bool mTCPWriteReady;
         IPAddress mRemoteIP;
         SocketPtr mSocket;

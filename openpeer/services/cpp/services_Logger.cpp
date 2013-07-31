@@ -108,6 +108,8 @@ namespace openpeer
 {
   namespace services
   {
+    using zsLib::AutoRecursiveLock;
+
     namespace internal
     {
 
@@ -829,6 +831,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         ~TelnetLogger()
         {
+          mThisWeak.reset();
           close();
         }
 
@@ -840,7 +843,19 @@ namespace openpeer
           {
             AutoRecursiveLock lock(mLock);
 
+            if (mClosed) {
+              // already closed
+              return;
+            }
+
             mClosed = true;
+
+            TelnetLoggerPtr pThis = mThisWeak.lock();
+            if (pThis) {
+              LogPtr log = Log::singleton();
+              log->removeListener(mThisWeak.lock());
+              mThisWeak.reset();
+            }
 
             mBufferedList.clear();
             mConnected = false;
@@ -876,6 +891,22 @@ namespace openpeer
         }
 
         //---------------------------------------------------------------------
+        bool isListening()
+        {
+          AutoRecursiveLock lock(mLock);
+          return mListenSocket;
+        }
+
+        //---------------------------------------------------------------------
+        bool isConnected()
+        {
+          AutoRecursiveLock lock(mLock);
+          if (!mTelnetSocket) return false;
+          if (mOutgoingMode) return mConnected;
+          return true;
+        }
+
+        //---------------------------------------------------------------------
         static TelnetLoggerPtr create(USHORT listenPort, ULONG maxSecondsWaitForSocketToBeAvailable, bool colorizeOutput)
         {
           MessageQueueThreadPtr thread = MessageQueueThread::createBasic();
@@ -900,47 +931,17 @@ namespace openpeer
         }
 
         //---------------------------------------------------------------------
-        static TelnetLoggerPtr singleton(USHORT listenPort, ULONG maxSecondsWaitForSocketToBeAvailable, bool colorizeOutput, bool reset = false) {
-          AutoRecursiveLock lock(IHelper::getGlobalLock());
-          static TelnetLoggerPtr logger = (reset ? TelnetLoggerPtr() : TelnetLogger::create(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger->close();
-            logger.reset();
-          }
-          if ((!reset) &&
-              (!logger)) {
-            logger = TelnetLogger::create(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
-          }
-          return logger;
+        static TelnetLoggerPtr &singletonListener()
+        {
+          static TelnetLoggerPtr singleton;
+          return singleton;
         }
 
         //---------------------------------------------------------------------
-        static TelnetLoggerPtr singleton(
-                                         const char *serverHostWithPort,
-                                         bool colorizeOutput,
-                                         const char *sendStringUponConnection
-                                         )
+        static TelnetLoggerPtr &singletonOutgoing()
         {
-          bool reset = (NULL == serverHostWithPort);
-
-          AutoRecursiveLock lock(IHelper::getGlobalLock());
-          static TelnetLoggerPtr logger = (reset ? TelnetLoggerPtr() : TelnetLogger::create(serverHostWithPort, colorizeOutput, sendStringUponConnection));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger->close();
-            logger.reset();
-          }
-
-          if ((!reset) &&
-              (!logger)) {
-            logger = TelnetLogger::create(serverHostWithPort, colorizeOutput, sendStringUponConnection);
-          }
-          return logger;
+          static TelnetLoggerPtr singleton;
+          return singleton;
         }
 
         //---------------------------------------------------------------------
@@ -1414,7 +1415,15 @@ namespace openpeer
     //-------------------------------------------------------------------------
     void ILogger::installTelnetLogger(WORD listenPort, ULONG maxSecondsWaitForSocketToBeAvailable,  bool colorizeOutput)
     {
-      internal::TelnetLogger::singleton(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonListener();
+      if (singleton) {
+        singleton->close();
+        singleton.reset();
+      }
+
+      singleton = internal::TelnetLogger::create(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
     }
 
     //-------------------------------------------------------------------------
@@ -1424,13 +1433,50 @@ namespace openpeer
                                               const char *sendStringUponConnection
                                               )
     {
-      internal::TelnetLogger::singleton(serverHostWithPort, colorizeOutput, sendStringUponConnection);
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonOutgoing();
+      if (singleton) {
+        singleton->close();
+        singleton.reset();
+      }
+      singleton = internal::TelnetLogger::create(serverHostWithPort, colorizeOutput, sendStringUponConnection);
     }
 
     //-------------------------------------------------------------------------
     void ILogger::installDebuggerLogger(bool colorizeOutput)
     {
       internal::DebuggerLogger::singleton(colorizeOutput);
+    }
+
+    //-------------------------------------------------------------------------
+    bool ILogger::isTelnetLoggerListening()
+    {
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonListener();
+      if (!singleton) return false;
+
+      return singleton->isListening();
+    }
+
+    //-------------------------------------------------------------------------
+    bool ILogger::isTelnetLoggerConnected()
+    {
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonListener();
+      if (!singleton) return false;
+
+      return singleton->isConnected();
+    }
+
+    //-------------------------------------------------------------------------
+    bool ILogger::isOutgoingTelnetLoggerConnected()
+    {
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonOutgoing();
+      if (!singleton) return false;
+
+      return singleton->isConnected();
     }
 
     //-------------------------------------------------------------------------
@@ -1448,13 +1494,25 @@ namespace openpeer
     //-------------------------------------------------------------------------
     void ILogger::uninstallTelnetLogger()
     {
-      internal::TelnetLogger::singleton(0, 0, false, true);
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonListener();
+      if (singleton) {
+        singleton->close();
+        singleton.reset();
+      }
     }
 
     //-------------------------------------------------------------------------
     void ILogger::uninstallOutgoingTelnetLogger()
     {
-      internal::TelnetLogger::singleton((const char *)NULL, false, (const char *)NULL);
+      AutoRecursiveLock lock(IHelper::getGlobalLock());
+
+      internal::TelnetLoggerPtr &singleton = internal::TelnetLogger::singletonOutgoing();
+      if (singleton) {
+        singleton->close();
+        singleton.reset();
+      }
     }
 
     //-------------------------------------------------------------------------
